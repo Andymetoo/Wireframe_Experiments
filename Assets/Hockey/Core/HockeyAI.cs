@@ -15,6 +15,7 @@ namespace ColdSnap
         private Vector2 aim;
         private bool goalie;
         private float requestedSpeed;
+        private float handHeight = 1.05f, handReach = .45f;
         private static readonly Vector2[] NetCorners = {
             new Vector2(-2.8f, 24f), new Vector2(2.8f, 24f),
             new Vector2(-2.8f, 27.8f), new Vector2(2.8f, 27.8f) };
@@ -40,12 +41,31 @@ namespace ColdSnap
             current.Brake = distance < (goalie ? .16f : .65f) && skater.Velocity.Length() > 1f;
             current.Aim = aim.LengthSquared() > .01f ? Vector2.Normalize(aim) : skater.Forward;
             current.Sprint = !goalie && distance > 7f;
+            if (!goalie)
+            {
+                float attack = skater.Team == 0 ? 1f : -1f;
+                // A readied pass can travel behind the goal between decisions; do not blindly volley it backward.
+                if (current.OneTimerHeld && match.Puck.Position.Y * attack >= RinkPhysics.GoalLine - .15f)
+                    current.OneTimerHeld = false;
+                if (current.HasShotTarget)
+                {
+                    // Close shots need less lift. Aiming at the top corner from two meters launches needless skyballs.
+                    float shootingDistance = Vector2.Distance(current.ShotTarget, match.Puck.Position);
+                    current.TargetHeight = Math.Min(current.TargetHeight, match.Puck.Height + shootingDistance * .3f);
+                }
+            }
+            if (goalie)
+            {
+                skater.GoalieHandHeight += Clamp(handHeight - skater.GoalieHandHeight, -2f * dt, 2f * dt);
+                skater.GoalieHandReach += Clamp(handReach - skater.GoalieHandReach, -2.5f * dt, 2.5f * dt);
+            }
             return current;
         }
 
         private void Decide(HockeySession match, SkaterState skater)
         {
             goalie = skater.Goalie;
+            current.OneTimerHeld = false; current.HasShotTarget = false;
             requestedSpeed = goalie ? 4.7f : 7.8f;
             float attack = skater.Team == 0 ? 1f : -1f;
             Vector2 theirGoal = new Vector2(0f, 25f * attack);
@@ -58,6 +78,7 @@ namespace ColdSnap
                 Carry(match, skater, theirGoal, attack);
                 return;
             }
+            if (carrier == null && ReadyForIncomingPass(match, skater, theirGoal, attack)) return;
             aim = puck.Position - skater.Position;
             int pursuer = Nearest(match, skater.Team, puck.Position, carrier == null ? -1 : carrier.Id);
             if (carrier == null)
@@ -136,8 +157,12 @@ namespace ColdSnap
             else if (actionTime <= 0f && distance < 20.5f && distance > 2f && Math.Abs(puck.Position.X) < 10f && attack * puck.Position.Y < 24f)
             {
                 current.Shoot = true; current.ShotPower = .65f + Rand() * .35f;
+                current.ShotKind = distance > 14f && pressure > 4f ? HockeyShotKind.Slap
+                    : distance < 9f && pressure > 2.6f ? HockeyShotKind.Wrist : HockeyShotKind.Snap;
+                current.HasShotTarget = true; current.ShotTarget = shotTarget;
+                current.TargetHeight = .35f + Rand() * 1.4f;
                 actionTime = .8f + Rand() * .6f;
-                skater.Intent = "Shoot far corner";
+                skater.Intent = current.ShotKind + " to the corner";
             }
             else skater.Intent = "Carry into shooting lane";
             // Move off the boards and toward the slot. Avoid skating through a keeper or net.
@@ -146,6 +171,30 @@ namespace ColdSnap
             if (pressure < 2.6f) target.X = -side * 5.5f;
             if (attack * skater.Position.Y > 23f) target = new Vector2(side * 6f, attack * 18f);
             requestedSpeed = 6.6f;
+        }
+
+        private bool ReadyForIncomingPass(HockeySession match, SkaterState skater, Vector2 goal, float attack)
+        {
+            PuckState puck = match.Puck;
+            if (!puck.LastStrikeWasPass || puck.LastPassTeam != skater.Team || puck.LastPasserId == skater.Id
+                || puck.PassAge > 2f || Vector2.Distance(skater.Position, goal) > 23f || attack * skater.Position.Y > 24f) return false;
+            Vector2 delta = skater.Position - puck.Position;
+            float speedSquared = puck.Velocity.LengthSquared();
+            if (speedSquared < 9f || delta.LengthSquared() > 13f * 13f) return false;
+            float arrival = Vector2.Dot(delta, puck.Velocity) / speedSquared;
+            if (arrival < -.04f || arrival > .85f) return false;
+            Vector2 intercept = puck.Position + puck.Velocity * Math.Max(0f, arrival);
+            if (Vector2.Distance(intercept, skater.Position) > 2.5f) return false;
+            SkaterState keeper = match.Skaters[skater.Team == 0 ? 7 : 6];
+            current.OneTimerHeld = true; current.ShotKind = HockeyShotKind.OneTimer; current.ShotPower = .86f;
+            current.HasShotTarget = true;
+            current.ShotTarget = goal + new Vector2(keeper.Position.X > 0f ? -1.1f : 1.1f, 0f);
+            current.TargetHeight = .5f + Rand() * 1.1f;
+            aim = current.ShotTarget - skater.Position;
+            target = RecoveryPoint(intercept);
+            requestedSpeed = 5.5f;
+            skater.Intent = "Ready a one-timer";
+            return true;
         }
 
         private void Goalkeeper(HockeySession match, SkaterState skater, float attack)
@@ -157,11 +206,17 @@ namespace ColdSnap
             float x = Clamp(toPuck.X * depth / longitudinal, -1.62f, 1.62f);
             // React to the predicted line only after the normal delayed decision tick.
             Vector2 v = match.Puck.Velocity;
+            handHeight = Clamp(match.Puck.Height + .15f, .65f, 2.02f);
+            handReach = Clamp((match.Puck.Position.X - skater.Position.X) * attack, -.9f, .9f);
             if (v.Y * attack < -5f)
             {
                 float t = (ownGoal.Y + attack * depth - match.Puck.Position.Y) / v.Y;
                 if (t > 0f && t < .9f)
+                {
                     x = Clamp(match.Puck.Position.X + v.X * t, -2.1f, 2.1f);
+                    handHeight = Clamp(match.Puck.Height + match.Puck.VerticalVelocity * t - 4.905f * t * t, .65f, 2.02f);
+                    handReach = Clamp((match.Puck.Position.X + v.X * t - skater.Position.X) * attack, -.9f, .9f);
+                }
             }
             target = new Vector2(x, ownGoal.Y + attack * depth);
             aim = toPuck;

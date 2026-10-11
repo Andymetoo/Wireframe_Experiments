@@ -1,0 +1,78 @@
+COLD SNAP / AIRBORNE SHOT EXPANSION
+Executed 2026-10-10, Unity 6000.4.1f1 URP, Windows x64.
+
+IMPLEMENTATION
+- Raised both physical and rendered goal frames/netting to 2.2m.
+- Quick LMB click releases an immediate snap; holding longer than .18 seconds
+  charges a slapshot. RMB passes on release. Holding RMB before pressing LMB
+  selects a wrist shot; releasing LMB shoots and suppresses the pending pass.
+- Wrist shots are slower and more accurate than slapshots. F remains a snap-shot
+  shortcut, Q an immediate pass shortcut.
+- Mouse points at a target on the goal plane, ice or rounded rink boundaries.
+  WASD offsets that target into nine regions: WA upper-left, none center, SD lower-right.
+  The outlined reticle displays the resolved target rather than the launch angle.
+- Holding Space exponentially slows skating and suppresses simultaneous thrust.
+- Puck height and vertical velocity integrate gravity, ice bounce and energy loss.
+  Shots compensate for travel time to the target height, with deterministic spread
+  increasing over distance. Players still physically obstruct shots.
+- Posts, crossbar, goal roof/netting, boards/glass, bodies, pads and delayed moving
+  goalie gloves react at the actual puck height. High pucks cannot be collected
+  from the ice; going over the glass causes an announced faceoff.
+- Holding LMB before an incoming puck or skating onto a loose puck can one-time
+  it at actual stick reach. One shot per hold; later release cannot fire again.
+  AI prepares pass one-timers and selects aimed snap/wrist/slap profiles.
+- Airborne puck silhouette, short geometric trail and ground shadow expose height.
+  Updated first-person view, reticle, charge display and in-game instructions.
+
+EXECUTED VALIDATION
+- .NET hockey suite: 255 passed, 0 failed. Includes 63 physics checks, button-gesture
+  timing, ballistic arrival, grounded passes, high goals, overbar misses, crossbar
+  and glove collisions, smooth stopping, incoming and skating-onto-puck one-timers,
+  per-skater attribution, AI pass one-timers, stranded goal-roof puck recovery
+  and full match/clock transitions.
+- Nine .NET bot matches: 56 goals, 143 shots, 80 saves, 410 passes released,
+  484 takeaways, 56 one-timers, zero frozen-puck resets.
+  See hockey-validation-results.txt for individual seeded matches.
+- Combined Unity core suite: 1,789 checks, 0 failures, including 534 Air Combat
+  checks and 1,000 complete Haunted House investigations. Unity's nine hockey games:
+  52 goals, 140 shots, 78 saves, 382 passes, 509 takeaways and 66 one-timers.
+  See cabinet-unity-validation.txt. Long trajectories differ between .NET and Unity;
+  same-runtime seed/input reproducibility is tested separately.
+- Rendered Unity Editor walkthrough: 265 checks, 0 failures, 0 runtime errors.
+  Actual Input System events tested quick clicks, charged holds, the ordered wrist
+  chord without stray passes, RMB release passes and contact one-timer debounce.
+  Aim tests exercised net height, WA/SD regions and intentionally looking at ice.
+  An explicitly isolated shot fixture demonstrated the rendered airborne puck.
+  See hockey-shots-editor-validation.txt for the full run.
+- Unmodified rendered seed-1988 match: Blue 0-2, 191.60 simulated seconds,
+  13 shots, 9 saves, 28 passes, 47 takeaways, 34 checks, zero stuck-puck resets.
+- All three launcher selections, input/camera isolation, pause/restart, results and
+  returns were exercised. Existing Haunted House and Air Combat gameplay were
+  exercised before and after hockey. All 26 legacy source/scene/shader files still
+  match the original SHA-256 preservation baseline.
+
+VISUAL INSPECTION
+Inspected actual Editor captures: airborne shot and shadow, raised goal/net,
+outlined reticle, first-person stick/rink, briefing and pause instructions.
+Logs/Hockey/28-hockey-airborne-shot.png shows the physical shot fixture in flight.
+Instructions and buttons fit; the shooting view keeps the goal visible.
+
+FINAL BUILD AND STANDALONE
+Windows x64 release build succeeded with 0 errors, 0 warnings; 103,437,910 bytes.
+The executable includes Cabinet, HauntedHouse, Meridian1944 and ColdSnap scenes.
+Builds/VectorCabinet/VectorCabinet.exe is ready to launch with its data folder/DLLs.
+The final release player passed all 265 integration checks with 0 failures,
+0 runtime errors and exit code 0. It exercised all three games and the new mouse
+gestures, one-timer arrival/debounce, airborne shooting and full match completion.
+See hockey-shots-standalone-validation.txt and cabinet-build-result.txt.
+Actual 1280x800 standalone captures are under Logs/HockeyShots/Standalone;
+the airborne-shot and briefing images were inspected. No test player remains open.
+
+LIMITS
+The gesture classifier fires snaps on click release, since the initial button-down
+cannot distinguish a future hold from a click. WASD has both skating and shot-region
+roles; holding Space suppresses propulsion while choosing corners. The puck has
+physical linear motion in 3D, but spin/wobble is cosmetic. No aerodynamic spin curve,
+manual high-stick play, new hockey rules, creative assets, audio or packages were added.
+Human playtesting is still needed for aiming difficulty, shot balance and control feel.
+Automated matches and captures do not establish those subjective qualities.

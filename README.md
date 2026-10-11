@@ -17,12 +17,14 @@ Try **Open Ice** first: the clock stops and opposing skaters hold position while
 | Control | Action |
 | --- | --- |
 | Mouse | Look and aim; momentum keeps its current direction |
-| W / A / S / D | Push forward / left / backward / right relative to view |
+| W / A / S / D | Skate relative to view; also select high / left / low / right shot region |
 | Shift | Stronger strides toward higher speed |
-| Space | Brake using the skate edges |
-| Left mouse, hold then release | Charge and shoot |
-| F | Quick wrist shot |
-| Right mouse / Q | Pass; nearby teammate within the aim cone receives a small lead assist |
+| Hold Space | Smooth hockey stop; overrides skating thrust while held |
+| Click left mouse / F | Immediate snap shot (mouse fires on click release) |
+| Hold left mouse, release | Charge and release a slapshot |
+| Hold right mouse, THEN hold left mouse | Charge a wrist shot; release left to shoot; slower and more accurate than a slapshot |
+| Right mouse release / Q | Pass; nearby teammate within the aim cone receives a small lead assist |
+| Hold left mouse before receiving a puck | Automatic one-timer when an incoming or loose puck reaches the stick |
 | E | Check an opponent within reach |
 | R | Request a pass from an AI teammate |
 | C | First-person / chase view |
@@ -32,11 +34,13 @@ Try **Open Ice** first: the clock stops and opposing skaters hold position while
 
 **Skating:** release movement keys to coast. Look around while gliding; your view does not instantly redirect velocity. Speed gives you reach but requires room to stop or reverse. Use the glide-direction indicator when your head and travel direction differ. No camera bob, roll or impact shake is applied.
 
-**Puck play:** get the puck within stick reach and in front of the body. The stick then guides it with a capped force; it is never parented to a skater. Hard turns, fast passes, collisions and checks can release it. Shots stay on the ice. Aim away from the goalie's pads and recover rebounds. The dark puck is slightly enlarged visually for readability; collision uses its smaller physical radius. A diamond/direction prompt and rink map help recover it when looking elsewhere.
+**Puck play:** get the puck within stick reach and in front of the body. The stick guides it with a capped force; it is never parented to a skater. Hard turns, fast passes, collisions and checks can release it. Shots lift under gravity and bounce off ice, skates, bodies, pads, gloves, posts and the raised crossbar. The dark puck is slightly enlarged visually for readability; a short air trail, ground shadow, direction prompt and rink map help track it. Pucks above stick height cannot be collected. A puck over the glass causes a faceoff.
 
-**Team play:** seek a clear passing lane, then R to call. Teammates may refuse a blocked or distant pass. One player pressures or recovers while the others support or protect dangerous space. With the puck, bots carry, pass and aim for corners. Goalies track angles with reaction delays and limited movement; saves are physical pad contacts that leave rebounds.
+**Aiming:** the mouse sets an impact point on the net or rink; the bright outlined cross shows the intended target, including the WASD offset. W+A selects upper left, no keys center, S+D lower right. Hold Space while aiming to stop pushing. The shot supplies an initial velocity that compensates for gravity, not a guaranteed goal: moving skaters, distance, shot type, rebounds and goalie reactions matter. Wrist shots spread less than slapshots; long shots require a higher arc and are less reliable. Passes remain along the ice. Holding LMB before contact can one-time an incoming pass or a loose puck you skate onto; releasing after that shot does not shoot again.
 
-Scores and match statistics lead to rematch and new-match options. Match seeds reproduce AI decisions for identical fixed-step inputs. There is no player switching, aerial puck simulation, stick-height control, stamina meter or full rulebook. [Architecture and limits](Documentation/cold-snap-architecture.md) describe the implementation.
+**Team play:** seek a clear passing lane, then R to call. Teammates may refuse a blocked or distant pass. One player pressures or recovers while the others support or protect dangerous space. With the puck, bots carry, pass and select aimed low or high shots. They can prepare one-timers, especially for incoming teammate passes. Goalies track angles and shot heights with reaction delays and limited movement; physical pad, torso and glove saves leave rebounds.
+
+Scores and match statistics lead to rematch and new-match options. Match seeds reproduce AI decisions for identical fixed-step inputs. There is no player switching, manual stick-height control, stamina meter or full rulebook. [Architecture and limits](Documentation/cold-snap-architecture.md) describe the implementation.
 
 ## WWII Air Combat — Meridian 1944
 
@@ -79,7 +83,7 @@ W/S move, A/D turn, E opens doors or examines, F examines, J opens the notebook,
 
 `Assets/AirCombat/Core` is plain C# and System.Numerics: aerodynamic forces and damped angular rates, terrain field, tactical pilots, ballistic weapons, aircraft damage and mission progression. `Presentation` adapts keyboard/mouse input, runs a fixed 60 Hz simulation and renders replaceable procedural meshes and UI. See [the architecture notes](Documentation/meridian-architecture.md) for details and limitations.
 
-`Assets/Hockey/Core` uses the same separation with its own ice-plane simulation, skating, puck contacts, team pilots, goalkeepers and match clock. Core ticks subdivide to 120 Hz; fast puck motion uses smaller collision steps. `HockeyGame` owns input and menus; `HockeyRenderer` owns the rink, equipment animation and camera. Neither touches the older games' simulation or presentation.
+`Assets/Hockey/Core` uses the same separation with its own skating, airborne puck simulation, puck contacts, team pilots, goalkeepers and match clock. Core ticks subdivide to 120 Hz; fast puck motion uses smaller collision steps. `HockeyGame` owns input and menus; `HockeyRenderer` owns the rink, equipment animation and camera. Neither touches the older games' simulation or presentation.
 
 Run the offline .NET 8 harnesses from their directories:
 
@@ -99,4 +103,4 @@ In Unity, **Vector Cabinet > Validate All Games** runs hockey and air checks plu
 
 Validation reports are in `Documentation`; current three-game integration captures and logs are under `Logs/Hockey`, with earlier flight captures preserved under `Logs/AirCombat`. Automated controls verify mechanics and integration. They do not establish subjective skating or flight feel, human difficulty, historical fidelity, or long-term replay value; these need human playtesting.
 
-The completed hockey delivery's executed checks, build results, preservation audit and practical limits are recorded in [hockey-verification.txt](Documentation/hockey-verification.txt). Actual release-player images are under `Logs/Hockey/VisibleStandalone`.
+The initial hockey delivery is recorded in [hockey-verification.txt](Documentation/hockey-verification.txt). The current airborne-shot expansion is recorded in [hockey-shots-verification.txt](Documentation/hockey-shots-verification.txt), with release-player captures under `Logs/HockeyShots/Standalone`.

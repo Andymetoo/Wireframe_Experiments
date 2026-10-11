@@ -3,12 +3,18 @@ using System.Numerics;
 
 namespace ColdSnap
 {
+    public enum HockeyShotKind { Snap, Slap, Wrist, OneTimer }
+
     /// <summary>World-space acceleration intent and stick/look aim. Action flags are pulses.</summary>
     public struct HockeyInput
     {
         public Vector2 Move, Aim;
         public bool Brake, Sprint, Shoot, Pass, Check, Call;
         public float ShotPower;
+        public HockeyShotKind ShotKind;
+        public Vector2 ShotTarget;
+        public float TargetHeight;
+        public bool HasShotTarget, OneTimerHeld;
     }
 
     public sealed class SkaterState
@@ -18,6 +24,7 @@ namespace ColdSnap
         public Vector2 Position, Velocity;
         // Zero faces +Y; positive yaw faces +X. Rendering maps XY to Unity XZ.
         public float Facing, Cooldown, Stun, StickCooldown, CheckCooldown;
+        public float GoalieHandHeight = 1.05f, GoalieHandReach = .45f;
         public string Role = "", Intent = "";
         public Vector2 Forward { get { return new Vector2((float)Math.Sin(Facing), (float)Math.Cos(Facing)); } }
         public float Speed { get { return Velocity.Length(); } }
@@ -26,6 +33,11 @@ namespace ColdSnap
     public sealed class PuckState
     {
         public Vector2 Position, Velocity;
+        public float Height = RinkPhysics.PuckHalfHeight, VerticalVelocity;
+        public bool OutOfPlay, LastStrikeWasPass;
+        public int LastPasserId = -1, LastPassTeam = -1, ShotSequence;
+        public float PassAge;
+        public HockeyShotKind LastShotKind;
         public int LastTouchTeam = -1, LastTouchId = -1, ControllerId = -1;
         public int LastCollisionId = -1, CollisionSerial;
         public float NoControlTime, ControlTime;

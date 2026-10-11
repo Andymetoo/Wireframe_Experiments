@@ -432,8 +432,9 @@ namespace VectorCabinet
             {
                 hockey.StepForDiagnostics(default(HockeyInput), 1f / 60f, true);
                 HockeySession match = hockey.Session;
-                finite &= HockeyMath.Finite(match.Puck.Position) && HockeyMath.Finite(match.Puck.Velocity);
-                contained &= RinkPhysics.Inside(match.Puck.Position, .1f);
+                finite &= HockeyMath.Finite(match.Puck.Position) && HockeyMath.Finite(match.Puck.Velocity)
+                    && HockeyMath.Finite(match.Puck.Height) && HockeyMath.Finite(match.Puck.VerticalVelocity);
+                contained &= match.Puck.Height > RinkPhysics.GlassHeight || RinkPhysics.Inside(match.Puck.Position, .1f);
                 controlValid &= match.Puck.ControllerId >= -1 && match.Puck.ControllerId < 6;
                 for (int i = 0; i < match.Skaters.Count; i++)
                     finite &= HockeyMath.Finite(match.Skaters[i].Position) && HockeyMath.Finite(match.Skaters[i].Velocity);
@@ -564,6 +565,7 @@ namespace VectorCabinet
                 yield return new WaitForSecondsRealtime(.15f);
                 Check(hockey.Session.Stats.Shots[0] == shots + 1,
                     "A released mouse charge produces one shot rather than repeated firing");
+                yield return ExerciseHockeyShots(hockey);
                 PrepareHockeyContact(hockey);
                 int passes = hockey.Session.Stats.Passes[0];
                 InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.Q));
@@ -621,10 +623,90 @@ namespace VectorCabinet
             SkaterState player = hockey.Session.Player;
             player.Position = new NVector2(-8, -13); player.Velocity = NVector2.Zero;
             player.Facing = 0; player.Stun = player.Cooldown = player.StickCooldown = 0;
-            hockey.SetLook(0, 32);
+            hockey.SetLook(0, 2);
             hockey.Session.Puck.Position = player.Position + NVector2.UnitY * 1.05f;
             hockey.Session.Puck.Velocity = NVector2.Zero;
+            hockey.Session.Puck.Height = RinkPhysics.PuckHalfHeight;
+            hockey.Session.Puck.VerticalVelocity = 0;
+            hockey.Session.Puck.OutOfPlay = false;
             hockey.Session.Puck.ControllerId = player.Id; hockey.Session.Puck.NoControlTime = 0;
+        }
+
+        IEnumerator ExerciseHockeyShots(HockeyGame hockey)
+        {
+            PrepareHockeyContact(hockey);
+            int shots=hockey.Session.Stats.Shots[0];
+            InputSystem.QueueStateEvent(testMouse,new MouseState().WithButton(MouseButton.Left));
+            yield return null; yield return null;
+            InputSystem.QueueStateEvent(testMouse,new MouseState());
+            yield return new WaitForSecondsRealtime(.10f);
+            Check(hockey.Session.Stats.Shots[0]==shots+1&&hockey.Session.Puck.LastShotKind==HockeyShotKind.Snap,
+                "Quick LMB click immediately releases a snap without a charge delay");
+            Check(hockey.Session.Puck.Height>.15f&&hockey.Session.Puck.VerticalVelocity>0,
+                "Human mouse aim creates a physically rising airborne shot");
+
+            PrepareHockeyContact(hockey);
+            int passes=hockey.Session.Stats.Passes[0];shots=hockey.Session.Stats.Shots[0];
+            InputSystem.QueueStateEvent(testMouse,new MouseState().WithButton(MouseButton.Right));
+            yield return new WaitForSecondsRealtime(.10f);
+            Check(hockey.Session.Stats.Passes[0]==passes,"RMB hold waits for pass release or wrist-shot chord");
+            InputSystem.QueueStateEvent(testMouse,new MouseState().WithButton(MouseButton.Right).WithButton(MouseButton.Left));
+            yield return new WaitForSecondsRealtime(.48f);
+            Check(hockey.Session.Stats.Passes[0]==passes&&hockey.Session.Stats.Shots[0]==shots,
+                "RMB then LMB charges a wrist shot without accidentally passing or shooting");
+            InputSystem.QueueStateEvent(testMouse,new MouseState().WithButton(MouseButton.Right));
+            yield return new WaitForSecondsRealtime(.10f);
+            Check(hockey.Session.Stats.Shots[0]==shots+1&&hockey.Session.Puck.LastShotKind==HockeyShotKind.Wrist,
+                "Releasing LMB from the ordered chord fires one physical wrist shot");
+            InputSystem.QueueStateEvent(testMouse,new MouseState());
+            yield return new WaitForSecondsRealtime(.10f);
+            Check(hockey.Session.Stats.Passes[0]==passes,"Ending a wrist-shot chord cannot emit a stray pass");
+
+            PrepareHockeyContact(hockey);
+            InputSystem.QueueStateEvent(testMouse,new MouseState().WithButton(MouseButton.Right));
+            yield return new WaitForSecondsRealtime(.10f);
+            InputSystem.QueueStateEvent(testMouse,new MouseState());
+            yield return new WaitForSecondsRealtime(.10f);
+            Check(hockey.Session.Stats.Passes[0]==passes+1,"Ordinary RMB click still releases a physical pass");
+
+            PrepareHockeyContact(hockey);
+            hockey.Session.Puck.Position=hockey.Session.Player.Position+NVector2.UnitY*4;
+            hockey.Session.Puck.Velocity=-NVector2.UnitY*8;
+            hockey.Session.Puck.ControllerId=-1;
+            hockey.Session.Puck.LastTouchId=1;hockey.Session.Puck.LastTouchTeam=0;
+            shots=hockey.Session.Stats.Shots[0];int oneTimers=hockey.Session.Stats.OneTimers[0];
+            InputSystem.QueueStateEvent(testMouse,new MouseState().WithButton(MouseButton.Left));
+            yield return new WaitForSecondsRealtime(.56f);
+            Check(hockey.Session.Stats.OneTimers[0]==oneTimers+1&&hockey.Session.Stats.Shots[0]==shots+1,
+                "Holding LMB before an incoming puck reaches the stick automatically makes one contact one-timer");
+            InputSystem.QueueStateEvent(testMouse,new MouseState());
+            yield return new WaitForSecondsRealtime(.12f);
+            Check(hockey.Session.Stats.Shots[0]==shots+1,"LMB release after an automatic one-timer cannot fire a second shot");
+
+            PrepareHockeyContact(hockey);
+            hockey.Session.Player.Position=new NVector2(0,10);
+            hockey.Session.Puck.Position=hockey.Session.Player.Position+NVector2.UnitY*1.05f;
+            hockey.SetLook(0,2);
+            hockey.ResolveShotTarget(Vector2.zero,out NVector2 center,out float centerHeight);
+            hockey.ResolveShotTarget(new Vector2(-1,1),out NVector2 upperLeft,out float upperHeight);
+            hockey.ResolveShotTarget(new Vector2(1,-1),out NVector2 lowerRight,out float lowerHeight);
+            Check(Mathf.Abs(center.Y-RinkPhysics.GoalLine)<.001f&&upperLeft.X<center.X&&lowerRight.X>center.X
+                &&upperHeight>centerHeight&&lowerHeight<centerHeight&&upperHeight<RinkPhysics.GoalHeight,
+                "Reticle ray resolves at net height; WA and SD select upper-left and lower-right impact regions");
+            hockey.SetLook(0,35);
+            hockey.ResolveShotTarget(Vector2.zero,out NVector2 ice,out float iceHeight);
+            Check(ice.Y<15&&iceHeight<.15f,"Looking down targets nearby ice instead of forcing every shot into the goal");
+            hockey.SetLook(0,2);
+            hockey.DiagnosticControl=true;
+            for(int i=1;i<hockey.Session.Skaters.Count;i++)
+            {hockey.Session.Skaters[i].Position=new NVector2(-10+i*.3f,-20);hockey.Session.Skaters[i].Velocity=NVector2.Zero;}
+            hockey.StepForDiagnostics(new HockeyInput{Aim=NVector2.UnitY,Shoot=true,ShotKind=HockeyShotKind.Wrist,
+                ShotPower=1,HasShotTarget=true,ShotTarget=upperLeft,TargetHeight=upperHeight},1f/60f);
+            for(int i=0;i<10;i++)hockey.StepForDiagnostics(default(HockeyInput),1f/60f);
+            Check(hockey.Session.Puck.Height>.6f,"Rendered near-net fixture lifts a wrist shot toward the selected upper corner");
+            yield return Capture("28-hockey-airborne-shot");
+            hockey.DiagnosticControl=false;
+            PrepareHockeyContact(hockey);
         }
 
         IEnumerator WalkHouse(HauntedHouseGame house, int room)

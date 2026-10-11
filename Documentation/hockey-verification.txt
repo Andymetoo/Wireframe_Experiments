@@ -1,4 +1,6 @@
 COLD SNAP / THREE-GAME CABINET - delivery verification
+Historical initial delivery. The airborne-shot expansion supersedes its hockey
+controls and ice-only limitations; see hockey-shots-verification.txt and README.md.
 Executed 2026-10-10, Unity 6000.4.1f1 URP, Windows x64.
 
 WHAT WAS BUILT

@@ -10,6 +10,7 @@ namespace ColdSnap
         public const float HalfWidth = 14, HalfLength = 29, CornerRadius = 6;
         public const float GoalLine = 25, GoalHalfWidth = 1.8f, GoalDepth = 1.8f;
         public const float SkaterRadius = .4f, PuckRadius = .125f, PostRadius = .075f;
+        public const float GoalHeight = 2.2f, BoardHeight = 1.15f, GlassHeight = 3.1f, PuckHalfHeight = .05f;
 
         public static bool Inside(Vector2 p, float margin = 0)
         {

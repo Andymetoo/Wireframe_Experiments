@@ -20,7 +20,9 @@ namespace ColdSnap
             float turnRate = (s.Goalie ? 5.5f : 3.8f) / (1 + speed * .055f);
             s.Facing += HockeyMath.Clamp(HockeyMath.Wrap(HockeyMath.Angle(aim) - s.Facing), -turnRate * dt, turnRate * dt);
             s.Facing = HockeyMath.Wrap(s.Facing);
-            Vector2 move = s.Stun > 0 ? Vector2.Zero : HockeyMath.Limited(input.Move, 1);
+            // Digging in the edges wins over simultaneous movement input. The stop is
+            // exponential: continuous at high speed, stable near zero, never reverses.
+            Vector2 move = s.Stun > 0 || input.Brake ? Vector2.Zero : HockeyMath.Limited(input.Move, 1);
             float intent = move.Length();
             float maxSpeed = s.Goalie ? 5 : input.Sprint ? SprintSpeed : CruiseSpeed;
             float forward = intent > .001f ? Vector2.Dot(move / intent, s.Forward) : 1;
@@ -38,10 +40,9 @@ namespace ColdSnap
                     Vector2 lateral = s.Velocity - axis * Vector2.Dot(s.Velocity, axis);
                     acceleration -= HockeyMath.Limited(lateral * (s.Goalie ? 2.3f : 1.25f), s.Goalie ? 12 : 5.6f) * intent;
                 }
-                if (input.Brake) acceleration -= s.Velocity / speed * Math.Min(speed / dt, 5.6f + speed * .8f);
             }
             Vector2 next = s.Velocity + acceleration * dt;
-            if (input.Brake && intent < .01f && Vector2.Dot(next, s.Velocity) < 0) next = Vector2.Zero;
+            if (input.Brake) next = s.Velocity * (float)Math.Exp(-4.2f * dt);
             s.Velocity = HockeyMath.Limited(next, 18);
             if (s.Velocity.LengthSquared() < .0004f && intent < .01f) s.Velocity = Vector2.Zero;
             s.Position += s.Velocity * dt;

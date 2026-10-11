@@ -4,17 +4,24 @@ using System.Numerics;
 
 namespace ColdSnap
 {
-    /// <summary>Ice-plane puck physics. Every stick touch changes velocity, never position.</summary>
+    /// <summary>Sliding and airborne puck physics. Stick touches change velocity, never position.</summary>
     public static class PuckPhysics
     {
         public const float StickReach = 1.75f, GuideAcceleration = 105;
         public const float PassSpeed = 16.5f, MaxShotSpeed = 36;
+        public const float GuideHeight = .28f, StrikeHeight = .55f;
 
         public static bool CanReach(SkaterState s, PuckState puck)
+        { return Reach(s, puck, GuideHeight); }
+
+        public static bool CanStrike(SkaterState s, PuckState puck)
+        { return Reach(s, puck, StrikeHeight); }
+
+        private static bool Reach(SkaterState s, PuckState puck, float heightLimit)
         {
             Vector2 d = puck.Position - s.Position;
             float d2 = d.LengthSquared();
-            return !s.Goalie && s.Stun <= 0 && d2 < StickReach * StickReach &&
+            return !s.Goalie && s.Stun <= 0 && !puck.OutOfPlay && puck.Height <= heightLimit && d2 < StickReach * StickReach &&
                 (d2 < .36f || Vector2.Dot(HockeyMath.Unit(d, s.Forward), s.Forward) > -.15f) &&
                 StickPathClear(s.Position, puck.Position);
         }
@@ -83,40 +90,86 @@ namespace ColdSnap
 
         public static bool Strike(SkaterState s, PuckState puck, Vector2 direction, float power, bool isPass)
         {
-            if (s.StickCooldown > 0 || !CanReach(s, puck)) return false;
+            if (s.StickCooldown > 0 || !CanStrike(s, puck)) return false;
             Vector2 aim = HockeyMath.Unit(direction, s.Forward);
             float speed = isPass ? PassSpeed * (.75f + .25f * HockeyMath.Clamp(power, 0, 1)) : 19 + 17 * HockeyMath.Clamp(power, 0, 1);
             // The stick supplies a finite impulse; inherited skater momentum remains visible.
             Vector2 desired = aim * speed + s.Velocity * .36f;
             puck.Velocity += HockeyMath.Limited(desired - puck.Velocity, isPass ? 24 : 45);
+            puck.VerticalVelocity = puck.Height > RinkPhysics.PuckHalfHeight + .01f ? -2 : 0;
+            RegisterStrike(s, puck, isPass, HockeyShotKind.Snap);
+            return true;
+        }
+
+        public static bool Strike(SkaterState s, PuckState puck, HockeyInput input)
+        {
+            if (input.Pass || !input.HasShotTarget)
+                return Strike(s, puck, input.Aim, input.ShotPower, input.Pass);
+            if (s.StickCooldown > 0 || !CanStrike(s, puck)) return false;
+            Vector2 velocity; float vertical;
+            HockeyShots.Launch(s, puck, input, out velocity, out vertical);
+            puck.Velocity += HockeyMath.Limited(velocity - puck.Velocity, input.ShotKind == HockeyShotKind.OneTimer ? 80 : 65);
+            puck.VerticalVelocity += HockeyMath.Clamp(vertical - puck.VerticalVelocity, -24, 24);
+            RegisterStrike(s, puck, false, input.ShotKind);
+            s.StickCooldown = input.ShotKind == HockeyShotKind.Slap ? .62f : input.ShotKind == HockeyShotKind.Wrist ? .38f : .28f;
+            return true;
+        }
+
+        private static void RegisterStrike(SkaterState s, PuckState puck, bool isPass, HockeyShotKind kind)
+        {
             puck.LastTouchId = s.Id; puck.LastTouchTeam = s.Team;
             puck.ControllerId = -1; puck.ControlTime = 0;
             puck.NoControlTime = isPass ? .10f : .13f;
+            puck.LastStrikeWasPass = isPass; puck.LastPasserId = isPass ? s.Id : -1;
+            puck.LastPassTeam = isPass ? s.Team : -1; puck.PassAge = 0;
+            puck.LastShotKind = kind; puck.ShotSequence = unchecked(puck.ShotSequence + 1);
             s.StickCooldown = isPass ? .27f : .42f;
             s.Cooldown = Math.Max(s.Cooldown, isPass ? .22f : .36f);
-            return true;
         }
 
         /// <returns>Scoring team (0 toward +Y, 1 toward -Y), or -1.</returns>
         public static int Step(PuckState puck, IList<SkaterState> skaters, float dt)
         {
-            if (dt <= 0) return -1;
+            if (dt <= 0 || !HockeyMath.Finite(dt) || puck.OutOfPlay) return -1;
             dt = Math.Min(dt, .05f);
             puck.NoControlTime = Math.Max(0, puck.NoControlTime - dt);
+            puck.PassAge += dt;
             // A 9cm maximum step protects the 15cm posts even on hard point shots.
-            int steps = Math.Max(1, (int)Math.Ceiling(Math.Max(dt * 180, puck.Velocity.Length() * dt / .09f)));
+            float spatialSpeed = (float)Math.Sqrt(puck.Velocity.LengthSquared() + puck.VerticalVelocity * puck.VerticalVelocity);
+            int steps = Math.Max(1, (int)Math.Ceiling(Math.Max(dt * 180, spatialSpeed * dt / .07f)));
             float h = dt / steps;
             for (int step = 0; step < steps; step++)
             {
                 Vector2 previous = puck.Position;
+                float previousHeight = Math.Max(RinkPhysics.PuckHalfHeight, puck.Height);
+                puck.Height = previousHeight;
+                bool grounded = puck.Height <= RinkPhysics.PuckHalfHeight + .0001f && puck.VerticalVelocity <= 0;
                 float speed = puck.Velocity.Length();
                 if (speed > 0)
                 {
-                    float nextSpeed = Math.Max(0, speed - (.20f + speed * .012f) * h);
+                    float nextSpeed = grounded ? Math.Max(0, speed - (.20f + speed * .012f) * h) : speed * (1 - .002f * h);
                     puck.Velocity *= nextSpeed / speed;
                 }
                 puck.Position += puck.Velocity * h;
-                RinkPhysics.Constrain(ref puck.Position, ref puck.Velocity, RinkPhysics.PuckRadius, .81f);
+                if (!grounded)
+                {
+                    puck.Height += puck.VerticalVelocity * h - .5f * HockeyShots.Gravity * h * h;
+                    puck.VerticalVelocity -= HockeyShots.Gravity * h;
+                }
+                else puck.VerticalVelocity = 0;
+                if (puck.Height < RinkPhysics.PuckHalfHeight)
+                {
+                    puck.Height = RinkPhysics.PuckHalfHeight;
+                    if (puck.VerticalVelocity < -1.2f)
+                    {
+                        puck.VerticalVelocity = -puck.VerticalVelocity * .24f;
+                        puck.Velocity *= .90f;
+                    }
+                    else puck.VerticalVelocity = 0;
+                }
+                ResolveBoards(puck);
+                if (puck.OutOfPlay) return -1;
+                ResolveRaisedGoal(puck, previous, previousHeight);
                 ResolveNets(puck);
                 for (int i = 0; i < skaters.Count; i++)
                 {
@@ -126,7 +179,8 @@ namespace ColdSnap
                 }
                 // Pad/skate separation can push an already constrained puck back through
                 // a board. Static rink containment must be the final contact constraint.
-                RinkPhysics.Constrain(ref puck.Position, ref puck.Velocity, RinkPhysics.PuckRadius, .81f);
+                ResolveBoards(puck);
+                ResolveRaisedGoal(puck, previous, previousHeight);
                 for (int team = 0; team < 2; team++)
                 {
                     float sign = team == 0 ? 1 : -1;
@@ -137,18 +191,21 @@ namespace ColdSnap
                     {
                         float t = (line - oldY) / Math.Max(.000001f, newY - oldY);
                         float x = previous.X + (puck.Position.X - previous.X) * t;
-                        if (Math.Abs(x) < RinkPhysics.GoalHalfWidth - RinkPhysics.PostRadius - RinkPhysics.PuckRadius)
+                        float height = previousHeight + (puck.Height - previousHeight) * t;
+                        if (Math.Abs(x) < RinkPhysics.GoalHalfWidth - RinkPhysics.PostRadius - RinkPhysics.PuckRadius &&
+                            height + RinkPhysics.PuckHalfHeight <= RinkPhysics.GoalHeight - RinkPhysics.PostRadius)
                             return team;
                     }
                 }
             }
-            if (!HockeyMath.Finite(puck.Position) || !HockeyMath.Finite(puck.Velocity))
+            if (!HockeyMath.Finite(puck.Position) || !HockeyMath.Finite(puck.Velocity) || !HockeyMath.Finite(puck.Height) || !HockeyMath.Finite(puck.VerticalVelocity))
                 throw new InvalidOperationException("Non-finite puck state");
             return -1;
         }
 
         private static void ResolveNets(PuckState p)
         {
+            if (p.Height - RinkPhysics.PuckHalfHeight > RinkPhysics.GoalHeight) return;
             for (int sign = -1; sign <= 1; sign += 2)
             {
                 float y = RinkPhysics.GoalLine * sign;
@@ -162,11 +219,55 @@ namespace ColdSnap
             }
         }
 
+        private static void ResolveBoards(PuckState puck)
+        {
+            if (puck.Height - RinkPhysics.PuckHalfHeight <= RinkPhysics.GlassHeight)
+                RinkPhysics.Constrain(ref puck.Position, ref puck.Velocity, RinkPhysics.PuckRadius,
+                    puck.Height - RinkPhysics.PuckHalfHeight <= RinkPhysics.BoardHeight ? .81f : .62f);
+            else if (!RinkPhysics.Inside(puck.Position, RinkPhysics.PuckRadius)) puck.OutOfPlay = true;
+        }
+
+        private static void ResolveRaisedGoal(PuckState p, Vector2 previous, float previousHeight)
+        {
+            for (int sign = -1; sign <= 1; sign += 2)
+            {
+                float line = RinkPhysics.GoalLine * sign;
+                // Crossbar is a real horizontal cylinder. The puck's broad radius and
+                // thin vertical profile form an elliptical contact region around it.
+                if (Math.Abs(p.Position.X) <= RinkPhysics.GoalHalfWidth)
+                {
+                    float longitudinalRadius = RinkPhysics.PuckRadius + RinkPhysics.PostRadius;
+                    float verticalRadius = RinkPhysics.PuckHalfHeight + RinkPhysics.PostRadius;
+                    Vector2 q = new Vector2((p.Position.Y - line) / longitudinalRadius, (p.Height - RinkPhysics.GoalHeight) / verticalRadius);
+                    if (q.LengthSquared() < 1)
+                    {
+                        Vector2 direction = HockeyMath.Unit(q, new Vector2(previous.Y < line ? -1 : 1, 0));
+                        p.Position.Y = line + direction.X * longitudinalRadius;
+                        p.Height = RinkPhysics.GoalHeight + direction.Y * verticalRadius;
+                        Vector2 normal = HockeyMath.Unit(new Vector2(direction.X / longitudinalRadius, direction.Y / verticalRadius), Vector2.UnitY);
+                        Vector2 velocity = new Vector2(p.Velocity.Y, p.VerticalVelocity);
+                        float into = Vector2.Dot(velocity, normal);
+                        if (into < 0) velocity -= normal * into * 1.68f;
+                        p.Velocity.Y = velocity.X; p.VerticalVelocity = velocity.Y;
+                    }
+                }
+                float depth = p.Position.Y * sign - RinkPhysics.GoalLine;
+                if (Math.Abs(p.Position.X) > RinkPhysics.GoalHalfWidth || depth < 0 || depth > RinkPhysics.GoalDepth) continue;
+                float roofTop = RinkPhysics.GoalHeight + RinkPhysics.PuckHalfHeight;
+                float roofBottom = RinkPhysics.GoalHeight - RinkPhysics.PuckHalfHeight;
+                if (previousHeight >= roofTop && p.Height < roofTop && p.VerticalVelocity < 0)
+                { p.Height = roofTop; p.VerticalVelocity *= -.22f; }
+                else if (previousHeight <= roofBottom && p.Height > roofBottom && p.VerticalVelocity > 0)
+                { p.Height = roofBottom; p.VerticalVelocity *= -.22f; }
+            }
+        }
+
         // Player separation is a correction that can be larger than the ordinary 9cm
         // integration step. Sweep that correction against solid netting and posts so
         // its endpoint cannot emerge on the opposite side of a thin obstacle.
         private static void ResolveNetContactMotion(PuckState puck, Vector2 start)
         {
+            if (puck.Height - RinkPhysics.PuckHalfHeight > RinkPhysics.GoalHeight) return;
             Vector2 end = puck.Position;
             if (Vector2.DistanceSquared(start, end) < .00000001f) return;
             for (int iteration = 0; iteration < 3; iteration++)
@@ -239,13 +340,16 @@ namespace ColdSnap
 
         private static void ResolveBody(PuckState puck, SkaterState s)
         {
+            if (s.Goalie) ResolveHand(puck, s);
+            if (puck.Height - RinkPhysics.PuckHalfHeight > (s.Goalie ? 1.72f : 1.85f)) return;
             // Goalies have a horizontal pad capsule. Skaters have a small skate/body disc.
             Vector2 center = s.Position;
-            float radius = s.Goalie ? .37f : .31f;
+            float radius = s.Goalie ? (puck.Height <= .65f ? .37f : .27f) : puck.Height > 1.4f ? .21f : .31f;
             if (s.Goalie)
             {
                 Vector2 right = new Vector2(s.Forward.Y, -s.Forward.X);
-                float t = HockeyMath.Clamp(Vector2.Dot(puck.Position - center, right), -.52f, .52f);
+                float width = puck.Height <= .65f ? .52f : .14f;
+                float t = HockeyMath.Clamp(Vector2.Dot(puck.Position - center, right), -width, width);
                 center += right * t;
             }
             Vector2 delta = puck.Position - center;
@@ -259,14 +363,45 @@ namespace ColdSnap
             {
                 // Pads give a softer, recoverable rebound; ordinary skates can deflect hard.
                 puck.Velocity -= normal * toward * (s.Goalie ? 1.33f : 1.62f);
-                if (s.Goalie) puck.Velocity *= .86f;
-                if (toward < -.6f)
+                if (s.Goalie)
                 {
-                    puck.LastCollisionId = s.Id; puck.CollisionSerial++;
-                    puck.LastTouchId = s.Id; puck.LastTouchTeam = s.Team;
-                    puck.ControllerId = -1; puck.NoControlTime = s.Goalie ? .23f : .07f;
+                    puck.Velocity *= .86f;
+                    if (puck.Height > .3f) puck.VerticalVelocity = Math.Min(-.6f, puck.VerticalVelocity * .35f);
                 }
+                if (toward < -.6f)
+                    RecordContact(puck, s);
             }
+        }
+
+        private static void ResolveHand(PuckState puck, SkaterState keeper)
+        {
+            Vector2 right = new Vector2(keeper.Forward.Y, -keeper.Forward.X);
+            Vector2 hand = keeper.Position + right * HockeyMath.Clamp(keeper.GoalieHandReach, -.85f, .85f) + keeper.Forward * .17f;
+            float handHeight = HockeyMath.Clamp(keeper.GoalieHandHeight, .6f, 1.9f);
+            Vector2 horizontal = puck.Position - hand;
+            float vertical = puck.Height - handHeight;
+            const float horizontalRadius = .37f, verticalRadius = .32f;
+            Vector3 q = new Vector3(horizontal.X / horizontalRadius, vertical / verticalRadius, horizontal.Y / horizontalRadius);
+            if (q.LengthSquared() >= 1) return;
+            Vector3 direction = q.LengthSquared() > .000001f ? Vector3.Normalize(q) : new Vector3(keeper.Forward.X, 0, keeper.Forward.Y);
+            puck.Position = hand + new Vector2(direction.X, direction.Z) * horizontalRadius;
+            puck.Height = Math.Max(RinkPhysics.PuckHalfHeight, handHeight + direction.Y * verticalRadius);
+            Vector3 normal = Vector3.Normalize(new Vector3(direction.X / horizontalRadius, direction.Y / verticalRadius, direction.Z / horizontalRadius));
+            Vector3 velocity = new Vector3(puck.Velocity.X - keeper.Velocity.X, puck.VerticalVelocity, puck.Velocity.Y - keeper.Velocity.Y);
+            float into = Vector3.Dot(velocity, normal);
+            if (into >= 0) return;
+            velocity -= normal * into * 1.28f;
+            velocity *= .8f;
+            puck.Velocity = new Vector2(velocity.X + keeper.Velocity.X, velocity.Z + keeper.Velocity.Y);
+            puck.VerticalVelocity = Math.Min(velocity.Y, -.45f);
+            if (into < -.6f) RecordContact(puck, keeper);
+        }
+
+        private static void RecordContact(PuckState puck, SkaterState s)
+        {
+            puck.LastCollisionId = s.Id; puck.CollisionSerial++;
+            puck.LastTouchId = s.Id; puck.LastTouchTeam = s.Team;
+            puck.ControllerId = -1; puck.NoControlTime = s.Goalie ? .23f : .07f;
         }
     }
 }

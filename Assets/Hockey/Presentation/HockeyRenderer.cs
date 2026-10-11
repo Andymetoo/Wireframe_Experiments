@@ -22,16 +22,20 @@ namespace ColdSnap
         static readonly Color Metal = new Color(.52f, .63f, .65f);
         readonly List<Mesh> meshes = new List<Mesh>();
         readonly Dictionary<int, SkaterVisual> skaters = new Dictionary<int, SkaterVisual>();
-        Transform generatedRoot, puck, puckRim, ownStick;
+        readonly Transform[] puckTrail = new Transform[6];
+        readonly Vector3[] trailPositions = new Vector3[7];
+        readonly float[] trailAges = new float[7];
+        Transform generatedRoot, puck, puckRim, puckShadow, ownStick;
         Material material;
         Camera viewCamera;
         HockeySession current;
-        float lookYaw, lookPitch = 26, animationTime;
-        int cameraMode;
+        float lookYaw, lookPitch = 10, animationTime;
+        int cameraMode, trailCount;
 
         sealed class SkaterVisual
         {
             public Transform Root, Body, LeftLeg, RightLeg, LeftArm, RightArm, Stick, Shadow;
+            public Transform SaveGlove, SaveUpperArm, SaveForearm;
             public float PreviousStickCooldown, Swing;
         }
 
@@ -72,6 +76,18 @@ namespace ColdSnap
             rimGeometry.Ring(Vector3.zero, .176f, .18f, new Color(.53f, .70f, .72f), 20);
             puckRim = MeshObject("Puck edge / geometric visibility aid", rimGeometry, puck);
             puckRim.localPosition = Vector3.up * .005f;
+            var shadowGeometry = new Geometry();
+            shadowGeometry.Disc(Vector3.zero, .19f, new Color(.46f, .61f, .65f), 20);
+            shadowGeometry.Ring(Vector3.zero, .19f, .225f, new Color(.58f, .72f, .75f), 20);
+            puckShadow = MeshObject("Puck ground projection", shadowGeometry, generatedRoot);
+            for (int i = 0; i < puckTrail.Length; i++)
+            {
+                var trailGeometry = new Geometry();
+                trailGeometry.Edge(Vector3.zero, Vector3.forward, .016f, new Color(.32f, .48f, .53f));
+                puckTrail[i] = MeshObject("Airborne puck trail " + i, trailGeometry, generatedRoot);
+                puckTrail[i].gameObject.SetActive(false);
+            }
+            trailCount = 0;
             ownStick = BuildStick(generatedRoot, true);
             animationTime = 0;
             Sync(session, 0);
@@ -113,12 +129,14 @@ namespace ColdSnap
                 if (state.Goalie)
                 {
                     float distance = NVector2.Distance(state.Position, session.Puck.Position);
-                    float crouch = Mathf.Clamp01((10 - distance) / 8);
+                    float highPuck = Mathf.Clamp01((session.Puck.Height - .45f) / .85f);
+                    float crouch = Mathf.Clamp01((10 - distance) / 8) * (1 - highPuck * .75f);
                     visual.Body.localPosition = Vector3.down * crouch * .16f;
                     visual.LeftLeg.localRotation = Quaternion.Euler(0, -8, -12 - crouch * 20);
                     visual.RightLeg.localRotation = Quaternion.Euler(0, 8, 12 + crouch * 20);
                     visual.LeftArm.localRotation = Quaternion.Euler(-8, 0, 12 + crouch * 22);
                     visual.RightArm.localRotation = Quaternion.Euler(-8, 0, -12 - crouch * 15);
+                    PoseSaveHand(visual, state);
                 }
                 else
                 {
@@ -134,9 +152,69 @@ namespace ColdSnap
                 bool controlling = session.Puck.ControllerId == state.Id;
                 visual.Stick.localRotation = Quaternion.Euler(-shot * 25, shot * -35 + (controlling ? Mathf.Sin(animationTime * 4) * 4 : 0), 0);
             }
-            puck.position = World(session.Puck.Position, .062f);
-            puck.rotation = Quaternion.Euler(0, animationTime * session.Puck.Velocity.Length() * 5, 0);
+            float puckHeight = Mathf.Max(.05f, session.Puck.Height);
+            puck.position = World(session.Puck.Position, puckHeight);
+            float airborne = Mathf.Clamp01((puckHeight - .09f) * 3);
+            // Orientation is presentation only. The core models height, gravity and impacts,
+            // not rigid-body angular momentum; a small airborne wobble communicates lift.
+            puck.rotation = Quaternion.Euler(Mathf.Sin(animationTime * 19) * 11 * airborne,
+                animationTime * session.Puck.Velocity.Length() * 5,
+                Mathf.Cos(animationTime * 13) * 7 * airborne);
+            puckShadow.position = World(session.Puck.Position, .024f);
+            float shadowScale = 1 + Mathf.Min(2.2f, puckHeight) * .16f;
+            puckShadow.localScale = new Vector3(shadowScale, 1, shadowScale);
+            SyncPuckTrail(session.Puck, dt);
             UpdateCamera(session);
+        }
+
+        void PoseSaveHand(SkaterVisual visual, SkaterState state)
+        {
+            bool leftHand = state.GoalieHandReach < 0;
+            visual.LeftArm.gameObject.SetActive(!leftHand);
+            visual.RightArm.gameObject.SetActive(leftHand);
+            Vector3 glove = World(state.Position, Mathf.Clamp(state.GoalieHandHeight, .6f, 1.9f))
+                + visual.Root.right * Mathf.Clamp(state.GoalieHandReach, -.85f, .85f)
+                + visual.Root.forward * .17f;
+            Vector3 shoulder = visual.Body.TransformPoint(new Vector3(leftHand ? -.36f : .36f, 1.30f, .01f));
+            Vector3 elbow = Vector3.Lerp(shoulder, glove, .46f) + visual.Root.forward * .14f + Vector3.down * .07f;
+            visual.SaveGlove.SetPositionAndRotation(glove, visual.Root.rotation);
+            SetSegment(visual.SaveUpperArm, shoulder, elbow);
+            SetSegment(visual.SaveForearm, elbow, glove);
+        }
+
+        static void SetSegment(Transform segment, Vector3 start, Vector3 end)
+        {
+            Vector3 delta = end - start;
+            if (delta.sqrMagnitude < .000001f) { segment.gameObject.SetActive(false); return; }
+            segment.gameObject.SetActive(true);
+            segment.SetPositionAndRotation(start, Quaternion.LookRotation(delta));
+            segment.localScale = new Vector3(1, 1, delta.magnitude);
+        }
+
+        void SyncPuckTrail(PuckState state, float dt)
+        {
+            for (int i = 0; i < trailCount; i++) trailAges[i] += Mathf.Max(0, dt);
+            Vector3 position = World(state.Position, state.Height);
+            if (state.Height <= .11f || state.Velocity.LengthSquared() + state.VerticalVelocity * state.VerticalVelocity < 25)
+                trailCount = 0;
+            else if (dt > 0 && (trailCount == 0 || Vector3.Distance(trailPositions[0], position) > .025f))
+            {
+                // Discontinuous faceoff resets never leave a line spanning the rink.
+                if (trailCount > 0 && Vector3.Distance(trailPositions[0], position) > 5) trailCount = 0;
+                trailCount = Mathf.Min(trailPositions.Length, trailCount + 1);
+                for (int i = trailCount - 1; i > 0; i--) { trailPositions[i] = trailPositions[i - 1]; trailAges[i] = trailAges[i - 1]; }
+                trailPositions[0] = position; trailAges[0] = 0;
+            }
+            for (int i = 0; i < puckTrail.Length; i++)
+            {
+                bool active = i + 1 < trailCount && trailAges[i + 1] < .12f;
+                puckTrail[i].gameObject.SetActive(active);
+                if (!active) continue;
+                SetSegment(puckTrail[i], trailPositions[i + 1], trailPositions[i]);
+                float thin = Mathf.Lerp(1, .35f, Mathf.Clamp01(trailAges[i + 1] / .12f));
+                Vector3 scale = puckTrail[i].localScale;
+                puckTrail[i].localScale = new Vector3(thin, thin, scale.z);
+            }
         }
 
         void UpdateCamera(HockeySession session)
@@ -239,19 +317,20 @@ namespace ColdSnap
             }
             MeshObject("Rink markings / geometric paint", lines, generatedRoot);
             var boards = new Geometry();
+            float boardTop = RinkPhysics.BoardHeight, barrierTop = RinkPhysics.GlassHeight;
             for (int i = 0; i < boundary.Count; i++)
             {
                 Vector3 a = boundary[i], b = boundary[(i + 1) % boundary.Count];
                 Color panel = (i & 1) == 0 ? new Color(.83f, .87f, .85f) : new Color(.78f, .83f, .82f);
                 // White board and kick strip occupy adjacent faces. Overlapping coplanar
                 // quads create severe depth flicker when viewed along the ice.
-                boards.Quad(a + Vector3.up * .15f, b + Vector3.up * .15f, b + Vector3.up * 1.05f, a + Vector3.up * 1.05f, panel);
+                boards.Quad(a + Vector3.up * .15f, b + Vector3.up * .15f, b + Vector3.up * boardTop, a + Vector3.up * boardTop, panel);
                 boards.Quad(a, b, b + Vector3.up * .15f, a + Vector3.up * .15f, new Color(.91f, .65f, .22f));
-                boards.Edge(a + Vector3.up * 1.06f, b + Vector3.up * 1.06f, .09f, Navy);
-                boards.Edge(a, a + Vector3.up * 1.02f, .025f, new Color(.52f, .62f, .64f));
+                boards.Edge(a + Vector3.up * (boardTop + .01f), b + Vector3.up * (boardTop + .01f), .09f, Navy);
+                boards.Edge(a, a + Vector3.up * (boardTop - .03f), .025f, new Color(.52f, .62f, .64f));
                 // The safety barrier is drawn as sparse opaque posts, avoiding sorted transparency.
-                if (i % 2 == 0) boards.Edge(a + Vector3.up * 1.1f, a + Vector3.up * 2.75f, .045f, Metal * .60f);
-                boards.Edge(a + Vector3.up * 2.75f, b + Vector3.up * 2.75f, .035f, Metal * .65f);
+                if (i % 2 == 0) boards.Edge(a + Vector3.up * (boardTop + .05f), a + Vector3.up * barrierTop, .045f, Metal * .60f);
+                boards.Edge(a + Vector3.up * barrierTop, b + Vector3.up * barrierTop, .035f, Metal * .65f);
             }
             MeshObject("Rounded dasher boards and barrier", boards, generatedRoot);
         }
@@ -276,36 +355,38 @@ namespace ColdSnap
         void BuildGoal(int sign)
         {
             var net = new Geometry();
-            float front = sign * 25, back = sign * 26.8f;
-            Vector3 fl = new Vector3(-1.8f, .09f, front), fr = new Vector3(1.8f, .09f, front);
-            Vector3 bl = new Vector3(-1.8f, .09f, back), br = new Vector3(1.8f, .09f, back);
-            net.Edge(fl, fl + Vector3.up * 1.11f, .11f, Red);
-            net.Edge(fr, fr + Vector3.up * 1.11f, .11f, Red);
-            net.Edge(fl + Vector3.up * 1.11f, fr + Vector3.up * 1.11f, .11f, Red);
+            float front = sign * RinkPhysics.GoalLine, back = sign * (RinkPhysics.GoalLine + RinkPhysics.GoalDepth);
+            float mouth = RinkPhysics.GoalHalfWidth, height = RinkPhysics.GoalHeight;
+            float upright = height - .09f, roof = height - .03f;
+            Vector3 fl = new Vector3(-mouth, .09f, front), fr = new Vector3(mouth, .09f, front);
+            Vector3 bl = new Vector3(-mouth, .09f, back), br = new Vector3(mouth, .09f, back);
+            net.Edge(fl, fl + Vector3.up * upright, RinkPhysics.PostRadius * 2, Red);
+            net.Edge(fr, fr + Vector3.up * upright, RinkPhysics.PostRadius * 2, Red);
+            net.Edge(fl + Vector3.up * upright, fr + Vector3.up * upright, RinkPhysics.PostRadius * 2, Red);
             net.Edge(fl, bl, .09f, Red); net.Edge(fr, br, .09f, Red); net.Edge(bl, br, .09f, Red);
-            net.Edge(bl, bl + Vector3.up * 1.11f, .06f, Cream);
-            net.Edge(br, br + Vector3.up * 1.11f, .06f, Cream);
-            net.Edge(bl + Vector3.up * 1.11f, br + Vector3.up * 1.11f, .06f, Cream);
-            net.Edge(fl + Vector3.up * 1.11f, bl + Vector3.up * 1.11f, .06f, Cream);
-            net.Edge(fr + Vector3.up * 1.11f, br + Vector3.up * 1.11f, .06f, Cream);
+            net.Edge(bl, bl + Vector3.up * upright, .06f, Cream);
+            net.Edge(br, br + Vector3.up * upright, .06f, Cream);
+            net.Edge(bl + Vector3.up * upright, br + Vector3.up * upright, .06f, Cream);
+            net.Edge(fl + Vector3.up * upright, bl + Vector3.up * upright, .06f, Cream);
+            net.Edge(fr + Vector3.up * upright, br + Vector3.up * upright, .06f, Cream);
             Color cord = new Color(.53f, .65f, .66f);
-            for (float x = -1.8f; x <= 1.81f; x += .225f)
+            for (float x = -mouth; x <= mouth + .01f; x += .225f)
             {
-                net.Edge(new Vector3(x, .1f, back), new Vector3(x, 1.19f, back), .013f, cord);
-                net.Edge(new Vector3(x, 1.19f, front), new Vector3(x, 1.19f, back), .013f, cord);
+                net.Edge(new Vector3(x, .1f, back), new Vector3(x, roof, back), .013f, cord);
+                net.Edge(new Vector3(x, roof, front), new Vector3(x, roof, back), .013f, cord);
             }
-            for (float height = .1f; height <= 1.2f; height += .18f)
+            for (float row = .1f; row <= roof; row += .18f)
             {
-                net.Edge(new Vector3(-1.8f, height, back), new Vector3(1.8f, height, back), .013f, cord);
-                net.Edge(new Vector3(-1.8f, height, front), new Vector3(-1.8f, height, back), .013f, cord);
-                net.Edge(new Vector3(1.8f, height, front), new Vector3(1.8f, height, back), .013f, cord);
+                net.Edge(new Vector3(-mouth, row, back), new Vector3(mouth, row, back), .013f, cord);
+                net.Edge(new Vector3(-mouth, row, front), new Vector3(-mouth, row, back), .013f, cord);
+                net.Edge(new Vector3(mouth, row, front), new Vector3(mouth, row, back), .013f, cord);
             }
-            for (float depth = .225f; depth < 1.8f; depth += .225f)
+            for (float depth = .225f; depth < RinkPhysics.GoalDepth; depth += .225f)
             {
                 float z = front + sign * depth;
-                net.Edge(new Vector3(-1.8f, .1f, z), new Vector3(-1.8f, 1.19f, z), .013f, cord);
-                net.Edge(new Vector3(1.8f, .1f, z), new Vector3(1.8f, 1.19f, z), .013f, cord);
-                net.Edge(new Vector3(-1.8f, 1.19f, z), new Vector3(1.8f, 1.19f, z), .013f, cord);
+                net.Edge(new Vector3(-mouth, .1f, z), new Vector3(-mouth, roof, z), .013f, cord);
+                net.Edge(new Vector3(mouth, .1f, z), new Vector3(mouth, roof, z), .013f, cord);
+                net.Edge(new Vector3(-mouth, roof, z), new Vector3(mouth, roof, z), .013f, cord);
             }
             MeshObject(sign > 0 ? "Orange goal / blue attack" : "Blue goal / defend", net, generatedRoot);
         }
@@ -386,6 +467,17 @@ namespace ColdSnap
             visual.RightLeg = BuildLeg(visual.Body, .17f, state.Goalie, jersey);
             visual.LeftArm = BuildArm(visual.Body, -.36f, state.Goalie, jersey);
             visual.RightArm = BuildArm(visual.Body, .36f, state.Goalie, jersey);
+            if (state.Goalie)
+            {
+                var gloveGeometry = new Geometry();
+                gloveGeometry.Box(Vector3.zero, new Vector3(.37f, .36f, .22f), Cream);
+                gloveGeometry.Box(new Vector3(0, -.07f, .115f), new Vector3(.35f, .055f, .016f), jersey);
+                visual.SaveGlove = MeshObject("Height-aware save glove", gloveGeometry, visual.Root);
+                var sleeve = new Geometry(); sleeve.Edge(Vector3.zero, Vector3.forward, .21f, jersey);
+                visual.SaveUpperArm = MeshObject("Save arm / shoulder", sleeve, visual.Root);
+                var forearm = new Geometry(); forearm.Edge(Vector3.zero, Vector3.forward, .18f, jersey);
+                visual.SaveForearm = MeshObject("Save arm / forearm", forearm, visual.Root);
+            }
             // Keep the blade on the ice while the torso leans into a stride.
             visual.Stick = BuildStick(visual.Root, false);
             var shadow = new Geometry();
@@ -428,7 +520,9 @@ namespace ColdSnap
         Transform BuildStick(Transform parent, bool firstPerson)
         {
             var geometry = new Geometry();
-            Vector3 top = new Vector3(.27f, 1.08f, .32f);
+            // The forward grip remains visible at a level shooting view. The blade stays
+            // on the real handling region and comes into view when looking down at the puck.
+            Vector3 top = firstPerson ? new Vector3(.36f, 1.24f, .58f) : new Vector3(.27f, 1.08f, .32f);
             Vector3 heel = new Vector3(.40f, .10f, 1.07f);
             geometry.Edge(top, heel, .042f, firstPerson ? new Color(.48f, .33f, .20f) : new Color(.62f, .46f, .27f));
             geometry.Edge(top, Vector3.Lerp(top, heel, .13f), .052f, Navy);
@@ -438,8 +532,9 @@ namespace ColdSnap
                 geometry.Box(new Vector3(.06f + tape * .10f, .095f, 1.13f - tape * .017f), new Vector3(.035f, .082f, .09f), Cream * .75f);
             if (firstPerson)
             {
-                geometry.Box(new Vector3(.27f, 1.035f, .36f), new Vector3(.115f, .105f, .13f), Navy);
-                geometry.Edge(new Vector3(.45f, 1.05f, .15f), new Vector3(.27f, 1.035f, .36f), .13f, Blue);
+                Vector3 grip = Vector3.Lerp(top, heel, .04f);
+                geometry.Box(grip, new Vector3(.115f, .105f, .13f), Navy);
+                geometry.Edge(new Vector3(.53f, 1.11f, .34f), grip, .13f, Blue);
             }
             return MeshObject(firstPerson ? "First-person stick and glove" : "Hockey stick", geometry, parent);
         }
@@ -484,8 +579,11 @@ namespace ColdSnap
             if (generatedRoot != null) { generatedRoot.gameObject.SetActive(false); Destroy(generatedRoot.gameObject); }
             foreach (var mesh in meshes) if (mesh != null) Destroy(mesh);
             meshes.Clear(); skaters.Clear();
+            for (int i = 0; i < puckTrail.Length; i++) puckTrail[i] = null;
+            trailCount = 0;
             if (material != null) Destroy(material);
             material = null; current = null; viewCamera = null; generatedRoot = null; ownStick = null;
+            puck = null; puckRim = null; puckShadow = null;
         }
         void OnDestroy() { Clear(); }
 

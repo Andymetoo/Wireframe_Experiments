@@ -570,6 +570,44 @@ PASS Pass direction and lower impulse are intentional
 PASS Moving shots rebound from the goalie's physical pads with save feedback
 PASS Goalies cannot remotely possess a puck
 PASS Eighty seeded high-speed ricochet trajectories remain finite and inside the rink
+PASS Airborne puck follows continuous gravity rather than a scripted flight curve
+PASS An airborne puck bounces off ice and loses energy instead of clipping underground
+PASS Small ice rebounds settle into stable sliding without vertical jitter
+PASS A high puck cannot be magnetically collected or struck from the ice
+PASS A low airborne puck can be volleyed while remaining above the dribbling region
+PASS A pass remains grounded and records its physical passer for one-timer anticipation
+PASS Ground passes retain their sliding height and age during real travel
+PASS An elevated puck wholly under the crossbar can score through the goal mouth
+PASS A shot above the crossbar passes over the goal without scoring
+PASS A hard elevated shot physically rebounds from the crossbar
+PASS Vertical goalposts stop elevated shots as well as grounded ones
+PASS A puck descending onto the goal rebounds from its geometric roof
+PASS A raised physical glove can save a shoulder-height shot and produce a falling rebound
+PASS A glove in the wrong vertical position cannot save a shot outside the torso
+PASS Goalies cannot collide with pucks flying above all of their equipment
+PASS Elevated rink glass rebounds a puck above the boards
+PASS A puck clearing the glass signals an explicit out-of-play stoppage
+PASS An aimed shot's ballistic solution and imperfection reproduce from the same sequence
+PASS A reachable wrist shot launches through the shared stick impulse path
+PASS A stationary wrist shot reaches the selected elevated target through ordinary ballistic travel
+PASS Slap shots trade accuracy for speed; wrist shots remain the precise option across seeded shots
+PASS A one-timer redirects incoming momentum into a real elevated shot without relocating the puck
+PASS Hockey stop smoothly kills momentum while suppressing held forward/sprint propulsion
+PASS Holding brake at rest cannot creep, jitter or reverse the skater
+PASS Exponential hockey stop is stable across ordinary fixed-step sizes
+PASS click waits only for release, not an invented wind-up
+PASS short click immediately emits one full snap on release
+PASS released snap cannot fire twice
+PASS held LMB charges and enables contact one-timers
+PASS long LMB release emits charged slapshot
+PASS RMB press defers pass so a wrist chord can be selected
+PASS RMB release sends a normal pass
+PASS RMB before LMB selects wrist shot
+PASS releasing chord RMB early does not accidentally pass
+PASS wrist choice survives release of modifier
+PASS LMB before RMB stays slapshot without stray pass
+PASS successful automatic one-timer consumes held shot and release
+PASS pause or restart cancels all pending button gestures
 PASS three skaters and goalie per team; stable human identity
 PASS match starts with readable faceoff countdown
 PASS faceoff freezes clock and physical play
@@ -581,8 +619,27 @@ PASS practice opposition skaters wait while goalkeeper remains active
 PASS actual moving puck crossing goal line scores exactly once
 PASS goal celebration transitions through center faceoff back to play
 PASS goal and faceoff pauses preserve regulation time
+PASS tied regulation clock always starts sudden-death overtime
+PASS scoreless overtime clock expires into a final draw without requiring a goal
 PASS teammate responds to human pass call through a clear physical lane
 PASS called pass travels toward human support rather than teleporting possession
+PASS legal airborne shot under raised crossbar scores through actual goal plane
+PASS faceoff clears airborne height and vertical momentum after goal
+PASS puck crossing goal plane above crossbar is not awarded a goal
+PASS puck over protective glass receives visible whistle and physical-state reset
+PASS unreachable roof puck physically settles above the crossbar
+PASS stationary puck on goal roof is whistled within twenty-one seconds and reset to ice faceoff
+PASS one-timer fixture begins with an actual teammate stick pass
+PASS pre-held stick redirects arriving physical teammate pass into one one-timer
+PASS human one-timer consumption is attributed to its skater, separately from teammate shots
+PASS one-timer applies physical upward shot impulse toward aimed height
+PASS holding after a one-timer never repeats automatically on another close puck
+PASS release after auto one-timer does not also fire a charged shot
+PASS skating onto a stationary loose puck with readied stick also produces a one-timer
+PASS holding the button while puck is already at the stick keeps a normal charged shot
+PASS AI anticipates teammate pass and readies an aimed airborne one-timer
+PASS AI physically completes a teammate-pass one-timer through the common session rules
+PASS teammate one-timer does not count as consumption of the human shoot gesture
 PASS stationary puck 0: AI physically recovers side-board/corner/behind-net puck in ten seconds
 PASS stationary puck 0: recovery needs no whistle or position reset
 PASS stationary puck 1: AI physically recovers side-board/corner/behind-net puck in ten seconds
@@ -596,120 +653,149 @@ PASS stationary puck 4: recovery needs no whistle or position reset
 PASS stationary puck 5: AI physically recovers side-board/corner/behind-net puck in ten seconds
 PASS stationary puck 5: recovery needs no whistle or position reset
 PASS identical seeds and bot inputs reproduce puck trajectory exactly
+PASS identical seeds also reproduce shot lift and airborne rebounds
 PASS identical seeded matches reproduce scores and shot decisions
 PASS all eight pilots remain deterministic across a repeated minute
 PASS seed 1988: finite state throughout full game
-PASS seed 1988: puck remains in rounded rink
+PASS seed 1988: puck remains in rounded rink;
 PASS seed 1988: control never belongs to goalie or invalid id
 PASS seed 1988: full match reaches final score
 PASS seed 1988: AI creates repeated shot attempts
+PASS seed 1988: AI produces physical airborne shots
 PASS seed 1988: AI passes between support players
 PASS seed 1988: contested possession changes teams
 PASS seed 1988: support roles spread across useful lanes
-PASS seed 1988: no stuck-puck watchdog interventions; 
+PASS seed 1988: no stuck-puck watchdog interventions;
 PASS seed 1988: all pilots respect bounded skating velocity
+PASS seed 1988: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 1988: one-timer attribution exactly matches team counts
 PASS seed 1988: final score freezes gameplay until restart
 PASS seed 1944: finite state throughout full game
-PASS seed 1944: puck remains in rounded rink
+PASS seed 1944: puck remains in rounded rink;
 PASS seed 1944: control never belongs to goalie or invalid id
 PASS seed 1944: full match reaches final score
 PASS seed 1944: AI creates repeated shot attempts
+PASS seed 1944: AI produces physical airborne shots
 PASS seed 1944: AI passes between support players
 PASS seed 1944: contested possession changes teams
 PASS seed 1944: support roles spread across useful lanes
-PASS seed 1944: no stuck-puck watchdog interventions; 
+PASS seed 1944: no stuck-puck watchdog interventions;
 PASS seed 1944: all pilots respect bounded skating velocity
+PASS seed 1944: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 1944: one-timer attribution exactly matches team counts
 PASS seed 1944: final score freezes gameplay until restart
 PASS seed 7: finite state throughout full game
-PASS seed 7: puck remains in rounded rink
+PASS seed 7: puck remains in rounded rink;
 PASS seed 7: control never belongs to goalie or invalid id
 PASS seed 7: full match reaches final score
 PASS seed 7: AI creates repeated shot attempts
+PASS seed 7: AI produces physical airborne shots
 PASS seed 7: AI passes between support players
 PASS seed 7: contested possession changes teams
 PASS seed 7: support roles spread across useful lanes
-PASS seed 7: no stuck-puck watchdog interventions; 
+PASS seed 7: no stuck-puck watchdog interventions;
 PASS seed 7: all pilots respect bounded skating velocity
+PASS seed 7: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 7: one-timer attribution exactly matches team counts
 PASS seed 7: final score freezes gameplay until restart
 PASS seed 93: finite state throughout full game
-PASS seed 93: puck remains in rounded rink
+PASS seed 93: puck remains in rounded rink;
 PASS seed 93: control never belongs to goalie or invalid id
 PASS seed 93: full match reaches final score
 PASS seed 93: AI creates repeated shot attempts
+PASS seed 93: AI produces physical airborne shots
 PASS seed 93: AI passes between support players
 PASS seed 93: contested possession changes teams
 PASS seed 93: support roles spread across useful lanes
-PASS seed 93: no stuck-puck watchdog interventions; 
+PASS seed 93: no stuck-puck watchdog interventions;
 PASS seed 93: all pilots respect bounded skating velocity
+PASS seed 93: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 93: one-timer attribution exactly matches team counts
 PASS seed 93: final score freezes gameplay until restart
 PASS seed 71319: finite state throughout full game
-PASS seed 71319: puck remains in rounded rink
+PASS seed 71319: puck remains in rounded rink;
 PASS seed 71319: control never belongs to goalie or invalid id
 PASS seed 71319: full match reaches final score
 PASS seed 71319: AI creates repeated shot attempts
+PASS seed 71319: AI produces physical airborne shots
 PASS seed 71319: AI passes between support players
 PASS seed 71319: contested possession changes teams
 PASS seed 71319: support roles spread across useful lanes
-PASS seed 71319: no stuck-puck watchdog interventions; 
+PASS seed 71319: no stuck-puck watchdog interventions;
 PASS seed 71319: all pilots respect bounded skating velocity
+PASS seed 71319: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 71319: one-timer attribution exactly matches team counts
 PASS seed 71319: final score freezes gameplay until restart
 PASS seed 2026: finite state throughout full game
-PASS seed 2026: puck remains in rounded rink
+PASS seed 2026: puck remains in rounded rink;
 PASS seed 2026: control never belongs to goalie or invalid id
 PASS seed 2026: full match reaches final score
 PASS seed 2026: AI creates repeated shot attempts
+PASS seed 2026: AI produces physical airborne shots
 PASS seed 2026: AI passes between support players
 PASS seed 2026: contested possession changes teams
 PASS seed 2026: support roles spread across useful lanes
-PASS seed 2026: no stuck-puck watchdog interventions; 
+PASS seed 2026: no stuck-puck watchdog interventions;
 PASS seed 2026: all pilots respect bounded skating velocity
+PASS seed 2026: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 2026: one-timer attribution exactly matches team counts
 PASS seed 2026: final score freezes gameplay until restart
 PASS seed 83: finite state throughout full game
-PASS seed 83: puck remains in rounded rink
+PASS seed 83: puck remains in rounded rink;
 PASS seed 83: control never belongs to goalie or invalid id
 PASS seed 83: full match reaches final score
 PASS seed 83: AI creates repeated shot attempts
+PASS seed 83: AI produces physical airborne shots
 PASS seed 83: AI passes between support players
 PASS seed 83: contested possession changes teams
 PASS seed 83: support roles spread across useful lanes
-PASS seed 83: no stuck-puck watchdog interventions; 
+PASS seed 83: no stuck-puck watchdog interventions;
 PASS seed 83: all pilots respect bounded skating velocity
+PASS seed 83: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 83: one-timer attribution exactly matches team counts
 PASS seed 83: final score freezes gameplay until restart
 PASS seed 501: finite state throughout full game
-PASS seed 501: puck remains in rounded rink
+PASS seed 501: puck remains in rounded rink;
 PASS seed 501: control never belongs to goalie or invalid id
 PASS seed 501: full match reaches final score
 PASS seed 501: AI creates repeated shot attempts
+PASS seed 501: AI produces physical airborne shots
 PASS seed 501: AI passes between support players
 PASS seed 501: contested possession changes teams
 PASS seed 501: support roles spread across useful lanes
-PASS seed 501: no stuck-puck watchdog interventions; 
+PASS seed 501: no stuck-puck watchdog interventions;
 PASS seed 501: all pilots respect bounded skating velocity
+PASS seed 501: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 501: one-timer attribution exactly matches team counts
 PASS seed 501: final score freezes gameplay until restart
 PASS seed 111: finite state throughout full game
-PASS seed 111: puck remains in rounded rink
+PASS seed 111: puck remains in rounded rink;
 PASS seed 111: control never belongs to goalie or invalid id
 PASS seed 111: full match reaches final score
 PASS seed 111: AI creates repeated shot attempts
+PASS seed 111: AI produces physical airborne shots
 PASS seed 111: AI passes between support players
 PASS seed 111: contested possession changes teams
 PASS seed 111: support roles spread across useful lanes
-PASS seed 111: no stuck-puck watchdog interventions; 
+PASS seed 111: no stuck-puck watchdog interventions;
 PASS seed 111: all pilots respect bounded skating velocity
+PASS seed 111: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 111: one-timer attribution exactly matches team counts
 PASS seed 111: final score freezes gameplay until restart
-PASS bot series produces earned goals through physical shooting (12 goals from 136 attempts)
-PASS bot series includes physical goalkeeper saves and rebounds (102 saves)
+PASS bot series produces earned goals through physical shooting (52 goals from 140 attempts)
+PASS bot series includes physical goalkeeper saves and rebounds (78 saves)
 PASS shooting has misses/saves rather than automatic goals
-PASS full bot series exercises blue win, orange win, overtime and draw outcomes
+PASS full bot series exercises both blue and orange wins (overtime and draw have separate clock fixtures)
+PASS full bot series includes actual physical passing one-timers (66)
 Seeded full bot matches (all actions use player physics):
-seed 1988: 1-0, shots 12, saves 12, passes 54, takeaways 45, checks 18, frozen-puck resets 0, elapsed 186.9s
-seed 1944: 1-0, shots 14, saves 10, passes 61, takeaways 61, checks 29, frozen-puck resets 0, elapsed 186.9s
-seed 7: 1-0, shots 18, saves 11, passes 63, takeaways 53, checks 18, frozen-puck resets 0, elapsed 186.9s
-seed 93: 0-1, shots 9, saves 3, passes 40, takeaways 54, checks 27, frozen-puck resets 0, elapsed 186.9s
-seed 71319: 0-1, shots 20, saves 16, passes 67, takeaways 61, checks 31, frozen-puck resets 0, elapsed 239.5s
-seed 2026: 0-1, shots 20, saves 18, passes 48, takeaways 42, checks 16, frozen-puck resets 0, elapsed 186.9s
-seed 83: 0-1, shots 16, saves 12, passes 67, takeaways 42, checks 26, frozen-puck resets 0, elapsed 186.9s
-seed 501: 1-1, shots 16, saves 12, passes 66, takeaways 70, checks 41, frozen-puck resets 0, elapsed 253.8s
-seed 111: 2-1, shots 11, saves 8, passes 35, takeaways 52, checks 34, frozen-puck resets 0, elapsed 228.3s
-TOTAL goals 12, shots 136, saves 102, passes 501, takeaways 480
-1703 checks; 0 failures (including 1000 Haunted House generation and complete resolution sessions).
+seed 1988: 0-2, shots 13, saves 9, passes 28, takeaways 47, checks 34, one-timers 4, max height 3.50m, frozen-puck resets 0, elapsed 191.6s
+seed 1944: 1-5, shots 21, saves 16, passes 47, takeaways 62, checks 41, one-timers 7, max height 2.20m, frozen-puck resets 0, elapsed 210.4s
+seed 7: 3-4, shots 17, saves 8, passes 51, takeaways 55, checks 33, one-timers 11, max height 1.80m, frozen-puck resets 0, elapsed 215.1s
+seed 93: 2-1, shots 14, saves 8, passes 41, takeaways 32, checks 21, one-timers 7, max height 2.47m, frozen-puck resets 0, elapsed 196.3s
+seed 71319: 5-2, shots 10, saves 5, passes 41, takeaways 68, checks 38, one-timers 3, max height 1.86m, frozen-puck resets 0, elapsed 215.1s
+seed 2026: 4-5, shots 20, saves 9, passes 45, takeaways 70, checks 27, one-timers 8, max height 2.15m, frozen-puck resets 0, elapsed 235.0s
+seed 83: 1-6, shots 15, saves 6, passes 44, takeaways 45, checks 28, one-timers 9, max height 1.67m, frozen-puck resets 0, elapsed 215.1s
+seed 501: 4-4, shots 17, saves 8, passes 42, takeaways 67, checks 39, one-timers 8, max height 3.65m, frozen-puck resets 0, elapsed 282.0s
+seed 111: 3-0, shots 13, saves 9, passes 43, takeaways 63, checks 38, one-timers 9, max height 1.48m, frozen-puck resets 0, elapsed 196.3s
+TOTAL goals 52, shots 140, saves 78, passes 382, takeaways 509, one-timers 66
+1789 checks; 0 failures (including 1000 Haunted House generation and complete resolution sessions).

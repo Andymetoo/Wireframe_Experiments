@@ -14,8 +14,12 @@ namespace ColdSnap
         public readonly int[] Checks = new int[2];
         public readonly int[] Turnovers = new int[2];
         public readonly int[] Goals = new int[2];
+        public readonly int[,] ShotTypes = new int[2, 4];
+        public readonly int[] OneTimers = new int[2];
+        public readonly int[] OneTimersBySkater = new int[6];
         public int Faceoffs;
         public int StuckResets;
+        public int OutOfPlay;
     }
 
     /// <summary>Scene-independent, fixed-step hockey rules. All pilots submit the same bounded inputs.</summary>
@@ -42,6 +46,9 @@ namespace ColdSnap
         public string LastFrozenDiagnostic { get; private set; } = "";
         private readonly HockeyAI[] pilots = new HockeyAI[8];
         private readonly HockeyInput[] inputs = new HockeyInput[8];
+        private readonly bool[] wasOneTimerHeld = new bool[8];
+        private readonly bool[] oneTimerArmed = new bool[8];
+        private readonly bool[] oneTimerConsumed = new bool[8];
         private int lastControlTeam = -1;
         private int lastCollisionSerial;
         private int pendingShotTeam = -1;
@@ -53,6 +60,7 @@ namespace ColdSnap
         {
             Seed = seed;
             Practice = practice;
+            Puck.ShotSequence = seed;
             for (int i = 0; i < 8; i++)
             {
                 int team = i < 3 || i == 6 ? 0 : 1;
@@ -139,18 +147,46 @@ namespace ColdSnap
                 SkaterState skater = Skaters[i];
                 if (skater.Goalie) continue;
                 HockeyInput input = inputs[i];
+                bool releasedAfterOneTimer = !input.OneTimerHeld && wasOneTimerHeld[i] && oneTimerConsumed[i];
+                if (!input.OneTimerHeld)
+                { oneTimerArmed[i] = false; oneTimerConsumed[i] = false; }
+                else if (!wasOneTimerHeld[i])
+                {
+                    // Readying the stick while already controlling a puck remains a normal charged shot.
+                    oneTimerArmed[i] = Puck.ControllerId != skater.Id && !PuckPhysics.CanStrike(skater, Puck);
+                    oneTimerConsumed[i] = false;
+                }
+                wasOneTimerHeld[i] = input.OneTimerHeld;
+                if (releasedAfterOneTimer) input.Shoot = false;
+                Vector2 relativeArrival = Puck.Velocity - skater.Velocity;
+                Vector2 towardSkater = skater.Position - Puck.Position;
+                bool arrives = relativeArrival.LengthSquared() > 1.25f * 1.25f && Vector2.Dot(relativeArrival, towardSkater) > .1f;
+                bool oneTimer = input.OneTimerHeld && oneTimerArmed[i] && !oneTimerConsumed[i]
+                    && Puck.ControllerId != skater.Id && arrives && PuckPhysics.CanStrike(skater, Puck);
+                if (oneTimer)
+                {
+                    input.Shoot = true; input.Pass = false; input.ShotKind = HockeyShotKind.OneTimer;
+                    input.ShotPower = Math.Max(.65f, input.ShotPower);
+                }
                 if (input.Check) TryCheck(skater, input.Aim);
                 if (input.Pass || input.Shoot)
                 {
-                    Vector2 aim = input.Aim.LengthSquared() > .01f ? Vector2.Normalize(input.Aim) : skater.Forward;
-                    float power = Math.Max(.1f, Math.Min(1f, input.ShotPower));
-                    if (PuckPhysics.Strike(skater, Puck, aim, power, input.Pass))
+                    input.Aim = input.Aim.LengthSquared() > .01f ? Vector2.Normalize(input.Aim) : skater.Forward;
+                    input.ShotPower = Math.Max(.1f, Math.Min(1f, input.ShotPower));
+                    if (PuckPhysics.Strike(skater, Puck, input))
                     {
                         if (input.Pass) { Stats.Passes[skater.Team]++; if (skater == Player) Message("Pass away. Find the return lane."); }
                         else
                         {
                             Stats.Shots[skater.Team]++; pendingShotTeam = skater.Team; pendingShotTime = 2.5f;
-                            if (skater == Player) Message("Shot away.");
+                            Stats.ShotTypes[skater.Team, (int)input.ShotKind]++;
+                            if (oneTimer)
+                            {
+                                Stats.OneTimers[skater.Team]++;
+                                Stats.OneTimersBySkater[skater.Id]++;
+                                oneTimerConsumed[i] = true; oneTimerArmed[i] = false;
+                            }
+                            if (skater == Player) Message(oneTimer ? "One-timer!" : input.ShotKind + " shot away.");
                         }
                     }
                 }
@@ -180,6 +216,8 @@ namespace ColdSnap
                 }
             }
             if (goal >= 0) { AwardGoal(goal); return; }
+            if (Puck.OutOfPlay)
+            { Stats.OutOfPlay++; BeginFaceoff(); Message("Puck over the glass. Center faceoff."); return; }
             DiagnosePuck(dt);
         }
 
@@ -201,7 +239,7 @@ namespace ColdSnap
                 other.Stun = .48f;
                 checker.Velocity *= .72f;
                 Stats.Checks[checker.Team]++;
-                if (Puck.ControllerId == other.Id || Vector2.Distance(Puck.Position, other.Position) < 1.8f)
+                if (Puck.Height <= .55f && (Puck.ControllerId == other.Id || Vector2.Distance(Puck.Position, other.Position) < 1.8f))
                 {
                     Puck.Velocity += direction * 5.2f;
                     Puck.ControllerId = -1; Puck.NoControlTime = .35f;
@@ -209,7 +247,7 @@ namespace ColdSnap
                 if (checker == Player) Message("Clean body check. Chase the loose puck.");
                 break;
             }
-            if (Vector2.Distance(Puck.Position, checker.Position) < 2f && Puck.ControllerId != checker.Id)
+            if (Puck.Height <= .55f && Vector2.Distance(Puck.Position, checker.Position) < 2f && Puck.ControllerId != checker.Id)
             {
                 Puck.Velocity += aim * 3.5f;
                 Puck.ControllerId = -1; Puck.NoControlTime = .2f;
@@ -231,6 +269,8 @@ namespace ColdSnap
             Phase = MatchPhase.Faceoff; PhaseTime = 2.2f;
             Stats.Faceoffs++;
             Puck.Position = Vector2.Zero; Puck.Velocity = Vector2.Zero;
+            Puck.Height = .05f; Puck.VerticalVelocity = 0f; Puck.OutOfPlay = false;
+            Puck.LastStrikeWasPass = false; Puck.LastPasserId = -1; Puck.LastPassTeam = -1; Puck.PassAge = 0f;
             Puck.ControllerId = -1; Puck.NoControlTime = 0f; Puck.ControlTime = 0f;
             Puck.LastTouchId = -1; Puck.LastTouchTeam = -1;
             lastControlTeam = -1; stuckTime = 0f; lastActivePuck = Vector2.Zero;
@@ -247,22 +287,24 @@ namespace ColdSnap
                 skater.Velocity = Vector2.Zero;
                 skater.Facing = skater.Team == 0 ? 0f : (float)Math.PI;
                 skater.Cooldown = 0f; skater.StickCooldown = 0f; skater.CheckCooldown = 0f; skater.Stun = 0f;
+                skater.GoalieHandHeight = 1.05f; skater.GoalieHandReach = .45f;
                 skater.Intent = skater.Goalie ? "Track angle" : "Faceoff";
                 pilots[i].Reset();
+                wasOneTimerHeld[i] = false; oneTimerArmed[i] = false; oneTimerConsumed[i] = false;
             }
         }
 
         private void DiagnosePuck(float dt)
         {
             // A dead puck is openly whistled and reset, never silently assigned or moved during play.
-            if (Vector2.DistanceSquared(lastActivePuck, Puck.Position) > .45f * .45f)
+            if (Vector2.DistanceSquared(lastActivePuck, Puck.Position) > .45f * .45f || Math.Abs(Puck.VerticalVelocity) > .2f)
             { lastActivePuck = Puck.Position; stuckTime = 0f; }
             else stuckTime += dt;
             if (stuckTime > 18f && Puck.Velocity.LengthSquared() < .16f)
             {
                 LastFrozenDiagnostic = "time=" + Time.ToString("F2") + ", puck=" + Puck.Position + ", velocity=" + Puck.Velocity + ", controller=" + Puck.ControllerId;
                 for (int i = 0; i < 6; i++) LastFrozenDiagnostic += "; skater " + i + " pos=" + Skaters[i].Position + ", facing=" + Skaters[i].Facing.ToString("F2") + ", " + Skaters[i].Intent;
-                Stats.StuckResets++; BeginFaceoff(); Message("Puck frozen against the boards. Center faceoff.");
+                Stats.StuckResets++; BeginFaceoff(); Message("Puck stranded. Center faceoff.");
             }
         }
 

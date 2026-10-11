@@ -14,12 +14,15 @@ namespace ColdSnap
         public bool Paused { get; private set; }
         public bool DiagnosticControl { get; set; }
         public float LookYaw { get; private set; }
-        public float LookPitch { get; private set; } = 28;
+        public float LookPitch { get; private set; } = 2;
         public int CameraMode { get; private set; }
         public string SeedText = "1988";
         public float Sensitivity = .12f;
-        bool practice, showMap=true, invertMouse, help, charging;
-        float accumulator, charge, controlsReady, shotPower;
+        bool practice, showMap=true, invertMouse, help;
+        readonly ShotGesture shotGesture = new ShotGesture();
+        float accumulator, controlsReady, shotPower;
+        HockeyShotKind shotKind;
+        Vector2 shotZone;
         bool pendingShot,pendingPass,pendingCheck,pendingCall;
         MatchPhase previousPhase;
         string inputError="";
@@ -39,7 +42,7 @@ namespace ColdSnap
         {
             Session=new HockeySession(seed,openIce);practice=openIce;SeedText=seed.ToString();
             View.Build(Session);Briefing=false;Paused=false;help=false;accumulator=0;
-            LookYaw=Session.Player.Facing*Mathf.Rad2Deg;LookPitch=28;CameraMode=0;
+            LookYaw=Session.Player.Facing*Mathf.Rad2Deg;LookPitch=2;CameraMode=0;
             previousPhase=Session.Phase;controlsReady=Time.unscaledTime+.25f;ResetActions();SetCursor();
             View.SetView(LookYaw,LookPitch,CameraMode);View.Sync(Session,0);
         }
@@ -54,7 +57,7 @@ namespace ColdSnap
             if(Session.Phase==MatchPhase.Final)SetCursor();
             View.SetView(LookYaw,LookPitch,CameraMode);View.Sync(Session,dt);
         }
-        void ResetActions(){pendingShot=pendingPass=pendingCheck=pendingCall=charging=false;charge=0;}
+        void ResetActions(){pendingShot=pendingPass=pendingCheck=pendingCall=false;shotGesture.Reset();shotZone=Vector2.zero;}
         void SetCursor()
         {
             bool active=!Briefing&&!Paused&&Session.Phase!=MatchPhase.Final;
@@ -85,7 +88,11 @@ namespace ColdSnap
                 accumulator+=dt;
                 while(accumulator>=1f/60f)
                 {
-                    input.Shoot=pendingShot;input.Pass=pendingPass;input.Check=pendingCheck;input.Call=pendingCall;input.ShotPower=input.Pass?1f:shotPower;
+                    input.Shoot=pendingShot;input.Pass=pendingPass;input.Check=pendingCheck;input.Call=pendingCall;
+                    input.ShotPower=input.Pass?1f:shotPower;input.ShotKind=shotKind;
+                    input.OneTimerHeld=shotGesture.OneTimerHeld;
+                    ResolveShotTarget(shotZone,out var target,out var height);
+                    input.HasShotTarget=true;input.ShotTarget=target;input.TargetHeight=height;
                     if(input.Pass)
                     {
                         var receiver=PassTarget();
@@ -95,7 +102,9 @@ namespace ColdSnap
                             input.Aim=HockeyMath.Unit(receiver.Position+receiver.Velocity*travel*.75f-Session.Player.Position,input.Aim);
                         }
                     }
+                    int oneTimers=Session.Stats.OneTimersBySkater[Session.Player.Id];
                     Session.Step(input,1f/60f);
+                    if(Session.Stats.OneTimersBySkater[Session.Player.Id]>oneTimers)shotGesture.ConsumeOneTimer();
                     pendingShot=pendingPass=pendingCheck=pendingCall=false;
                     accumulator-=1f/60f;
                 }
@@ -103,7 +112,7 @@ namespace ColdSnap
             }
             if(Session.Phase!=previousPhase)
             {
-                if(Session.Phase==MatchPhase.Faceoff){LookYaw=Session.Player.Facing*Mathf.Rad2Deg;LookPitch=28;ResetActions();}
+                if(Session.Phase==MatchPhase.Faceoff){LookYaw=Session.Player.Facing*Mathf.Rad2Deg;LookPitch=2;ResetActions();}
                 previousPhase=Session.Phase;
             }
             View.SetView(LookYaw,LookPitch,CameraMode);View.Sync(Session,Paused?0:Time.unscaledDeltaTime);
@@ -115,10 +124,9 @@ namespace ColdSnap
             {
                 Vector2 delta=m.delta.ReadValue();LookYaw+=Mathf.Clamp(delta.x,-500,500)*Sensitivity;
                 LookPitch+=Mathf.Clamp(delta.y,-500,500)*Sensitivity*(invertMouse?1:-1);
-                if(m.leftButton.wasPressedThisFrame){charging=true;charge=0;}
-                if(charging&&m.leftButton.isPressed)charge=Mathf.Min(1,charge+dt/1.05f);
-                if(charging&&m.leftButton.wasReleasedThisFrame){pendingShot=true;shotPower=.25f+.75f*charge;charging=false;charge=0;}
-                if(m.rightButton.wasPressedThisFrame)pendingPass=true;
+                HockeyInput gesture=shotGesture.Update(m.leftButton.isPressed,m.rightButton.isPressed,dt);
+                if(gesture.Shoot){pendingShot=true;shotPower=gesture.ShotPower;shotKind=gesture.ShotKind;}
+                pendingPass|=gesture.Pass;
             }
             Vector2 movement=Vector2.zero;bool brake=false,sprint=false;
             if(k!=null)
@@ -127,13 +135,63 @@ namespace ColdSnap
                 LookPitch+=((k.downArrowKey.isPressed?1:0)-(k.upArrowKey.isPressed?1:0))*dt*55;
                 movement=new Vector2((k.dKey.isPressed?1:0)-(k.aKey.isPressed?1:0),(k.wKey.isPressed?1:0)-(k.sKey.isPressed?1:0));
                 brake=k.spaceKey.isPressed;sprint=k.leftShiftKey.isPressed||k.rightShiftKey.isPressed;
-                if(k.fKey.wasPressedThisFrame){pendingShot=true;shotPower=.58f;}
+                if(k.fKey.wasPressedThisFrame){pendingShot=true;shotPower=1;shotKind=HockeyShotKind.Snap;}
                 pendingPass|=k.qKey.wasPressedThisFrame;pendingCheck|=k.eKey.wasPressedThisFrame;pendingCall|=k.rKey.wasPressedThisFrame;
             }
             LookYaw=Mathf.Repeat(LookYaw+180,360)-180;LookPitch=Mathf.Clamp(LookPitch,-15,65);
             float yaw=LookYaw*Mathf.Deg2Rad;NVector2 forward=new NVector2(Mathf.Sin(yaw),Mathf.Cos(yaw)),right=new NVector2(forward.Y,-forward.X);
+            shotZone=movement;
             if(movement.sqrMagnitude>1)movement.Normalize();
             return new HockeyInput{Move=right*movement.x+forward*movement.y,Aim=forward,Brake=brake,Sprint=sprint};
+        }
+
+        /// <summary>Analytic aim ray against rink surfaces. Geometry has no Unity colliders.
+        /// WASD offsets the impact target, not launch velocity: the ballistic solver supplies the arc.</summary>
+        public void ResolveShotTarget(Vector2 zone,out NVector2 target,out float height)
+        {
+            Vector3 origin=new Vector3(Session.Player.Position.X,1.65f,Session.Player.Position.Y);
+            Vector3 direction=Quaternion.Euler(LookPitch,LookYaw,0)*Vector3.forward;
+            if(CameraMode!=0&&View.ViewCamera!=null)
+            {origin=View.ViewCamera.transform.position;direction=View.ViewCamera.transform.forward;}
+            float boundary=60;
+            if(Mathf.Abs(direction.x)>.001f)
+                boundary=Mathf.Min(boundary,(Mathf.Sign(direction.x)*(RinkPhysics.HalfWidth-.2f)-origin.x)/direction.x);
+            if(Mathf.Abs(direction.z)>.001f)
+                boundary=Mathf.Min(boundary,(Mathf.Sign(direction.z)*(RinkPhysics.HalfLength-.2f)-origin.z)/direction.z);
+            var rayOrigin=new NVector2(origin.x,origin.z);var rayDirection=new NVector2(direction.x,direction.z);
+            if(RinkPhysics.Inside(rayOrigin,.2f)&&!RinkPhysics.Inside(rayOrigin+rayDirection*boundary,.2f))
+            {
+                float low=0,high=boundary;
+                for(int i=0;i<16;i++){float middle=(low+high)*.5f;if(RinkPhysics.Inside(rayOrigin+rayDirection*middle,.2f))low=middle;else high=middle;}
+                boundary=low;
+            }
+            float distance=boundary;
+            if(direction.y<-.001f)distance=Mathf.Min(distance,(RinkPhysics.PuckHalfHeight-origin.y)/direction.y);
+            float netZ=Session.Player.Team==0?RinkPhysics.GoalLine:-RinkPhysics.GoalLine;
+            float netDistance=Mathf.Abs(direction.z)>.001f?(netZ-origin.z)/direction.z:-1;
+            Vector3 net=origin+direction*netDistance;
+            // A tiny bottom-edge assist keeps a skimming aim on the goal plane. Looking down
+            // at nearby ice still deliberately selects that ice, and aiming wide still misses.
+            if(netDistance>0&&netDistance<=boundary&&Mathf.Abs(net.x)<RinkPhysics.GoalHalfWidth+1.3f
+                &&net.y>-.25f&&net.y<RinkPhysics.GoalHeight+1f)
+                distance=netDistance;
+            Vector3 point=origin+direction*Mathf.Max(1.5f,distance);
+            float yaw=LookYaw*Mathf.Deg2Rad;
+            Vector3 right=CameraMode!=0?View.ViewCamera.transform.right:new Vector3(Mathf.Cos(yaw),0,-Mathf.Sin(yaw));
+            point+=new Vector3(right.x,0,right.z).normalized*zone.x*1.08f;
+            point.y+=zone.y*.78f;
+            point.y=Mathf.Clamp(point.y,.10f,RinkPhysics.GlassHeight-.12f);
+            point.x=Mathf.Clamp(point.x,-RinkPhysics.HalfWidth+.2f,RinkPhysics.HalfWidth-.2f);
+            point.z=Mathf.Clamp(point.z,-RinkPhysics.HalfLength+.2f,RinkPhysics.HalfLength-.2f);
+            target=new NVector2(point.x,point.z);height=point.y;
+            var unusedVelocity=NVector2.Zero;RinkPhysics.Constrain(ref target,ref unusedVelocity,.2f,0);
+        }
+        string ShotZoneName()
+        {
+            if(shotZone==Vector2.zero)return "CENTER";
+            string vertical=shotZone.y>0?"UPPER":shotZone.y<0?"LOWER":"";
+            string horizontal=shotZone.x<0?"LEFT":shotZone.x>0?"RIGHT":"";
+            return (vertical+" "+horizontal).Trim();
         }
         void Launch(){int seed;if(int.TryParse(SeedText,out seed))StartMatch(seed,practice);else inputError="Use a whole-number match seed.";}
         public SkaterState PassTarget()
@@ -193,9 +251,9 @@ namespace ColdSnap
             Label(94,315,508,127,practice?
                 "Learn your edges with the clock stopped. Opposing skaters stay in place; goalies and your two teammates remain active. Request passes and try shots. Return here to start a match.":
                 "You are Blue #9, attacking the orange goal. Your teammates support and cover behind you. Three minutes, then one minute of sudden death if tied. No icing, offsides or penalties.");
-            Label(640,315,520,127,"WASD pushes in the direction you look. Release to coast; turning your head does not erase momentum. Shift adds speed, Space digs in the edges to brake. Aim the stick with the mouse.");
-            Label(94,466,525,101,"LEFT MOUSE  hold / release shot    F  quick shot\nRIGHT MOUSE / Q  pass toward a teammate\nE  check nearby opponent    R  request a pass\nC  camera    Tab  rink map    Esc / H  pause / help",small);
-            Label(640,466,522,101,"The puck is loose until your stick is close enough to guide it. Shots stay on the ice; aim for a corner. A nearby teammate in your aim cone receives a gently assisted pass. Go for rebounds.",small);
+            Label(640,315,520,127,"WASD pushes in the direction you look. Release to coast; looking around preserves momentum. Shift adds speed; hold Space for a smooth hockey stop. Mouse aims the shot target; WASD also selects its high / low / left / right region.");
+            Label(94,466,525,112,"LMB  click: snap / hold + release: slapshot\nHold RMB THEN LMB, release LMB: wrist shot\nRMB release / Q  pass    E  check    R  call\nHold LMB before receiving: automatic one-timer\nC  camera    Tab  map    Esc / H  pause / help",small);
+            Label(640,466,522,112,"The bright reticle marks the intended impact point. W+A aims upper left; no keys aims center; S+D aims lower right. Hold Space to aim without accelerating. Shots arc under gravity: close shots are precise, long shots spread. Wrist shots trade speed for accuracy. Go for rebounds.",small);
             Label(94,593,106,26,"MATCH SEED",small,blue);SeedText=GUI.TextField(new Rect(213,586,171,35),SeedText,12);
             Label(416,593,729,32,inputError.Length>0?inputError:"Reproduce the same starting players and AI decisions.",small);
             if(Button(94,657,520,"TAKE THE ICE  [ENTER]",true))Launch();
@@ -227,7 +285,7 @@ namespace ColdSnap
                 Panel(340,135,600,132);Label(369,149,542,58,Session.LastGoalTeam==0?"BLUE GOAL":"ORANGE GOAL",title,Session.LastGoalTeam==0?blue:orange);
                 Label(371,217,540,32,"Back to center. The next play starts here.",body);
             }
-            bool front;Vector2 p=Project(puck.Position,.12f,out front);
+            bool front;Vector2 p=Project(puck.Position,puck.Height+.06f,out front);
             float distance=NVector2.Distance(player.Position,puck.Position);
             if(front&&p.x>26&&p.x<1250&&p.y>84&&p.y<681)
             {
@@ -238,7 +296,7 @@ namespace ColdSnap
             {
                 NVector2 delta=puck.Position-player.Position;float yaw=LookYaw*Mathf.Deg2Rad;
                 float side=delta.X*Mathf.Cos(yaw)-delta.Y*Mathf.Sin(yaw),ahead=delta.X*Mathf.Sin(yaw)+delta.Y*Mathf.Cos(yaw);
-                string direction=ahead<0?"BEHIND / ":"";direction+=side<0?"LEFT":"RIGHT";
+                string direction=distance<2.1f&&ahead>0?"BELOW VIEW":(ahead<0?"BEHIND / ":"")+(side<0?"LEFT":"RIGHT");
                 Panel(436,642,410,35);Label(451,648,383,25,"PUCK  "+direction+"  "+distance.ToString("0.0")+"m",small);
             }
             var passTarget=PassTarget();
@@ -253,18 +311,32 @@ namespace ColdSnap
                     Label(marker.x+12,marker.y-15,180,25,(s==passTarget?"PASS  ":"")+(s.Id==1?"#7  WING":"#12  ANCHOR"),small,blue);
                 }
             }
-            // Stick aim projected onto the ice makes shot direction clear without hiding the puck.
             float a=LookYaw*Mathf.Deg2Rad;var aim=new NVector2(Mathf.Sin(a),Mathf.Cos(a));
-            var aimPoint=player.Position+aim*4.5f;Vector2 aimScreen=Project(aimPoint,.06f,out front);
-            if(front&&aimScreen.y<683&&aimScreen.y>85)
-            {Line(aimScreen+new Vector2(-8,0),aimScreen+new Vector2(8,0),new Color(.03f,.24f,.31f,.75f));Line(aimScreen+new Vector2(0,-5),aimScreen+new Vector2(0,5),new Color(.03f,.24f,.31f,.75f));}
+            ResolveShotTarget(shotZone,out var aimPoint,out var aimHeight);
+            Vector2 aimScreen=Project(aimPoint,aimHeight,out front);
+            // The small center dot is the mouse ray; the bright cross includes the WASD offset.
+            Fill(638,398,4,4,new Color(.04f,.18f,.22f,.8f));
+            if(front&&aimScreen.y<680&&aimScreen.y>85&&aimScreen.x>15&&aimScreen.x<1265)
+            {
+                for(int stroke=0;stroke<2;stroke++)
+                {
+                    Color reticle=stroke==0?new Color(.015f,.08f,.1f):mint;float width=stroke==0?5:2;
+                    Line(aimScreen+new Vector2(-12,0),aimScreen+new Vector2(-4,0),reticle,width);
+                    Line(aimScreen+new Vector2(4,0),aimScreen+new Vector2(12,0),reticle,width);
+                    Line(aimScreen+new Vector2(0,-12),aimScreen+new Vector2(0,-4),reticle,width);
+                    Line(aimScreen+new Vector2(0,4),aimScreen+new Vector2(0,12),reticle,width);
+                }
+                if(shotGesture.Charging)
+                {Fill(aimScreen.x+17,aimScreen.y-12,177,25,new Color(.018f,.035f,.052f,.85f));Label(aimScreen.x+22,aimScreen.y-13,174,27,ShotZoneName()+" / "+aimHeight.ToString("0.0")+"m",small,mint);}
+            }
             if(showMap)RinkMap();
             Fill(0,704,1280,96,new Color(.018f,.035f,.052f,.96f));
             Label(24,717,170,23,"SKATING / km/h",small);Label(24,747,167,37,(player.Speed*3.6f).ToString("0.0"),number,blue);
             Label(205,717,515,31,player.Stun>0?"OFF BALANCE":puck.ControllerId==player.Id?"ON YOUR STICK":puck.ControllerId>=0?(Session.Skaters[puck.ControllerId].Team==0?"BLUE POSSESSION / R CALL":"DEFEND / E CHECK"):"LOOSE PUCK / CLOSE TO COLLECT",body,player.Stun>0?orange:mint);
-            Label(205,756,730,27,"LMB SHOT   RMB PASS   SPACE BRAKE   E CHECK   R CALL",small);
-            Label(961,717,290,25,"SHOT POWER",small);
-            Fill(963,755,286,9,new Color(.11f,.21f,.26f));Fill(963,755,286*(charging?charge:0),9,orange);
+            Label(205,756,730,27,"CLICK SNAP / HOLD SLAP    RMB+LMB WRIST    SPACE STOP",small);
+            Label(961,717,290,25,shotGesture.Charging?(shotGesture.Wrist?"WRIST / ":"SLAP / ")+ShotZoneName():"AIM / "+ShotZoneName(),small);
+            Fill(963,755,286,9,new Color(.11f,.21f,.26f));Fill(963,755,286*(shotGesture.Charging?shotGesture.Charge:0),9,orange);
+            Label(961,772,290,22,shotGesture.OneTimerHeld&&puck.ControllerId!=player.Id?"ONE-TIMER READY":"WASD SELECTS SHOT REGION",small);
             if(Session.MessageTime>0){Panel(229,92,789,35);Label(243,97,765,27,Session.LastMessage,small);}
             if(Session.PassCallTime>0)Label(25,92,191,28,"PASS REQUESTED",small,blue);
             // Relative velocity shows momentum independently of mouse look.
@@ -291,8 +363,8 @@ namespace ColdSnap
         void PauseScreen()
         {
             Panel(184,151,912,493);Label(215,173,846,62,help?"READ THE ICE":"SHIFT PAUSED",title);
-            Label(216,252,844,121,"WASD pushes relative to your view. Release to glide. Space brakes and Shift adds speed. Mouse look remains independent of momentum; arrow keys also turn the view.\n\nThe stick guides a nearby puck with limited force. Hold and release left mouse for a shot, or tap F. Right mouse / Q passes. Get close and face the puck first.");
-            Label(216,400,844,67,"E checks within reach. R requests a teammate pass; move into a clear lane.\nBlue always attacks the orange end. C switches camera. Tab toggles the rink map.",small);
+            Label(216,252,844,131,"WASD skates and selects shot region: W high, S low, A left, D right; combine for corners. Hold Space to stop smoothly while aiming. Mouse sets the target; arrows also look.\n\nClick LMB / F: snap shot. Hold LMB, release: slapshot. Hold RMB first, then LMB: wrist shot on LMB release. RMB release / Q: pass toward a teammate.");
+            Label(216,400,844,77,"Hold LMB before a loose puck reaches your stick for a one-timer. Air shots arc to the bright target; wrist shots are slower and more accurate. Long-range shots spread more.\nE checks. R requests a pass. Shift sprints. C camera. Tab map. Blue attacks orange.",small);
             Label(216,492,212,27,"MOUSE SENSITIVITY",small);Sensitivity=GUI.HorizontalSlider(new Rect(432,503,258,24),Sensitivity,.04f,.30f);
             invertMouse=GUI.Toggle(new Rect(750,492,255,28),invertMouse," Invert vertical look");
             if(Button(216,560,251,"RESUME")){help=false;SetPaused(false);}
