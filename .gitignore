@@ -46,6 +46,9 @@ ExportedObj/
 *.csproj
 !Validation/HauntedHouse.Validation.csproj
 !ValidationAir/*.csproj
+!ValidationHockey/*.csproj
+/ValidationHockey/bin/
+/ValidationHockey/obj/
 /ValidationAir/bin/
 /ValidationAir/obj/
 /Validation/bin/

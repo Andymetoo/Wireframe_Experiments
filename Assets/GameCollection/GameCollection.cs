@@ -9,6 +9,7 @@ namespace VectorCabinet
         public const string LauncherScene = "Cabinet";
         public const string HouseScene = "HauntedHouse";
         public const string AirScene = "Meridian1944";
+        public const string HockeyScene = "ColdSnap";
         public static void Open(string scene)
         {
             Time.timeScale=1f;

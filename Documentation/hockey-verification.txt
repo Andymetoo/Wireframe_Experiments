@@ -1,0 +1,96 @@
+COLD SNAP / THREE-GAME CABINET - delivery verification
+Executed 2026-10-10, Unity 6000.4.1f1 URP, Windows x64.
+
+WHAT WAS BUILT
+The existing launcher now selects Haunted House, WWII Air Combat or Hockey.
+Cold Snap is first-person 3v3 hockey plus two goalkeepers: three-minute matches,
+one-minute sudden-death overtime, final scores, faceoffs, practice, replay and menus.
+All visuals are generated meshes, plain colors, geometric animation and Unity UI.
+No creative assets, textures, audio, services or additional packages were introduced.
+
+SIMULATION AND PLAY
+Skating uses acceleration, retained momentum, limited turning/edge forces and braking.
+Looking does not rotate existing velocity. The puck slides freely and is guided by a
+capped stick force within reach, never parented to a skater. Shots and passes impart
+velocity; board, post, net, player and pad contacts produce deflections and rebounds.
+Fast pucks use collision substeps. Stick interaction cannot reach through netting.
+Team pilots distinguish retrieval, carrier pressure, passing support and defensive
+cover. Retrievers navigate around goal nets and reach the rounded boards. Goalies
+track shooting angles after a 0.23-0.35 second reaction interval and make physical saves.
+Human and AI players use the same skating, striking and contact rules.
+
+EXECUTED CORE CHECKS
+- Haunted House: 21,008 .NET assertions passed, zero failures. Includes 10,000 seeded
+  structural/determinism cases, corrupted cases and 1,000 complete resolutions.
+- Air Combat: 534 .NET checks passed, zero failures, including complete armed dogfights
+  and courier missions. The existing source and presentation were preserved.
+- Hockey: 169 .NET checks passed, zero failures. Includes 38 physics assertions,
+  cooperation, deterministic replay, six difficult loose-puck recovery fixtures,
+  match transitions and nine complete bot matches.
+  Final .NET series: 14 goals, 137 shots, 100 saves, 489 passes released, 454 turnovers;
+  no frozen-puck resets. See hockey-validation-results.txt for individual seeds.
+- Combined Unity core suite: 1,703 checks passed, zero failures.
+  Unity's nine hockey matches: 12 goals, 136 shots, 102 saves, 501 passes released,
+  480 turnovers; no frozen-puck resets. See cabinet-unity-validation.txt.
+  Replay is deterministic within the same runtime and input schedule. Floating-point
+  differences between .NET and Unity can produce different long-term match outcomes.
+
+EXECUTED UNITY GAMEPLAY AND INTEGRATION CHECKS
+252 checks passed, zero runtime errors; hockey-rendered-validation.txt is the raw log.
+Launcher keys 1/2/3 used actual temporary Input System keyboard events. Hockey input
+tests exercised WASD/Shift acceleration, coasting, Space braking, mouse look, quick and
+charged shots, passing, checks, pass calls, camera selection and Escape pause/resume.
+The charged-shot fixture verified that holding does not fire, releasing shoots once,
+and the physical puck then travels. Contact fixtures are explicitly labelled in the log.
+The complete default hockey match used ordinary bot inputs with no forced goals or
+state overrides: seed 1988, Blue 1-0, 186.90 simulated seconds, 12 shots, 12 saves,
+54 passes released, 45 turnovers, 18 checks and zero dead-puck resets.
+The walkthrough also completed a full-strength Air Combat dogfight through ballistic
+hits, exercised Haunted House investigation, and relaunched both games after Hockey.
+Scene checks verified one enabled camera, no duplicate listeners, isolated controllers
+and renderers, reset clocks/state, mouse release and cleanup on returning to the cabinet.
+
+The runner uses an unsaved InputSettings clone and private synthetic devices so it can
+test while another editor has focus. It restores the original settings and devices;
+ordinary gameplay retains normal focus behavior. No OS focus stealing is needed.
+
+VISUAL INSPECTION
+Actual Unity captures inspected: launcher, briefing, first-person rink and stick,
+chase view, live play, goals/faceoffs and final scoreboard. Captures are under
+Logs/Hockey. Inspection found and corrected overlapping board faces, enlarged the
+distant faceoff markings and reduced the first-person glove. Important puck and rink
+geometry is visible. These captures establish rendering, not subjective control feel.
+
+PRESERVATION
+26 Haunted House and Air Combat source, shader and scene files are byte-for-byte
+unchanged from the pre-hockey SHA-256 baseline. See hockey-preservation.txt.
+Shared changes are launcher selection, scene registration, build and diagnostics.
+
+PRACTICAL LIMITS / HUMAN PLAYTESTING
+The puck is simulated on the ice plane; there are no aerial/lifted shots, icing,
+offsides, penalties, line changes, stamina or player switching. The human stays Blue #9.
+The visual puck is deliberately a little larger than its collision disc.
+Statistics count pass releases and physical events, not full regulation scorekeeping.
+Keyboard/mouse feel, comfort, shot difficulty, teammate usefulness and long-term fun
+still need human playtesting. Automated bot outcomes do not establish those qualities.
+
+HOW TO PLAY
+Run Builds/VectorCabinet/VectorCabinet.exe beside its data folder and DLLs; choose Hockey
+or press 3. Open Ice practice explains the mechanics without a running clock.
+Mouse looks/aims; WASD pushes; Shift accelerates; Space brakes. Hold/release LMB shoots,
+F quick-shoots, RMB/Q passes, E checks and R requests a pass. C changes camera; Esc
+pauses and provides restart and return-to-cabinet controls. README.md has the full guide.
+
+BUILD AND STANDALONE
+Windows x64 release build succeeded: zero errors, zero warnings, 103,403,094 bytes.
+The build contains Cabinet, HauntedHouse, Meridian1944 and ColdSnap scenes.
+Both hidden and visible standalone walkthroughs passed 252 checks with zero runtime
+errors. The visible run exited with code 0 and reproduced the complete Blue 1-0 hockey
+match and full-strength Air Combat victory. hockey-standalone-validation.txt contains
+the visible executable's log; cabinet-build-result.txt is the Unity build report.
+
+Hidden-window screenshot files were black and were not used as visual evidence.
+A subsequent visible run produced valid actual-game captures: the launcher and
+first-person/live hockey images were inspected at 1280x800 under
+Logs/Hockey/VisibleStandalone. The earlier Unity captures are separate evidence.
+No test player process is left running. Launch the executable normally to play.

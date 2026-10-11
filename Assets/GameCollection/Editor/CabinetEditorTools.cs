@@ -12,17 +12,17 @@ namespace VectorCabinet.Editor
     [InitializeOnLoad]
     public static class CabinetEditorTools
     {
-        public static readonly string[] Scenes={"Assets/GameCollection/Scenes/Cabinet.unity","Assets/HauntedHouse/Scenes/HauntedHouse.unity","Assets/AirCombat/Scenes/Meridian1944.unity"};
+        public static readonly string[] Scenes={"Assets/GameCollection/Scenes/Cabinet.unity","Assets/HauntedHouse/Scenes/HauntedHouse.unity","Assets/AirCombat/Scenes/Meridian1944.unity","Assets/Hockey/Scenes/ColdSnap.unity"};
         static double nextCheck;
         static CabinetEditorTools()
         {
             EditorApplication.update+=CheckCommand;
             CompilationPipeline.assemblyCompilationFinished+=(path,messages)=>
             {
-                Directory.CreateDirectory("Logs/AirCombat");
+                Directory.CreateDirectory("Logs/Hockey");
                 foreach(var message in messages)
                     if(message.type==CompilerMessageType.Error)
-                        File.AppendAllText("Logs/AirCombat/compile-errors.txt",message.file+":"+message.line+" "+message.message+"\n");
+                        File.AppendAllText("Logs/Hockey/compile-errors.txt",message.file+":"+message.line+" "+message.message+"\n");
             };
         }
         static void CheckCommand()
@@ -42,6 +42,7 @@ namespace VectorCabinet.Editor
                 }
                 else if(command=="stop")EditorApplication.isPlaying=false;
                 else if(command=="validate")Validate();
+                else if(command=="validate-hockey")ValidateHockey();
                 else if(command=="build")Build(false);
                 else if(command=="build-dev")Build(true);
                 else throw new ArgumentException("Unknown Cabinet command: "+command);
@@ -56,11 +57,13 @@ namespace VectorCabinet.Editor
             if(!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())return;
             EditorSceneManager.OpenScene(Scenes[0]);
         }
-        [MenuItem("Vector Cabinet/Validate Both Games")]
+        [MenuItem("Vector Cabinet/Validate All Games")]
         public static void Validate()
         {
             int checks=0,failures=0;var report=new StringBuilder();
             Meridian.AirValidation.Run((pass,name)=>{checks++;if(!pass)failures++;report.AppendLine((pass?"PASS ":"FAIL ")+name);});
+            ColdSnap.HockeyValidation.Run((pass,name)=>{checks++;if(!pass)failures++;report.AppendLine((pass?"PASS ":"FAIL ")+name);});
+            report.AppendLine(ColdSnap.HockeyValidation.MatchSummary);
             for(int seed=0;seed<1000;seed++)
             {
                 var errors=HollowHouse.ScenarioValidator.Validate(HollowHouse.ScenarioGenerator.Generate(seed));
@@ -71,6 +74,17 @@ namespace VectorCabinet.Editor
             Directory.CreateDirectory("Documentation");File.WriteAllText("Documentation/cabinet-unity-validation.txt",report.ToString());
             if(failures>0)throw new Exception("Cabinet validation failed: "+failures);
             Debug.Log("Vector Cabinet validation passed: "+checks+" checks.");
+        }
+        [MenuItem("Vector Cabinet/Validate Hockey")]
+        public static void ValidateHockey()
+        {
+            int checks=0,failures=0;var report=new StringBuilder();
+            ColdSnap.HockeyValidation.Run((pass,name)=>{checks++;if(!pass)failures++;report.AppendLine((pass?"PASS ":"FAIL ")+name);});
+            report.AppendLine(ColdSnap.HockeyValidation.MatchSummary);
+            report.AppendLine(checks+" checks; "+failures+" failures.");
+            Directory.CreateDirectory("Documentation");File.WriteAllText("Documentation/hockey-unity-validation.txt",report.ToString());
+            if(failures>0)throw new Exception("Hockey validation failed: "+failures);
+            Debug.Log("Hockey validation passed: "+checks+" checks.");
         }
         [MenuItem("Vector Cabinet/Build Windows Player")]
         public static void BuildRelease(){Build(false);}

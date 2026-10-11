@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/AirCombat/Scenes/Meridian1944.unity
     guid: 516726870e734e41a3b48a56d44f43cd
+  - enabled: 1
+    path: Assets/Hockey/Scenes/ColdSnap.unity
+    guid: d4a734808dd84a70a09e65fe8853f62d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

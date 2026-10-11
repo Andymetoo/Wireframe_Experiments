@@ -20,6 +20,7 @@ namespace VectorCabinet
             var k=Keyboard.current;if(k==null)return;
             if(k.digit1Key.wasPressedThisFrame)GameCollection.Open(GameCollection.HouseScene);
             else if(k.digit2Key.wasPressedThisFrame)GameCollection.Open(GameCollection.AirScene);
+            else if(k.digit3Key.wasPressedThisFrame)GameCollection.Open(GameCollection.HockeyScene);
             else if(k.escapeKey.wasPressedThisFrame && !Application.isEditor)Application.Quit();
         }
         void Rect(float x,float y,float w,float h,Color c)
@@ -49,29 +50,43 @@ namespace VectorCabinet
             }
             float scale=Mathf.Min(Screen.width/1280f,Screen.height/800f);
             GUI.matrix=Matrix4x4.TRS(new Vector3((Screen.width-1280*scale)/2,(Screen.height-800*scale)/2,0),Quaternion.identity,Vector3.one*scale);
-            Label(66,47,1050,28,"IMPOSSIBLE STRUCTURES  /  TWO GAMES, ONE CABINET",small);
+            Label(66,47,1050,28,"IMPOSSIBLE STRUCTURES  /  THREE GAMES, ONE CABINET",small);
             Label(61,91,1110,75,"THE VECTOR CABINET",title);
             Label(66,175,1110,50,"Choose a world. Each game begins fresh and has its own controls.");
-            Rect(65,240,552,424,new Color(.033f,.068f,.080f));Rect(641,240,574,424,new Color(.067f,.078f,.079f));
-            Color teal=new Color(.30f,.63f,.63f);
-            Line(new Vector2(104,357),new Vector2(104,304),teal);Line(new Vector2(104,304),new Vector2(146,274),teal);
-            Line(new Vector2(146,274),new Vector2(188,304),teal);Line(new Vector2(188,304),new Vector2(188,357),teal);
-            Line(new Vector2(104,357),new Vector2(188,357),teal);Line(new Vector2(137,357),new Vector2(137,324),teal);Line(new Vector2(155,357),new Vector2(155,324),teal);
-            Vector2 p=new Vector2(736,316);
-            Line(p+new Vector2(0,-43),p+new Vector2(-8,40),amber);Line(p+new Vector2(0,-43),p+new Vector2(8,40),amber);
-            Line(p+new Vector2(-65,4),p+new Vector2(65,4),amber);Line(p+new Vector2(-65,4),p+new Vector2(-8,20),amber);Line(p+new Vector2(65,4),p+new Vector2(8,20),amber);
-            Line(p+new Vector2(-25,34),p+new Vector2(25,34),amber);
-            Label(98,390,490,48,"HAUNTED HOUSE",new GUIStyle(title){fontSize=31});
-            Label(98,450,478,91,"The House That Listens\nInvestigate ten rooms. Learn the dead's rules. Finish what they could not.");
-            Label(98,555,475,25,"GRID EXPLORATION  /  DEDUCTION  /  SURVIVAL",small);
-            if(Button(98,593,484,"ENTER THE HOUSE                                      [1]"))GameCollection.Open(GameCollection.HouseScene);
-            Label(674,390,505,48,"WWII AIR COMBAT",new GUIStyle(title){fontSize=31});
-            Label(674,450,505,91,"Meridian 1944\nTrade altitude for speed. Lead your shots. Bring your courier home.");
-            Label(674,555,500,25,"FLIGHT  /  DOGFIGHTING  /  COURIER COVER",small);
-            if(Button(674,593,507,"FLY A SORTIE                                                [2]"))GameCollection.Open(GameCollection.AirScene);
-            Label(66,706,935,58,"Both worlds are silent. All scenery and aircraft are built from code.\nUse each game's pause menu to return here.",small);
+            Card(65,0,"HAUNTED HOUSE","The House That Listens","Investigate ten rooms. Learn the dead's rules. Finish what they could not.","DEDUCTION / SURVIVAL","ENTER THE HOUSE   [1]",GameCollection.HouseScene);
+            Card(457,1,"WWII AIR COMBAT","Meridian 1944","Trade altitude for speed. Lead your shots. Bring your courier home.","FLIGHT / DOGFIGHTING","FLY A SORTIE   [2]",GameCollection.AirScene);
+            Card(849,2,"HOCKEY","Cold Snap","Find a passing lane. Cut across the ice. Earn the next goal.","FIRST PERSON / 3-ON-3","TAKE THE ICE   [3]",GameCollection.HockeyScene);
+            Label(66,706,935,58,"Three silent worlds, built from code.\nUse each game's pause menu to return here.",small);
             if(!Application.isEditor && Button(1030,705,185,"EXIT  [ESC]"))Application.Quit();
             GUI.matrix=Matrix4x4.identity;
+        }
+        void Card(float x,int icon,string name,string subtitle,string description,string tags,string action,string scene)
+        {
+            Rect(x,240,366,424,new Color(.033f,.068f,.080f));
+            Vector2 p=new Vector2(x+86,316);Color c=icon==1?amber:new Color(.30f,.63f,.63f);
+            if(icon==0)
+            {
+                Line(p+new Vector2(-42,40),p+new Vector2(-42,-13),c);Line(p+new Vector2(-42,-13),p+new Vector2(0,-43),c);
+                Line(p+new Vector2(0,-43),p+new Vector2(42,-13),c);Line(p+new Vector2(42,-13),p+new Vector2(42,40),c);
+                Line(p+new Vector2(-42,40),p+new Vector2(42,40),c);Line(p+new Vector2(-9,40),p+new Vector2(-9,7),c);Line(p+new Vector2(9,40),p+new Vector2(9,7),c);
+            }
+            else if(icon==1)
+            {
+                Line(p+new Vector2(0,-43),p+new Vector2(-8,40),c);Line(p+new Vector2(0,-43),p+new Vector2(8,40),c);
+                Line(p+new Vector2(-65,4),p+new Vector2(65,4),c);Line(p+new Vector2(-65,4),p+new Vector2(-8,20),c);Line(p+new Vector2(65,4),p+new Vector2(8,20),c);
+                Line(p+new Vector2(-25,34),p+new Vector2(25,34),c);
+            }
+            else
+            {
+                Line(p+new Vector2(-33,-40),p+new Vector2(12,32),c,4);Line(p+new Vector2(12,32),p+new Vector2(48,28),c,6);
+                Line(p+new Vector2(33,-40),p+new Vector2(-12,32),c,4);Line(p+new Vector2(-12,32),p+new Vector2(-48,28),c,6);
+                Rect(p.x-12,p.y+44,24,7,amber);
+            }
+            Label(x+22,389,326,45,name,new GUIStyle(title){fontSize=27});
+            Label(x+22,443,326,30,subtitle,small);
+            Label(x+22,477,322,85,description);
+            Label(x+22,566,322,24,tags,small);
+            if(Button(x+22,605,322,action))GameCollection.Open(scene);
         }
     }
 }

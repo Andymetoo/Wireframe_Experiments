@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using ColdSnap;
 using HollowHouse;
 using Meridian;
 using UnityEngine;
@@ -9,6 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
 using NVector3 = System.Numerics.Vector3;
+using NVector2 = System.Numerics.Vector2;
 
 namespace VectorCabinet
 {
@@ -23,6 +25,11 @@ namespace VectorCabinet
         float started;
         bool finished;
         Keyboard testKeyboard, previousKeyboard;
+        Mouse testMouse, previousMouse;
+        Keyboard idleKeyboard, hardwareKeyboard;
+        Mouse idleMouse, hardwareMouse;
+        InputSettings originalInputSettings, smokeInputSettings;
+        bool originalRunInBackground;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Begin()
@@ -32,7 +39,7 @@ namespace VectorCabinet
             if (UnityEditor.SessionState.GetBool("VectorCabinet.Smoke", false))
             {
                 UnityEditor.SessionState.SetBool("VectorCabinet.Smoke", false);
-                destination = Path.GetFullPath("Logs/AirCombat");
+                destination = Path.GetFullPath("Logs/Hockey");
             }
 #endif
             string[] args = Environment.GetCommandLineArgs();
@@ -48,16 +55,16 @@ namespace VectorCabinet
                 "Checks include temporary keyboard-device events, public gameplay APIs and diagnostic fixed steps. Human ergonomics remain untested.\n");
             File.WriteAllText(Path.Combine(destination, "runtime-errors.txt"), "");
             runner.started = Time.realtimeSinceStartup;
-            Application.runInBackground = true;
+            runner.InstallDiagnosticInput();
             Application.logMessageReceived += runner.Record;
             runner.StartCoroutine(runner.GuardedRun());
         }
 
         void Update()
         {
-            if (!finished && output != null && Time.realtimeSinceStartup - started > 240)
+            if (!finished && output != null && Time.realtimeSinceStartup - started > 480)
             {
-                Check(false, "Integration runner exceeded four minutes of wall time");
+                Check(false, "Integration runner exceeded eight minutes of wall time");
                 Finish();
             }
         }
@@ -102,14 +109,67 @@ namespace VectorCabinet
         }
         void Note(string value) { File.AppendAllText(Path.Combine(output, "runtime-smoke.txt"), value + "\n"); }
 
+        void InstallDiagnosticInput()
+        {
+            // Keep this opt-in run independent of the user's foreground application.
+            // The project asset is never edited: only an unsaved clone is installed.
+            originalRunInBackground = Application.runInBackground;
+            Application.runInBackground = true;
+            originalInputSettings = InputSystem.settings;
+            smokeInputSettings = Instantiate(originalInputSettings);
+            smokeInputSettings.name = "Temporary cabinet diagnostic input settings";
+            smokeInputSettings.hideFlags = HideFlags.HideAndDontSave;
+            smokeInputSettings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+            smokeInputSettings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+            InputSystem.settings = smokeInputSettings;
+            hardwareKeyboard = Keyboard.current; hardwareMouse = Mouse.current;
+            idleKeyboard = InputSystem.AddDevice<Keyboard>("Cabinet diagnostic idle keyboard");
+            idleMouse = InputSystem.AddDevice<Mouse>("Cabinet diagnostic idle mouse");
+            idleKeyboard.MakeCurrent(); idleMouse.MakeCurrent();
+            InputSystem.onAfterUpdate += PinDiagnosticDevices;
+            Note("Diagnostic input: unsaved settings clone, background events enabled, application focused=" + Application.isFocused);
+        }
+
+        void PinDiagnosticDevices()
+        {
+            if (InputState.currentUpdateType != InputUpdateType.Dynamic) return;
+            // Real devices remain connected and untouched. Only these private devices
+            // drive tests, even if the user types in another foreground application.
+            Keyboard keyboard = testKeyboard != null ? testKeyboard : idleKeyboard;
+            Mouse mouse = testMouse != null ? testMouse : idleMouse;
+            if (keyboard != null && keyboard.added) keyboard.MakeCurrent();
+            if (mouse != null && mouse.added) mouse.MakeCurrent();
+        }
+
+        void RestoreDiagnosticInput()
+        {
+            InputSystem.onAfterUpdate -= PinDiagnosticDevices;
+            if (idleKeyboard != null && idleKeyboard.added) InputSystem.RemoveDevice(idleKeyboard);
+            if (idleMouse != null && idleMouse.added) InputSystem.RemoveDevice(idleMouse);
+            idleKeyboard = null; idleMouse = null;
+            if (hardwareKeyboard != null && hardwareKeyboard.added) hardwareKeyboard.MakeCurrent();
+            if (hardwareMouse != null && hardwareMouse.added) hardwareMouse.MakeCurrent();
+            hardwareKeyboard = null; hardwareMouse = null;
+            if (originalInputSettings != null)
+            {
+                InputSystem.settings = originalInputSettings;
+                Application.runInBackground = originalRunInBackground;
+                originalInputSettings = null;
+            }
+            if (smokeInputSettings != null) Destroy(smokeInputSettings);
+            smokeInputSettings = null;
+        }
+
         void CheckScene(string expected)
         {
             Check(SceneManager.GetActiveScene().name == expected, "Active scene is " + expected);
             Check(Count<CabinetLauncher>() == (expected == GameCollection.LauncherScene ? 1 : 0), expected + ": launcher lifetime isolated");
             Check(Count<HauntedHouseGame>() == (expected == GameCollection.HouseScene ? 1 : 0), expected + ": house input/simulation root isolated");
             Check(Count<AirCombatGame>() == (expected == GameCollection.AirScene ? 1 : 0), expected + ": air input/simulation root isolated");
+            Check(Count<HockeyGame>() == (expected == GameCollection.HockeyScene ? 1 : 0), expected + ": hockey input/simulation root isolated");
             Check(Count<HouseRenderer>() == (expected == GameCollection.HouseScene ? 1 : 0), expected + ": house presentation lifetime isolated");
             Check(Count<AirRenderer>() == (expected == GameCollection.AirScene ? 1 : 0), expected + ": air presentation lifetime isolated");
+            Check(Count<HockeyRenderer>() == (expected == GameCollection.HockeyScene ? 1 : 0), expected + ": hockey presentation lifetime isolated");
             Check(Count<Camera>() == 1, expected + ": exactly one enabled camera");
             Check(Count<AudioListener>() <= 1, expected + ": no duplicate audio listeners");
             Check(Mathf.Approximately(Time.timeScale, 1), expected + ": simulation timescale restored");
@@ -127,6 +187,38 @@ namespace VectorCabinet
             yield return null;
             yield return null;
             CheckScene(scene);
+        }
+        IEnumerator SelectFromLauncher(Key key, string scene)
+        {
+            Check(SceneManager.GetActiveScene().name == GameCollection.LauncherScene, "Game selection begins in the shared launcher");
+            previousKeyboard = Keyboard.current;
+            testKeyboard = InputSystem.AddDevice<Keyboard>("Cabinet selection keyboard");
+            testKeyboard.MakeCurrent();
+            try
+            {
+                Note("Launcher input before " + key + ": focused=" + Application.isFocused + "; current keyboard="
+                    + (Keyboard.current != null ? Keyboard.current.deviceId.ToString() : "none")
+                    + "; synthetic keyboard=" + testKeyboard.deviceId + "; enabled=" + testKeyboard.enabled);
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(key));
+                bool observedPress = false;
+                // Wait for actual player frames, rather than a wall-clock delay which
+                // can expire while the editor routes or defers input in the background.
+                for (int frame = 0; frame < 12 && SceneManager.GetActiveScene().name == GameCollection.LauncherScene; frame++)
+                {
+                    yield return null;
+                    observedPress |= testKeyboard[key].wasPressedThisFrame;
+                }
+                Note("Launcher input after " + key + ": focused=" + Application.isFocused + "; current keyboard="
+                    + (Keyboard.current != null ? Keyboard.current.deviceId.ToString() : "none")
+                    + "; down=" + testKeyboard[key].isPressed + "; observed edge=" + observedPress
+                    + "; scene=" + SceneManager.GetActiveScene().name);
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null;
+                yield return null;
+                Check(SceneManager.GetActiveScene().name == scene, "Launcher " + key + " input selects " + scene);
+                CheckScene(scene);
+            }
+            finally { CleanupKeyboard(); }
         }
         IEnumerator Capture(string name)
         {
@@ -148,7 +240,7 @@ namespace VectorCabinet
             else CheckScene(GameCollection.LauncherScene);
             yield return Capture("01-cabinet");
 
-            yield return Open(GameCollection.HouseScene);
+            yield return SelectFromLauncher(Key.Digit1, GameCollection.HouseScene);
             HauntedHouseGame house = FindAnyObjectByType<HauntedHouseGame>();
             if (house == null) throw new InvalidOperationException("House composition root missing");
             Check(house.AtTitle, "Haunted House opens at its original title");
@@ -173,7 +265,7 @@ namespace VectorCabinet
             yield return Open(GameCollection.LauncherScene);
             yield return Capture("05-cabinet-after-house");
 
-            yield return Open(GameCollection.AirScene);
+            yield return SelectFromLauncher(Key.Digit2, GameCollection.AirScene);
             AirCombatGame air = FindAnyObjectByType<AirCombatGame>();
             if (air == null) throw new InvalidOperationException("Air composition root missing");
             air.DiagnosticControl = true;
@@ -284,16 +376,255 @@ namespace VectorCabinet
             yield return Capture("15-courier-briefing");
             yield return Open(GameCollection.LauncherScene);
             yield return Capture("16-cabinet-after-flight");
+            yield return ExerciseHockey();
             yield return Open(GameCollection.HouseScene);
             house = FindAnyObjectByType<HauntedHouseGame>();
             Check(house != null && house.AtTitle && house.Session.Turn == 0,
-                "Haunted House relaunches fresh after Air Combat");
+                "Haunted House relaunches fresh after Air Combat and Hockey");
             house.NewCase(128);
             house.Act(() => house.Session.Inspect());
-            Check(house.Session.Journal.Count > 0, "Investigation still accepts evidence actions after switching from flight");
+            Check(house.Session.Journal.Count > 0, "Investigation still accepts evidence actions after switching through flight and hockey");
             yield return Capture("17-house-after-flight");
             yield return Open(GameCollection.LauncherScene);
             yield return Capture("18-cabinet-final");
+        }
+
+        IEnumerator ExerciseHockey()
+        {
+            yield return SelectFromLauncher(Key.Digit3, GameCollection.HockeyScene);
+            HockeyGame hockey = FindAnyObjectByType<HockeyGame>();
+            if (hockey == null) throw new InvalidOperationException("Hockey composition root missing");
+            hockey.DiagnosticControl = true;
+            Check(hockey.Briefing && hockey.Session.Skaters.Count == 8, "Hockey opens at its instructions with three skaters and goalie on each team");
+            Check(Cursor.lockState == CursorLockMode.None && Cursor.visible, "Hockey instructions leave the menu cursor available");
+            yield return Capture("19-hockey-briefing");
+            yield return ExerciseHockeyInput(hockey);
+
+            // Reproducible scoring fixture; ordinary AI and physics run the entire match.
+            hockey.StartMatch(501);
+            hockey.SetLook(0, 32);
+            yield return null;
+            yield return null;
+            Check(!hockey.Briefing && !hockey.Paused && hockey.CameraMode == 0 && hockey.Session.Phase == MatchPhase.Faceoff,
+                "Hockey seeded match starts in genuine first person at a center faceoff");
+            CheckScene(GameCollection.HockeyScene);
+            yield return Capture("20-hockey-first-person");
+            hockey.SetCamera(1);
+            yield return Capture("21-hockey-chase");
+            Check(hockey.CameraMode == 1 && hockey.Session.Seed == 501, "Hockey chase view preserves the same match state");
+            hockey.SetCamera(0);
+            hockey.SetPaused(true);
+            hockey.DiagnosticControl = false;
+            float pausedTime = hockey.Session.Time;
+            NVector2 pausedPosition = hockey.Session.Player.Position;
+            yield return Capture("22-hockey-pause");
+            Check(hockey.Paused && hockey.Session.Time == pausedTime && hockey.Session.Player.Position == pausedPosition,
+                "Hockey pause holds normal Update simulation and skating state");
+            hockey.DiagnosticControl = true;
+            hockey.StartMatch(1988);
+
+            // Complete default match: every skater, including the human slot, uses ordinary
+            // bounded AI controls through the unchanged session and physical puck rules.
+            bool capturedGoal = false, capturedReset = false, capturedLive = false;
+            bool finite = true, contained = true, controlValid = true;
+            float clockBeforeGoal = 0;
+            for (int frame = 0; frame < 60 * 350 && hockey.Session.Phase != MatchPhase.Final; frame++)
+            {
+                hockey.StepForDiagnostics(default(HockeyInput), 1f / 60f, true);
+                HockeySession match = hockey.Session;
+                finite &= HockeyMath.Finite(match.Puck.Position) && HockeyMath.Finite(match.Puck.Velocity);
+                contained &= RinkPhysics.Inside(match.Puck.Position, .1f);
+                controlValid &= match.Puck.ControllerId >= -1 && match.Puck.ControllerId < 6;
+                for (int i = 0; i < match.Skaters.Count; i++)
+                    finite &= HockeyMath.Finite(match.Skaters[i].Position) && HockeyMath.Finite(match.Skaters[i].Velocity);
+                if (!capturedLive && frame >= 60 * 12 && match.Phase == MatchPhase.Playing)
+                {
+                    capturedLive = true;
+                    yield return Capture("23-hockey-live-play");
+                }
+                if (!capturedGoal && match.Phase == MatchPhase.Goal)
+                {
+                    capturedGoal = true; clockBeforeGoal = match.TimeRemaining;
+                    Check(match.BlueScore + match.OrangeScore == 1 && match.Stats.Goals[0] + match.Stats.Goals[1] == 1,
+                        "An unmodified bot match scores through physical shooting and updates both scoreboard and statistics once");
+                    Note("First physical goal: time " + match.Time.ToString("0.00") + "; scorer team " + match.LastGoalTeam);
+                    yield return Capture("24-hockey-earned-goal");
+                }
+                if (capturedGoal && !capturedReset && match.Phase == MatchPhase.Faceoff)
+                {
+                    capturedReset = true;
+                    Check(match.Stats.Faceoffs >= 2 && match.Puck.Position == NVector2.Zero && match.Puck.Velocity == NVector2.Zero,
+                        "A scored goal resets the puck and teams at an announced center faceoff");
+                    Check(Mathf.Abs(match.TimeRemaining - clockBeforeGoal) < .03f, "Goal celebration does not consume regulation time");
+                    yield return Capture("25-hockey-faceoff-reset");
+                }
+                if (frame % 24 == 0) yield return null;
+            }
+            HockeySession completed = hockey.Session;
+            Check(finite && contained && controlValid, "Complete rendered bot match keeps all physics finite, puck contained and contact control valid");
+            Check(completed.Phase == MatchPhase.Final && (completed.TimeRemaining <= .01f || completed.Overtime && completed.BlueScore != completed.OrangeScore),
+                "The regulation clock and any overtime reach an unambiguous final score");
+            Check(capturedGoal && capturedReset, "Seeded unmodified match demonstrates an earned goal and a subsequent faceoff");
+            Check(completed.Stats.Shots[0] + completed.Stats.Shots[1] > 3 && completed.Stats.Passes[0] + completed.Stats.Passes[1] > 1,
+                "Rendered match develops repeated shots and teammate passes");
+            Check(completed.Stats.Saves[0] + completed.Stats.Saves[1] > 0, "Rendered match includes a physical goalkeeper save");
+            Check(completed.Stats.Turnovers[0] + completed.Stats.Turnovers[1] > 1 && completed.Stats.Checks[0] + completed.Stats.Checks[1] > 0,
+                "Rendered match includes contested possession and defensive checks");
+            Check(completed.Stats.StuckResets == 0, "Complete seeded match needs no frozen-puck watchdog reset");
+            Note("Full unmodified hockey match seed " + completed.Seed + ": " + completed.BlueScore + "-" + completed.OrangeScore
+                + "; elapsed " + completed.Time.ToString("0.00") + "; shots " + (completed.Stats.Shots[0] + completed.Stats.Shots[1])
+                + "; saves " + (completed.Stats.Saves[0] + completed.Stats.Saves[1])
+                + "; passes " + (completed.Stats.Passes[0] + completed.Stats.Passes[1])
+                + "; takeaways " + (completed.Stats.Turnovers[0] + completed.Stats.Turnovers[1])
+                + "; checks " + (completed.Stats.Checks[0] + completed.Stats.Checks[1]) + "; stuck resets " + completed.Stats.StuckResets);
+            yield return Capture("26-hockey-final-score");
+            float finalTime = completed.Time;
+            hockey.StepForDiagnostics(new HockeyInput { Move = NVector2.UnitY, Shoot = true, ShotPower = 1 }, 1f / 60f);
+            Check(completed.Time == finalTime && completed.Phase == MatchPhase.Final, "Final score rejects further gameplay actions");
+            hockey.StartMatch(1988);
+            Check(hockey.Session.BlueScore == 0 && hockey.Session.OrangeScore == 0 && hockey.Session.Time == 0
+                && hockey.Session.TimeRemaining == 180 && !hockey.Paused && hockey.Session.Stats.Shots[0] == 0,
+                "Hockey replay resets score, statistics, clock and pause state");
+            hockey.ShowBriefing();
+            Check(hockey.Briefing && !hockey.Paused && Cursor.lockState == CursorLockMode.None && Cursor.visible,
+                "Hockey can reopen its instructions and restore the menu cursor");
+            yield return Open(GameCollection.LauncherScene);
+            Check(Cursor.lockState == CursorLockMode.None && Cursor.visible, "Leaving hockey releases the captured mouse");
+            yield return Capture("27-cabinet-after-hockey");
+            yield return Open(GameCollection.AirScene);
+            AirCombatGame returnedAir = FindAnyObjectByType<AirCombatGame>();
+            returnedAir.DiagnosticControl = true;
+            Check(returnedAir.Briefing && returnedAir.Mission.Player.Alive, "Air Combat relaunches independently after Hockey");
+            returnedAir.StartSortie(1944, MissionKind.Duel);
+            NVector3 returnedStart = returnedAir.Mission.Player.Position;
+            for (int i = 0; i < 60; i++) returnedAir.StepForDiagnostics(new FlightInput { Throttle = .8f }, 1f / 60f);
+            Check(returnedAir.Mission.Player.Alive && NVector3.Distance(returnedStart, returnedAir.Mission.Player.Position) > 80,
+                "Air Combat flight dynamics still operate after hockey teardown");
+            returnedAir.ShowBriefing();
+            yield return Open(GameCollection.LauncherScene);
+        }
+
+        IEnumerator ExerciseHockeyInput(HockeyGame hockey)
+        {
+            previousKeyboard = Keyboard.current;
+            previousMouse = Mouse.current;
+            testKeyboard = InputSystem.AddDevice<Keyboard>("Hockey smoke keyboard");
+            testMouse = InputSystem.AddDevice<Mouse>("Hockey smoke mouse");
+            testKeyboard.MakeCurrent(); testMouse.MakeCurrent();
+            try
+            {
+                hockey.StartMatch(1988, true);
+                for (int i = 0; i < 140; i++) hockey.StepForDiagnostics(default(HockeyInput), 1f / 60f);
+                // Explicit contact fixtures test adapter mechanics, not match difficulty.
+                hockey.Session.Player.Position = new NVector2(-8, -13);
+                hockey.Session.Player.Velocity = NVector2.Zero;
+                hockey.Session.Puck.Position = new NVector2(9, 12);
+                hockey.Session.Puck.Velocity = NVector2.Zero;
+                hockey.SetLook(0, 32);
+                hockey.DiagnosticControl = false;
+                NVector2 start = hockey.Session.Player.Position;
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.W, Key.LeftShift));
+                yield return new WaitForSecondsRealtime(.7f);
+                float speed = hockey.Session.Player.Speed;
+                Check(hockey.Session.Player.Position.Y > start.Y + 1 && speed > 3,
+                    "Temporary W and Shift input accelerates the skater through normal Update");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return new WaitForSecondsRealtime(.3f);
+                Check(hockey.Session.Player.Speed > speed * .8f && hockey.Session.Player.Position.Y > start.Y + 2,
+                    "Releasing physical skating input preserves visible coasting momentum");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.Space));
+                yield return new WaitForSecondsRealtime(.65f);
+                Check(hockey.Session.Player.Speed < speed * .35f, "Temporary Space input digs in edges and brakes");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null; yield return null;
+                float yaw = hockey.LookYaw;
+                InputSystem.QueueDeltaStateEvent(testMouse.delta, new Vector2(80, 0));
+                yield return null; yield return null;
+                Check(Mathf.Abs(Mathf.DeltaAngle(yaw, hockey.LookYaw)) > 3, "Temporary mouse movement changes first-person look through the actual input adapter");
+                hockey.SetLook(0, 32);
+
+                PrepareHockeyContact(hockey);
+                int shots = hockey.Session.Stats.Shots[0];
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.F));
+                yield return new WaitForSecondsRealtime(.12f);
+                Check(hockey.Session.Stats.Shots[0] == shots + 1 && hockey.Session.Puck.Velocity.Length() > 15,
+                    "Contact fixture: F input makes a physical quick shot with travel and recorded attempt");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null; yield return null;
+                PrepareHockeyContact(hockey);
+                shots = hockey.Session.Stats.Shots[0];
+                InputSystem.QueueStateEvent(testMouse, new MouseState().WithButton(MouseButton.Left));
+                yield return new WaitForSecondsRealtime(.65f);
+                Check(hockey.Session.Stats.Shots[0] == shots && PuckPhysics.CanReach(hockey.Session.Player, hockey.Session.Puck),
+                    "Contact fixture: holding the left mouse button charges without firing or losing nearby stick contact");
+                InputSystem.QueueStateEvent(testMouse, new MouseState());
+                yield return new WaitForSecondsRealtime(.10f);
+                Check(hockey.Session.Stats.Shots[0] == shots + 1 && hockey.Session.Puck.Velocity.Length() > 20,
+                    "Contact fixture: left mouse release fires one charged physical shot through the normal input adapter");
+                yield return new WaitForSecondsRealtime(.15f);
+                Check(hockey.Session.Stats.Shots[0] == shots + 1,
+                    "A released mouse charge produces one shot rather than repeated firing");
+                PrepareHockeyContact(hockey);
+                int passes = hockey.Session.Stats.Passes[0];
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.Q));
+                yield return new WaitForSecondsRealtime(.12f);
+                Check(hockey.Session.Stats.Passes[0] == passes + 1 && hockey.Session.Puck.Velocity.Length() > 8,
+                    "Contact fixture: Q input sends a lower-power travelling teammate pass");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null; yield return null;
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.R));
+                yield return new WaitForSecondsRealtime(.12f);
+                Check(hockey.Session.PassCallTime > 1.5f, "Temporary R input calls for teammate support");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null; yield return null;
+
+                PrepareHockeyContact(hockey);
+                SkaterState opponent = hockey.Session.Skaters[3];
+                opponent.Position = hockey.Session.Player.Position + NVector2.UnitY * 1.3f;
+                opponent.Velocity = NVector2.Zero;
+                hockey.Session.Player.CheckCooldown = 0;
+                int checks = hockey.Session.Stats.Checks[0];
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.E));
+                yield return new WaitForSecondsRealtime(.12f);
+                Check(hockey.Session.Stats.Checks[0] == checks + 1 && opponent.Stun > 0,
+                    "Contact fixture: E input checks a reachable opponent through normal gameplay");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null; yield return null;
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.C));
+                yield return new WaitForSecondsRealtime(.12f);
+                Check(hockey.CameraMode == 1, "Temporary C input changes hockey camera");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null; yield return null;
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.Escape));
+                yield return new WaitForSecondsRealtime(.12f);
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null;
+                float paused = hockey.Session.Time;
+                yield return new WaitForSecondsRealtime(.2f);
+                Check(hockey.Paused && hockey.Session.Time == paused && Cursor.lockState == CursorLockMode.None,
+                    "Escape input pauses hockey and releases mouse capture");
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState(Key.Escape));
+                yield return new WaitForSecondsRealtime(.12f);
+                InputSystem.QueueStateEvent(testKeyboard, new KeyboardState());
+                yield return null;
+                Check(!hockey.Paused && hockey.Session.Time > paused, "Second Escape input resumes the hockey simulation");
+            }
+            finally
+            {
+                hockey.DiagnosticControl = true;
+                CleanupKeyboard(); CleanupMouse();
+            }
+        }
+
+        static void PrepareHockeyContact(HockeyGame hockey)
+        {
+            SkaterState player = hockey.Session.Player;
+            player.Position = new NVector2(-8, -13); player.Velocity = NVector2.Zero;
+            player.Facing = 0; player.Stun = player.Cooldown = player.StickCooldown = 0;
+            hockey.SetLook(0, 32);
+            hockey.Session.Puck.Position = player.Position + NVector2.UnitY * 1.05f;
+            hockey.Session.Puck.Velocity = NVector2.Zero;
+            hockey.Session.Puck.ControllerId = player.Id; hockey.Session.Puck.NoControlTime = 0;
         }
 
         IEnumerator WalkHouse(HauntedHouseGame house, int room)
@@ -376,6 +707,16 @@ namespace VectorCabinet
             if (previousKeyboard != null && previousKeyboard.added) previousKeyboard.MakeCurrent();
             previousKeyboard = null;
         }
+        void CleanupMouse()
+        {
+            if (testMouse != null)
+            {
+                if (testMouse.added) InputSystem.RemoveDevice(testMouse);
+                testMouse = null;
+            }
+            if (previousMouse != null && previousMouse.added) previousMouse.MakeCurrent();
+            previousMouse = null;
+        }
         static void HouseCounter(HauntedHouseGame house)
         {
             GameSession session = house.Session;
@@ -390,6 +731,11 @@ namespace VectorCabinet
             if (finished) return;
             finished = true;
             CleanupKeyboard();
+            CleanupMouse();
+            InputSettings expectedSettings = originalInputSettings;
+            RestoreDiagnosticInput();
+            Check(expectedSettings != null && InputSystem.settings == expectedSettings,
+                "Diagnostic input settings and private devices are restored without changing the project asset");
             Application.logMessageReceived -= Record;
             Note("Runtime errors: " + runtimeErrors);
             Note("Checks: " + assertions + "; failures: " + failures);
@@ -400,6 +746,6 @@ namespace VectorCabinet
             Application.Quit(failures == 0 && runtimeErrors == 0 ? 0 : 1);
 #endif
         }
-        void OnDestroy() { CleanupKeyboard(); Application.logMessageReceived -= Record; }
+        void OnDestroy() { CleanupKeyboard(); CleanupMouse(); RestoreDiagnosticInput(); Application.logMessageReceived -= Record; }
     }
 }

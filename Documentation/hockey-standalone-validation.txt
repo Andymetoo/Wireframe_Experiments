@@ -1,0 +1,270 @@
+RUNNING: rendered scene integration checks
+Checks include temporary keyboard-device events, public gameplay APIs and diagnostic fixed steps. Human ergonomics remain untested.
+Diagnostic input: unsaved settings clone, background events enabled, application focused=True
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 01-cabinet
+PASS Game selection begins in the shared launcher
+Launcher input before Digit1: focused=True; current keyboard=19; synthetic keyboard=19; enabled=True
+Launcher input after Digit1: focused=True; current keyboard=19; down=True; observed edge=True; scene=HauntedHouse
+PASS Launcher Digit1 input selects HauntedHouse
+PASS Active scene is HauntedHouse
+PASS HauntedHouse: launcher lifetime isolated
+PASS HauntedHouse: house input/simulation root isolated
+PASS HauntedHouse: air input/simulation root isolated
+PASS HauntedHouse: hockey input/simulation root isolated
+PASS HauntedHouse: house presentation lifetime isolated
+PASS HauntedHouse: air presentation lifetime isolated
+PASS HauntedHouse: hockey presentation lifetime isolated
+PASS HauntedHouse: exactly one enabled camera
+PASS HauntedHouse: no duplicate audio listeners
+PASS HauntedHouse: simulation timescale restored
+PASS Haunted House opens at its original title
+PASS Rendered screenshot saved: 02-house-title
+PASS Haunted House starts a reproducible active investigation
+PASS Examining the vestibule records evidence and advances the investigation
+PASS Grid movement, doors, room inspection and evidence remain functional
+PASS Rendered screenshot saved: 03-house-room
+PASS Rendered screenshot saved: 04-house-journal
+PASS Haunted House pause preserves action-driven state
+PASS Haunted House restart resets the case
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 05-cabinet-after-house
+PASS Game selection begins in the shared launcher
+Launcher input before Digit2: focused=True; current keyboard=20; synthetic keyboard=20; enabled=True
+Launcher input after Digit2: focused=True; current keyboard=20; down=True; observed edge=True; scene=Meridian1944
+PASS Launcher Digit2 input selects Meridian1944
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Air Combat opens at the operations briefing
+PASS Rendered screenshot saved: 06-air-briefing
+PASS Temporary D key events pass through Update and ReadControls to bank the aircraft
+PASS Temporary Space key events fire physical rounds through the normal input adapter
+PASS Temporary C key press switches the player camera
+PASS Temporary Escape key press pauses the normal simulation clock
+PASS A second Escape press resumes the sortie
+PASS Training duel starts with one opponent and a live player
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Rendered screenshot saved: 07-air-cockpit
+PASS Eight seconds of manual flight controls advance a live aircraft through the world
+PASS Right roll input banks the rendered/simulated airframe
+Manual flight sample: speed 119.8 m/s; altitude 1156.3 m
+PASS Rendered screenshot saved: 08-air-bank
+PASS Rendered screenshot saved: 09-air-chase
+PASS Chase camera switch preserves the same mission
+PASS Rendered screenshot saved: 10-air-pause
+PASS Air pause prevents normal Update from advancing the simulation
+PASS Air restart replaces the sortie and resets damage, time and pause state
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Rendered screenshot saved: 11-air-contact
+PASS Rendered screenshot saved: 11a-air-live-tracers
+Tracer capture: time 61.22; player rounds 3
+PASS Rendered screenshot saved: 11b-air-live-impact
+Impact capture: time 108.89; player hits 1
+PASS A complete rendered diagnostic dogfight remains finite
+PASS Unmodified default seed 1944 is won through actual ballistic combat using bounded player controls
+PASS Full-strength dogfight records travelling rounds and nonterminal impact feedback
+Full-strength default dogfight: elapsed 172.89; outcome Victory; player rounds 132; all rounds 132; player hits 8; player health 100.0
+PASS Rendered screenshot saved: 12-air-dogfight
+PASS Controlled gunnery fixture: travelling projectiles destroy a damaged target and trigger victory
+PASS Rendered screenshot saved: 13-air-victory-fixture
+PASS Terrain collision fixture triggers defeat
+PASS Rendered screenshot saved: 14-air-defeat-fixture
+PASS Restart after defeat can begin courier cover with two interceptors
+PASS Operations briefing can be reopened from a sortie
+PASS Rendered screenshot saved: 15-courier-briefing
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 16-cabinet-after-flight
+PASS Game selection begins in the shared launcher
+Launcher input before Digit3: focused=True; current keyboard=22; synthetic keyboard=22; enabled=True
+Launcher input after Digit3: focused=True; current keyboard=22; down=True; observed edge=True; scene=ColdSnap
+PASS Launcher Digit3 input selects ColdSnap
+PASS Active scene is ColdSnap
+PASS ColdSnap: launcher lifetime isolated
+PASS ColdSnap: house input/simulation root isolated
+PASS ColdSnap: air input/simulation root isolated
+PASS ColdSnap: hockey input/simulation root isolated
+PASS ColdSnap: house presentation lifetime isolated
+PASS ColdSnap: air presentation lifetime isolated
+PASS ColdSnap: hockey presentation lifetime isolated
+PASS ColdSnap: exactly one enabled camera
+PASS ColdSnap: no duplicate audio listeners
+PASS ColdSnap: simulation timescale restored
+PASS Hockey opens at its instructions with three skaters and goalie on each team
+PASS Hockey instructions leave the menu cursor available
+PASS Rendered screenshot saved: 19-hockey-briefing
+PASS Temporary W and Shift input accelerates the skater through normal Update
+PASS Releasing physical skating input preserves visible coasting momentum
+PASS Temporary Space input digs in edges and brakes
+PASS Temporary mouse movement changes first-person look through the actual input adapter
+PASS Contact fixture: F input makes a physical quick shot with travel and recorded attempt
+PASS Contact fixture: holding the left mouse button charges without firing or losing nearby stick contact
+PASS Contact fixture: left mouse release fires one charged physical shot through the normal input adapter
+PASS A released mouse charge produces one shot rather than repeated firing
+PASS Contact fixture: Q input sends a lower-power travelling teammate pass
+PASS Temporary R input calls for teammate support
+PASS Contact fixture: E input checks a reachable opponent through normal gameplay
+PASS Temporary C input changes hockey camera
+PASS Escape input pauses hockey and releases mouse capture
+PASS Second Escape input resumes the hockey simulation
+PASS Hockey seeded match starts in genuine first person at a center faceoff
+PASS Active scene is ColdSnap
+PASS ColdSnap: launcher lifetime isolated
+PASS ColdSnap: house input/simulation root isolated
+PASS ColdSnap: air input/simulation root isolated
+PASS ColdSnap: hockey input/simulation root isolated
+PASS ColdSnap: house presentation lifetime isolated
+PASS ColdSnap: air presentation lifetime isolated
+PASS ColdSnap: hockey presentation lifetime isolated
+PASS ColdSnap: exactly one enabled camera
+PASS ColdSnap: no duplicate audio listeners
+PASS ColdSnap: simulation timescale restored
+PASS Rendered screenshot saved: 20-hockey-first-person
+PASS Rendered screenshot saved: 21-hockey-chase
+PASS Hockey chase view preserves the same match state
+PASS Rendered screenshot saved: 22-hockey-pause
+PASS Hockey pause holds normal Update simulation and skating state
+PASS Rendered screenshot saved: 23-hockey-live-play
+PASS An unmodified bot match scores through physical shooting and updates both scoreboard and statistics once
+First physical goal: time 102.40; scorer team 0
+PASS Rendered screenshot saved: 24-hockey-earned-goal
+PASS A scored goal resets the puck and teams at an announced center faceoff
+PASS Goal celebration does not consume regulation time
+PASS Rendered screenshot saved: 25-hockey-faceoff-reset
+PASS Complete rendered bot match keeps all physics finite, puck contained and contact control valid
+PASS The regulation clock and any overtime reach an unambiguous final score
+PASS Seeded unmodified match demonstrates an earned goal and a subsequent faceoff
+PASS Rendered match develops repeated shots and teammate passes
+PASS Rendered match includes a physical goalkeeper save
+PASS Rendered match includes contested possession and defensive checks
+PASS Complete seeded match needs no frozen-puck watchdog reset
+Full unmodified hockey match seed 1988: 1-0; elapsed 186.90; shots 12; saves 12; passes 54; takeaways 45; checks 18; stuck resets 0
+PASS Rendered screenshot saved: 26-hockey-final-score
+PASS Final score rejects further gameplay actions
+PASS Hockey replay resets score, statistics, clock and pause state
+PASS Hockey can reopen its instructions and restore the menu cursor
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Leaving hockey releases the captured mouse
+PASS Rendered screenshot saved: 27-cabinet-after-hockey
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Air Combat relaunches independently after Hockey
+PASS Air Combat flight dynamics still operate after hockey teardown
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Active scene is HauntedHouse
+PASS HauntedHouse: launcher lifetime isolated
+PASS HauntedHouse: house input/simulation root isolated
+PASS HauntedHouse: air input/simulation root isolated
+PASS HauntedHouse: hockey input/simulation root isolated
+PASS HauntedHouse: house presentation lifetime isolated
+PASS HauntedHouse: air presentation lifetime isolated
+PASS HauntedHouse: hockey presentation lifetime isolated
+PASS HauntedHouse: exactly one enabled camera
+PASS HauntedHouse: no duplicate audio listeners
+PASS HauntedHouse: simulation timescale restored
+PASS Haunted House relaunches fresh after Air Combat and Hockey
+PASS Investigation still accepts evidence actions after switching through flight and hockey
+PASS Rendered screenshot saved: 17-house-after-flight
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 18-cabinet-final
+PASS Diagnostic input settings and private devices are restored without changing the project asset
+Runtime errors: 0
+Checks: 252; failures: 0
+COMPLETE: PASS
