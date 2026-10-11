@@ -1,0 +1,41 @@
+THE HOUSE THAT LISTENS - verification scope
+
+Core: see validation-results.txt for the actual console report.
+10,000 generated cases, 10,000 deterministic regeneration comparisons,
+8 deliberately corrupted scenarios, 1,000 full session scenarios.
+21,008 top-level assertions, zero failures.
+The session checks use actual actions and derive deductions from collected
+evidence. They include wrong-object and wrong-site recovery, ritual prerequisite
+rejections, door traversal, resource exhaustion, warned death, terminal states,
+and successful solutions without injury or spending salt.
+
+Unity: compiled in Unity 6000.4.1f1 with the project's installed URP 17.4.0.
+Haunted House > Validate 1000 Cases also passed inside the editor after the
+final simulation changes, checking both structural and session validation.
+
+Rendered integration: see rendered-validation-results.txt.
+Automated action-driven playthroughs in Unity Game view completed all three
+haunting families. A deliberately reckless Watcher investigation ended in
+defeat; another case ended in voluntary withdrawal. Zero recorded runtime
+exceptions/errors during the walkthrough. Screenshot inspection covered the
+title, lit/dark room geometry, closed/open doors, journal, discovered map,
+active directional manifestation, victory, defeat and withdrawal.
+The tall seven-row map (seed128) was checked again after its label-layout fix.
+Screenshot files are in Logs/EditorSmoke (generated verification output).
+
+A development Windows player separately completed all three rituals with
+184 / 134 / 171 actions and no recorded runtime gameplay exceptions.
+Its hidden-window screenshots were black, so those captures were NOT used as
+evidence of visual correctness. The rendered visual checks above used the
+actual Unity Game view instead. The final Windows player is a release build;
+the opt-in smoke runner is excluded from release builds.
+Final release build succeeded with zero errors (103,188,869 reported bytes).
+The release executable was then launched in a normal window; its title screen
+and procedural background were visually inspected, with no gameplay/shader
+exceptions found in the startup log. It was left at the title ready to play.
+
+Uncertainty: these are scripted playthroughs, not a human usability study.
+The intended 10-15-minute duration, perceived fear, difficulty and long-term
+replay value remain to be tested by people. There is no mid-case disk save.
+The generated histories use authored, fact-consistent templates rather than
+unrestricted narrative generation. No art/audio/media APIs were used.

@@ -1,0 +1,11 @@
+﻿THE HOUSE THAT LISTENS — reproducible core validation
+Framework: .NET 8.0.11
+Structural scenarios: 10000 (seeds 0–9995, -1, -1640531527, Int32.MinValue, Int32.MaxValue).
+Archetypes: Mourner 3265, Watcher 3343, Echo 3392.
+Generation determinism comparisons: 10000.
+Deliberately broken scenarios rejected: 8 checks.
+Session scenarios: 1000 (seeds 0–997 and signed integer boundaries).
+Assertions: 21008; failures: 0.
+Elapsed: 3.055 seconds.
+Scope: generated geometry, evidence and core simulation. Does not validate Unity rendering, UI, subjective difficulty, or visual quality.
+

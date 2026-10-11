@@ -1,0 +1,6 @@
+MERIDIAN 1944 - deterministic flight and combat validation
+Executed with .NET 8 in ValidationAir, Release configuration.
+Complete dogfights: 6/6 controller-driven ballistic victories; 83.7-221.3 seconds; 603 rounds total.
+Armed escort victories: 3/3. No state, damage or transform overrides in these nine sorties.
+Checks: 534; failures: 0; seconds: 0.64.
+Scope: numerical flight, AI, ballistics, mission transitions. Human handling/visual playtesting remains separate.

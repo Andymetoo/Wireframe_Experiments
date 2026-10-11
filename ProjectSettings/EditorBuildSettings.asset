@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/GameCollection/Scenes/Cabinet.unity
+    guid: ea632e38a7754b97b28928286f7c219b
+  - enabled: 1
+    path: Assets/HauntedHouse/Scenes/HauntedHouse.unity
+    guid: 1a72d9817af64a26919b6bb876f4ce80
+  - enabled: 1
+    path: Assets/AirCombat/Scenes/Meridian1944.unity
+    guid: 516726870e734e41a3b48a56d44f43cd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

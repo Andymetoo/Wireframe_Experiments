@@ -1,0 +1,38 @@
+THE VECTOR CABINET — verification notes
+
+Unity: 6000.4.1f1, existing URP project, Windows x64.
+
+Preservation:
+- SHA-256 comparisons before/after the expansion: all five Haunted House Core source files unchanged.
+- Original procedural house renderer unchanged.
+- HauntedHouseGame changes add cabinet navigation only; existing controls and game rules preserved.
+- Original builder now delegates to the three-scene collection build. Original development smoke routes to the house scene.
+
+Executed validation:
+- Haunted House .NET Release harness: 21,008 assertions, 0 failures; 10,000 structural scenarios, 10,000 repeat-generation comparisons, 8 corruption rejections, 1,000 gameplay sessions.
+- Meridian .NET Release harness: 534 assertions, 0 failures. Includes aerodynamic relationships, stall/recovery, overspeed/damage, terrain, determinism, AI behavior, ballistic travel/lead/collision/ammunition and mission outcomes.
+- Six full-health, unmodified duel missions won with bounded pilot control commands and real ballistics: 83.7–221.3 seconds; 603 rounds total.
+- Three unmodified escort missions survived armed opposition to the five-minute objective.
+- Six straight-flying player tests lost to actual enemy fire; eight low-altitude AI recoveries passed.
+- Unity combined validation: 1,534 checks, 0 failures (534 air checks plus 1,000 generated haunted investigations).
+- Unity rendered integration: 128 checks, 0 failures, 0 runtime errors. Temporary keyboard events exercised normal roll, firing, camera and pause handlers. Scene transitions, one-camera ownership, restarts, evidence actions, victory, defeat and return flows checked.
+- Full default seed 1944 duel in the Unity renderer: victory at 172.89 seconds, 132 fired rounds, eight hits, surviving player. No target/state/damage overrides in this full sortie. Separately labelled short fixtures exercise victory and crash UI.
+- Inspected actual GameView captures of launcher, haunted title, flight briefing, cockpit, banked chase, pause and live impact. Fixed scaled HUD line placement, palette color conversion and cockpit rotor obstruction based on those captures.
+
+Limits:
+- Automated pilots and synthetic input prove working controls and combat, not subjective human handling or fun.
+- Human testing is still needed for keyboard/mouse sensitivity, targeting difficulty, escort balance and replay longevity.
+- Symmetric imperfect AI pilots can circle for prolonged periods; the stronger validation pilot demonstrates a viable firing solution and win, not guaranteed human pacing.
+- Missions start airborne; no takeoff, landing, detailed engine/airframe subsystems, sound, campaign or mid-sortie save.
+- Rendering uses the existing machine's Unity editor/device; no broad GPU or resolution compatibility survey.
+- Seed reproducibility is for identical fixed-step inputs on the same runtime, not promised bitwise equality across platforms.
+
+Reports:
+Documentation/air-validation-results.txt
+Documentation/cabinet-unity-validation.txt
+Documentation/cabinet-rendered-validation.txt
+Documentation/cabinet-build-result.txt
+Logs/AirCombat/*.png
+
+Standalone release: 128 checks, 0 failures, 0 runtime errors. Same complete combat victory, keyboard event tests and scene-switch checks passed in the actual executable. Hidden-window screenshot files were black, so they are not evidence of rendered visual quality; GameView captures supplied the visual inspection. See Documentation/cabinet-standalone-validation.txt. Build succeeded with 0 errors and 0 warnings, 103301597 bytes.
+The final visible standalone launcher was also captured and inspected: Logs/AirCombat/standalone-launcher-window.png. The interactive player is left at the cabinet for the user.

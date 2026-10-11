@@ -44,6 +44,12 @@
 ExportedObj/
 .consulo/
 *.csproj
+!Validation/HauntedHouse.Validation.csproj
+!ValidationAir/*.csproj
+/ValidationAir/bin/
+/ValidationAir/obj/
+/Validation/bin/
+/Validation/obj/
 *.unityproj
 *.sln
 *.slnx

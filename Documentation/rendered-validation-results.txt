@@ -1,0 +1,6 @@
+Mourner: Won, 184 actions, 3 health
+Watcher: Won, 134 actions, 3 health
+Echo: Won, 171 actions, 3 health
+Reckless Watcher: Lost
+Withdrawal: Escaped
+Runtime errors: 0

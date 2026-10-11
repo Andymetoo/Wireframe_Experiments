@@ -1,0 +1,535 @@
+PASS Neutral trim remains airborne and approximately level for 30 seconds
+PASS Steady wing lift balances gravitational weight
+PASS Engine power increases airspeed against drag
+PASS A commanded climb exchanges speed for altitude
+PASS A commanded dive converts height into speed
+PASS Banked lift produces a right turn with retained forward momentum
+PASS Control input cannot instantly rotate or redirect the airframe
+PASS Below stall speed the wing cannot support the aircraft
+PASS Lowering the nose and adding power recovers a low-speed stall at the expense of height
+PASS Excessive angle of attack stalls the wing and generates a nose-down recovery moment
+PASS Sustained overspeed causes progressive damage after a recovery grace interval
+PASS Combat damage reduces available engine power
+PASS Terrain collision produces a definite fatal airframe state
+PASS Destroyed aircraft stop participating in flight integration
+PASS Identical fixed-step inputs reproduce an identical two-minute trajectory
+PASS Terrain seed 0 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 0
+PASS Terrain seed 1 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 1
+PASS Terrain seed 2 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 2
+PASS Terrain seed 3 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 3
+PASS Terrain seed 4 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 4
+PASS Terrain seed 5 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 5
+PASS Terrain seed 6 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 6
+PASS Terrain seed 7 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 7
+PASS Terrain seed 8 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 8
+PASS Terrain seed 9 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 9
+PASS Terrain seed 10 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 10
+PASS Terrain seed 11 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 11
+PASS swept projectile intersects fuselage between ticks
+PASS projectile above aircraft misses
+PASS solid wing can be hit
+PASS space above thin wing is not a sphere hit
+PASS moving aircraft crossing a projectile is swept
+PASS lead predicts lateral movement and compensates gravity
+PASS rate of fire is bounded to 13.33 rounds/sec
+PASS every fired round consumes ammunition
+PASS empty weapons cannot create projectiles
+PASS actual ballistic damage destroys aircraft
+PASS hits consume rounds and produce geometric impact events
+PASS friendly courier is protected from friendly fire
+PASS expired projectiles are removed
+PASS physical intercept with lead hits a crossing aircraft
+PASS aiming at current location misses a fast crossing aircraft
+PASS valid initial mission 0
+PASS spawn clears terrain 0/0
+PASS spawn clears terrain 0/1
+PASS valid initial mission 1
+PASS spawn clears terrain 1/0
+PASS spawn clears terrain 1/1
+PASS spawn clears terrain 1/2
+PASS spawn clears terrain 1/3
+PASS valid initial mission 2
+PASS spawn clears terrain 2/0
+PASS spawn clears terrain 2/1
+PASS valid initial mission 3
+PASS spawn clears terrain 3/0
+PASS spawn clears terrain 3/1
+PASS spawn clears terrain 3/2
+PASS spawn clears terrain 3/3
+PASS valid initial mission 4
+PASS spawn clears terrain 4/0
+PASS spawn clears terrain 4/1
+PASS valid initial mission 5
+PASS spawn clears terrain 5/0
+PASS spawn clears terrain 5/1
+PASS spawn clears terrain 5/2
+PASS spawn clears terrain 5/3
+PASS valid initial mission 6
+PASS spawn clears terrain 6/0
+PASS spawn clears terrain 6/1
+PASS valid initial mission 7
+PASS spawn clears terrain 7/0
+PASS spawn clears terrain 7/1
+PASS spawn clears terrain 7/2
+PASS spawn clears terrain 7/3
+PASS valid initial mission 8
+PASS spawn clears terrain 8/0
+PASS spawn clears terrain 8/1
+PASS valid initial mission 9
+PASS spawn clears terrain 9/0
+PASS spawn clears terrain 9/1
+PASS spawn clears terrain 9/2
+PASS spawn clears terrain 9/3
+PASS valid initial mission 10
+PASS spawn clears terrain 10/0
+PASS spawn clears terrain 10/1
+PASS valid initial mission 11
+PASS spawn clears terrain 11/0
+PASS spawn clears terrain 11/1
+PASS spawn clears terrain 11/2
+PASS spawn clears terrain 11/3
+PASS valid initial mission 12
+PASS spawn clears terrain 12/0
+PASS spawn clears terrain 12/1
+PASS valid initial mission 13
+PASS spawn clears terrain 13/0
+PASS spawn clears terrain 13/1
+PASS spawn clears terrain 13/2
+PASS spawn clears terrain 13/3
+PASS valid initial mission 14
+PASS spawn clears terrain 14/0
+PASS spawn clears terrain 14/1
+PASS valid initial mission 15
+PASS spawn clears terrain 15/0
+PASS spawn clears terrain 15/1
+PASS spawn clears terrain 15/2
+PASS spawn clears terrain 15/3
+PASS valid initial mission 16
+PASS spawn clears terrain 16/0
+PASS spawn clears terrain 16/1
+PASS valid initial mission 17
+PASS spawn clears terrain 17/0
+PASS spawn clears terrain 17/1
+PASS spawn clears terrain 17/2
+PASS spawn clears terrain 17/3
+PASS valid initial mission 18
+PASS spawn clears terrain 18/0
+PASS spawn clears terrain 18/1
+PASS valid initial mission 19
+PASS spawn clears terrain 19/0
+PASS spawn clears terrain 19/1
+PASS spawn clears terrain 19/2
+PASS spawn clears terrain 19/3
+PASS valid initial mission 20
+PASS spawn clears terrain 20/0
+PASS spawn clears terrain 20/1
+PASS valid initial mission 21
+PASS spawn clears terrain 21/0
+PASS spawn clears terrain 21/1
+PASS spawn clears terrain 21/2
+PASS spawn clears terrain 21/3
+PASS valid initial mission 22
+PASS spawn clears terrain 22/0
+PASS spawn clears terrain 22/1
+PASS valid initial mission 23
+PASS spawn clears terrain 23/0
+PASS spawn clears terrain 23/1
+PASS spawn clears terrain 23/2
+PASS spawn clears terrain 23/3
+PASS valid initial mission 24
+PASS spawn clears terrain 24/0
+PASS spawn clears terrain 24/1
+PASS valid initial mission 25
+PASS spawn clears terrain 25/0
+PASS spawn clears terrain 25/1
+PASS spawn clears terrain 25/2
+PASS spawn clears terrain 25/3
+PASS valid initial mission 26
+PASS spawn clears terrain 26/0
+PASS spawn clears terrain 26/1
+PASS valid initial mission 27
+PASS spawn clears terrain 27/0
+PASS spawn clears terrain 27/1
+PASS spawn clears terrain 27/2
+PASS spawn clears terrain 27/3
+PASS valid initial mission 28
+PASS spawn clears terrain 28/0
+PASS spawn clears terrain 28/1
+PASS valid initial mission 29
+PASS spawn clears terrain 29/0
+PASS spawn clears terrain 29/1
+PASS spawn clears terrain 29/2
+PASS spawn clears terrain 29/3
+PASS valid initial mission 30
+PASS spawn clears terrain 30/0
+PASS spawn clears terrain 30/1
+PASS valid initial mission 31
+PASS spawn clears terrain 31/0
+PASS spawn clears terrain 31/1
+PASS spawn clears terrain 31/2
+PASS spawn clears terrain 31/3
+PASS valid initial mission 32
+PASS spawn clears terrain 32/0
+PASS spawn clears terrain 32/1
+PASS valid initial mission 33
+PASS spawn clears terrain 33/0
+PASS spawn clears terrain 33/1
+PASS spawn clears terrain 33/2
+PASS spawn clears terrain 33/3
+PASS valid initial mission 34
+PASS spawn clears terrain 34/0
+PASS spawn clears terrain 34/1
+PASS valid initial mission 35
+PASS spawn clears terrain 35/0
+PASS spawn clears terrain 35/1
+PASS spawn clears terrain 35/2
+PASS spawn clears terrain 35/3
+PASS valid initial mission 36
+PASS spawn clears terrain 36/0
+PASS spawn clears terrain 36/1
+PASS valid initial mission 37
+PASS spawn clears terrain 37/0
+PASS spawn clears terrain 37/1
+PASS spawn clears terrain 37/2
+PASS spawn clears terrain 37/3
+PASS valid initial mission 38
+PASS spawn clears terrain 38/0
+PASS spawn clears terrain 38/1
+PASS valid initial mission 39
+PASS spawn clears terrain 39/0
+PASS spawn clears terrain 39/1
+PASS spawn clears terrain 39/2
+PASS spawn clears terrain 39/3
+PASS valid initial mission 40
+PASS spawn clears terrain 40/0
+PASS spawn clears terrain 40/1
+PASS valid initial mission 41
+PASS spawn clears terrain 41/0
+PASS spawn clears terrain 41/1
+PASS spawn clears terrain 41/2
+PASS spawn clears terrain 41/3
+PASS valid initial mission 42
+PASS spawn clears terrain 42/0
+PASS spawn clears terrain 42/1
+PASS valid initial mission 43
+PASS spawn clears terrain 43/0
+PASS spawn clears terrain 43/1
+PASS spawn clears terrain 43/2
+PASS spawn clears terrain 43/3
+PASS valid initial mission 44
+PASS spawn clears terrain 44/0
+PASS spawn clears terrain 44/1
+PASS valid initial mission 45
+PASS spawn clears terrain 45/0
+PASS spawn clears terrain 45/1
+PASS spawn clears terrain 45/2
+PASS spawn clears terrain 45/3
+PASS valid initial mission 46
+PASS spawn clears terrain 46/0
+PASS spawn clears terrain 46/1
+PASS valid initial mission 47
+PASS spawn clears terrain 47/0
+PASS spawn clears terrain 47/1
+PASS spawn clears terrain 47/2
+PASS spawn clears terrain 47/3
+PASS valid initial mission 48
+PASS spawn clears terrain 48/0
+PASS spawn clears terrain 48/1
+PASS valid initial mission 49
+PASS spawn clears terrain 49/0
+PASS spawn clears terrain 49/1
+PASS spawn clears terrain 49/2
+PASS spawn clears terrain 49/3
+PASS valid initial mission 50
+PASS spawn clears terrain 50/0
+PASS spawn clears terrain 50/1
+PASS valid initial mission 51
+PASS spawn clears terrain 51/0
+PASS spawn clears terrain 51/1
+PASS spawn clears terrain 51/2
+PASS spawn clears terrain 51/3
+PASS valid initial mission 52
+PASS spawn clears terrain 52/0
+PASS spawn clears terrain 52/1
+PASS valid initial mission 53
+PASS spawn clears terrain 53/0
+PASS spawn clears terrain 53/1
+PASS spawn clears terrain 53/2
+PASS spawn clears terrain 53/3
+PASS valid initial mission 54
+PASS spawn clears terrain 54/0
+PASS spawn clears terrain 54/1
+PASS valid initial mission 55
+PASS spawn clears terrain 55/0
+PASS spawn clears terrain 55/1
+PASS spawn clears terrain 55/2
+PASS spawn clears terrain 55/3
+PASS valid initial mission 56
+PASS spawn clears terrain 56/0
+PASS spawn clears terrain 56/1
+PASS valid initial mission 57
+PASS spawn clears terrain 57/0
+PASS spawn clears terrain 57/1
+PASS spawn clears terrain 57/2
+PASS spawn clears terrain 57/3
+PASS valid initial mission 58
+PASS spawn clears terrain 58/0
+PASS spawn clears terrain 58/1
+PASS valid initial mission 59
+PASS spawn clears terrain 59/0
+PASS spawn clears terrain 59/1
+PASS spawn clears terrain 59/2
+PASS spawn clears terrain 59/3
+PASS valid initial mission 60
+PASS spawn clears terrain 60/0
+PASS spawn clears terrain 60/1
+PASS valid initial mission 61
+PASS spawn clears terrain 61/0
+PASS spawn clears terrain 61/1
+PASS spawn clears terrain 61/2
+PASS spawn clears terrain 61/3
+PASS valid initial mission 62
+PASS spawn clears terrain 62/0
+PASS spawn clears terrain 62/1
+PASS valid initial mission 63
+PASS spawn clears terrain 63/0
+PASS spawn clears terrain 63/1
+PASS spawn clears terrain 63/2
+PASS spawn clears terrain 63/3
+PASS valid initial mission 64
+PASS spawn clears terrain 64/0
+PASS spawn clears terrain 64/1
+PASS valid initial mission 65
+PASS spawn clears terrain 65/0
+PASS spawn clears terrain 65/1
+PASS spawn clears terrain 65/2
+PASS spawn clears terrain 65/3
+PASS valid initial mission 66
+PASS spawn clears terrain 66/0
+PASS spawn clears terrain 66/1
+PASS valid initial mission 67
+PASS spawn clears terrain 67/0
+PASS spawn clears terrain 67/1
+PASS spawn clears terrain 67/2
+PASS spawn clears terrain 67/3
+PASS valid initial mission 68
+PASS spawn clears terrain 68/0
+PASS spawn clears terrain 68/1
+PASS valid initial mission 69
+PASS spawn clears terrain 69/0
+PASS spawn clears terrain 69/1
+PASS spawn clears terrain 69/2
+PASS spawn clears terrain 69/3
+PASS valid initial mission 70
+PASS spawn clears terrain 70/0
+PASS spawn clears terrain 70/1
+PASS valid initial mission 71
+PASS spawn clears terrain 71/0
+PASS spawn clears terrain 71/1
+PASS spawn clears terrain 71/2
+PASS spawn clears terrain 71/3
+PASS valid initial mission 72
+PASS spawn clears terrain 72/0
+PASS spawn clears terrain 72/1
+PASS valid initial mission 73
+PASS spawn clears terrain 73/0
+PASS spawn clears terrain 73/1
+PASS spawn clears terrain 73/2
+PASS spawn clears terrain 73/3
+PASS valid initial mission 74
+PASS spawn clears terrain 74/0
+PASS spawn clears terrain 74/1
+PASS valid initial mission 75
+PASS spawn clears terrain 75/0
+PASS spawn clears terrain 75/1
+PASS spawn clears terrain 75/2
+PASS spawn clears terrain 75/3
+PASS valid initial mission 76
+PASS spawn clears terrain 76/0
+PASS spawn clears terrain 76/1
+PASS valid initial mission 77
+PASS spawn clears terrain 77/0
+PASS spawn clears terrain 77/1
+PASS spawn clears terrain 77/2
+PASS spawn clears terrain 77/3
+PASS valid initial mission 78
+PASS spawn clears terrain 78/0
+PASS spawn clears terrain 78/1
+PASS valid initial mission 79
+PASS spawn clears terrain 79/0
+PASS spawn clears terrain 79/1
+PASS spawn clears terrain 79/2
+PASS spawn clears terrain 79/3
+PASS valid initial mission 80
+PASS spawn clears terrain 80/0
+PASS spawn clears terrain 80/1
+PASS valid initial mission 81
+PASS spawn clears terrain 81/0
+PASS spawn clears terrain 81/1
+PASS spawn clears terrain 81/2
+PASS spawn clears terrain 81/3
+PASS valid initial mission 82
+PASS spawn clears terrain 82/0
+PASS spawn clears terrain 82/1
+PASS valid initial mission 83
+PASS spawn clears terrain 83/0
+PASS spawn clears terrain 83/1
+PASS spawn clears terrain 83/2
+PASS spawn clears terrain 83/3
+PASS valid initial mission 84
+PASS spawn clears terrain 84/0
+PASS spawn clears terrain 84/1
+PASS valid initial mission 85
+PASS spawn clears terrain 85/0
+PASS spawn clears terrain 85/1
+PASS spawn clears terrain 85/2
+PASS spawn clears terrain 85/3
+PASS valid initial mission 86
+PASS spawn clears terrain 86/0
+PASS spawn clears terrain 86/1
+PASS valid initial mission 87
+PASS spawn clears terrain 87/0
+PASS spawn clears terrain 87/1
+PASS spawn clears terrain 87/2
+PASS spawn clears terrain 87/3
+PASS valid initial mission 88
+PASS spawn clears terrain 88/0
+PASS spawn clears terrain 88/1
+PASS valid initial mission 89
+PASS spawn clears terrain 89/0
+PASS spawn clears terrain 89/1
+PASS spawn clears terrain 89/2
+PASS spawn clears terrain 89/3
+PASS valid initial mission 90
+PASS spawn clears terrain 90/0
+PASS spawn clears terrain 90/1
+PASS valid initial mission 91
+PASS spawn clears terrain 91/0
+PASS spawn clears terrain 91/1
+PASS spawn clears terrain 91/2
+PASS spawn clears terrain 91/3
+PASS valid initial mission 92
+PASS spawn clears terrain 92/0
+PASS spawn clears terrain 92/1
+PASS valid initial mission 93
+PASS spawn clears terrain 93/0
+PASS spawn clears terrain 93/1
+PASS spawn clears terrain 93/2
+PASS spawn clears terrain 93/3
+PASS valid initial mission 94
+PASS spawn clears terrain 94/0
+PASS spawn clears terrain 94/1
+PASS valid initial mission 95
+PASS spawn clears terrain 95/0
+PASS spawn clears terrain 95/1
+PASS spawn clears terrain 95/2
+PASS spawn clears terrain 95/3
+PASS valid initial mission 96
+PASS spawn clears terrain 96/0
+PASS spawn clears terrain 96/1
+PASS valid initial mission 97
+PASS spawn clears terrain 97/0
+PASS spawn clears terrain 97/1
+PASS spawn clears terrain 97/2
+PASS spawn clears terrain 97/3
+PASS valid initial mission 98
+PASS spawn clears terrain 98/0
+PASS spawn clears terrain 98/1
+PASS valid initial mission 99
+PASS spawn clears terrain 99/0
+PASS spawn clears terrain 99/1
+PASS spawn clears terrain 99/2
+PASS spawn clears terrain 99/3
+PASS last hostile destroyed completes sortie and scores
+PASS completed sorties freeze simulation
+PASS courier loss fails escort
+PASS player terrain crash fails sortie
+PASS fixed-seed simulation repeatability aircraft 0
+PASS fixed-seed simulation repeatability aircraft 1
+PASS fixed-seed simulation repeatability aircraft 2
+PASS fixed-seed simulation repeatability aircraft 3
+PASS fixed-seed combat repeatability
+PASS actual player fire can destroy the last enemy and produce victory
+PASS surviving five minutes completes courier objective without requiring kills
+PASS escort completion does not depend on opponents crashing
+PASS pilot avoids terrain seed 0
+PASS pilot banks and turns to pursue seed 0
+PASS pilot obeys bounded physical attitude rates seed 0
+PASS pilot obtains firing solutions and fires seed 0
+PASS pilot ballistic fire damages a predictable target seed 0
+PASS ignoring pursuing enemy can fail the sortie seed 0
+PASS transient combat objects remain bounded seed 0
+PASS pilot avoids terrain seed 1
+PASS pilot banks and turns to pursue seed 1
+PASS pilot obeys bounded physical attitude rates seed 1
+PASS pilot obtains firing solutions and fires seed 1
+PASS pilot ballistic fire damages a predictable target seed 1
+PASS ignoring pursuing enemy can fail the sortie seed 1
+PASS transient combat objects remain bounded seed 1
+PASS pilot avoids terrain seed 17
+PASS pilot banks and turns to pursue seed 17
+PASS pilot obeys bounded physical attitude rates seed 17
+PASS pilot obtains firing solutions and fires seed 17
+PASS pilot ballistic fire damages a predictable target seed 17
+PASS ignoring pursuing enemy can fail the sortie seed 17
+PASS transient combat objects remain bounded seed 17
+PASS pilot avoids terrain seed 1944
+PASS pilot banks and turns to pursue seed 1944
+PASS pilot obeys bounded physical attitude rates seed 1944
+PASS pilot obtains firing solutions and fires seed 1944
+PASS pilot ballistic fire damages a predictable target seed 1944
+PASS ignoring pursuing enemy can fail the sortie seed 1944
+PASS transient combat objects remain bounded seed 1944
+PASS pilot avoids terrain seed -2147483648
+PASS pilot banks and turns to pursue seed -2147483648
+PASS pilot obeys bounded physical attitude rates seed -2147483648
+PASS pilot obtains firing solutions and fires seed -2147483648
+PASS pilot ballistic fire damages a predictable target seed -2147483648
+PASS ignoring pursuing enemy can fail the sortie seed -2147483648
+PASS transient combat objects remain bounded seed -2147483648
+PASS pilot avoids terrain seed 2147483647
+PASS pilot banks and turns to pursue seed 2147483647
+PASS pilot obeys bounded physical attitude rates seed 2147483647
+PASS pilot obtains firing solutions and fires seed 2147483647
+PASS pilot ballistic fire damages a predictable target seed 2147483647
+PASS ignoring pursuing enemy can fail the sortie seed 2147483647
+PASS transient combat objects remain bounded seed 2147483647
+PASS pilot recovers from a descending low-altitude situation 0
+PASS pilot recovers from a descending low-altitude situation 1
+PASS pilot recovers from a descending low-altitude situation 2
+PASS pilot recovers from a descending low-altitude situation 3
+PASS pilot recovers from a descending low-altitude situation 4
+PASS pilot recovers from a descending low-altitude situation 5
+PASS pilot recovers from a descending low-altitude situation 6
+PASS pilot recovers from a descending low-altitude situation 7
+PASS bounded-control test pilot wins through ballistic fire, seed 1944
+PASS test pilot conserves ammunition and survives, seed 1944
+PASS bounded-control test pilot wins through ballistic fire, seed 0
+PASS test pilot conserves ammunition and survives, seed 0
+PASS bounded-control test pilot wins through ballistic fire, seed 1
+PASS test pilot conserves ammunition and survives, seed 1
+PASS bounded-control test pilot wins through ballistic fire, seed 17
+PASS test pilot conserves ammunition and survives, seed 17
+PASS bounded-control test pilot wins through ballistic fire, seed 88
+PASS test pilot conserves ammunition and survives, seed 88
+PASS bounded-control test pilot wins through ballistic fire, seed 31337
+PASS test pilot conserves ammunition and survives, seed 31337
+PASS flight-controller pilot can complete armed escort scenario, seed 1944
+PASS escort victory survives an active enemy attack, seed 1944
+PASS flight-controller pilot can complete armed escort scenario, seed 1
+PASS escort victory survives an active enemy attack, seed 1
+PASS flight-controller pilot can complete armed escort scenario, seed 88
+PASS escort victory survives an active enemy attack, seed 88
+1534 checks; 0 failures (including 1000 Haunted House generation and complete resolution sessions).
