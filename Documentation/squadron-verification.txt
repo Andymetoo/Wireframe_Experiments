@@ -1,0 +1,87 @@
+SQUADRON EXPANSION — FINAL VERIFICATION
+2026-10-12 | Unity 6000.4.1f1 | Windows x64
+
+LAUNCH
+Builds/VectorCabinetSquadron/VectorCabinet.exe
+Keep the adjacent data folder and DLLs with the executable.
+Choose WWII Air Combat from the cabinet, then one of five mission briefings.
+The previous Builds/VectorCabinet build remains unchanged.
+
+IMPLEMENTED
+The original flight force model, Training Duel and Courier Cover remain.
+Two mortal wingmen fly formation, rejoin and obey Form Up / Engage / Cover Me /
+Regroup orders. Tactical pilots use delayed decisions, persistent target choices,
+bounded visual awareness, terrain and collision avoidance, speed recovery,
+defensive breaks, pursuit extensions, damage withdrawal and bounded gun tracking.
+They issue ordinary flight inputs and never reposition an aircraft to follow a slot.
+
+Interception requires stopping two raid leaders before a physical boundary.
+Bomber Escort requires two of three bombers to complete an actual formation route.
+Ground Attack requires destroying four moving trucks under fighter and physical
+flak fire. Ground pilots line up, strafe, extend and pull out between passes.
+HUD, wingman status, briefings, objective tracking and debriefs support these rules.
+Bombers, trucks, flak guns, road, wrecks and effects use code-generated geometry.
+
+Keyboard/mouse controls are retained. Gamepad flight, look, menus and order chords
+use a scene-owned device adapter. Pause offers analog settings and optional Input
+System axis paths. Invalid vector-as-axis bindings disable once; unplugging does
+not leave held controls. RMB freelook is independent of mouse-stick steering.
+See meridian-input-guide.txt for mappings and hardware limitations.
+
+EXECUTED VALIDATION
+1. .NET 8 air harness: 776 checks, zero failures. Uses the same simulation source.
+   Covers flight forces, original combat regressions, physical projectiles,
+   generation, terminal objectives, formations, rejoin, perception and orders.
+   Nine unmodified tactical bot sorties include both real victories and losses.
+   Additional expert-control sorties demonstrate split-target squadron tactics.
+2. Unity batch validation: 2,031 checks, zero failures. This executes air and
+   hockey checks plus 1,000 generated Haunted House investigations to completion.
+   Report: squadron-unity-validation.txt.
+3. Separate Windows build: succeeded, zero build errors, zero build warnings.
+   Includes Cabinet, HauntedHouse, Meridian1944 and ColdSnap scenes.
+   Report: squadron-build-result.txt.
+4. Final rendered standalone walkthrough: 343 checks, zero failures, zero runtime
+   errors; player exit code 0. Includes 23 virtual gamepad/mouse/binding checks,
+   real keyboard events for orders, targeting, freelook, pause and restart,
+   original airborne combat, Hockey gameplay and final match, Haunted House
+   investigation, scene switching, camera/listener counts and input cleanup.
+   Report: squadron-standalone-validation.txt.
+
+Complete rendered tactical missions used ordinary bounded AI inputs and physical
+guns, without changing starting states, health, ammunition or objectives:
+  Interception seed 1944: victory 236.42 s; both raiders stopped; both wingmen alive.
+  Bomber Escort seed 81: victory 212.36 s; two delivered, one bomber lost.
+  Ground Attack seed 81: victory 306.49 s; four trucks destroyed, one wingman lost.
+The close-up bomber and convoy captures are explicitly labeled geometry fixtures;
+their camera positions were adjusted and they are not winnability evidence.
+
+Inspected rendered cockpit, bomber, convoy, live gunnery, briefing, controls and
+debrief captures. Full final captures and raw player log are retained in
+Logs/Squadron/RenderedFinal and Logs/Squadron/standalone-final.log.
+Logs are local diagnostics, not required by the shipped game.
+
+PRESERVATION
+SHA-256 comparisons: all 71 protected source/scene/settings files unchanged,
+including Haunted House, Hockey, launcher, FlightDynamics and the user's existing
+ProjectSettings edit. All 188 files in the previous working build are unchanged.
+No packages were added. No generated/imported creative assets or audio were used.
+No commit or push was performed. Report: squadron-preservation.txt.
+
+REPRODUCE
+From ValidationAir: dotnet run --project AirCombat.Validation.csproj --configuration Release
+Unity menu: Vector Cabinet > Squadron > Validate All Games
+Separate build: Vector Cabinet > Squadron > Build Separate Windows Player
+Rendered walkthrough: launch the expansion executable with
+  -cabinetSmoke <absolute-project-log-directory> -screen-width 1280
+  -screen-height 800 -screen-fullscreen 0 -logFile <absolute-log-file>
+The opt-in walkthrough exits after restoring its temporary input settings/devices.
+
+REMAINING HUMAN VALIDATION
+Automated and rendered evidence proves functioning simulation and outcomes, not
+enjoyment. Human playtesting is still needed for squadron usefulness, mission
+difficulty, gunnery feel, HUD readability at other resolutions and controller
+comfort. No physical gamepad, joystick or HOTAS was tested. Custom binding paths
+provide an extension point, not universal device support. Settings last within
+the Air Combat scene; there is no campaign, landing sequence, voice/audio or save.
+Seeds reproduce identical fixed-step inputs within a runtime; cross-platform
+bit-for-bit determinism is not promised.

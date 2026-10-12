@@ -1,0 +1,144 @@
+MERIDIAN 1944: SQUADRON AND TACTICAL WARFARE
+Implementation and numerical validation notes, 2026-10-12
+
+SCOPE AND PRESERVATION
+
+The existing Air Combat game is extended inside the three-game collection. The
+original Duel and Convoy Cover missions keep their original generation, legacy
+pilot-update path, and outcome rules. FlightDynamics.cs is unchanged. No new
+packages, creative assets, textures, audio, network service, or Unity project is
+required. Haunted House and Hockey gameplay are outside this change's scope.
+Unity runtime, rendering, launcher regression and standalone build verification
+are separate from the numerical evidence below and were pending when this file
+was first written. Consult the final expansion verification report for those.
+
+NEW SORTIES
+
+Each new mission gives Kestrel two mortal wingmen, Rook and Finch, with 1,100
+rounds each. Kestrel has 1,500 rounds. They begin in a loose formation and follow
+orders using the same aerodynamic forces as the player. Mission seeds reproduce
+initial headings, forces, attack directions and the pilots' random decisions.
+
+Interception:
+  Two raid leaders are outbound along a known route, with one or two fighter
+  escorts. Both leaders must be stopped before either crosses the defended
+  boundary. Destroying escort fighters alone cannot win. The route is about
+  35 km, usually about five minutes to the defended boundary; actual elapsed
+  time depends on flight, evasion and interception. The longer route permits
+  recovery after an initial head-on pass without changing enemy performance.
+  Pilot guidance aims beyond the finish plane, avoiding circles around a point
+  immediately before the boundary. Search guidance uses the briefing's route
+  and estimated cruise speed, not an omniscient update of hostile positions.
+  Split attacks can let the player engage one raider while wingmen pressure the
+  other. Chasing escorts can allow the raid to get through.
+
+Bomber Escort:
+  Three Heron B.26 bombers fly a physical formation for roughly 19 km. At least
+  two must actually cross the destination plane while the player survives.
+  Three hostile fighters preferentially attack bombers. Killing every hostile
+  does not replace the arrival requirement; losing two bombers before arrival
+  makes the mission impossible and causes defeat. The bomber leader flies a
+  route, followers use local formation slots and fall back to their route if
+  the leader dies. Bombers have 195 health, larger swept collision shapes and
+  slower transport-like performance. Their models use generated geometry.
+
+Ground Attack:
+  Four moving supply trucks are the required objectives. Two finite-ammunition
+  flak emplacements and two defending fighters are optional threats. Trucks
+  follow the terrain at 2.4 m/s. Guns fire real projectiles; three 13-damage
+  aircraft rounds disable a 39-health truck. Flak has 65 health and emits
+  imperfectly led 7-damage rounds in limited bursts, 440 rounds per gun.
+  Destroying the four trucks while alive wins, even if fighters or flak remain.
+  There is no hidden extraction or fighter kill requirement. Fuel ends an
+  unfinished ground sortie at ten minutes; other tactical sorties are bounded
+  to eight minutes if their normal objective has not ended them sooner.
+
+TACTICAL PILOTS AND ORDERS
+
+Form Up, Engage, Cover Me and Regroup change persistent mission intent. A
+designated contact can be an aircraft or ground vehicle. Merely looking at the
+next target does not silently change a previously issued attack order. Missions
+start in Form Up and reset order state on restart. Wingmen acknowledge commands
+in text; surviving pilots retain immediate terrain, speed and threat priorities.
+
+The tactical pilot layers intentions onto the existing bank/elevator controller:
+intercept, attack, defensive break, extend, energy climb, low-speed recovery,
+terrain escape, damaged/empty-gun withdrawal, search, formation and rejoin. It
+uses delayed decisions, target commitment, imperfect bursts, bounded visual
+awareness and terrain occlusion. Formation control adjusts speed and bank to a
+leader-relative slot rather than attaching aircraft to the leader. Aircraft
+positions, velocity and rotation still come from FlightDynamics.
+
+Strafing pilots line up a run, require suitable orientation, lead the moving
+vehicle with gravity compensation, fire physical rounds and pull out through
+actual lift before returning for another pass. A destroyed target does not
+cancel a needed recovery maneuver. Friendly firing solutions avoid allies;
+friendly projectiles retain the pre-existing team damage filter.
+
+WEAPONS, DAMAGE AND SESSION LIFETIME
+
+Weapons still use muzzle velocity plus shooter velocity, finite ammunition,
+gravity, dispersion, round lifetime and swept moving-target collision. The same
+round path now tests terrain and ground targets before applying damage. Only
+rounds owned by player ID 0 count toward the player's hit tally; wingman hits
+cannot inflate it. Ground flak rounds are reported separately from aircraft gun
+rounds. Destroyed targets stop moving/firing and remain as renderable wrecks.
+
+New tactical missions also test swept conservative fuselage-core collisions.
+Both colliding aircraft are destroyed; no avoidance code teleports them apart.
+All simulation state belongs to an AirMission instance. A completed mission
+stops advancing. No new static match state or event subscription is needed.
+
+AUTOMATED EVIDENCE AT IMPLEMENTATION HANDOFF
+
+Command, from ValidationAir:
+  dotnet run --project AirCombat.Validation.csproj --configuration Release
+
+MissionValidation covers 72 generated tactical forces; unique IDs and safe
+spawns; correct objective counts; command/restart state; invalid time deltas;
+moving swept ground hits and misses; physical truck and wingman destruction;
+flak ammunition/burst limits; objective precedence; projectile-to-goal outcome
+integration; physical aircraft collision; deterministic repeated state; and
+complete, unmodified bot sorties. It asserts at least one actual bot victory
+for each new mission kind across its three diagnostic seeds. Defeats are also
+reported; it does not require every AI sortie to win.
+
+Latest .NET complete bot sorties at handoff (no position, health or ammo edits):
+  Interception 1944: victory 236.4 s, 2/2 raiders, player 8 impacts.
+  Interception 81: defeat 209.0 s, player shot down, 0/2 raiders.
+  Interception 31337: defeat 303.6 s, 1/2 raiders, player 3 impacts.
+  Bomber Escort 1944: victory 204.6 s, 2 arrivals, all 3 bombers alive.
+  Bomber Escort 81: victory 212.4 s, 2 arrivals, 1 bomber lost.
+  Bomber Escort 31337: defeat 162.9 s, 2 bombers lost, route 76% complete.
+  Ground Attack 1944: victory 237.9 s, 4/4 trucks; Rook shot down.
+  Ground Attack 81: victory 306.5 s, 4/4 trucks; Finch shot down.
+  Ground Attack 31337: defeat 257.4 s, 1/4 trucks; player and Finch shot down.
+  No aircraft collisions occurred in these nine full sorties.
+
+TacticalValidationPilot is an additional controls-only expert regression driver,
+not a player assist. It selects raid targets and sends legal squadron orders,
+then issues bounded pitch, roll, yaw, throttle and fire inputs. It never edits
+the simulation state. Its split-target interception seed 81 earned victory in
+163.9 s with 98 player rounds and 8 impacts. Seed 31337 won in 256.0 s with
+76 player rounds and 16 impacts, but both wingmen were lost. Seed 1944 lost at
+the boundary despite landing hits. Original ValidationPilot remains unchanged.
+
+Existing legacy dogfight diagnostics still reported 6/6 physical-gunnery wins
+in 83.7-221.3 seconds and 3/3 armed courier-escort wins.
+
+The full .NET harness passed 776 checks with zero failures at handoff, including
+the tactical handling fixtures. Head-on aircraft physically passed at 38 metres
+after both selected the conventional right-side avoidance maneuver. The terrain
+recovery fixture climbed from a minimum 94 to 389 metres AGL. These are numerical
+results, not a substitute for final Unity/build verification. Exact seeded
+trajectories may differ between .NET and Unity floating-point implementations;
+repeatability is tested within each runtime, not assumed across runtimes.
+
+LIMITS OF THIS EVIDENCE
+
+These tests demonstrate reachable outcomes, physical gunnery, finite ammunition,
+route completion, mortality and bounded simulation. They do not establish human
+control comfort, visual readability, enjoyable balance, or squadron personality.
+Those require actual player sessions. The player still has to manage speed,
+lead shots, choose orders and watch the mission assets. There are no turreted
+bomber guns, bombing subsystem, campaign, radio audio or perfect tactical radar.

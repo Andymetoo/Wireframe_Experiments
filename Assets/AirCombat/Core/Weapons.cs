@@ -21,6 +21,7 @@ namespace Meridian
         public Vector3 Position, PreviousPosition, Velocity;
         public int Team, OwnerId;
         public float Age, Lifetime = 1.85f;
+        public float Damage = Weapons.RoundDamage;
     }
 
     /// <summary>Physical rounds: inherited velocity, gravity, dispersion, and swept moving-target collision.</summary>
@@ -42,7 +43,7 @@ namespace Meridian
             float delay;
             cooldown.TryGetValue(aircraft.Id, out delay);
             delay -= dt;
-            if (!trigger || !aircraft.Alive || aircraft.Ammo <= 0 || aircraft.Role == AircraftRole.Courier)
+            if (!trigger || !aircraft.Alive || aircraft.Ammo <= 0 || aircraft.Role == AircraftRole.Courier || aircraft.Role == AircraftRole.Bomber)
             { cooldown[aircraft.Id] = Math.Max(0f, delay); return; }
             // The cooldown is carried across ticks, so rate of fire is independent of simulation rate.
             while (delay <= 0f && aircraft.Ammo > 0)
@@ -64,6 +65,10 @@ namespace Meridian
 
         public void Step(float dt, List<Projectile> rounds, IList<AircraftState> aircraft,
             Dictionary<int, Vector3> previousPositions, TerrainField terrain, List<CombatEvent> events)
+        { Step(dt, rounds, aircraft, previousPositions, terrain, events, null); }
+
+        public void Step(float dt, List<Projectile> rounds, IList<AircraftState> aircraft,
+            Dictionary<int, Vector3> previousPositions, TerrainField terrain, List<CombatEvent> events, IList<GroundTarget> groundTargets)
         {
             for (int i = rounds.Count - 1; i >= 0; i--)
             {
@@ -73,6 +78,7 @@ namespace Meridian
                 round.Position += round.Velocity * dt;
                 round.Age += dt;
                 AircraftState hit = null;
+                GroundTarget groundHit = null;
                 float firstFraction = float.MaxValue;
                 for (int a = 0; a < aircraft.Count; a++)
                 {
@@ -84,16 +90,42 @@ namespace Meridian
                     if (SweptAircraftHit(round.PreviousPosition, round.Position, previous, candidate, out fraction) && fraction < firstFraction)
                     { hit = candidate; firstFraction = fraction; }
                 }
+                if (groundTargets != null)
+                    for (int g = 0; g < groundTargets.Count; g++)
+                    {
+                        GroundTarget candidate = groundTargets[g];
+                        if (!candidate.Alive || candidate.Team == round.Team) continue;
+                        float fraction;
+                        if (SweptGroundHit(round.PreviousPosition, round.Position, candidate, out fraction) && fraction < firstFraction)
+                        { groundHit = candidate; hit = null; firstFraction = fraction; }
+                    }
+                // Hills intercept the round before targets on the other side of terrain.
+                bool intoTerrain = round.Position.Y <= terrain.Height(round.Position.X, round.Position.Z);
+                if (intoTerrain)
+                {
+                    float a = round.PreviousPosition.Y - terrain.Height(round.PreviousPosition.X, round.PreviousPosition.Z);
+                    float b = round.Position.Y - terrain.Height(round.Position.X, round.Position.Z);
+                    float terrainFraction = a <= 0f ? 0f : a / Math.Max(.0001f, a - b);
+                    if (terrainFraction < firstFraction) { hit = null; groundHit = null; }
+                }
                 if (hit != null)
                 {
-                    hit.Health = Math.Max(0f, hit.Health - RoundDamage);
+                    hit.Health = Math.Max(0f, hit.Health - round.Damage);
                     Vector3 impact = Vector3.Lerp(round.PreviousPosition, round.Position, firstFraction);
                     events.Add(new CombatEvent(impact, CombatEventKind.GunHit));
-                    if (round.Team == 0) PlayerHits++;
-                    if (hit.Health <= 0f) hit.Alive = false;
+                    if (round.OwnerId == 0) PlayerHits++;
+                    if (hit.Health <= 0f) { hit.Alive = false; hit.DestructionCause = "Gunfire"; }
                     rounds.RemoveAt(i);
                 }
-                else if (round.Position.Y <= terrain.Height(round.Position.X, round.Position.Z))
+                else if (groundHit != null)
+                {
+                    groundHit.Health = Math.Max(0f, groundHit.Health - round.Damage);
+                    if (round.OwnerId == 0) PlayerHits++;
+                    events.Add(new CombatEvent(Vector3.Lerp(round.PreviousPosition, round.Position, firstFraction), CombatEventKind.GunHit));
+                    if (groundHit.Health <= 0f) groundHit.Alive = false;
+                    rounds.RemoveAt(i);
+                }
+                else if (intoTerrain)
                 { events.Add(new CombatEvent(round.Position, CombatEventKind.GroundHit)); rounds.RemoveAt(i); }
                 else if (round.Age >= round.Lifetime) rounds.RemoveAt(i);
             }
@@ -106,12 +138,20 @@ namespace Meridian
             Vector3 a = Vector3.Transform(start - previousTarget, inverse);
             Vector3 b = Vector3.Transform(end - target.Position, inverse);
             // Two overlapping ellipsoids approximate solid fuselage and broad, thin wings.
-            float size = target.Role == AircraftRole.Courier ? 1.75f : 1f;
+            float size = target.Role == AircraftRole.Courier || target.Role == AircraftRole.Bomber ? 1.75f : 1f;
             float body, wing;
             bool bodyHit = SegmentEllipsoid(a, b, new Vector3(1.5f, 1.6f, 5.5f) * size, out body);
             bool wingHit = SegmentEllipsoid(a, b, new Vector3(6.1f, .65f, 2.0f) * size, out wing);
             fraction = bodyHit && wingHit ? Math.Min(body, wing) : bodyHit ? body : wing;
             return bodyHit || wingHit;
+        }
+
+        public static bool SweptGroundHit(Vector3 start, Vector3 end, GroundTarget target, out float fraction)
+        {
+            Quaternion inverse = Quaternion.CreateFromAxisAngle(Vector3.UnitY, -target.Heading);
+            Vector3 a = Vector3.Transform(start - target.PreviousPosition, inverse);
+            Vector3 b = Vector3.Transform(end - target.Position, inverse);
+            return SegmentEllipsoid(a, b, target.Extents, out fraction);
         }
 
         private static bool SegmentEllipsoid(Vector3 start, Vector3 end, Vector3 radii, out float fraction)

@@ -1,6 +1,6 @@
 # Meridian 1944 implementation
 
-Meridian is an independent, scene-owned air-combat game inside the existing Unity project. The three scenes are `Cabinet`, `HauntedHouse`, and `Meridian1944`. `VectorCabinet.GameCollection` changes scenes with `LoadSceneMode.Single`, restores normal time and cursor state, and retains no gameplay objects. Haunted House keeps its own simulation, renderer, and controls.
+Meridian is an independent, scene-owned air-combat game inside the existing Unity project. The collection has four scenes: `Cabinet`, `HauntedHouse`, `Meridian1944` and `ColdSnap`. `VectorCabinet.GameCollection` changes scenes with `LoadSceneMode.Single`, restores normal time and cursor state, and retains no gameplay objects. Haunted House and Hockey keep their own simulation, renderer and controls. The squadron expansion is described in [squadron-design-and-validation.txt](squadron-design-and-validation.txt); the flight force model is unchanged.
 
 ## Simulation boundaries
 
@@ -11,6 +11,9 @@ The classes under `Assets/AirCombat/Core` use `System.Numerics`, SI units, and a
 | `FlightTypes.cs` | Aircraft definitions, retained aircraft state, and pilot commands. |
 | `FlightDynamics.cs` | Aerodynamic forces, attitude rates, damage effects, and terrain impact. |
 | `PilotAI.cs` | Delayed tactical decisions and flight-control commands. |
+| `PilotTactics.cs`, `TacticalOrders.cs` | Persistent tactical intentions, bounded awareness, formation slots, squadron orders and strafing passes. |
+| `GroundTarget.cs` | Moving convoy, finite flak bursts and ground damage state. |
+| `AirInputAdapter.cs` | Device-independent intentions, analog settings and scene-owned Input System bindings. |
 | `Weapons.cs` | Ballistic projectiles, swept hit detection, impacts, and predicted lead. |
 | `TerrainField.cs` | Seeded continuous terrain heights shared by collision and rendering. |
 | `AirMission.cs` | Seeded starting situations, pilot ownership, simulation order, and outcomes. |

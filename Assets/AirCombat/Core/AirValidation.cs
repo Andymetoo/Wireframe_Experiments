@@ -14,6 +14,10 @@ namespace Meridian
             ValidateMissions(check);
             ValidatePilots(check);
             ValidatePlayableSorties(check);
+            MissionValidation.Run(check);
+            SortieSummary += "\n" + MissionValidation.Summary;
+            TacticalValidation.Run(check);
+            SortieSummary += "\n" + TacticalValidation.Summary;
         }
 
         private static AircraftState Target(Vector3 position, int id = 1, int team = 1)

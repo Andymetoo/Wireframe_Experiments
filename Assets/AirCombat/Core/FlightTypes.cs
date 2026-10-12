@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Meridian
 {
-    public enum AircraftRole { Player, Fighter, Courier }
+    public enum AircraftRole { Player, Fighter, Courier, Wingman, Bomber }
 
     /// <summary>SI units throughout. Shapes and performance are fictional period-inspired types.</summary>
     public sealed class AircraftDefinition
@@ -39,6 +39,15 @@ namespace Meridian
             MaxThrust = 28000, MaxPower = 1550000, BaseDrag = .033f, InducedDrag = .075f,
             LiftAtZero = .20f, LiftSlope = 4.8f, StallAngle = .30f, StallSpeed = 40,
             CruiseSpeed = 84, MaxSpeed = 143, MaxRollRate = .47f, MaxPitchRate = .21f,
+            MaxYawRate = .13f, Ammunition = 0
+        };
+
+        public static readonly AircraftDefinition Bomber = new AircraftDefinition
+        {
+            Name = "Heron B.26", Mass = 8500, WingArea = 91, Wingspan = 28, Length = 19.6f,
+            MaxThrust = 30000, MaxPower = 1850000, BaseDrag = .034f, InducedDrag = .075f,
+            LiftAtZero = .20f, LiftSlope = 4.8f, StallAngle = .30f, StallSpeed = 43,
+            CruiseSpeed = 92, MaxSpeed = 150, MaxRollRate = .43f, MaxPitchRate = .21f,
             MaxYawRate = .13f, Ammunition = 0
         };
     }

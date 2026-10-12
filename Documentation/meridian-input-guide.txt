@@ -1,0 +1,61 @@
+MERIDIAN 1944 — INPUT AND SQUADRON CONTROLS
+
+The keyboard and mouse flight controls are retained. W/S lower/raise the nose,
+A/D bank, Q/E rudder, Shift/Ctrl or R/F adjust throttle, Space or left mouse
+fires, and Z levels the aircraft using control inputs. C changes view; G toggles
+the lead cue; M enables the original mouse stick. Tab selects the next target.
+Hold right mouse to look around; V or middle mouse centers the view. Look never
+changes the aircraft's flight attitude or the direction of its guns.
+In mouse-stick mode, RMB temporarily withholds mouse steering and releasing RMB
+recenters the cursor before mouse steering resumes. Keyboard steering still works.
+
+Squadron orders: 1 Form Up; 2 Engage selected target; 3 Cover Me; 4 Regroup.
+Changing the selected target does not silently change a previous attack order.
+Issue Engage again to designate a different contact to your wingmen.
+
+GAMEPAD (Xbox names / physical button positions)
+Left stick: roll and pitch. Pull down to raise the nose.
+Triggers: left/right rudder. RB: guns. LB: level assist.
+D-pad up/down: throttle. Right stick: look; click to center.
+X (west): target. B (east): view. A (south): lead cue. Start: pause.
+Hold Y (north), then D-pad: up Form Up; right Engage; left Cover Me; down Regroup.
+While issuing orders, D-pad input does not move the throttle.
+Menus: D-pad up/down moves focus; A selects; B goes back.
+The mission briefing lists five choices; select a mission, then focus Take the Air.
+
+Pause settings include flight sensitivity, analog deadzone, look speed, analog
+pitch/roll/rudder inversion, mouse-stick pitch inversion, and look inversion.
+Analog pitch and roll are read before Unity's default gamepad deadzone processor
+so the configured deadzone is applied once. Releasing a stick centers the pilot's
+control demand, not the aircraft: angular momentum remains in the flight model.
+Unplugging a controller clears its held controls; the last throttle setting stays.
+
+OPTIONAL JOYSTICK / HOTAS BINDING EXTENSION
+The pause menu's Flight-stick Bindings panel accepts Unity Input System control
+paths for individual roll, pitch, rudder, throttle and fire controls. Example axis:
+<Joystick>/stick/x. Actual paths depend on the installed device layout. Empty fields
+remain unbound. Use a single axis (/x or /y), not a complete Vector2 stick. Apply
+the fields to activate them. A throttle can span either -1..+1 or 0..+1.
+Binding a whole Vector2 stick to a single axis safely disables that binding and
+shows an error. Invalid throttle bindings preserve the last commanded throttle.
+
+Bindings use scene-owned InputActions and are disposed when leaving Air Combat.
+No global input settings, device disabling, or other game's handlers are changed.
+Settings persist across sorties within Air Combat, not across leaving the mode or
+quitting the executable. This is an extensible binding path, not a claim of universal
+joystick/HOTAS compatibility. Specialized devices require actual hardware testing.
+
+IMPLEMENTATION / VALIDATION
+AirInputAdapter converts devices to AirControlIntent (FlightInput, look, orders,
+menu commands). AirCombatGame applies level assistance, commands and camera intent;
+AirMission and FlightDynamics know nothing about keys, mice or controllers.
+AirInputValidation is opt-in via the cabinet diagnostic walkthrough. It injects
+states into a temporary real Unity InputSystem Gamepad and verifies neutral input,
+simultaneous controls, deadzones, axis inversion, throttle, command chords, menu
+buttons, an InputAction control-path binding and disconnection. The helper releases
+its malformed-binding fixtures after checking one-time disabling; temporary mouse
+input verifies that freelook does not also steer the mouse stick. It releases
+its temporary device and bindings without persisting global input settings.
+Execution results are reported separately by the walkthrough; source coverage alone
+is not a passed test. Physical gamepad and specialized joystick comfort/compatibility
+remain human hardware validation work.

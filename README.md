@@ -4,7 +4,7 @@ Three independent, silent games in one Unity **6000.4.1f1 URP** project. All gam
 
 ## Launch
 
-Run **`Builds/VectorCabinet/VectorCabinet.exe`** with its data folder and DLLs beside it. The launcher offers **Haunted House**, **WWII Air Combat** and **Hockey**, also selected with keys 1, 2 and 3. Each game has restart and return-to-cabinet buttons. Progress is kept only for the current session.
+Run the squadron expansion at **`Builds/VectorCabinetSquadron/VectorCabinet.exe`** with its data folder and DLLs beside it. The previous build remains at `Builds/VectorCabinet/VectorCabinet.exe`. The launcher offers **Haunted House**, **WWII Air Combat** and **Hockey**, also selected with keys 1, 2 and 3. Each game has restart and return-to-cabinet buttons. Progress is kept only for the current session.
 
 In Unity, open `Assets/GameCollection/Scenes/Cabinet.unity` and press Play, or use **Vector Cabinet > Open Launcher**. All individual game scenes also work directly. **Vector Cabinet > Build Windows Player** builds the launcher and three game scenes into the same executable. The original Haunted House build menu now builds the collection too.
 
@@ -44,7 +44,13 @@ Scores and match statistics lead to rematch and new-match options. Match seeds r
 
 ## WWII Air Combat — Meridian 1944
 
-A fictional Channel sortie in a low-polygon WWII setting. Fly the Kestrel Mk.IX against Falke fighters over a seeded island. Begin with **Training Duel**: one armed opponent and an optional lead cue. **Courier Cover** asks you to keep the unarmed Heron transport, callsign Lark, alive for five minutes, or shoot down both interceptors. Missions begin airborne. There is no takeoff or landing sequence.
+A fictional Channel sortie in a low-polygon WWII setting. Fly the Kestrel Mk.IX against Falke fighters over a seeded island. Five selectable briefings retain **Training Duel** and **Courier Cover** and add three squadron missions with two mortal wingmen, Rook and Finch. All missions begin airborne; there is no takeoff or landing sequence.
+
+- **Fighter Interception:** stop both raid leaders before they cross the defended boundary. Escort fighters try to delay you. Designating a raider for your wingmen while you intercept the other can split the workload.
+- **Bomber Escort:** deliver at least two of three Heron bombers to air cover. Bombers fly an actual route and formation. Killing attackers does not replace lost bombers or complete the route.
+- **Ground Attack:** destroy four moving supply trucks. Two optional flak batteries fire physical rounds, and enemy fighters defend the convoy. Set up a shallow dive, fire a short burst, pull clear and extend before returning.
+
+The original **Training Duel** offers one armed opponent and a lead cue. **Courier Cover** asks you to keep the unarmed transport Lark alive for five minutes or destroy both interceptors.
 
 | Control | Action |
 | --- | --- |
@@ -56,6 +62,9 @@ A fictional Channel sortie in a low-polygon WWII setting. Fly the Kestrel Mk.IX 
 | Hold Z | Gentle wings-level control assist |
 | C | Cockpit / chase camera |
 | Tab | Select next surviving hostile |
+| 1 / 2 / 3 / 4 during flight | Form Up / Engage selected target / Cover Me / Regroup |
+| Hold right mouse | Look around independently of the aircraft |
+| V / middle mouse | Center look |
 | G | Toggle predicted lead cue |
 | M | Toggle mouse stick; cursor above center pulls up |
 | H | Pause and read flight notes |
@@ -67,7 +76,11 @@ Mouse stick and keyboard can be combined; the pause screen has sensitivity and m
 
 **Gunnery:** close to about 300–600 metres and fire short bursts. Rounds travel through space, inherit aircraft velocity, drop under gravity, and collide with moving wing/fuselage volumes. The small green cue predicts an intercept; the larger amber brackets identify the aircraft. Put the gunsight on the lead cue, not the target bracket. A HIT flash confirms damage. The cue does not steer or aim your guns.
 
-**Escort:** Lark is green on the contact scope. Amber contacts are hostiles; the scope faces with your heading and shows a 4 km radius, with farther contacts clamped to its edge. Watch the courier's condition and intervene before a pursuer gets a sustained firing position. Destroyed enemies, survival, remaining condition and hits contribute to the sortie score.
+**Squadron:** wingmen fly their formation slots through normal controls, manage speed, acquire visible contacts, defend themselves and recover from low energy or terrain danger. Orders allow immediate survival maneuvers. Engage uses the target selected when you issue the order; cycling targets alone does not retask the flight. Cover Me focuses on threats near you. Regroup breaks pursuit and returns to formation. Damaged or exhausted pilots may withdraw.
+
+**Awareness:** allies are green and hostiles amber. The contact scope shows visible contacts within 4 km, with terrain occlusion. Watch bomber condition and threat notices; abandon a pursuit when the protected formation needs help. The target/waypoint guidance supplements visual tracking rather than steering the aircraft.
+
+**Gamepad:** left stick flies, triggers control rudder, RB fires, LB levels, D-pad up/down adjusts throttle, right stick looks. X selects a target, B changes camera, A toggles lead. Hold Y and tap D-pad up/right/left/down for Form Up/Engage/Cover Me/Regroup. Start pauses; menus use D-pad/A/B. Pause offers sensitivity, deadzone, inversion and optional Input System flight-stick binding paths. Settings last for the current Air Combat scene. Physical controller and HOTAS testing remains necessary; see [input guide](Documentation/meridian-input-guide.txt).
 
 The HUD reports speed in knots, altitude in feet, heading, throttle, airframe condition, ammunition and load. Stalls, terrain proximity and overspeed show warnings. A sortie number reproduces the starting terrain, contacts and pilot decisions when the same controls and simulation steps are used. No mid-sortie save is implemented.
 
@@ -81,7 +94,11 @@ W/S move, A/D turn, E opens doors or examines, F examines, J opens the notebook,
 
 `Assets/GameCollection` owns the launcher, scene switching, combined builder and opt-in integration runner. Each scene owns its controls, camera, UI, generated geometry and state. Loading a game replaces the current scene; ordinary play uses no persistent game objects. The opt-in diagnostic runner is the only persistent helper.
 
-`Assets/AirCombat/Core` is plain C# and System.Numerics: aerodynamic forces and damped angular rates, terrain field, tactical pilots, ballistic weapons, aircraft damage and mission progression. `Presentation` adapts keyboard/mouse input, runs a fixed 60 Hz simulation and renders replaceable procedural meshes and UI. See [the architecture notes](Documentation/meridian-architecture.md) for details and limitations.
+`Assets/AirCombat/Core` is plain C# and System.Numerics: aerodynamic forces and damped angular rates, terrain field, tactical pilots, ballistic weapons, aircraft damage and mission progression. `Presentation` adapts keyboard/mouse/gamepad or configured axes into device-independent intentions, runs a fixed 60 Hz simulation and renders replaceable procedural meshes and UI. See [the architecture notes](Documentation/meridian-architecture.md) and [squadron design notes](Documentation/squadron-design-and-validation.txt).
+
+**Vector Cabinet > Squadron > Validate All Games** executes the combined checks in Unity. **Vector Cabinet > Squadron > Build Separate Windows Player** writes the expansion folder while preserving the prior build. The air harness includes bounded complete bot sorties, orders and perception checks, formation/rejoin trials, terrain recovery and physical ground-gunnery tests. Automated victories establish working objectives, not human-rated flight feel or balance.
+
+The [final squadron verification report](Documentation/squadron-verification.txt) records 2,031 passing Unity checks, 343 passing rendered standalone checks, build results and remaining human/hardware testing.
 
 `Assets/Hockey/Core` uses the same separation with its own skating, airborne puck simulation, puck contacts, team pilots, goalkeepers and match clock. Core ticks subdivide to 120 Hz; fast puck motion uses smaller collision steps. `HockeyGame` owns input and menus; `HockeyRenderer` owns the rink, equipment animation and camera. Neither touches the older games' simulation or presentation.
 

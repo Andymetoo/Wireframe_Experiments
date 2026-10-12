@@ -18,7 +18,7 @@ namespace VectorCabinet
     /// Opt-in rendered integration checks. Nothing is created during ordinary play.
     /// Uses public action APIs and temporary keyboard events; ergonomics still require human playtesting.
     /// </summary>
-    public sealed class CabinetSmoke : MonoBehaviour
+    public sealed partial class CabinetSmoke : MonoBehaviour
     {
         string output;
         int assertions, failures, runtimeErrors;
@@ -374,6 +374,7 @@ namespace VectorCabinet
             air.ShowBriefing();
             Check(air.Briefing && !air.Paused, "Operations briefing can be reopened from a sortie");
             yield return Capture("15-courier-briefing");
+            yield return ExerciseSquadron(air);
             yield return Open(GameCollection.LauncherScene);
             yield return Capture("16-cabinet-after-flight");
             yield return ExerciseHockey();

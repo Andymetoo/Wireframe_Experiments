@@ -5,7 +5,7 @@ using System.Numerics;
 namespace Meridian
 {
     /// <summary>A delayed tactical pilot that commands the same aerodynamic model as the player.</summary>
-    public sealed class PilotAI
+    public sealed partial class PilotAI
     {
         private readonly Random random;
         private readonly float aggression;
@@ -175,11 +175,13 @@ namespace Meridian
             float targetHeading = (float)Math.Atan2(d.X, d.Z);
             float headingError = Wrap(targetHeading - heading);
             float bank = (float)Math.Atan2(-self.Right.Y, self.Up.Y);
-            float bankLimit = self.Role == AircraftRole.Courier ? .48f : 1.22f;
+            float bankLimit = self.Role == AircraftRole.Courier || self.Role == AircraftRole.Bomber ? .48f : 1.22f;
+            if (State == "Formation" || State == "Rejoin") bankLimit = .82f;
+            if (State == "Strafe") bankLimit = .65f;
             if (State == "Terrain escape" || State == "Recover airspeed") bankLimit = .24f;
             float desiredBank = Clamp(headingError * 1.45f, -bankLimit, bankLimit);
             float desiredPitch = (float)Math.Atan2(d.Y, Math.Max(horizontalDistance, 1f));
-            desiredPitch = Clamp(desiredPitch, -.30f, State == "Terrain escape" ? .45f : .34f);
+            desiredPitch = Clamp(desiredPitch, State == "Strafe" ? -.40f : -.30f, State == "Terrain escape" || State == "Pull up" ? .45f : .34f);
             float pitch = (float)Math.Asin(Clamp(self.Forward.Y, -1f, 1f));
             float pitchError = desiredPitch - pitch;
             float roll = Clamp(Wrap(desiredBank - bank) * 1.7f + self.AngularVelocity.Z * .50f, -1f, 1f);

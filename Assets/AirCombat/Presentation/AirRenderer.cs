@@ -20,6 +20,7 @@ namespace Meridian
         static readonly Color Amber = new Color(.94f, .64f, .21f);
         readonly List<Mesh> meshes = new List<Mesh>();
         readonly Dictionary<int, AircraftVisual> aircraft = new Dictionary<int, AircraftVisual>();
+        readonly Dictionary<int, GroundVisual> groundTargets = new Dictionary<int, GroundVisual>();
         readonly List<Transform> tracerPool = new List<Transform>();
         readonly List<Transform> effectPool = new List<Transform>();
         readonly List<Transform> smokePool = new List<Transform>();
@@ -29,11 +30,18 @@ namespace Meridian
         int cameraMode;
         bool cameraInitialized;
         float propellerAngle;
+        float lookYaw, lookPitch;
+        Quaternion flightCameraRotation;
 
         sealed class AircraftVisual
         {
             public Transform Root, Canopy;
             public readonly List<Transform> Propellers = new List<Transform>();
+        }
+
+        sealed class GroundVisual
+        {
+            public Transform Root, Intact, Wreck, Gun;
         }
 
         public Camera ViewCamera { get { return viewCamera; } }
@@ -60,12 +68,21 @@ namespace Meridian
             viewCamera.allowHDR = false;
             viewCamera.allowMSAA = true;
             BuildSky();
-            BuildTerrain(mission.Terrain);
+            BuildTerrain(mission.Terrain, mission.GroundTargets);
             foreach (var plane in mission.Aircraft) aircraft.Add(plane.Id, BuildAircraft(plane));
+            foreach (var target in mission.GroundTargets) groundTargets.Add(target.Id, BuildGroundTarget(target));
+            BuildSupplyRoute(mission);
             BuildCockpit();
             BuildEffectPools();
             cameraInitialized = false;
+            lookYaw = lookPitch = 0;
             Sync(mission, 0);
+        }
+
+        public void SetLook(float yawDegrees, float pitchDegrees)
+        {
+            lookYaw = Mathf.Clamp(yawDegrees, -130, 130);
+            lookPitch = Mathf.Clamp(pitchDegrees, -65, 65);
         }
 
         public void SetCameraMode(int mode)
@@ -99,6 +116,23 @@ namespace Meridian
                     prop.localRotation = Quaternion.Euler(0, 0, propellerAngle * (.3f + .7f * plane.Throttle));
                 }
             }
+            foreach (var target in mission.GroundTargets)
+            {
+                GroundVisual visual;
+                if (!groundTargets.TryGetValue(target.Id, out visual))
+                {
+                    visual = BuildGroundTarget(target);
+                    groundTargets.Add(target.Id, visual);
+                }
+                visual.Root.SetPositionAndRotation(World(target.Position), target.IsAntiAircraft ? Quaternion.identity : Quaternion.Euler(0, target.Heading * Mathf.Rad2Deg, 0));
+                visual.Intact.gameObject.SetActive(target.Alive);
+                visual.Wreck.gameObject.SetActive(!target.Alive);
+                if (visual.Gun != null && target.Alive)
+                {
+                    Vector3 aim = World(target.AimDirection);
+                    if (aim.sqrMagnitude > .01f) visual.Gun.rotation = Quaternion.LookRotation(aim);
+                }
+            }
 
             var player = mission.Player;
             Vector3 position = World(player.Position);
@@ -106,15 +140,20 @@ namespace Meridian
             Vector3 desired = position + rotation * (cameraMode == 0 ? new Vector3(0, 1.08f, .2f) : new Vector3(0, 4.2f, -19));
             if (!cameraInitialized || cameraMode == 0)
             {
-                viewCamera.transform.SetPositionAndRotation(desired, rotation);
+                viewCamera.transform.position = desired;
+                flightCameraRotation = rotation;
                 cameraInitialized = true;
             }
             else
             {
                 // Follow inertially, but keep the horizon physically tied to attitude.
                 viewCamera.transform.position = Vector3.Lerp(viewCamera.transform.position, desired, 1 - Mathf.Exp(-dt * 8));
-                viewCamera.transform.rotation = Quaternion.Slerp(viewCamera.transform.rotation, rotation, 1 - Mathf.Exp(-dt * 10));
+                flightCameraRotation = Quaternion.Slerp(flightCameraRotation, rotation, 1 - Mathf.Exp(-dt * 10));
             }
+            Quaternion look = Quaternion.Euler(lookPitch, lookYaw, 0);
+            viewCamera.transform.rotation = flightCameraRotation * look;
+            // The instrument panel belongs to the airframe, not to the pilot's eyes.
+            cockpit.localRotation = Quaternion.Inverse(look);
             sky.position = viewCamera.transform.position;
             cockpit.gameObject.SetActive(cameraMode == 0);
             speedNeedle.localRotation = Quaternion.Euler(0, 0, 130 - (float)player.Velocity.Length() * 1.6f);
@@ -153,7 +192,7 @@ namespace Meridian
             return new Vector3(Mathf.Cos(longitude) * Mathf.Cos(latitude), Mathf.Sin(latitude), Mathf.Sin(longitude) * Mathf.Cos(latitude));
         }
 
-        void BuildTerrain(TerrainField field)
+        void BuildTerrain(TerrainField field, IList<GroundTarget> targets)
         {
             var ocean = new Geometry();
             ocean.Quad(new Vector3(-47000, -.5f, -47000), new Vector3(-47000, -.5f, 47000),
@@ -170,13 +209,30 @@ namespace Meridian
                 {
                     float px = -half + (cx * chunkCells + x) * spacing;
                     float pz = -half + (cz * chunkCells + z) * spacing;
-                    Vector3 a = Ground(field, px, pz), b = Ground(field, px, pz + spacing);
-                    Vector3 c = Ground(field, px + spacing, pz + spacing), d = Ground(field, px + spacing, pz);
-                    float max = Mathf.Max(a.y, Mathf.Max(b.y, Mathf.Max(c.y, d.y)));
-                    if (max <= .2f) continue;
-                    Color color = TerrainColor(px, pz, (a.y + b.y + c.y + d.y) * .25f, field.Seed);
-                    if (((x + z) & 1) == 0) { g.Triangle(a, b, c, color); g.Triangle(a, c, d, color * .97f); }
-                    else { g.Triangle(a, b, d, color); g.Triangle(b, c, d, color * .97f); }
+                    bool closeToTarget = false;
+                    for (int t = 0; t < targets.Count; t++)
+                    {
+                        NVector3 start = targets[t].Position, end = start + targets[t].Velocity * 600;
+                        float mx = px + spacing * .5f, mz = pz + spacing * .5f;
+                        if (mx > Mathf.Min(start.X, end.X) - 220 && mx < Mathf.Max(start.X, end.X) + 220 &&
+                            mz > Mathf.Min(start.Z, end.Z) - 220 && mz < Mathf.Max(start.Z, end.Z) + 220)
+                        { closeToTarget = true; break; }
+                    }
+                    // Keep gun targets and their collision surfaces in agreement at strafing height.
+                    // The broad terrain remains the original low polygon landscape.
+                    int subdivisions = closeToTarget ? 10 : 1;
+                    float cell = spacing / subdivisions;
+                    for (int sz = 0; sz < subdivisions; sz++) for (int sx = 0; sx < subdivisions; sx++)
+                    {
+                        float tx = px + sx * cell, tz = pz + sz * cell;
+                        Vector3 a = Ground(field, tx, tz), b = Ground(field, tx, tz + cell);
+                        Vector3 c = Ground(field, tx + cell, tz + cell), d = Ground(field, tx + cell, tz);
+                        float max = Mathf.Max(a.y, Mathf.Max(b.y, Mathf.Max(c.y, d.y)));
+                        if (max <= .2f) continue;
+                        Color color = TerrainColor(tx, tz, (a.y + b.y + c.y + d.y) * .25f, field.Seed);
+                        if (((x + z + sx + sz) & 1) == 0) { g.Triangle(a, b, c, color); g.Triangle(a, c, d, color * .97f); }
+                        else { g.Triangle(a, b, d, color); g.Triangle(b, c, d, color * .97f); }
+                    }
                 }
                 if (g.Count > 0) MeshObject("Terrain " + cx + "," + cz, g, generatedRoot);
             }
@@ -287,6 +343,7 @@ namespace Meridian
 
         AircraftVisual BuildAircraft(AircraftState state)
         {
+            if (state.Role == AircraftRole.Bomber) return BuildBomber(state);
             var visual = new AircraftVisual { Root = NewChild(state.Callsign + " / polygon airframe", generatedRoot) };
             bool courier = state.Role == AircraftRole.Courier;
             bool enemy = state.Team != 0;
@@ -328,6 +385,13 @@ namespace Meridian
                     g.Disc(roundel, .49f, Vector3.up, new Color(.12f,.23f,.35f), 16);
                     g.Disc(roundel + Vector3.up * .005f, .31f, Vector3.up, Cream, 16);
                     g.Disc(roundel + Vector3.up * .01f, .16f, Vector3.up, new Color(.65f,.20f,.14f), 12);
+                    if (state.Role == AircraftRole.Wingman)
+                    {
+                        // Flight bands distinguish the wingmen without changing the Kestrel silhouette.
+                        Color flight = (state.Id & 1) == 0 ? Cream : new Color(.37f, .61f, .70f);
+                        g.Box(new Vector3(side * 2.6f, .08f, -.04f), new Vector3(.23f, .03f, 2.15f), flight);
+                        g.Box(new Vector3(side * 2.95f, .08f, -.04f), new Vector3(.14f, .03f, 2.15f), flight);
+                    }
                 }
                 else
                 {
@@ -360,6 +424,143 @@ namespace Meridian
             }
             else visual.Propellers.Add(BuildPropeller(visual.Root,new Vector3(0,0,4.62f)));
             return visual;
+        }
+
+        AircraftVisual BuildBomber(AircraftState state)
+        {
+            var visual = new AircraftVisual { Root = NewChild(state.Callsign + " / twin-engine bomber", generatedRoot) };
+            var g = new Geometry();
+            Color body = new Color(.38f, .41f, .30f), belly = Cream * .82f, glass = new Color(.26f, .43f, .47f);
+            float[] stations = { -7.4f, -5.8f, -2.7f, 1.5f, 4.6f, 6.2f, 7.4f };
+            float[] radii = { .18f, .46f, .89f, 1.08f, .96f, .75f, .12f };
+            for (int ring = 0; ring < stations.Length - 1; ring++) for (int face = 0; face < 8; face++)
+            {
+                float a = face * Mathf.PI / 4, b = (face + 1) * Mathf.PI / 4;
+                Vector3 p = new Vector3(Mathf.Cos(a) * radii[ring], Mathf.Sin(a) * radii[ring], stations[ring]);
+                Vector3 q = new Vector3(Mathf.Cos(b) * radii[ring], Mathf.Sin(b) * radii[ring], stations[ring]);
+                Vector3 r = new Vector3(Mathf.Cos(b) * radii[ring + 1], Mathf.Sin(b) * radii[ring + 1], stations[ring + 1]);
+                Vector3 s = new Vector3(Mathf.Cos(a) * radii[ring + 1], Mathf.Sin(a) * radii[ring + 1], stations[ring + 1]);
+                Color paint = ring >= 4 && face < 5 ? glass : face >= 4 ? belly : body;
+                g.Quad(p, q, r, s, paint);
+                if (ring >= 4) { g.Edge(p, s, .04f, Dark); g.Edge(p, q, .04f, Dark); }
+            }
+            for (int side = -1; side <= 1; side += 2)
+            {
+                Vector3[] wing = { new Vector3(.7f * side, -.06f, 2.15f), new Vector3(5.7f * side, .10f, 1.48f),
+                    new Vector3(10.7f * side, .31f, -.12f), new Vector3(10.3f * side, .31f, -1.35f),
+                    new Vector3(5.6f * side, .10f, -1.78f), new Vector3(.7f * side, -.06f, -2.15f) };
+                g.Extrude(wing, .24f, body, belly);
+                Vector3[] tail = { new Vector3(.2f * side, .2f, -5.2f), new Vector3(3.3f * side, .3f, -5.7f),
+                    new Vector3(3.3f * side, .3f, -7.05f), new Vector3(.1f * side, .2f, -7.05f) };
+                g.Extrude(tail, .12f, body, belly);
+                // Twin vertical fins and a glazed nose make the bomber distinct at a glance.
+                g.Quad(new Vector3(3.1f * side, -.08f, -5.65f), new Vector3(3.1f * side, 2.08f, -5.92f),
+                    new Vector3(3.1f * side, 2.01f, -7.05f), new Vector3(3.1f * side, -.15f, -7.17f), body);
+                g.Edge(new Vector3(3.11f * side, .72f, -6.1f), new Vector3(3.11f * side, .72f, -6.87f), .23f, Cream);
+                g.Octahedron(new Vector3(side * 3.4f, -.12f, 1.25f), new Vector3(.69f, .73f, 2.55f), body);
+                g.Box(new Vector3(side * 3.4f, -.74f, .1f), new Vector3(.68f, .22f, 1.65f), Dark);
+                Vector3 roundel = new Vector3(side * 7.4f, .27f, -.4f);
+                g.Disc(roundel, .77f, Vector3.up, new Color(.12f, .23f, .35f), 16);
+                g.Disc(roundel + Vector3.up * .008f, .49f, Vector3.up, Cream, 16);
+                g.Disc(roundel + Vector3.up * .016f, .25f, Vector3.up, new Color(.65f, .20f, .14f), 12);
+                visual.Propellers.Add(BuildPropeller(visual.Root, new Vector3(side * 3.4f, -.12f, 3.73f)));
+            }
+            // Closed bomb-bay doors are geometry, as are the dorsal observation blister and framing.
+            g.Box(new Vector3(0, -.86f, -.5f), new Vector3(.81f, .10f, 3.2f), Dark);
+            g.Edge(new Vector3(0, -.925f, -2.1f), new Vector3(0, -.925f, 1.1f), .04f, Cream);
+            g.Octahedron(new Vector3(0, 1.08f, -1.4f), new Vector3(.62f, .5f, .67f), glass);
+            MeshObject("Bomber fuselage / wings / nacelles / twin fins", g, visual.Root);
+            var cockpitGlass = new Geometry();
+            cockpitGlass.Octahedron(new Vector3(0, 1.04f, 3.48f), new Vector3(.81f, .64f, 1.35f), glass);
+            cockpitGlass.Edge(new Vector3(0, 1.67f, 3.45f), new Vector3(0, 1.05f, 4.82f), .055f, Dark);
+            visual.Canopy = MeshObject("Raised bomber cockpit", cockpitGlass, visual.Root);
+            visual.Root.localScale = new Vector3(state.Definition.Wingspan / 21.4f, 1.15f, state.Definition.Length / 14.8f);
+            return visual;
+        }
+
+        GroundVisual BuildGroundTarget(GroundTarget target)
+        {
+            var visual = new GroundVisual { Root = NewChild(target.Name + " / ground target", generatedRoot) };
+            visual.Intact = NewChild("Intact vehicle", visual.Root);
+            var g = new Geometry();
+            Color paint = new Color(.43f, .41f, .26f), canvas = new Color(.52f, .48f, .32f);
+            if (target.IsAntiAircraft)
+            {
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    g.Edge(new Vector3(side * 3.2f, -1.5f, -2.7f), new Vector3(-side * 3.2f, -1.5f, 2.7f), .5f, paint);
+                    for (int n = -2; n <= 2; n++)
+                    {
+                        g.Box(new Vector3(side * 4.3f, -1.45f, n * 1.65f), new Vector3(1.15f, 1.1f, 1.55f), canvas);
+                        g.Box(new Vector3(n * 1.65f, -1.45f, side * 4.3f), new Vector3(1.55f, 1.1f, 1.15f), canvas);
+                    }
+                }
+                g.Box(new Vector3(0, -1.1f, 0), new Vector3(2.6f, 1.8f, 2.6f), paint);
+                g.Box(new Vector3(0, .4f, 0), new Vector3(.65f, 1.7f, .65f), Dark);
+                MeshObject("Gun carriage and sandbags", g, visual.Intact);
+                var gun = new Geometry();
+                gun.Box(new Vector3(0, 0, .1f), new Vector3(1.6f, 1.5f, .25f), paint);
+                gun.Box(new Vector3(0, -.1f, -.6f), new Vector3(.5f, .55f, 1.3f), Dark);
+                gun.Edge(new Vector3(-.25f, .08f, 0), new Vector3(-.25f, .08f, 3.1f), .16f, Dark);
+                gun.Edge(new Vector3(.25f, .08f, 0), new Vector3(.25f, .08f, 3.1f), .16f, Dark);
+                gun.Box(new Vector3(-.65f, -.4f, -.4f), new Vector3(.65f, .6f, .8f), Cream * .6f);
+                visual.Gun = MeshObject("Tracking twin anti-aircraft gun", gun, visual.Intact);
+                visual.Gun.localPosition = Vector3.up * 1.3f;
+            }
+            else
+            {
+                g.Box(new Vector3(0, -.75f, -.2f), new Vector3(2.6f, .38f, 6.7f), Dark);
+                g.Box(new Vector3(0, -.17f, -1.05f), new Vector3(2.65f, .78f, 4.45f), paint);
+                g.Box(new Vector3(0, .98f, -1.05f), new Vector3(2.55f, 1.5f, 4.4f), canvas);
+                g.Box(new Vector3(0, .4f, 2.05f), new Vector3(2.5f, 2.2f, 2.05f), paint);
+                g.Box(new Vector3(0, -.1f, 3.22f), new Vector3(2.45f, 1.0f, .52f), paint);
+                g.Box(new Vector3(0, .80f, 3.09f), new Vector3(2.1f, .7f, .05f), new Color(.17f, .29f, .32f));
+                g.Box(new Vector3(0, .8f, 3.14f), new Vector3(.08f, .78f, .07f), paint);
+                g.Box(new Vector3(0, -.26f, 3.51f), new Vector3(1.1f, .55f, .05f), Dark);
+                g.Box(new Vector3(0, -.66f, 3.59f), new Vector3(2.85f, .18f, .17f), Dark);
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    g.Box(new Vector3(side * 1.27f, .83f, 2.17f), new Vector3(.05f, .72f, 1.25f), new Color(.17f, .29f, .32f));
+                    g.Box(new Vector3(side * 1.04f, -.06f, 3.52f), new Vector3(.23f, .23f, .07f), Cream);
+                    for (int wheel = 0; wheel < 3; wheel++)
+                    {
+                        float z = wheel == 0 ? 2.32f : -1.42f - (wheel - 1) * 1.35f;
+                        g.Box(new Vector3(side * 1.25f, -1.19f, z), new Vector3(.55f, 1.25f, 1.25f), Dark);
+                        g.Disc(new Vector3(side * 1.54f, -1.19f, z), .26f, Vector3.right * side, paint, 8);
+                    }
+                }
+                MeshObject("Canvas troop truck / cab / wheels", g, visual.Intact);
+                visual.Intact.localScale = new Vector3(target.Extents.X / 1.55f, target.Extents.Y / 2f, target.Extents.Z / 3.65f);
+            }
+            var wreck = new Geometry();
+            Color charcoal = new Color(.13f, .14f, .12f);
+            wreck.Box(new Vector3(0, -target.Extents.Y + .45f, 0), new Vector3(target.Extents.X * 1.85f, .9f, target.Extents.Z * 1.65f), charcoal);
+            wreck.Octahedron(new Vector3(-.6f, -target.Extents.Y + 1, 1), new Vector3(target.Extents.X * .72f, 1.6f, target.Extents.Z * .48f), charcoal * .8f);
+            wreck.Box(new Vector3(target.Extents.X * .8f, -target.Extents.Y + .6f, -1), new Vector3(.5f, 1.2f, 1.2f), Dark);
+            visual.Wreck = MeshObject("Blackened wreckage", wreck, visual.Root);
+            visual.Root.position = World(target.Position);
+            return visual;
+        }
+
+        void BuildSupplyRoute(AirMission mission)
+        {
+            GroundTarget first = null;
+            for (int i = 0; i < mission.GroundTargets.Count; i++)
+                if (!mission.GroundTargets[i].IsAntiAircraft) { first = mission.GroundTargets[i]; break; }
+            if (first == null) return;
+            Vector3 forward = new Vector3(Mathf.Sin(first.Heading), 0, Mathf.Cos(first.Heading));
+            Vector3 right = new Vector3(forward.z, 0, -forward.x);
+            var road = new Geometry();
+            for (int i = -42; i < 150; i++)
+            {
+                Vector3 a = World(first.Position) + right * 6.5f + forward * (i * 12), b = a + forward * 12;
+                Vector3 al = a - right * 12, ar = a + right * 12, bl = b - right * 12, br = b + right * 12;
+                road.Quad(Ground(mission.Terrain, al.x, al.z) + Vector3.up * .2f,
+                    Ground(mission.Terrain, bl.x, bl.z) + Vector3.up * .2f,
+                    Ground(mission.Terrain, br.x, br.z) + Vector3.up * .2f,
+                    Ground(mission.Terrain, ar.x, ar.z) + Vector3.up * .2f, new Color(.46f, .43f, .31f));
+            }
+            MeshObject("Supply road / terrain following", road, generatedRoot);
         }
 
         Transform BuildPropeller(Transform parent,Vector3 position)
@@ -420,13 +621,13 @@ namespace Meridian
             var tracer=new Geometry();
             tracer.Edge(Vector3.zero,Vector3.forward,1,new Color(1,.73f,.28f));
             var tracerMesh=BuildMesh(tracer,"Shared tracer geometry");
-            for(int i=0;i<160;i++) tracerPool.Add(MeshObject("Ballistic tracer",tracerMesh,generatedRoot,instrumentMaterial));
+            for(int i=0;i<320;i++) tracerPool.Add(MeshObject("Ballistic tracer",tracerMesh,generatedRoot,instrumentMaterial));
             var flash=new Geometry(); flash.Octahedron(Vector3.zero,Vector3.one,new Color(1,.67f,.23f));
             var flashMesh=BuildMesh(flash,"Shared impact geometry");
             for(int i=0;i<80;i++) effectPool.Add(MeshObject("Impact / debris",flashMesh,generatedRoot,material));
             var smoke=new Geometry(); smoke.Octahedron(Vector3.zero,Vector3.one,new Color(.21f,.23f,.23f));
             var smokeMesh=BuildMesh(smoke,"Shared smoke geometry");
-            for(int i=0;i<90;i++) smokePool.Add(MeshObject("Damage smoke",smokeMesh,generatedRoot,material));
+            for(int i=0;i<160;i++) smokePool.Add(MeshObject("Damage smoke",smokeMesh,generatedRoot,material));
             foreach(var t in tracerPool) t.gameObject.SetActive(false);
             foreach(var t in effectPool) t.gameObject.SetActive(false);
             foreach(var t in smokePool) t.gameObject.SetActive(false);
@@ -465,6 +666,18 @@ namespace Meridian
                     t.localScale=new Vector3(size,size*.7f,size*.65f);
                 }
             }
+            foreach (var target in mission.GroundTargets)
+            {
+                if (target.Alive) continue;
+                for (int flame = 0; flame < 2 && cursor < effectPool.Count; flame++)
+                {
+                    var t = effectPool[cursor++]; t.gameObject.SetActive(true);
+                    float pulse = 1.0f + .3f * Mathf.Sin(mission.Time * 8 + target.Id * 7 + flame * 3);
+                    t.position = World(target.Position) + new Vector3(flame * 1.2f - .6f, -.4f, flame * 2 - 1);
+                    t.localScale = new Vector3(.8f, 2.2f, .9f) * pulse;
+                    t.rotation = Quaternion.Euler(0, mission.Time * 23 + flame * 70, 0);
+                }
+            }
             for(int i=cursor;i<effectPool.Count;i++) effectPool[i].gameObject.SetActive(false);
             cursor=0;
             foreach(var plane in mission.Aircraft)
@@ -478,6 +691,20 @@ namespace Meridian
                     t.position=World(plane.Position)-World(plane.Velocity)*age*1.2f+Vector3.up*age*5;
                     float size=1+age*6; t.localScale=new Vector3(size,size*.85f,size);
                     t.rotation=Quaternion.Euler(puff*60,puff*27,puff*43);
+                }
+            }
+            foreach (var target in mission.GroundTargets)
+            {
+                if (target.Alive && target.Health > target.MaxHealth * .55f) continue;
+                int count = target.Alive ? 5 : 12;
+                for (int puff = 0; puff < count && cursor < smokePool.Count; puff++)
+                {
+                    var t = smokePool[cursor++]; t.gameObject.SetActive(true);
+                    float age = (mission.Time * .19f + puff / (float)count) % 1f;
+                    t.position = World(target.Position) + new Vector3(age * 7, 1.5f + age * 31, age * 3);
+                    float size = 1.3f + age * 6;
+                    t.localScale = new Vector3(size, size * 1.15f, size);
+                    t.rotation = Quaternion.Euler(puff * 37, puff * 71, puff * 13);
                 }
             }
             for(int i=cursor;i<smokePool.Count;i++) smokePool[i].gameObject.SetActive(false);
@@ -508,7 +735,7 @@ namespace Meridian
         {
             if(generatedRoot!=null) { generatedRoot.gameObject.SetActive(false); Destroy(generatedRoot.gameObject); }
             foreach(var mesh in meshes) if(mesh!=null) Destroy(mesh);
-            meshes.Clear();aircraft.Clear();tracerPool.Clear();effectPool.Clear();smokePool.Clear();
+            meshes.Clear();aircraft.Clear();groundTargets.Clear();tracerPool.Clear();effectPool.Clear();smokePool.Clear();
             if(material!=null) Destroy(material);if(skyMaterial!=null) Destroy(skyMaterial);if(instrumentMaterial!=null) Destroy(instrumentMaterial);
             material=null;skyMaterial=null;instrumentMaterial=null;viewCamera=null;cameraInitialized=false;
         }
