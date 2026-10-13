@@ -6,7 +6,7 @@ using NVector3 = System.Numerics.Vector3;
 namespace Meridian
 {
     /// <summary>Scene-owned controls, fixed-step clock and interface. No persistent game state.</summary>
-    public sealed class AirCombatGame : MonoBehaviour
+    public sealed partial class AirCombatGame : MonoBehaviour
     {
         public AirMission Mission { get; private set; }
         public AirRenderer View { get; private set; }
@@ -21,15 +21,17 @@ namespace Meridian
         readonly AirInputAdapter inputAdapter = new AirInputAdapter();
         public AirInputAdapter Controls { get { return inputAdapter; } }
         public int SelectedTargetId { get { return Mission.SelectedTargetId; } }
-        float accumulator, hitFlash, lookYaw, lookPitch;
+        float accumulator, hitFlash;
         int previousHits;
         int menuIndex = 5;
-        bool help, invertMouse, stickBindings;
+        bool help, invertMouse, stickBindings, lookingAround;
         bool editingSeed;
         string seedError = "";
-        GUIStyle body, small, title, button, number;
+        GUIStyle body, small, description, title, button, number;
         readonly Color ink = new Color(.88f,.90f,.78f), amber = new Color(1,.73f,.30f), green = new Color(.59f,.89f,.63f);
         Rect screenRect;
+        readonly GUIContent layoutMeasure=new GUIContent();
+        public int DescriptionOverflowCount {get;private set;}
 
         void Awake()
         {
@@ -42,31 +44,36 @@ namespace Meridian
 
         public void StartSortie(int seed, MissionKind kind)
         {
+            Campaign=null;
             selectedKind=kind;SeedText=seed.ToString();seedError="";
             Mission=new AirMission(seed,kind);View.Build(Mission);
             if(Mission.SelectedTargetId<0)Mission.SelectNextTarget();
-            Briefing=false;Paused=false;help=false;stickBindings=false;editingSeed=false;accumulator=0;previousHits=0;hitFlash=0;lookYaw=lookPitch=0;menuIndex=0;
+            Briefing=false;Paused=false;help=false;stickBindings=false;editingSeed=false;accumulator=0;previousHits=0;hitFlash=0;menuIndex=0;
+            ResetFlightPresentation();
             inputAdapter.Reset();
-            ShowLead=kind==MissionKind.Duel;SetCursor();
+            ShowLead=true;SetCursor();
         }
-        public void SetPaused(bool value) { Paused=value;accumulator=0;menuIndex=0;if(!value)stickBindings=false;SetCursor(); }
-        public void StepForDiagnostics(FlightInput input,float dt) { Mission.Step(input,dt); View.Sync(Mission,dt); }
-        public void ShowBriefing() { Briefing=true;Paused=false;help=false;menuIndex=5;SetCursor(); }
+        public void SetPaused(bool value) { Paused=value;accumulator=0;menuIndex=0;if(!value)stickBindings=false;lookingAround=false;viewControls.Reset();View.SetLook(0,0);SetCursor(); }
+        public void StepForDiagnostics(FlightInput input,float dt) { StepFlight(input,dt); View.Sync(Mission,dt); }
+        public void ShowBriefing() { Briefing=true;Paused=false;help=false;menuIndex=5;aftermathRemaining=0;outcomeObserved=Mission.Outcome!=MissionOutcome.Flying;viewControls.Reset();SetCursor(); }
         void SetCursor()
         {
-            bool flying=!Briefing&&!Paused&&Mission.Outcome==MissionOutcome.Flying;
-            Cursor.visible=!flying || MouseStick;
-            Cursor.lockState=flying ? CursorLockMode.Confined : CursorLockMode.None;
+            bool flying=!Briefing&&!Paused&&!RogueScreenOpen&&Mission.Outcome==MissionOutcome.Flying;
+            Cursor.visible=!flying || (MouseStick&&!lookingAround);
+            Cursor.lockState=flying ? (lookingAround?CursorLockMode.Locked:CursorLockMode.Confined) : CursorLockMode.None;
         }
         void OnDestroy() { inputAdapter.Dispose();Cursor.visible=true;Cursor.lockState=CursorLockMode.None; }
 
         void Update()
         {
             float dt=Mathf.Min(Time.unscaledDeltaTime,.1f);
+            ObserveOutcome();
             inputAdapter.Settings.Sensitivity=Sensitivity;inputAdapter.Settings.MouseStick=MouseStick;inputAdapter.Settings.InvertMouse=invertMouse;
-            bool wasFlying=!Briefing&&!Paused&&Mission.Outcome==MissionOutcome.Flying;
-            AirControlIntent intent=inputAdapter.Read(dt,wasFlying&&!DiagnosticControl);
-            if(Briefing||Paused||Mission.Outcome!=MissionOutcome.Flying)HandleMenu(intent);
+            bool wasFlying=!Briefing&&!Paused&&!RogueScreenOpen&&Mission.Outcome==MissionOutcome.Flying;
+            AirControlIntent intent=inputAdapter.Read(dt,wasFlying&&!DiagnosticControl,wasFlying&&Campaign!=null,wasFlying);
+            if(AftermathActive)HandleAftermath(intent,dt);
+            else if(RogueScreenOpen)HandleRogueMenu(intent);
+            else if(Briefing||Paused||Mission.Outcome!=MissionOutcome.Flying)HandleMenu(intent);
             else
             {
                 if(intent.Pause){help=false;SetPaused(true);}
@@ -76,24 +83,34 @@ namespace Meridian
                 if(intent.NextTarget)Mission.SelectNextTarget();
                 if(!SelectedTargetAlive())Mission.SelectNextTarget();
                 if(intent.HasOrder)Mission.IssueOrder(intent.Order,Mission.SelectedTargetId);
+                if(Campaign!=null&&!Paused)
+                {if(intent.Ability1)ActivateRogueAbility(0);if(intent.Ability2)ActivateRogueAbility(1);}
                 if(intent.MouseMode){MouseStick=!MouseStick;if(MouseStick&&Mouse.current!=null)Mouse.current.WarpCursorPosition(new Vector2(Screen.width*.5f,Screen.height*.5f));SetCursor();}
-                if(intent.CenterLook){lookYaw=lookPitch=0;}
-                lookYaw=Mathf.Clamp(lookYaw+intent.LookRate.x*dt+intent.LookDelta.x,-130,130);
-                lookPitch=Mathf.Clamp(lookPitch+intent.LookRate.y*dt+intent.LookDelta.y,-65,65);
-                View.SetLook(lookYaw,lookPitch);
+                viewControls.Step(intent,dt,wasFlying&&!Paused);
+                View.SetLook(viewControls.Yaw,viewControls.Pitch);
+                bool heldLook=!Paused&&(intent.FreeLookHeld||intent.RearViewHeld);
+                if(heldLook!=lookingAround)
+                {
+                    lookingAround=heldLook;SetCursor();
+                    if(!heldLook&&MouseStick&&Mouse.current!=null)
+                        Mouse.current.WarpCursorPosition(new Vector2(Screen.width*.5f,Screen.height*.5f));
+                }
             }
-            if(!Briefing&&!Paused&&Mission.Outcome==MissionOutcome.Flying&&!DiagnosticControl)
+            if(!Briefing&&!Paused&&!RogueScreenOpen&&Mission.Outcome==MissionOutcome.Flying&&!DiagnosticControl)
             {
                 FlightInput input=ReadControls(intent);
                 accumulator+=dt;
                 while(accumulator>=1f/60f)
                 {
-                    Mission.Step(input,1f/60f);accumulator-=1f/60f;
+                    StepFlight(input,1f/60f);accumulator-=1f/60f;
+                    if(Mission.Outcome!=MissionOutcome.Flying)break;
                 }
                 if(Mission.Outcome!=MissionOutcome.Flying){menuIndex=0;SetCursor();}
             }
             if(Mission.Hits>previousHits)hitFlash=.35f;
             previousHits=Mission.Hits;hitFlash=Mathf.Max(0,hitFlash-Time.unscaledDeltaTime);
+            UpdateAircraftFeedback(Paused?0:dt);
+            if(!Paused&&!RogueScreenOpen)abilityFeedbackTime=Mathf.Max(0,abilityFeedbackTime-Time.unscaledDeltaTime);
             View.Sync(Mission,Paused?0:Time.unscaledDeltaTime);
         }
 
@@ -109,18 +126,21 @@ namespace Meridian
         }
         void HandleMenu(AirControlIntent intent)
         {
+            if(Briefing&&!editingSeed&&intent.OpenRogue){OpenNewRogueFromSeed();return;}
             if(stickBindings){if(intent.Back||intent.Pause)stickBindings=false;return;}
             if(intent.Back){if(Briefing||Mission.Outcome!=MissionOutcome.Flying)VectorCabinet.GameCollection.ReturnToMenu();else{help=false;SetPaused(false);}return;}
             if((intent.Pause||intent.Notes)&&!Briefing&&Mission.Outcome==MissionOutcome.Flying){help=false;SetPaused(false);return;}
-            int count=Briefing?7:3;
+            int count=Briefing?10:3;
             if(intent.MenuMove!=0&&!(Briefing&&editingSeed))menuIndex=(menuIndex+intent.MenuMove+count)%count;
-            if(Briefing&&!editingSeed&&intent.MissionChoice>=0){selectedKind=MissionAt(intent.MissionChoice);menuIndex=intent.MissionChoice;}
+            if(Briefing&&!editingSeed&&intent.MissionChoice>=0){selectedKind=MissionAt(intent.MissionChoice);menuIndex=intent.MissionChoice<5?intent.MissionChoice:intent.MissionChoice+3;}
             if(!intent.Submit)return;
             if(Briefing)
             {
                 // Enter keeps its original quick-launch behavior; a gamepad selects the focused row.
                 if(intent.QuickLaunch){Launch();return;}
-                if(menuIndex<5)selectedKind=MissionAt(menuIndex);else if(menuIndex==5)Launch();else VectorCabinet.GameCollection.ReturnToMenu();
+                if(menuIndex<5)selectedKind=MissionAt(menuIndex);else if(menuIndex==5)Launch();
+                else if(menuIndex>=8)selectedKind=MissionAt(menuIndex-3);
+                else if(menuIndex==7)OpenNewRogueFromSeed();else VectorCabinet.GameCollection.ReturnToMenu();
             }
             else if(Mission.Outcome!=MissionOutcome.Flying)
             {
@@ -129,13 +149,13 @@ namespace Meridian
                 else VectorCabinet.GameCollection.ReturnToMenu();
             }
             else if(menuIndex==0){help=false;SetPaused(false);}
-            else if(menuIndex==1)StartSortie(Mission.Seed,Mission.Kind);
+            else if(menuIndex==1)RestartFlightMode();
             else VectorCabinet.GameCollection.ReturnToMenu();
         }
         static MissionKind MissionAt(int index)
-        {return index==0?MissionKind.Interception:index==1?MissionKind.BomberEscort:index==2?MissionKind.GroundAttack:index==3?MissionKind.Duel:MissionKind.ConvoyCover;}
+        {return index==0?MissionKind.Interception:index==1?MissionKind.BomberEscort:index==2?MissionKind.GroundAttack:index==3?MissionKind.Duel:index==4?MissionKind.ConvoyCover:index==5?MissionKind.AceHunt:MissionKind.FleetBattle;}
         static string MissionName(MissionKind kind)
-        {return kind==MissionKind.Interception?"FIGHTER INTERCEPTION":kind==MissionKind.BomberEscort?"BOMBER ESCORT":kind==MissionKind.GroundAttack?"GROUND ATTACK":kind==MissionKind.Duel?"TRAINING DUEL":"COURIER COVER";}
+        {return kind==MissionKind.Interception?"FIGHTER INTERCEPTION":kind==MissionKind.BomberEscort?"BOMBER ESCORT":kind==MissionKind.GroundAttack?"GROUND ATTACK":kind==MissionKind.Duel?"TRAINING DUEL":kind==MissionKind.ConvoyCover?"COURIER COVER":kind==MissionKind.AceHunt?"ACE HUNT":"CHANNEL AIR BATTLE";}
         void Launch() { int seed;if(int.TryParse(SeedText,out seed))StartSortie(seed,selectedKind);else seedError="Use a whole-number seed."; }
 
         void Styles()
@@ -143,6 +163,7 @@ namespace Meridian
             if(body!=null)return;
             body=new GUIStyle(GUI.skin.label){fontSize=18,wordWrap=true,normal={textColor=ink}};
             small=new GUIStyle(body){fontSize=14};
+            description=new GUIStyle(body){fontSize=17};
             title=new GUIStyle(body){fontSize=43,fontStyle=FontStyle.Bold};
             number=new GUIStyle(body){fontSize=24,fontStyle=FontStyle.Bold};
             button=new GUIStyle(body){fontSize=17,alignment=TextAnchor.MiddleCenter};
@@ -150,7 +171,11 @@ namespace Meridian
         void Fill(float x,float y,float w,float h,Color color)
         {var old=GUI.color;GUI.color=color;GUI.DrawTexture(new Rect(x,y,w,h),Texture2D.whiteTexture);GUI.color=old;}
         void Label(float x,float y,float w,float h,string text,GUIStyle style=null,Color? color=null)
-        {var old=GUI.color;if(color.HasValue)GUI.color=color.Value;GUI.Label(new Rect(x,y,w,h),text,style??body);GUI.color=old;}
+        {
+            if(DiagnosticControl&&style==description&&Event.current.type==EventType.Repaint)
+            {layoutMeasure.text=text;if(style.CalcHeight(layoutMeasure,w)>h+1)DescriptionOverflowCount++;}
+            var old=GUI.color;if(color.HasValue)GUI.color=color.Value;GUI.Label(new Rect(x,y,w,h),text,style??body);GUI.color=old;
+        }
         bool Button(float x,float y,float w,string text,bool active=false)
         {
             Rect r=new Rect(x,y,w,43);
@@ -162,20 +187,24 @@ namespace Meridian
         {
             var mat=GUI.matrix;GUI.matrix=mat*Matrix4x4.TRS(a,Quaternion.Euler(0,0,Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg),Vector3.one);
             float length=Vector2.Distance(a,b);
-            Fill(0,-width/2-.7f,length,width+1.4f,new Color(.018f,.025f,.021f,c.a*.75f));
+            Fill(0,-width/2-1f,length,width+2f,new Color(.012f,.018f,.015f,.95f));
             Fill(0,-width/2,length,width,c);GUI.matrix=mat;
         }
         void OnGUI()
         {
             if(Mission==null||View==null)return;Styles();
+            if(Event.current.type==EventType.Repaint)DescriptionOverflowCount=0;
             float scale=Mathf.Min(Screen.width/1280f,Screen.height/800f);
             screenRect=new Rect((Screen.width-1280*scale)/2,(Screen.height-800*scale)/2,1280*scale,800*scale);
             GUI.matrix=Matrix4x4.TRS(new Vector3(screenRect.x,screenRect.y,0),Quaternion.identity,Vector3.one*scale);
-            if(Briefing)BriefingScreen();
+            if(RogueScreenOpen)RogueScreen();
+            else if(Briefing)BriefingScreen();
             else
             {
                 Hud();
-                if(Mission.Outcome!=MissionOutcome.Flying)Debrief();
+                if(Campaign!=null)RogueFlightHud();
+                if(AftermathActive){AftermathHud();if(Paused)PauseScreen();}
+                else if(Mission.Outcome!=MissionOutcome.Flying)Debrief();
                 else if(Paused)PauseScreen();
             }
             GUI.matrix=Matrix4x4.identity;
@@ -189,32 +218,36 @@ namespace Meridian
             Label(78,45,1060,25,"THE VECTOR CABINET   /   SQUADRON OPERATIONS   /   SUMMER 1944",small,amber);
             Label(75,77,1080,62,"MERIDIAN 1944",title);
             Label(79,140,1060,30,"Your flight. Your decisions. Every aircraft can be lost.");
-            for(int i=0;i<5;i++)
+            for(int i=0;i<7;i++)
             {
                 MissionKind kind=MissionAt(i);
-                if(Button(79,190+i*51,405,(menuIndex==i?"> ":"")+(i+1)+"  "+MissionName(kind),selectedKind==kind)){selectedKind=kind;menuIndex=i;}
+                int focus=i<5?i:i+3,hotkey=i<5?i+1:i+2;
+                if(Button(79,176+i*46,405,(menuIndex==focus?"> ":"")+hotkey+"  "+MissionName(kind),selectedKind==kind)){selectedKind=kind;menuIndex=focus;}
             }
             Label(514,190,670,34,MissionName(selectedKind),number,amber);
             Label(514,234,665,108,BriefingText(selectedKind));
             Label(514,351,665,91,selectedKind==MissionKind.Duel||selectedKind==MissionKind.ConvoyCover?
                 "Original patrols preserved. Bank, pull, lead the target and use short bursts inside 300–600 m. Your opponent flies the same aerodynamic model.":
-                "Two wingmen fly with you. They can be separated, damaged or shot down. Orders guide their intentions; immediate danger takes priority. Stay aware of your objective.",small);
-            Label(79,462,530,124,"W / S   nose down / up     A / D   roll\nQ / E   rudder     Shift / Ctrl   throttle\nSpace / LMB   guns     Z   level assist     Tab   target\n1   form up     2   engage     3   cover me     4   regroup\nC   view     G   lead cue     M   mouse stick     RMB   look",small);
-            Label(653,462,524,124,"GAMEPAD: left stick fly; triggers rudder; RB guns\nD-pad up / down throttle; LB level assist; right stick look\nX target; B view; A lead cue; right-stick click center look\nHold Y + D-pad: up form / right engage / left cover / down regroup\nStart pause. Menus: D-pad navigate, A select, B back.",small);
-            Label(79,612,108,25,"SORTIE SEED",small,amber);
+                "Two wingmen fly with you. They can be separated, damaged or shot down. Orders guide their intentions; immediate danger takes priority. Stay aware of your objective.",description);
+            Label(79,515,530,123,"W/S pitch   A/D roll   Q/E rudder\nWheel/Shift/Ctrl throttle   Space/LMB guns\nRMB free-look (release centers)   Hold X rear\n1 form   2 engage   3 cover   4 regroup\nTab target   Z level   C view   G lead   M mouse\nAFTERBURN: T / Y abilities (also 5 / 6)",description);
+            Label(653,515,524,123,"GAMEPAD: left stick fly; triggers rudder; RB guns\nD-pad throttle; LB level; right stick look\nX target; B view; A lead; stick-click center\nHold Y + D-pad: up form / right engage / left cover / down regroup\nAFTERBURN: hold Y + LB / RB for abilities\nStart pause. Menus: D-pad / A / B.",description);
+            Label(79,657,108,25,"SORTIE SEED",small,amber);
             GUI.SetNextControlName("MeridianSortieSeed");
-            SeedText=GUI.TextField(new Rect(195,607,174,32),SeedText,12);
+            SeedText=GUI.TextField(new Rect(195,652,174,32),SeedText,12);
             editingSeed=GUI.GetNameOfFocusedControl()=="MeridianSortieSeed";
-            Label(391,610,787,39,seedError.Length>0?seedError:"After launch, Esc / Start opens controls, stick bindings and axis inversion.",small);
-            if(Button(79,681,535,(menuIndex==5?"> ":"")+"TAKE THE AIR   [ENTER / A]",menuIndex==5))Launch();
-            if(Button(645,681,535,(menuIndex==6?"> ":"")+"RETURN TO CABINET",menuIndex==6))VectorCabinet.GameCollection.ReturnToMenu();
+            Label(391,655,246,52,seedError.Length>0?seedError:"Esc / Start opens controls after launch.",small);
+            if(Button(645,652,535,"OPERATION AFTERBURN / ROGUELITE [6]",menuIndex==7)){OpenNewRogueFromSeed();return;}
+            if(Button(79,717,535,(menuIndex==5?"> ":"")+"TAKE THE AIR   [ENTER / A]",menuIndex==5)){Launch();return;}
+            if(Button(645,717,535,(menuIndex==6?"> ":"")+"RETURN TO CABINET",menuIndex==6))VectorCabinet.GameCollection.ReturnToMenu();
         }
 
         static string BriefingText(MissionKind kind)
         {
             switch(kind)
             {
-                case MissionKind.Interception:return "Destroy both raiders before either crosses the defended boundary. Escort fighters are secondary targets. Identify Raid 1 and Raid 2, designate a target with Tab, and send your wingmen to engage before the raiders get through.";
+                case MissionKind.Interception:return "Destroy both raiders before either crosses the defended boundary. They cross your nose below you: cut across their route before settling behind them. Tab selects Raid 1 / Raid 2; send wingmen to engage. Their escort fighters are secondary targets.";
+                case MissionKind.AceHunt:return "Hunt the enemy ace with Rook and Finch. His aircraft has ordinary armor and obeys the same physics. Expect disciplined bursts, energy extensions and defensive reversals. Keep your flight together and deny him an isolated opponent.";
+                case MissionKind.FleetBattle:return "Break the offensive: destroy three of five enemy fighters and survive until both flights enter the contested airspace. Rook, Finch and the independent Blue pair support you. Reinforcements approach on another bearing; regroup and conserve ammunition between contacts.";
                 case MissionKind.BomberEscort:return "Protect the bomber formation on its route to friendly airspace. At least two bombers must arrive. Killing every fighter does not complete the escort: the bombers must make it home. Break off distant pursuits when the formation needs you.";
                 case MissionKind.GroundAttack:return "Destroy all four supply trucks and survive. Two gun positions and hostile fighters defend the target; destroying them is optional. Set up a shallow strafing pass, aim at the marked vehicles and pull out early. Your wingmen can keep the fighters occupied.";
                 case MissionKind.ConvoyCover:return "Protect the unarmed Heron courier for five minutes, or destroy both interceptors. They divide their attention between you and the courier. Stay close enough to intervene.";
@@ -273,7 +306,7 @@ namespace Meridian
             Instrument(940,"ROUNDS",p.Ammo.ToString(),p.Ammo<150?amber:ink);
             Instrument(1112,"G LOAD",p.LoadFactor.ToString("0.0"),ink);
             bool ahead;Vector2 sight=Project(p.Position+p.Forward*1200,out ahead);
-            if(ahead) { Line(sight+new Vector2(-15,0),sight+new Vector2(-5,0),green);Line(sight+new Vector2(5,0),sight+new Vector2(15,0),green);Line(sight+new Vector2(0,-15),sight+new Vector2(0,-5),green);Fill(sight.x-1,sight.y-1,2,2,green); }
+            if(ahead)Gunsight(sight);
             var target=Target();
             if(target!=null)
             {
@@ -282,32 +315,34 @@ namespace Meridian
                 bool contact=distance<5500&&Visible(target.Position);
                 if(contact&&ahead&&pt.x>22&&pt.x<1258&&pt.y>105&&pt.y<680)
                 {
-                    Bracket(pt,amber,17);Label(pt.x+23,pt.y-21,220,24,target.Callsign+"  "+distance.ToString("0")+"m",small,amber);
+                    Bracket(pt,amber,17);
+                    if(!HasObjectiveAircraftMarker(target.Id))WorldLabel(pt.x+23,pt.y-21,220,24,target.Callsign+"  "+distance.ToString("0")+"m",small,amber);
                     if(ShowLead&&distance<1400)
                     {
                         Vector2 lead=Project(Weapons.ComputeLead(p,target),out ahead);
                         if(ahead&&lead.x>0&&lead.x<1280&&lead.y>80&&lead.y<700)
-                        { Bracket(lead,green,5);Line(pt,lead,new Color(.63f,.8f,.62f,.4f),1); }
+                        { Bracket(lead,green,7);Line(pt,lead,new Color(.63f,.8f,.62f,.4f),1); }
                     }
                 }
-                else if(contact)
+                else if(contact&&!HasObjectiveAircraftMarker(target.Id))
                 {
                     var local=System.Numerics.Vector3.Transform(target.Position-p.Position,System.Numerics.Quaternion.Inverse(p.Rotation));
                     string bearing=local.Z<0?"BEHIND / ":"";
                     bearing+=local.X<0?"LEFT":"RIGHT";bearing+=local.Y>150?" / HIGH":local.Y < -150?" / LOW":" / LEVEL";
-                    Label(414,97,620,27,target.Callsign+"  "+distance.ToString("0")+"m  "+bearing,small,amber);
+                    WorldLabel(414,97,620,27,target.Callsign+"  "+distance.ToString("0")+"m  "+bearing,small,amber);
                 }
-                Label(22,103,250,26,"TARGET  "+target.Callsign,small,amber);
-                Label(22,131,280,26,contact?$"{distance:0}m   {target.Health:0}%":"Contact obscured / beyond visual range",small);
+                WorldLabel(22,103,250,26,"TARGET  "+target.Callsign,small,amber);
+                WorldLabel(22,131,280,26,contact?$"{distance:0}m   {target.Health:0}"+(Campaign==null?"%":" HP"):"Contact obscured / beyond visual range",small);
             }
             else GroundTargetHud();
             SquadronHud();
             ObjectiveHud();
+            MissionObjectiveMarkers();
             Radar();
             string warning=p.StallFactor>.2f?"STALL — LOWER NOSE, ADD POWER":p.Speed>p.Definition.MaxSpeed?"OVERSPEED — REDUCE POWER, EASE OUT":agl<140?"TERRAIN — WINGS LEVEL, PULL UP":p.Health<35?"AIRFRAME DAMAGED — FLY SMOOTHLY":"";
-            if(warning.Length>0)Label(335,628,860,37,warning,number,amber);
-            if(Mission.MessageTime>0)Label(289,668,794,31,Mission.LastMessage,body,green);
-            if(hitFlash>0)Label(sight.x+27,sight.y+20,120,26,"HIT",small,green);
+            if(!AftermathActive&&warning.Length>0)Label(335,628,860,37,warning,number,amber);
+            if(!AftermathActive&&Mission.MessageTime>0)Label(289,668,794,31,Mission.LastMessage,body,green);
+            if(hitFlash>0&&!AircraftHitVisible&&!AircraftKillVisible)Label(sight.x+27,sight.y+20,120,26,"HIT",small,green);
             if(ShowLead)Label(23,679,250,22,"G  LEAD CUE ON",small,green);
             if(MouseStick)
             {
@@ -332,7 +367,8 @@ namespace Meridian
                 offset=Vector2.ClampMagnitude(offset,68);
                 Fill(center.x+offset.x-3,center.y+offset.y-3,6,6,a.Team==Mission.Player.Team?green:amber);
             }
-            Label(1092,235,170,22,"VISUAL / 4 km",small);
+            ObjectiveRadar(center,heading);
+            Label(1092,235,170,22,"4 km / OBJECTIVES ◇",small);
         }
         void GroundTargetHud()
         {
@@ -340,12 +376,14 @@ namespace Meridian
             {
                 if(target.Id!=Mission.SelectedTargetId||!target.Alive)continue;
                 float distance=NVector3.Distance(target.Position,Mission.Player.Position);
-                Label(22,103,285,26,"TARGET  "+target.Name,small,amber);
-                Label(22,131,285,26,$"{distance:0}m   {target.Health/target.MaxHealth*100:0}%",small);
-                bool ahead;Vector2 point=Project(target.Position,out ahead);
-                if(ahead&&point.x>20&&point.x<1250&&point.y>100&&point.y<680&&Visible(target.Position+NVector3.UnitY*5))
-                {Bracket(point,amber,17);Label(point.x+22,point.y-18,260,40,target.Name+" / "+distance.ToString("0")+"m",small,amber);}
-                else Label(390,98,630,25,"GROUND OBJECTIVE  /  "+Bearing(target.Position)+"  /  "+distance.ToString("0")+"m",small,amber);
+                WorldLabel(22,103,285,26,"TARGET  "+target.Name,small,amber);
+                WorldLabel(22,131,285,26,$"{distance:0}m   {target.Health/target.MaxHealth*100:0}%",small);
+                if(!target.IsObjective)
+                {
+                    bool ahead;Vector2 point=Project(target.Position,out ahead);
+                    if(ahead&&point.x>20&&point.x<1250&&point.y>100&&point.y<680&&Visible(target.Position+NVector3.UnitY*5))
+                    {Bracket(point,amber,17);WorldLabel(point.x+22,point.y-18,260,40,target.Name+" / "+distance.ToString("0")+"m",small,amber);}
+                }
                 break;
             }
         }
@@ -366,23 +404,24 @@ namespace Meridian
                 if(!a.Alive||distance>4500||!Visible(a.Position))continue;
                 bool ahead;Vector2 pt=Project(a.Position,out ahead);
                 if(ahead&&pt.x>325&&pt.x<1020&&pt.y>115&&pt.y<590)
-                {Line(pt+new Vector2(-6,10),pt+new Vector2(0,15),green);Line(pt+new Vector2(6,10),pt+new Vector2(0,15),green);Label(pt.x+11,pt.y+7,190,24,a.Callsign,small,green);}
+                {Line(pt+new Vector2(-6,10),pt+new Vector2(0,15),green);Line(pt+new Vector2(6,10),pt+new Vector2(0,15),green);WorldLabel(pt.x+11,pt.y+7,190,24,a.Callsign,small,green);}
             }
-            Label(23,302,380,43,"1 FORM  2 ENGAGE  3 COVER  4 REGROUP\nTab designates the next target",small,green);
+            WorldLabel(23,302,380,43,"1 FORM  2 ENGAGE  3 COVER  4 REGROUP\nTab designates the next target",small,green);
         }
         static string OrderName(SquadronOrder order)
         {return order==SquadronOrder.FormUp?"FORM UP":order==SquadronOrder.CoverMe?"COVER ME":order==SquadronOrder.Regroup?"REGROUP":"ENGAGE";}
         void ObjectiveHud()
         {
             if(Mission.Kind==MissionKind.Duel||Mission.Kind==MissionKind.ConvoyCover)return;
+            if(Mission.Kind==MissionKind.AceHunt||Mission.Kind==MissionKind.FleetBattle)return;
             Fill(1080,279,180,7,new Color(.15f,.23f,.21f));Fill(1080,279,180*Mathf.Clamp01(Mission.ObjectiveProgress),7,green);
             if(Mission.Bombers.Count>0)
             {
-                Label(1087,300,183,23,"PROTECTED FORMATION",small,green);
+                WorldLabel(1087,300,183,23,"PROTECTED FORMATION",small,green);
                 bool threatened=false;
                 for(int i=0;i<Mission.Bombers.Count;i++)
                 {
-                    var a=Mission.Bombers[i];Label(1087,330+i*25,182,24,a.Callsign+"  "+(a.Alive?a.Health.ToString("0")+" HP":"LOST"),small,a.Alive?ink:amber);
+                    var a=Mission.Bombers[i];WorldLabel(1087,330+i*25,182,24,a.Callsign+"  "+(a.Alive?a.Health.ToString("0")+" HP":"LOST"),small,a.Alive?ink:amber);
                     if(!a.Alive)continue;
                     foreach(var enemy in Mission.Aircraft)
                     {
@@ -391,20 +430,27 @@ namespace Meridian
                         if(d2>1&&d2<1200*1200&&NVector3.Dot(enemy.Forward,NVector3.Normalize(offset))>.8f)threatened=true;
                     }
                 }
-                if(threatened)Label(420,580,690,34,"FORMATION THREATENED — BREAK OFF AND COVER",small,amber);
+                if(threatened)WorldLabel(420,580,690,34,"FORMATION THREATENED — BREAK OFF AND COVER",small,amber);
             }
+            if(Mission.GroundTargets.Count>0)
+            {
+                float clearance=(Mission.Player.Position.Y-Mission.Terrain.Height(Mission.Player.Position.X,Mission.Player.Position.Z))*3.28084f;
+                WorldLabel(1068,316,200,50,"RADALT "+clearance.ToString("0")+" ft\nV1–V4: strike vehicles",small,clearance<500?amber:ink);
+                return;
+            }
+            if(Mission.Raiders.Count>0)return;
             bool ahead;Vector2 point=Project(Mission.ObjectivePosition,out ahead);
             float distance=NVector3.Distance(Mission.ObjectivePosition,Mission.Player.Position);
             if(ahead&&point.x>330&&point.x<1010&&point.y>145&&point.y<590)
-            {Bracket(point,new Color(.5f,.8f,1f,.65f),10);Label(point.x+15,point.y+4,250,24,"OBJECTIVE  "+(distance/1000).ToString("0.0")+"km",small,new Color(.5f,.8f,1));}
+            {Bracket(point,new Color(.5f,.8f,1f,.65f),10);WorldLabel(point.x+15,point.y+4,250,24,"OBJECTIVE  "+(distance/1000).ToString("0.0")+"km",small,new Color(.5f,.8f,1));}
         }
         void PauseScreen()
         {
             Panel(142,99,996,606);
             Label(177,119,916,62,help?"PILOT'S NOTES":"SORTIE PAUSED",title);
             if(stickBindings){BindingPanel();return;}
-            Label(178,190,922,100,"Bank with A / D, then pull S to curve the flight path. W lowers the nose. Below 110 knots, lower the nose and add power. Shift / Ctrl (or R / F) throttle; Space / LMB guns; Z level assist.\nTab target; 1 form up, 2 engage, 3 cover me, 4 regroup. Orders never override survival.",body);
-            Label(178,300,921,84,"Gamepad: left stick fly; triggers rudder; RB guns; LB level. D-pad up / down throttle. X target; B view; A lead cue. Hold Y + D-pad: up form, right engage, left cover, down regroup.\nRight stick / held RMB looks around. V / middle mouse / right-stick click centers view. C view; G lead cue; M mouse stick. In menus use D-pad / A / B. Esc or Start resumes.",small);
+            Label(178,190,922,100,"Bank with A / D, then pull S to curve the flight path. W lowers the nose. Below 110 knots, lower the nose and add power. Wheel / Shift / Ctrl (or R / F) throttle; Space / LMB guns; Z level assist.\nTab target; 1 form up, 2 engage, 3 cover me, 4 regroup. Orders never override survival.",body);
+            Label(178,300,921,84,"Gamepad: left stick fly; triggers rudder; RB guns; LB level. D-pad up / down throttle. X target; B view; A lead cue. Hold Y + D-pad: up form, right engage, left cover, down regroup.\nRMB looks around; release centers. Hold X for rear view. Right stick looks; V / middle mouse / stick-click centers. C view; G lead cue; M mouse stick. In menus use D-pad / A / B. Esc or Start resumes.",small);
             Label(178,398,204,26,"STICK SENSITIVITY",small);
             Sensitivity=GUI.HorizontalSlider(new Rect(389,409,222,22),Sensitivity,.35f,1.2f);
             Label(638,398,176,26,"ANALOG DEADZONE",small);
@@ -418,9 +464,10 @@ namespace Meridian
             settings.InvertYaw=GUI.Toggle(new Rect(638,490,203,26),settings.InvertYaw," Invert analog rudder");
             settings.InvertLook=GUI.Toggle(new Rect(861,490,213,26),settings.InvertLook," Invert look pitch");
             if(Button(178,540,909,"FLIGHT-STICK BINDINGS / OPTIONAL INPUT SYSTEM CONTROL PATHS"))stickBindings=true;
+            if(Campaign!=null)Label(178,590,909,26,"TACTICAL ABILITIES — Keyboard: T / Y (or 5 / 6).   Gamepad: hold Y + LB / RB.",description,amber);
             if(Button(178,624,276,(menuIndex==0?"> ":"")+"RESUME",menuIndex==0)){help=false;SetPaused(false);}
-            if(Button(466,624,300,(menuIndex==1?"> ":"")+"RESTART SORTIE",menuIndex==1))StartSortie(Mission.Seed,Mission.Kind);
-            if(Button(778,624,309,(menuIndex==2?"> ":"")+"RETURN TO CABINET",menuIndex==2))VectorCabinet.GameCollection.ReturnToMenu();
+            if(Button(466,624,300,(menuIndex==1?"> ":"")+(Campaign==null?"RESTART SORTIE":"RESTART ENTIRE RUN"),menuIndex==1))RestartFlightMode();
+            if(Button(778,624,309,(menuIndex==2?"> ":"")+(Campaign==null?"RETURN TO CABINET":"ABANDON TO CABINET"),menuIndex==2))VectorCabinet.GameCollection.ReturnToMenu();
         }
         void BindingPanel()
         {

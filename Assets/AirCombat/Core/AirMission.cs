@@ -4,11 +4,11 @@ using System.Numerics;
 
 namespace Meridian
 {
-    public enum MissionKind { Duel, ConvoyCover, Interception, BomberEscort, GroundAttack }
+    public enum MissionKind { Duel, ConvoyCover, Interception, BomberEscort, GroundAttack, AceHunt, FleetBattle }
     public enum MissionOutcome { Flying, Victory, Defeat }
 
     /// <summary>One isolated sortie. The Unity shell owns input, presentation, and lifetime.</summary>
-    public sealed class AirMission
+    public sealed partial class AirMission
     {
         public const float EscortDuration = 300f;
         public readonly int Seed;
@@ -59,6 +59,11 @@ namespace Meridian
         public int Score { get; private set; }
         public int Kills { get; private set; }
         public int Hits { get { return weapons.PlayerHits; } }
+        public int PlayerAircraftHits { get { return weapons.PlayerAircraftHits; } }
+        public int PlayerAircraftKills { get { return weapons.PlayerAircraftKills; } }
+        public float PlayerAircraftDamage { get { return weapons.PlayerAircraftDamage; } }
+        public float LastPlayerAircraftDamage { get { return weapons.LastPlayerAircraftDamage; } }
+        public int LastPlayerAircraftTargetId { get { return weapons.LastPlayerAircraftTargetId; } }
         public int RoundsFired { get { return weapons.PlayerRounds; } }
         public int TotalRoundsFired { get { return weapons.TotalRounds; } }
         public int GroundRoundsFired
@@ -80,6 +85,8 @@ namespace Meridian
                     case MissionKind.ConvoyCover: return "Protect courier Lark for five minutes, or destroy both interceptors.";
                     case MissionKind.Interception: return "Stop both raid leaders before either reaches the defended boundary. Escort fighters are secondary.";
                     case MissionKind.BomberEscort: return "Deliver at least two of three bombers to friendly air cover. Stay close enough to protect them.";
+                    case MissionKind.AceHunt: return "Defeat ace Voss and survive. His escorts are secondary targets; do not follow a low-energy climbing lure.";
+                    case MissionKind.FleetBattle: return "Break the offensive: defeat " + RequiredFighterLosses + " enemy fighters and survive until every flight enters the sector. Blue flight supports you.";
                     default: return "Destroy all four convoy trucks. AAA and defending fighters are optional threats. Survive your strafing passes.";
                 }
             }
@@ -90,6 +97,9 @@ namespace Meridian
             get
             {
                 if (Kind == MissionKind.GroundAttack) return GroundObjectivesDestroyed / (float)Math.Max(1, RequiredGroundTargets);
+                if (Kind == MissionKind.AceHunt) return AceAlive() ? 0f : 1f;
+                if (Kind == MissionKind.FleetBattle) return Math.Min(1f, Kills / (float)Math.Max(1, RequiredFighterLosses))
+                    * (EnemyFlightsEngaged / (float)TotalEnemyFlights);
                 if (Kind == MissionKind.Interception)
                 { int lost = 0; foreach (AircraftState plane in Raiders) if (!plane.Alive) lost++; return lost / (float)Math.Max(1, Raiders.Count); }
                 if (Kind == MissionKind.BomberEscort)
@@ -108,15 +118,18 @@ namespace Meridian
                 if (Kind == MissionKind.BomberEscort) return BombersArrived + "/2 delivered | " + BombersAlive + "/3 bombers flying | route " + (int)(RouteFraction(BomberAnchor()) * 100f) + "%";
                 if (Kind == MissionKind.GroundAttack) return GroundObjectivesDestroyed + "/" + RequiredGroundTargets + " trucks destroyed | " + (GroundTargets.Count - GroundDestroyed) + " ground contacts remain";
                 if (Kind == MissionKind.Interception) return (int)(ObjectiveProgress * Raiders.Count) + "/" + Raiders.Count + " raiders stopped | " + EnemyEscaped + " escaped";
+                if (Kind == MissionKind.AceHunt) return (AceAlive() ? "Ace Voss flying" : "Ace defeated") + " | " + EnemyRemaining + " enemy aircraft remain";
+                if (Kind == MissionKind.FleetBattle) return Kills + "/" + RequiredFighterLosses + " victories | " + EnemyFlightsEngaged + "/" + TotalEnemyFlights + " flights engaged | " + EnemyRemaining + " airborne";
                 return Kind == MissionKind.ConvoyCover ? "Lark " + (int)Math.Max(0, Courier.Health) + " | " + (int)Math.Max(0, EscortDuration - Time) + " seconds to cover" : EnemyRemaining + " hostile remaining";
             }
         }
         public string DebriefDetails
         { get { return ObjectiveStatus + "\nWingmen home: " + WingmenAlive + "/" + Wingmen.Count + " | Enemy aircraft lost: " + Kills + "\nPlayer rounds: " + RoundsFired + " | Confirmed impacts: " + Hits + " | Flak rounds: " + GroundRoundsFired; } }
 
-        public AirMission(int seed, MissionKind kind)
+        public AirMission(int seed, MissionKind kind, AirEncounterOptions encounter = null)
         {
             Seed = seed; Kind = kind;
+            EncounterPressure = encounter == null ? 0 : Math.Max(0, Math.Min(2, encounter.Pressure));
             Terrain = new TerrainField(seed);
             weapons = new Weapons(unchecked(seed ^ 0x48BA621D));
             groundDefense = new GroundDefense(unchecked(seed ^ 0x174b39));
@@ -133,8 +146,10 @@ namespace Meridian
                 BuildSquadron(heading, ahead, right);
                 if (kind == MissionKind.Interception) BuildInterception(heading, ahead, right, random);
                 else if (kind == MissionKind.BomberEscort) BuildEscort(heading, ahead, right, random);
-                else BuildGroundAttack(heading, ahead, right, random);
+                else if (kind == MissionKind.GroundAttack) BuildGroundAttack(heading, ahead, right, random);
+                else BuildExpandedEncounter(heading, ahead, right);
                 ConfigureOrders();
+                ConfigureEncounter(heading, ahead, right);
                 SelectNextTarget();
                 Summary = "Sortie in progress";
                 return;
@@ -174,21 +189,26 @@ namespace Meridian
 
         private void BuildInterception(float heading, Vector3 ahead, Vector3 right, Random random)
         {
-            RouteStart = Player.Position + ahead * 7000f + Vector3.UnitY * 220f;
-            RouteDestination = Player.Position - ahead * 28000f + Vector3.UnitY * 220f;
+            // A crossing intercept gives time to enter the raiders' stern quarter. The previous
+            // head-on merge demanded an immediate 180-degree reversal before a long tail chase.
+            float routeHeading = heading + .55f;
+            Vector3 route = new Vector3((float)Math.Sin(routeHeading), 0f, (float)Math.Cos(routeHeading));
+            Vector3 routeRight = new Vector3(route.Z, 0f, -route.X);
+            RouteStart = Player.Position + ahead * 1800f - right * 1400f - Vector3.UnitY * 150f;
+            RouteDestination = RouteStart + route * 35000f;
             ObjectivePosition = RouteDestination;
             for (int i = 0; i < 2; i++)
             {
-                CreateEnemy(10 + i, RouteStart + right * ((i == 0 ? -1f : 1f) * 310f) + ahead * i * 230f,
-                    heading + (float)Math.PI, unchecked(Seed + i * 53));
+                CreateEnemy(10 + i, RouteStart + routeRight * ((i == 0 ? -1f : 1f) * 310f) + route * i * 230f,
+                    routeHeading, unchecked(Seed + i * 53));
                 AircraftState raid = Aircraft[Aircraft.Count - 1];
                 raid.Callsign = "Raid " + (i + 1); Raiders.Add(raid);
             }
             int escortCount = 1 + random.Next(2);
             for (int i = 0; i < escortCount; i++)
-                CreateEnemy(12 + i, RouteStart - ahead * 1500f + right * ((i == 0 ? -1f : 1f) * 950f) + Vector3.UnitY * 280f,
-                    heading + (float)Math.PI, unchecked(Seed + i * 127 + 23));
-            Message("Raid leaders approaching the island. Stop both before the boundary; enemy escorts will try to delay you.");
+                CreateEnemy(12 + i, RouteStart + route * 1300f + routeRight * ((i == 0 ? -1f : 1f) * 1500f) + Vector3.UnitY * 380f,
+                    routeHeading, unchecked(Seed + i * 127 + 23));
+            Message("Raid crossing ahead from the left. Cut onto its track, then attack from behind. Send your wingmen after a raid leader; escorts are distractions.");
         }
 
         private void BuildEscort(float heading, Vector3 ahead, Vector3 right, Random random)
@@ -345,7 +365,8 @@ namespace Meridian
             {
                 botPilot = new PilotAI(unchecked(Seed * 19 + 613));
                 botOrders = new PilotOrders { Order = SquadronOrder.Engage, ObjectiveAnchor = ObjectivePosition,
-                    ProtectedAssets = Bombers, GroundTargets = GroundTargets, CanStrafe = Kind == MissionKind.GroundAttack };
+                    ProtectedAssets = Bombers, GroundTargets = GroundTargets, CanStrafe = Kind == MissionKind.GroundAttack,
+                    CombatRadius = Kind == MissionKind.FleetBattle ? 5600f : 0f };
                 if (Tactical) IssueOrder(SquadronOrder.Engage, BotObjectiveTarget());
             }
             float remaining = Math.Min(dt, .25f);
@@ -371,6 +392,7 @@ namespace Meridian
             { foreach (AircraftState raider in Raiders) if (raider.Alive) return raider.Id; }
             if (Kind == MissionKind.GroundAttack)
             { foreach (GroundTarget target in GroundTargets) if (target.Alive && target.IsObjective) return target.Id; }
+            if (Kind == MissionKind.AceHunt && AceAlive()) return AceId;
             return -1;
         }
 
@@ -391,6 +413,7 @@ namespace Meridian
         private void Tick(FlightInput playerInput, float dt)
         {
             Time += dt;
+            AdvanceEncounter();
             MessageTime = Math.Max(0f, MessageTime - dt);
             for (int i = Events.Count - 1; i >= 0; i--)
             { Events[i].Age += dt; if (Events[i].Age >= Events[i].Lifetime) Events.RemoveAt(i); }
@@ -507,9 +530,18 @@ namespace Meridian
                 if (possible < RequiredBombers) Finish(MissionOutcome.Defeat, "Too many bombers lost. Fewer than two can reach the destination.");
                 else if (BombersArrived >= RequiredBombers) Finish(MissionOutcome.Victory, "Two Herons delivered to friendly air cover. The bomber formation completed its mission.");
             }
+            else if (Kind == MissionKind.AceHunt)
+            {
+                if (!AceAlive()) Finish(MissionOutcome.Victory, "Ace Voss defeated. The enemy fighter leader will not return to this sector.");
+            }
+            else if (Kind == MissionKind.FleetBattle)
+            {
+                if (EnemyFlightsEngaged == TotalEnemyFlights && Kills >= RequiredFighterLosses)
+                    Finish(MissionOutcome.Victory, "The enemy offensive is broken. Your two flights have won control of the sector.");
+            }
             else if (GroundObjectivesDestroyed >= RequiredGroundTargets)
                 Finish(MissionOutcome.Victory, "Supply convoy destroyed. The ground offensive has been delayed.");
-            if (Outcome == MissionOutcome.Flying && Time >= (Kind == MissionKind.GroundAttack ? 600f : 480f))
+            if (Outcome == MissionOutcome.Flying && Time >= (Kind == MissionKind.GroundAttack || Kind == MissionKind.FleetBattle ? 600f : 480f))
                 Finish(MissionOutcome.Defeat, "Sortie fuel limit reached before the mission objective was secured.");
             if (Outcome == MissionOutcome.Flying && Player.Ammo == 0 && Time > 30f)
                 MessageOnce("Kestrel guns empty. Surviving wingmen can continue; use Engage to direct the flight.");

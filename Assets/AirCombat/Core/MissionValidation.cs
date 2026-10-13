@@ -165,7 +165,9 @@ namespace Meridian
         private static void ValidateSorties(Action<bool, string> check)
         {
             var report = new StringBuilder("TACTICAL SORTIES (unmodified real physics / weapons / pilots)\n");
-            int[] seeds = { 1944, 81, 31337 };
+            // Keep the full six-seed interception audit in the regression population; a geometry
+            // change should not require one historical seed to remain the sole proof of bot success.
+            int[] seeds = { 1944, 81, 31337, 0, 17, 88 };
             foreach (MissionKind kind in TacticalKinds())
             {
                 int earnedWins = 0;

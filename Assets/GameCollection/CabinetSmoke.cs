@@ -24,6 +24,7 @@ namespace VectorCabinet
         int assertions, failures, runtimeErrors;
         float started;
         bool finished;
+        bool polishOnly;
         Keyboard testKeyboard, previousKeyboard;
         Mouse testMouse, previousMouse;
         Keyboard idleKeyboard, hardwareKeyboard;
@@ -49,6 +50,7 @@ namespace VectorCabinet
             var runner = new GameObject("Opt-in cabinet integration checks").AddComponent<CabinetSmoke>();
             DontDestroyOnLoad(runner.gameObject);
             runner.output = destination;
+            runner.polishOnly = Array.IndexOf(args, "-polishSmoke") >= 0;
             Directory.CreateDirectory(destination);
             File.WriteAllText(Path.Combine(destination, "runtime-smoke.txt"),
                 "RUNNING: rendered scene integration checks\n" +
@@ -240,6 +242,14 @@ namespace VectorCabinet
             else CheckScene(GameCollection.LauncherScene);
             yield return Capture("01-cabinet");
 
+            if (polishOnly)
+            {
+                yield return Open(GameCollection.AirScene);
+                yield return ExercisePolish(FindAnyObjectByType<AirCombatGame>());
+                yield return Open(GameCollection.LauncherScene);
+                yield break;
+            }
+
             yield return SelectFromLauncher(Key.Digit1, GameCollection.HouseScene);
             HauntedHouseGame house = FindAnyObjectByType<HauntedHouseGame>();
             if (house == null) throw new InvalidOperationException("House composition root missing");
@@ -359,12 +369,14 @@ namespace VectorCabinet
             }
             Check(air.Mission.Hits > 0 && air.Mission.RoundsFired > 0 && air.Mission.Outcome == MissionOutcome.Victory,
                 "Controlled gunnery fixture: travelling projectiles destroy a damaged target and trigger victory");
+            FinishDiagnosticAftermath(air);
             yield return Capture("13-air-victory-fixture");
             air.StartSortie(991, MissionKind.Duel);
             air.Mission.Player.Position = new NVector3(0, air.Mission.Terrain.Height(0, 0) + 1, 0);
             air.StepForDiagnostics(new FlightInput { Throttle = .7f }, 1f / 60f);
             Check(air.Mission.Outcome == MissionOutcome.Defeat && !air.Mission.Player.Alive,
                 "Terrain collision fixture triggers defeat");
+            FinishDiagnosticAftermath(air);
             yield return Capture("14-air-defeat-fixture");
             air.StartSortie(71319, MissionKind.ConvoyCover);
             yield return null;
@@ -375,6 +387,9 @@ namespace VectorCabinet
             Check(air.Briefing && !air.Paused, "Operations briefing can be reopened from a sortie");
             yield return Capture("15-courier-briefing");
             yield return ExerciseSquadron(air);
+            yield return ExerciseRoguelite(air);
+            yield return ExercisePolish(air);
+            yield return ExerciseExpandedMissions(air);
             yield return Open(GameCollection.LauncherScene);
             yield return Capture("16-cabinet-after-flight");
             yield return ExerciseHockey();

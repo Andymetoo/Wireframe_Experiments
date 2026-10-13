@@ -11,7 +11,7 @@ namespace Meridian
     /// Replaceable presentation. All models, terrain, cockpit and effects are mesh geometry;
     /// the simulation is independent of Unity and never reads back a rendered transform.
     /// </summary>
-    public sealed class AirRenderer : MonoBehaviour
+    public sealed partial class AirRenderer : MonoBehaviour
     {
         static readonly Color Grass = new Color(.24f, .34f, .20f);
         static readonly Color Olive = new Color(.28f, .34f, .25f);
@@ -81,8 +81,8 @@ namespace Meridian
 
         public void SetLook(float yawDegrees, float pitchDegrees)
         {
-            lookYaw = Mathf.Clamp(yawDegrees, -130, 130);
-            lookPitch = Mathf.Clamp(pitchDegrees, -65, 65);
+            lookYaw = Mathf.Clamp(yawDegrees, -165, 165);
+            lookPitch = Mathf.Clamp(pitchDegrees, -80, 70);
         }
 
         public void SetCameraMode(int mode)
@@ -106,13 +106,14 @@ namespace Meridian
                 }
                 visual.Root.position = World(plane.Position);
                 visual.Root.rotation = World(plane.Rotation);
-                visual.Root.gameObject.SetActive(plane.Alive);
-                if (visual.Canopy != null) visual.Canopy.gameObject.SetActive(!plane.IsPlayer || cameraMode != 0);
+                SyncAircraftWreck(plane, visual, mission);
+                bool external = !plane.IsPlayer || cameraMode != 0 || OutcomeActive && !mission.Player.Alive;
+                if (visual.Canopy != null) visual.Canopy.gameObject.SetActive(external);
                 foreach (var prop in visual.Propellers)
                 {
                     // Solid blades alias across the sight at low frame rates. The forward view
                     // omits the player's rotor; external views retain the actual rotating model.
-                    prop.gameObject.SetActive(!plane.IsPlayer || cameraMode != 0);
+                    prop.gameObject.SetActive(plane.Alive && external);
                     prop.localRotation = Quaternion.Euler(0, 0, propellerAngle * (.3f + .7f * plane.Throttle));
                 }
             }
@@ -156,6 +157,8 @@ namespace Meridian
             cockpit.localRotation = Quaternion.Inverse(look);
             sky.position = viewCamera.transform.position;
             cockpit.gameObject.SetActive(cameraMode == 0);
+            SyncOutcomeCamera(mission);
+            sky.position = viewCamera.transform.position;
             speedNeedle.localRotation = Quaternion.Euler(0, 0, 130 - (float)player.Velocity.Length() * 1.6f);
             altitudeNeedle.localRotation = Quaternion.Euler(0, 0, 130 - player.Position.Y * .11f);
             climbNeedle.localRotation = Quaternion.Euler(0, 0, -player.Velocity.Y * 2);
@@ -639,8 +642,12 @@ namespace Meridian
             foreach(var projectile in mission.Projectiles)
             {
                 if(cursor>=tracerPool.Count) break;
+                if(projectile.Age + OutcomeElapsed >= projectile.Lifetime) continue;
+                Vector3 end=World(projectile.Position) + World(projectile.Velocity) * OutcomeElapsed
+                    + Vector3.down * (4.905f * OutcomeElapsed * OutcomeElapsed);
+                if(OutcomeElapsed > 0f && end.y <= mission.Terrain.Height(end.x,end.z)) continue;
                 var t=tracerPool[cursor++]; t.gameObject.SetActive(true);
-                Vector3 end=World(projectile.Position), velocity=World(projectile.Velocity);
+                Vector3 velocity=World(projectile.Velocity) + Vector3.down * (9.81f * OutcomeElapsed);
                 float length=Mathf.Clamp(velocity.magnitude*.027f,8,32);
                 t.SetPositionAndRotation(end-velocity.normalized*length,Quaternion.LookRotation(velocity.normalized));
                 float thickness=Mathf.Clamp(Vector3.Distance(end,viewCamera.transform.position)*.00045f,.12f,.72f);
@@ -655,7 +662,7 @@ namespace Meridian
                 for(int piece=0;piece<pieces&&cursor<effectPool.Count;piece++)
                 {
                     var t=effectPool[cursor++];
-                    float age=effect.Age;
+                    float age=effect.Age + OutcomeElapsed;
                     bool visible=destroyed?age<3.8f:age<.32f;
                     t.gameObject.SetActive(visible);
                     if(!visible) continue;
@@ -672,10 +679,10 @@ namespace Meridian
                 for (int flame = 0; flame < 2 && cursor < effectPool.Count; flame++)
                 {
                     var t = effectPool[cursor++]; t.gameObject.SetActive(true);
-                    float pulse = 1.0f + .3f * Mathf.Sin(mission.Time * 8 + target.Id * 7 + flame * 3);
+                    float pulse = 1.0f + .3f * Mathf.Sin((mission.Time + OutcomeElapsed) * 8 + target.Id * 7 + flame * 3);
                     t.position = World(target.Position) + new Vector3(flame * 1.2f - .6f, -.4f, flame * 2 - 1);
                     t.localScale = new Vector3(.8f, 2.2f, .9f) * pulse;
-                    t.rotation = Quaternion.Euler(0, mission.Time * 23 + flame * 70, 0);
+                    t.rotation = Quaternion.Euler(0, (mission.Time + OutcomeElapsed) * 23 + flame * 70, 0);
                 }
             }
             for(int i=cursor;i<effectPool.Count;i++) effectPool[i].gameObject.SetActive(false);
@@ -687,12 +694,13 @@ namespace Meridian
                 for(int puff=0;puff<count&&cursor<smokePool.Count;puff++)
                 {
                     var t=smokePool[cursor++]; t.gameObject.SetActive(true);
-                    float age=((float)mission.Time*.7f+puff/(float)count)%1.0f;
+                    float age=((mission.Time + OutcomeElapsed)*.7f+puff/(float)count)%1.0f;
                     t.position=World(plane.Position)-World(plane.Velocity)*age*1.2f+Vector3.up*age*5;
                     float size=1+age*6; t.localScale=new Vector3(size,size*.85f,size);
                     t.rotation=Quaternion.Euler(puff*60,puff*27,puff*43);
                 }
             }
+            SyncWreckSmoke(mission, ref cursor);
             foreach (var target in mission.GroundTargets)
             {
                 if (target.Alive && target.Health > target.MaxHealth * .55f) continue;
@@ -700,7 +708,7 @@ namespace Meridian
                 for (int puff = 0; puff < count && cursor < smokePool.Count; puff++)
                 {
                     var t = smokePool[cursor++]; t.gameObject.SetActive(true);
-                    float age = (mission.Time * .19f + puff / (float)count) % 1f;
+                    float age = ((mission.Time + OutcomeElapsed) * .19f + puff / (float)count) % 1f;
                     t.position = World(target.Position) + new Vector3(age * 7, 1.5f + age * 31, age * 3);
                     float size = 1.3f + age * 6;
                     t.localScale = new Vector3(size, size * 1.15f, size);
@@ -733,6 +741,7 @@ namespace Meridian
         }
         void Clear()
         {
+            ResetOutcome();
             if(generatedRoot!=null) { generatedRoot.gameObject.SetActive(false); Destroy(generatedRoot.gameObject); }
             foreach(var mesh in meshes) if(mesh!=null) Destroy(mesh);
             meshes.Clear();aircraft.Clear();groundTargets.Clear();tracerPool.Clear();effectPool.Clear();smokePool.Clear();

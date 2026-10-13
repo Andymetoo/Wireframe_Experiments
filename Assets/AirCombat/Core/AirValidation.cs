@@ -18,6 +18,11 @@ namespace Meridian
             SortieSummary += "\n" + MissionValidation.Summary;
             TacticalValidation.Run(check);
             SortieSummary += "\n" + TacticalValidation.Summary;
+            RogueValidation.Run(check);
+            SortieSummary += "\n" + RogueValidation.Summary;
+            CombatFeedbackValidation.Run(check);
+            EncounterValidation.Run(check);
+            SortieSummary += "\n" + EncounterValidation.Summary;
         }
 
         private static AircraftState Target(Vector3 position, int id = 1, int team = 1)

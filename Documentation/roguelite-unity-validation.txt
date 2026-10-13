@@ -1,0 +1,2172 @@
+PASS Neutral trim remains airborne and approximately level for 30 seconds
+PASS Steady wing lift balances gravitational weight
+PASS Engine power increases airspeed against drag
+PASS A commanded climb exchanges speed for altitude
+PASS A commanded dive converts height into speed
+PASS Banked lift produces a right turn with retained forward momentum
+PASS Control input cannot instantly rotate or redirect the airframe
+PASS Below stall speed the wing cannot support the aircraft
+PASS Lowering the nose and adding power recovers a low-speed stall at the expense of height
+PASS Excessive angle of attack stalls the wing and generates a nose-down recovery moment
+PASS Sustained overspeed causes progressive damage after a recovery grace interval
+PASS Combat damage reduces available engine power
+PASS Terrain collision produces a definite fatal airframe state
+PASS Destroyed aircraft stop participating in flight integration
+PASS Identical fixed-step inputs reproduce an identical two-minute trajectory
+PASS Terrain seed 0 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 0
+PASS Terrain seed 1 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 1
+PASS Terrain seed 2 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 2
+PASS Terrain seed 3 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 3
+PASS Terrain seed 4 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 4
+PASS Terrain seed 5 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 5
+PASS Terrain seed 6 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 6
+PASS Terrain seed 7 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 7
+PASS Terrain seed 8 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 8
+PASS Terrain seed 9 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 9
+PASS Terrain seed 10 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 10
+PASS Terrain seed 11 is deterministic and within the safe spawn envelope
+PASS Three-minute varied-control trajectory remains finite for airframe seed 11
+PASS swept projectile intersects fuselage between ticks
+PASS projectile above aircraft misses
+PASS solid wing can be hit
+PASS space above thin wing is not a sphere hit
+PASS moving aircraft crossing a projectile is swept
+PASS lead predicts lateral movement and compensates gravity
+PASS rate of fire is bounded to 13.33 rounds/sec
+PASS every fired round consumes ammunition
+PASS empty weapons cannot create projectiles
+PASS actual ballistic damage destroys aircraft
+PASS hits consume rounds and produce geometric impact events
+PASS friendly courier is protected from friendly fire
+PASS expired projectiles are removed
+PASS physical intercept with lead hits a crossing aircraft
+PASS aiming at current location misses a fast crossing aircraft
+PASS valid initial mission 0
+PASS spawn clears terrain 0/0
+PASS spawn clears terrain 0/1
+PASS valid initial mission 1
+PASS spawn clears terrain 1/0
+PASS spawn clears terrain 1/1
+PASS spawn clears terrain 1/2
+PASS spawn clears terrain 1/3
+PASS valid initial mission 2
+PASS spawn clears terrain 2/0
+PASS spawn clears terrain 2/1
+PASS valid initial mission 3
+PASS spawn clears terrain 3/0
+PASS spawn clears terrain 3/1
+PASS spawn clears terrain 3/2
+PASS spawn clears terrain 3/3
+PASS valid initial mission 4
+PASS spawn clears terrain 4/0
+PASS spawn clears terrain 4/1
+PASS valid initial mission 5
+PASS spawn clears terrain 5/0
+PASS spawn clears terrain 5/1
+PASS spawn clears terrain 5/2
+PASS spawn clears terrain 5/3
+PASS valid initial mission 6
+PASS spawn clears terrain 6/0
+PASS spawn clears terrain 6/1
+PASS valid initial mission 7
+PASS spawn clears terrain 7/0
+PASS spawn clears terrain 7/1
+PASS spawn clears terrain 7/2
+PASS spawn clears terrain 7/3
+PASS valid initial mission 8
+PASS spawn clears terrain 8/0
+PASS spawn clears terrain 8/1
+PASS valid initial mission 9
+PASS spawn clears terrain 9/0
+PASS spawn clears terrain 9/1
+PASS spawn clears terrain 9/2
+PASS spawn clears terrain 9/3
+PASS valid initial mission 10
+PASS spawn clears terrain 10/0
+PASS spawn clears terrain 10/1
+PASS valid initial mission 11
+PASS spawn clears terrain 11/0
+PASS spawn clears terrain 11/1
+PASS spawn clears terrain 11/2
+PASS spawn clears terrain 11/3
+PASS valid initial mission 12
+PASS spawn clears terrain 12/0
+PASS spawn clears terrain 12/1
+PASS valid initial mission 13
+PASS spawn clears terrain 13/0
+PASS spawn clears terrain 13/1
+PASS spawn clears terrain 13/2
+PASS spawn clears terrain 13/3
+PASS valid initial mission 14
+PASS spawn clears terrain 14/0
+PASS spawn clears terrain 14/1
+PASS valid initial mission 15
+PASS spawn clears terrain 15/0
+PASS spawn clears terrain 15/1
+PASS spawn clears terrain 15/2
+PASS spawn clears terrain 15/3
+PASS valid initial mission 16
+PASS spawn clears terrain 16/0
+PASS spawn clears terrain 16/1
+PASS valid initial mission 17
+PASS spawn clears terrain 17/0
+PASS spawn clears terrain 17/1
+PASS spawn clears terrain 17/2
+PASS spawn clears terrain 17/3
+PASS valid initial mission 18
+PASS spawn clears terrain 18/0
+PASS spawn clears terrain 18/1
+PASS valid initial mission 19
+PASS spawn clears terrain 19/0
+PASS spawn clears terrain 19/1
+PASS spawn clears terrain 19/2
+PASS spawn clears terrain 19/3
+PASS valid initial mission 20
+PASS spawn clears terrain 20/0
+PASS spawn clears terrain 20/1
+PASS valid initial mission 21
+PASS spawn clears terrain 21/0
+PASS spawn clears terrain 21/1
+PASS spawn clears terrain 21/2
+PASS spawn clears terrain 21/3
+PASS valid initial mission 22
+PASS spawn clears terrain 22/0
+PASS spawn clears terrain 22/1
+PASS valid initial mission 23
+PASS spawn clears terrain 23/0
+PASS spawn clears terrain 23/1
+PASS spawn clears terrain 23/2
+PASS spawn clears terrain 23/3
+PASS valid initial mission 24
+PASS spawn clears terrain 24/0
+PASS spawn clears terrain 24/1
+PASS valid initial mission 25
+PASS spawn clears terrain 25/0
+PASS spawn clears terrain 25/1
+PASS spawn clears terrain 25/2
+PASS spawn clears terrain 25/3
+PASS valid initial mission 26
+PASS spawn clears terrain 26/0
+PASS spawn clears terrain 26/1
+PASS valid initial mission 27
+PASS spawn clears terrain 27/0
+PASS spawn clears terrain 27/1
+PASS spawn clears terrain 27/2
+PASS spawn clears terrain 27/3
+PASS valid initial mission 28
+PASS spawn clears terrain 28/0
+PASS spawn clears terrain 28/1
+PASS valid initial mission 29
+PASS spawn clears terrain 29/0
+PASS spawn clears terrain 29/1
+PASS spawn clears terrain 29/2
+PASS spawn clears terrain 29/3
+PASS valid initial mission 30
+PASS spawn clears terrain 30/0
+PASS spawn clears terrain 30/1
+PASS valid initial mission 31
+PASS spawn clears terrain 31/0
+PASS spawn clears terrain 31/1
+PASS spawn clears terrain 31/2
+PASS spawn clears terrain 31/3
+PASS valid initial mission 32
+PASS spawn clears terrain 32/0
+PASS spawn clears terrain 32/1
+PASS valid initial mission 33
+PASS spawn clears terrain 33/0
+PASS spawn clears terrain 33/1
+PASS spawn clears terrain 33/2
+PASS spawn clears terrain 33/3
+PASS valid initial mission 34
+PASS spawn clears terrain 34/0
+PASS spawn clears terrain 34/1
+PASS valid initial mission 35
+PASS spawn clears terrain 35/0
+PASS spawn clears terrain 35/1
+PASS spawn clears terrain 35/2
+PASS spawn clears terrain 35/3
+PASS valid initial mission 36
+PASS spawn clears terrain 36/0
+PASS spawn clears terrain 36/1
+PASS valid initial mission 37
+PASS spawn clears terrain 37/0
+PASS spawn clears terrain 37/1
+PASS spawn clears terrain 37/2
+PASS spawn clears terrain 37/3
+PASS valid initial mission 38
+PASS spawn clears terrain 38/0
+PASS spawn clears terrain 38/1
+PASS valid initial mission 39
+PASS spawn clears terrain 39/0
+PASS spawn clears terrain 39/1
+PASS spawn clears terrain 39/2
+PASS spawn clears terrain 39/3
+PASS valid initial mission 40
+PASS spawn clears terrain 40/0
+PASS spawn clears terrain 40/1
+PASS valid initial mission 41
+PASS spawn clears terrain 41/0
+PASS spawn clears terrain 41/1
+PASS spawn clears terrain 41/2
+PASS spawn clears terrain 41/3
+PASS valid initial mission 42
+PASS spawn clears terrain 42/0
+PASS spawn clears terrain 42/1
+PASS valid initial mission 43
+PASS spawn clears terrain 43/0
+PASS spawn clears terrain 43/1
+PASS spawn clears terrain 43/2
+PASS spawn clears terrain 43/3
+PASS valid initial mission 44
+PASS spawn clears terrain 44/0
+PASS spawn clears terrain 44/1
+PASS valid initial mission 45
+PASS spawn clears terrain 45/0
+PASS spawn clears terrain 45/1
+PASS spawn clears terrain 45/2
+PASS spawn clears terrain 45/3
+PASS valid initial mission 46
+PASS spawn clears terrain 46/0
+PASS spawn clears terrain 46/1
+PASS valid initial mission 47
+PASS spawn clears terrain 47/0
+PASS spawn clears terrain 47/1
+PASS spawn clears terrain 47/2
+PASS spawn clears terrain 47/3
+PASS valid initial mission 48
+PASS spawn clears terrain 48/0
+PASS spawn clears terrain 48/1
+PASS valid initial mission 49
+PASS spawn clears terrain 49/0
+PASS spawn clears terrain 49/1
+PASS spawn clears terrain 49/2
+PASS spawn clears terrain 49/3
+PASS valid initial mission 50
+PASS spawn clears terrain 50/0
+PASS spawn clears terrain 50/1
+PASS valid initial mission 51
+PASS spawn clears terrain 51/0
+PASS spawn clears terrain 51/1
+PASS spawn clears terrain 51/2
+PASS spawn clears terrain 51/3
+PASS valid initial mission 52
+PASS spawn clears terrain 52/0
+PASS spawn clears terrain 52/1
+PASS valid initial mission 53
+PASS spawn clears terrain 53/0
+PASS spawn clears terrain 53/1
+PASS spawn clears terrain 53/2
+PASS spawn clears terrain 53/3
+PASS valid initial mission 54
+PASS spawn clears terrain 54/0
+PASS spawn clears terrain 54/1
+PASS valid initial mission 55
+PASS spawn clears terrain 55/0
+PASS spawn clears terrain 55/1
+PASS spawn clears terrain 55/2
+PASS spawn clears terrain 55/3
+PASS valid initial mission 56
+PASS spawn clears terrain 56/0
+PASS spawn clears terrain 56/1
+PASS valid initial mission 57
+PASS spawn clears terrain 57/0
+PASS spawn clears terrain 57/1
+PASS spawn clears terrain 57/2
+PASS spawn clears terrain 57/3
+PASS valid initial mission 58
+PASS spawn clears terrain 58/0
+PASS spawn clears terrain 58/1
+PASS valid initial mission 59
+PASS spawn clears terrain 59/0
+PASS spawn clears terrain 59/1
+PASS spawn clears terrain 59/2
+PASS spawn clears terrain 59/3
+PASS valid initial mission 60
+PASS spawn clears terrain 60/0
+PASS spawn clears terrain 60/1
+PASS valid initial mission 61
+PASS spawn clears terrain 61/0
+PASS spawn clears terrain 61/1
+PASS spawn clears terrain 61/2
+PASS spawn clears terrain 61/3
+PASS valid initial mission 62
+PASS spawn clears terrain 62/0
+PASS spawn clears terrain 62/1
+PASS valid initial mission 63
+PASS spawn clears terrain 63/0
+PASS spawn clears terrain 63/1
+PASS spawn clears terrain 63/2
+PASS spawn clears terrain 63/3
+PASS valid initial mission 64
+PASS spawn clears terrain 64/0
+PASS spawn clears terrain 64/1
+PASS valid initial mission 65
+PASS spawn clears terrain 65/0
+PASS spawn clears terrain 65/1
+PASS spawn clears terrain 65/2
+PASS spawn clears terrain 65/3
+PASS valid initial mission 66
+PASS spawn clears terrain 66/0
+PASS spawn clears terrain 66/1
+PASS valid initial mission 67
+PASS spawn clears terrain 67/0
+PASS spawn clears terrain 67/1
+PASS spawn clears terrain 67/2
+PASS spawn clears terrain 67/3
+PASS valid initial mission 68
+PASS spawn clears terrain 68/0
+PASS spawn clears terrain 68/1
+PASS valid initial mission 69
+PASS spawn clears terrain 69/0
+PASS spawn clears terrain 69/1
+PASS spawn clears terrain 69/2
+PASS spawn clears terrain 69/3
+PASS valid initial mission 70
+PASS spawn clears terrain 70/0
+PASS spawn clears terrain 70/1
+PASS valid initial mission 71
+PASS spawn clears terrain 71/0
+PASS spawn clears terrain 71/1
+PASS spawn clears terrain 71/2
+PASS spawn clears terrain 71/3
+PASS valid initial mission 72
+PASS spawn clears terrain 72/0
+PASS spawn clears terrain 72/1
+PASS valid initial mission 73
+PASS spawn clears terrain 73/0
+PASS spawn clears terrain 73/1
+PASS spawn clears terrain 73/2
+PASS spawn clears terrain 73/3
+PASS valid initial mission 74
+PASS spawn clears terrain 74/0
+PASS spawn clears terrain 74/1
+PASS valid initial mission 75
+PASS spawn clears terrain 75/0
+PASS spawn clears terrain 75/1
+PASS spawn clears terrain 75/2
+PASS spawn clears terrain 75/3
+PASS valid initial mission 76
+PASS spawn clears terrain 76/0
+PASS spawn clears terrain 76/1
+PASS valid initial mission 77
+PASS spawn clears terrain 77/0
+PASS spawn clears terrain 77/1
+PASS spawn clears terrain 77/2
+PASS spawn clears terrain 77/3
+PASS valid initial mission 78
+PASS spawn clears terrain 78/0
+PASS spawn clears terrain 78/1
+PASS valid initial mission 79
+PASS spawn clears terrain 79/0
+PASS spawn clears terrain 79/1
+PASS spawn clears terrain 79/2
+PASS spawn clears terrain 79/3
+PASS valid initial mission 80
+PASS spawn clears terrain 80/0
+PASS spawn clears terrain 80/1
+PASS valid initial mission 81
+PASS spawn clears terrain 81/0
+PASS spawn clears terrain 81/1
+PASS spawn clears terrain 81/2
+PASS spawn clears terrain 81/3
+PASS valid initial mission 82
+PASS spawn clears terrain 82/0
+PASS spawn clears terrain 82/1
+PASS valid initial mission 83
+PASS spawn clears terrain 83/0
+PASS spawn clears terrain 83/1
+PASS spawn clears terrain 83/2
+PASS spawn clears terrain 83/3
+PASS valid initial mission 84
+PASS spawn clears terrain 84/0
+PASS spawn clears terrain 84/1
+PASS valid initial mission 85
+PASS spawn clears terrain 85/0
+PASS spawn clears terrain 85/1
+PASS spawn clears terrain 85/2
+PASS spawn clears terrain 85/3
+PASS valid initial mission 86
+PASS spawn clears terrain 86/0
+PASS spawn clears terrain 86/1
+PASS valid initial mission 87
+PASS spawn clears terrain 87/0
+PASS spawn clears terrain 87/1
+PASS spawn clears terrain 87/2
+PASS spawn clears terrain 87/3
+PASS valid initial mission 88
+PASS spawn clears terrain 88/0
+PASS spawn clears terrain 88/1
+PASS valid initial mission 89
+PASS spawn clears terrain 89/0
+PASS spawn clears terrain 89/1
+PASS spawn clears terrain 89/2
+PASS spawn clears terrain 89/3
+PASS valid initial mission 90
+PASS spawn clears terrain 90/0
+PASS spawn clears terrain 90/1
+PASS valid initial mission 91
+PASS spawn clears terrain 91/0
+PASS spawn clears terrain 91/1
+PASS spawn clears terrain 91/2
+PASS spawn clears terrain 91/3
+PASS valid initial mission 92
+PASS spawn clears terrain 92/0
+PASS spawn clears terrain 92/1
+PASS valid initial mission 93
+PASS spawn clears terrain 93/0
+PASS spawn clears terrain 93/1
+PASS spawn clears terrain 93/2
+PASS spawn clears terrain 93/3
+PASS valid initial mission 94
+PASS spawn clears terrain 94/0
+PASS spawn clears terrain 94/1
+PASS valid initial mission 95
+PASS spawn clears terrain 95/0
+PASS spawn clears terrain 95/1
+PASS spawn clears terrain 95/2
+PASS spawn clears terrain 95/3
+PASS valid initial mission 96
+PASS spawn clears terrain 96/0
+PASS spawn clears terrain 96/1
+PASS valid initial mission 97
+PASS spawn clears terrain 97/0
+PASS spawn clears terrain 97/1
+PASS spawn clears terrain 97/2
+PASS spawn clears terrain 97/3
+PASS valid initial mission 98
+PASS spawn clears terrain 98/0
+PASS spawn clears terrain 98/1
+PASS valid initial mission 99
+PASS spawn clears terrain 99/0
+PASS spawn clears terrain 99/1
+PASS spawn clears terrain 99/2
+PASS spawn clears terrain 99/3
+PASS last hostile destroyed completes sortie and scores
+PASS completed sorties freeze simulation
+PASS courier loss fails escort
+PASS player terrain crash fails sortie
+PASS fixed-seed simulation repeatability aircraft 0
+PASS fixed-seed simulation repeatability aircraft 1
+PASS fixed-seed simulation repeatability aircraft 2
+PASS fixed-seed simulation repeatability aircraft 3
+PASS fixed-seed combat repeatability
+PASS actual player fire can destroy the last enemy and produce victory
+PASS surviving five minutes completes courier objective without requiring kills
+PASS escort completion does not depend on opponents crashing
+PASS pilot avoids terrain seed 0
+PASS pilot banks and turns to pursue seed 0
+PASS pilot obeys bounded physical attitude rates seed 0
+PASS pilot obtains firing solutions and fires seed 0
+PASS pilot ballistic fire damages a predictable target seed 0
+PASS ignoring pursuing enemy can fail the sortie seed 0
+PASS transient combat objects remain bounded seed 0
+PASS pilot avoids terrain seed 1
+PASS pilot banks and turns to pursue seed 1
+PASS pilot obeys bounded physical attitude rates seed 1
+PASS pilot obtains firing solutions and fires seed 1
+PASS pilot ballistic fire damages a predictable target seed 1
+PASS ignoring pursuing enemy can fail the sortie seed 1
+PASS transient combat objects remain bounded seed 1
+PASS pilot avoids terrain seed 17
+PASS pilot banks and turns to pursue seed 17
+PASS pilot obeys bounded physical attitude rates seed 17
+PASS pilot obtains firing solutions and fires seed 17
+PASS pilot ballistic fire damages a predictable target seed 17
+PASS ignoring pursuing enemy can fail the sortie seed 17
+PASS transient combat objects remain bounded seed 17
+PASS pilot avoids terrain seed 1944
+PASS pilot banks and turns to pursue seed 1944
+PASS pilot obeys bounded physical attitude rates seed 1944
+PASS pilot obtains firing solutions and fires seed 1944
+PASS pilot ballistic fire damages a predictable target seed 1944
+PASS ignoring pursuing enemy can fail the sortie seed 1944
+PASS transient combat objects remain bounded seed 1944
+PASS pilot avoids terrain seed -2147483648
+PASS pilot banks and turns to pursue seed -2147483648
+PASS pilot obeys bounded physical attitude rates seed -2147483648
+PASS pilot obtains firing solutions and fires seed -2147483648
+PASS pilot ballistic fire damages a predictable target seed -2147483648
+PASS ignoring pursuing enemy can fail the sortie seed -2147483648
+PASS transient combat objects remain bounded seed -2147483648
+PASS pilot avoids terrain seed 2147483647
+PASS pilot banks and turns to pursue seed 2147483647
+PASS pilot obeys bounded physical attitude rates seed 2147483647
+PASS pilot obtains firing solutions and fires seed 2147483647
+PASS pilot ballistic fire damages a predictable target seed 2147483647
+PASS ignoring pursuing enemy can fail the sortie seed 2147483647
+PASS transient combat objects remain bounded seed 2147483647
+PASS pilot recovers from a descending low-altitude situation 0
+PASS pilot recovers from a descending low-altitude situation 1
+PASS pilot recovers from a descending low-altitude situation 2
+PASS pilot recovers from a descending low-altitude situation 3
+PASS pilot recovers from a descending low-altitude situation 4
+PASS pilot recovers from a descending low-altitude situation 5
+PASS pilot recovers from a descending low-altitude situation 6
+PASS pilot recovers from a descending low-altitude situation 7
+PASS bounded-control test pilot wins through ballistic fire, seed 1944
+PASS test pilot conserves ammunition and survives, seed 1944
+PASS bounded-control test pilot wins through ballistic fire, seed 0
+PASS test pilot conserves ammunition and survives, seed 0
+PASS bounded-control test pilot wins through ballistic fire, seed 1
+PASS test pilot conserves ammunition and survives, seed 1
+PASS bounded-control test pilot wins through ballistic fire, seed 17
+PASS test pilot conserves ammunition and survives, seed 17
+PASS bounded-control test pilot wins through ballistic fire, seed 88
+PASS test pilot conserves ammunition and survives, seed 88
+PASS bounded-control test pilot wins through ballistic fire, seed 31337
+PASS test pilot conserves ammunition and survives, seed 31337
+PASS flight-controller pilot can complete armed escort scenario, seed 1944
+PASS escort victory survives an active enemy attack, seed 1944
+PASS flight-controller pilot can complete armed escort scenario, seed 1
+PASS escort victory survives an active enemy attack, seed 1
+PASS flight-controller pilot can complete armed escort scenario, seed 88
+PASS escort victory survives an active enemy attack, seed 88
+PASS Interception seeded force generation, unique IDs and terrain clearance 0
+PASS interception separates raid objectives from escorts 0
+PASS Interception seeded force generation, unique IDs and terrain clearance 1
+PASS interception separates raid objectives from escorts 1
+PASS Interception seeded force generation, unique IDs and terrain clearance 2
+PASS interception separates raid objectives from escorts 2
+PASS Interception seeded force generation, unique IDs and terrain clearance 3
+PASS interception separates raid objectives from escorts 3
+PASS Interception seeded force generation, unique IDs and terrain clearance 4
+PASS interception separates raid objectives from escorts 4
+PASS Interception seeded force generation, unique IDs and terrain clearance 5
+PASS interception separates raid objectives from escorts 5
+PASS Interception seeded force generation, unique IDs and terrain clearance 6
+PASS interception separates raid objectives from escorts 6
+PASS Interception seeded force generation, unique IDs and terrain clearance 7
+PASS interception separates raid objectives from escorts 7
+PASS Interception seeded force generation, unique IDs and terrain clearance 8
+PASS interception separates raid objectives from escorts 8
+PASS Interception seeded force generation, unique IDs and terrain clearance 9
+PASS interception separates raid objectives from escorts 9
+PASS Interception seeded force generation, unique IDs and terrain clearance 10
+PASS interception separates raid objectives from escorts 10
+PASS Interception seeded force generation, unique IDs and terrain clearance 11
+PASS interception separates raid objectives from escorts 11
+PASS Interception seeded force generation, unique IDs and terrain clearance 12
+PASS interception separates raid objectives from escorts 12
+PASS Interception seeded force generation, unique IDs and terrain clearance 13
+PASS interception separates raid objectives from escorts 13
+PASS Interception seeded force generation, unique IDs and terrain clearance 14
+PASS interception separates raid objectives from escorts 14
+PASS Interception seeded force generation, unique IDs and terrain clearance 15
+PASS interception separates raid objectives from escorts 15
+PASS Interception seeded force generation, unique IDs and terrain clearance 16
+PASS interception separates raid objectives from escorts 16
+PASS Interception seeded force generation, unique IDs and terrain clearance 17
+PASS interception separates raid objectives from escorts 17
+PASS Interception seeded force generation, unique IDs and terrain clearance 18
+PASS interception separates raid objectives from escorts 18
+PASS Interception seeded force generation, unique IDs and terrain clearance 19
+PASS interception separates raid objectives from escorts 19
+PASS Interception seeded force generation, unique IDs and terrain clearance 20
+PASS interception separates raid objectives from escorts 20
+PASS Interception seeded force generation, unique IDs and terrain clearance 21
+PASS interception separates raid objectives from escorts 21
+PASS Interception seeded force generation, unique IDs and terrain clearance 22
+PASS interception separates raid objectives from escorts 22
+PASS Interception seeded force generation, unique IDs and terrain clearance 23
+PASS interception separates raid objectives from escorts 23
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 0
+PASS bomber escort has real formation and survival margin 0
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 1
+PASS bomber escort has real formation and survival margin 1
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 2
+PASS bomber escort has real formation and survival margin 2
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 3
+PASS bomber escort has real formation and survival margin 3
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 4
+PASS bomber escort has real formation and survival margin 4
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 5
+PASS bomber escort has real formation and survival margin 5
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 6
+PASS bomber escort has real formation and survival margin 6
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 7
+PASS bomber escort has real formation and survival margin 7
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 8
+PASS bomber escort has real formation and survival margin 8
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 9
+PASS bomber escort has real formation and survival margin 9
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 10
+PASS bomber escort has real formation and survival margin 10
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 11
+PASS bomber escort has real formation and survival margin 11
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 12
+PASS bomber escort has real formation and survival margin 12
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 13
+PASS bomber escort has real formation and survival margin 13
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 14
+PASS bomber escort has real formation and survival margin 14
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 15
+PASS bomber escort has real formation and survival margin 15
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 16
+PASS bomber escort has real formation and survival margin 16
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 17
+PASS bomber escort has real formation and survival margin 17
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 18
+PASS bomber escort has real formation and survival margin 18
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 19
+PASS bomber escort has real formation and survival margin 19
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 20
+PASS bomber escort has real formation and survival margin 20
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 21
+PASS bomber escort has real formation and survival margin 21
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 22
+PASS bomber escort has real formation and survival margin 22
+PASS BomberEscort seeded force generation, unique IDs and terrain clearance 23
+PASS bomber escort has real formation and survival margin 23
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 0
+PASS ground convoy separates logistics from optional flak 0
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 1
+PASS ground convoy separates logistics from optional flak 1
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 2
+PASS ground convoy separates logistics from optional flak 2
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 3
+PASS ground convoy separates logistics from optional flak 3
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 4
+PASS ground convoy separates logistics from optional flak 4
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 5
+PASS ground convoy separates logistics from optional flak 5
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 6
+PASS ground convoy separates logistics from optional flak 6
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 7
+PASS ground convoy separates logistics from optional flak 7
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 8
+PASS ground convoy separates logistics from optional flak 8
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 9
+PASS ground convoy separates logistics from optional flak 9
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 10
+PASS ground convoy separates logistics from optional flak 10
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 11
+PASS ground convoy separates logistics from optional flak 11
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 12
+PASS ground convoy separates logistics from optional flak 12
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 13
+PASS ground convoy separates logistics from optional flak 13
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 14
+PASS ground convoy separates logistics from optional flak 14
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 15
+PASS ground convoy separates logistics from optional flak 15
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 16
+PASS ground convoy separates logistics from optional flak 16
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 17
+PASS ground convoy separates logistics from optional flak 17
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 18
+PASS ground convoy separates logistics from optional flak 18
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 19
+PASS ground convoy separates logistics from optional flak 19
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 20
+PASS ground convoy separates logistics from optional flak 20
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 21
+PASS ground convoy separates logistics from optional flak 21
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 22
+PASS ground convoy separates logistics from optional flak 22
+PASS GroundAttack seeded force generation, unique IDs and terrain clearance 23
+PASS ground convoy separates logistics from optional flak 23
+PASS order changes mission state with acknowledgment
+PASS target selection chooses an in-range hostile rather than a friendly asset
+PASS new sortie resets command, time and diagnostic state
+PASS invalid simulation deltas do not advance time or activate bot commands
+PASS swept projectile hits truck between simulation ticks
+PASS round above truck misses, without an inflated target sphere
+PASS three real rounds disable a convoy truck and are consumed
+PASS wingman physical hit does not inflate the player's hit count
+PASS AAA cannot damage its own convoy
+PASS AAA finite bursts consume ammunition at a bounded rate
+PASS AAA emits visible physical projectiles instead of automatic damage
+PASS destroyed flak stops firing
+PASS friendly wingmen are mortal under the same projectile damage rules
+PASS destroying every fighter does not substitute for bomber arrival
+PASS two distinct bomber route crossings complete escort
+PASS completed tactical sortie stops simulation
+PASS bomber loss threshold takes precedence over eliminating enemies
+PASS interception completes when raid leaders are stopped despite surviving escorts
+PASS a raid crossing the defended boundary causes genuine objective failure
+PASS ground attack cannot be won by fighter kills alone
+PASS logistics destruction wins while optional flak can remain
+PASS real projectile impacts cause damage, four objective losses and ground mission victory
+PASS player death on objective completion tick remains defeat
+PASS real fuselage collision destroys both aircraft without teleport correction
+PASS Interception seed reproduces complete aircraft, command and ground state
+PASS BomberEscort seed reproduces complete aircraft, command and ground state
+PASS GroundAttack seed reproduces complete aircraft, command and ground state
+PASS Interception full bot sortie reaches finite terminal outcome 1944
+PASS Interception no sustained squadron-wide stall loop 1944
+PASS Interception pilots engage using actual ammunition 1944
+PASS Interception ammunition, health and projectile lifetime stay bounded 1944
+PASS Interception full bot sortie reaches finite terminal outcome 81
+PASS Interception no sustained squadron-wide stall loop 81
+PASS Interception pilots engage using actual ammunition 81
+PASS Interception ammunition, health and projectile lifetime stay bounded 81
+PASS Interception full bot sortie reaches finite terminal outcome 31337
+PASS Interception no sustained squadron-wide stall loop 31337
+PASS Interception pilots engage using actual ammunition 31337
+PASS Interception ammunition, health and projectile lifetime stay bounded 31337
+PASS Interception can be completed by live pilots through actual movement, gunnery and objective progress
+PASS BomberEscort full bot sortie reaches finite terminal outcome 1944
+PASS BomberEscort no sustained squadron-wide stall loop 1944
+PASS BomberEscort pilots engage using actual ammunition 1944
+PASS BomberEscort ammunition, health and projectile lifetime stay bounded 1944
+PASS BomberEscort full bot sortie reaches finite terminal outcome 81
+PASS BomberEscort no sustained squadron-wide stall loop 81
+PASS BomberEscort pilots engage using actual ammunition 81
+PASS BomberEscort ammunition, health and projectile lifetime stay bounded 81
+PASS BomberEscort full bot sortie reaches finite terminal outcome 31337
+PASS BomberEscort no sustained squadron-wide stall loop 31337
+PASS BomberEscort pilots engage using actual ammunition 31337
+PASS BomberEscort ammunition, health and projectile lifetime stay bounded 31337
+PASS BomberEscort can be completed by live pilots through actual movement, gunnery and objective progress
+PASS GroundAttack full bot sortie reaches finite terminal outcome 1944
+PASS GroundAttack no sustained squadron-wide stall loop 1944
+PASS GroundAttack pilots engage using actual ammunition 1944
+PASS GroundAttack ammunition, health and projectile lifetime stay bounded 1944
+PASS GroundAttack full bot sortie reaches finite terminal outcome 81
+PASS GroundAttack no sustained squadron-wide stall loop 81
+PASS GroundAttack pilots engage using actual ammunition 81
+PASS GroundAttack ammunition, health and projectile lifetime stay bounded 81
+PASS GroundAttack full bot sortie reaches finite terminal outcome 31337
+PASS GroundAttack no sustained squadron-wide stall loop 31337
+PASS GroundAttack pilots engage using actual ammunition 31337
+PASS GroundAttack ammunition, health and projectile lifetime stay bounded 31337
+PASS GroundAttack can be completed by live pilots through actual movement, gunnery and objective progress
+PASS controls-only interception pilot lands physical rounds and reaches an outcome 1944
+PASS controls-only interception pilot lands physical rounds and reaches an outcome 81
+PASS controls-only interception pilot lands physical rounds and reaches an outcome 31337
+PASS at least one complete interception is earned through player controls, squadron orders and physical gunnery
+PASS tactical decisions never mutate aircraft position, velocity, attitude, health or ammunition
+PASS tactical pilots issue finite bounded player-equivalent flight controls
+PASS offset interception banks and changes trajectory through aerodynamic flight
+PASS designating an aircraft outside awareness range does not reveal it
+PASS distant aircraft behind the pilot remain outside the visual scan
+PASS a visible forward contact inside scan range can be designated
+PASS destroyed contacts are dropped despite previous target commitment
+PASS friendly aircraft never become tactical gun targets
+PASS engage order yields finite firing windows on a visible aligned target
+PASS regroup revokes offensive firing and restores the assigned formation slot
+PASS a friendly aircraft crossing the gun line suppresses AI firing
+PASS cover order prioritizes an enemy aiming at the flight leader
+PASS seriously damaged pilots withdraw instead of obeying suicidal pursuit
+PASS straight leader formation uses finite continuous flight without correction teleports
+PASS straight leader formation maintains safe physical spacing
+PASS straight leader formation retains a useful bounded slot after leader motion
+PASS separated wingman rejoin uses finite continuous flight without correction teleports
+PASS separated wingman rejoin maintains safe physical spacing
+PASS a displaced wingman closes a two-kilometre formation gap within 105 seconds
+PASS turning leader formation uses finite continuous flight without correction teleports
+PASS turning leader formation maintains safe physical spacing
+PASS turning leader formation retains a useful bounded slot after leader motion
+PASS slow pilots prioritize energy recovery over the assigned climb
+PASS low-energy recovery regains maneuvering speed using aerodynamic acceleration
+PASS descending low aircraft override mission orders with an early pull-up
+PASS terrain escape actually clears the ground through elevator and lift
+PASS converging friendly traffic triggers predictive avoidance before the crossing
+PASS head-on friendly encounter clears both fuselages using normal bank and elevator
+PASS Roguelite: 200 seeded planning decks reproduce exactly
+PASS Roguelite: 200 fresh runs offer valid, distinct, nonempty route choices and a live aircraft
+PASS Roguelite: 200 signed seeds produce at least 100 distinct route and sortie decks
+PASS Roguelite: minimum integer seed is supported deterministically
+PASS Roguelite: invalid route indices cannot consume the run or launch a sortie
+PASS Roguelite: planning cannot claim unearned rewards or spend airborne equipment
+PASS Roguelite: four explicit objective fixtures traverse launch, reward, planning and terminal victory without invalid reentry
+PASS Roguelite: duplicate debriefs and reward submits never grant duplicate supplies or rewards
+PASS Roguelite: remaining hull carries into distinct fresh mission instances
+PASS Roguelite: losing the aircraft terminates the run and cannot collect victory rewards
+PASS Roguelite: terminal runs freeze simulation and tactical activations
+PASS Roguelite: retry creates a clean run with no carried destruction, mission or modifications
+PASS Roguelite: unavailable refits, full-health repairs and invalid crew slots never consume supplies
+PASS Roguelite: 300 generated reward decks omit capped equipment and always provide a repair alternative
+PASS Roguelite: paid refits spend exactly three crates once per planning visit and cannot be rerolled or duplicated
+PASS Roguelite: equipment and repair competition respects installation/level caps and never blocks a surviving aircraft from its next route
+PASS Roguelite: dead pilots remain lost and cannot be revived by a cheap repair
+PASS Roguelite: surviving wingman repair restores forty hull for one crate
+PASS Roguelite: the next squadron sortie omits a lost pilot and carries repaired survivor health
+PASS Roguelite: invalid and empty ability slots cannot activate
+PASS Roguelite: emergency boost consumes one charge, adds real engine power and incurs disclosed hull wear
+PASS Roguelite: held/repeated activation cannot stack an already active ability
+PASS Roguelite: invalid or zero simulation deltas cannot expire an ability or damage an aircraft
+PASS Roguelite: ability duration follows actual bounded simulation time during a long render frame
+PASS Roguelite: expired boost restores the exact permanent engine specification
+PASS Roguelite: the second boost use is available after expiration
+PASS Roguelite: expended equipment cannot activate without remaining sortie charges
+PASS Roguelite: ArmorPiercing is actually obtainable from generated mission rewards
+PASS Roguelite: earned ArmorPiercing can be equipped between sorties
+PASS Roguelite: ArmorPiercing activates from its second cockpit slot
+PASS Roguelite: in-flight loadout cannot be swapped to evade ArmorPiercing charges
+PASS Roguelite: AP equipment affects authoritative projectile damage and ammunition expenditure rate
+PASS Roguelite: debrief clears every temporary timer after ArmorPiercing
+PASS Roguelite: CombatFlaps is actually obtainable from generated mission rewards
+PASS Roguelite: earned CombatFlaps can be equipped between sorties
+PASS Roguelite: CombatFlaps activates from its second cockpit slot
+PASS Roguelite: in-flight loadout cannot be swapped to evade CombatFlaps charges
+PASS Roguelite: combat flaps add aerodynamic lift area and a real drag penalty
+PASS Roguelite: debrief clears every temporary timer after CombatFlaps
+PASS Roguelite: Rally is actually obtainable from generated mission rewards
+PASS Roguelite: earned Rally can be equipped between sorties
+PASS Roguelite: Rally activates from its second cockpit slot
+PASS Roguelite: in-flight loadout cannot be swapped to evade Rally charges
+PASS Roguelite: rally commands actual surviving wingmen to cover the player
+PASS Roguelite: debrief clears every temporary timer after Rally
+PASS Roguelite: modified aircraft own a private definition instead of mutating the standard fighter
+PASS Roguelite: rebuilding every double-installed modification 100 times never compounds previous effects
+PASS Roguelite: modification tradeoffs produce finite aircraft, with distinct armor, cannon, lightframe and lift identities
+PASS Roguelite: removing all installations exactly restores private baseline performance
+PASS Roguelite: 144 paired double-level builds plus simultaneous boost/flaps remain finite in authoritative aerodynamic flight
+PASS Roguelite: cannon and AP synergy is carried by a real fired projectile while consuming ammunition
+PASS Roguelite: rounds already in flight retain their launch damage after temporary equipment expires
+PASS Roguelite: swept physical hits apply equipment resistance without granting immunity
+PASS Roguelite: emergency engine power produces measurable acceleration and distance through existing aerodynamic forces
+PASS Roguelite: actual campaign 1944 keeps aircraft, damage, ammunition and projectiles finite and bounded
+PASS Roguelite: actual campaign 1944 reaches a terminal run outcome through real sorties
+PASS Roguelite: actual campaign 81 keeps aircraft, damage, ammunition and projectiles finite and bounded
+PASS Roguelite: actual campaign 81 reaches a terminal run outcome through real sorties
+PASS Roguelite: actual campaign 31337 keeps aircraft, damage, ammunition and projectiles finite and bounded
+PASS Roguelite: actual campaign 31337 reaches a terminal run outcome through real sorties
+PASS Roguelite: actual campaign 0 keeps aircraft, damage, ammunition and projectiles finite and bounded
+PASS Roguelite: actual campaign 0 reaches a terminal run outcome through real sorties
+PASS Roguelite: actual campaign 17 keeps aircraft, damage, ammunition and projectiles finite and bounded
+PASS Roguelite: actual campaign 17 reaches a terminal run outcome through real sorties
+PASS Roguelite: run equipment and carried consequences allow actual combat victories
+PASS Roguelite: at least one complete four-sortie campaign is earned through authoritative combat without outcome overrides
+PASS Roguelite: all shared aircraft definition fields remain bit-for-bit unchanged after upgrades and abilities
+PASS Roguelite: all five ordinary mission trajectories, health, ammunition and objectives exactly reproduce after campaign use
+Complete dogfights: 6/6 controller-driven ballistic victories; 83.7-221.3 seconds; 595 rounds total. Armed escort victories: 3/3. No state, damage or transform overrides in these nine sorties.
+TACTICAL SORTIES (unmodified real physics / weapons / pilots)
+Interception seed=1944 Victory t=236.4 rounds=292 player hits=8 wingmen=2 flak rounds=0 collisions=0 | 2/2 raiders stopped | 0 escaped
+  Lost Raid 1: Gunfire
+  Lost Raid 2: Gunfire
+Interception seed=81 Defeat t=209.0 rounds=852 player hits=0 wingmen=2 flak rounds=0 collisions=0 | 0/2 raiders stopped | 0 escaped
+  Lost Kestrel: Gunfire
+Interception seed=31337 Defeat t=303.6 rounds=524 player hits=3 wingmen=2 flak rounds=0 collisions=0 | 1/2 raiders stopped | 1 escaped
+  Lost Raid 1: Gunfire
+BomberEscort seed=1944 Victory t=204.6 rounds=373 player hits=1 wingmen=2 flak rounds=0 collisions=0 | 2/2 delivered | 3/3 bombers flying | route 100%
+BomberEscort seed=81 Victory t=212.4 rounds=546 player hits=8 wingmen=2 flak rounds=0 collisions=0 | 2/2 delivered | 2/3 bombers flying | route 100%
+  Lost Heron 2: Gunfire
+  Lost Falke 12: Gunfire
+BomberEscort seed=31337 Defeat t=162.9 rounds=335 player hits=1 wingmen=2 flak rounds=0 collisions=0 | 0/2 delivered | 1/3 bombers flying | route 76%
+  Lost Heron 1: Gunfire
+  Lost Heron 3: Gunfire
+GroundAttack seed=1944 Victory t=237.9 rounds=301 player hits=12 wingmen=1 flak rounds=224 collisions=0 | 4/4 trucks destroyed | 2 ground contacts remain
+  Lost Rook: Gunfire
+GroundAttack seed=81 Victory t=306.5 rounds=656 player hits=10 wingmen=1 flak rounds=327 collisions=0 | 4/4 trucks destroyed | 2 ground contacts remain
+  Lost Finch: Gunfire
+GroundAttack seed=31337 Defeat t=257.4 rounds=363 player hits=3 wingmen=1 flak rounds=312 collisions=0 | 1/4 trucks destroyed | 5 ground contacts remain
+  Lost Kestrel: Gunfire
+  Lost Finch: Gunfire
+CONTROLS-ONLY TACTICAL INTERCEPTIONS (player and wingmen split raid targets)
+Interception seed=1944 Defeat t=315.3 hits=8 rounds=131 wingmen=1 | 1/2 raiders stopped | 1 escaped
+Interception seed=81 Victory t=163.9 hits=8 rounds=98 wingmen=2 | 2/2 raiders stopped | 0 escaped
+Interception seed=31337 Victory t=256.0 hits=16 rounds=76 wingmen=0 | 2/2 raiders stopped | 0 escaped
+
+TACTICAL HANDLING (real aerodynamic integration)
+straight leader formation initial=0 final=23 peak=23 closest=234 m
+separated wingman rejoin initial=2283 final=53 peak=1682 closest=287 m
+turning leader formation initial=0 final=20 peak=180 closest=237 m
+speed recovery final=105.1 m/s
+terrain recovery minimum=94 final=389 m AGL
+head-on avoidance closest=38.0 m
+
+ROGUELITE VALIDATION
+State fixtures and actual combat runs are reported separately.
+ACTUAL CAMPAIGNS: legal route, reward and repair choices; bounded pilot controls; no health, position, ammunition or objective overrides.
+Run 1944 stage 1 Duel seed=1998853823 Victory t=613.7 hull=100.0 player rounds=115 hits=8 wingmen=0
+Run 1944 stage 2 Duel seed=1843799244 Victory t=207.3 hull=100.0 player rounds=229 hits=9 wingmen=0
+Run 1944 stage 3 GroundAttack seed=1512555482 Victory t=306.1 hull=72.0 player rounds=46 hits=5 wingmen=1
+Run 1944 stage 4 GroundAttack seed=2084743031 Defeat t=507.9 hull=0.0 player rounds=48 hits=7 wingmen=0
+Campaign 1944 result Defeat | Operation lost after 3 successful sorties. Kestrel lost. Your sortie has ended.
+Run 81 stage 1 Duel seed=113517009 Victory t=215.0 hull=100.0 player rounds=257 hits=8 wingmen=0
+Run 81 stage 2 Duel seed=1363781881 Victory t=302.7 hull=100.0 player rounds=177 hits=9 wingmen=0
+Run 81 stage 3 Interception seed=1406506383 Defeat t=303.5 hull=100.0 player rounds=260 hits=8 wingmen=2
+Campaign 81 result Defeat | Operation lost after 2 successful sorties. A raid leader crossed the defended boundary. The strike got through.
+Run 31337 stage 1 Duel seed=57798223 Defeat t=405.6 hull=0.0 player rounds=88 hits=7 wingmen=0
+Campaign 31337 result Defeat | Operation lost after 0 successful sorties. Kestrel lost. Your sortie has ended.
+Run 0 stage 1 Duel seed=1071316691 Victory t=184.2 hull=100.0 player rounds=213 hits=8 wingmen=0
+Run 0 stage 2 Duel seed=780525707 Victory t=141.1 hull=100.0 player rounds=155 hits=9 wingmen=0
+Run 0 stage 3 GroundAttack seed=1308398490 Victory t=231.0 hull=86.0 player rounds=103 hits=14 wingmen=1
+Run 0 stage 4 GroundAttack seed=561375023 Victory t=242.0 hull=79.0 player rounds=44 hits=7 wingmen=2
+Campaign 0 result Victory | Blockade broken. All four sorties completed in your heavy hitter.
+Run 17 stage 1 Duel seed=1326372591 Victory t=271.6 hull=100.0 player rounds=169 hits=8 wingmen=0
+Run 17 stage 2 Duel seed=429153816 Victory t=146.5 hull=100.0 player rounds=90 hits=9 wingmen=0
+Run 17 stage 3 Interception seed=837920124 Defeat t=303.5 hull=69.8 player rounds=30 hits=0 wingmen=2
+Campaign 17 result Defeat | Operation lost after 2 successful sorties. A raid leader crossed the defended boundary. The strike got through.
+Earned campaign victories: 1/5; sortie victories 11/15
+
+PASS Skating accelerates toward a bounded cruising speed
+PASS Coasting retains ice momentum but gradually slows
+PASS Edges brake to a controlled stop
+PASS Reverse input cannot instantly reverse momentum
+PASS Sustained reverse input enables backward skating
+PASS Lateral steering bends a trajectory without snapping it
+PASS Body rotation obeys a speed dependent yaw limit
+PASS Sprint produces faster sustained skating
+PASS Boards contain skaters and preserve tangential sliding
+PASS Skaters separate and exchange collision momentum
+PASS Player contact at a straight board cannot project the puck outside the rink
+PASS A board-side puck retains tangential travel and escapes the skater contact pocket
+PASS Player contact in a rounded corner preserves the rink constraint throughout every fixed step
+PASS Skate contact cannot push an outside puck through either side of solid netting
+PASS Rear-net contact preserves the original side while allowing a puck to slide free
+PASS Body separation cannot tunnel a resting puck through a goalpost
+PASS The open goal mouth still permits a physical contact deflection to score
+PASS Stick control and shots cannot reach through the side netting
+PASS The back netting blocks stick contact from behind the goal
+PASS An unobstructed stick can still reach through the open goal mouth
+PASS Puck slides with low continuous ice friction
+PASS Board rebound loses normal energy and retains tangential motion
+PASS Rounded corners deflect without trapping or NaN state
+PASS A real northbound shot crossing the full goal line scores team zero
+PASS South goal uses the same full-puck crossing rule
+PASS A hard shot hits a post instead of tunnelling into a false goal
+PASS Side netting cannot be penetrated from outside
+PASS Back netting rebounds the puck without awarding a goal
+PASS Stick guide changes velocity with bounded force and never teleports
+PASS Contact guide settles without persistent jitter
+PASS A hard deflection breaks contact control
+PASS A skater cannot shoot from outside stick reach
+PASS A reachable charged shot supplies physical forward momentum
+PASS Stick cooldown rejects duplicate impulses
+PASS Pass direction and lower impulse are intentional
+PASS Moving shots rebound from the goalie's physical pads with save feedback
+PASS Goalies cannot remotely possess a puck
+PASS Eighty seeded high-speed ricochet trajectories remain finite and inside the rink
+PASS Airborne puck follows continuous gravity rather than a scripted flight curve
+PASS An airborne puck bounces off ice and loses energy instead of clipping underground
+PASS Small ice rebounds settle into stable sliding without vertical jitter
+PASS A high puck cannot be magnetically collected or struck from the ice
+PASS A low airborne puck can be volleyed while remaining above the dribbling region
+PASS A pass remains grounded and records its physical passer for one-timer anticipation
+PASS Ground passes retain their sliding height and age during real travel
+PASS An elevated puck wholly under the crossbar can score through the goal mouth
+PASS A shot above the crossbar passes over the goal without scoring
+PASS A hard elevated shot physically rebounds from the crossbar
+PASS Vertical goalposts stop elevated shots as well as grounded ones
+PASS A puck descending onto the goal rebounds from its geometric roof
+PASS A raised physical glove can save a shoulder-height shot and produce a falling rebound
+PASS A glove in the wrong vertical position cannot save a shot outside the torso
+PASS Goalies cannot collide with pucks flying above all of their equipment
+PASS Elevated rink glass rebounds a puck above the boards
+PASS A puck clearing the glass signals an explicit out-of-play stoppage
+PASS An aimed shot's ballistic solution and imperfection reproduce from the same sequence
+PASS A reachable wrist shot launches through the shared stick impulse path
+PASS A stationary wrist shot reaches the selected elevated target through ordinary ballistic travel
+PASS Slap shots trade accuracy for speed; wrist shots remain the precise option across seeded shots
+PASS A one-timer redirects incoming momentum into a real elevated shot without relocating the puck
+PASS Hockey stop smoothly kills momentum while suppressing held forward/sprint propulsion
+PASS Holding brake at rest cannot creep, jitter or reverse the skater
+PASS Exponential hockey stop is stable across ordinary fixed-step sizes
+PASS click waits only for release, not an invented wind-up
+PASS short click immediately emits one full snap on release
+PASS released snap cannot fire twice
+PASS held LMB charges and enables contact one-timers
+PASS long LMB release emits charged slapshot
+PASS RMB press defers pass so a wrist chord can be selected
+PASS RMB release sends a normal pass
+PASS RMB before LMB selects wrist shot
+PASS releasing chord RMB early does not accidentally pass
+PASS wrist choice survives release of modifier
+PASS LMB before RMB stays slapshot without stray pass
+PASS successful automatic one-timer consumes held shot and release
+PASS pause or restart cancels all pending button gestures
+PASS three skaters and goalie per team; stable human identity
+PASS match starts with readable faceoff countdown
+PASS faceoff freezes clock and physical play
+PASS countdown starts live play and regulation clock
+PASS human can call for teammate pass
+PASS live action advances match clock
+PASS practice clock does not expire
+PASS practice opposition skaters wait while goalkeeper remains active
+PASS actual moving puck crossing goal line scores exactly once
+PASS goal celebration transitions through center faceoff back to play
+PASS goal and faceoff pauses preserve regulation time
+PASS tied regulation clock always starts sudden-death overtime
+PASS scoreless overtime clock expires into a final draw without requiring a goal
+PASS teammate responds to human pass call through a clear physical lane
+PASS called pass travels toward human support rather than teleporting possession
+PASS legal airborne shot under raised crossbar scores through actual goal plane
+PASS faceoff clears airborne height and vertical momentum after goal
+PASS puck crossing goal plane above crossbar is not awarded a goal
+PASS puck over protective glass receives visible whistle and physical-state reset
+PASS unreachable roof puck physically settles above the crossbar
+PASS stationary puck on goal roof is whistled within twenty-one seconds and reset to ice faceoff
+PASS one-timer fixture begins with an actual teammate stick pass
+PASS pre-held stick redirects arriving physical teammate pass into one one-timer
+PASS human one-timer consumption is attributed to its skater, separately from teammate shots
+PASS one-timer applies physical upward shot impulse toward aimed height
+PASS holding after a one-timer never repeats automatically on another close puck
+PASS release after auto one-timer does not also fire a charged shot
+PASS skating onto a stationary loose puck with readied stick also produces a one-timer
+PASS holding the button while puck is already at the stick keeps a normal charged shot
+PASS AI anticipates teammate pass and readies an aimed airborne one-timer
+PASS AI physically completes a teammate-pass one-timer through the common session rules
+PASS teammate one-timer does not count as consumption of the human shoot gesture
+PASS stationary puck 0: AI physically recovers side-board/corner/behind-net puck in ten seconds
+PASS stationary puck 0: recovery needs no whistle or position reset
+PASS stationary puck 1: AI physically recovers side-board/corner/behind-net puck in ten seconds
+PASS stationary puck 1: recovery needs no whistle or position reset
+PASS stationary puck 2: AI physically recovers side-board/corner/behind-net puck in ten seconds
+PASS stationary puck 2: recovery needs no whistle or position reset
+PASS stationary puck 3: AI physically recovers side-board/corner/behind-net puck in ten seconds
+PASS stationary puck 3: recovery needs no whistle or position reset
+PASS stationary puck 4: AI physically recovers side-board/corner/behind-net puck in ten seconds
+PASS stationary puck 4: recovery needs no whistle or position reset
+PASS stationary puck 5: AI physically recovers side-board/corner/behind-net puck in ten seconds
+PASS stationary puck 5: recovery needs no whistle or position reset
+PASS identical seeds and bot inputs reproduce puck trajectory exactly
+PASS identical seeds also reproduce shot lift and airborne rebounds
+PASS identical seeded matches reproduce scores and shot decisions
+PASS all eight pilots remain deterministic across a repeated minute
+PASS seed 1988: finite state throughout full game
+PASS seed 1988: puck remains in rounded rink;
+PASS seed 1988: control never belongs to goalie or invalid id
+PASS seed 1988: full match reaches final score
+PASS seed 1988: AI creates repeated shot attempts
+PASS seed 1988: AI produces physical airborne shots
+PASS seed 1988: AI passes between support players
+PASS seed 1988: contested possession changes teams
+PASS seed 1988: support roles spread across useful lanes
+PASS seed 1988: no stuck-puck watchdog interventions;
+PASS seed 1988: all pilots respect bounded skating velocity
+PASS seed 1988: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 1988: one-timer attribution exactly matches team counts
+PASS seed 1988: final score freezes gameplay until restart
+PASS seed 1944: finite state throughout full game
+PASS seed 1944: puck remains in rounded rink;
+PASS seed 1944: control never belongs to goalie or invalid id
+PASS seed 1944: full match reaches final score
+PASS seed 1944: AI creates repeated shot attempts
+PASS seed 1944: AI produces physical airborne shots
+PASS seed 1944: AI passes between support players
+PASS seed 1944: contested possession changes teams
+PASS seed 1944: support roles spread across useful lanes
+PASS seed 1944: no stuck-puck watchdog interventions;
+PASS seed 1944: all pilots respect bounded skating velocity
+PASS seed 1944: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 1944: one-timer attribution exactly matches team counts
+PASS seed 1944: final score freezes gameplay until restart
+PASS seed 7: finite state throughout full game
+PASS seed 7: puck remains in rounded rink;
+PASS seed 7: control never belongs to goalie or invalid id
+PASS seed 7: full match reaches final score
+PASS seed 7: AI creates repeated shot attempts
+PASS seed 7: AI produces physical airborne shots
+PASS seed 7: AI passes between support players
+PASS seed 7: contested possession changes teams
+PASS seed 7: support roles spread across useful lanes
+PASS seed 7: no stuck-puck watchdog interventions;
+PASS seed 7: all pilots respect bounded skating velocity
+PASS seed 7: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 7: one-timer attribution exactly matches team counts
+PASS seed 7: final score freezes gameplay until restart
+PASS seed 93: finite state throughout full game
+PASS seed 93: puck remains in rounded rink;
+PASS seed 93: control never belongs to goalie or invalid id
+PASS seed 93: full match reaches final score
+PASS seed 93: AI creates repeated shot attempts
+PASS seed 93: AI produces physical airborne shots
+PASS seed 93: AI passes between support players
+PASS seed 93: contested possession changes teams
+PASS seed 93: support roles spread across useful lanes
+PASS seed 93: no stuck-puck watchdog interventions;
+PASS seed 93: all pilots respect bounded skating velocity
+PASS seed 93: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 93: one-timer attribution exactly matches team counts
+PASS seed 93: final score freezes gameplay until restart
+PASS seed 71319: finite state throughout full game
+PASS seed 71319: puck remains in rounded rink;
+PASS seed 71319: control never belongs to goalie or invalid id
+PASS seed 71319: full match reaches final score
+PASS seed 71319: AI creates repeated shot attempts
+PASS seed 71319: AI produces physical airborne shots
+PASS seed 71319: AI passes between support players
+PASS seed 71319: contested possession changes teams
+PASS seed 71319: support roles spread across useful lanes
+PASS seed 71319: no stuck-puck watchdog interventions;
+PASS seed 71319: all pilots respect bounded skating velocity
+PASS seed 71319: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 71319: one-timer attribution exactly matches team counts
+PASS seed 71319: final score freezes gameplay until restart
+PASS seed 2026: finite state throughout full game
+PASS seed 2026: puck remains in rounded rink;
+PASS seed 2026: control never belongs to goalie or invalid id
+PASS seed 2026: full match reaches final score
+PASS seed 2026: AI creates repeated shot attempts
+PASS seed 2026: AI produces physical airborne shots
+PASS seed 2026: AI passes between support players
+PASS seed 2026: contested possession changes teams
+PASS seed 2026: support roles spread across useful lanes
+PASS seed 2026: no stuck-puck watchdog interventions;
+PASS seed 2026: all pilots respect bounded skating velocity
+PASS seed 2026: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 2026: one-timer attribution exactly matches team counts
+PASS seed 2026: final score freezes gameplay until restart
+PASS seed 83: finite state throughout full game
+PASS seed 83: puck remains in rounded rink;
+PASS seed 83: control never belongs to goalie or invalid id
+PASS seed 83: full match reaches final score
+PASS seed 83: AI creates repeated shot attempts
+PASS seed 83: AI produces physical airborne shots
+PASS seed 83: AI passes between support players
+PASS seed 83: contested possession changes teams
+PASS seed 83: support roles spread across useful lanes
+PASS seed 83: no stuck-puck watchdog interventions;
+PASS seed 83: all pilots respect bounded skating velocity
+PASS seed 83: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 83: one-timer attribution exactly matches team counts
+PASS seed 83: final score freezes gameplay until restart
+PASS seed 501: finite state throughout full game
+PASS seed 501: puck remains in rounded rink;
+PASS seed 501: control never belongs to goalie or invalid id
+PASS seed 501: full match reaches final score
+PASS seed 501: AI creates repeated shot attempts
+PASS seed 501: AI produces physical airborne shots
+PASS seed 501: AI passes between support players
+PASS seed 501: contested possession changes teams
+PASS seed 501: support roles spread across useful lanes
+PASS seed 501: no stuck-puck watchdog interventions;
+PASS seed 501: all pilots respect bounded skating velocity
+PASS seed 501: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 501: one-timer attribution exactly matches team counts
+PASS seed 501: final score freezes gameplay until restart
+PASS seed 111: finite state throughout full game
+PASS seed 111: puck remains in rounded rink;
+PASS seed 111: control never belongs to goalie or invalid id
+PASS seed 111: full match reaches final score
+PASS seed 111: AI creates repeated shot attempts
+PASS seed 111: AI produces physical airborne shots
+PASS seed 111: AI passes between support players
+PASS seed 111: contested possession changes teams
+PASS seed 111: support roles spread across useful lanes
+PASS seed 111: no stuck-puck watchdog interventions;
+PASS seed 111: all pilots respect bounded skating velocity
+PASS seed 111: shot kinds and one-timers correspond to actual successful stick strikes
+PASS seed 111: one-timer attribution exactly matches team counts
+PASS seed 111: final score freezes gameplay until restart
+PASS bot series produces earned goals through physical shooting (52 goals from 140 attempts)
+PASS bot series includes physical goalkeeper saves and rebounds (78 saves)
+PASS shooting has misses/saves rather than automatic goals
+PASS full bot series exercises both blue and orange wins (overtime and draw have separate clock fixtures)
+PASS full bot series includes actual physical passing one-timers (66)
+Seeded full bot matches (all actions use player physics):
+seed 1988: 0-2, shots 13, saves 9, passes 28, takeaways 47, checks 34, one-timers 4, max height 3.50m, frozen-puck resets 0, elapsed 191.6s
+seed 1944: 1-5, shots 21, saves 16, passes 47, takeaways 62, checks 41, one-timers 7, max height 2.20m, frozen-puck resets 0, elapsed 210.4s
+seed 7: 3-4, shots 17, saves 8, passes 51, takeaways 55, checks 33, one-timers 11, max height 1.80m, frozen-puck resets 0, elapsed 215.1s
+seed 93: 2-1, shots 14, saves 8, passes 41, takeaways 32, checks 21, one-timers 7, max height 2.47m, frozen-puck resets 0, elapsed 196.3s
+seed 71319: 5-2, shots 10, saves 5, passes 41, takeaways 68, checks 38, one-timers 3, max height 1.86m, frozen-puck resets 0, elapsed 215.1s
+seed 2026: 4-5, shots 20, saves 9, passes 45, takeaways 70, checks 27, one-timers 8, max height 2.15m, frozen-puck resets 0, elapsed 235.0s
+seed 83: 1-6, shots 15, saves 6, passes 44, takeaways 45, checks 28, one-timers 9, max height 1.67m, frozen-puck resets 0, elapsed 215.1s
+seed 501: 4-4, shots 17, saves 8, passes 42, takeaways 67, checks 39, one-timers 8, max height 3.65m, frozen-puck resets 0, elapsed 282.0s
+seed 111: 3-0, shots 13, saves 9, passes 43, takeaways 63, checks 38, one-timers 9, max height 1.48m, frozen-puck resets 0, elapsed 196.3s
+TOTAL goals 52, shots 140, saves 78, passes 382, takeaways 509, one-timers 66
+PASS Haunted House complete seeded investigation 0
+PASS Haunted House complete seeded investigation 1
+PASS Haunted House complete seeded investigation 2
+PASS Haunted House complete seeded investigation 3
+PASS Haunted House complete seeded investigation 4
+PASS Haunted House complete seeded investigation 5
+PASS Haunted House complete seeded investigation 6
+PASS Haunted House complete seeded investigation 7
+PASS Haunted House complete seeded investigation 8
+PASS Haunted House complete seeded investigation 9
+PASS Haunted House complete seeded investigation 10
+PASS Haunted House complete seeded investigation 11
+PASS Haunted House complete seeded investigation 12
+PASS Haunted House complete seeded investigation 13
+PASS Haunted House complete seeded investigation 14
+PASS Haunted House complete seeded investigation 15
+PASS Haunted House complete seeded investigation 16
+PASS Haunted House complete seeded investigation 17
+PASS Haunted House complete seeded investigation 18
+PASS Haunted House complete seeded investigation 19
+PASS Haunted House complete seeded investigation 20
+PASS Haunted House complete seeded investigation 21
+PASS Haunted House complete seeded investigation 22
+PASS Haunted House complete seeded investigation 23
+PASS Haunted House complete seeded investigation 24
+PASS Haunted House complete seeded investigation 25
+PASS Haunted House complete seeded investigation 26
+PASS Haunted House complete seeded investigation 27
+PASS Haunted House complete seeded investigation 28
+PASS Haunted House complete seeded investigation 29
+PASS Haunted House complete seeded investigation 30
+PASS Haunted House complete seeded investigation 31
+PASS Haunted House complete seeded investigation 32
+PASS Haunted House complete seeded investigation 33
+PASS Haunted House complete seeded investigation 34
+PASS Haunted House complete seeded investigation 35
+PASS Haunted House complete seeded investigation 36
+PASS Haunted House complete seeded investigation 37
+PASS Haunted House complete seeded investigation 38
+PASS Haunted House complete seeded investigation 39
+PASS Haunted House complete seeded investigation 40
+PASS Haunted House complete seeded investigation 41
+PASS Haunted House complete seeded investigation 42
+PASS Haunted House complete seeded investigation 43
+PASS Haunted House complete seeded investigation 44
+PASS Haunted House complete seeded investigation 45
+PASS Haunted House complete seeded investigation 46
+PASS Haunted House complete seeded investigation 47
+PASS Haunted House complete seeded investigation 48
+PASS Haunted House complete seeded investigation 49
+PASS Haunted House complete seeded investigation 50
+PASS Haunted House complete seeded investigation 51
+PASS Haunted House complete seeded investigation 52
+PASS Haunted House complete seeded investigation 53
+PASS Haunted House complete seeded investigation 54
+PASS Haunted House complete seeded investigation 55
+PASS Haunted House complete seeded investigation 56
+PASS Haunted House complete seeded investigation 57
+PASS Haunted House complete seeded investigation 58
+PASS Haunted House complete seeded investigation 59
+PASS Haunted House complete seeded investigation 60
+PASS Haunted House complete seeded investigation 61
+PASS Haunted House complete seeded investigation 62
+PASS Haunted House complete seeded investigation 63
+PASS Haunted House complete seeded investigation 64
+PASS Haunted House complete seeded investigation 65
+PASS Haunted House complete seeded investigation 66
+PASS Haunted House complete seeded investigation 67
+PASS Haunted House complete seeded investigation 68
+PASS Haunted House complete seeded investigation 69
+PASS Haunted House complete seeded investigation 70
+PASS Haunted House complete seeded investigation 71
+PASS Haunted House complete seeded investigation 72
+PASS Haunted House complete seeded investigation 73
+PASS Haunted House complete seeded investigation 74
+PASS Haunted House complete seeded investigation 75
+PASS Haunted House complete seeded investigation 76
+PASS Haunted House complete seeded investigation 77
+PASS Haunted House complete seeded investigation 78
+PASS Haunted House complete seeded investigation 79
+PASS Haunted House complete seeded investigation 80
+PASS Haunted House complete seeded investigation 81
+PASS Haunted House complete seeded investigation 82
+PASS Haunted House complete seeded investigation 83
+PASS Haunted House complete seeded investigation 84
+PASS Haunted House complete seeded investigation 85
+PASS Haunted House complete seeded investigation 86
+PASS Haunted House complete seeded investigation 87
+PASS Haunted House complete seeded investigation 88
+PASS Haunted House complete seeded investigation 89
+PASS Haunted House complete seeded investigation 90
+PASS Haunted House complete seeded investigation 91
+PASS Haunted House complete seeded investigation 92
+PASS Haunted House complete seeded investigation 93
+PASS Haunted House complete seeded investigation 94
+PASS Haunted House complete seeded investigation 95
+PASS Haunted House complete seeded investigation 96
+PASS Haunted House complete seeded investigation 97
+PASS Haunted House complete seeded investigation 98
+PASS Haunted House complete seeded investigation 99
+PASS Haunted House complete seeded investigation 100
+PASS Haunted House complete seeded investigation 101
+PASS Haunted House complete seeded investigation 102
+PASS Haunted House complete seeded investigation 103
+PASS Haunted House complete seeded investigation 104
+PASS Haunted House complete seeded investigation 105
+PASS Haunted House complete seeded investigation 106
+PASS Haunted House complete seeded investigation 107
+PASS Haunted House complete seeded investigation 108
+PASS Haunted House complete seeded investigation 109
+PASS Haunted House complete seeded investigation 110
+PASS Haunted House complete seeded investigation 111
+PASS Haunted House complete seeded investigation 112
+PASS Haunted House complete seeded investigation 113
+PASS Haunted House complete seeded investigation 114
+PASS Haunted House complete seeded investigation 115
+PASS Haunted House complete seeded investigation 116
+PASS Haunted House complete seeded investigation 117
+PASS Haunted House complete seeded investigation 118
+PASS Haunted House complete seeded investigation 119
+PASS Haunted House complete seeded investigation 120
+PASS Haunted House complete seeded investigation 121
+PASS Haunted House complete seeded investigation 122
+PASS Haunted House complete seeded investigation 123
+PASS Haunted House complete seeded investigation 124
+PASS Haunted House complete seeded investigation 125
+PASS Haunted House complete seeded investigation 126
+PASS Haunted House complete seeded investigation 127
+PASS Haunted House complete seeded investigation 128
+PASS Haunted House complete seeded investigation 129
+PASS Haunted House complete seeded investigation 130
+PASS Haunted House complete seeded investigation 131
+PASS Haunted House complete seeded investigation 132
+PASS Haunted House complete seeded investigation 133
+PASS Haunted House complete seeded investigation 134
+PASS Haunted House complete seeded investigation 135
+PASS Haunted House complete seeded investigation 136
+PASS Haunted House complete seeded investigation 137
+PASS Haunted House complete seeded investigation 138
+PASS Haunted House complete seeded investigation 139
+PASS Haunted House complete seeded investigation 140
+PASS Haunted House complete seeded investigation 141
+PASS Haunted House complete seeded investigation 142
+PASS Haunted House complete seeded investigation 143
+PASS Haunted House complete seeded investigation 144
+PASS Haunted House complete seeded investigation 145
+PASS Haunted House complete seeded investigation 146
+PASS Haunted House complete seeded investigation 147
+PASS Haunted House complete seeded investigation 148
+PASS Haunted House complete seeded investigation 149
+PASS Haunted House complete seeded investigation 150
+PASS Haunted House complete seeded investigation 151
+PASS Haunted House complete seeded investigation 152
+PASS Haunted House complete seeded investigation 153
+PASS Haunted House complete seeded investigation 154
+PASS Haunted House complete seeded investigation 155
+PASS Haunted House complete seeded investigation 156
+PASS Haunted House complete seeded investigation 157
+PASS Haunted House complete seeded investigation 158
+PASS Haunted House complete seeded investigation 159
+PASS Haunted House complete seeded investigation 160
+PASS Haunted House complete seeded investigation 161
+PASS Haunted House complete seeded investigation 162
+PASS Haunted House complete seeded investigation 163
+PASS Haunted House complete seeded investigation 164
+PASS Haunted House complete seeded investigation 165
+PASS Haunted House complete seeded investigation 166
+PASS Haunted House complete seeded investigation 167
+PASS Haunted House complete seeded investigation 168
+PASS Haunted House complete seeded investigation 169
+PASS Haunted House complete seeded investigation 170
+PASS Haunted House complete seeded investigation 171
+PASS Haunted House complete seeded investigation 172
+PASS Haunted House complete seeded investigation 173
+PASS Haunted House complete seeded investigation 174
+PASS Haunted House complete seeded investigation 175
+PASS Haunted House complete seeded investigation 176
+PASS Haunted House complete seeded investigation 177
+PASS Haunted House complete seeded investigation 178
+PASS Haunted House complete seeded investigation 179
+PASS Haunted House complete seeded investigation 180
+PASS Haunted House complete seeded investigation 181
+PASS Haunted House complete seeded investigation 182
+PASS Haunted House complete seeded investigation 183
+PASS Haunted House complete seeded investigation 184
+PASS Haunted House complete seeded investigation 185
+PASS Haunted House complete seeded investigation 186
+PASS Haunted House complete seeded investigation 187
+PASS Haunted House complete seeded investigation 188
+PASS Haunted House complete seeded investigation 189
+PASS Haunted House complete seeded investigation 190
+PASS Haunted House complete seeded investigation 191
+PASS Haunted House complete seeded investigation 192
+PASS Haunted House complete seeded investigation 193
+PASS Haunted House complete seeded investigation 194
+PASS Haunted House complete seeded investigation 195
+PASS Haunted House complete seeded investigation 196
+PASS Haunted House complete seeded investigation 197
+PASS Haunted House complete seeded investigation 198
+PASS Haunted House complete seeded investigation 199
+PASS Haunted House complete seeded investigation 200
+PASS Haunted House complete seeded investigation 201
+PASS Haunted House complete seeded investigation 202
+PASS Haunted House complete seeded investigation 203
+PASS Haunted House complete seeded investigation 204
+PASS Haunted House complete seeded investigation 205
+PASS Haunted House complete seeded investigation 206
+PASS Haunted House complete seeded investigation 207
+PASS Haunted House complete seeded investigation 208
+PASS Haunted House complete seeded investigation 209
+PASS Haunted House complete seeded investigation 210
+PASS Haunted House complete seeded investigation 211
+PASS Haunted House complete seeded investigation 212
+PASS Haunted House complete seeded investigation 213
+PASS Haunted House complete seeded investigation 214
+PASS Haunted House complete seeded investigation 215
+PASS Haunted House complete seeded investigation 216
+PASS Haunted House complete seeded investigation 217
+PASS Haunted House complete seeded investigation 218
+PASS Haunted House complete seeded investigation 219
+PASS Haunted House complete seeded investigation 220
+PASS Haunted House complete seeded investigation 221
+PASS Haunted House complete seeded investigation 222
+PASS Haunted House complete seeded investigation 223
+PASS Haunted House complete seeded investigation 224
+PASS Haunted House complete seeded investigation 225
+PASS Haunted House complete seeded investigation 226
+PASS Haunted House complete seeded investigation 227
+PASS Haunted House complete seeded investigation 228
+PASS Haunted House complete seeded investigation 229
+PASS Haunted House complete seeded investigation 230
+PASS Haunted House complete seeded investigation 231
+PASS Haunted House complete seeded investigation 232
+PASS Haunted House complete seeded investigation 233
+PASS Haunted House complete seeded investigation 234
+PASS Haunted House complete seeded investigation 235
+PASS Haunted House complete seeded investigation 236
+PASS Haunted House complete seeded investigation 237
+PASS Haunted House complete seeded investigation 238
+PASS Haunted House complete seeded investigation 239
+PASS Haunted House complete seeded investigation 240
+PASS Haunted House complete seeded investigation 241
+PASS Haunted House complete seeded investigation 242
+PASS Haunted House complete seeded investigation 243
+PASS Haunted House complete seeded investigation 244
+PASS Haunted House complete seeded investigation 245
+PASS Haunted House complete seeded investigation 246
+PASS Haunted House complete seeded investigation 247
+PASS Haunted House complete seeded investigation 248
+PASS Haunted House complete seeded investigation 249
+PASS Haunted House complete seeded investigation 250
+PASS Haunted House complete seeded investigation 251
+PASS Haunted House complete seeded investigation 252
+PASS Haunted House complete seeded investigation 253
+PASS Haunted House complete seeded investigation 254
+PASS Haunted House complete seeded investigation 255
+PASS Haunted House complete seeded investigation 256
+PASS Haunted House complete seeded investigation 257
+PASS Haunted House complete seeded investigation 258
+PASS Haunted House complete seeded investigation 259
+PASS Haunted House complete seeded investigation 260
+PASS Haunted House complete seeded investigation 261
+PASS Haunted House complete seeded investigation 262
+PASS Haunted House complete seeded investigation 263
+PASS Haunted House complete seeded investigation 264
+PASS Haunted House complete seeded investigation 265
+PASS Haunted House complete seeded investigation 266
+PASS Haunted House complete seeded investigation 267
+PASS Haunted House complete seeded investigation 268
+PASS Haunted House complete seeded investigation 269
+PASS Haunted House complete seeded investigation 270
+PASS Haunted House complete seeded investigation 271
+PASS Haunted House complete seeded investigation 272
+PASS Haunted House complete seeded investigation 273
+PASS Haunted House complete seeded investigation 274
+PASS Haunted House complete seeded investigation 275
+PASS Haunted House complete seeded investigation 276
+PASS Haunted House complete seeded investigation 277
+PASS Haunted House complete seeded investigation 278
+PASS Haunted House complete seeded investigation 279
+PASS Haunted House complete seeded investigation 280
+PASS Haunted House complete seeded investigation 281
+PASS Haunted House complete seeded investigation 282
+PASS Haunted House complete seeded investigation 283
+PASS Haunted House complete seeded investigation 284
+PASS Haunted House complete seeded investigation 285
+PASS Haunted House complete seeded investigation 286
+PASS Haunted House complete seeded investigation 287
+PASS Haunted House complete seeded investigation 288
+PASS Haunted House complete seeded investigation 289
+PASS Haunted House complete seeded investigation 290
+PASS Haunted House complete seeded investigation 291
+PASS Haunted House complete seeded investigation 292
+PASS Haunted House complete seeded investigation 293
+PASS Haunted House complete seeded investigation 294
+PASS Haunted House complete seeded investigation 295
+PASS Haunted House complete seeded investigation 296
+PASS Haunted House complete seeded investigation 297
+PASS Haunted House complete seeded investigation 298
+PASS Haunted House complete seeded investigation 299
+PASS Haunted House complete seeded investigation 300
+PASS Haunted House complete seeded investigation 301
+PASS Haunted House complete seeded investigation 302
+PASS Haunted House complete seeded investigation 303
+PASS Haunted House complete seeded investigation 304
+PASS Haunted House complete seeded investigation 305
+PASS Haunted House complete seeded investigation 306
+PASS Haunted House complete seeded investigation 307
+PASS Haunted House complete seeded investigation 308
+PASS Haunted House complete seeded investigation 309
+PASS Haunted House complete seeded investigation 310
+PASS Haunted House complete seeded investigation 311
+PASS Haunted House complete seeded investigation 312
+PASS Haunted House complete seeded investigation 313
+PASS Haunted House complete seeded investigation 314
+PASS Haunted House complete seeded investigation 315
+PASS Haunted House complete seeded investigation 316
+PASS Haunted House complete seeded investigation 317
+PASS Haunted House complete seeded investigation 318
+PASS Haunted House complete seeded investigation 319
+PASS Haunted House complete seeded investigation 320
+PASS Haunted House complete seeded investigation 321
+PASS Haunted House complete seeded investigation 322
+PASS Haunted House complete seeded investigation 323
+PASS Haunted House complete seeded investigation 324
+PASS Haunted House complete seeded investigation 325
+PASS Haunted House complete seeded investigation 326
+PASS Haunted House complete seeded investigation 327
+PASS Haunted House complete seeded investigation 328
+PASS Haunted House complete seeded investigation 329
+PASS Haunted House complete seeded investigation 330
+PASS Haunted House complete seeded investigation 331
+PASS Haunted House complete seeded investigation 332
+PASS Haunted House complete seeded investigation 333
+PASS Haunted House complete seeded investigation 334
+PASS Haunted House complete seeded investigation 335
+PASS Haunted House complete seeded investigation 336
+PASS Haunted House complete seeded investigation 337
+PASS Haunted House complete seeded investigation 338
+PASS Haunted House complete seeded investigation 339
+PASS Haunted House complete seeded investigation 340
+PASS Haunted House complete seeded investigation 341
+PASS Haunted House complete seeded investigation 342
+PASS Haunted House complete seeded investigation 343
+PASS Haunted House complete seeded investigation 344
+PASS Haunted House complete seeded investigation 345
+PASS Haunted House complete seeded investigation 346
+PASS Haunted House complete seeded investigation 347
+PASS Haunted House complete seeded investigation 348
+PASS Haunted House complete seeded investigation 349
+PASS Haunted House complete seeded investigation 350
+PASS Haunted House complete seeded investigation 351
+PASS Haunted House complete seeded investigation 352
+PASS Haunted House complete seeded investigation 353
+PASS Haunted House complete seeded investigation 354
+PASS Haunted House complete seeded investigation 355
+PASS Haunted House complete seeded investigation 356
+PASS Haunted House complete seeded investigation 357
+PASS Haunted House complete seeded investigation 358
+PASS Haunted House complete seeded investigation 359
+PASS Haunted House complete seeded investigation 360
+PASS Haunted House complete seeded investigation 361
+PASS Haunted House complete seeded investigation 362
+PASS Haunted House complete seeded investigation 363
+PASS Haunted House complete seeded investigation 364
+PASS Haunted House complete seeded investigation 365
+PASS Haunted House complete seeded investigation 366
+PASS Haunted House complete seeded investigation 367
+PASS Haunted House complete seeded investigation 368
+PASS Haunted House complete seeded investigation 369
+PASS Haunted House complete seeded investigation 370
+PASS Haunted House complete seeded investigation 371
+PASS Haunted House complete seeded investigation 372
+PASS Haunted House complete seeded investigation 373
+PASS Haunted House complete seeded investigation 374
+PASS Haunted House complete seeded investigation 375
+PASS Haunted House complete seeded investigation 376
+PASS Haunted House complete seeded investigation 377
+PASS Haunted House complete seeded investigation 378
+PASS Haunted House complete seeded investigation 379
+PASS Haunted House complete seeded investigation 380
+PASS Haunted House complete seeded investigation 381
+PASS Haunted House complete seeded investigation 382
+PASS Haunted House complete seeded investigation 383
+PASS Haunted House complete seeded investigation 384
+PASS Haunted House complete seeded investigation 385
+PASS Haunted House complete seeded investigation 386
+PASS Haunted House complete seeded investigation 387
+PASS Haunted House complete seeded investigation 388
+PASS Haunted House complete seeded investigation 389
+PASS Haunted House complete seeded investigation 390
+PASS Haunted House complete seeded investigation 391
+PASS Haunted House complete seeded investigation 392
+PASS Haunted House complete seeded investigation 393
+PASS Haunted House complete seeded investigation 394
+PASS Haunted House complete seeded investigation 395
+PASS Haunted House complete seeded investigation 396
+PASS Haunted House complete seeded investigation 397
+PASS Haunted House complete seeded investigation 398
+PASS Haunted House complete seeded investigation 399
+PASS Haunted House complete seeded investigation 400
+PASS Haunted House complete seeded investigation 401
+PASS Haunted House complete seeded investigation 402
+PASS Haunted House complete seeded investigation 403
+PASS Haunted House complete seeded investigation 404
+PASS Haunted House complete seeded investigation 405
+PASS Haunted House complete seeded investigation 406
+PASS Haunted House complete seeded investigation 407
+PASS Haunted House complete seeded investigation 408
+PASS Haunted House complete seeded investigation 409
+PASS Haunted House complete seeded investigation 410
+PASS Haunted House complete seeded investigation 411
+PASS Haunted House complete seeded investigation 412
+PASS Haunted House complete seeded investigation 413
+PASS Haunted House complete seeded investigation 414
+PASS Haunted House complete seeded investigation 415
+PASS Haunted House complete seeded investigation 416
+PASS Haunted House complete seeded investigation 417
+PASS Haunted House complete seeded investigation 418
+PASS Haunted House complete seeded investigation 419
+PASS Haunted House complete seeded investigation 420
+PASS Haunted House complete seeded investigation 421
+PASS Haunted House complete seeded investigation 422
+PASS Haunted House complete seeded investigation 423
+PASS Haunted House complete seeded investigation 424
+PASS Haunted House complete seeded investigation 425
+PASS Haunted House complete seeded investigation 426
+PASS Haunted House complete seeded investigation 427
+PASS Haunted House complete seeded investigation 428
+PASS Haunted House complete seeded investigation 429
+PASS Haunted House complete seeded investigation 430
+PASS Haunted House complete seeded investigation 431
+PASS Haunted House complete seeded investigation 432
+PASS Haunted House complete seeded investigation 433
+PASS Haunted House complete seeded investigation 434
+PASS Haunted House complete seeded investigation 435
+PASS Haunted House complete seeded investigation 436
+PASS Haunted House complete seeded investigation 437
+PASS Haunted House complete seeded investigation 438
+PASS Haunted House complete seeded investigation 439
+PASS Haunted House complete seeded investigation 440
+PASS Haunted House complete seeded investigation 441
+PASS Haunted House complete seeded investigation 442
+PASS Haunted House complete seeded investigation 443
+PASS Haunted House complete seeded investigation 444
+PASS Haunted House complete seeded investigation 445
+PASS Haunted House complete seeded investigation 446
+PASS Haunted House complete seeded investigation 447
+PASS Haunted House complete seeded investigation 448
+PASS Haunted House complete seeded investigation 449
+PASS Haunted House complete seeded investigation 450
+PASS Haunted House complete seeded investigation 451
+PASS Haunted House complete seeded investigation 452
+PASS Haunted House complete seeded investigation 453
+PASS Haunted House complete seeded investigation 454
+PASS Haunted House complete seeded investigation 455
+PASS Haunted House complete seeded investigation 456
+PASS Haunted House complete seeded investigation 457
+PASS Haunted House complete seeded investigation 458
+PASS Haunted House complete seeded investigation 459
+PASS Haunted House complete seeded investigation 460
+PASS Haunted House complete seeded investigation 461
+PASS Haunted House complete seeded investigation 462
+PASS Haunted House complete seeded investigation 463
+PASS Haunted House complete seeded investigation 464
+PASS Haunted House complete seeded investigation 465
+PASS Haunted House complete seeded investigation 466
+PASS Haunted House complete seeded investigation 467
+PASS Haunted House complete seeded investigation 468
+PASS Haunted House complete seeded investigation 469
+PASS Haunted House complete seeded investigation 470
+PASS Haunted House complete seeded investigation 471
+PASS Haunted House complete seeded investigation 472
+PASS Haunted House complete seeded investigation 473
+PASS Haunted House complete seeded investigation 474
+PASS Haunted House complete seeded investigation 475
+PASS Haunted House complete seeded investigation 476
+PASS Haunted House complete seeded investigation 477
+PASS Haunted House complete seeded investigation 478
+PASS Haunted House complete seeded investigation 479
+PASS Haunted House complete seeded investigation 480
+PASS Haunted House complete seeded investigation 481
+PASS Haunted House complete seeded investigation 482
+PASS Haunted House complete seeded investigation 483
+PASS Haunted House complete seeded investigation 484
+PASS Haunted House complete seeded investigation 485
+PASS Haunted House complete seeded investigation 486
+PASS Haunted House complete seeded investigation 487
+PASS Haunted House complete seeded investigation 488
+PASS Haunted House complete seeded investigation 489
+PASS Haunted House complete seeded investigation 490
+PASS Haunted House complete seeded investigation 491
+PASS Haunted House complete seeded investigation 492
+PASS Haunted House complete seeded investigation 493
+PASS Haunted House complete seeded investigation 494
+PASS Haunted House complete seeded investigation 495
+PASS Haunted House complete seeded investigation 496
+PASS Haunted House complete seeded investigation 497
+PASS Haunted House complete seeded investigation 498
+PASS Haunted House complete seeded investigation 499
+PASS Haunted House complete seeded investigation 500
+PASS Haunted House complete seeded investigation 501
+PASS Haunted House complete seeded investigation 502
+PASS Haunted House complete seeded investigation 503
+PASS Haunted House complete seeded investigation 504
+PASS Haunted House complete seeded investigation 505
+PASS Haunted House complete seeded investigation 506
+PASS Haunted House complete seeded investigation 507
+PASS Haunted House complete seeded investigation 508
+PASS Haunted House complete seeded investigation 509
+PASS Haunted House complete seeded investigation 510
+PASS Haunted House complete seeded investigation 511
+PASS Haunted House complete seeded investigation 512
+PASS Haunted House complete seeded investigation 513
+PASS Haunted House complete seeded investigation 514
+PASS Haunted House complete seeded investigation 515
+PASS Haunted House complete seeded investigation 516
+PASS Haunted House complete seeded investigation 517
+PASS Haunted House complete seeded investigation 518
+PASS Haunted House complete seeded investigation 519
+PASS Haunted House complete seeded investigation 520
+PASS Haunted House complete seeded investigation 521
+PASS Haunted House complete seeded investigation 522
+PASS Haunted House complete seeded investigation 523
+PASS Haunted House complete seeded investigation 524
+PASS Haunted House complete seeded investigation 525
+PASS Haunted House complete seeded investigation 526
+PASS Haunted House complete seeded investigation 527
+PASS Haunted House complete seeded investigation 528
+PASS Haunted House complete seeded investigation 529
+PASS Haunted House complete seeded investigation 530
+PASS Haunted House complete seeded investigation 531
+PASS Haunted House complete seeded investigation 532
+PASS Haunted House complete seeded investigation 533
+PASS Haunted House complete seeded investigation 534
+PASS Haunted House complete seeded investigation 535
+PASS Haunted House complete seeded investigation 536
+PASS Haunted House complete seeded investigation 537
+PASS Haunted House complete seeded investigation 538
+PASS Haunted House complete seeded investigation 539
+PASS Haunted House complete seeded investigation 540
+PASS Haunted House complete seeded investigation 541
+PASS Haunted House complete seeded investigation 542
+PASS Haunted House complete seeded investigation 543
+PASS Haunted House complete seeded investigation 544
+PASS Haunted House complete seeded investigation 545
+PASS Haunted House complete seeded investigation 546
+PASS Haunted House complete seeded investigation 547
+PASS Haunted House complete seeded investigation 548
+PASS Haunted House complete seeded investigation 549
+PASS Haunted House complete seeded investigation 550
+PASS Haunted House complete seeded investigation 551
+PASS Haunted House complete seeded investigation 552
+PASS Haunted House complete seeded investigation 553
+PASS Haunted House complete seeded investigation 554
+PASS Haunted House complete seeded investigation 555
+PASS Haunted House complete seeded investigation 556
+PASS Haunted House complete seeded investigation 557
+PASS Haunted House complete seeded investigation 558
+PASS Haunted House complete seeded investigation 559
+PASS Haunted House complete seeded investigation 560
+PASS Haunted House complete seeded investigation 561
+PASS Haunted House complete seeded investigation 562
+PASS Haunted House complete seeded investigation 563
+PASS Haunted House complete seeded investigation 564
+PASS Haunted House complete seeded investigation 565
+PASS Haunted House complete seeded investigation 566
+PASS Haunted House complete seeded investigation 567
+PASS Haunted House complete seeded investigation 568
+PASS Haunted House complete seeded investigation 569
+PASS Haunted House complete seeded investigation 570
+PASS Haunted House complete seeded investigation 571
+PASS Haunted House complete seeded investigation 572
+PASS Haunted House complete seeded investigation 573
+PASS Haunted House complete seeded investigation 574
+PASS Haunted House complete seeded investigation 575
+PASS Haunted House complete seeded investigation 576
+PASS Haunted House complete seeded investigation 577
+PASS Haunted House complete seeded investigation 578
+PASS Haunted House complete seeded investigation 579
+PASS Haunted House complete seeded investigation 580
+PASS Haunted House complete seeded investigation 581
+PASS Haunted House complete seeded investigation 582
+PASS Haunted House complete seeded investigation 583
+PASS Haunted House complete seeded investigation 584
+PASS Haunted House complete seeded investigation 585
+PASS Haunted House complete seeded investigation 586
+PASS Haunted House complete seeded investigation 587
+PASS Haunted House complete seeded investigation 588
+PASS Haunted House complete seeded investigation 589
+PASS Haunted House complete seeded investigation 590
+PASS Haunted House complete seeded investigation 591
+PASS Haunted House complete seeded investigation 592
+PASS Haunted House complete seeded investigation 593
+PASS Haunted House complete seeded investigation 594
+PASS Haunted House complete seeded investigation 595
+PASS Haunted House complete seeded investigation 596
+PASS Haunted House complete seeded investigation 597
+PASS Haunted House complete seeded investigation 598
+PASS Haunted House complete seeded investigation 599
+PASS Haunted House complete seeded investigation 600
+PASS Haunted House complete seeded investigation 601
+PASS Haunted House complete seeded investigation 602
+PASS Haunted House complete seeded investigation 603
+PASS Haunted House complete seeded investigation 604
+PASS Haunted House complete seeded investigation 605
+PASS Haunted House complete seeded investigation 606
+PASS Haunted House complete seeded investigation 607
+PASS Haunted House complete seeded investigation 608
+PASS Haunted House complete seeded investigation 609
+PASS Haunted House complete seeded investigation 610
+PASS Haunted House complete seeded investigation 611
+PASS Haunted House complete seeded investigation 612
+PASS Haunted House complete seeded investigation 613
+PASS Haunted House complete seeded investigation 614
+PASS Haunted House complete seeded investigation 615
+PASS Haunted House complete seeded investigation 616
+PASS Haunted House complete seeded investigation 617
+PASS Haunted House complete seeded investigation 618
+PASS Haunted House complete seeded investigation 619
+PASS Haunted House complete seeded investigation 620
+PASS Haunted House complete seeded investigation 621
+PASS Haunted House complete seeded investigation 622
+PASS Haunted House complete seeded investigation 623
+PASS Haunted House complete seeded investigation 624
+PASS Haunted House complete seeded investigation 625
+PASS Haunted House complete seeded investigation 626
+PASS Haunted House complete seeded investigation 627
+PASS Haunted House complete seeded investigation 628
+PASS Haunted House complete seeded investigation 629
+PASS Haunted House complete seeded investigation 630
+PASS Haunted House complete seeded investigation 631
+PASS Haunted House complete seeded investigation 632
+PASS Haunted House complete seeded investigation 633
+PASS Haunted House complete seeded investigation 634
+PASS Haunted House complete seeded investigation 635
+PASS Haunted House complete seeded investigation 636
+PASS Haunted House complete seeded investigation 637
+PASS Haunted House complete seeded investigation 638
+PASS Haunted House complete seeded investigation 639
+PASS Haunted House complete seeded investigation 640
+PASS Haunted House complete seeded investigation 641
+PASS Haunted House complete seeded investigation 642
+PASS Haunted House complete seeded investigation 643
+PASS Haunted House complete seeded investigation 644
+PASS Haunted House complete seeded investigation 645
+PASS Haunted House complete seeded investigation 646
+PASS Haunted House complete seeded investigation 647
+PASS Haunted House complete seeded investigation 648
+PASS Haunted House complete seeded investigation 649
+PASS Haunted House complete seeded investigation 650
+PASS Haunted House complete seeded investigation 651
+PASS Haunted House complete seeded investigation 652
+PASS Haunted House complete seeded investigation 653
+PASS Haunted House complete seeded investigation 654
+PASS Haunted House complete seeded investigation 655
+PASS Haunted House complete seeded investigation 656
+PASS Haunted House complete seeded investigation 657
+PASS Haunted House complete seeded investigation 658
+PASS Haunted House complete seeded investigation 659
+PASS Haunted House complete seeded investigation 660
+PASS Haunted House complete seeded investigation 661
+PASS Haunted House complete seeded investigation 662
+PASS Haunted House complete seeded investigation 663
+PASS Haunted House complete seeded investigation 664
+PASS Haunted House complete seeded investigation 665
+PASS Haunted House complete seeded investigation 666
+PASS Haunted House complete seeded investigation 667
+PASS Haunted House complete seeded investigation 668
+PASS Haunted House complete seeded investigation 669
+PASS Haunted House complete seeded investigation 670
+PASS Haunted House complete seeded investigation 671
+PASS Haunted House complete seeded investigation 672
+PASS Haunted House complete seeded investigation 673
+PASS Haunted House complete seeded investigation 674
+PASS Haunted House complete seeded investigation 675
+PASS Haunted House complete seeded investigation 676
+PASS Haunted House complete seeded investigation 677
+PASS Haunted House complete seeded investigation 678
+PASS Haunted House complete seeded investigation 679
+PASS Haunted House complete seeded investigation 680
+PASS Haunted House complete seeded investigation 681
+PASS Haunted House complete seeded investigation 682
+PASS Haunted House complete seeded investigation 683
+PASS Haunted House complete seeded investigation 684
+PASS Haunted House complete seeded investigation 685
+PASS Haunted House complete seeded investigation 686
+PASS Haunted House complete seeded investigation 687
+PASS Haunted House complete seeded investigation 688
+PASS Haunted House complete seeded investigation 689
+PASS Haunted House complete seeded investigation 690
+PASS Haunted House complete seeded investigation 691
+PASS Haunted House complete seeded investigation 692
+PASS Haunted House complete seeded investigation 693
+PASS Haunted House complete seeded investigation 694
+PASS Haunted House complete seeded investigation 695
+PASS Haunted House complete seeded investigation 696
+PASS Haunted House complete seeded investigation 697
+PASS Haunted House complete seeded investigation 698
+PASS Haunted House complete seeded investigation 699
+PASS Haunted House complete seeded investigation 700
+PASS Haunted House complete seeded investigation 701
+PASS Haunted House complete seeded investigation 702
+PASS Haunted House complete seeded investigation 703
+PASS Haunted House complete seeded investigation 704
+PASS Haunted House complete seeded investigation 705
+PASS Haunted House complete seeded investigation 706
+PASS Haunted House complete seeded investigation 707
+PASS Haunted House complete seeded investigation 708
+PASS Haunted House complete seeded investigation 709
+PASS Haunted House complete seeded investigation 710
+PASS Haunted House complete seeded investigation 711
+PASS Haunted House complete seeded investigation 712
+PASS Haunted House complete seeded investigation 713
+PASS Haunted House complete seeded investigation 714
+PASS Haunted House complete seeded investigation 715
+PASS Haunted House complete seeded investigation 716
+PASS Haunted House complete seeded investigation 717
+PASS Haunted House complete seeded investigation 718
+PASS Haunted House complete seeded investigation 719
+PASS Haunted House complete seeded investigation 720
+PASS Haunted House complete seeded investigation 721
+PASS Haunted House complete seeded investigation 722
+PASS Haunted House complete seeded investigation 723
+PASS Haunted House complete seeded investigation 724
+PASS Haunted House complete seeded investigation 725
+PASS Haunted House complete seeded investigation 726
+PASS Haunted House complete seeded investigation 727
+PASS Haunted House complete seeded investigation 728
+PASS Haunted House complete seeded investigation 729
+PASS Haunted House complete seeded investigation 730
+PASS Haunted House complete seeded investigation 731
+PASS Haunted House complete seeded investigation 732
+PASS Haunted House complete seeded investigation 733
+PASS Haunted House complete seeded investigation 734
+PASS Haunted House complete seeded investigation 735
+PASS Haunted House complete seeded investigation 736
+PASS Haunted House complete seeded investigation 737
+PASS Haunted House complete seeded investigation 738
+PASS Haunted House complete seeded investigation 739
+PASS Haunted House complete seeded investigation 740
+PASS Haunted House complete seeded investigation 741
+PASS Haunted House complete seeded investigation 742
+PASS Haunted House complete seeded investigation 743
+PASS Haunted House complete seeded investigation 744
+PASS Haunted House complete seeded investigation 745
+PASS Haunted House complete seeded investigation 746
+PASS Haunted House complete seeded investigation 747
+PASS Haunted House complete seeded investigation 748
+PASS Haunted House complete seeded investigation 749
+PASS Haunted House complete seeded investigation 750
+PASS Haunted House complete seeded investigation 751
+PASS Haunted House complete seeded investigation 752
+PASS Haunted House complete seeded investigation 753
+PASS Haunted House complete seeded investigation 754
+PASS Haunted House complete seeded investigation 755
+PASS Haunted House complete seeded investigation 756
+PASS Haunted House complete seeded investigation 757
+PASS Haunted House complete seeded investigation 758
+PASS Haunted House complete seeded investigation 759
+PASS Haunted House complete seeded investigation 760
+PASS Haunted House complete seeded investigation 761
+PASS Haunted House complete seeded investigation 762
+PASS Haunted House complete seeded investigation 763
+PASS Haunted House complete seeded investigation 764
+PASS Haunted House complete seeded investigation 765
+PASS Haunted House complete seeded investigation 766
+PASS Haunted House complete seeded investigation 767
+PASS Haunted House complete seeded investigation 768
+PASS Haunted House complete seeded investigation 769
+PASS Haunted House complete seeded investigation 770
+PASS Haunted House complete seeded investigation 771
+PASS Haunted House complete seeded investigation 772
+PASS Haunted House complete seeded investigation 773
+PASS Haunted House complete seeded investigation 774
+PASS Haunted House complete seeded investigation 775
+PASS Haunted House complete seeded investigation 776
+PASS Haunted House complete seeded investigation 777
+PASS Haunted House complete seeded investigation 778
+PASS Haunted House complete seeded investigation 779
+PASS Haunted House complete seeded investigation 780
+PASS Haunted House complete seeded investigation 781
+PASS Haunted House complete seeded investigation 782
+PASS Haunted House complete seeded investigation 783
+PASS Haunted House complete seeded investigation 784
+PASS Haunted House complete seeded investigation 785
+PASS Haunted House complete seeded investigation 786
+PASS Haunted House complete seeded investigation 787
+PASS Haunted House complete seeded investigation 788
+PASS Haunted House complete seeded investigation 789
+PASS Haunted House complete seeded investigation 790
+PASS Haunted House complete seeded investigation 791
+PASS Haunted House complete seeded investigation 792
+PASS Haunted House complete seeded investigation 793
+PASS Haunted House complete seeded investigation 794
+PASS Haunted House complete seeded investigation 795
+PASS Haunted House complete seeded investigation 796
+PASS Haunted House complete seeded investigation 797
+PASS Haunted House complete seeded investigation 798
+PASS Haunted House complete seeded investigation 799
+PASS Haunted House complete seeded investigation 800
+PASS Haunted House complete seeded investigation 801
+PASS Haunted House complete seeded investigation 802
+PASS Haunted House complete seeded investigation 803
+PASS Haunted House complete seeded investigation 804
+PASS Haunted House complete seeded investigation 805
+PASS Haunted House complete seeded investigation 806
+PASS Haunted House complete seeded investigation 807
+PASS Haunted House complete seeded investigation 808
+PASS Haunted House complete seeded investigation 809
+PASS Haunted House complete seeded investigation 810
+PASS Haunted House complete seeded investigation 811
+PASS Haunted House complete seeded investigation 812
+PASS Haunted House complete seeded investigation 813
+PASS Haunted House complete seeded investigation 814
+PASS Haunted House complete seeded investigation 815
+PASS Haunted House complete seeded investigation 816
+PASS Haunted House complete seeded investigation 817
+PASS Haunted House complete seeded investigation 818
+PASS Haunted House complete seeded investigation 819
+PASS Haunted House complete seeded investigation 820
+PASS Haunted House complete seeded investigation 821
+PASS Haunted House complete seeded investigation 822
+PASS Haunted House complete seeded investigation 823
+PASS Haunted House complete seeded investigation 824
+PASS Haunted House complete seeded investigation 825
+PASS Haunted House complete seeded investigation 826
+PASS Haunted House complete seeded investigation 827
+PASS Haunted House complete seeded investigation 828
+PASS Haunted House complete seeded investigation 829
+PASS Haunted House complete seeded investigation 830
+PASS Haunted House complete seeded investigation 831
+PASS Haunted House complete seeded investigation 832
+PASS Haunted House complete seeded investigation 833
+PASS Haunted House complete seeded investigation 834
+PASS Haunted House complete seeded investigation 835
+PASS Haunted House complete seeded investigation 836
+PASS Haunted House complete seeded investigation 837
+PASS Haunted House complete seeded investigation 838
+PASS Haunted House complete seeded investigation 839
+PASS Haunted House complete seeded investigation 840
+PASS Haunted House complete seeded investigation 841
+PASS Haunted House complete seeded investigation 842
+PASS Haunted House complete seeded investigation 843
+PASS Haunted House complete seeded investigation 844
+PASS Haunted House complete seeded investigation 845
+PASS Haunted House complete seeded investigation 846
+PASS Haunted House complete seeded investigation 847
+PASS Haunted House complete seeded investigation 848
+PASS Haunted House complete seeded investigation 849
+PASS Haunted House complete seeded investigation 850
+PASS Haunted House complete seeded investigation 851
+PASS Haunted House complete seeded investigation 852
+PASS Haunted House complete seeded investigation 853
+PASS Haunted House complete seeded investigation 854
+PASS Haunted House complete seeded investigation 855
+PASS Haunted House complete seeded investigation 856
+PASS Haunted House complete seeded investigation 857
+PASS Haunted House complete seeded investigation 858
+PASS Haunted House complete seeded investigation 859
+PASS Haunted House complete seeded investigation 860
+PASS Haunted House complete seeded investigation 861
+PASS Haunted House complete seeded investigation 862
+PASS Haunted House complete seeded investigation 863
+PASS Haunted House complete seeded investigation 864
+PASS Haunted House complete seeded investigation 865
+PASS Haunted House complete seeded investigation 866
+PASS Haunted House complete seeded investigation 867
+PASS Haunted House complete seeded investigation 868
+PASS Haunted House complete seeded investigation 869
+PASS Haunted House complete seeded investigation 870
+PASS Haunted House complete seeded investigation 871
+PASS Haunted House complete seeded investigation 872
+PASS Haunted House complete seeded investigation 873
+PASS Haunted House complete seeded investigation 874
+PASS Haunted House complete seeded investigation 875
+PASS Haunted House complete seeded investigation 876
+PASS Haunted House complete seeded investigation 877
+PASS Haunted House complete seeded investigation 878
+PASS Haunted House complete seeded investigation 879
+PASS Haunted House complete seeded investigation 880
+PASS Haunted House complete seeded investigation 881
+PASS Haunted House complete seeded investigation 882
+PASS Haunted House complete seeded investigation 883
+PASS Haunted House complete seeded investigation 884
+PASS Haunted House complete seeded investigation 885
+PASS Haunted House complete seeded investigation 886
+PASS Haunted House complete seeded investigation 887
+PASS Haunted House complete seeded investigation 888
+PASS Haunted House complete seeded investigation 889
+PASS Haunted House complete seeded investigation 890
+PASS Haunted House complete seeded investigation 891
+PASS Haunted House complete seeded investigation 892
+PASS Haunted House complete seeded investigation 893
+PASS Haunted House complete seeded investigation 894
+PASS Haunted House complete seeded investigation 895
+PASS Haunted House complete seeded investigation 896
+PASS Haunted House complete seeded investigation 897
+PASS Haunted House complete seeded investigation 898
+PASS Haunted House complete seeded investigation 899
+PASS Haunted House complete seeded investigation 900
+PASS Haunted House complete seeded investigation 901
+PASS Haunted House complete seeded investigation 902
+PASS Haunted House complete seeded investigation 903
+PASS Haunted House complete seeded investigation 904
+PASS Haunted House complete seeded investigation 905
+PASS Haunted House complete seeded investigation 906
+PASS Haunted House complete seeded investigation 907
+PASS Haunted House complete seeded investigation 908
+PASS Haunted House complete seeded investigation 909
+PASS Haunted House complete seeded investigation 910
+PASS Haunted House complete seeded investigation 911
+PASS Haunted House complete seeded investigation 912
+PASS Haunted House complete seeded investigation 913
+PASS Haunted House complete seeded investigation 914
+PASS Haunted House complete seeded investigation 915
+PASS Haunted House complete seeded investigation 916
+PASS Haunted House complete seeded investigation 917
+PASS Haunted House complete seeded investigation 918
+PASS Haunted House complete seeded investigation 919
+PASS Haunted House complete seeded investigation 920
+PASS Haunted House complete seeded investigation 921
+PASS Haunted House complete seeded investigation 922
+PASS Haunted House complete seeded investigation 923
+PASS Haunted House complete seeded investigation 924
+PASS Haunted House complete seeded investigation 925
+PASS Haunted House complete seeded investigation 926
+PASS Haunted House complete seeded investigation 927
+PASS Haunted House complete seeded investigation 928
+PASS Haunted House complete seeded investigation 929
+PASS Haunted House complete seeded investigation 930
+PASS Haunted House complete seeded investigation 931
+PASS Haunted House complete seeded investigation 932
+PASS Haunted House complete seeded investigation 933
+PASS Haunted House complete seeded investigation 934
+PASS Haunted House complete seeded investigation 935
+PASS Haunted House complete seeded investigation 936
+PASS Haunted House complete seeded investigation 937
+PASS Haunted House complete seeded investigation 938
+PASS Haunted House complete seeded investigation 939
+PASS Haunted House complete seeded investigation 940
+PASS Haunted House complete seeded investigation 941
+PASS Haunted House complete seeded investigation 942
+PASS Haunted House complete seeded investigation 943
+PASS Haunted House complete seeded investigation 944
+PASS Haunted House complete seeded investigation 945
+PASS Haunted House complete seeded investigation 946
+PASS Haunted House complete seeded investigation 947
+PASS Haunted House complete seeded investigation 948
+PASS Haunted House complete seeded investigation 949
+PASS Haunted House complete seeded investigation 950
+PASS Haunted House complete seeded investigation 951
+PASS Haunted House complete seeded investigation 952
+PASS Haunted House complete seeded investigation 953
+PASS Haunted House complete seeded investigation 954
+PASS Haunted House complete seeded investigation 955
+PASS Haunted House complete seeded investigation 956
+PASS Haunted House complete seeded investigation 957
+PASS Haunted House complete seeded investigation 958
+PASS Haunted House complete seeded investigation 959
+PASS Haunted House complete seeded investigation 960
+PASS Haunted House complete seeded investigation 961
+PASS Haunted House complete seeded investigation 962
+PASS Haunted House complete seeded investigation 963
+PASS Haunted House complete seeded investigation 964
+PASS Haunted House complete seeded investigation 965
+PASS Haunted House complete seeded investigation 966
+PASS Haunted House complete seeded investigation 967
+PASS Haunted House complete seeded investigation 968
+PASS Haunted House complete seeded investigation 969
+PASS Haunted House complete seeded investigation 970
+PASS Haunted House complete seeded investigation 971
+PASS Haunted House complete seeded investigation 972
+PASS Haunted House complete seeded investigation 973
+PASS Haunted House complete seeded investigation 974
+PASS Haunted House complete seeded investigation 975
+PASS Haunted House complete seeded investigation 976
+PASS Haunted House complete seeded investigation 977
+PASS Haunted House complete seeded investigation 978
+PASS Haunted House complete seeded investigation 979
+PASS Haunted House complete seeded investigation 980
+PASS Haunted House complete seeded investigation 981
+PASS Haunted House complete seeded investigation 982
+PASS Haunted House complete seeded investigation 983
+PASS Haunted House complete seeded investigation 984
+PASS Haunted House complete seeded investigation 985
+PASS Haunted House complete seeded investigation 986
+PASS Haunted House complete seeded investigation 987
+PASS Haunted House complete seeded investigation 988
+PASS Haunted House complete seeded investigation 989
+PASS Haunted House complete seeded investigation 990
+PASS Haunted House complete seeded investigation 991
+PASS Haunted House complete seeded investigation 992
+PASS Haunted House complete seeded investigation 993
+PASS Haunted House complete seeded investigation 994
+PASS Haunted House complete seeded investigation 995
+PASS Haunted House complete seeded investigation 996
+PASS Haunted House complete seeded investigation 997
+PASS Haunted House complete seeded investigation 998
+PASS Haunted House complete seeded investigation 999
+2099 checks; 0 failures.

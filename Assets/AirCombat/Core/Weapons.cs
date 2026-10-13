@@ -12,6 +12,10 @@ namespace Meridian
         public CombatEventKind Kind;
         public float Age;
         public float Lifetime;
+        // Aircraft-only damage metadata; ground impacts retain the default values.
+        public int AircraftId = -1, OwnerId = -1;
+        public float AircraftDamage;
+        public bool DestroyedAircraft;
         public CombatEvent(Vector3 position, CombatEventKind kind)
         { Position = position; Kind = kind; Lifetime = kind == CombatEventKind.Destroyed ? 5f : 1.1f; }
     }
@@ -35,6 +39,11 @@ namespace Meridian
         public int PlayerRounds { get; private set; }
         public int PlayerHits { get; private set; }
         public int TotalRounds { get; private set; }
+        public int PlayerAircraftHits { get; private set; }
+        public int PlayerAircraftKills { get; private set; }
+        public float PlayerAircraftDamage { get; private set; }
+        public float LastPlayerAircraftDamage { get; private set; }
+        public int LastPlayerAircraftTargetId { get; private set; } = -1;
 
         public Weapons(int seed) { random = new Random(seed); }
 
@@ -48,17 +57,18 @@ namespace Meridian
             // The cooldown is carried across ticks, so rate of fire is independent of simulation rate.
             while (delay <= 0f && aircraft.Ammo > 0)
             {
-                float spread = aircraft.IsPlayer ? .0026f : .0045f;
+                float spread = (aircraft.IsPlayer ? .0026f : .0045f) * aircraft.SpreadMultiplier;
                 float x = ((float)random.NextDouble() * 2f - 1f) * spread;
                 float y = ((float)random.NextDouble() * 2f - 1f) * spread;
                 Vector3 direction = Vector3.Normalize(aircraft.Forward + aircraft.Right * x + aircraft.Up * y);
                 float side = (aircraft.Ammo & 1) == 0 ? -1.4f : 1.4f;
                 Vector3 origin = aircraft.Position + aircraft.Forward * 4f + aircraft.Right * side;
                 rounds.Add(new Projectile { Position = origin, PreviousPosition = origin,
-                    Velocity = aircraft.Velocity + direction * MuzzleSpeed, Team = aircraft.Team, OwnerId = aircraft.Id });
+                    Velocity = aircraft.Velocity + direction * (MuzzleSpeed * aircraft.MuzzleSpeedMultiplier),
+                    Damage = RoundDamage * aircraft.DamageMultiplier, Team = aircraft.Team, OwnerId = aircraft.Id });
                 aircraft.Ammo--; TotalRounds++;
                 if (aircraft.IsPlayer) PlayerRounds++;
-                delay += ShotInterval;
+                delay += ShotInterval / Math.Max(.25f, Math.Min(3f, aircraft.FireRateMultiplier));
             }
             cooldown[aircraft.Id] = delay;
         }
@@ -110,10 +120,22 @@ namespace Meridian
                 }
                 if (hit != null)
                 {
-                    hit.Health = Math.Max(0f, hit.Health - round.Damage);
+                    float previousHealth = hit.Health;
+                    hit.Health = Math.Max(0f, hit.Health - round.Damage * hit.DamageTakenMultiplier);
+                    float actualDamage = Math.Max(0f, previousHealth - hit.Health);
+                    bool destroyed = previousHealth > 0f && hit.Health <= 0f;
                     Vector3 impact = Vector3.Lerp(round.PreviousPosition, round.Position, firstFraction);
-                    events.Add(new CombatEvent(impact, CombatEventKind.GunHit));
+                    events.Add(new CombatEvent(impact, CombatEventKind.GunHit) { AircraftId = hit.Id,
+                        OwnerId = round.OwnerId, AircraftDamage = actualDamage, DestroyedAircraft = destroyed });
                     if (round.OwnerId == 0) PlayerHits++;
+                    if (round.OwnerId == 0 && actualDamage > 0f)
+                    {
+                        PlayerAircraftHits++;
+                        PlayerAircraftDamage += actualDamage;
+                        LastPlayerAircraftDamage = actualDamage;
+                        LastPlayerAircraftTargetId = hit.Id;
+                        if (destroyed) PlayerAircraftKills++;
+                    }
                     if (hit.Health <= 0f) { hit.Alive = false; hit.DestructionCause = "Gunfire"; }
                     rounds.RemoveAt(i);
                 }
@@ -171,11 +193,12 @@ namespace Meridian
         {
             Vector3 offset = target.Position - shooter.Position;
             Vector3 relativeVelocity = target.Velocity - shooter.Velocity;
-            float aa = Vector3.Dot(relativeVelocity, relativeVelocity) - MuzzleSpeed * MuzzleSpeed;
+            float muzzleSpeed = MuzzleSpeed * Math.Max(.25f, shooter.MuzzleSpeedMultiplier);
+            float aa = Vector3.Dot(relativeVelocity, relativeVelocity) - muzzleSpeed * muzzleSpeed;
             float bb = 2f * Vector3.Dot(offset, relativeVelocity);
             float cc = Vector3.Dot(offset, offset);
             float disc = bb * bb - 4f * aa * cc;
-            float t = offset.Length() / MuzzleSpeed;
+            float t = offset.Length() / muzzleSpeed;
             if (disc >= 0f && Math.Abs(aa) > .0001f)
             {
                 float root = (float)Math.Sqrt(disc);

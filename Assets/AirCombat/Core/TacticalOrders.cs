@@ -17,6 +17,8 @@ namespace Meridian
         public IList<GroundTarget> GroundTargets;
         public bool FollowRoute, CanStrafe, PreferBombers;
         public float LeashRadius = 7000;
+        // Optional theatre boundary for a coordinated air-superiority engagement; zero leaves legacy pursuit unchanged.
+        public float CombatRadius;
         public int Revision;
         public string FlightName = "";
     }

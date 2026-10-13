@@ -4,9 +4,9 @@ Three independent, silent games in one Unity **6000.4.1f1 URP** project. All gam
 
 ## Launch
 
-Run the squadron expansion at **`Builds/VectorCabinetSquadron/VectorCabinet.exe`** with its data folder and DLLs beside it. The previous build remains at `Builds/VectorCabinet/VectorCabinet.exe`. The launcher offers **Haunted House**, **WWII Air Combat** and **Hockey**, also selected with keys 1, 2 and 3. Each game has restart and return-to-cabinet buttons. Progress is kept only for the current session.
+Run **`Builds/VectorCabinetAfterburn11/VectorCabinet.exe`** with its data folder and DLLs beside it. Earlier releases remain in `Builds/VectorCabinetRoguelite`, `Builds/VectorCabinetSquadron` and `Builds/VectorCabinet`. The launcher offers **Haunted House**, **WWII Air Combat** and **Hockey**, also selected with keys 1, 2 and 3. Each game has restart and return-to-cabinet buttons. Progress is kept only for the current session.
 
-In Unity, open `Assets/GameCollection/Scenes/Cabinet.unity` and press Play, or use **Vector Cabinet > Open Launcher**. All individual game scenes also work directly. **Vector Cabinet > Build Windows Player** builds the launcher and three game scenes into the same executable. The original Haunted House build menu now builds the collection too.
+In Unity, open `Assets/GameCollection/Scenes/Cabinet.unity` and press Play, or use **Vector Cabinet > Open Launcher**. All individual game scenes also work directly. **Vector Cabinet > Afterburn 1.1 > Build Separate Windows Player** builds the current collection into its separate Phase 1.1 folder; the older build menu items retain their earlier destinations.
 
 ## Hockey — Cold Snap
 
@@ -44,45 +44,68 @@ Scores and match statistics lead to rematch and new-match options. Match seeds r
 
 ## WWII Air Combat — Meridian 1944
 
-A fictional Channel sortie in a low-polygon WWII setting. Fly the Kestrel Mk.IX against Falke fighters over a seeded island. Five selectable briefings retain **Training Duel** and **Courier Cover** and add three squadron missions with two mortal wingmen, Rook and Finch. All missions begin airborne; there is no takeoff or landing sequence.
+A fictional Channel sortie in a low-polygon WWII setting. Fly the Kestrel Mk.IX against Falke fighters over a seeded island. Seven selectable briefings include the original **Training Duel** and **Courier Cover**, three squadron assignments, **Ace Hunt**, and **Channel Air Battle**. Rook and Finch join the squadron missions and can be lost. All missions begin airborne; there is no takeoff or landing sequence.
 
 - **Fighter Interception:** stop both raid leaders before they cross the defended boundary. Escort fighters try to delay you. Designating a raider for your wingmen while you intercept the other can split the workload.
 - **Bomber Escort:** deliver at least two of three Heron bombers to air cover. Bombers fly an actual route and formation. Killing attackers does not replace lost bombers or complete the route.
 - **Ground Attack:** destroy four moving supply trucks. Two optional flak batteries fire physical rounds, and enemy fighters defend the convoy. Set up a shallow dive, fire a short burst, pull clear and extend before returning.
+- **Ace Hunt:** defeat Voss, a disciplined energy fighter with an escort. His stock aircraft obeys normal flight limits; better decisions, defensive reactions and gun discipline make the difference. Escorts are secondary objectives.
+- **Channel Air Battle:** your squadron and the independent Blue pair face five fighters arriving in two flights. Break the offensive by destroying three and surviving until both enemy flights reach the sector or are defeated. Reinforcements approach physically from beyond friendly visual range.
 
 The original **Training Duel** offers one armed opponent and a lead cue. **Courier Cover** asks you to keep the unarmed transport Lark alive for five minutes or destroy both interceptors.
+
+Briefing shortcuts **1–5** select the original missions, **7** selects Ace Hunt, **8** selects Channel Air Battle, and **6** opens Afterburn. Press Enter to launch the selected standard assignment. Interception now presents a crossing opportunity: cut onto the raid's diagonal track before committing to a tail chase; escort fighters are distractions from the two raid leaders.
 
 | Control | Action |
 | --- | --- |
 | W / S or Up / Down | Nose down / nose up |
 | A / D or Left / Right | Roll left / right |
 | Q / E | Rudder left / right |
-| Shift / Ctrl, or R / F | Increase / decrease throttle |
+| Mouse wheel up / down; Shift / Ctrl, or R / F | Increase / decrease throttle (wheel: 4% per notch) |
 | Space / left mouse | Fire guns |
 | Hold Z | Gentle wings-level control assist |
 | C | Cockpit / chase camera |
 | Tab | Select next surviving hostile |
 | 1 / 2 / 3 / 4 during flight | Form Up / Engage selected target / Cover Me / Regroup |
-| Hold right mouse | Look around independently of the aircraft |
-| V / middle mouse | Center look |
-| G | Toggle predicted lead cue |
+| Hold right mouse | Look around and behind either shoulder; release returns forward |
+| Hold X | Quick rear view; release returns forward, overriding RMB while held |
+| V / middle mouse | Instantly center look |
+| G | Toggle predicted lead cue, enabled by default |
 | M | Toggle mouse stick; cursor above center pulls up |
 | H | Pause and read flight notes |
 | Esc | Pause, sensitivity, restart, return to cabinet |
 
 Mouse stick and keyboard can be combined; the pause screen has sensitivity and mouse pitch inversion. Start with keyboard controls and short inputs. The cursor recenters when mouse stick is enabled. The control system never directly snaps aircraft attitude or velocity.
 
+RMB free-look permits 165 degrees to either side with bounded vertical motion. RMB/X withhold mouse steering and LMB gunfire; keyboard steering and Space guns remain usable. Releasing returns forward smoothly and safely restores normal mouse flight. An LMB press held through a look gesture must be released before mouse gunfire resumes.
+
 **Turning:** bank with A/D, release roll, then pull S. More bank needs more elevator. Hold Z to ease the wings level. Climbing spends speed; diving gains speed. Near stall, lower the nose and add power. Sustained overspeed and extreme load damage the airframe. Damaged aircraft lose power, lift and control authority.
 
-**Gunnery:** close to about 300–600 metres and fire short bursts. Rounds travel through space, inherit aircraft velocity, drop under gravity, and collide with moving wing/fuselage volumes. The small green cue predicts an intercept; the larger amber brackets identify the aircraft. Put the gunsight on the lead cue, not the target bracket. A HIT flash confirms damage. The cue does not steer or aim your guns.
+**Gunnery:** close to about 300–600 metres and fire short bursts. Rounds travel through space, inherit aircraft velocity, drop under gravity, and collide with moving wing/fuselage volumes. The green cue predicts an intercept; amber brackets identify the aircraft. Put the outlined gunsight on the lead cue, not the target bracket. Actual aircraft damage triggers a brief X; a longer amber confirmation identifies destruction. The cue starts enabled in both flight modes and never steers or aims your guns.
 
 **Squadron:** wingmen fly their formation slots through normal controls, manage speed, acquire visible contacts, defend themselves and recover from low energy or terrain danger. Orders allow immediate survival maneuvers. Engage uses the target selected when you issue the order; cycling targets alone does not retask the flight. Cover Me focuses on threats near you. Regroup breaks pursuit and returns to formation. Damaged or exhausted pilots may withdraw.
 
-**Awareness:** allies are green and hostiles amber. The contact scope shows visible contacts within 4 km, with terrain occlusion. Watch bomber condition and threat notices; abandon a pursuit when the protected formation needs help. The target/waypoint guidance supplements visual tracking rather than steering the aircraft.
+**Awareness:** allies are green and hostiles amber. Outlined labels retain their colors without floating backplates. The contact scope shows visible contacts within 4 km, with terrain occlusion. Each living ground objective also has a numbered marker, radar diamond and off-screen/ridge guidance; known raid leaders receive persistent guidance too. Destroyed objectives disappear. These mission markers identify assigned objectives without exposing unrelated hidden aircraft. Watch bomber condition and threat notices; abandon a pursuit when the protected formation needs help.
+
+Success or destruction leaves approximately three seconds to see the aftermath before results. Falling aircraft and smoke are presentation effects; finalized scores and outcomes cannot change during the hold. Enter or gamepad A continues immediately, and Esc can pause, restart or leave.
 
 **Gamepad:** left stick flies, triggers control rudder, RB fires, LB levels, D-pad up/down adjusts throttle, right stick looks. X selects a target, B changes camera, A toggles lead. Hold Y and tap D-pad up/right/left/down for Form Up/Engage/Cover Me/Regroup. Start pauses; menus use D-pad/A/B. Pause offers sensitivity, deadzone, inversion and optional Input System flight-stick binding paths. Settings last for the current Air Combat scene. Physical controller and HOTAS testing remains necessary; see [input guide](Documentation/meridian-input-guide.txt).
 
 The HUD reports speed in knots, altitude in feet, heading, throttle, airframe condition, ammunition and load. Stalls, terrain proximity and overspeed show warnings. A sortie number reproduces the starting terrain, contacts and pilot decisions when the same controls and simulation steps are used. No mid-sortie save is implemented.
+
+### Operation Afterburn — roguelite
+
+Choose **WWII Air Combat**, then **Operation Afterburn** (or **6** on its briefing). All seven standard missions remain available. Survive four sorties: choose among three assignments, bring home supplies, select one reward, and prepare for the next flight. Hull damage and wingman losses persist; ammunition, fuel and tactical charges replenish. Each later stop offers a fixed workshop refit competing with repairs and replacement pilots for supplies.
+
+Twelve field kits change the existing aerodynamic and weapon simulation. Heavy cannon, armor, extended wings, a stripped airframe, racing fairings and other equipment have distinct tradeoffs. Up to five kit types can be installed, each up to Mk II. Two tactical slots hold **Emergency boost**, **AP belt**, **Combat flaps** or **Flight rally**. On keyboard, press **T / Y** (or **5 / 6**). On gamepad, hold the **Y/north button**, then press **LB / RB**. The HUD separates these bindings and reports active duration, remaining uses and rejected activations. Emergency boost costs hull; flaps sacrifice speed; AP bursts consume ammunition faster; rally needs surviving wingmen.
+
+The four stages now have distinct encounter decks: **Opening moves** offers a duel, courier escort or risky ground strike; **Contested skies** introduces bomber duty, crossing interception and the ace; **Pressure front** adds a reinforced ground strike, squadron battle or better-supported ace; **Final offensive** offers reinforced bomber protection, a seven-fighter battle in three waves, or the ace's high-altitude formation. Enemy airframes use stock performance, hull and weapons: escalation comes from opponents, geometry, reinforcements and pilot behavior instead of hidden stat inflation.
+
+An objective failure or crash ends the run. Retry the seed, start a fresh operation, return to standard missions, or exit to the cabinet. Restart during flight restarts the entire operation. There is no save/resume or permanent stat progression. Seeded routes and rewards replay with the same choices; choosing another seed gives a different operation. [Full guide and architecture](Documentation/operation-afterburn.md).
+
+In both flight modes, mouse wheel throttle changes the existing command in discrete steps and is ignored in menus. Contact labels and the stronger gunsight use contrasting outlines. Briefing, equipment and ability descriptions have larger body text with adjusted wrapping.
+
+[Original Afterburn verification report](Documentation/operation-afterburn-verification.md) records that release's executed simulation, input, rendered gameplay and preservation checks. It does not report Phase 1.1 results.
 
 ## Haunted House — The House That Listens
 
@@ -96,7 +119,7 @@ W/S move, A/D turn, E opens doors or examines, F examines, J opens the notebook,
 
 `Assets/AirCombat/Core` is plain C# and System.Numerics: aerodynamic forces and damped angular rates, terrain field, tactical pilots, ballistic weapons, aircraft damage and mission progression. `Presentation` adapts keyboard/mouse/gamepad or configured axes into device-independent intentions, runs a fixed 60 Hz simulation and renders replaceable procedural meshes and UI. See [the architecture notes](Documentation/meridian-architecture.md) and [squadron design notes](Documentation/squadron-design-and-validation.txt).
 
-**Vector Cabinet > Squadron > Validate All Games** executes the combined checks in Unity. **Vector Cabinet > Squadron > Build Separate Windows Player** writes the expansion folder while preserving the prior build. The air harness includes bounded complete bot sorties, orders and perception checks, formation/rejoin trials, terrain recovery and physical ground-gunnery tests. Automated victories establish working objectives, not human-rated flight feel or balance.
+**Vector Cabinet > Afterburn 1.1 > Validate All Games** executes the current combined checks in Unity. **Vector Cabinet > Afterburn 1.1 > Build Separate Windows Player** writes the new expansion folder while preserving earlier builds. The air harness includes bounded complete bot sorties, orders and perception checks, formation/rejoin trials, terrain recovery, physical ground gunnery, expanded encounters and run progression. Automated victories establish working objectives, not human-rated flight feel or balance.
 
 The [final squadron verification report](Documentation/squadron-verification.txt) records 2,031 passing Unity checks, 343 passing rendered standalone checks, build results and remaining human/hardware testing.
 

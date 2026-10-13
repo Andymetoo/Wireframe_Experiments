@@ -10,6 +10,8 @@ namespace Meridian
         public FlightInput Flight;
         public Vector2 LookRate, LookDelta;
         public bool LevelAssist, CenterLook, Pause, Back, Submit, QuickLaunch, Notes, Camera, Lead, MouseMode, NextTarget;
+        public bool Ability1, Ability2, OpenRogue;
+        public bool FreeLookHeld, RearViewHeld, LookReleased;
         public int MenuMove, MissionChoice;
         public bool HasOrder;
         public SquadronOrder Order;
@@ -33,10 +35,23 @@ namespace Meridian
         public string BindingError { get; private set; } = "";
         public int DisabledBindingCount { get; private set; }
         InputAction rollAxis, pitchAxis, yawAxis, throttleAxis, fireButton;
-        bool disposed, mouseLookHeld;
+        bool disposed, mouseLookHeld, mouseFireInhibited, previousViewActive;
         float mouseRecenterTime;
+        float lastBoundThrottle;
+        bool hasBoundThrottle;
 
-        public void Reset(float throttle = .78f) { Throttle = Mathf.Clamp01(throttle);mouseLookHeld=false;mouseRecenterTime=0; }
+        public const float ThrottlePerWheelNotch = .04f;
+
+        // Input System's default is one unit per notch. Its optional legacy Windows
+        // range is 120. Never infer the range from the size of an individual event:
+        // that would turn high-resolution wheels into unexpectedly large steps.
+        public static float WheelThrottleDelta(float scroll, bool uniformRange, bool windows)
+        {
+            if (float.IsNaN(scroll) || float.IsInfinity(scroll)) return 0;
+            return scroll / (!uniformRange && windows ? 120f : 1f) * ThrottlePerWheelNotch;
+        }
+
+        public void Reset(float throttle = .78f) { Throttle = Mathf.Clamp01(throttle);mouseLookHeld=false;mouseFireInhibited=false;previousViewActive=false;mouseRecenterTime=0;hasBoundThrottle=false; }
         static float Held(bool value) { return value ? 1f : 0f; }
         public static float Axis(float value, float deadzone)
         {
@@ -46,16 +61,19 @@ namespace Meridian
         }
         static float MouseAxis(float value) { return Axis(value, .08f); }
 
-        public AirControlIntent Read(float dt, bool flying)
-        { return Read(dt, flying, Keyboard.current, Mouse.current, Gamepad.current); }
+        public AirControlIntent Read(float dt, bool flying, bool tacticalAbilities = false, bool? viewActive = null)
+        { return Read(dt, flying, Keyboard.current, Mouse.current, Gamepad.current, tacticalAbilities, viewActive); }
 
         // Explicit device overload lets runtime diagnostics use temporary devices without disabling hardware.
-        public AirControlIntent Read(float dt, bool flying, Keyboard keyboard, Mouse mouse, Gamepad pad)
+        public AirControlIntent Read(float dt, bool flying, Keyboard keyboard, Mouse mouse, Gamepad pad, bool tacticalAbilities = false, bool? viewActive = null)
         {
             var r = new AirControlIntent { MissionChoice = -1 };
             var k = keyboard; var m = mouse;
+            bool canView = viewActive ?? flying;
+            bool resumedView = canView && !previousViewActive;
+            previousViewActive = canView;
             mouseRecenterTime=Mathf.Max(0,mouseRecenterTime-Mathf.Max(0,dt));
-            float roll = 0, pitch = 0, yaw = 0, throttleRate = 0;
+            float roll = 0, pitch = 0, yaw = 0, throttleRate = 0, wheelThrottle = 0;
             if (k != null && k.added && k.enabled)
             {
                 roll = Held(k.dKey.isPressed || k.rightArrowKey.isPressed) - Held(k.aKey.isPressed || k.leftArrowKey.isPressed);
@@ -70,36 +88,65 @@ namespace Meridian
                 r.Camera = k.cKey.wasPressedThisFrame; r.Lead = k.gKey.wasPressedThisFrame;
                 r.NextTarget = k.tabKey.wasPressedThisFrame; r.MouseMode = k.mKey.wasPressedThisFrame;
                 r.CenterLook = k.vKey.wasPressedThisFrame;
+                r.RearViewHeld = canView && k.xKey.isPressed;
+                r.OpenRogue = k.digit6Key.wasPressedThisFrame;
+                if (tacticalAbilities)
+                {
+                    r.Ability1 = k.tKey.wasPressedThisFrame || k.digit5Key.wasPressedThisFrame;
+                    r.Ability2 = k.yKey.wasPressedThisFrame || k.digit6Key.wasPressedThisFrame;
+                }
                 r.MenuMove = (k.downArrowKey.wasPressedThisFrame ? 1 : 0) - (k.upArrowKey.wasPressedThisFrame ? 1 : 0);
                 for (int i = 0; i < 5; i++) if (k[(Key)((int)Key.Digit1 + i)].wasPressedThisFrame)
                 {
                     r.MissionChoice = i;
                     if (i < 4) { r.HasOrder = true; r.Order = (SquadronOrder)i; }
                 }
-                if (roll != 0 || pitch != 0 || yaw != 0 || r.Flight.Fire || throttleRate != 0) ActiveDevice = "KEYBOARD / MOUSE";
+                // Six remains the separate Afterburn briefing shortcut.
+                if (k.digit7Key.wasPressedThisFrame) r.MissionChoice = 5;
+                if (k.digit8Key.wasPressedThisFrame) r.MissionChoice = 6;
+                if (roll != 0 || pitch != 0 || yaw != 0 || r.Flight.Fire || throttleRate != 0 || r.RearViewHeld || r.Ability1 || r.Ability2) ActiveDevice = "KEYBOARD / MOUSE";
             }
             roll *= Settings.Sensitivity; pitch *= Settings.Sensitivity;
-            if (m != null && m.added && m.enabled)
+            bool validMouse = m != null && m.added && m.enabled;
+            r.FreeLookHeld = canView && validMouse && m.rightButton.isPressed;
+            bool looking = r.FreeLookHeld || r.RearViewHeld;
+            bool releasedLook = mouseLookHeld && !looking;
+            r.LookReleased = releasedLook;
+            mouseLookHeld = looking;
+            if (!canView) mouseRecenterTime = 0;
+            if (validMouse)
             {
-                r.Flight.Fire |= m.leftButton.isPressed;
+                if (flying)
+                {
+                    bool uniform = InputSystem.settings.scrollDeltaBehavior == InputSettings.ScrollDeltaBehavior.UniformAcrossAllPlatforms;
+                    bool windows = Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer;
+                    wheelThrottle = WheelThrottleDelta(m.scroll.y.ReadValue(), uniform, windows);
+                    if (wheelThrottle != 0) ActiveDevice = "KEYBOARD / MOUSE";
+                }
+                bool mouseFire = m.leftButton.isPressed;
+                if (!mouseFire) mouseFireInhibited = false;
+                else if (looking || !canView) mouseFireInhibited = true;
+                r.Flight.Fire |= mouseFire && canView && !looking && !mouseFireInhibited;
                 r.CenterLook |= m.middleButton.wasPressedThisFrame;
-                bool looking=m.rightButton.isPressed;
-                bool releasedLook=mouseLookHeld&&!looking;
-                mouseLookHeld=looking;
-                if(Settings.MouseStick&&releasedLook&&flying)
+                if(Settings.MouseStick&&canView&&!looking&&(releasedLook||resumedView))
                 {
                     m.WarpCursorPosition(new Vector2(Screen.width*.5f,Screen.height*.5f));
                     // Cursor-warp events may reach the device on the following update.
                     mouseRecenterTime=.05f;
                 }
-                if (Settings.MouseStick&&!looking&&!releasedLook&&mouseRecenterTime<=0)
+                if (canView&&Settings.MouseStick&&!looking&&!releasedLook&&!resumedView&&mouseRecenterTime<=0)
                 {
                     Vector2 offset = m.position.ReadValue() - new Vector2(Screen.width * .5f, Screen.height * .5f);
                     roll += MouseAxis(offset.x / Mathf.Max(1, Screen.height * .24f)) * .85f * Settings.Sensitivity;
                     pitch += MouseAxis(offset.y / Mathf.Max(1, Screen.height * .24f)) * (Settings.InvertMouse ? -1 : 1) * .65f * Settings.Sensitivity;
                 }
-                if (looking) r.LookDelta = Vector2.Scale(m.delta.ReadValue(), new Vector2(.12f, Settings.InvertLook ? .12f : -.12f));
+                if (r.FreeLookHeld&&!r.RearViewHeld)
+                {
+                    r.LookDelta = Vector2.Scale(m.delta.ReadValue(), new Vector2(.12f, Settings.InvertLook ? .12f : -.12f));
+                    if(r.LookDelta.sqrMagnitude>0)ActiveDevice="KEYBOARD / MOUSE";
+                }
             }
+            else mouseFireInhibited = false;
             if (pad != null && pad.added && pad.enabled)
             {
                 Vector2 stick = pad.leftStick.ReadUnprocessedValue();
@@ -109,11 +156,18 @@ namespace Meridian
                 pitch += -py * Settings.Sensitivity * (Settings.InvertPitch ? -1 : 1);
                 yaw += rudder * .65f * (Settings.InvertYaw ? -1 : 1);
                 Vector2 look = pad.rightStick.ReadUnprocessedValue();
-                r.LookRate = new Vector2(Axis(look.x, Settings.Deadzone), Axis(look.y, Settings.Deadzone) * (Settings.InvertLook ? 1 : -1)) * Settings.LookSensitivity;
+                if(canView&&!r.RearViewHeld)
+                    r.LookRate = new Vector2(Axis(look.x, Settings.Deadzone), Axis(look.y, Settings.Deadzone) * (Settings.InvertLook ? 1 : -1)) * Settings.LookSensitivity;
                 r.CenterLook |= pad.rightStickButton.wasPressedThisFrame;
-                r.Flight.Fire |= pad.rightShoulder.isPressed;
-                r.LevelAssist |= pad.leftShoulder.isPressed;
                 bool orders = pad.buttonNorth.isPressed;
+                bool abilityChord = tacticalAbilities && orders;
+                r.Flight.Fire |= pad.rightShoulder.isPressed && !abilityChord;
+                r.LevelAssist |= pad.leftShoulder.isPressed && !abilityChord;
+                if (abilityChord)
+                {
+                    r.Ability1 |= pad.leftShoulder.wasPressedThisFrame;
+                    r.Ability2 |= pad.rightShoulder.wasPressedThisFrame;
+                }
                 if (!orders) throttleRate += Held(pad.dpad.up.isPressed) - Held(pad.dpad.down.isPressed);
                 else if (flying)
                 {
@@ -144,10 +198,20 @@ namespace Meridian
                 if (flying && throttleAxis != null && throttleAxis.enabled && throttleAxis.controls.Count > 0 && throttleAxis.controls[0].device.added)
                 {
                     float value = ReadBound(throttleAxis);
-                    if(throttleAxis.enabled)Throttle = Mathf.Clamp01(Settings.ThrottleSigned ? (value + 1f) * .5f : value);
+                    if(throttleAxis.enabled)
+                    {
+                        // The physical lever takes command when moved. A stationary
+                        // lever must not undo wheel / keyboard throttle next frame.
+                        if (!hasBoundThrottle || Mathf.Abs(value - lastBoundThrottle) > .002f)
+                        {
+                            Throttle = Mathf.Clamp01(Settings.ThrottleSigned ? (value + 1f) * .5f : value);
+                            lastBoundThrottle = value;
+                            hasBoundThrottle = true;
+                        }
+                    }
                 }
             }
-            if (flying) Throttle = Mathf.Clamp01(Throttle + Mathf.Clamp(dt, 0, .1f) * .32f * Mathf.Clamp(throttleRate, -1, 1));
+            if (flying) Throttle = Mathf.Clamp01(Throttle + wheelThrottle + Mathf.Clamp(dt, 0, .1f) * .32f * Mathf.Clamp(throttleRate, -1, 1));
             r.Flight.Roll = Mathf.Clamp(roll, -1, 1); r.Flight.Pitch = Mathf.Clamp(pitch, -1, 1);
             r.Flight.Yaw = Mathf.Clamp(yaw, -1, 1); r.Flight.Throttle = Throttle;
             return r;
@@ -185,6 +249,7 @@ namespace Meridian
         {
             rollAxis?.Dispose(); pitchAxis?.Dispose(); yawAxis?.Dispose(); throttleAxis?.Dispose(); fireButton?.Dispose();
             rollAxis = pitchAxis = yawAxis = throttleAxis = fireButton = null;
+            hasBoundThrottle = false;
         }
         public void Dispose() { ReleaseBindings(); disposed = true; }
     }

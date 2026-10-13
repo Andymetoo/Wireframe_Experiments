@@ -3,11 +3,26 @@ MERIDIAN 1944 — INPUT AND SQUADRON CONTROLS
 The keyboard and mouse flight controls are retained. W/S lower/raise the nose,
 A/D bank, Q/E rudder, Shift/Ctrl or R/F adjust throttle, Space or left mouse
 fires, and Z levels the aircraft using control inputs. C changes view; G toggles
-the lead cue; M enables the original mouse stick. Tab selects the next target.
-Hold right mouse to look around; V or middle mouse centers the view. Look never
-changes the aircraft's flight attitude or the direction of its guns.
-In mouse-stick mode, RMB temporarily withholds mouse steering and releasing RMB
-recenters the cursor before mouse steering resumes. Keyboard steering still works.
+the lead cue, which begins enabled in standard and Afterburn sorties. M enables
+the original mouse stick. Tab selects the next target.
+Hold right mouse to look around, including substantially behind either shoulder.
+Release RMB to return forward in roughly a quarter-second. Hold X for a quick
+six-o'clock view; X takes precedence over RMB. Releasing X returns forward before
+held RMB resumes free-look. Head limits are 165 degrees either side, 80 degrees up
+and 70 degrees down. V or middle mouse instantly centers the view. Look never changes
+the aircraft's flight attitude or the direction of its guns.
+In mouse-stick mode, RMB or X temporarily withholds mouse steering; releasing the
+look control recenters the cursor safely before mouse steering resumes. Keyboard
+steering and Space guns still work. LMB gunfire is blocked while looking, and a
+fresh LMB press is required afterward if it was held through the look gesture.
+Pause and new sorties reset the view; menu cursor movement cannot become an
+unexpected mouse-stick deflection when flight resumes.
+
+Mouse wheel up/down also changes throttle in both standard and roguelite sorties:
+four percentage points per notch. High-resolution wheel fractions are preserved.
+The existing THROTTLE instrument reports the commanded setting. Scroll events are
+used only during active flight, never in the briefing, pause/settings, campaign,
+reward or result screens. Wheel deltas are not multiplied by frame duration.
 
 Squadron orders: 1 Form Up; 2 Engage selected target; 3 Cover Me; 4 Regroup.
 Changing the selected target does not silently change a previous attack order.
@@ -21,7 +36,21 @@ X (west): target. B (east): view. A (south): lead cue. Start: pause.
 Hold Y (north), then D-pad: up Form Up; right Engage; left Cover Me; down Regroup.
 While issuing orders, D-pad input does not move the throttle.
 Menus: D-pad up/down moves focus; A selects; B goes back.
-The mission briefing lists five choices; select a mission, then focus Take the Air.
+The mission briefing lists seven choices; select a mission, then focus Take the Air.
+Number keys 1-5 select the original missions; 7 selects Ace Hunt and 8 selects
+Channel Air Battle. Key 6 remains the separate Afterburn shortcut.
+After a finalized outcome, Enter or gamepad A skips the three-second aftermath;
+Esc or Start pauses it and opens the usual resume/restart/exit choices.
+
+ROGUELITE TACTICAL ABILITIES
+KEYBOARD: in a roguelite sortie, tap T for ability slot one or Y for slot two.
+The original 5 / 6 number-key bindings remain available as aliases.
+GAMEPAD: hold the north/Y button first, then press LB for slot one or RB for slot two. An ability
+chord does not also level the aircraft or fire its guns. Without Y, shoulders retain
+their usual controls. Abilities activate once per press; holding does not spend
+multiple charges. Availability, remaining uses and active effects appear on the HUD.
+Standard sorties retain their previous controls and cannot activate these abilities.
+Press 6 at the standard mission briefing to open the separate roguelite mode.
 
 Pause settings include flight sensitivity, analog deadzone, look speed, analog
 pitch/roll/rudder inversion, mouse-stick pitch inversion, and look inversion.
@@ -38,6 +67,9 @@ remain unbound. Use a single axis (/x or /y), not a complete Vector2 stick. Appl
 the fields to activate them. A throttle can span either -1..+1 or 0..+1.
 Binding a whole Vector2 stick to a single axis safely disables that binding and
 shows an error. Invalid throttle bindings preserve the last commanded throttle.
+A bound throttle lever takes command when moved. Leaving it stationary allows
+wheel, keyboard and gamepad throttle adjustments to persist; moving it takes
+command again. No separate competing throttle value is created.
 
 Bindings use scene-owned InputActions and are disposed when leaving Air Combat.
 No global input settings, device disabling, or other game's handlers are changed.
@@ -56,6 +88,16 @@ buttons, an InputAction control-path binding and disconnection. The helper relea
 its malformed-binding fixtures after checking one-time disabling; temporary mouse
 input verifies that freelook does not also steer the mouse stick. It releases
 its temporary device and bindings without persisting global input settings.
+Wheel checks inject real mouse states for up/down, high-resolution fractions,
+idle updates, frame-rate independence, clamps, menu gating and sortie reset.
+Additional checks cover coexistence with a bound throttle lever and tactical
+ability press edges, chords and standard-mode isolation. Wheel range follows the
+installed Input System setting: default uniform uses one unit per notch; legacy
+Windows uses 120. No project-wide input setting is changed.
+View checks cover RMB press/release, X/RMB overlap precedence, bounded rear and
+vertical look, smooth return at 15 and 240 FPS, reset/menu behavior, and the LMB
+release interlock. Keyboard T/Y aliases retain explicit coverage alongside 5/6
+and virtual gamepad ability chords.
 Execution results are reported separately by the walkthrough; source coverage alone
 is not a passed test. Physical gamepad and specialized joystick comfort/compatibility
 remain human hardware validation work.

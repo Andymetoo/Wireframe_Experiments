@@ -13,12 +13,14 @@ namespace Meridian
         public int StateTransitions { get; private set; }
         public float TimeSlow { get; private set; }
         public float FormationError { get; private set; }
-        public string Personality => aggression > .91f ? "Bold" : aggression < .82f ? "Cautious" : "Steady";
+        public string Personality => Skill == PilotSkill.Ace ? "Ace / energy fighter" : aggression > .91f ? "Bold" : aggression < .82f ? "Cautious" : "Steady";
         public float AwarenessRange => 6200;
         float targetCommit, contactMemory, defenseCooldown, energyCooldown, gunPitchIntegral;
         int orderRevision = -1, groundTargetId = -1;
         Vector3 lastContact, runDirection;
         bool rejoining, groundAttackRun, groundPullout, groundAlign;
+        Vector3 acePreviousVelocity, aceTargetAcceleration;
+        int aceTrackedTarget = -1;
 
         public FlightInput Update(AircraftState self, IList<AircraftState> aircraft, TerrainField terrain,
             PilotOrders orders, float dt)
@@ -39,7 +41,8 @@ namespace Meridian
             {
                 string before = State;
                 int previousTarget = targetId;
-                thinkTimer = .19f + (float)random.NextDouble() * .12f;
+                thinkTimer = Skill == PilotSkill.Ace ? .11f + (float)random.NextDouble() * .06f
+                    : .19f + (float)random.NextDouble() * .12f;
                 ThinkTactically(self, aircraft, terrain, orders);
                 if (State != before) StateTransitions++;
                 if (previousTarget >= 0 && targetId >= 0 && previousTarget != targetId) TargetSwitches++;
@@ -53,7 +56,20 @@ namespace Meridian
                 if (State == "Attack")
                     for (int i = 0; i < aircraft.Count; i++)
                         if (aircraft[i].Id == targetId && aircraft[i].Alive)
+                        {
                             gunPoint = Weapons.ComputeLead(self, aircraft[i]);
+                            if (Skill == PilotSkill.Ace)
+                            {
+                                AircraftState target = aircraft[i];
+                                if (aceTrackedTarget != target.Id) { aceTrackedTarget = target.Id; acePreviousVelocity = target.Velocity; aceTargetAcceleration = Vector3.Zero; }
+                                Vector3 observed = (target.Velocity - acePreviousVelocity) / Math.Max(.001f, dt);
+                                acePreviousVelocity = target.Velocity;
+                                if (observed.LengthSquared() > 35f * 35f) observed = Vector3.Normalize(observed) * 35f;
+                                aceTargetAcceleration += (observed - aceTargetAcceleration) * Math.Min(1f, dt * 7f);
+                                float travel = Math.Min(1f, Vector3.Distance(self.Position, target.Position) / Weapons.MuzzleSpeed);
+                                gunPoint += aceTargetAcceleration * (.35f * travel * travel);
+                            }
+                        }
                 if (State == "Strafe" && orders.GroundTargets != null)
                     for (int i = 0; i < orders.GroundTargets.Count; i++)
                     {
@@ -106,6 +122,13 @@ namespace Meridian
                 desiredThrottle = 1; return;
             }
             if (AvoidTraffic(self, planes)) return;
+            if (orders.CombatRadius > 0f && HorizontalLength(self.Position - orders.ObjectiveAnchor) > orders.CombatRadius)
+            {
+                State = "Return to sector"; targetId = -1; pursuitTime = 0;
+                aimPoint = orders.ObjectiveAnchor;
+                aimPoint.Y = Math.Max(aheadGround + 450f, orders.ObjectiveAnchor.Y + 100f);
+                desiredThrottle = SpeedThrottle(self, 120f); return;
+            }
 
             AircraftState threat = FindThreat(self, planes, terrain);
             if (maneuverTimer > 0 && (State == "Break" || State == "Extend" || State == "Energy climb" || State == "Withdraw"))
@@ -122,13 +145,13 @@ namespace Meridian
                 BeginManeuver(self, "Withdraw", direction + Vector3.UnitY * .05f, 7);
                 return;
             }
-            if (threat != null && defenseCooldown <= 0 && random.NextDouble() < .48)
+            if (threat != null && defenseCooldown <= 0 && random.NextDouble() < (Skill == PilotSkill.Ace ? .8 : .48))
             {
                 float side = Vector3.Dot(threat.Position - self.Position, self.Right) > 0 ? -1 : 1;
                 Vector3 direction = Horizontal(self.Forward) + Horizontal(self.Right) * side * 1.7f;
                 direction.Y = agl > 650 && self.Speed < 140 ? -.16f : .06f;
-                BeginManeuver(self, "Break", direction, 3.5f + (1 - aggression) * 5);
-                defenseCooldown = 10; return;
+                BeginManeuver(self, "Break", direction, (Skill == PilotSkill.Ace ? 2.8f : 3.5f) + (1 - aggression) * 5);
+                defenseCooldown = Skill == PilotSkill.Ace ? 6f : 10f; return;
             }
             if (orders.FollowRoute)
             {
@@ -184,10 +207,17 @@ namespace Meridian
             }
             float energy = .5f * (self.Speed * self.Speed - target.Speed * target.Speed) / FlightDynamics.Gravity
                 + self.Position.Y - target.Position.Y;
-            if (energy > 600 && distance < 800 && nose < .1f && self.Speed > 126 && energyCooldown <= 0)
+            if (Skill == PilotSkill.Ace && energy < -180 && target.Position.Y > self.Position.Y + 200
+                && self.Speed < 118 && distance < 2300 && energyCooldown <= 0)
+            {
+                BeginManeuver(self, "Extend", Horizontal(self.Forward) - Vector3.UnitY * .12f, 5f);
+                energyCooldown = 12f; return;
+            }
+            if (energy > (Skill == PilotSkill.Ace ? 420 : 600) && distance < (Skill == PilotSkill.Ace ? 1250 : 800)
+                && nose < (Skill == PilotSkill.Ace ? .3f : .1f) && self.Speed > 126 && energyCooldown <= 0)
             {
                 BeginManeuver(self, "Energy climb", Horizontal(self.Forward) + Vector3.UnitY * .24f, 5);
-                energyCooldown = 22; return;
+                energyCooldown = Skill == PilotSkill.Ace ? 12f : 22f; return;
             }
             State = distance > 1050 ? "Intercept" : "Attack";
             Vector3 lead = Weapons.ComputeLead(self, target);
@@ -197,7 +227,8 @@ namespace Meridian
             float climbLimit = self.Speed > 125 ? .33f : .13f;
             aimPoint.Y = Clamp(aimPoint.Y, Math.Max(aheadGround + 280, self.Position.Y - distance * .30f),
                 Math.Max(aheadGround + 320, self.Position.Y + distance * climbLimit));
-            aimPoint += self.Right * ((float)Math.Sin(elapsed * .8f + weave) * (distance < 700 ? 1.5f : 7));
+            aimPoint += self.Right * ((float)Math.Sin(elapsed * .8f + weave)
+                * (Skill == PilotSkill.Ace ? distance < 700 ? .5f : 3f : distance < 700 ? 1.5f : 7f));
             float wantedSpeed = Clamp(target.Speed + (distance - 240) * .028f, self.Definition.StallSpeed * 1.58f, 165);
             if (nose < .45f && distance < 2300) wantedSpeed = Math.Min(wantedSpeed, 108 + distance * .008f);
             desiredThrottle = SpeedThrottle(self, wantedSpeed);
@@ -225,12 +256,12 @@ namespace Meridian
 
         AircraftState FindThreat(AircraftState self, IList<AircraftState> planes, TerrainField terrain)
         {
-            AircraftState result = null; float nearest = 1050 * 1050;
+            AircraftState result = null; float nearest = Skill == PilotSkill.Ace ? 1250 * 1250 : 1050 * 1050;
             for (int i = 0; i < planes.Count; i++)
             {
                 AircraftState other = planes[i]; if (!other.Alive || other.Team == self.Team) continue;
                 Vector3 toSelf = self.Position - other.Position; float d = toSelf.LengthSquared();
-                if (d < 1 || d > nearest || Vector3.Dot(other.Forward, toSelf / (float)Math.Sqrt(d)) < .93f) continue;
+                if (d < 1 || d > nearest || Vector3.Dot(other.Forward, toSelf / (float)Math.Sqrt(d)) < (Skill == PilotSkill.Ace ? .9f : .93f)) continue;
                 if (Vector3.Dot(self.Forward, -Unit(toSelf, self.Forward)) > .5f || !Visible(self, other, terrain, 1300)) continue;
                 result = other; nearest = d;
             }
@@ -296,9 +327,13 @@ namespace Meridian
         bool FiringSolution(AircraftState self, AircraftState target, IList<AircraftState> planes, TerrainField terrain)
         {
             float distance = Vector3.Distance(self.Position, target.Position);
-            if (distance > 1000 || distance < 65 || !Visible(self, target, terrain, 1050)) return false;
+            if (distance > (Skill == PilotSkill.Ace ? 850 : 1000) || distance < 65 || !Visible(self, target, terrain, 1050)) return false;
             Vector3 aim = Unit(Weapons.ComputeLead(self, target) - self.Position, self.Forward);
-            if (Vector3.Dot(self.Forward, aim) < .9982f || (elapsed + weave) % 2.6f > 1.15f + aggression * .22f) return false;
+            if (Skill == PilotSkill.Ace)
+            {
+                if (Vector3.Dot(self.Forward, aim) < .9988f || (elapsed + weave) % 2.05f > 1.25f) return false;
+            }
+            else if (Vector3.Dot(self.Forward, aim) < .9982f || (elapsed + weave) % 2.6f > 1.15f + aggression * .22f) return false;
             for (int i = 0; i < planes.Count; i++)
             {
                 AircraftState ally = planes[i]; if (!ally.Alive || ally == self || ally.Team != self.Team) continue;

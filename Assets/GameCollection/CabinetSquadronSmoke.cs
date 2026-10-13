@@ -40,8 +40,9 @@ namespace VectorCabinet
             MissionKind[] kinds = { MissionKind.Interception, MissionKind.BomberEscort, MissionKind.GroundAttack };
             foreach (MissionKind kind in kinds)
             {
-                int seed = kind == MissionKind.Interception ? 1944 : 81;
+                int seed = 81;
                 air.StartSortie(seed, kind);
+                var interceptionPilot = new TacticalValidationPilot(seed);
                 air.View.SetCameraMode(1);
                 Check(air.Mission.Time == 0 && air.Mission.Outcome == MissionOutcome.Flying
                     && air.Mission.Wingmen.Count == 2 && air.Mission.CurrentOrder == SquadronOrder.FormUp,
@@ -53,7 +54,8 @@ namespace VectorCabinet
                 {
                     // The actual mission AI writes ordinary inputs into the existing flight and weapons systems.
                     // No positions, health, ammunition, targets, projectiles or outcomes are changed here.
-                    air.Mission.StepBots(1f / 60f);
+                    if (kind == MissionKind.Interception) air.Mission.Step(interceptionPilot.Update(air.Mission), 1f / 60f);
+                    else air.Mission.StepBots(1f / 60f);
                     if (tick % 30 == 0)
                     {
                         foreach (var aircraft in air.Mission.Aircraft)
@@ -70,6 +72,7 @@ namespace VectorCabinet
                         yield return Capture("31-" + kind + "-live-combat");
                     }
                 }
+                FinishDiagnosticAftermath(air);
                 air.View.Sync(air.Mission, 0);
                 Check(finite, kind + ": every actual aircraft state stays finite throughout the rendered mission");
                 Check(air.Mission.Outcome != MissionOutcome.Flying, kind + ": bounded actual mission reaches a terminal outcome");

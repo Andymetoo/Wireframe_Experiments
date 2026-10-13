@@ -16,9 +16,11 @@ namespace Meridian
         public string State { get; private set; }
         public int ShotsRequested { get; private set; }
         public float MaximumBank { get; private set; }
+        public PilotSkill Skill { get; private set; }
 
-        public PilotAI(int seed, bool courier = false)
+        public PilotAI(int seed, bool courier = false, PilotSkill skill = PilotSkill.Regular)
         {
+            Skill = skill;
             random = new Random(seed);
             aggression = .75f + (float)random.NextDouble() * .25f;
             weave = (float)random.NextDouble() * 6.28f;

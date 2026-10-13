@@ -71,6 +71,9 @@ namespace Meridian
         public Vector3 AngularVelocity;
         public float Throttle = .7f, Health = 100;
         public int Ammo = 900;
+        // Instance-owned equipment factors. Standard sorties retain the identity values.
+        public float DamageMultiplier = 1, FireRateMultiplier = 1, SpreadMultiplier = 1;
+        public float MuzzleSpeedMultiplier = 1, DamageTakenMultiplier = 1;
         public float StallFactor, AngleOfAttack, LoadFactor, OverspeedTime;
         public float DistanceTravelled;
         public bool Alive = true;
