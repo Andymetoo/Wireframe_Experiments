@@ -10,6 +10,12 @@ namespace VectorCabinet
 {
     public sealed partial class CabinetSmoke
     {
+        bool DescriptionsFit(AirCombatGame air)
+        {
+            bool fits=air.DescriptionsMeasured>0&&air.DescriptionOverflowCount==0;
+            if(!fits)Note("DESCRIPTION LAYOUT: measured="+air.DescriptionsMeasured+" overflow="+air.DescriptionOverflowCount+" text="+air.DescriptionOverflowText);
+            return fits;
+        }
         static void FinishDiagnosticAftermath(AirCombatGame air)
         {
             if (air.Mission.Outcome == MissionOutcome.Flying) return;
@@ -47,7 +53,7 @@ namespace VectorCabinet
                 yield return ExerciseReadableFlightLabels(air);
                 air.ShowStandardMissions();
                 yield return Capture("61-polish-readable-standard-briefing");
-                Check(air.DescriptionOverflowCount == 0, "Polish: enlarged standard briefing and separate keyboard/controller descriptions fit their layout bounds");
+                Check(DescriptionsFit(air), "Polish: enlarged standard briefing and separate keyboard/controller descriptions fit their layout bounds");
                 CheckScene(GameCollection.AirScene);
             }
             finally { CleanupKeyboard(); CleanupMouse(); air.DiagnosticControl = true; }
@@ -103,14 +109,14 @@ namespace VectorCabinet
             FinishDiagnosticAftermath(air);
             Note("ABILITY UI FIXTURE: the first encounter is explicitly completed to acquire a second real equipment reward; this is not combat evidence.");
             yield return Capture("51-polish-readable-equipment-cards");
-            Check(air.DescriptionOverflowCount == 0, "Polish: generated reward-card descriptions fit their enlarged-font layout");
+            Check(DescriptionsFit(air), "Polish: generated reward-card descriptions fit their enlarged-font layout");
             yield return AuditEquipmentDescriptions(air);
             int ability = -1;
             for (int i = 0; i < air.Campaign.Rewards.Count; i++)
                 if (air.Campaign.Rewards[i].Kind == RogueRewardKind.Ability) { ability = i; break; }
             Check(ability >= 0 && air.ChooseRogueReward(ability), "Polish: an actual generated ability reward can fill the second tactical slot");
             yield return Capture("51a-polish-readable-planning");
-            Check(air.DescriptionOverflowCount == 0, "Polish: hangar, route, workshop and ability descriptions fit their enlarged-font layout");
+            Check(DescriptionsFit(air), "Polish: hangar, route, workshop and ability descriptions fit their enlarged-font layout");
             air.LaunchRogueRoute(0);
             // Separate input timing from enemy combat: this explicit setup keeps opponents out of contact.
             foreach (var enemy in air.Mission.Aircraft)
@@ -272,7 +278,7 @@ namespace VectorCabinet
                     card.Title = RogueCatalog.ModName(mod) + " / Mk 2";
                     card.Description = RogueCatalog.ModDescription(mod) + " Second level compounds these effects.";
                     yield return null; yield return new WaitForEndOfFrame();
-                    bool fits = air.DescriptionOverflowCount == 0;
+                    bool fits = DescriptionsFit(air);
                     Check(fits, "Polish: maximum-level " + mod + " description fits the actual reward-card font and rectangle");
                     if (!fits) yield return Capture("51-overflow-mod-" + mod);
                 }
@@ -280,7 +286,7 @@ namespace VectorCabinet
                 {
                     card.Title = RogueCatalog.AbilityName(ability); card.Description = RogueCatalog.AbilityDescription(ability);
                     yield return null; yield return new WaitForEndOfFrame();
-                    bool fits = air.DescriptionOverflowCount == 0;
+                    bool fits = DescriptionsFit(air);
                     Check(fits, "Polish: " + ability + " ability description fits the actual reward-card font and rectangle");
                     if (!fits) yield return Capture("51-overflow-ability-" + ability);
                 }

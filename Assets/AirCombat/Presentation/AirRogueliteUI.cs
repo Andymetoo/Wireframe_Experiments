@@ -137,10 +137,10 @@ namespace Meridian
             Label(65,214,324,32,$"HULL {Campaign.Hull:0}%     SUPPLIES {Campaign.Supplies}",body,Campaign.Hull<45?amber:green);
             var d=Campaign.AircraftPreview;var stock=AircraftDefinition.AlliedFighter;
             Label(65,251,320,67,$"Mass {d.Mass:0} kg   Power {d.MaxPower/stock.MaxPower*100:0}%\nWing {d.WingArea:0.0} m²   Roll {d.MaxRollRate/stock.MaxRollRate*100:0}%\nGun damage {Campaign.DamageMultiplier*100:0}%   Rate {Campaign.FireRateMultiplier*100:0}%",description);
-            Label(65,326,320,27,"INSTALLED FIELD KITS",small,amber);
+            Label(65,320,320,23,"INSTALLED FIELD KITS",small,amber);
             if(Campaign.Mods.Count==0)Label(65,357,320,82,"An ordinary fighter. Salvage and refits will change how it flies and fights.",description);
             for(int i=0;i<Campaign.Mods.Count;i++)
-                Label(65,351+i*21,320,23,Campaign.Mods[i].Name+"  Mk "+Campaign.Mods[i].Level,description);
+                Label(65,345+i*22,320,26,Campaign.Mods[i].Name+"  Mk "+Campaign.Mods[i].Level,description);
             if(RunButton(65,461,320,"REPAIR +35 HULL / 2 SUPPLIES",3,Campaign.Hull<100&&Campaign.Supplies>=2))Campaign.RepairHull();
             for(int i=0;i<2;i++)
             {

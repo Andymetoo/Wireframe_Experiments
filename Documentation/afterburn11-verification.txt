@@ -1,0 +1,160 @@
+OPERATION AFTERBURN 1.1 — IMPLEMENTATION AND VERIFICATION
+Updated October 13, 2026
+
+Release: Builds/VectorCabinetAfterburn11/VectorCabinet.exe
+Keep its data directory and DLLs beside the executable.
+Windows build: succeeded with zero errors and zero warnings.
+Final visible standalone: 686 checks, zero failures, zero runtime errors.
+
+WHAT CHANGED
+
+Flight usability changes apply to standard missions and Afterburn:
+- Hold RMB to look around independently of the airframe; release returns forward.
+  Head limits reach 165 degrees either side. Hold X for a quick rear-hemisphere
+  view. X takes precedence over RMB; V/middle mouse still centers immediately.
+  Mouse-stick steering and mouse gunfire are withheld during the look gesture;
+  releasing safely recenters the cursor before mouse steering resumes.
+- Tactical slot 1: T or 5. Slot 2: Y or 6. Gamepad: hold Y, then LB/RB.
+  The two device families are labeled separately. HUD cards show charges, active
+  duration, and concise unavailable reasons. Existing throttle controls remain.
+- Floating label backplates are replaced by stable colored text with a dark
+  outline. The gunsight is stronger and outlined; lead guidance defaults on but
+  G still toggles it. None of this aims the guns or changes projectile collisions.
+- A brief X confirms actual player-caused aircraft damage. Amber destruction
+  feedback is separate. Ground hits, missed rounds, and reticle overlap cannot
+  increment the aircraft-hit counter.
+- Finalized outcomes receive a three-second visual aftermath. Geometric wrecks
+  coast, descend and trail smoke; player destruction uses an external camera.
+  Authoritative time, damage, ammunition, score and outcome remain frozen.
+  Enter/gamepad A skips; pause, binding menus, restart and exit remain available.
+- All surviving critical vehicles have individual V1–V4 markers and radar
+  diamonds, including directional guidance outside view. Raiders and the ace
+  have objective guidance; the larger battle marks its contested sector.
+  Unrelated hidden fighters are not revealed. Destroyed objectives disappear.
+- Equipment, route and ability descriptions use larger type and adjusted card
+  spacing. Layout checks cover generated descriptions, stacked kits and stages.
+
+MISSIONS AND PROGRESSION
+
+The original five missions remain. Standard briefing keys 7 and 8 add Ace Hunt
+and Channel Air Battle; 6 still opens Afterburn.
+
+Ace Hunt pits the player's flight against Voss and escorts. The ace uses stock
+health, engine and aerodynamic limits. His advantages are quicker decisions,
+disciplined bursts, defensive reversals and refusing a losing climb. Later
+versions add a second escort and a greater starting altitude advantage.
+
+Channel Air Battle adds an independent friendly Blue pair alongside Rook and
+Finch. Defeat three of five hostile fighters across two flights; the finale asks
+for four of seven across three flights. Every scheduled flight must physically
+reach the contested sector, or be destroyed, before victory. Reinforcements
+start outside friendly visual/combat bubbles and fly into the engagement. Pilots
+commit to a return into the sector rather than repeatedly reversing at its edge.
+Fruitless sustained circles prompt an energy extension and another approach.
+These Fleet-only decisions still use the ordinary bounded flight controls.
+
+The old operation used overlapping mission pools and hidden enemy stat pressure.
+The revised run communicates its four stages explicitly:
+1. Opening moves: duel, courier protection or a risky ground strike.
+2. Contested skies: bomber escort, raider interception or the first ace encounter.
+3. Pressure front: reinforced ground attack, two-flight battle or escorted ace.
+4. Final offensive: reinforced bomber protection, three-flight battle or ace
+   with two escorts and the greater altitude advantage.
+Escalation uses encounter structure rather than added enemy hull or gun damage.
+The existing equipment, supplies, repairs, wingman losses and tactical cards
+remain the run's economy. There is still no persistent save or permanent grind.
+
+INTERCEPTION FINDINGS
+
+The previous setup forced an early head-on merge followed by a large reversal
+into a tail chase. The new diagonal crossing starts the raid 150 m below the
+player; escorts approach ahead on the flank. Aircraft definitions, raid speed
+capabilities and the defended-route objective are retained. Briefings explain
+cutting across the raid's route and splitting targets with wingmen.
+
+The before/after audit used six fixed seeds with ordinary and controls-only
+expert pilots. Earned wins improved from 4/12 to 6/12; the expert sample improved
+from 3/6 to 5/6. Ordinary pilots fired at roughly 33–35 seconds in all six new
+starts. Boundary failures still occur; this is an opportunity and communication
+improvement, not a guarantee of victory or a claim about human difficulty.
+Logs: Logs/Afterburn11/interception-before.txt and interception-after.txt.
+
+EXECUTED VALIDATION
+
+The first usability candidate passed 201 standalone checks with zero runtime
+errors. Visual inspection additionally caught and corrected long displaced
+ground-label leaders and aftermath text collisions. Later review corrected
+overlapping hit/destruction text and binding-panel/back-button behavior.
+
+The initial complete .NET flight suite passed 943 checks. Unity's corresponding
+full cabinet suite exposed one additional failure: a larger battle's automated
+pilot timed out despite its .NET victory. The extended final-battle sample also
+showed lengthy pursuits. These observations prompted a focused Fleet-only AI
+review; they are not omitted from the validation history.
+
+Final core results:
+- Full .NET flight harness: 951 checks, zero failures.
+  Logs/Afterburn11/full-core-refined-validation.txt
+- Additional Unity Mono encounter probe: 59 checks, zero failures.
+  Logs/Afterburn11/encounter-refined-mono-validation.txt
+- Actual Unity Editor cabinet validation: 2,206 checks, zero failures, including
+  flight, Hockey and 1,000 complete seeded Haunted House investigations.
+  Documentation/afterburn11-unity-validation.txt
+- Windows release build: succeeded, zero errors, zero warnings, all four scenes
+  included. Documentation/afterburn11-build-result.txt records the build result.
+
+Actual Unity combat results included stock Ace Hunt seed 1944 in 190.2 seconds,
+stock Channel Air Battle seed 1944 in 531.1 seconds, and a complete earned
+four-sortie run at seed 81: Duel, Interception, Ace Hunt, final Channel battle.
+The final sortie won in 215.6 seconds with four enemy losses, 132 player rounds,
+32 player hits and both wingmen surviving. All three flights entered the sector.
+No health, position, ammunition or objective overrides produced those victories.
+Explicit state/impact fixtures are separately labeled in the logs.
+
+The first resumed standalone pass completed 686 checks without runtime errors,
+but hidden-window captures were not accepted as visual evidence. A visible pass
+then exposed three undersized installed-kit rows; those rows were corrected,
+and layout assertions now require measured GUI descriptions. The final visible
+rerun passed all 686 checks, with zero runtime errors and 87 screenshots. It
+exercised all three games; keyboard/mouse and virtual gamepad input; wheel
+throttle; free-look and rear view; tactical abilities; real hit feedback; frozen
+aftermath, pause, bindings, skip and restart; objectives; seven standard mission
+launches; earned original/new mission outcomes; the full four-sortie run; and
+return-to-launcher cleanup. Description checks covered all four hangars and
+catalog reward text. Labels were captured over sky and terrain at 1280x800 and
+1600x900. The launcher, menus, labels, markers and aftermath images were visually
+inspected as well as checked by the runner.
+
+Durable runtime report: Documentation/afterburn11-runtime-validation.txt
+Final screenshots and runtime error log: Logs/AfterburnPolish/Verified/
+Final player log: Logs/AfterburnPolish/verified-player.log
+Final build log: Logs/AfterburnPolish/unity-verified-build.log
+Historical failed/intermediate logs are retained; they are not the release result.
+
+PRESERVATION AND SCOPE
+
+SHA-256 manifests were captured before this assignment. All 564 files across
+Builds/VectorCabinet, Builds/VectorCabinetSquadron and Builds/VectorCabinetRoguelite
+were rechecked after resuming: zero mismatches. All 70 protected source/settings
+files also match their original hashes, including both other games, launcher,
+cabinet scene, authoritative FlightDynamics and ProjectSettings. The executable uses a
+separate directory. No automatic commit or push is performed. Final preservation
+verification again found zero mismatches across all 70 source/settings and 564
+previous-build files: Logs/AfterburnPolish/preservation-final.txt. Release
+executable and gameplay assembly hashes are recorded in
+Logs/AfterburnPolish/release-hashes.json.
+
+All new visuals are source-driven geometry or built-in UI. No creative media,
+audio, third-party asset packages or external runtime services were introduced.
+
+HUMAN PLAYTESTING STILL NEEDED
+
+Automated victories prove the physical objectives and state transitions can
+complete; they do not establish enjoyment or ideal balance. Please assess rear
+view comfort, free-look with a physical mouse/controller, readability on your
+display, interception pressure, ace fairness, larger-battle pacing and the
+four-sortie difficulty curve. In the broad automated sample, stock final battles
+won only 1/18 trials; the legally upgraded campaign won its final battle. This
+remains the clearest balance question for human playtesting, not proof that an
+unmodified aircraft has a comfortable finale. Specialized flight-stick/HOTAS hardware
+and a formal GPU/frame-time benchmark have not been tested in this pass.

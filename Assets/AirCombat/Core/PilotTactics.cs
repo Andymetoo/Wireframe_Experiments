@@ -15,10 +15,10 @@ namespace Meridian
         public float FormationError { get; private set; }
         public string Personality => Skill == PilotSkill.Ace ? "Ace / energy fighter" : aggression > .91f ? "Bold" : aggression < .82f ? "Cautious" : "Steady";
         public float AwarenessRange => 6200;
-        float targetCommit, contactMemory, defenseCooldown, energyCooldown, gunPitchIntegral;
+        float targetCommit, contactMemory, defenseCooldown, energyCooldown, gunPitchIntegral, noFiringTime;
         int orderRevision = -1, groundTargetId = -1;
         Vector3 lastContact, runDirection;
-        bool rejoining, groundAttackRun, groundPullout, groundAlign;
+        bool rejoining, groundAttackRun, groundPullout, groundAlign, returningToSector;
         Vector3 acePreviousVelocity, aceTargetAcceleration;
         int aceTrackedTarget = -1;
 
@@ -28,6 +28,7 @@ namespace Meridian
             if (orders == null) return Update(self, aircraft, terrain, Vector3.Zero, dt);
             elapsed += dt; thinkTimer -= dt; maneuverTimer -= dt; pursuitTime += dt;
             targetCommit -= dt; contactMemory -= dt; defenseCooldown -= dt; energyCooldown -= dt;
+            noFiringTime = fireIntent ? 0f : noFiringTime + dt;
             if (self.Speed < self.Definition.StallSpeed * 1.16f) TimeSlow += dt;
             if (orderRevision != orders.Revision)
             {
@@ -122,7 +123,14 @@ namespace Meridian
                 desiredThrottle = 1; return;
             }
             if (AvoidTraffic(self, planes)) return;
-            if (orders.CombatRadius > 0f && HorizontalLength(self.Position - orders.ObjectiveAnchor) > orders.CombatRadius)
+            if (orders.CombatRadius > 0f)
+            {
+                float sectorDistance = HorizontalLength(self.Position - orders.ObjectiveAnchor);
+                if (sectorDistance > orders.CombatRadius) returningToSector = true;
+                if (sectorDistance < orders.CombatRadius * .58f) returningToSector = false;
+            }
+            else returningToSector = false;
+            if (returningToSector)
             {
                 State = "Return to sector"; targetId = -1; pursuitTime = 0;
                 aimPoint = orders.ObjectiveAnchor;
@@ -199,6 +207,15 @@ namespace Meridian
             float distance = Vector3.Distance(self.Position, target.Position);
             Vector3 directionToTarget = Unit(target.Position - self.Position, self.Forward);
             float nose = Vector3.Dot(self.Forward, directionToTarget);
+            if (orders.CombatRadius > 0f && noFiringTime > 22f && distance < 2200f && energyCooldown <= 0f)
+            {
+                // A fruitless sustained circle spends energy without a firing window. Open the
+                // separation for another pass; the normal controller still has to fly the reversal.
+                Vector3 exitDirection = Horizontal(self.Forward);
+                exitDirection.Y = self.Speed < 125f && agl > 650f ? -.12f : .06f;
+                BeginManeuver(self, "Extend", exitDirection, 8f);
+                energyCooldown = 25f; noFiringTime = 0f; pursuitTime = 0f; return;
+            }
             if (distance < 150 && nose > .1f || pursuitTime > 24 + aggression * 12 && nose < .35f && distance < 3000)
             {
                 Vector3 direction = Horizontal(self.Forward) + Horizontal(self.Right) * (self.Id % 2 == 0 ? .5f : -.5f);
@@ -224,6 +241,17 @@ namespace Meridian
             float closing = Math.Max(65, self.Speed - Vector3.Dot(target.Velocity, directionToTarget));
             float interceptTime = Math.Min(6, distance / closing);
             aimPoint = distance > 1050 ? target.Position + target.Velocity * interceptTime : lead;
+            if (orders.CombatRadius > 0f && distance > 1500f)
+            {
+                Vector3 sectorOffset = aimPoint - orders.ObjectiveAnchor;
+                float sectorDistance = HorizontalLength(sectorOffset);
+                float pursuitRadius = orders.CombatRadius * .82f;
+                if (sectorDistance > pursuitRadius)
+                {
+                    aimPoint.X = orders.ObjectiveAnchor.X + sectorOffset.X * pursuitRadius / sectorDistance;
+                    aimPoint.Z = orders.ObjectiveAnchor.Z + sectorOffset.Z * pursuitRadius / sectorDistance;
+                }
+            }
             float climbLimit = self.Speed > 125 ? .33f : .13f;
             aimPoint.Y = Clamp(aimPoint.Y, Math.Max(aheadGround + 280, self.Position.Y - distance * .30f),
                 Math.Max(aheadGround + 320, self.Position.Y + distance * climbLimit));

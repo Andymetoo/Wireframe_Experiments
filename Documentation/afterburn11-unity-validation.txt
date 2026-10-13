@@ -918,6 +918,9 @@ PASS Ace recognizes a losing climb and extends to regain energy instead of follo
 PASS Ace decisions do not write transforms, momentum, damage or ammunition
 PASS Ace decisions command the same bounded flight input as every other pilot
 PASS Ace movement is produced by ordinary finite aerodynamic integration
+PASS Fleet boundary fixture: return leg persists inside outer boundary instead of immediately reversing into pursuit
+PASS Fleet boundary fixture: entering inner sector releases the return leg to ordinary tactical decisions
+PASS Fleet geometry fixture: fruitless sustained pursuit opens a new pass using bounded controls, without changing aircraft state
 PASS Four-sortie decks escalate from patrol to reinforced formations and a defined final offensive
 PASS Roguelite tactical escalation never inflates enemy hull or gun damage
 PASS Route descriptions state the tactical problem in at most 170 characters for readable cards
@@ -940,7 +943,12 @@ PASS FleetBattle 88 actual battle preserves finite flight and bounded aircraft/p
 PASS FleetBattle 88 reaches an authoritative terminal outcome
 PASS FleetBattle 88 produces actual contact, maneuvering and firing opportunities
 PASS Ace encounter is won through actual stock-aircraft combat without outcome overrides
-FAIL Larger air battle is won through actual stock-aircraft combat without outcome overrides
+PASS Larger air battle is won through actual stock-aircraft combat without outcome overrides
+PASS Earned final offensive stage 1 terminates with bounded aircraft and projectiles
+PASS Earned final offensive stage 2 terminates with bounded aircraft and projectiles
+PASS Earned final offensive stage 3 terminates with bounded aircraft and projectiles
+PASS Earned final offensive stage 4 terminates with bounded aircraft and projectiles
+PASS Earned four-sortie operation wins the three-wave final offensive through legal repairs, upgrades and actual combat
 Complete dogfights: 6/6 controller-driven ballistic victories; 83.7-221.3 seconds; 595 rounds total. Armed escort victories: 3/3. No state, damage or transform overrides in these nine sorties.
 TACTICAL SORTIES (unmodified real physics / weapons / pilots)
 Interception seed=1944 Defeat t=301.8 rounds=761 player hits=9 wingmen=1 flak rounds=0 collisions=0 | 1/2 raiders stopped | 1 escaped
@@ -1035,9 +1043,15 @@ EXPANDED ENCOUNTERS / ACTUAL CONTROLS-ONLY SORTIES
 AceHunt seed=1944 result=Victory contact=3.8s firing-window=67.6s first-shot=67.9s duration=190.2s kills=1 player-hits=3 wingmen=2 collisions=0 peak-aircraft=5 peak-rounds=24 cause=Ace Voss defeated. The enemy fighter leader will not return to this sector.
 AceHunt seed=17 result=Victory contact=3.8s firing-window=74.4s first-shot=138.4s duration=302.6s kills=1 player-hits=3 wingmen=2 collisions=0 peak-aircraft=5 peak-rounds=35 cause=Ace Voss defeated. The enemy fighter leader will not return to this sector.
 AceHunt seed=88 result=Victory contact=3.8s firing-window=45.0s first-shot=45.2s duration=370.3s kills=1 player-hits=1 wingmen=2 collisions=0 peak-aircraft=5 peak-rounds=34 cause=Ace Voss defeated. The enemy fighter leader will not return to this sector.
-FleetBattle seed=1944 result=Defeat contact=4.2s firing-window=11.5s first-shot=322.8s duration=600.0s kills=1 player-hits=1 wingmen=2 collisions=0 peak-aircraft=10 peak-rounds=32 cause=Sortie fuel limit reached before the mission objective was secured.
-FleetBattle seed=17 result=Defeat contact=4.2s firing-window=11.5s first-shot=371.4s duration=600.0s kills=2 player-hits=8 wingmen=0 collisions=0 peak-aircraft=10 peak-rounds=39 cause=Sortie fuel limit reached before the mission objective was secured.
-FleetBattle seed=88 result=Defeat contact=4.2s firing-window=11.5s first-shot=230.1s duration=600.0s kills=0 player-hits=1 wingmen=2 collisions=0 peak-aircraft=10 peak-rounds=40 cause=Sortie fuel limit reached before the mission objective was secured.
+FleetBattle seed=1944 result=Victory contact=4.2s firing-window=11.5s first-shot=118.9s duration=531.1s kills=3 player-hits=24 wingmen=2 collisions=0 peak-aircraft=10 peak-rounds=32 cause=The enemy offensive is broken. Your two flights have won control of the sector.
+FleetBattle seed=17 result=Defeat contact=4.2s firing-window=11.5s first-shot=-1.0s duration=143.8s kills=0 player-hits=0 wingmen=2 collisions=0 peak-aircraft=10 peak-rounds=28 cause=Kestrel lost. Your sortie has ended.
+FleetBattle seed=88 result=Victory contact=4.2s firing-window=11.5s first-shot=98.3s duration=305.1s kills=3 player-hits=16 wingmen=2 collisions=0 peak-aircraft=10 peak-rounds=31 cause=The enemy offensive is broken. Your two flights have won control of the sector.
+ACTUAL FINAL OFFENSIVE / earned upgrades, route decisions and real controls; no outcome or aircraft-state overrides
+Operation81 stage=1 kind=Duel seed=113517009 result=Victory t=215.0 hull=100.0 player-rounds=257 player-hits=8 kills=1 flights=0/1 wingmen=0 collisions=0 peak-aircraft=2 peak-rounds=25 cause=Airspace clear. You won the duel.
+Operation81 stage=2 kind=Interception seed=2119636327 result=Victory t=110.0 hull=100.0 player-rounds=56 player-hits=8 kills=2 flights=1/1 wingmen=2 collisions=0 peak-aircraft=7 peak-rounds=38 cause=Both raid leaders stopped. The defended sector is safe.
+Operation81 stage=3 kind=AceHunt seed=57448039 result=Victory t=89.3 hull=100.0 player-rounds=36 player-hits=8 kills=1 flights=1/1 wingmen=2 collisions=0 peak-aircraft=6 peak-rounds=23 cause=Ace Voss defeated. The enemy fighter leader will not return to this sector.
+Operation81 stage=4 kind=FleetBattle seed=1032352584 result=Victory t=215.6 hull=100.0 player-rounds=132 player-hits=32 kills=4 flights=3/3 wingmen=2 collisions=0 peak-aircraft=12 peak-rounds=37 cause=The enemy offensive is broken. Your two flights have won control of the sector.
+Final offensive operation result: Victory
 
 PASS Skating accelerates toward a bounded cruising speed
 PASS Coasting retains ice momentum but gradually slows
@@ -2305,4 +2319,4 @@ PASS Haunted House complete seeded investigation 996
 PASS Haunted House complete seeded investigation 997
 PASS Haunted House complete seeded investigation 998
 PASS Haunted House complete seeded investigation 999
-2198 checks; 1 failures.
+2206 checks; 0 failures.

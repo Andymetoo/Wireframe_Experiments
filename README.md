@@ -52,6 +52,8 @@ A fictional Channel sortie in a low-polygon WWII setting. Fly the Kestrel Mk.IX 
 - **Ace Hunt:** defeat Voss, a disciplined energy fighter with an escort. His stock aircraft obeys normal flight limits; better decisions, defensive reactions and gun discipline make the difference. Escorts are secondary objectives.
 - **Channel Air Battle:** your squadron and the independent Blue pair face five fighters arriving in two flights. Break the offensive by destroying three and surviving until both enemy flights reach the sector or are defeated. Reinforcements approach physically from beyond friendly visual range.
 
+In the larger battles, pilots return toward the contested sector after a long pursuit and open separation when a sustained turn produces no firing opportunity. Use those extensions to regain speed, choose another target or bring Rook and Finch back together before the next flight arrives.
+
 The original **Training Duel** offers one armed opponent and a lead cue. **Courier Cover** asks you to keep the unarmed transport Lark alive for five minutes or destroy both interceptors.
 
 Briefing shortcuts **1–5** select the original missions, **7** selects Ace Hunt, **8** selects Channel Air Battle, and **6** opens Afterburn. Press Enter to launch the selected standard assignment. Interception now presents a crossing opportunity: cut onto the raid's diagonal track before committing to a tail chase; escort fighters are distractions from the two raid leaders.
@@ -105,7 +107,7 @@ An objective failure or crash ends the run. Retry the seed, start a fresh operat
 
 In both flight modes, mouse wheel throttle changes the existing command in discrete steps and is ignored in menus. Contact labels and the stronger gunsight use contrasting outlines. Briefing, equipment and ability descriptions have larger body text with adjusted wrapping.
 
-[Original Afterburn verification report](Documentation/operation-afterburn-verification.md) records that release's executed simulation, input, rendered gameplay and preservation checks. It does not report Phase 1.1 results.
+[Phase 1.1 verification](Documentation/afterburn11-verification.txt) records the current build, simulation and rendered checks, preservation results and remaining balance questions. The [original Afterburn verification report](Documentation/operation-afterburn-verification.md) remains the record of the earlier release.
 
 ## Haunted House — The House That Listens
 

@@ -35,7 +35,7 @@ namespace Meridian
                 foreach(var plane in Mission.Aircraft)
                     if(plane.Alive&&plane.Id==Mission.AceId)ObjectiveMarker(plane.Position,"ACE / Voss",plane.Id==Mission.SelectedTargetId,amber);
             if(Mission.Kind==MissionKind.FleetBattle&&NVector3.DistanceSquared(Mission.Player.Position,Mission.ObjectivePosition)>3500f*3500f)
-                ObjectiveMarker(Mission.ObjectivePosition,"CONTESTED SECTOR",false,green);
+                ObjectiveMarker(Mission.ObjectivePosition,"SECTOR",false,green);
         }
         bool HasObjectiveAircraftMarker(int id)
         {

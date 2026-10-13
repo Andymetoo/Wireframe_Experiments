@@ -60,7 +60,7 @@ namespace VectorCabinet
                     if (air.Campaign.Phase == RoguePhase.Reward)
                     {
                         yield return Capture("44-afterburn-earned-reward-" + sorties);
-                        Check(air.DescriptionOverflowCount == 0,
+                        Check(DescriptionsFit(air),
                             "Roguelite: earned stage " + sorties + " reward descriptions fit the enlarged-font cards");
                         int reward = 0;
                         if (air.Campaign.Hull < 65)
@@ -75,29 +75,36 @@ namespace VectorCabinet
                         else if (air.Campaign.WingmanHull[wing] < 65) air.Campaign.RepairWingman(wing);
                     }
                     yield return Capture("44-afterburn-earned-planning-" + (air.Campaign.Stage + 1));
-                    Check(air.DescriptionOverflowCount == 0,
+                    Check(DescriptionsFit(air),
                         "Roguelite: all three routes at stage " + (air.Campaign.Stage + 1) + " fit their enlarged-font descriptions");
-                    int[] routePolicy = { 0, 1, 2, 2 };
+                    int[] routePolicy = { 0, 1, 2, 1 };
                     air.LaunchRogueRoute(routePolicy[air.Campaign.Stage]);
                     var pilot = new ValidationPilot(air.Mission.Seed);
                     var tacticalPilot = new TacticalValidationPilot(air.Mission.Seed);
                     var encounterPilot = new EncounterValidationPilot(air.Mission.Seed); sorties++;
+                    bool capturedFinalFlights=false; int peakAircraft=0;
                     for (int tick = 0; tick < 60 * 721 && air.Campaign.Phase == RoguePhase.Flying; tick++)
                     {
-                        if (air.Mission.Kind == MissionKind.AceHunt || air.Mission.Kind == MissionKind.FleetBattle)
+                        if (air.Mission.Kind == MissionKind.AceHunt)
                             air.StepForDiagnostics(encounterPilot.Update(air.Mission), 1f / 60f);
-                        else if (air.Mission.Kind == MissionKind.Interception || air.Mission.Kind == MissionKind.BomberEscort)
+                        else if (air.Mission.Kind == MissionKind.Interception || air.Mission.Kind == MissionKind.BomberEscort || air.Mission.Kind == MissionKind.FleetBattle)
                             air.StepForDiagnostics(tacticalPilot.Update(air.Mission), 1f / 60f);
                         else if (air.Mission.Tactical) air.StepRogueBotsForDiagnostics(1f / 60f);
                         else air.StepForDiagnostics(pilot.Update(air.Mission), 1f / 60f);
                         if (tick % 30 != 0) continue;
                         finite &= FlightDynamics.Finite(air.Mission.Player.Position) && FlightDynamics.Finite(air.Mission.Player.Velocity);
+                        peakAircraft=Math.Max(peakAircraft,air.Mission.Aircraft.Count);
                         yield return null;
+                        if(!capturedFinalFlights&&air.Mission.Kind==MissionKind.FleetBattle&&air.Mission.EnemyFlightsEngaged==3)
+                        {capturedFinalFlights=true;yield return Capture("44-afterburn-final-three-flights");}
                     }
                     Check(finite && air.Campaign.Phase != RoguePhase.Flying,
                         "Roguelite: rendered seeded sortie " + sorties + " reaches a finite real combat outcome without objective overrides");
                     Check(air.Mission.RoundsFired > 0 && air.Mission.Hits > 0,
                         "Roguelite: rendered sortie " + sorties + " fires actual ammunition and lands travelling projectiles");
+                    if(air.Mission.Kind==MissionKind.FleetBattle)
+                        Check(capturedFinalFlights&&peakAircraft==12&&air.Mission.Kills>=4,
+                            "Roguelite: final larger battle renders twelve aircraft and earns four losses after all three flights enter the sector");
                     Note("ACTUAL ROGUELITE SORTIE: run 81 / stage " + sorties + " / mission " + air.Mission.Seed + " " + air.Mission.Kind
                         + "; " + air.Mission.Outcome + "; t=" + air.Mission.Time.ToString("F1")
                         + "; rounds=" + air.Mission.RoundsFired + "; hits=" + air.Mission.Hits + "; hull=" + air.Campaign.Hull.ToString("F1"));

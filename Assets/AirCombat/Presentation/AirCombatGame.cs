@@ -32,6 +32,8 @@ namespace Meridian
         Rect screenRect;
         readonly GUIContent layoutMeasure=new GUIContent();
         public int DescriptionOverflowCount {get;private set;}
+        public int DescriptionsMeasured {get;private set;}
+        public string DescriptionOverflowText {get;private set;}="";
 
         void Awake()
         {
@@ -173,7 +175,10 @@ namespace Meridian
         void Label(float x,float y,float w,float h,string text,GUIStyle style=null,Color? color=null)
         {
             if(DiagnosticControl&&style==description&&Event.current.type==EventType.Repaint)
-            {layoutMeasure.text=text;if(style.CalcHeight(layoutMeasure,w)>h+1)DescriptionOverflowCount++;}
+            {
+                DescriptionsMeasured++;layoutMeasure.text=text;
+                if(style.CalcHeight(layoutMeasure,w)>h+1){DescriptionOverflowCount++;DescriptionOverflowText=text;}
+            }
             var old=GUI.color;if(color.HasValue)GUI.color=color.Value;GUI.Label(new Rect(x,y,w,h),text,style??body);GUI.color=old;
         }
         bool Button(float x,float y,float w,string text,bool active=false)
@@ -193,7 +198,7 @@ namespace Meridian
         void OnGUI()
         {
             if(Mission==null||View==null)return;Styles();
-            if(Event.current.type==EventType.Repaint)DescriptionOverflowCount=0;
+            if(Event.current.type==EventType.Repaint){DescriptionOverflowCount=DescriptionsMeasured=0;DescriptionOverflowText="";}
             float scale=Mathf.Min(Screen.width/1280f,Screen.height/800f);
             screenRect=new Rect((Screen.width-1280*scale)/2,(Screen.height-800*scale)/2,1280*scale,800*scale);
             GUI.matrix=Matrix4x4.TRS(new Vector3(screenRect.x,screenRect.y,0),Quaternion.identity,Vector3.one*scale);
@@ -341,7 +346,7 @@ namespace Meridian
             Radar();
             string warning=p.StallFactor>.2f?"STALL — LOWER NOSE, ADD POWER":p.Speed>p.Definition.MaxSpeed?"OVERSPEED — REDUCE POWER, EASE OUT":agl<140?"TERRAIN — WINGS LEVEL, PULL UP":p.Health<35?"AIRFRAME DAMAGED — FLY SMOOTHLY":"";
             if(!AftermathActive&&warning.Length>0)Label(335,628,860,37,warning,number,amber);
-            if(!AftermathActive&&Mission.MessageTime>0)Label(289,668,794,31,Mission.LastMessage,body,green);
+            if(!AftermathActive&&Mission.MessageTime>0)WorldLabel(289,663,794,49,Mission.LastMessage,description,green);
             if(hitFlash>0&&!AircraftHitVisible&&!AircraftKillVisible)Label(sight.x+27,sight.y+20,120,26,"HIT",small,green);
             if(ShowLead)Label(23,679,250,22,"G  LEAD CUE ON",small,green);
             if(MouseStick)

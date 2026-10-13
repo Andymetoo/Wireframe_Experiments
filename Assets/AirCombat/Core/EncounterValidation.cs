@@ -16,6 +16,7 @@ namespace Meridian
             ValidateGeneration(check);
             ValidateWaves(check);
             ValidateAce(check);
+            ValidateSectorManeuvers(check);
             ValidateProgression(check);
             var report = new StringBuilder("EXPANDED ENCOUNTERS / ACTUAL CONTROLS-ONLY SORTIES\n");
             int aceWins = 0, fleetWins = 0;
@@ -62,7 +63,81 @@ namespace Meridian
                 }
             check(aceWins > 0, "Ace encounter is won through actual stock-aircraft combat without outcome overrides");
             check(fleetWins > 0, "Larger air battle is won through actual stock-aircraft combat without outcome overrides");
+            ValidateActualFinalOperation(check, report);
             Summary = report.ToString();
+        }
+
+        static void ValidateSectorManeuvers(Action<bool, string> check)
+        {
+            var self = new AircraftState { Id = 10, Team = 1, Definition = AircraftDefinition.AxisFighter,
+                Position = new Vector3(6000, 1800, 0), Velocity = Vector3.UnitZ * 120f };
+            var enemy = new AircraftState { Id = 0, Team = 0, Position = new Vector3(2500, 1800, 1000), Velocity = Vector3.UnitZ * 120f };
+            var planes = new List<AircraftState> { self, enemy };
+            var terrain = new TerrainField(81);
+            var orders = new PilotOrders { CombatRadius = 5600f, ObjectiveAnchor = new Vector3(0, 1800, 0), Order = SquadronOrder.Engage };
+            var pilot = new PilotAI(81);
+            pilot.Update(self, planes, terrain, orders, .35f);
+            bool started = pilot.State == "Return to sector";
+            self.Position = new Vector3(5400, 1800, 0);
+            pilot.Update(self, planes, terrain, orders, .35f);
+            check(started && pilot.State == "Return to sector", "Fleet boundary fixture: return leg persists inside outer boundary instead of immediately reversing into pursuit");
+            self.Position = new Vector3(2500, 1800, 0);
+            pilot.Update(self, planes, terrain, orders, .35f);
+            check(pilot.State != "Return to sector", "Fleet boundary fixture: entering inner sector releases the return leg to ordinary tactical decisions");
+
+            self.Position = new Vector3(0, 1800, 0); enemy.Position = new Vector3(1100, 1800, 0);
+            var stuck = new PilotAI(81); bool openedPass = false, bounded = true;
+            Vector3 position = self.Position, velocity = self.Velocity; Quaternion rotation = self.Rotation;
+            for (int tick = 0; tick < 24 * 60; tick++)
+            {
+                FlightInput input = stuck.Update(self, planes, terrain, orders, Tick);
+                openedPass |= stuck.State == "Extend";
+                bounded &= Math.Abs(input.Pitch) <= 1 && Math.Abs(input.Roll) <= 1 && Math.Abs(input.Yaw) <= 1 && input.Throttle >= 0 && input.Throttle <= 1;
+            }
+            check(openedPass && bounded && position == self.Position && velocity == self.Velocity && rotation == self.Rotation,
+                "Fleet geometry fixture: fruitless sustained pursuit opens a new pass using bounded controls, without changing aircraft state");
+        }
+
+        static void ValidateActualFinalOperation(Action<bool, string> check, StringBuilder report)
+        {
+            report.AppendLine("ACTUAL FINAL OFFENSIVE / earned upgrades, route decisions and real controls; no outcome or aircraft-state overrides");
+            var run = new RogueRun(81); int completed = 0; bool finite = true;
+            while (run.Phase == RoguePhase.Planning || run.Phase == RoguePhase.Reward)
+            {
+                if (run.Phase == RoguePhase.Reward) run.ChooseReward(0);
+                while (run.Hull < 85f && run.RepairHull()) { }
+                for (int wing = 0; wing < 2; wing++)
+                    if (run.WingmanHull[wing] <= 0) run.RecruitWingman(wing);
+                    else if (run.WingmanHull[wing] < 65f) run.RepairWingman(wing);
+                AirMission mission = run.LaunchRoute(run.Stage == 0 ? 0 : run.Stage == 1 ? 1 : run.Stage == 2 ? 2 : 1);
+                var basic = new ValidationPilot(mission.Seed);
+                var tactical = new TacticalValidationPilot(mission.Seed);
+                var committed = new EncounterValidationPilot(mission.Seed);
+                int peakPlanes = 0, peakRounds = 0;
+                for (int tick = 0; tick < 601 * 60 && run.Phase == RoguePhase.Flying; tick++)
+                {
+                    FlightInput input = mission.Kind == MissionKind.Duel ? basic.Update(mission)
+                        : mission.Kind == MissionKind.AceHunt ? committed.Update(mission) : tactical.Update(mission);
+                    run.Step(input, Tick);
+                    peakPlanes = Math.Max(peakPlanes, mission.Aircraft.Count); peakRounds = Math.Max(peakRounds, mission.Projectiles.Count);
+                    foreach (AircraftState plane in mission.Aircraft)
+                        finite &= FlightDynamics.Finite(plane.Position) && FlightDynamics.Finite(plane.Velocity) && FlightDynamics.Finite(plane.Rotation) && plane.Ammo >= 0;
+                }
+                if (mission.Outcome == MissionOutcome.Victory) completed++;
+                check(mission.Outcome != MissionOutcome.Flying && peakPlanes <= 12 && peakRounds < 400,
+                    "Earned final offensive stage " + (run.Stage + 1) + " terminates with bounded aircraft and projectiles");
+                report.Append("Operation81 stage=").Append(run.Stage + 1).Append(" kind=").Append(mission.Kind).Append(" seed=").Append(mission.Seed)
+                    .Append(" result=").Append(mission.Outcome).Append(" t=").Append(mission.Time.ToString("F1"))
+                    .Append(" hull=").Append(run.Hull.ToString("F1")).Append(" player-rounds=").Append(mission.RoundsFired)
+                    .Append(" player-hits=").Append(mission.Hits).Append(" kills=").Append(mission.Kills)
+                    .Append(" flights=").Append(mission.EnemyFlightsEngaged).Append('/').Append(mission.TotalEnemyFlights)
+                    .Append(" wingmen=").Append(mission.WingmenAlive).Append(" collisions=").Append(mission.CollisionLosses)
+                    .Append(" peak-aircraft=").Append(peakPlanes).Append(" peak-rounds=").Append(peakRounds)
+                    .Append(" cause=").AppendLine(mission.Summary);
+            }
+            check(finite && run.Phase == RoguePhase.Victory && completed == 4,
+                "Earned four-sortie operation wins the three-wave final offensive through legal repairs, upgrades and actual combat");
+            report.Append("Final offensive operation result: ").AppendLine(run.Phase.ToString());
         }
 
         static void ValidateGeneration(Action<bool, string> check)

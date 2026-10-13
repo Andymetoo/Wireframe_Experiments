@@ -23,7 +23,7 @@ namespace VectorCabinet
                     air.ShowStandardMissions(); air.SeedText = "1944";
                     yield return SquadronKey(kind == MissionKind.AceHunt ? Key.Digit7 : Key.Digit8);
                     yield return Capture("62-" + kind + "-briefing");
-                    Check(air.DescriptionOverflowCount == 0, kind + ": 17-pixel mission description fits its briefing panel");
+                    Check(DescriptionsFit(air), kind + ": 17-pixel mission description fits its briefing panel");
                     yield return SquadronKey(Key.Enter);
                     Check(air.Mission.Kind == kind && air.Mission.Seed == 1944 && !air.Briefing && air.Campaign == null,
                         kind + ": physical mission shortcut and Enter launch a separate standard encounter");

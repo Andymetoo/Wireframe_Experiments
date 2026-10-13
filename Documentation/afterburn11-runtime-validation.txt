@@ -1,0 +1,732 @@
+RUNNING: rendered scene integration checks
+Checks include temporary keyboard-device events, public gameplay APIs and diagnostic fixed steps. Human ergonomics remain untested.
+Diagnostic input: unsaved settings clone, background events enabled, application focused=True
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 01-cabinet
+PASS Game selection begins in the shared launcher
+Launcher input before Digit1: focused=True; current keyboard=21; synthetic keyboard=21; enabled=True
+Launcher input after Digit1: focused=True; current keyboard=21; down=True; observed edge=True; scene=HauntedHouse
+PASS Launcher Digit1 input selects HauntedHouse
+PASS Active scene is HauntedHouse
+PASS HauntedHouse: launcher lifetime isolated
+PASS HauntedHouse: house input/simulation root isolated
+PASS HauntedHouse: air input/simulation root isolated
+PASS HauntedHouse: hockey input/simulation root isolated
+PASS HauntedHouse: house presentation lifetime isolated
+PASS HauntedHouse: air presentation lifetime isolated
+PASS HauntedHouse: hockey presentation lifetime isolated
+PASS HauntedHouse: exactly one enabled camera
+PASS HauntedHouse: no duplicate audio listeners
+PASS HauntedHouse: simulation timescale restored
+PASS Haunted House opens at its original title
+PASS Rendered screenshot saved: 02-house-title
+PASS Haunted House starts a reproducible active investigation
+PASS Examining the vestibule records evidence and advances the investigation
+PASS Grid movement, doors, room inspection and evidence remain functional
+PASS Rendered screenshot saved: 03-house-room
+PASS Rendered screenshot saved: 04-house-journal
+PASS Haunted House pause preserves action-driven state
+PASS Haunted House restart resets the case
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 05-cabinet-after-house
+PASS Game selection begins in the shared launcher
+Launcher input before Digit2: focused=True; current keyboard=22; synthetic keyboard=22; enabled=True
+Launcher input after Digit2: focused=True; current keyboard=22; down=True; observed edge=True; scene=Meridian1944
+PASS Launcher Digit2 input selects Meridian1944
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Air Combat opens at the operations briefing
+PASS Rendered screenshot saved: 06-air-briefing
+PASS Temporary D key events pass through Update and ReadControls to bank the aircraft
+PASS Temporary Space key events fire physical rounds through the normal input adapter
+PASS Temporary C key press switches the player camera
+PASS Temporary Escape key press pauses the normal simulation clock
+PASS A second Escape press resumes the sortie
+PASS Training duel starts with one opponent and a live player
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Rendered screenshot saved: 07-air-cockpit
+PASS Eight seconds of manual flight controls advance a live aircraft through the world
+PASS Right roll input banks the rendered/simulated airframe
+Manual flight sample: speed 119.8 m/s; altitude 1156.3 m
+PASS Rendered screenshot saved: 08-air-bank
+PASS Rendered screenshot saved: 09-air-chase
+PASS Chase camera switch preserves the same mission
+PASS Rendered screenshot saved: 10-air-pause
+PASS Air pause prevents normal Update from advancing the simulation
+PASS Air restart replaces the sortie and resets damage, time and pause state
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Rendered screenshot saved: 11-air-contact
+PASS Rendered screenshot saved: 11a-air-live-tracers
+Tracer capture: time 61.22; player rounds 3
+PASS Rendered screenshot saved: 11b-air-live-impact
+Impact capture: time 108.89; player hits 1
+PASS A complete rendered diagnostic dogfight remains finite
+PASS Unmodified default seed 1944 is won through actual ballistic combat using bounded player controls
+PASS Full-strength dogfight records travelling rounds and nonterminal impact feedback
+Full-strength default dogfight: elapsed 172.89; outcome Victory; player rounds 132; all rounds 132; player hits 8; player health 100.0
+PASS Rendered screenshot saved: 12-air-dogfight
+PASS Controlled gunnery fixture: travelling projectiles destroy a damaged target and trigger victory
+PASS Rendered screenshot saved: 13-air-victory-fixture
+PASS Terrain collision fixture triggers defeat
+PASS Rendered screenshot saved: 14-air-defeat-fixture
+PASS Restart after defeat can begin courier cover with two interceptors
+PASS Operations briefing can be reopened from a sortie
+PASS Rendered screenshot saved: 15-courier-briefing
+PASS Virtual gamepad: neutral stick/triggers/buttons produce neutral flight controls
+PASS Virtual gamepad: neutral input preserves commanded throttle
+PASS Virtual gamepad: simultaneous roll, pull-up, rudder and guns survive device-to-intent conversion
+PASS Virtual gamepad: right stick looks right/up independently of flight controls
+PASS Virtual gamepad: configured deadzone is applied once to raw analog input
+PASS Virtual gamepad: independent pitch/roll/rudder inversion reverses axes
+PASS Virtual gamepad: resting stick drift and trigger noise stay inside the deadzone
+PASS Virtual gamepad: D-pad up increases throttle
+PASS Virtual gamepad: menu navigation never changes flight throttle
+PASS Virtual gamepad: Y plus D-pad issues Engage without moving throttle
+PASS Virtual gamepad: target and pause button edges map to device-independent intentions
+PASS Virtual gamepad: menu navigation and submit are usable without a mouse
+PASS Roguelite gamepad: Y then LB activates the first ability without also leveling the aircraft
+PASS Roguelite gamepad: holding an ability chord does not consume repeated charges
+PASS Roguelite gamepad: Y then RB activates the second ability without firing guns
+PASS Standard gamepad: roguelite ability chords do not replace existing flight controls
+PASS Roguelite gamepad: shoulders retain guns and level assist unless Y is held
+PASS Input System: a runtime axis control path binds successfully
+PASS Input System: bound axis drives the same roll intention with no Gamepad shortcut
+PASS Input System: a Vector2 path in an axis slot is safely disabled with a readable binding error
+PASS Input System: invalid axis binding is disabled once, without repeated per-frame exceptions
+PASS Input System: invalid throttle binding preserves the last throttle and is not retried
+PASS Virtual gamepad: disconnection clears held controls and bound axes without stuck guns
+PASS Virtual gamepad: disconnection safely retains the last throttle setting
+PASS Analog adapter rejects non-finite axis values
+PASS Mouse stick: holding RMB moves the eyes while withholding mouse flight-axis deflections
+PASS Mouse stick: releasing freelook suppresses stale cursor deflection during recentering
+PASS Mouse stick: centered cursor resumes neutral flight after freelook
+PASS Mouse wheel: uniform and legacy platform ranges resolve to the same four-percent notch
+PASS Mouse wheel: non-finite deltas are ignored
+PASS Mouse wheel: upward scrolling changes the authoritative flight throttle by one precise increment
+PASS Mouse wheel: an idle update does not repeat the previous scroll delta
+PASS Mouse wheel: downward scrolling decreases the same throttle state
+PASS Mouse wheel: four high-resolution quarter-notches retain the same total precision as one notch
+PASS Mouse wheel: identical event deltas at 15 and 240 FPS produce identical throttle changes
+PASS Mouse wheel: upward adjustment clamps at full throttle
+PASS Mouse wheel: downward adjustment clamps at idle
+PASS Mouse wheel: scrolling menus, settings or cards leaves throttle unchanged
+PASS Mouse wheel: menu scroll events are discarded, not deferred until flight resumes
+PASS Mouse wheel: sortie reset restores the initial throttle without stale scrolling
+PASS Bound throttle: a resolved lever controls the authoritative throttle
+PASS Bound throttle: a stationary lever does not undo a mouse-wheel adjustment on the next frame
+PASS Bound throttle: moving the lever takes command again after wheel input
+PASS Roguelite keyboard: 5 activates ability slot one
+PASS Roguelite keyboard: a held ability key does not repeat activation
+PASS Roguelite keyboard: 6 is the second flight slot and the separate briefing selection intention
+PASS Roguelite keyboard: ordinary menus and standard sorties cannot activate tactical abilities
+PASS Roguelite keyboard: nearby T key activates slot one without replacing 5
+PASS Roguelite keyboard: nearby Y key activates slot two without replacing 6
+PASS Standard flight: T and Y cannot activate roguelite abilities
+PASS Standard briefing: 7 selects the ace encounter without issuing a flight order
+PASS Standard briefing: 8 selects the larger engagement without replacing the Afterburn shortcut
+PASS Standard briefing: 6 still opens Afterburn rather than selecting a standard mission
+PASS Center view: V, middle mouse and right-stick click retain their common explicit center intention
+PASS Free-look: RMB delivers independent left/right and vertical head motion
+PASS Free-look: mouse guns and mouse steering are withheld while keyboard flight controls remain usable
+PASS Free-look: deliberate keyboard gunfire remains available while mouse gunfire is inhibited
+PASS Free-look: RMB release requests forward return and safely recenters normal mouse steering
+PASS Free-look: holding LMB through RMB release cannot accidentally open fire
+PASS Free-look: return-to-forward is a single release edge
+PASS Free-look: a fresh click and deliberate cursor displacement restore normal mouse gunfire and steering
+PASS Rear view: hold X takes precedence over RMB motion, mouse steering and mouse firing
+PASS Menus: look holds are cleared and release is reported when flight input becomes inactive
+PASS Diagnostics: explicit view activity supports camera checks without enabling wheel throttle
+PASS View controls: sortie restart does not leave a stuck look hold or release edge
+PASS Head motion: right/up limits expose the rear hemisphere without unrestricted rotation
+PASS Head motion: left/down limits remain bounded like a pilot turning their head
+PASS Head motion: releasing RMB smoothly starts the forward return
+PASS Head motion: release reliably settles exactly forward without residual drift
+PASS Head motion: quick-six reaches its rear shoulder view within 0.2 seconds and overrides free-look
+PASS Head motion: releasing X returns forward even if RMB remains held, without applying stale rear-view deltas
+PASS Head motion: RMB resumes normal bounded free-look after the quick-six return
+PASS Head motion: quick-six uses the shoulder the pilot was already looking over
+PASS Head motion: pause or menu exit clears camera offsets and transition state
+PASS Head motion: explicit center is immediate and ignores concurrent look deltas instead of easing
+PASS Head motion: forward return is consistent at 15 and 240 FPS and nearly centered after a quarter-second
+PASS Head motion: a fresh sortie has no inherited rear-view state
+PASS Tactical sortie starts with two mortal wingmen and a fresh Form Up order
+PASS Physical keyboard 1 issues FormUp through normal Update
+PASS Physical keyboard 2 issues Engage through normal Update
+PASS Physical keyboard 3 issues CoverMe through normal Update
+PASS Physical keyboard 4 issues Regroup through normal Update
+PASS Tab selects another real hostile target without changing the Regroup order
+PASS Target browsing preserves the last explicit wingman order
+PASS Held right mouse and mouse delta look around without rotating the aircraft
+PASS V recenters the view after independent freelook
+PASS Tactical pause releases cursor capture and exposes squadron/controller instructions
+PASS Rendered screenshot saved: 27-squadron-controller-settings
+PASS Menu submit resumes the focused tactical sortie action
+PASS Pause menu keyboard navigation and submit restart the mission with cleared orders
+VISUAL FIXTURE ONLY: player positioned near a bomber to inspect procedural geometry; simulation frozen.
+PASS Rendered screenshot saved: 28-squadron-bomber-geometry-fixture
+VISUAL FIXTURE ONLY: player/camera near convoy geometry; no physics or damage overrides used by the later mission tests.
+PASS Rendered screenshot saved: 29-squadron-ground-geometry-fixture
+PASS Interception: fresh seeded sortie clears previous damage, outcome, clock and squadron order
+PASS Rendered screenshot saved: 30-Interception-start
+PASS Rendered screenshot saved: 31-Interception-live-combat
+PASS Interception: every actual aircraft state stays finite throughout the rendered mission
+PASS Interception: bounded actual mission reaches a terminal outcome
+PASS Interception: unmodified seed 81 is won by bounded pilot controls through actual flight, projectiles and mission objectives
+PASS Interception: participating pilots fire travelling rounds and live combat is captured
+PASS Interception victory stops both raid aircraft before the defended boundary
+Rendered actual mission: Interception seed 81; elapsed 87.89; outcome Victory; all rounds 194; player HP 100.0; 2/2 raiders stopped | 0 escaped;Wingmen home: 2/2 | Enemy aircraft lost: 2;Player rounds: 33 | Confirmed impacts: 8 | Flak rounds: 0
+PASS Rendered screenshot saved: 32-Interception-debrief
+PASS BomberEscort: fresh seeded sortie clears previous damage, outcome, clock and squadron order
+PASS Rendered screenshot saved: 30-BomberEscort-start
+PASS Rendered screenshot saved: 31-BomberEscort-live-combat
+PASS BomberEscort: every actual aircraft state stays finite throughout the rendered mission
+PASS BomberEscort: bounded actual mission reaches a terminal outcome
+PASS BomberEscort: unmodified seed 81 is won by bounded pilot controls through actual flight, projectiles and mission objectives
+PASS BomberEscort: participating pilots fire travelling rounds and live combat is captured
+PASS Bomber escort victory requires actual route arrivals by the protected aircraft
+Rendered actual mission: BomberEscort seed 81; elapsed 212.36; outcome Victory; all rounds 546; player HP 100.0; 2/2 delivered | 2/3 bombers flying | route 100%;Wingmen home: 2/2 | Enemy aircraft lost: 1;Player rounds: 172 | Confirmed impacts: 8 | Flak rounds: 0
+PASS Rendered screenshot saved: 32-BomberEscort-debrief
+PASS GroundAttack: fresh seeded sortie clears previous damage, outcome, clock and squadron order
+PASS Rendered screenshot saved: 30-GroundAttack-start
+PASS Rendered screenshot saved: 31-GroundAttack-live-combat
+PASS GroundAttack: every actual aircraft state stays finite throughout the rendered mission
+PASS GroundAttack: bounded actual mission reaches a terminal outcome
+PASS GroundAttack: unmodified seed 81 is won by bounded pilot controls through actual flight, projectiles and mission objectives
+PASS GroundAttack: participating pilots fire travelling rounds and live combat is captured
+PASS Ground attack victory destroys every required truck through actual ballistic impacts
+Rendered actual mission: GroundAttack seed 81; elapsed 306.49; outcome Victory; all rounds 656; player HP 93.0; 4/4 trucks destroyed | 2 ground contacts remain;Wingmen home: 1/2 | Enemy aircraft lost: 0;Player rounds: 116 | Confirmed impacts: 10 | Flak rounds: 327
+PASS Rendered screenshot saved: 32-GroundAttack-debrief
+PASS Restarting after three tactical missions restores both wingmen and clears old mission commands
+PASS Tactical missions return cleanly to the shared flight briefing
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Rendered screenshot saved: 40-standard-and-roguelite-selection
+PASS Roguelite: physical briefing key 6 enters a separately owned run planning screen
+PASS Roguelite: new operation offers routes before launching any campaign simulation
+PASS Rendered screenshot saved: 41-afterburn-operations
+PASS Roguelite: scrolling the operations screen cannot move throttle or start simulation
+PASS Roguelite: route launch uses the authoritative flight mission and renderer
+PASS Mouse wheel in roguelite: one upward event raises authoritative throttle four percent through normal Update
+PASS Mouse wheel in roguelite: half downward event preserves gradual fractional adjustment
+PASS Mouse wheel in roguelite: paused settings consume scroll without changing flight state
+PASS Mouse wheel in roguelite: no stale menu scroll applies when flight resumes
+PASS Roguelite: physical key 5 activates the first tactical ability once during real Update
+PASS Rendered screenshot saved: 42-afterburn-live-ability
+PASS Roguelite: pause freezes ability lifetime, mission time and activation edges
+PASS Rendered screenshot saved: 43-afterburn-pause
+PASS Rendered screenshot saved: 44-afterburn-earned-planning-1
+PASS Roguelite: all three routes at stage 1 fit their enlarged-font descriptions
+PASS Roguelite: rendered seeded sortie 1 reaches a finite real combat outcome without objective overrides
+PASS Roguelite: rendered sortie 1 fires actual ammunition and lands travelling projectiles
+ACTUAL ROGUELITE SORTIE: run 81 / stage 1 / mission 113517009 Duel; Victory; t=215.0; rounds=257; hits=8; hull=100.0
+PASS Rendered screenshot saved: 44-afterburn-earned-reward-1
+PASS Roguelite: earned stage 1 reward descriptions fit the enlarged-font cards
+PASS Rendered screenshot saved: 44-afterburn-earned-planning-2
+PASS Roguelite: all three routes at stage 2 fit their enlarged-font descriptions
+PASS Roguelite: rendered seeded sortie 2 reaches a finite real combat outcome without objective overrides
+PASS Roguelite: rendered sortie 2 fires actual ammunition and lands travelling projectiles
+ACTUAL ROGUELITE SORTIE: run 81 / stage 2 / mission 2119636327 Interception; Victory; t=110.0; rounds=56; hits=8; hull=100.0
+PASS Rendered screenshot saved: 44-afterburn-earned-reward-2
+PASS Roguelite: earned stage 2 reward descriptions fit the enlarged-font cards
+PASS Rendered screenshot saved: 44-afterburn-earned-planning-3
+PASS Roguelite: all three routes at stage 3 fit their enlarged-font descriptions
+PASS Roguelite: rendered seeded sortie 3 reaches a finite real combat outcome without objective overrides
+PASS Roguelite: rendered sortie 3 fires actual ammunition and lands travelling projectiles
+ACTUAL ROGUELITE SORTIE: run 81 / stage 3 / mission 57448039 AceHunt; Victory; t=89.3; rounds=36; hits=8; hull=100.0
+PASS Rendered screenshot saved: 44-afterburn-earned-reward-3
+PASS Roguelite: earned stage 3 reward descriptions fit the enlarged-font cards
+PASS Rendered screenshot saved: 44-afterburn-earned-planning-4
+PASS Roguelite: all three routes at stage 4 fit their enlarged-font descriptions
+PASS Rendered screenshot saved: 44-afterburn-final-three-flights
+PASS Roguelite: rendered seeded sortie 4 reaches a finite real combat outcome without objective overrides
+PASS Roguelite: rendered sortie 4 fires actual ammunition and lands travelling projectiles
+PASS Roguelite: final larger battle renders twelve aircraft and earns four losses after all three flights enter the sector
+ACTUAL ROGUELITE SORTIE: run 81 / stage 4 / mission 1032352584 FleetBattle; Victory; t=215.6; rounds=132; hits=32; hull=100.0
+PASS Roguelite: all four rendered sorties complete an earned campaign through real flight, guns, repairs and objective progress
+PASS Rendered screenshot saved: 44-afterburn-earned-operation-result
+UI FIXTURE ONLY: stage 1 objective state completed to inspect reward/final menus; not combat evidence.
+PASS Roguelite: completed sortie 1 exposes earned equipment and repair choices
+PASS Rendered screenshot saved: 45-afterburn-reward-choices-fixture
+PASS Roguelite: reward advances the operation exactly one sortie
+PASS Rendered screenshot saved: 46-afterburn-equipped-hangar-fixture
+UI FIXTURE ONLY: stage 2 objective state completed to inspect reward/final menus; not combat evidence.
+PASS Roguelite: completed sortie 2 exposes earned equipment and repair choices
+PASS Roguelite: reward advances the operation exactly one sortie
+UI FIXTURE ONLY: stage 3 objective state completed to inspect reward/final menus; not combat evidence.
+PASS Roguelite: completed sortie 3 exposes earned equipment and repair choices
+PASS Roguelite: reward advances the operation exactly one sortie
+UI FIXTURE ONLY: stage 4 objective state completed to inspect reward/final menus; not combat evidence.
+PASS Roguelite: fourth explicit objective fixture exposes the completed operation screen
+PASS Rendered screenshot saved: 47-afterburn-victory-fixture
+PASS Roguelite: player-loss fixture exposes the failed-run screen and blocks further sorties
+PASS Rendered screenshot saved: 48-afterburn-defeat-fixture
+PASS Roguelite: retry clears previous aircraft modifications, destruction and campaign progress
+PASS Roguelite: return to standard missions discards campaign state and restores ordinary briefing
+PASS Roguelite: the next standard sortie has no leftover aircraft, weapon or resistance modifiers
+PASS Mouse wheel in standard mission after campaign: one upward event raises authoritative throttle four percent through normal Update
+PASS Mouse wheel in standard mission after campaign: half downward event preserves gradual fractional adjustment
+PASS Mouse wheel in standard mission after campaign: paused settings consume scroll without changing flight state
+PASS Mouse wheel in standard mission after campaign: no stale menu scroll applies when flight resumes
+LABEL VISUAL FIXTURE ONLY: standard camera positioned toward bright sky; resolution 1280x800; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-standard-sky-1280
+LABEL VISUAL FIXTURE ONLY: standard camera positioned toward dark terrain; resolution 1600x900; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-standard-terrain-1600
+LABEL VISUAL FIXTURE ONLY: roguelite camera positioned toward bright sky; resolution 1280x800; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-roguelite-sky-1280
+LABEL VISUAL FIXTURE ONLY: roguelite camera positioned toward dark terrain; resolution 1600x900; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-roguelite-terrain-1600
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Virtual gamepad: neutral stick/triggers/buttons produce neutral flight controls
+PASS Virtual gamepad: neutral input preserves commanded throttle
+PASS Virtual gamepad: simultaneous roll, pull-up, rudder and guns survive device-to-intent conversion
+PASS Virtual gamepad: right stick looks right/up independently of flight controls
+PASS Virtual gamepad: configured deadzone is applied once to raw analog input
+PASS Virtual gamepad: independent pitch/roll/rudder inversion reverses axes
+PASS Virtual gamepad: resting stick drift and trigger noise stay inside the deadzone
+PASS Virtual gamepad: D-pad up increases throttle
+PASS Virtual gamepad: menu navigation never changes flight throttle
+PASS Virtual gamepad: Y plus D-pad issues Engage without moving throttle
+PASS Virtual gamepad: target and pause button edges map to device-independent intentions
+PASS Virtual gamepad: menu navigation and submit are usable without a mouse
+PASS Roguelite gamepad: Y then LB activates the first ability without also leveling the aircraft
+PASS Roguelite gamepad: holding an ability chord does not consume repeated charges
+PASS Roguelite gamepad: Y then RB activates the second ability without firing guns
+PASS Standard gamepad: roguelite ability chords do not replace existing flight controls
+PASS Roguelite gamepad: shoulders retain guns and level assist unless Y is held
+PASS Input System: a runtime axis control path binds successfully
+PASS Input System: bound axis drives the same roll intention with no Gamepad shortcut
+PASS Input System: a Vector2 path in an axis slot is safely disabled with a readable binding error
+PASS Input System: invalid axis binding is disabled once, without repeated per-frame exceptions
+PASS Input System: invalid throttle binding preserves the last throttle and is not retried
+PASS Virtual gamepad: disconnection clears held controls and bound axes without stuck guns
+PASS Virtual gamepad: disconnection safely retains the last throttle setting
+PASS Analog adapter rejects non-finite axis values
+PASS Mouse stick: holding RMB moves the eyes while withholding mouse flight-axis deflections
+PASS Mouse stick: releasing freelook suppresses stale cursor deflection during recentering
+PASS Mouse stick: centered cursor resumes neutral flight after freelook
+PASS Mouse wheel: uniform and legacy platform ranges resolve to the same four-percent notch
+PASS Mouse wheel: non-finite deltas are ignored
+PASS Mouse wheel: upward scrolling changes the authoritative flight throttle by one precise increment
+PASS Mouse wheel: an idle update does not repeat the previous scroll delta
+PASS Mouse wheel: downward scrolling decreases the same throttle state
+PASS Mouse wheel: four high-resolution quarter-notches retain the same total precision as one notch
+PASS Mouse wheel: identical event deltas at 15 and 240 FPS produce identical throttle changes
+PASS Mouse wheel: upward adjustment clamps at full throttle
+PASS Mouse wheel: downward adjustment clamps at idle
+PASS Mouse wheel: scrolling menus, settings or cards leaves throttle unchanged
+PASS Mouse wheel: menu scroll events are discarded, not deferred until flight resumes
+PASS Mouse wheel: sortie reset restores the initial throttle without stale scrolling
+PASS Bound throttle: a resolved lever controls the authoritative throttle
+PASS Bound throttle: a stationary lever does not undo a mouse-wheel adjustment on the next frame
+PASS Bound throttle: moving the lever takes command again after wheel input
+PASS Roguelite keyboard: 5 activates ability slot one
+PASS Roguelite keyboard: a held ability key does not repeat activation
+PASS Roguelite keyboard: 6 is the second flight slot and the separate briefing selection intention
+PASS Roguelite keyboard: ordinary menus and standard sorties cannot activate tactical abilities
+PASS Roguelite keyboard: nearby T key activates slot one without replacing 5
+PASS Roguelite keyboard: nearby Y key activates slot two without replacing 6
+PASS Standard flight: T and Y cannot activate roguelite abilities
+PASS Standard briefing: 7 selects the ace encounter without issuing a flight order
+PASS Standard briefing: 8 selects the larger engagement without replacing the Afterburn shortcut
+PASS Standard briefing: 6 still opens Afterburn rather than selecting a standard mission
+PASS Center view: V, middle mouse and right-stick click retain their common explicit center intention
+PASS Free-look: RMB delivers independent left/right and vertical head motion
+PASS Free-look: mouse guns and mouse steering are withheld while keyboard flight controls remain usable
+PASS Free-look: deliberate keyboard gunfire remains available while mouse gunfire is inhibited
+PASS Free-look: RMB release requests forward return and safely recenters normal mouse steering
+PASS Free-look: holding LMB through RMB release cannot accidentally open fire
+PASS Free-look: return-to-forward is a single release edge
+PASS Free-look: a fresh click and deliberate cursor displacement restore normal mouse gunfire and steering
+PASS Rear view: hold X takes precedence over RMB motion, mouse steering and mouse firing
+PASS Menus: look holds are cleared and release is reported when flight input becomes inactive
+PASS Diagnostics: explicit view activity supports camera checks without enabling wheel throttle
+PASS View controls: sortie restart does not leave a stuck look hold or release edge
+PASS Head motion: right/up limits expose the rear hemisphere without unrestricted rotation
+PASS Head motion: left/down limits remain bounded like a pilot turning their head
+PASS Head motion: releasing RMB smoothly starts the forward return
+PASS Head motion: release reliably settles exactly forward without residual drift
+PASS Head motion: quick-six reaches its rear shoulder view within 0.2 seconds and overrides free-look
+PASS Head motion: releasing X returns forward even if RMB remains held, without applying stale rear-view deltas
+PASS Head motion: RMB resumes normal bounded free-look after the quick-six return
+PASS Head motion: quick-six uses the shoulder the pilot was already looking over
+PASS Head motion: pause or menu exit clears camera offsets and transition state
+PASS Head motion: explicit center is immediate and ignores concurrent look deltas instead of easing
+PASS Head motion: forward return is consistent at 15 and 240 FPS and nearly centered after a quarter-second
+PASS Head motion: a fresh sortie has no inherited rear-view state
+PASS Polish: lead guidance defaults on for Duel without aiming or firing the guns
+PASS Polish: lead guidance defaults on for ConvoyCover without aiming or firing the guns
+PASS Polish: lead guidance defaults on for Interception without aiming or firing the guns
+PASS Polish: lead guidance defaults on for BomberEscort without aiming or firing the guns
+PASS Polish: lead guidance defaults on for GroundAttack without aiming or firing the guns
+PASS Polish: lead guidance defaults on for AceHunt without aiming or firing the guns
+PASS Polish: lead guidance defaults on for FleetBattle without aiming or firing the guns
+PASS Polish: roguelite launch also defaults lead guidance on
+PASS Polish: G still lets the pilot disable lead guidance
+PASS Polish: G restores optional lead guidance
+PASS Polish roguelite: RMB reaches the rear hemisphere with bounded human head movement
+PASS Polish: diagnostic free-look changes camera orientation without changing authoritative aircraft attitude or firing
+PASS Polish: releasing RMB automatically recenters within a comfortable fraction of a second
+PASS Polish: held X provides a quick six-o'clock view without changing aircraft heading
+PASS Polish: rear-view hold takes precedence over simultaneous free-look deltas
+PASS Polish: releasing rear view returns forward without rotating the aircraft
+PASS Polish: V preserves immediate center while release gestures use the eased return
+PASS Polish standard: RMB reaches the rear hemisphere with bounded human head movement
+PASS Polish: diagnostic free-look changes camera orientation without changing authoritative aircraft attitude or firing
+PASS Rendered screenshot saved: 50-polish-cockpit-rear-look
+PASS Polish: releasing RMB automatically recenters within a comfortable fraction of a second
+PASS Polish: held X provides a quick six-o'clock view without changing aircraft heading
+PASS Polish: rear-view hold takes precedence over simultaneous free-look deltas
+PASS Polish: releasing rear view returns forward without rotating the aircraft
+PASS Polish: V preserves immediate center while release gestures use the eased return
+ABILITY UI FIXTURE: the first encounter is explicitly completed to acquire a second real equipment reward; this is not combat evidence.
+PASS Rendered screenshot saved: 51-polish-readable-equipment-cards
+PASS Polish: generated reward-card descriptions fit their enlarged-font layout
+DESCRIPTION LAYOUT FIXTURE: substitute catalog prose into the first visible reward card, measure actual GUI wrapping, then restore the earned reward unchanged.
+PASS Polish: maximum-level Armor description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level Supercharger description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level Cannon description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level Lightframe description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level Longwing description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level Streamline description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level AmmoBays description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level HarmonizedGuns description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level HotBelt description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level BoostInjector description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level ControlCables description fits the actual reward-card font and rectangle
+PASS Polish: maximum-level FieldMechanic description fits the actual reward-card font and rectangle
+PASS Polish: None ability description fits the actual reward-card font and rectangle
+PASS Polish: Overboost ability description fits the actual reward-card font and rectangle
+PASS Polish: ArmorPiercing ability description fits the actual reward-card font and rectangle
+PASS Polish: CombatFlaps ability description fits the actual reward-card font and rectangle
+PASS Polish: Rally ability description fits the actual reward-card font and rectangle
+PASS Polish: an actual generated ability reward can fill the second tactical slot
+PASS Rendered screenshot saved: 51a-polish-readable-planning
+PASS Polish: hangar, route, workshop and ability descriptions fit their enlarged-font layout
+PASS Polish: keyboard T activates slot one through normal Update
+PASS Polish: keyboard Y activates the acquired second ability through normal Update
+PASS Rendered screenshot saved: 52-polish-two-active-abilities
+PASS Polish: repeated active ability shortcuts preserve charges and give concise unavailable feedback
+PASS Polish: legacy 5/6 shortcuts still activate the same slots after the first effects expire
+PASS Rendered screenshot saved: 53-polish-keyboard-and-controller-help
+HIT / AFTERMATH FIXTURE: an opponent is positioned in front of the camera and real projectile impacts exercise feedback. This is not sortie balance evidence.
+PASS Polish: reticle overlap alone never lights the aircraft hit indicator
+PASS Polish: a genuine nonlethal aircraft impact lights the brief cockpit confirmation
+PASS Rendered screenshot saved: 54-polish-confirmed-aircraft-hit
+PASS Polish: final damage decides victory immediately but holds results menus for approximately three seconds
+PASS Polish: confirmed destruction has a separate, stronger cockpit signal
+PASS Polish: pausing the aftermath freezes its presentation clock and authoritative mission state
+PASS Polish: submit inside controller bindings cannot skip or resume the paused aftermath
+PASS Polish: gamepad B resumes the paused aftermath without abandoning the completed sortie
+PASS Polish: a destroyed aircraft visibly retains momentum and falls while the mission is frozen
+PASS Polish: repeated render Sync calls cannot advance the absolute aftermath clock twice
+PASS Polish: wreck animation never edits authoritative aircraft, ammunition, score or finalized outcome
+PASS Rendered screenshot saved: 55-polish-victory-wreck-aftermath
+PASS Polish: Enter safely skips the remaining visual hold without simulating another combat event
+PASS Rendered screenshot saved: 56-polish-victory-results
+PASS Polish: restart clears previous wrecks, outcome clocks and hit counters
+PASS Polish: player destruction also receives the outcome hold before a defeat screen
+PASS Rendered screenshot saved: 57-polish-player-wreck-camera
+PASS Polish: the natural aftermath remains visible after its first second
+PASS Polish: the normal three-second presentation interval completes automatically
+PASS Rendered screenshot saved: 58-polish-natural-defeat-results
+PASS Polish: the paused aftermath can restart immediately into a clean playable sortie
+PASS Polish: all four live mission-critical vehicles have individual navigation markers
+PASS Rendered screenshot saved: 59-polish-ground-objectives-and-radar
+PASS Polish: a known ground objective can be deliberately selected before a firing pass
+PASS Polish: destroyed vehicles leave both active objective navigation and current target selection
+PASS Polish: a ground-vehicle hit cannot trigger the aircraft-only confirmation indicator
+PASS Polish: remaining known ground objectives retain guidance when behind the pilot
+PASS Rendered screenshot saved: 60-polish-offscreen-ground-guidance
+LABEL VISUAL FIXTURE ONLY: standard camera positioned toward bright sky; resolution 1280x800; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-standard-sky-1280
+LABEL VISUAL FIXTURE ONLY: standard camera positioned toward dark terrain; resolution 1600x900; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-standard-terrain-1600
+LABEL VISUAL FIXTURE ONLY: roguelite camera positioned toward bright sky; resolution 1280x800; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-roguelite-sky-1280
+LABEL VISUAL FIXTURE ONLY: roguelite camera positioned toward dark terrain; resolution 1600x900; no target visibility rules changed.
+PASS Rendered screenshot saved: 49-labels-roguelite-terrain-1600
+PASS Rendered screenshot saved: 61-polish-readable-standard-briefing
+PASS Polish: enlarged standard briefing and separate keyboard/controller descriptions fit their layout bounds
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Rendered screenshot saved: 62-AceHunt-briefing
+PASS AceHunt: 17-pixel mission description fits its briefing panel
+PASS AceHunt: physical mission shortcut and Enter launch a separate standard encounter
+PASS AceHunt: fresh encounter restores lead assistance and two unmodified wingmen
+PASS Rendered screenshot saved: 63-AceHunt-initial-objectives
+PASS Rendered screenshot saved: 64-AceHunt-live-combat
+PASS AceHunt: actual rendered engagement preserves finite flight and bounded aircraft/projectile counts
+PASS AceHunt: stock seed 1944 reaches an earned victory through actual flight and travelling rounds
+PASS AceHunt: real pilots establish contact, maneuver and exchange actual gunfire
+PASS Ace Hunt victory defeats the designated pilot rather than requiring an unrelated escort kill
+ACTUAL EXPANDED ENCOUNTER: AceHunt seed=1944; outcome=Victory; contact=3.8s; first-round=67.9s; duration=190.2s; kills=1; player-hits=3; wingmen=2; peak-concurrent=5; total-aircraft=5; peak-rounds=24; flights=1/1; cause=Ace Voss defeated. The enemy fighter leader will not return to this sector.
+PASS Rendered screenshot saved: 66-AceHunt-earned-victory
+PASS AceHunt: deliberately unsafe bounded flying produces an actual failure without state overrides
+ACTUAL UNSAFE-CONTROL FAILURE: AceHunt; t=24.9; outcome=Defeat; cause=Kestrel lost. Your sortie has ended.
+PASS Rendered screenshot saved: 67-AceHunt-actual-defeat
+PASS AceHunt: replay clears outcome presentation, wrecks, damage and elapsed mission time
+PASS Rendered screenshot saved: 62-FleetBattle-briefing
+PASS FleetBattle: 17-pixel mission description fits its briefing panel
+PASS FleetBattle: physical mission shortcut and Enter launch a separate standard encounter
+PASS FleetBattle: fresh encounter restores lead assistance and two unmodified wingmen
+PASS Rendered screenshot saved: 63-FleetBattle-initial-objectives
+PASS Rendered screenshot saved: 64-FleetBattle-live-combat
+PASS Rendered screenshot saved: 65-FleetBattle-reinforcements-engaged
+PASS FleetBattle: actual rendered engagement preserves finite flight and bounded aircraft/projectile counts
+PASS FleetBattle: stock seed 1944 reaches an earned victory through actual flight and travelling rounds
+PASS FleetBattle: real pilots establish contact, maneuver and exchange actual gunfire
+PASS Channel battle victory earns its loss quota after both enemy flights physically enter the contested sector
+ACTUAL EXPANDED ENCOUNTER: FleetBattle seed=1944; outcome=Victory; contact=4.2s; first-round=11.7s; duration=531.1s; kills=3; player-hits=24; wingmen=2; peak-concurrent=10; total-aircraft=10; peak-rounds=32; flights=2/2; cause=The enemy offensive is broken. Your two flights have won control of the sector.
+PASS Rendered screenshot saved: 66-FleetBattle-earned-victory
+PASS FleetBattle: deliberately unsafe bounded flying produces an actual failure without state overrides
+ACTUAL UNSAFE-CONTROL FAILURE: FleetBattle; t=24.9; outcome=Defeat; cause=Kestrel lost. Your sortie has ended.
+PASS Rendered screenshot saved: 67-FleetBattle-actual-defeat
+PASS FleetBattle: replay clears outcome presentation, wrecks, damage and elapsed mission time
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 16-cabinet-after-flight
+PASS Game selection begins in the shared launcher
+Launcher input before Digit3: focused=True; current keyboard=41; synthetic keyboard=41; enabled=True
+Launcher input after Digit3: focused=True; current keyboard=41; down=True; observed edge=True; scene=ColdSnap
+PASS Launcher Digit3 input selects ColdSnap
+PASS Active scene is ColdSnap
+PASS ColdSnap: launcher lifetime isolated
+PASS ColdSnap: house input/simulation root isolated
+PASS ColdSnap: air input/simulation root isolated
+PASS ColdSnap: hockey input/simulation root isolated
+PASS ColdSnap: house presentation lifetime isolated
+PASS ColdSnap: air presentation lifetime isolated
+PASS ColdSnap: hockey presentation lifetime isolated
+PASS ColdSnap: exactly one enabled camera
+PASS ColdSnap: no duplicate audio listeners
+PASS ColdSnap: simulation timescale restored
+PASS Hockey opens at its instructions with three skaters and goalie on each team
+PASS Hockey instructions leave the menu cursor available
+PASS Rendered screenshot saved: 19-hockey-briefing
+PASS Temporary W and Shift input accelerates the skater through normal Update
+PASS Releasing physical skating input preserves visible coasting momentum
+PASS Temporary Space input digs in edges and brakes
+PASS Temporary mouse movement changes first-person look through the actual input adapter
+PASS Contact fixture: F input makes a physical quick shot with travel and recorded attempt
+PASS Contact fixture: holding the left mouse button charges without firing or losing nearby stick contact
+PASS Contact fixture: left mouse release fires one charged physical shot through the normal input adapter
+PASS A released mouse charge produces one shot rather than repeated firing
+PASS Quick LMB click immediately releases a snap without a charge delay
+PASS Human mouse aim creates a physically rising airborne shot
+PASS RMB hold waits for pass release or wrist-shot chord
+PASS RMB then LMB charges a wrist shot without accidentally passing or shooting
+PASS Releasing LMB from the ordered chord fires one physical wrist shot
+PASS Ending a wrist-shot chord cannot emit a stray pass
+PASS Ordinary RMB click still releases a physical pass
+PASS Holding LMB before an incoming puck reaches the stick automatically makes one contact one-timer
+PASS LMB release after an automatic one-timer cannot fire a second shot
+PASS Reticle ray resolves at net height; WA and SD select upper-left and lower-right impact regions
+PASS Looking down targets nearby ice instead of forcing every shot into the goal
+PASS Rendered near-net fixture lifts a wrist shot toward the selected upper corner
+PASS Rendered screenshot saved: 28-hockey-airborne-shot
+PASS Contact fixture: Q input sends a lower-power travelling teammate pass
+PASS Temporary R input calls for teammate support
+PASS Contact fixture: E input checks a reachable opponent through normal gameplay
+PASS Temporary C input changes hockey camera
+PASS Escape input pauses hockey and releases mouse capture
+PASS Second Escape input resumes the hockey simulation
+PASS Hockey seeded match starts in genuine first person at a center faceoff
+PASS Active scene is ColdSnap
+PASS ColdSnap: launcher lifetime isolated
+PASS ColdSnap: house input/simulation root isolated
+PASS ColdSnap: air input/simulation root isolated
+PASS ColdSnap: hockey input/simulation root isolated
+PASS ColdSnap: house presentation lifetime isolated
+PASS ColdSnap: air presentation lifetime isolated
+PASS ColdSnap: hockey presentation lifetime isolated
+PASS ColdSnap: exactly one enabled camera
+PASS ColdSnap: no duplicate audio listeners
+PASS ColdSnap: simulation timescale restored
+PASS Rendered screenshot saved: 20-hockey-first-person
+PASS Rendered screenshot saved: 21-hockey-chase
+PASS Hockey chase view preserves the same match state
+PASS Rendered screenshot saved: 22-hockey-pause
+PASS Hockey pause holds normal Update simulation and skating state
+PASS Rendered screenshot saved: 23-hockey-live-play
+PASS An unmodified bot match scores through physical shooting and updates both scoreboard and statistics once
+First physical goal: time 108.68; scorer team 1
+PASS Rendered screenshot saved: 24-hockey-earned-goal
+PASS A scored goal resets the puck and teams at an announced center faceoff
+PASS Goal celebration does not consume regulation time
+PASS Rendered screenshot saved: 25-hockey-faceoff-reset
+PASS Complete rendered bot match keeps all physics finite, puck contained and contact control valid
+PASS The regulation clock and any overtime reach an unambiguous final score
+PASS Seeded unmodified match demonstrates an earned goal and a subsequent faceoff
+PASS Rendered match develops repeated shots and teammate passes
+PASS Rendered match includes a physical goalkeeper save
+PASS Rendered match includes contested possession and defensive checks
+PASS Complete seeded match needs no frozen-puck watchdog reset
+Full unmodified hockey match seed 1988: 0-2; elapsed 191.60; shots 13; saves 9; passes 28; takeaways 47; checks 34; stuck resets 0
+PASS Rendered screenshot saved: 26-hockey-final-score
+PASS Final score rejects further gameplay actions
+PASS Hockey replay resets score, statistics, clock and pause state
+PASS Hockey can reopen its instructions and restore the menu cursor
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Leaving hockey releases the captured mouse
+PASS Rendered screenshot saved: 27-cabinet-after-hockey
+PASS Active scene is Meridian1944
+PASS Meridian1944: launcher lifetime isolated
+PASS Meridian1944: house input/simulation root isolated
+PASS Meridian1944: air input/simulation root isolated
+PASS Meridian1944: hockey input/simulation root isolated
+PASS Meridian1944: house presentation lifetime isolated
+PASS Meridian1944: air presentation lifetime isolated
+PASS Meridian1944: hockey presentation lifetime isolated
+PASS Meridian1944: exactly one enabled camera
+PASS Meridian1944: no duplicate audio listeners
+PASS Meridian1944: simulation timescale restored
+PASS Air Combat relaunches independently after Hockey
+PASS Air Combat flight dynamics still operate after hockey teardown
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Active scene is HauntedHouse
+PASS HauntedHouse: launcher lifetime isolated
+PASS HauntedHouse: house input/simulation root isolated
+PASS HauntedHouse: air input/simulation root isolated
+PASS HauntedHouse: hockey input/simulation root isolated
+PASS HauntedHouse: house presentation lifetime isolated
+PASS HauntedHouse: air presentation lifetime isolated
+PASS HauntedHouse: hockey presentation lifetime isolated
+PASS HauntedHouse: exactly one enabled camera
+PASS HauntedHouse: no duplicate audio listeners
+PASS HauntedHouse: simulation timescale restored
+PASS Haunted House relaunches fresh after Air Combat and Hockey
+PASS Investigation still accepts evidence actions after switching through flight and hockey
+PASS Rendered screenshot saved: 17-house-after-flight
+PASS Active scene is Cabinet
+PASS Cabinet: launcher lifetime isolated
+PASS Cabinet: house input/simulation root isolated
+PASS Cabinet: air input/simulation root isolated
+PASS Cabinet: hockey input/simulation root isolated
+PASS Cabinet: house presentation lifetime isolated
+PASS Cabinet: air presentation lifetime isolated
+PASS Cabinet: hockey presentation lifetime isolated
+PASS Cabinet: exactly one enabled camera
+PASS Cabinet: no duplicate audio listeners
+PASS Cabinet: simulation timescale restored
+PASS Rendered screenshot saved: 18-cabinet-final
+PASS Diagnostic input settings and private devices are restored without changing the project asset
+Runtime errors: 0
+Checks: 686; failures: 0
+COMPLETE: PASS

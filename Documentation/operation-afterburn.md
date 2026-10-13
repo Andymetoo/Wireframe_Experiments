@@ -44,6 +44,8 @@ Voss flies a stock Falke with ordinary hull and flight limits. His advantages ar
 
 Squadron clash adds two independent Blue-flight allies to your squadron. In the ordinary battle, defeat **three of five** enemies; in the finale, defeat **four of seven**. Every incoming flight must physically enter the contested sector or already be destroyed before victory. Reserve aircraft approach in formation from outside friendly visual range rather than appearing on your tail. Blue flight is local support, separate from the persistent Rook/Finch roster.
 
+The battle's pilots bring long pursuits back toward the contested sector. When a sustained turn gives them no firing opportunity, they extend to recover separation for another pass. Watch for those openings rather than following every turn: regain speed, lead a crossing target or call your wingmen back before the next formation arrives. The final three-flight battle rewards the aircraft improvements and supplies earned earlier in the operation.
+
 Interception begins with a closer, diagonal crossing opportunity while retaining normal aircraft speeds. Cut across toward the raid's track, gain a firing position and split the raid leaders with your wingmen. Chasing escort fighters or settling into a long tail chase still risks losing the objective.
 
 At the standard briefing, **1–5** select Fighter Interception, Bomber Escort, Ground Attack, Training Duel and Courier Cover. **7** selects Ace Hunt, **8** selects Channel Air Battle, and **6** opens Afterburn. Enter launches the selected standard mission.

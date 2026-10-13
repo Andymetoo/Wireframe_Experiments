@@ -1,10 +1,9 @@
 Succeeded
 0 errors
-1 warnings
-103661894 bytes
+0 warnings
+103689686 bytes
 Assets/GameCollection/Scenes/Cabinet.unity
 Assets/HauntedHouse/Scenes/HauntedHouse.unity
 Assets/AirCombat/Scenes/Meridian1944.unity
 Assets/Hockey/Scenes/ColdSnap.unity
-2026-10-13T03:48:25.5851836Z
-Warning: You are building a player, but you have uncompiled code changes. This means that any post-processing or importing code you may have changed will not affect this player build.
+2026-10-13T15:06:33.5653682Z
