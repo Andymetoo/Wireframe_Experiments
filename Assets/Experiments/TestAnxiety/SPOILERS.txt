@@ -1,0 +1,165 @@
+SPOILERS — DESIGN, IMPLEMENTATION AND REGRESSION WALKTHROUGH
+Do not read before playing if you want the surprises preserved.
+
+CREATIVE THROUGHLINE
+
+The assessment does not measure an empty room. It maintains its attendance.
+The player's seemingly harmless answers become administrative authority over
+who may occupy the space. Mara Bell's missing record makes that authority
+specific and human. Documents, machine copies and physical changes refer to
+the same problem instead of introducing unrelated hauntings.
+
+The first section grades honestly. It establishes the paper-return ritual and
+three mundane observations. The second retains the original alone/shirt
+contradictions but removes the HUD's continuous instruction to check behind.
+The explicit hint remains available on H. An unrelated continuation of the
+player's footsteps occurs when they stop after sufficient walking in this
+section. It does not unlock anything and cannot block progression.
+
+The second acknowledgement opens the actual classroom entrance. The player
+walks through a short corridor to Records. The office has an internal glazed
+partition, archive shelves, a desk lamp, papers, an emergency circuit, and an
+outer door. Its retained copy names Mara Bell and reproduces the player's
+original clock/window/notice marks. It also lists actual door attempts and
+pencil corrections. Those values come only from this game session: no files,
+identity information or external data are examined.
+
+The third section asks which workstation can be removed. The submitted choice
+maps A to desk03, B to desk06, C to desk08, and D (no vacancy authorized) to an
+administratively imposed desk06 removal. Per-response notes explicitly explain
+that override so refusal is not silently misrepresented as consent.
+
+The reader accepts this sheet, then holds it and requests a supervised seated
+interval. The player returns to their desk and takes the seat. They may look
+around freely, stand, and resume; leaving holds rather than resets the interval.
+The authored 18 seconds contain an open intercom, three knocks, a chair scrape,
+and a nearby footstep, with ambient room sound withdrawn. At completion one
+brief blackout conceals the desk removal and the other chairs turning toward
+desk014. A restrained mechanical paper burst accompanies the transition. No
+monster or chase appears. The reader then returns the sheet normally.
+
+Section IV asks the player to remember the original desk count. The machine
+insists on eight although the original arrangement had nine. A returned answer
+also differs from the original pencil mark. The UI no longer narrates that
+contradiction; COMPARE CARBON COPY exposes the unchanged original for the
+player to interpret. The clock changes to 9:00 while the player is reading this
+section. The later ordinary clock question therefore has a new physical answer.
+The retained-copy question stays straightforward.
+
+The final record offers four responses. Releasing candidate014 or Mara Bell
+produces compliance variants. The chosen release appears on the physical board
+and namecard. At the Records outer door the image fades, then returns at the
+teacher's position, looking across the room at the next candidate's namecard.
+The scanner begins another physical sheet. The receipt identifies the released
+and retained person and repeats the player's actual first clock response.
+
+Neither-record / examination-itself responses take a refusal route. The final
+report directs the player to the wall isolation switch beside the classroom
+entrance. The reader goes dark, the board clears, and the emergency/daylight
+circuit leaves the route legible. The outer door concludes in silence with an
+unrecoverable attendance record. There is no score gate for either route.
+
+PACING
+
+Five sections / fifteen questions, contextual documents, a connected office
+excursion, a short supervised interval, and a physical concluding action target
+a roughly 15–20-minute exploratory first play. This estimate is unmeasured.
+No generic wait gates pad the ordinary marking/return loop. Most documents
+can be lowered at any time. The seated interval is the one deliberately
+uncomfortable pause and has recoverable progress.
+
+STATE AND OWNERSHIP
+
+ExamSession remains the sole authority for answers and examination progress.
+It retains immutable originals/results and prevents submission during unmet
+requirements. An optional section prerequisite='archive' requires MarkArchiveRead
+followed by CollectArchiveRecord before the booklet opens. scanCondition='quiet'
+prevents FinishScan until AdvanceQuietInterval accumulates 18 seated seconds.
+Standing and pause preserve progress. Invalid/nonpositive/large deltas cannot
+skip the interval. All four final choices advance through the same core stages.
+
+Game.Sequence owns presentation flags, audio thresholds, blackout, contextual
+interactions and final camera staging. It does not maintain a second set of
+answers or scores. Scanner.ProcessingHeld is set before each tick from the core
+quiet requirement OR remaining blackout. Feeding finishes before the hold.
+The processed callback generates the core result before ejection. Retrieval
+requires both core ResultsReady and physical scanner Ready. Paper never expires.
+
+Required world geometry changes occur under an inspection or the intentional
+blackout. Progress never depends on a disappearing target, a precise input
+frame, a correct answer, or an unpaused wall-clock timer. The optional footstep
+continuation has no progression gate.
+
+Paper targets stay stable after collection. The outer door remains interactable
+until completion. Refusal requires the switch while inside the classroom, to
+avoid activation through the corridor wall. Escape during the final camera
+sequence still opens a visible pause menu.
+
+Restart recreates only this root, resets progress/resources, and retains mouse
+sensitivity, volume and caption preferences. Other games and shared graphics
+assets are unchanged.
+
+AUTHORING
+
+Resources/TestAnxietyExam.json has sections with unique ids, titles, instructions
+and questions. Each question has four nonempty options and a zero-based
+correctOption. Supported anomalies: none, alone, shirt, changed-answer. Shirt
+requires changedPrompt, which commits only on reopening after the original was
+shown and the rear of the room was observed.
+
+Optional responseNotes contains exactly four nonempty strings and selects the
+annotation using the ORIGINAL submitted option. ExaminerNote is the fallback.
+This supports the workstation allocation explanation without a hardcoded grader.
+
+Section prerequisites: none/archive. Scan conditions: none/quiet. Presentation
+references stable section ids verification, allocation, retention, release and
+question ids allocation-seat, release-choice, clock, windows, notice. Reordering
+ordinary questions is safe; changing these story ids requires corresponding
+staging and physical-clue changes. Core tests independently exercise reordered,
+removed and repeated requirement content.
+
+PRESENTATION LIMITS
+
+The procedural classroom and office have roughly a thousand renderers and
+several real-time lights. No profiling or Play Mode pass was run for this
+expansion. Actual darkness, sound balance, camera pacing, the transparent
+partition, final-view namecard readability, and collision clearances need Editor
+verification. World text uses normalized physical em sizes; larger readable
+overlays are authoritative. No voice recording, character rig, hand model,
+real exterior or persistent checkpoint is included.
+
+REGRESSION WALKTHROUGH (AFTER YOUR BLIND PLAY)
+
+1. Start the scene. Check Console, solid URP surfaces, one first-person camera
+   and listener, and quiet ambience. Walk the x1.4 aisle. Verify clock3:15,
+   three classroom windows, and QUIET notice.
+2. Mark first-section A/B/C. Change a mark and back. Close/reopen and verify
+   persistence. Insert at front-right reader; pause during insertion/ejection.
+   Retrieve, compare carbon, lower/reopen without acknowledgement, then accept.
+3. In sectionII choose YES for alone. Read the original shirt question, lower,
+   look rearward near desk014, reopen, then inspect the wall. Text must not
+   change while displayed. Acknowledge the returned paper.
+4. Walk through entrance, corridor and office partition opening. Try the outer
+   door early. Inspect/lower the ledger without taking it; return to the booklet
+   and verify the prerequisite persists. Collect it. R should show the retained
+   copy without moving the body. Compare real initial marks and edit counts.
+5. Test every workstation option in separate sessions. Insert the third sheet.
+   Wait at the machine: it must stay held. Return to desk014; E to sit. Look in
+   every direction, stand midway, pause, resume. Progress must be retained.
+   Check that chair rotations neither trap nor push a nearby standing player.
+6. Compare removed workstation to selected option and response note, including
+   D's explicit override. Verify other chairs face desk014 and the scanner's
+   result preserves original choices.
+7. During sectionIV compare remembered desk count, changed clock, and carbon.
+   Test all four original options for the changed-answer question; originals
+   must remain preserved and returned marks must differ.
+8. Complete final section for every release option. For0/1 use the outer door;
+   verify final camera, physical namecard and restarted reader. For2/3 try exit
+   before isolation, then use the classroom switch and return; verify emergency
+   lighting and silent receipt. No grade may block completion.
+9. Pause/resume during the final transition. Restart from pause and conclusion.
+   Verify preference retention, fresh progress and resource cleanup. Check
+   captions, zero-volume mode and optional H hints.
+10. Check document scrolling and paper layouts at 1280x720 and 1920x1080.
+    Profile shadows/frame rate. Time fresh players before claiming a measured
+    duration or describing this expansion as visually/playtest verified.

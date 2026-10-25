@@ -1,0 +1,6 @@
+{
+  "name": "TestAnxiety.Runtime",
+  "rootNamespace": "TestAnxiety",
+  "references": ["Unity.InputSystem"],
+  "autoReferenced": true
+}

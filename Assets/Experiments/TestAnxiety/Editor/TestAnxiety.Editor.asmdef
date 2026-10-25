@@ -1,0 +1,7 @@
+{
+  "name": "TestAnxiety.Editor",
+  "rootNamespace": "TestAnxiety.Editor",
+  "references": ["TestAnxiety.Runtime"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

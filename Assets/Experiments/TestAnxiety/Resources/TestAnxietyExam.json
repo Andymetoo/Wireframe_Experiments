@@ -1,0 +1,168 @@
+{
+  "sections": [
+    {
+      "id": "calibration",
+      "title": "I. OBSERVATION",
+      "instructions": "Observe the room. Fill one bubble per question. Close the booklet, then carry this section to the optical reader by the teacher's desk. All responses must be recorded before insertion.",
+      "questions": [
+        {
+          "id": "clock",
+          "prompt": "What time is shown on the classroom clock?",
+          "options": ["3:15", "9:00", "12:30", "6:45"],
+          "correctOption": 0,
+          "anomaly": "none",
+          "examinerNote": "Compare the hour hand with the minute hand."
+        },
+        {
+          "id": "windows",
+          "prompt": "How many large windows are on the left wall when facing the board?",
+          "options": ["Two", "Three", "Four", "There are no windows"],
+          "correctOption": 1,
+          "anomaly": "none",
+          "examinerNote": "Count window frames, not panes of glass."
+        },
+        {
+          "id": "notice",
+          "prompt": "Which word is printed largest on the examination notice?",
+          "options": ["LISTEN", "WELCOME", "QUIET", "LEAVE"],
+          "correctOption": 2,
+          "anomaly": "none",
+          "examinerNote": "The notice is posted beside the classroom board."
+        }
+      ]
+    },
+    {
+      "id": "verification",
+      "title": "II. VERIFICATION",
+      "instructions": "The room has not changed. Read each question carefully. If an observation seems impossible, close the booklet and check it before continuing.",
+      "questions": [
+        {
+          "id": "alone",
+          "prompt": "Are you alone in this room?",
+          "options": ["YES", "NO", "I cannot tell", "I prefer not to answer"],
+          "correctOption": 1,
+          "anomaly": "alone",
+          "examinerNote": "RECOUNT. Your presence has already been included."
+        },
+        {
+          "id": "shirt",
+          "prompt": "What color is the shirt of the person sitting behind you?",
+          "changedPrompt": "What color is the shirt hanging on the wall?",
+          "options": ["Red", "Blue", "Green", "There is no shirt"],
+          "correctOption": 1,
+          "anomaly": "shirt",
+          "examinerNote": "The wording of this question has not been revised."
+        },
+        {
+          "id": "door",
+          "prompt": "Which room number appears on the entrance door?",
+          "options": ["104", "214", "107", "There is no number"],
+          "correctOption": 2,
+          "anomaly": "none",
+          "examinerNote": "The number is fixed to the inside of the door."
+        }
+      ]
+    },
+    {
+      "id": "allocation",
+      "title": "III. ALLOCATION",
+      "instructions": "Consult the retained attendance record. Account for the available workstations. After insertion, remain seated until the reader releases your sheet.",
+      "prerequisite": "archive",
+      "scanCondition": "quiet",
+      "questions": [
+        {
+          "id": "allocation-seat",
+          "prompt": "Which workstation can be removed from the attendance record?",
+          "options": ["Desk 03", "Desk 06", "Desk 08", "None"],
+          "correctOption": 1,
+          "anomaly": "none",
+          "examinerNote": "The selected space will be made available.",
+          "responseNotes": [
+            "Workstation 03 has been released from the inventory.",
+            "Workstation 06 has been released from the inventory.",
+            "Workstation 08 has been released from the inventory.",
+            "No vacancy selected. Administrative allocation: workstation 06."
+          ]
+        },
+        {
+          "id": "pencil",
+          "prompt": "What color is the pencil on your examination desk?",
+          "options": ["Black", "Blue", "Red", "Yellow"],
+          "correctOption": 3,
+          "anomaly": "none",
+          "examinerNote": "Use only the pencil provided."
+        },
+        {
+          "id": "pa-source",
+          "prompt": "Where do the classroom announcements come from?",
+          "options": ["The wall speaker", "The radiator", "Under the door", "Behind the board"],
+          "correctOption": 0,
+          "anomaly": "none",
+          "examinerNote": "Do not respond to an announcement unless your name is called."
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "title": "IV. RETENTION",
+      "instructions": "Use the record you retained. Answer from memory where directed. The present arrangement must not influence your recollection.",
+      "questions": [
+        {
+          "id": "memory-desks",
+          "prompt": "How many student desks were here when you arrived?",
+          "options": ["Eight", "Nine", "One", "This was not a classroom"],
+          "correctOption": 0,
+          "anomaly": "none",
+          "examinerNote": "The inventory was checked before your arrival."
+        },
+        {
+          "id": "symbol",
+          "prompt": "Which shape is printed above the classroom board?",
+          "options": ["A circle", "A square", "A triangle", "A cross"],
+          "correctOption": 0,
+          "anomaly": "changed-answer",
+          "examinerNote": "INVALID RESPONSE. No correction has been made by the reader."
+        },
+        {
+          "id": "archive-record",
+          "prompt": "Whose name appears on the retained attendance record?",
+          "options": ["MARA BELL", "ELIAS WARD", "CANDIDATE 014", "No name is recorded"],
+          "correctOption": 0,
+          "anomaly": "none",
+          "examinerNote": "An absent candidate must not be marked as present."
+        }
+      ]
+    },
+    {
+      "id": "release",
+      "title": "V. RELEASE",
+      "instructions": "Compare the current clock with your first response. Retain the carbon copy. Designate one record for release. The remaining record will stay on file.",
+      "questions": [
+        {
+          "id": "clock-return",
+          "prompt": "What time is shown on the classroom clock now?",
+          "options": ["3:15", "9:00", "12:30", "6:45"],
+          "correctOption": 1,
+          "anomaly": "none",
+          "examinerNote": "Your earlier observation has been retained without amendment."
+        },
+        {
+          "id": "carbon",
+          "prompt": "Whose answers appear on the retained copy?",
+          "options": ["My own", "Someone else's", "Both", "No answers were recorded"],
+          "correctOption": 0,
+          "anomaly": "none",
+          "examinerNote": "The original and retained copies bear the same responses."
+        },
+        {
+          "id": "release-choice",
+          "prompt": "Which record do you authorize for release?",
+          "options": ["Candidate 014", "Mara Bell", "Neither record", "The examination itself"],
+          "correctOption": 0,
+          "anomaly": "none",
+          "examinerNote": "The designation has been entered. Authorization cannot be withdrawn."
+        }
+      ]
+    }
+  ]
+}
