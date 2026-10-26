@@ -1,0 +1,23 @@
+﻿PASS configuration rejects nonfinite physics values
+PASS fixed-step deterministic across render cadence
+PASS hydrostatic coast and service braking
+PASS reversal brakes through zero
+PASS board collision contains machine
+PASS conditioner follows inside turn
+PASS only actual trailing footprint is processed
+  physical blade=1.956m, rasterized straight cut/wet span=1.80–2.00m at 0.20m cells
+PASS 77-inch working width matches cut and wet cell extents
+PASS turning cut and water remain inside the articulated footprint
+PASS footprint conserves water and collected snow material
+PASS conditioner lift removes blade contact
+PASS separate augers, overflow, load and finite tank
+PASS manual snow breaker conserves material and respects interlocks
+PASS wash valve gravity feed and pickup priming
+PASS stationary flood pooling and finite water
+PASS left brush cleans board contact
+PASS exit and tank interlocks prevent instant finish
+PASS continuous controls and practice report
+  driven full run: coverage=95.06%, quality=79.6%, score=90.6, water=700.7L, snow=2.92m3, time=1750s, mistakes=0
+PASS complete route, return, unload and finish
+PASS: 19 deterministic simulation scenarios.
+

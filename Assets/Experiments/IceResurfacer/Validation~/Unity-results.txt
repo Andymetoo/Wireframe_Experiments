@@ -1,0 +1,10 @@
+Unity 6000.4.1f1 Play Mode validation
+Saved launch scene, camera, world, conditioner, state texture, six audio sources: PASS
+Genuine simulated cut/wash/flood lane and snow conveyance: PASS
+Input System: RMB motion/release, W+Shift precision pedal, Space brake: PASS
+Runtime renderers: 120
+Graphics device: NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11
+Runtime error/exception count: 0
+Camera inspection and physical-layout checks; HUD framebuffer and GUI input validated separately in the development player.
+Physical left operator layout and true-width geometry: PASS
+Final runtime error/exception count: 0

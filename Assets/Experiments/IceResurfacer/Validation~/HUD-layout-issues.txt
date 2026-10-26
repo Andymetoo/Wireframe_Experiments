@@ -1,0 +1,2 @@
+1366x768: PASS: no measured text clipping in captured HUD states.
+1920x1080: PASS: no measured text clipping in captured HUD states.

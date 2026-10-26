@@ -1,0 +1,102 @@
+ICE RESURFACER / TECHNICAL REFERENCE AND CALIBRATION
+Research checked 25 October 2026. Fictional machine: AURORA R-54.
+
+Reference provenance
+
+The principal source is Zamboni Company's Model 546 Operating Instructions,
+DM-54620, revision 03/12/2025. The manufacturer Owners Area lists that edition:
+https://zamboni.com/owners-area/?folder=546
+
+The full manufacturer-authored PDF was downloaded to a temporary research
+directory and its text inspected; no manual, photographs or logos are bundled:
+https://cdn4.sportngin.com/attachments/document/051a-3512134/546_Operating_Instructions_English.pdf
+
+Manufacturer web chapters require a password. A manufacturer-authored 2020
+manual mirrored at ManualsLib was initially cross-checked, then superseded by
+the 2025 PDF above. The editions differ on maximum flood-water temperature;
+the prototype does not simulate temperature or teach tank-filling procedure.
+
+Physical reference values
+
+Source: manufacturer Model 546 specification sheet, revision 06/2021, also
+confirmed by the manufacturer's currently published product specification:
+https://zamboni.com/wp-content/uploads/specs/546_specs.pdf
+https://zamboni.com/product/model-546/
+
+Tank lowered envelope: 4.04 m long, 2.13 m wide, 2.21 m high.
+Tank raised envelope: 5.03 m long, 2.13 m wide, 3.73 m high.
+Wheelbase: 1.96 m; wheel track: 1.37 m.
+Turning radius measured at conditioner: 4.87 m.
+Shaving blade: 1.956 m long; horizontal/vertical auger diameter: 0.254 m.
+Flood-water capacity: 738 L; wash-water capacity: 310 L.
+Snow tank: 2.83 cubic metres actual volume, 3.54 cubic metres compacted rating.
+Mass: 2,912 kg empty; 3,910 kg with water, as published.
+Hydrostatic transmission and hydrodynamic braking are authentic. These figures
+guide scale and capacity; the original model is not a CAD replica.
+
+Operating facts used by the prototype
+
+References below are printed chapter/page numbers in the 2025 manual:
+
+- 7-2: Releasing the accelerator causes hydrostatic braking; a separate foot
+  brake is available. Recommended resurfacing engine speed: 2,400-2,800 RPM.
+- 7-6: Enter with conditioner raised. While moving slowly forward, lower it
+  with blade retracted, start conveyors, then adjust cut. No mandatory
+  vertical-before-horizontal starting order is stated.
+- 7-10 and 8-1: Open wash valve, wait at least ten seconds, then enable pickup
+  pump. Water returns through a filter. Stop pump before closing valve.
+- 7-11/12: Left brush sweeps kickplate snow before flooding. Reduce flood flow
+  through repeated overlaps, corners and goal areas. Counterclockwise raises
+  the blade handwheel; clockwise increases cut.
+- 7-14/15: Retract blade, stop augers and pump, close water valves; fully lift
+  conditioner after vertical auger stops. Dump off ice, stationary and level,
+  with conveyors stopped. Lower tank before moving.
+- 7-16: Deep cuts at high ground speed increase load.
+
+Mechanism reference: https://zamboni.com/about/how-it-works/
+Shaved ice travels through horizontal and vertical conveyors to the snow tank.
+The wash circuit and the fresh ice-making-water circuit have different jobs.
+A cloth spreader trails the conditioner and distributes the fresh water.
+
+Prototype assumptions and calibration
+
+The fictional 60 x 26 m rink has 8.5 m rounded corners, an open central south
+service gate and an adjacent level service bay. These are scenario dimensions,
+not Model 546 specifications. Nets are parked off the playing surface for the
+resurfacing session. All spectators and players have already left the ice.
+
+SimulatorConfig is the calibration authority. Its SI-valued fields are serializable
+for playtesting. Manufacturer reference values above do not validate the following
+chosen model parameters: acceleration/deceleration, speed limits, steering rate,
+effective trailer pivot, lift timings, throughput, snow expansion, water recovery,
+target water depth, freeze time, ice-cut thresholds, damage and scoring weights.
+
+The 4.87 m conditioner radius is a calibration target. The bicycle model's rear
+axle radius and the conditioner trajectory differ; changing wheelbase, steering
+limit or hitch geometry requires a turning-circle check. The conditioner is a
+lagging articulated footprint, not a mark painted beneath the vehicle centre.
+
+The 3.54 cubic-metre capacity is treated as equivalent compacted snow capacity;
+the spatial simulation converts shaved ice to equivalent snow using a tunable
+expansion ratio. This is an approximation, not a compaction or granular-flow solver.
+
+Each surface cell retains its own condition. Water quantity, cut and snow handling
+affect finish instead of awarding credit merely for driving over a location.
+The initial seeded wear, persistent cut depth and wet-to-frozen transition are
+game models. There is no thermal ice-sheet, slab or refrigeration simulation.
+
+Goal/crease sensitivity makes careful cut and water adjustment useful. Its stricter
+cut threshold is deliberately a scenario rule, not a published manufacturer limit.
+The raised-conditioner exit check represents clearance at the service threshold;
+there is no structural blade-deformation simulation. Stationary dumping and tank
+movement restrictions represent equipment handling without a dynamic rollover model.
+
+W/S combine pedal demand and direction selection for keyboard play. The real
+machine uses separate hydrostatic direction and engine-speed controls. The lower
+centre mouse panel is an original accessible arrangement, not a traced dashboard.
+Physical control animations communicate actual simulation state. The initial
+engine warm-up, guard inspection and blade installation have already occurred.
+
+This entertainment prototype is not an operator qualification or a substitute
+for equipment-specific training. Asset names, graphics and AURORA branding are
+original; Zamboni is cited only as the technical reference.

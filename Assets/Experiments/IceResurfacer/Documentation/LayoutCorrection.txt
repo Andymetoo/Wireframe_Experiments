@@ -1,0 +1,83 @@
+AURORA R-54 / LEFT OPERATOR, READABLE HUD, WORKING-WIDTH CORRECTION
+25 October 2026
+
+Physical assembly
+The actual station is rebuilt at negative local X, facing local +Z. The seat,
+pedestal, non-slip platform, column shaft/support, steering wheel, dashboard,
+pedal backing and pivoting pedals, valve bank, handwheels, boarding steps and
+grab rails all move with it. CameraMount is a child of the seat assembly at
+(-0.76,1.90,-0.48) in vehicle coordinates; it is no longer an independent
+right-side camera anchor. Rear/right head look includes a +X shoulder lean.
+
+The snow-tank shell and engine compartment move to positive X so the body sits
+predominantly to the seated operator's right. Filler/exhaust and surrounding
+panels follow the revised layout. This is positive-scale, explicitly authored
+geometry: no whole-machine mirroring or negative-scale reflection is used.
+
+The board brush stays on the left. Conditioner centre, trailer tracking,
+horizontal-flight handedness, vertical-flight direction, steering signs and
+world-space drive/collision geometry remain unchanged. The vertical elevator
+is translated from X=-0.28 to X=+0.28 to clear the station, with a connecting
+transfer throat and delivery chute; its geometry and rotation are not mirrored.
+Physical auger levers and pedals now animate from their existing commands.
+
+A manual snow-breaker rod/guide/T-handle is reachable inboard/right of the
+seat. The momentary HUD button or key 6 performs a down-and-return stroke.
+The optional core operation assists up to 0.004 m3 from the existing horizontal
+buffer into available vertical-buffer space. It conserves material and requires
+a lowered conditioner/tank and the vertical conveyor running. It cannot empty
+the tank, create capacity, or make snow disappear. This volume and the 0.18 m
+visual stroke are prototype calibration assumptions. Existing automatic
+conveyance and complete-run requirements do not change when the control is unused.
+Mechanism reference: https://zamboni.com/auto-snow-breaker/
+
+Working width: measured rather than inflated
+Manufacturer reference: https://zamboni.com/wp-content/uploads/specs/546_specs.pdf
+The published blade is 1.956 m / 77 inches; vehicle width is 2.13 m / 84 inches.
+Inspection found the original core footprint AND blade mesh already 1.956 m.
+A 25% physical increase would be 2.445 m / about 96.3 inches, exceeding the
+reference vehicle width. The physical blade/processing width is therefore kept.
+
+The builder now derives blade, towel, guard, side plates, manifold/nozzle
+positions and conveyor spans from SimulatorConfig.ConditionerWidth. The towel
+is 1.956 m (previously 1.94 m); housing/side enclosure is 2.076 m (previously a
+blade-width housing); visible water emission spans 1.956 m (previously 1.6 m).
+The 0.2 m grid samples cell centres, producing 1.8-2.0 m cell-band extents
+depending on lateral alignment. New tests verify this bound and verify that
+cut and wet extents agree. During turns, processed cells stay in the actual
+articulated footprint. No texture-only dilation, snow shortcut or score bonus
+has been introduced.
+
+To address the narrow apparent path while retaining correct real dimensions,
+the seated lens changes from 76 to 64 degrees. At equal distance/orientation,
+tan(76/2)/tan(64/2) is about 1.25: the whole physical scene, including blade and
+its real treatment path, appears about 25% wider. New seating, clearance and
+shoulder position also improve direct inspection. This is a view calibration,
+not a claim that the blade physically became 25% larger.
+
+HUD
+The existing palette, instrument groups, dials, levers, survey and service
+workflow remain. The rack is widened/padded; secondary text rises from 12 to
+16 virtual pixels, body from 16 to 19, headings/buttons from 13 to 17. Blade
+heading, wheel, numeric cut and hint occupy separate rows. The 1600x900 design
+canvas scales to both requested resolutions without hiding equipment controls.
+Dial spokes and survey arrows now rotate in local canvas coordinates, fixing
+the previous scale-dependent drift across labels and the world view. The footer
+has a dark backing, and modal panels use opaque navy to prevent underlying
+survey text from showing through the operator guide.
+Actual renders and mouse-event checks are performed in a temporary development
+player through its native OnGUI and framebuffer. A text-metric audit detects
+clipping alongside visual inspection. See Validation~/HUD-player-results.txt,
+HUD-layout-issues.txt, Layout-results.txt and captures for
+the final observed result; subjective ergonomics still benefit from playtesting.
+The mouse checks use messages only to that player's own invisible window, with
+no OS cursor movement or activation. Optional wheel scrolling is preserved;
+handwheel/valve dragging is the automated continuous-input path.
+
+Preservation
+The pure simulation regression is 19 passing scenarios, including the original
+full scored route: 95.06% coverage, 90.6/100, zero mistakes, proper exit and dump.
+Rink, drive dynamics, scoring weights, audio and existing controls are retained.
+All source changes remain inside this experiment. Validation runs in an isolated
+copy because the user's repository is already open in Unity. No project-wide
+settings or other experiments are edited; no commit or push is performed.

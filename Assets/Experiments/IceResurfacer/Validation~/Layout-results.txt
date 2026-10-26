@@ -1,0 +1,4 @@
+PASS physical LEFT seat/platform/steering/dashboard/pedals/access, seat-attached eye, right-side body/plunger, unchanged left brush, positive scales.
+Measured geometry: blade=1.956m; towel=1.956m; housing=2.076m; vehicle=2.130m.
+64-degree seated lens: apparent world-width ratio=1.250 versus prior 76-degree lens; no widened texture or scoring footprint.
+PASS relocated physical steering/auger levers/blade/wash/flood/lift/pedal animation pivots and rendered children; world steering sign and independent head orientation retained.

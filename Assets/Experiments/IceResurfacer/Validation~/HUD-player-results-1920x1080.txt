@@ -1,0 +1,27 @@
+Aurora native development-player HUD validation / Unity 6000.4.1f1
+Actual player framebuffer captures include the world and live IMGUI instruments.
+Native mouse messages target only this player's own window; no simulation is advanced during instrument clicks.
+Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
+The results capture follows an actual raised, dry entry and safe return through the normal finish path.
+PASS 1920x1080 / Requested client resolution (actual 1920x1080)
+PASS 1920x1080 / Continuous conditioner lever
+PASS 1920x1080 / Horizontal auger switch
+PASS 1920x1080 / Vertical auger switch
+PASS 1920x1080 / Board brush switch
+PASS 1920x1080 / Continuous blade handwheel drag
+PASS 1920x1080 / Continuous wash-valve drag
+PASS 1920x1080 / Pickup pump switch
+PASS 1920x1080 / Continuous flood lever
+PASS 1920x1080 / Continuous tank-lift lever
+PASS 1920x1080 / Manual snow-breaker button and interlock
+PASS 1920x1080 / Guide button opens
+PASS 1920x1080 / Guide button closes
+PASS 1920x1080 / Pause button
+PASS 1920x1080 / Resume button
+PASS 1920x1080 / Refill/service button
+PASS 1920x1080 / Finish button enforces unfinished-run guard
+PASS 1920x1080 / New-session button
+PASS 1920x1080 / Unscored-practice launch button
+PASS 1920x1080 / Scored-run launch button
+PASS 1920x1080 / Legal partial run reaches results through normal finish path
+PASS: all player HUD checks.

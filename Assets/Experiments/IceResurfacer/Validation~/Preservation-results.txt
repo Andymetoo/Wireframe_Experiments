@@ -1,0 +1,4 @@
+PASS: Packages and ProjectSettings file counts and SHA256 hashes match the pre-correction baseline.
+PASS: git status lists only the owned IceResurfacer experiment and its adjacent folder metadata.
+PASS: validation used an isolated project copy; the original editor was not stopped or switched.
+No commit or push performed.

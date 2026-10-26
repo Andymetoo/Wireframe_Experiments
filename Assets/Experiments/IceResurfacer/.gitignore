@@ -1,0 +1,6 @@
+!Validation~/*.csproj
+Validation~/bin/
+Validation~/obj/
+Validation~/UnityProject/
+Validation~/Build/
+Validation~/*.log

@@ -1,0 +1,6 @@
+{
+  "name": "IceResurfacer.Runtime",
+  "rootNamespace": "IceResurfacer",
+  "references": ["Unity.InputSystem"],
+  "autoReferenced": true
+}
