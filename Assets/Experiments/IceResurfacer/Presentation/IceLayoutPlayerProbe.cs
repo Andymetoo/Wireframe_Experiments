@@ -112,7 +112,9 @@ namespace IceResurfacer.Presentation
 
             float bladeBefore = controls.BladeDepthMm;
             yield return RotateDial("Blade");
-            Check(controls.BladeDepthMm > bladeBefore + .08f && controls.BladeDepthMm < .8f, "Continuous blade handwheel drag");
+            Check(Mathf.Abs(controls.BladeDepthMm-bladeBefore-.8f/14)<.01f, "Precise quarter-turn blade handwheel drag");
+            controls.BladeDepthMm=0;
+            yield return ValidateBladeTurns();
             float washBefore = controls.WashValve;
             yield return RotateDial("WashValve");
             Check(controls.WashValve > washBefore + .1f && controls.WashValve < 1, "Continuous wash-valve drag");
@@ -183,6 +185,24 @@ namespace IceResurfacer.Presentation
         }
 
         IEnumerator Click(string key) { yield return ClickAt(IceDashboard.ControlRect(key).center); }
+
+        IEnumerator ValidateBladeTurns()
+        {
+            Rect rect=IceDashboard.ControlRect("Blade");float radius=rect.width*.35f;
+            yield return Send(EventType.MouseDown,rect.center+Vector2.right*radius);
+            for(int quarter=1;quarter<=15;quarter++)
+            {
+                float angle=quarter*Mathf.PI*.5f;
+                yield return Send(EventType.MouseDrag,rect.center+new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*radius);
+                if(quarter==12)Check(game.Sim.Controls.BladeDepthMm>.67f&&game.Sim.Controls.BladeDepthMm<.70f,"three full turns retain remaining blade adjustment");
+                if(quarter==14)Check(Mathf.Abs(game.Sim.Controls.BladeDepthMm-.8f)<.005f,"3.5 full turns reach deepest blade stop");
+                if(quarter==15)Check(Mathf.Abs(game.Sim.Controls.BladeDepthMm-.8f)<.005f,"blade mechanical end stop rejects extra rotation");
+            }
+            Vector2 reversed=rect.center+Vector2.left*radius;
+            yield return Send(EventType.MouseDrag,reversed);
+            Check(Mathf.Abs(game.Sim.Controls.BladeDepthMm-(.8f-.8f/14))<.01f,"blade reverses continuously from end stop");
+            yield return Send(EventType.MouseUp,reversed);
+        }
 
         IEnumerator ClickAt(Vector2 canvasPoint)
         {

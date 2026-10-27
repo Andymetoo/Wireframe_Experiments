@@ -203,7 +203,7 @@ namespace IceResurfacer.Presentation
             if (s.TankLift > .02f || c.TankLiftTarget > .02f) return "STOW TANK  /  Return the tank lever fully down before moving or finishing.";
             if (s.InServiceBay && !s.HasEnteredRink) return "ENTER THE RINK  /  W drives through the south gate. Keep the conditioner raised until fully on ice.";
             if (s.InServiceBay && s.SnowTankM3 > .005f && !s.InDumpZone) return "APPROACH THE DUMP PIT  /  Drive toward the far end, centred and facing the pit. Stop at the yellow line.";
-            if (s.InDumpZone && s.SnowTankM3 > .005f && Mathf.Abs(s.Vehicle.Speed) > .035f) return "STOP TO DUMP  /  Hold SPACE until stationary, then stow equipment and raise the snow-tank lever.";
+            if (s.InDumpZone && s.SnowTankM3 > .005f && Mathf.Abs(s.Vehicle.Speed) > .035f) return "STOP TO DUMP  /  Hold CTRL until stationary, then stow equipment and raise the snow-tank lever.";
             if (s.InDumpZone && s.SnowTankM3 > .005f) return "EMPTY THE TANK  /  With all equipment stowed, raise the tank. Wait until empty, then lower it fully.";
             if (s.InServiceBay && s.EquipmentSafe) return "READY TO RETURN  /  Finish this run, or refill water and continue working on missed strips.";
             if (s.InServiceBay) return "STOW EQUIPMENT  /  Blade out, augers and water off, brush stowed and conditioner fully raised.";
@@ -211,6 +211,7 @@ namespace IceResurfacer.Presentation
                 return "EXIT SEQUENCE  /  Stop on ice and clear conveyors. Shut augers and water, stow brush, then lift fully before the threshold.";
             if (c.ConditionerTarget > .05f && s.Conditioner.Lift > .25f) return "LOWER CONDITIONER  /  Blade out. Creep forward, lower fully, then engage both augers.";
             if (!c.HorizontalAuger || !c.VerticalAuger) return "CONVEYORS  /  Engage both augers before cutting. Let them clear before the exit sequence.";
+            if (s.ConveyorJammed) return "AUGER JAM  /  Stop, blade out, BOTH augers OFF. Empty the tank; J resets after safe inspection.";
             if (s.SnowTankM3 > s.Config.SnowCapacityM3 * .85f) return "TANK NEAR CAPACITY  /  Retract blade, clear conveyors and return to the service bay.";
             if (c.BladeDepthMm < .02f) return "SET THE CUT  /  Turn the blade wheel clockwise. Start near 0.35 mm; use a lighter cut in creases.";
             if (c.WashValve > .02f && !c.WashPump && s.WashPrimeSeconds < 10) return "PRIMING WASH  /  " + Mathf.CeilToInt(10 - s.WashPrimeSeconds) + " s remaining. Continue forward before starting the pickup pump.";
@@ -245,12 +246,12 @@ namespace IceResurfacer.Presentation
             c.HorizontalAuger = Toggle(ControlRect("HorizontalAuger"), "HORIZONTAL  [2]", c.HorizontalAuger, "Horizontal auger moves shaved snow toward the vertical auger.");
             c.VerticalAuger = Toggle(ControlRect("VerticalAuger"), "VERTICAL  [3]", c.VerticalAuger, "Vertical auger lifts snow into the tank. Stop before raising conditioner or tank.");
             c.BoardBrush = Toggle(ControlRect("BoardBrush"), "BOARD BRUSH  [4]", c.BoardBrush, "Brush extends LEFT. Use only in actual contact with the perimeter kickplate.");
-            Label(new Rect(304, 852, 208, 24), "BUFFER " + ((s.HorizontalSnowM3 + s.VerticalSnowM3) * 1000).ToString("0.0") + " L", small, Muted);
+            Label(new Rect(304, 852, 208, 24), s.ConveyorJammed?"JAM / STOP AUGERS":"BUFFER " + ((s.HorizontalSnowM3 + s.VerticalSnowM3) * 1000).ToString("0.0") + " L", small, s.ConveyorJammed?Amber:Muted);
 
             Label(new Rect(546, 690, 190, 25), "BLADE HANDWHEEL", heading, Muted);
-            c.BladeDepthMm = Dial(502, ControlRect("Blade"), c.BladeDepthMm, .8f, "Rotate clockwise to cut deeper; counterclockwise to retract. Q / E also adjust.");
-            CenterLabel(new Rect(546, 826, 190, 25), c.BladeDepthMm < .005f ? "BLADE OUT" : c.BladeDepthMm.ToString("0.00") + " mm CUT", heading, c.BladeDepthMm > .45f ? Amber : Mint);
-            CenterLabel(new Rect(546, 852, 190, 24), "DRAG / SCROLL", small, Muted);
+            c.BladeDepthMm = Dial(502, ControlRect("Blade"), c.BladeDepthMm, s.Config.MaxBladeDepthMm, "3.5 turns: clockwise deeper, counterclockwise retract. Screw setting and effective bite differ. Q / E also adjust.", s.Config.BladeWheelTurns*360);
+            CenterLabel(new Rect(546, 826, 190, 25), c.BladeDepthMm < .005f ? "BLADE OUT" : c.BladeDepthMm.ToString("0.00") + " mm SET", heading, c.BladeDepthMm > .45f ? Amber : Mint);
+            CenterLabel(new Rect(546, 852, 190, 24), "BITE " + s.ActualBladeDepthMm.ToString("0.000") + " mm", small, Muted);
 
             Label(new Rect(770, 690, 235, 25), "WASH CIRCUIT", heading, Muted);
             c.WashValve = Dial(503, ControlRect("WashValve"), c.WashValve, 1, "Rotate wash valve clockwise to open. Wait 10 seconds before enabling pickup pump.");
@@ -271,7 +272,7 @@ namespace IceResurfacer.Presentation
             Label(new Rect(1225, 852, 255, 24), s.InDumpZone ? "DUMP PIT ALIGNED" : s.InServiceBay ? "PIT AT FAR END OF BAY" : "DUMP OFF ICE ONLY", small, s.InDumpZone ? Mint : Muted);
             GUI.enabled = true;
             Box(new Rect(100, 880, 1400, 20), Navy);
-            Label(new Rect(120, 881, 1380, 19), game.Looking ? "HEAD LOOK  /  Release RMB to return forward and operate instruments." : "W / S drive   A / D steer   SHIFT precision speed   SPACE brake   Hold RMB head look   Mouse instruments", small, Muted);
+            Label(new Rect(120, 881, 1380, 19), game.Looking ? "HEAD LOOK  /  Release RMB to keep this view and use instruments. R recenters. Hold SPACE to rise." : "W/S drive   A/D steer   SHIFT precision   CTRL brake   SPACE rise   RMB look   R recenter   Mouse instruments", small, Muted);
         }
 
         float Lever(int hint, Rect rect, float value, string top, string bottom, string help)
@@ -300,7 +301,7 @@ namespace IceResurfacer.Presentation
             return value;
         }
 
-        float Dial(int hint, Rect rect, float value, float maximum, string help)
+        float Dial(int hint, Rect rect, float value, float maximum, string help,float travelDegrees=300)
         {
             int id = GUIUtility.GetControlID(hint, FocusType.Passive);
             Event e = Event.current;
@@ -309,7 +310,7 @@ namespace IceResurfacer.Presentation
             if (GUI.enabled && rect.Contains(e.mousePosition))
             {
                 hoverHint = help;
-                if (e.type == EventType.ScrollWheel) { value = Mathf.Clamp(value - e.delta.y * maximum * .025f, 0, maximum); e.Use(); }
+                if (e.type == EventType.ScrollWheel) { value = Mathf.Clamp(value - e.delta.y * maximum * 7.5f/travelDegrees, 0, maximum); e.Use(); }
                 if (e.type == EventType.MouseDown && e.button == 0) { GUIUtility.hotControl = id; dialLastAngle = angle; e.Use(); }
             }
             if (GUIUtility.hotControl == id)
@@ -317,14 +318,14 @@ namespace IceResurfacer.Presentation
                 if (GUI.enabled && e.type == EventType.MouseDrag)
                 {
                     if (Vector2.Distance(e.mousePosition, center) > 12)
-                        value = Mathf.Clamp(value + Mathf.DeltaAngle(dialLastAngle, angle) / 300 * maximum, 0, maximum);
+                        value = Mathf.Clamp(value + Mathf.DeltaAngle(dialLastAngle, angle) / travelDegrees * maximum, 0, maximum);
                     dialLastAngle = angle; e.Use();
                 }
                 if (e.type == EventType.MouseUp || !GUI.enabled) { GUIUtility.hotControl = 0; if (e.type == EventType.MouseUp) e.Use(); }
             }
             Texture(rect, disc, Inset);
             Texture(rect, ring, GUI.enabled ? Amber : Muted);
-            float rotation = value / maximum * 300 - 120;
+            float rotation = value / maximum * travelDegrees - 120;
             for (int i = 0; i < 3; i++)
             {
                 float a = (rotation + i * 120) * Mathf.Deg2Rad;
@@ -363,7 +364,7 @@ namespace IceResurfacer.Presentation
             Label(new Rect(396, 216, 730, 25), "NORTHLINE  /  BETWEEN SESSIONS", heading, Mint);
             Label(new Rect(394, 256, 740, 47), "A clean sheet is in your hands.", title, White);
             Label(new Rect(396, 319, 740, 71), "Drive a full resurfacing pass from the operator's seat. Manage the blade, snow conveyors and water while watching the actual finish behind your conditioner.", text, Muted);
-            Label(new Rect(396, 405, 740, 34), "WASD drive  /  SHIFT precision speed  /  RMB head look  /  MOUSE instruments", heading, White);
+            Label(new Rect(396, 405, 740, 34), "WASD drive  /  RMB look  /  R recenter  /  SPACE rise  /  MOUSE instruments", heading, White);
             if (Button(new Rect(397, 465, 225, 50), "START SCORED RUN", new Color(.18f, .40f, .33f))) game.NewSession(false);
             if (Button(new Rect(640, 465, 225, 50), "UNSCORED PRACTICE", Slate)) game.NewSession(true);
             if (Button(new Rect(884, 465, 290, 50), "READ THE OPERATOR GUIDE", Slate)) game.ToggleHelp();
@@ -387,12 +388,12 @@ namespace IceResurfacer.Presentation
             Label(new Rect(214, 150, 950, 44), "Operator's quick guide", title, White);
             if (Button(new Rect(1254, 151, 132, 36), "CLOSE  F1", Slate)) game.ToggleHelp();
             Label(new Rect(216, 218, 550, 25), "01  PREPARE & RESURFACE", heading, Mint);
-            Label(new Rect(216, 255, 550, 280), "Enter with conditioner raised and blade out. Once fully on ice, creep forward, lower the conditioner and engage both augers.\n\nSet a cut near 0.35 mm. Open wash water, wait 10 seconds, then start the pickup pump. Apply flood water while moving.\n\nOverlap the visible wet edge slightly. Use the left brush near boards. Reduce cut and flood in goal areas and on repeated overlaps. The manual snow breaker assists snow feeding.", text, White);
+            Label(new Rect(216, 255, 550, 280), "Enter with conditioner raised and blade out. Once fully on ice, creep forward, lower the conditioner and engage both augers.\n\nSet wheel near 0.35 mm (0.056 mm bite). Open wash water, wait 10 seconds, then start the pickup pump. Apply flood water while moving.\n\nOverlap the visible wet edge slightly. Use the left brush near boards. Reduce cut and flood in goal areas and on repeated overlaps. Jam: stop BOTH augers before J reset.", text, White);
             Box(new Rect(795, 220, 1, 314), Slate);
             Label(new Rect(826, 218, 550, 25), "02  RETURN & EMPTY", heading, Mint);
             Label(new Rect(826, 255, 550, 280), "Retract blade and close flood flow. Stop on ice and let conveyors clear. Stop augers and wash pump; close wash valve and stow brush.\n\nFully lift before the south threshold. Drive to the far snow pit, centred and facing it. Stop at the yellow line, empty the tank, then lower it fully.\n\nFinish Run measures actual coverage and finish. Refill restores water and repairs pickup-pump wear for another pass.", text, White);
-            Label(new Rect(216, 558, 1170, 24), "1 lift   2 horizontal auger   3 vertical auger   4 brush   5 pickup pump   6 snow breaker   Q / E blade", small, Muted);
-            Label(new Rect(216, 585, 1170, 24), "SHIFT + W/S precision speed   SPACE brake   RMB head look   F1 close guide   ESC pause", small, Muted);
+            Label(new Rect(216, 558, 1170, 24), "1 lift   2 horizontal auger   3 vertical auger   4 brush   5 pump   6 snow breaker   Q/E blade   J safe jam reset", small, Muted);
+            Label(new Rect(216, 585, 1170, 24), "SHIFT precision   CTRL brake   Hold SPACE rise   RMB look, release keeps view   R recenter   F1 guide   ESC pause", small, Muted);
         }
 
         void Results(IceResurfacerGame game)

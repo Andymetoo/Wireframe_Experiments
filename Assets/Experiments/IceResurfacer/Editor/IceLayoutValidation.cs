@@ -39,13 +39,13 @@ namespace IceResurfacer.Editor
             float towel=w.DistributionTowelMesh.bounds.size.x*w.DistributionTowel.lossyScale.x;
             float housing=w.ConditionerHousingMesh.bounds.size.x*w.ConditionerHousing.lossyScale.x;
             Require(Mathf.Abs(blade-game.Sim.Config.ConditionerWidth)<.001f,"Rendered blade matches simulated footprint");
-            Require(Mathf.Abs(towel-blade)<.001f,"Water towel covers the same physical working width");
+            Require(Mathf.Abs(towel-game.Sim.Config.WaterDistributionWidth)<.001f,"Water towel matches simulated water distribution width");
             Require(housing>blade&&housing<game.Sim.Config.VehicleHalfWidth*2,"Housing fits the 84-inch vehicle envelope");
-            float projection=Mathf.Tan(76*Mathf.Deg2Rad*.5f)/Mathf.Tan(game.DriverCamera.fieldOfView*Mathf.Deg2Rad*.5f);
-            Require(projection>1.24f&&projection<1.26f,"Authentic working width projects approximately 25% wider");
+            float projection=Mathf.Tan(64*Mathf.Deg2Rad*.5f)/Mathf.Tan(game.DriverCamera.fieldOfView*Mathf.Deg2Rad*.5f)*towel/blade;
+            Require(projection>1.10f&&projection<1.15f,"Real water spread plus lens projects wet half-width 10-15% wider per side");
             observations.Add("PASS physical LEFT seat/platform/steering/dashboard/pedals/access, seat-attached eye, right-side body/plunger, unchanged left brush, positive scales.");
             observations.Add("Measured geometry: blade="+blade.ToString("F3")+"m; towel="+towel.ToString("F3")+"m; housing="+housing.ToString("F3")+"m; vehicle="+(game.Sim.Config.VehicleHalfWidth*2).ToString("F3")+"m.");
-            observations.Add("64-degree seated lens: apparent world-width ratio="+projection.ToString("F3")+" versus prior 76-degree lens; no widened texture or scoring footprint.");
+            observations.Add("61-degree seated lens and real water spread: apparent wet half-width ratio="+projection.ToString("F3")+" versus prior 64-degree lens / 1.956m water; scored coverage still requires actual blade contact.");
         }
         static void CaptureExternal()
         {

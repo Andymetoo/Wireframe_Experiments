@@ -1,0 +1,129 @@
+AURORA R-54 / OPERATOR VISIBILITY AND PHYSICAL SYSTEMS
+26 October 2026
+
+Launch: Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity
+Open the saved scene and press Play; choose scored or practice.
+
+Controls and viewpoint
+RMB rotates the head; release preserves the exact rendered yaw/pitch relative
+to the machine. There is no release target, recenter spring or rotational
+filter left running after release. Yaw remains -170..170 degrees; pitch
+-55..80. Vehicle rotation carries the seat and head together.
+R recenters to yaw 0/pitch 5 over 0.20 seconds using a smoothstep. E already
+adjusts the blade and remains assigned to it. A new mouse motion can interrupt
+an intentional recenter. Only R and New Session intentionally return forward.
+The cursor position is saved at RMB acquisition and restored on release.
+Acquisition and the next frame discard lock-generated deltas. Mouse movement
+outside RMB does not alter yaw/pitch. Guide, pause and focus loss preserve it.
+Space raises eyes 0.48 m and leans forward 0.10 m; release lowers the eyes.
+Both directions preserve head rotation. Ctrl (either side) now applies the
+service brake, previously on Space. WASD and mouse instruments remain usable
+in both postures. Left rear shoulder lean exposes the conditioner edge.
+
+Tank, snow and dumping
+The previous tank was an opaque solid with a dark patch and top-mounted mounds.
+It is now a hollow shell with floor/walls, an opening front dump door, and roof
+panels around a black-framed inspection opening near the operator and a separate
+conveyor inlet. There is no solid roof/body beneath the inspection opening.
+A reusable 221-vertex interior surface occupies 1.488 x 2.026 m. Its integrated
+height represents 2.83 m3 at full physical volume, corresponding to the 3.54 m3
+loose-snow equivalent capacity through 1.25:1 compaction. The uneven profile has
+zero integrated mean. It vanishes when empty and falls as snow is actually
+removed. It is a bulk fill approximation, not simulated snow grains.
+Discharge particles follow accepted vertical-conveyor m3/s; stopped, empty or
+jammed conveyors have no new discharge. Near-full crowding reduces throughput
+and raises load. Rejected vertical throughput sprays near the discharge and
+deposits into nearby ice cells; horizontal overflow deposits at the conditioner.
+The same finite source volume is removed from buffers. Persistent ice snow
+can be collected again. Off-ice losses are recorded separately rather than
+silently creating or deleting storage. SpilledSnowM3 is cumulative throughput,
+not a second snow reservoir. No emission can be sustained without source snow.
+Six seconds of sustained blocked discharge latches a jam, stops both physical
+conveyor animations, and changes load/sound. J resets only while stopped, blade
+out, both conveyors OFF, tank lowered and capacity available. The normal manual
+snow breaker remains available for feed assistance but cannot clear a jam while
+running. This is an inspection/reset abstraction, not a maintenance procedure.
+Dumping retains the stopped/in-zone/equipment-off interlocks. The existing tilt
+and timed 0.35 m3/s transfer now open the door and drive a falling snow stream
+and an accumulating pit mesh. Internal stock decreases during visible discharge;
+the tank does not empty before the transfer. Lowering restores the physical tank.
+Four bounded 360-particle snow pools and two reusable mesh buffers are used;
+no per-cell scene objects or per-frame temporary particle objects are created.
+
+Measured snow calibration
+The original source did NOT fill after 20 yards in the reproducible straight
+fixture. At 42% throttle from rest, 18.288 m then brake/blade-out/conveyor purge:
+  Normal 0.35 mm setting: before 0.047101 m3; after 0.013696 m3 (29.1%).
+  Maximum 0.80 mm setting: before 0.098188 m3; after 0.021871 m3 (22.3%).
+  Maximum tank fill: before 2.774%; after 0.618% of unchanged 3.54 m3 capacity.
+The original maximum cut treated the screw setting as a fully engaged rectangular
+bite. BladeBiteFraction=0.16 now calibrates actual removed ice for the floating
+shoes/rake: normal bite 0.056 mm, maximum 0.128 mm. Both nominal setting and actual
+bite are displayed. Actual cell cut depth and resulting expanded shaved volume
+change together. Loose surface snow remains a separately measured source, so
+total snow is not exactly 16% of the old volume. Expansion remains 3.1; tank
+capacity and UI readings are not multiplied to hide accumulation. Finish/overcut
+thresholds retain their intended response to the nominal range while recording
+physical cut depth. This bite model needs operator calibration, especially with
+different ice hardness, blade rake, speed and downforce.
+The native mouse wheel/drag maps the complete 0..0.8 setting to 1260 degrees
+(3.5 full turns), with hard end stops and continuous reversal. Both HUD and 3D
+handwheel use this same travel; the underlying state never wraps each turn.
+
+Working width and board contact
+The cut remains 1.956 m (77 inches). Investigation found no 25% undersized blade:
+the remaining limitations were water and blade sharing one footprint, grid
+sampling at 0.20 m and edge softening. Water now uses a physical 2.100 m towel,
+emitter and flood footprint, inside a 2.120 m conditioner and 2.130 m vehicle
+envelope. Wash and snow collection remain confined to the actual cut width.
+The 0.10 m grid gives a 1.90..2.00 m rasterized cutting span and approximately
+2.10 m wet span. Every processed centre stays in its articulated physical
+footprint; outside-rink cells receive no water. Wider flooded-only cells do not
+become scored cut coverage. Cosmetic drops are suppressed near board edges.
+A modest 64 -> 61 degree lens adjustment plus real water width gives about
+14% additional apparent wet half-width on each side at equal distance, while
+the physical water increase is 7.4%. Expanding physical water by 25% would
+exceed the machine envelope; no such hidden width or scoring increase is used.
+The default close-board fixture gives an 85 mm / 3.35 inch physical untreated
+margin and 100 mm rasterized edge. Curves and imperfect tracking leave more.
+Exposed stainless side plates have amber lower-edge witnesses. The left plate
+can be inspected with a rear-left/down shoulder view without seeing through
+the seat or conveyor. The original right/down trail view remains available.
+The separate front-left guide has a 90 mm radius at local (-1.015,0.53,2.38).
+Kinematic shallow collisions project motion along the rounded board tangent,
+apply resistance and bounded alignment, then validate the whole body and roller.
+Direct impacts still stop and penalize; repeated contact remains penalized.
+The wheel rotates from actual contact travel. It is not the board brush roller.
+
+Validation and limits
+Results.txt: 24 deterministic core scenarios, including material conservation,
+overflow/recovery/jam interlocks, progressive dump, measured width and calibration,
+glancing contacts, close-board margin and a complete driven scored run.
+The route uses only controls at the production spawn, no pose/cell/tank writes,
+capacity changes or refills. Its outer path was moved 0.05 m nearer the boards
+for the finer grid; flood demand is 23%. It is an overlapping regression route.
+Observed run: 95.18% coverage, 77.7% finish, 85.2 score, 672.3 L flood water,
+0.72 m3 dumped, 1753 seconds and four board-contact penalties. This route is
+neither an efficient operating procedure nor proof of physical authenticity.
+Unity-results.txt, Camera-results.txt and Operations-results.txt record actual
+Unity compilation/Play Mode/graphics/input checks: 27 camera assertions and 19
+operation checks passed, with zero runtime errors. A 240-tick working CPU
+sample measured 3.697 ms/tick and zero managed allocation, excluding HUD/GPU.
+Operations rendering stress
+fixtures explicitly seed an initially full tank; they do not validate fill rate.
+Core fill/recovery/conservation tests use actual generated and transferred snow.
+HUD-player-results-* record 25 passing native GUI checks at each of 1366x768
+and 1920x1080, including full multi-turn adjustment; no measured text clipping.
+The development-player build passed. Captures show the real seated/standing positions,
+inspection opening, outer plate, overflow, dumping and pit.
+Subjective driving feel, glare, mouse ergonomics, board following, snow density,
+maximum bite/load consequences, audio and full-session efficiency need human
+operator playtesting. The CPU sample excludes GPU/display and IMGUI; it is not
+a guaranteed frame budget. No real-time granular, fluid, tire or rollover solver
+has been introduced. The optional wash circuit and priming model are preserved.
+
+Reference dimensions rechecked 26 October 2026:
+https://zamboni.com/wp-content/uploads/specs/546_specs.pdf
+Manufacturer dimensions/capacities are reference facts; bite fraction, guide
+response, jam timer and particle/mesh presentation are prototype assumptions.
+All changes remain within this experiment. No branch, commit or push was made.

@@ -47,13 +47,13 @@ namespace IceResurfacer.Presentation
             var c=sim.Controls; float speed=Mathf.Abs(sim.Vehicle.Speed), factor=running?1:0;
             target[0]=.48f;
             target[1]=Mathf.Clamp01(speed)*c.BladeDepthMm*(1-sim.Conditioner.Lift)*.65f;
-            target[2]=(c.HorizontalAuger?.16f:0)+(c.VerticalAuger?.18f:0);
+            target[2]=((c.HorizontalAuger?.16f:0)+(c.VerticalAuger?.18f:0))*(1+sim.ConveyorCongestion*.65f);
             target[3]=hydraulic?.3f:0;
             target[4]=c.FloodFlow*.17f+(c.WashPump?.1f:0);
             target[5]=.15f;
             for(int i=0;i<layers.Length;i++)layers[i].volume=Mathf.Lerp(layers[i].volume,target[i]*factor,1-Mathf.Exp(-6*Time.unscaledDeltaTime));
             layers[0].pitch=.72f+speed*.12f+sim.MachineLoad*.23f;
-            layers[2].pitch=1-sim.MachineLoad*.18f;
+            layers[2].pitch=sim.ConveyorJammed?.38f:1-sim.MachineLoad*.18f;
         }
         void OnDestroy() { foreach(var source in layers)if(source!=null&&source.clip!=null)Destroy(source.clip); }
     }

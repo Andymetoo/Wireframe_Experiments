@@ -15,6 +15,7 @@ namespace IceResurfacer.Presentation
         public Transform OperatorStation, Seat, SteeringColumn, Dashboard, Pedals, AccessSteps;
         public Transform SnowBreakerPlunger, BodyTank, HorizontalAugerLever, VerticalAugerLever;
         public Transform AcceleratorPedal, BrakePedal, CuttingBlade, DistributionTowel, ConditionerHousing;
+        public Transform TankInspection, TankDischarge, DumpOutlet, TankDoor, PitSnow, GuideRoller, ConditionerLeftEdge;
         public float WorkingWidth;
         // Geometry witnesses survive batching. Built-in cube meshes are referenced,
         // never added to the owned Meshes list or destroyed by this experiment.
@@ -317,14 +318,16 @@ namespace IceResurfacer.Presentation
                     world.TankPivot,world.SteeringWheel,world.BladeWheel,world.WashValve,
                     world.FloodLever,world.ConditionerLever,world.VerticalAuger,world.BrushArm,
                     world.HorizontalAugerLever,world.VerticalAugerLever,world.SnowBreakerPlunger,
-                    world.AcceleratorPedal,world.BrakePedal
+                    world.AcceleratorPedal,world.BrakePedal,world.GuideRoller
                 };
                 foreach(var wheel in world.FrontWheels)moving.Add(wheel);
                 foreach(var wheel in world.RearWheels)moving.Add(wheel);
                 BatchMeshes(world.Machine,moving);
                 foreach(var wheel in world.FrontWheels)BatchMeshes(wheel);
                 foreach(var wheel in world.RearWheels)BatchMeshes(wheel);
-                BatchMeshes(world.TankPivot,new HashSet<Transform>{world.TankSnow});
+                BatchMeshes(world.TankPivot,new HashSet<Transform>{world.TankSnow,world.TankDoor});
+                BatchMeshes(world.TankDoor);
+                BatchMeshes(world.GuideRoller);
                 BatchMeshes(world.TankSnow);
                 BatchMeshes(world.SteeringWheel);
                 BatchMeshes(world.BladeWheel);
@@ -339,7 +342,7 @@ namespace IceResurfacer.Presentation
                 BatchMeshes(world.VerticalAuger);
                 BatchMeshes(world.BrushArm,new HashSet<Transform>{world.Brush});
                 BatchMeshes(world.Brush);
-                BatchMeshes(world.Conditioner,new HashSet<Transform>{world.HorizontalAuger});
+                BatchMeshes(world.Conditioner,new HashSet<Transform>{world.HorizontalAuger,world.CuttingBlade});
                 BatchMeshes(world.HorizontalAuger);
             }
 
@@ -439,6 +442,7 @@ namespace IceResurfacer.Presentation
                     }
                 }
                 Box("Snow pit recess",bay,new Vector3(0,.007f,-41.9f),new Vector3(3.8f,.01f,1.9f),black);
+                world.PitSnow=SnowSurface("Accumulating dumped snow / physical pit",bay,new Vector3(0,.04f,-41.9f));
                 Box("Pit rear curb",bay,new Vector3(0,.14f,-42.85f),new Vector3(4.1f,.28f,.18f),yellow);
                 for(int i=0;i<15;i++)Box("Pit grate bar",bay,new Vector3(-1.75f+i*.25f,.028f,-41.9f),new Vector3(.035f,.025f,1.8f),steel);
                 Label("SNOW DISCHARGE",bay,new Vector3(0,2.45f,-43.4f),.24f,Color.white,Quaternion.identity);
@@ -527,6 +531,12 @@ namespace IceResurfacer.Presentation
                 VerticalConveyor(machine);
                 Cylinder("Filler neck",machine,new Vector3(.56f,1.48f,.13f),.17f,.11f,steel,Vector3.up);
                 Cylinder("Filler cap",machine,new Vector3(.56f,1.55f,.13f),.2f,.035f,black,Vector3.up);
+                var roller=Group("Front-left board guide / distinct from board brush",machine,new Vector3(config.GuideRollerX,.53f,config.GuideRollerZ));
+                Beam("Guide roller bracket",machine,new Vector3(-.82f,.55f,config.GuideRollerZ),new Vector3(config.GuideRollerX,.55f,config.GuideRollerZ),.055f,steel);
+                world.GuideRoller=Group("Board guide freely rotating wheel",roller);
+                Cylinder("Guide roller rubber tire",world.GuideRoller,Vector3.zero,config.GuideRollerRadius*2,.16f,rubber,Vector3.up);
+                Cylinder("Guide roller axle cap",world.GuideRoller,new Vector3(0,.09f,0),.07f,.025f,steel,Vector3.up);
+                Box("Guide roller rotation witness",world.GuideRoller,new Vector3(config.GuideRollerRadius*.6f,.083f,0),new Vector3(.045f,.012f,.019f),orange);
                 Box("Rear bumper",machine,new Vector3(0,.48f,-.91f),new Vector3(2.04f,.15f,.12f),rubber);
                 Box("Front bumper",machine,new Vector3(0,.5f,2.65f),new Vector3(1.97f,.17f,.12f),rubber);
                 for(int side=-1;side<=1;side+=2)
@@ -544,22 +554,32 @@ namespace IceResurfacer.Presentation
             {
                 world.TankPivot=Group("Snow tank forward dump hinge",machine,new Vector3(0,.78f,2.46f));
                 var tank=world.TankPivot;
-                // Chamfered manufactured shell; open top exposes actual collected snow.
-                world.BodyTank=BevelBox("Main snow tank shell / equipment side",tank,new Vector3(.20f,.50f,-.93f),new Vector3(1.56f,.96f,1.99f),.15f,white);
-                Box("Tank opening dark recess",tank,new Vector3(.20f,.982f,-.96f),new Vector3(1.2f,.022f,1.59f),black);
-                Box("Tank lip left",tank,new Vector3(-.47f,.99f,-.96f),new Vector3(.11f,.07f,1.73f),steel);
-                Box("Tank lip right",tank,new Vector3(.87f,.99f,-.96f),new Vector3(.11f,.07f,1.73f),steel);
-                Box("Tank lip front",tank,new Vector3(.20f,.99f,-.12f),new Vector3(1.44f,.07f,.10f),steel);
-                Box("Tank lip rear",tank,new Vector3(.20f,.99f,-1.79f),new Vector3(1.44f,.07f,.10f),steel);
-                world.TankSnow=Group("Collected snow fill",tank,new Vector3(.20f,1.0f,-.95f));
-                for(int i=0;i<7;i++)
+                // Hollow walls and floor, with separate roof panels around actual
+                // inspection/inlet holes. There is no opaque cube beneath the window.
+                world.BodyTank=Group("Hollow snow tank shell / equipment side",tank,new Vector3(.20f,.51f,-.98f));
+                var shell=world.BodyTank;
+                Box("Tank internal floor",shell,new Vector3(0,-.48f,0),new Vector3(1.56f,.06f,2.10f),steel);
+                for(int side=-1;side<=1;side+=2)
+                    Box("Tank side wall",shell,new Vector3(side*.763f,0,0),new Vector3(.034f,1.02f,2.10f),white);
+                Box("Tank rear wall",shell,new Vector3(0,0,-1.032f),new Vector3(1.56f,1.02f,.036f),white);
+                world.TankDoor=Group("Forward dump door hinge",tank,new Vector3(.20f,1.02f,.052f));
+                Box("Opening snow dump door",world.TankDoor,new Vector3(0,-.51f,0),new Vector3(1.56f,1.02f,.036f),white);
+                Box("Tank roof forward panel",tank,new Vector3(.20f,1.025f,-.59f),new Vector3(1.56f,.045f,1.32f),white);
+                Box("Roof rear rim",tank,new Vector3(.20f,1.025f,-2.005f),new Vector3(1.56f,.045f,.05f),white);
+                Box("Roof rear left rim",tank,new Vector3(-.56f,1.025f,-1.625f),new Vector3(.04f,.045f,.71f),white);
+                Box("Roof between window and inlet",tank,new Vector3(.085f,1.025f,-1.625f),new Vector3(.09f,.045f,.71f),white);
+                Box("Roof rear right panel",tank,new Vector3(.705f,1.025f,-1.625f),new Vector3(.55f,.045f,.71f),white);
+                Box("Inlet rear closure",tank,new Vector3(.28f,1.025f,-1.90f),new Vector3(.30f,.045f,.16f),white);
+                Box("Inlet forward closure",tank,new Vector3(.28f,1.025f,-1.36f),new Vector3(.30f,.045f,.18f),white);
+                world.TankInspection=Group("Physical snow inspection opening / clear sightline",tank,new Vector3(-.25f,1.05f,-1.625f));
+                for(int side=-1;side<=1;side+=2)
                 {
-                    float x=((i%3)-1)*.38f,z=(i/3-1)*.45f;
-                    var mound=Sphere("Snow mound",world.TankSnow,new Vector3(x,0,z),.72f,snow);
-                    mound.localScale=new Vector3(.63f,.18f,.69f);
+                    Box("Black inspection window side frame",world.TankInspection,new Vector3(side*.29f,0,0),new Vector3(.035f,.035f,.71f),black);
+                    Box("Black inspection window end frame",world.TankInspection,new Vector3(0,0,side*.34f),new Vector3(.60f,.035f,.035f),black);
                 }
-                // Leave a nonsingular transform during mesh consolidation; runtime controls fill height.
-                world.TankSnow.localScale=Vector3.one;
+                Beam("Inspection opening protective crossbar",world.TankInspection,new Vector3(-.28f,.01f,0),new Vector3(.28f,.01f,0),.014f,steel);
+                world.TankSnow=SnowSurface("Uneven snow surface / actual tank contents",tank,new Vector3(.20f,.06f,-.98f));
+                world.DumpOutlet=Group("Snow exiting tilted tank at forward door",tank,new Vector3(.20f,.16f,.12f));
                 for(int side=-1;side<=1;side+=2)
                 {
                     Box("Tank glacier stripe",tank,new Vector3(.20f+side*.786f,.39f,-.93f),new Vector3(.016f,.26f,1.56f),cyan);
@@ -569,6 +589,14 @@ namespace IceResurfacer.Presentation
                 }
                 Label("AURORA",tank,new Vector3(.20f,.68f,.074f),.13f,new Color(.035f,.12f,.16f),Quaternion.identity);
                 Box("Front accent panel",tank,new Vector3(.12f,.34f,.073f),new Vector3(1.35f,.19f,.018f),navy);
+            }
+
+            Transform SnowSurface(string name,Transform parent,Vector3 position)
+            {
+                var surface=Group(name,parent,position);
+                surface.gameObject.AddComponent<MeshFilter>();
+                surface.gameObject.AddComponent<MeshRenderer>().sharedMaterial=snow;
+                return surface;
             }
 
             void Wheels(Transform machine)
@@ -694,19 +722,22 @@ namespace IceResurfacer.Presentation
             {
                 var c=world.Conditioner=Group("Trailing conditioner / articulated hitch",root);
                 float width=config.ConditionerWidth, half=width*.5f;
+                float wetWidth=config.WaterDistributionWidth;
                 // Blade and towel use the simulation's exact working width. The housing
                 // surrounds them rather than squeezing the working parts inside a blade-wide shell.
-                world.ConditionerHousing=BevelBox("Conditioner stainless housing",c,new Vector3(0,.24f,0),new Vector3(width+.12f,.32f,.73f),.075f,steel);
+                world.ConditionerHousing=BevelBox("Conditioner stainless housing",c,new Vector3(0,.24f,0),new Vector3(Mathf.Max(width+.12f,wetWidth+.02f),.32f,.73f),.075f,steel);
                 world.ConditionerHousingMesh=world.ConditionerHousing.GetComponent<MeshFilter>().sharedMesh;
                 Box("Conditioner upper guard",c,new Vector3(0,.43f,.02f),new Vector3(width+.09f,.08f,.62f),navy);
-                world.DistributionTowel=Box("Trailing distribution towel",c,new Vector3(0,.018f,-.44f),new Vector3(width,.025f,.27f),cloth);
+                world.DistributionTowel=Box("Trailing distribution towel",c,new Vector3(0,.018f,-.44f),new Vector3(wetWidth,.025f,.27f),cloth);
                 world.DistributionTowelMesh=world.DistributionTowel.GetComponent<MeshFilter>().sharedMesh;
-                for(int i=0;i<17;i++)Box("Towel longitudinal fold",c,new Vector3(Mathf.Lerp(-half+.04f,half-.04f,i/16f),.033f,-.44f),new Vector3(.018f,.01f,.26f),cloth);
+                for(int i=0;i<17;i++)Box("Towel longitudinal fold",c,new Vector3(Mathf.Lerp(-wetWidth*.5f+.02f,wetWidth*.5f-.02f,i/16f),.033f,-.44f),new Vector3(.018f,.01f,.26f),cloth);
                 world.CuttingBlade=Box("Cutting blade edge",c,new Vector3(0,.043f,.30f),new Vector3(width,.015f,.127f),steel);
                 world.CuttingBladeMesh=world.CuttingBlade.GetComponent<MeshFilter>().sharedMesh;
                 for(int side=-1;side<=1;side+=2)
                 {
-                    Box("Conditioner side skirt",c,new Vector3(side*(half+.04f),.14f,-.04f),new Vector3(.032f,.24f,.8f),rubber);
+                    var edge=Box("Exposed conditioner side plate",c,new Vector3(side*(Mathf.Max(width,wetWidth)*.5f+.007f),.14f,-.04f),new Vector3(.014f,.24f,.8f),steel);
+                    if(side==-1)world.ConditionerLeftEdge=edge;
+                    Box("Amber conditioner clearance edge",c,new Vector3(side*(Mathf.Max(width,wetWidth)*.5f+.007f),.034f,-.04f),new Vector3(.018f,.035f,.8f),orange);
                     Beam("Lift linkage",c,new Vector3(side*.58f,.34f,.25f),new Vector3(side*.58f,.58f,.76f),.055f,steel);
                     Cylinder("Conditioner runner",c,new Vector3(side*(half-.08f),.07f,.22f),.13f,.045f,black,Vector3.right);
                 }
@@ -723,7 +754,7 @@ namespace IceResurfacer.Presentation
                     Cylinder("Flood outlet nozzle",c,new Vector3(x,.08f,-.42f),.014f,.05f,black,Vector3.down);
                 }
                 Beam("Wash water manifold",c,new Vector3(-half+.1f,.42f,-.19f),new Vector3(half-.1f,.42f,-.19f),.042f,cyan);
-                Beam("Flood distribution manifold",c,new Vector3(-half+.04f,.11f,-.42f),new Vector3(half-.04f,.11f,-.42f),.035f,steel);
+                Beam("Flood distribution manifold",c,new Vector3(-wetWidth*.5f+.02f,.11f,-.42f),new Vector3(wetWidth*.5f-.02f,.11f,-.42f),.035f,steel);
                 world.WaterOutlet=Group("Visible flood emission",c,new Vector3(0,.09f,-.43f));
                 world.SnowOutlet=Group("Escaping snow at conditioner",c,new Vector3(half-.2f,.16f,-.41f));
                 Label("AURORA  /  CONDITIONER",c,new Vector3(0,.477f,.01f),.065f,Color.white,Quaternion.Euler(270,180,0));
@@ -753,6 +784,7 @@ namespace IceResurfacer.Presentation
                 Beam("Snow delivery elbow",tube,new Vector3(0,1.52f,0),new Vector3(0,1.6f,.36f),.31f,navy);
                 Beam("Snow delivery chute",tube,new Vector3(0,1.6f,.36f),new Vector3(0,1.58f,1.29f),.31f,navy);
                 Beam("Snow delivery downspout",tube,new Vector3(0,1.58f,1.29f),new Vector3(0,1.39f,1.29f),.31f,navy);
+                world.TankDischarge=Group("Vertical auger snow discharge into bin",tube,new Vector3(0,1.38f,1.29f));
             }
 
             void Brush(Transform machine)

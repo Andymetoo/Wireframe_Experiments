@@ -1,102 +1,71 @@
-Ice Resurfacer deterministic simulation validation
-=================================================
+﻿Ice Resurfacer validation
+26 October 2026
 
-Run from the repository root with the installed .NET 9 SDK:
-  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release
+Run actual Core source with the dependency-free .NET 9 harness:
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release -p:UseSharedCompilation=false
+Unity ignores this directory because its name ends in ~.
 
-The project has no NuGet dependencies. It compiles the actual Core source directly.
-Unity ignores this directory because its name ends in ~. Build products stay here.
-Results.txt contains the successful observed output on 2026-10-25.
+Results.txt records 24 deterministic scenarios: original driving, independent
+conveyors, wash priming/recovery, water, brush, practice/scoring and interlocks;
+physical cut/water footprints and conservation; snow-breaker assistance;
+measured snow calibration; spill/jam/dump/recollection conservation; progressive
+dumping; side/end/rounded board contacts; close-board water margin; and an
+integrated scored route from the production default spawn.
 
-Nineteen scenarios check finite configuration, deterministic fixed stepping,
-hydrostatic coasting and braking, reversal, body/rink collision, conditioner
-tracking, trailing spatial coverage and missed strips, conditioner lift,
-independent conveyors and snow overflow/load/capacity, gravity wash feed and
-pickup priming/recirculation, finite flood water and pooling, left brush contact,
-exit/tank interlocks, continuous controls, unscored practice, and a complete run.
-The correction pass adds physical cutting/wet-width measurements, per-tick
-turning footprint bounds, water/snow mass balance, and manual snow-breaker
-capacity/interlock/conservation checks.
+The complete route uses only throttle/steer/equipment commands. It never
+writes poses or cells, changes tank capacity, or refills. Five nested perimeter
+circuits and nine overlapping oval circuits cover the sheet before clearing,
+exiting, aligning with the pit, dumping, lowering and finishing. The outer route
+is 0.05 m closer to the boards than the earlier coarse-grid regression and
+uses 23% flood demand. Four board-contact penalties are retained. This route
+is a regression harness, not an in-game autopilot or an efficient operator plan.
+Individual mechanism tests deliberately use pose fixtures and small capacities
+to isolate behavior. Material balance counts actual cut depth, loose snow,
+conveyor buffers, tank, pit and accounted off-ice losses; cumulative spill
+throughput is not counted as a second storage reservoir.
 
-Measured width
-The physical cut remains 1.956 m (approximately 77 inches), against a 2.130 m
-vehicle envelope (approximately 84 inches). At the existing 0.20 m cell size,
-the rasterized straight cut/wet span is 1.80-2.00 m depending on lateral cell
-alignment. The measurement covers several offsets and configurable working
-widths. Cutting and water use the same cells. Every changed cell in a working
-turn is checked against the articulated conditioner's physical footprint.
-There is no shader-only widening, increased nominal blade, or changed score
-area. A 25% physical increase would make a 2.445 m blade, wider than the cited
-vehicle. The corrected camera perspective supplies apparent enlargement while
-the builder now follows the same calibrated working width as simulation.
+20-yard before/after measurements compare the original source/configuration
+against the current source at the same nominal blade settings and 42% throttle
+from rest, then blade-out/brake/conveyor purge. The previous implementation did
+not fill the tank over that distance. See Results.txt for observed volumes,
+OperatorRealism.txt for the actual bite model and its calibration assumptions.
+Reference blade stays 1.956 m; water distribution is 2.100 m; grid is 0.10 m.
+Cut and water have separate physical bounds. Water-only cells earn no cut
+coverage. Default close-board physical margin is 85 mm, rasterized margin 100 mm.
 
-Manual plunger
-StrokeSnowBreaker transfers up to the configured 0.004 m3 of existing throat
-snow from the horizontal buffer into available vertical-buffer capacity. It
-requires the tank and conditioner lowered and the vertical conveyor running;
-safe strokes without transferable snow may still animate. This optional
-manual assist never creates snow, empties the tank, or changes the previous
-automatic conveyor behavior. Its transfer volume is a calibration assumption,
-not a manufacturer specification or a granular bridging solver.
+Repeatable Unity / input / rendering validation
+StageUnityValidation.ps1 creates an isolated project at Validation~/UnityProject
+with its own Settings, Packages and Library. Use -UpdateOnly on later runs.
+If scripts are disabled locally, invoke with:
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/StageUnityValidation.ps1 -UpdateOnly
 
-The complete-run test starts at the production default spawn in the service bay.
-It drives exclusively through throttle, steering, and equipment controls. It
-never writes the vehicle pose, conditioner pose, or ice cells; never enlarges
-capacities or changes geometry; and never refills. A pure-pursuit route follows
-five nested perimeter circuits and nine overlapping long oval circuits, then
-clears its conveyors, raises the conditioner, crosses the exit threshold, aligns
-with the far snow pit, stops, unloads, lowers the tank, and finishes.
+Run installed Unity 6000.4.1f1 against that copy with -batchmode -force-d3d11
+and -executeMethod IceResurfacer.Editor.IceResurfacerEditor.RunBatch.
+Do not pass -quit: the method enters real Play Mode and exits after checking.
+Unity licensing must be accessible to the validation process. No license,
+shared project settings, packages, or live user scene are changed by the tests.
+Reports and camera captures initially land in the copy's own experiment
+Validation~ directory. Copy the successful reports/images here after the run.
 
-Observed complete-run result with default configuration and seed 546:
-  Coverage 95.06%; finish quality 79.6%; score 90.6/100.
-  Flood water used 700.7 L; snow dumped 2.92 m3.
-  Elapsed simulation time 1750 seconds; operator mistakes 0.
-  Complete=true, proper exit=true, one completed snow dump.
+Unity-results.txt: saved scene, shader, spatial lane, audio and runtime errors.
+Camera-results.txt: real Input System camera behavior, stance and sightlines.
+Operations-results.txt: actual snow visual/state behavior and CPU/allocation
+sample. Rendering stress fixtures seed initial tank stock near full; ordinary
+fill rate is measured by the core harness without tank writes.
 
-The small mechanism tests intentionally use explicit pose fixtures to isolate
-individual effects. Only the full-run test demonstrates integrated driving and
-completion. The route is a regression harness, not an in-game autopilot or a
-claim that this overlapping pattern is an efficient real operator's route.
-The full-run test does not use wash water; priming and recovery are checked in
-their dedicated scenario. No human ergonomics, audio quality, tire dynamics,
-frame-time budget, or visual realism claims follow from these pure-core tests.
-Unity compilation, shader validation, and scene smoke checks are documented
-separately in the experiment's main documentation.
+Then run -executeMethod IceResurfacer.Editor.IceResurfacerEditor.BuildLayoutPlayer
+against the isolated copy. It adds the probe only to a temporary scene and
+builds Validation~/Build/AuroraLayout.exe. Run RunLayoutPlayer.ps1 with Width
+1366 / Height 768, then Width 1920 / Height 1080. The helper starts hidden,
+verifies alpha zero and a non-interactive owned window, and supplies native
+messages without moving the user's OS pointer or activating the window.
+It checks switches/levers, three and 3.5 complete blade turns, stops/reversal,
+wash handwheel, interlocks, guide/pause/start/results, clipping and captures.
+Native wheel scrolling and human ergonomics remain manual checks.
 
-Repeatable Unity and HUD validation
-----------------------------------
-StageUnityValidation.ps1 makes an isolated project under Validation~/UnityProject,
-with its own Settings, Packages and Library. Run it with PowerShell's explicit
--ExecutionPolicy Bypass -File switch if script execution is disabled locally.
-Use -UpdateOnly after the first copy. The staging script disables only the
-copy's Editor Search startup indexing to avoid a Unity first-use/Play Mode race.
-It never edits the original project's preferences, settings or open scene.
-
-Run the installed Unity 6000.4.1f1 executable against that copy with -batchmode,
--force-d3d11 and -executeMethod IceResurfacer.Editor.IceResurfacerEditor.RunBatch.
-Do not pass -quit: the method enters real Play Mode and exits after its checks.
-Camera-only inspection images and reports are initially written to the copy's
-own experiment Validation~ directory.
-
-Then invoke -executeMethod IceResurfacer.Editor.IceResurfacerEditor.BuildLayoutPlayer
-against the copy. This explicitly attaches the probe only to a temporary scene;
-the normal launch scene never contains it. The development player is produced
-in Validation~/Build. RunLayoutPlayer.ps1 launches it hidden, makes only its own
-window fully transparent and click-through before showing it without activation,
-and tests one requested resolution per process. Mouse messages go only to that
-player's own native window, exercising OnGUI without moving the OS cursor,
-activating a window, or manipulating the user's editor.
-Screenshots come from the actual player framebuffer, including all instruments.
-
-The launcher uses Direct3D11 BitBlt presentation for its transparent test window,
-a per-process switch; the project retains its existing rendering configuration.
-Unity reference: https://docs.unity.com/en-us/engine/6000.7/manual/unity-editor/command-line-arguments/player
-Normal scene/graphics/input checks use the project's unmodified Direct3D11 path.
-Use separate invocations of RunLayoutPlayer.ps1 with -Width 1366 -Height 768
-and -Width 1920 -Height 1080. Each writes a resolution-specific result and
-text-fit report. Combined HUD-player-results.txt and HUD-layout-issues.txt
-contain both final observed runs. The disposable build uses its own product
-identity so its window preferences stay separate from the original project.
-HUD player validation checks both exact client sizes, continuous lever/dial input,
-switches, plunger, guide, pause/resume, service/finish guards, session reset, and
-scored/practice launch. Text metrics are audited alongside saved visual captures.
+Camera images: Operator-seated.png, Operator-standing-window.png,
+Operator-board-side-edge.png, Operator-full-tank-window.png,
+Operator-auger-discharge.png. Operation images: Snow-overflow.png,
+Snow-dumping.png, Snow-dumped-pit.png. These are actual Unity camera renders;
+HUD-* images separately include the player's native IMGUI framebuffer.
+No simulation check proves physically authentic driving or a GPU frame budget.

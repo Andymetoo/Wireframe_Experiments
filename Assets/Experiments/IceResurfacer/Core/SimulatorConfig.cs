@@ -9,7 +9,7 @@ namespace IceResurfacer.Core
         public float RinkWidth = 26f;
         public float RinkLength = 60f;
         public float CornerRadius = 8.5f;
-        public float CellSize = 0.2f;
+        public float CellSize = 0.1f;
         public float GateHalfWidth = 2.7f;
         public float BayLength = 12f;
         public float Wheelbase = 1.96f;
@@ -17,6 +17,10 @@ namespace IceResurfacer.Core
         public float BodyFront = 2.5f;
         public float BodyRear = 0.45f;
         public float ConditionerWidth = 1.956f;
+        public float WaterDistributionWidth = 2.10f;
+        public float GuideRollerX = -1.015f;
+        public float GuideRollerZ = 2.38f;
+        public float GuideRollerRadius = .09f;
         public float ConditionerLength = 0.8f;
         public float HitchBehindAxle = 0.45f;
         public float DrawbarLength = 0.65f;
@@ -42,7 +46,13 @@ namespace IceResurfacer.Core
         public float SnowBreakerStrokeM3 = 0.004f;
         public float SnowExpansionRatio = 3.1f;
         public float DumpM3PerSecond = 0.35f;
-        public float MaxBladeDepthMm = 1.0f;
+        public float MaxBladeDepthMm = .8f;
+        // Nominal screw setting is not a fully engaged rectangular bite. The
+        // floating shoes/rake admit this fraction as actual shaved ice depth.
+        // Prototype calibration: expose both quantities, never scale the tank UI.
+        public float BladeBiteFraction = .16f;
+        public float BladeWheelTurns = 3.5f;
+        public float ConveyorJamSeconds = 6f;
         public float RecommendedBladeDepthMm = 0.35f;
         public float CumulativeSafeCutMm = 1.2f;
         public float SensitiveCumulativeSafeCutMm = 0.55f;
@@ -54,7 +64,8 @@ namespace IceResurfacer.Core
         public void Validate()
         {
             float[] values = { RinkWidth, RinkLength, CornerRadius, CellSize, GateHalfWidth, BayLength,
-                Wheelbase, VehicleHalfWidth, BodyFront, BodyRear, ConditionerWidth, ConditionerLength,
+                Wheelbase, VehicleHalfWidth, BodyFront, BodyRear, ConditionerWidth, WaterDistributionWidth,
+                GuideRollerX, GuideRollerZ, GuideRollerRadius, BladeBiteFraction, BladeWheelTurns, ConveyorJamSeconds, ConditionerLength,
                 HitchBehindAxle, DrawbarLength, MaxSteeringRadians, SteeringRate, ForwardSpeed, ReverseSpeed,
                 Acceleration, HydrostaticDeceleration, ServiceBrakeDeceleration, ConditionerLiftSeconds,
                 TankLiftSeconds, FloodCapacityLiters, WashCapacityLiters, SnowCapacityM3, FloodMaxLitersPerSecond,
@@ -68,13 +79,15 @@ namespace IceResurfacer.Core
                     throw new ArgumentException("Ice resurfacer configuration must contain finite numbers.");
             if (RinkWidth < 10 || RinkWidth > 120 || RinkLength < 20 || RinkLength > 120 || CellSize < 0.08f || CellSize > 0.5f ||
                 CornerRadius < 0 || CornerRadius > Math.Min(RinkWidth, RinkLength) * .5f ||
-                Wheelbase <= 0 || DrawbarLength <= 0 || ConditionerWidth <= 0 || ConditionerLength <= 0 ||
+                Wheelbase <= 0 || DrawbarLength <= 0 || ConditionerWidth <= 0 || WaterDistributionWidth <= 0 ||
+                WaterDistributionWidth > VehicleHalfWidth*2 || ConditionerLength <= 0 || GuideRollerRadius <= 0 ||
+                BladeBiteFraction <= 0 || BladeBiteFraction > 1 || BladeWheelTurns < 3 || BladeWheelTurns > 4 || ConveyorJamSeconds <= 0 ||
                 FloodCapacityLiters <= 0 || WashCapacityLiters <= 0 || SnowCapacityM3 <= 0 ||
                 ConditionerLiftSeconds <= 0 || TankLiftSeconds <= 0 || FreezeSeconds <= 0 ||
                 GateHalfWidth <= VehicleHalfWidth || BayLength <= BodyFront + BodyRear ||
                 MaxSteeringRadians <= 0 || MaxSteeringRadians >= 1.2f || SteeringRate <= 0 ||
                 ForwardSpeed <= 0 || ReverseSpeed <= 0 || Acceleration <= 0 || HydrostaticDeceleration <= 0 ||
-                ServiceBrakeDeceleration <= 0 || MaxBladeDepthMm <= 0 ||
+                ServiceBrakeDeceleration <= 0 || MaxBladeDepthMm <= 0 || RecommendedBladeDepthMm <= 0 ||
                 ConditionerSnowCapacityM3 <= 0 || VerticalSnowCapacityM3 <= 0 || SnowBreakerStrokeM3 <= 0 ||
                 VehicleHalfWidth <= 0 || BodyFront <= 0 || BodyRear <= 0 || HitchBehindAxle < 0 ||
                 FloodMaxLitersPerSecond <= 0 || WashMaxLitersPerSecond <= 0 || WashRecoveryFraction < 0 || WashRecoveryFraction > 1 ||

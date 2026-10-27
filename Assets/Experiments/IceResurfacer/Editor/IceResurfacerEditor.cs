@@ -172,16 +172,18 @@ namespace IceResurfacer.Editor
                     InputSystem.QueueStateEvent(testMouse,new MouseState());
                     InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(Key.W,Key.LeftShift));
                 }
+                if(frame==68&&passPrepared)
+                    InputSystem.QueueStateEvent(testMouse,new MouseState { buttons=2,delta=new Vector2(-900,250) });
                 if(frame==95&&passPrepared)
                 {
                     Require(!game.Looking,"RMB release restores instrument mode");
-                    Require(Quaternion.Angle(Quaternion.Euler(5,0,0),game.DriverCamera.transform.localRotation)<Quaternion.Angle(Quaternion.Euler(5,0,0),releasedHead),"Released head moves toward forward view");
+                    Require(Vector3.Distance(game.DriverCamera.transform.localRotation*Vector3.forward,releasedHead*Vector3.forward)<.000001f,"Released head keeps exactly the same vehicle-relative orientation");
                     Require(Mathf.Abs(game.Sim.Controls.Throttle-.42f)<.001f,"W + Shift reaches precision pedal demand");
-                    InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(Key.Space));
+                    InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(Key.LeftCtrl));
                 }
                 if(frame==102&&passPrepared)
                 {
-                    Require(game.Sim.Controls.Brake,"Space input reaches service brake");
+                    Require(game.Sim.Controls.Brake,"Ctrl input reaches service brake");
                     InputSystem.QueueStateEvent(testKeyboard,new KeyboardState());
                 }
                 if(frame==120&&passPrepared)
@@ -206,7 +208,7 @@ namespace IceResurfacer.Editor
                     resultReport="Unity "+Application.unityVersion+" Play Mode validation\n"+
                         "Saved launch scene, camera, world, conditioner, state texture, six audio sources: PASS\n"+
                         "Genuine simulated cut/wash/flood lane and snow conveyance: PASS\n"+
-                        "Input System: RMB motion/release, W+Shift precision pedal, Space brake: PASS\n"+
+                        "Input System: persistent RMB motion/release, W+Shift precision pedal, Ctrl brake: PASS\n"+
                         "Runtime renderers: "+renderers+"\n"+
                         "Graphics device: "+SystemInfo.graphicsDeviceName+" / "+SystemInfo.graphicsDeviceType+"\n"+
                         "Runtime error/exception count: "+failures+"\n"+
@@ -218,6 +220,10 @@ namespace IceResurfacer.Editor
                 }
                 if(layoutStarted&&IceLayoutValidation.Tick())
                 {
+                    IceCameraValidation.Run(game,testKeyboard,testMouse);
+                    IceOperationValidation.Run(game);
+                    resultReport+="Snow surface/discharge/overflow/jam/dump/pit rendering and bounded pools: PASS (Operations-results.txt)\n";
+                    resultReport+="Persistent camera, Space stance, R recenter and camera sightlines: PASS (Camera-results.txt)\n";
                     resultReport+="Physical left operator layout and true-width geometry: PASS\n";
                     resultReport+="Final runtime error/exception count: "+failures+"\n";
                     File.WriteAllText(Root+"Validation~/Unity-results.txt",resultReport);

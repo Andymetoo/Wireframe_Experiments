@@ -1,6 +1,9 @@
 AURORA R-54 / LEFT OPERATOR, READABLE HUD, WORKING-WIDTH CORRECTION
 25 October 2026
 
+Historical correction record. OperatorRealism.txt (26 October) supersedes the
+camera release behavior, lens, water width, cell size and snow calibration.
+
 Physical assembly
 The actual station is rebuilt at negative local X, facing local +Z. The seat,
 pedestal, non-slip platform, column shaft/support, steering wheel, dashboard,

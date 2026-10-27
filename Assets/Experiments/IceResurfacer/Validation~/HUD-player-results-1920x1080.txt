@@ -8,7 +8,11 @@ PASS 1920x1080 / Continuous conditioner lever
 PASS 1920x1080 / Horizontal auger switch
 PASS 1920x1080 / Vertical auger switch
 PASS 1920x1080 / Board brush switch
-PASS 1920x1080 / Continuous blade handwheel drag
+PASS 1920x1080 / Precise quarter-turn blade handwheel drag
+PASS 1920x1080 / three full turns retain remaining blade adjustment
+PASS 1920x1080 / 3.5 full turns reach deepest blade stop
+PASS 1920x1080 / blade mechanical end stop rejects extra rotation
+PASS 1920x1080 / blade reverses continuously from end stop
 PASS 1920x1080 / Continuous wash-valve drag
 PASS 1920x1080 / Pickup pump switch
 PASS 1920x1080 / Continuous flood lever

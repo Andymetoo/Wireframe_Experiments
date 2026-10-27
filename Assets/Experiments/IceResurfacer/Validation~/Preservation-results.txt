@@ -1,4 +1,7 @@
-PASS: Packages and ProjectSettings file counts and SHA256 hashes match the pre-correction baseline.
-PASS: git status lists only the owned IceResurfacer experiment and its adjacent folder metadata.
-PASS: validation used an isolated project copy; the original editor was not stopped or switched.
-No commit or push performed.
+﻿PASS 26 October 2026: Git began clean; all changed/untracked files remain inside Assets/Experiments/IceResurfacer/.
+PASS: Packages and ProjectSettings have no tracked differences from the initial repository state.
+PASS: All 14 runtime/editor C# files match SHA256 hashes of the isolated source used for final Unity validation and development build.
+PASS: Owned asset metadata GUIDs are valid.
+PASS: The isolated project owns its temporary player scene, player preferences/settings, build products and Library. The normal launch scene is unchanged.
+PASS: Native HUD validation uses only the temporary player's own hidden, non-interactive window and does not move the user's OS cursor.
+No original Editor was stopped or switched. No branch, commit or push was made.

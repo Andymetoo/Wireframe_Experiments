@@ -81,5 +81,44 @@ namespace IceResurfacer.Core
             if (col < 0 || col >= Columns || row < 0 || row >= Rows) return -1;
             return Index(col, row);
         }
+
+        // Signed distance to the rounded boards; negative is inside. The normal
+        // points back onto the ice and is stable across straights and corners.
+        public float BoardDistance(float x,float z,out float nx,out float nz)
+        {
+            float qx=Math.Abs(x)-(config.RinkWidth*.5f-config.CornerRadius);
+            float qz=Math.Abs(z)-(config.RinkLength*.5f-config.CornerRadius);
+            float ox=Math.Max(0,qx),oz=Math.Max(0,qz);
+            float length=(float)Math.Sqrt(ox*ox+oz*oz);
+            if(length>.00001f) { nx=-Math.Sign(x)*ox/length; nz=-Math.Sign(z)*oz/length; }
+            else { nx=qx>qz?-Math.Sign(x):0; nz=qx>qz?0:-Math.Sign(z); }
+            return length+Math.Min(Math.Max(qx,qz),0)-config.CornerRadius;
+        }
+
+        // Deposits only existing snow into nearby ice cells, including rounded
+        // boundaries. Two passes normalize the kernel without temporary arrays.
+        public float DepositSnow(float x,float z,float volume,float radius=.3f)
+        {
+            int cx=(int)Math.Floor((x-MinX)/CellSize),cz=(int)Math.Floor((z-MinZ)/CellSize);
+            int reach=(int)Math.Ceiling(radius/CellSize);
+            float total=0;
+            for(int pass=0;pass<2;pass++)
+            for(int row=Math.Max(0,cz-reach);row<=Math.Min(Rows-1,cz+reach);row++)
+            for(int col=Math.Max(0,cx-reach);col<=Math.Min(Columns-1,cx+reach);col++)
+            {
+                int i=Index(col,row); if(!Cells[i].IsIce)continue;
+                float dx=CellX(col)-x,dz=CellZ(row)-z;
+                float weight=Math.Max(0,1-(dx*dx+dz*dz)/(radius*radius));
+                if(pass==0)total+=weight;
+                else if(total>0)
+                {
+                    var cell=Cells[i]; float mm=volume*1000*weight/(total*CellSize*CellSize);
+                    cell.SnowMm+=mm; cell.Quality=Math.Max(0,cell.Quality-mm*.5f);
+                    cell.Covered=cell.Covered&&cell.SnowMm<.25f;
+                    Cells[i]=cell;
+                }
+            }
+            return total>0?volume:0;
+        }
     }
 }

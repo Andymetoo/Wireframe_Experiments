@@ -11,23 +11,31 @@ requiring a generation command. No Build Settings change is required.
 Quick controls
 W / S: forward / reverse pedal demand. Opposite demand brakes through zero.
 A / D: steer. Steering does not turn the operator's head.
-Release pedal: hydrostatic deceleration. SPACE: stronger service brake.
+Release pedal: hydrostatic deceleration. CTRL: stronger service brake.
 Hold SHIFT with W/S: precision speed (42% demand, about 4.5 km/h forward).
 Hold RMB: smooth head look, including rear/down with a shoulder lean.
 The seat and complete operator station are on the vehicle's LEFT. Look down
-and to the RIGHT to inspect the trailing conditioner; the main body is right.
-Release RMB: return to the forward view; mouse cursor operates instruments.
+and rear-left for the outer conditioner edge; rear-right shows the main trail.
+Release RMB: keep the exact head direction relative to the machine; mouse
+cursor returns to its instrument position. Mouse movement alone never turns
+the head. R: smoothly recenter to forward in 0.2 seconds (E remains blade depth).
+Hold SPACE: smoothly raise eyes 0.48 m with a small 0.10 m forward lean.
+Release SPACE: return to seated height, preserving head direction both ways.
+WASD and instruments work while seated or raised. Pause, guide and focus loss
+preserve head direction; only R or a new session intentionally recenters.
 Mouse: drag amber levers; rotate handwheels clockwise/counterclockwise, or
 scroll over them. Continuous values drive both the mechanisms and 3D controls.
 1: conditioner up/down; 2: horizontal auger; 3: vertical auger; 4: left brush;
 5: wash pickup pump; 6: one snow-breaker plunger stroke;
-Q/E: shallower/deeper cut. These supplement the mouse.
+Q/E: shallower/deeper blade screw setting. Blade wheel travel: 3.5 full turns.
+J: jam inspection/reset, only stopped with blade out and BOTH augers off,
+tank lowered and enough capacity available. Dump first if the tank is full.
 F1: operator guide (pauses the run). ESC: pause. Focus loss also pauses.
 
 A complete working run
 1. Drive through the south gate with conditioner raised, blade out, tank down.
    Once the entire conditioner is on ice, creep forward and lower it. Start
-   both conveyors, then adjust the blade to about 0.35 mm.
+   both conveyors, then set the blade wheel near 0.35 mm (0.056 mm effective bite).
 2. Begin at precision speed. Open the wash valve to roughly 25%, wait at
    least 10 seconds for priming, then start the pickup pump. Start flood flow
    around 32% at precision speed; faster travel needs more flow. These are
@@ -39,6 +47,9 @@ A complete working run
 4. Watch tank volume, conveyor buffer and load. Excess cutting, a stopped
    auger or a full tank backs up snow and eventually spills it onto the ice.
    Close flood flow before stopping. Dry wash-pump operation causes wear.
+   Hold Space and look forward/down through the black-framed tank opening to
+   inspect actual snow. Continued full-tank feeding can jam the conveyors.
+   Stop both augers before inspecting/resetting a physical jam with J.
 5. For exit, retract the blade, stop flood flow and let both conveyors empty.
    Turn both conveyors off. Stop wash pickup pump, close wash valve and stow
    brush. Fully raise the conditioner BEFORE crossing the south threshold.
@@ -88,12 +99,16 @@ machine geometry in Core also requires changing the authored visual builder.
 Behavioral values in the launch component's Calibration fields can be tuned
 without changing other games or project settings. Start a new session after
 changing calibration values.
-Blade and towel geometry now share the simulation's 1.956 m working width;
-the surrounding conditioner housing is 2.076 m wide within the 2.13 m vehicle
-envelope. The earlier 1.6 m water emitter now spans that full working width.
-The corrected seated lens is 64 degrees instead of 76, giving roughly 25%
-more apparent width without changing the correct 77-inch cut or faking water
-coverage. See Documentation/LayoutCorrection.txt for measurements and rationale.
+The blade remains 1.956 m. Towel, emitter and physical flood footprint span
+2.100 m inside a 2.120 m housing and 2.130 m vehicle envelope. The 0.10 m grid
+resolves the close-board wet edge. Flood outside the blade earns no cutting
+coverage credit. A 61-degree lens plus actual water spread gives about 14%
+additional apparent wet half-width per side compared with the previous pass.
+Snow volume now follows the actual effective bite, not the nominal screw
+setting. The chosen 0.16 bite fraction is an explicit calibration assumption,
+not a manufacturer specification. Full-depth cutting still increases load,
+snow, scoring damage and overcutting relative to a normal setting.
+See Documentation/OperatorRealism.txt for current measurements and limitations.
 
 Files and validation
 Core/                 Plain C# state and mechanics, no Unity dependencies.

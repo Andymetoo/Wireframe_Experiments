@@ -1,0 +1,27 @@
+PASS cursor lock acquisition deltas are discarded
+PASS RMB can look backward within existing limits
+PASS release restores unlocked visible instrument cursor
+PASS released rear view stays exact for 2.4 seconds despite cursor movement
+PASS reacquiring RMB introduces no sudden head rotation
+PASS new relative mouse motion resumes from saved pose
+PASS raising viewpoint preserves downward head orientation
+PASS Space raises physical eyes 0.48m and leans 0.10m forward
+PASS raised stance retains WASD without applying service brake
+PASS turning vehicle preserves local head orientation
+PASS vehicle turn naturally carries world viewpoint
+PASS returning to seated height preserves head orientation
+PASS Space release smoothly returns to seated eyes
+PASS pause does not recenter
+PASS guide does not recenter
+PASS focus loss does not recenter
+PASS R begins a smooth recenter without teleporting
+PASS recenter remains animated at 0.10 seconds
+PASS recenter reaches forward after 0.20 seconds
+PASS recenter preserves raised stance
+PASS E remains blade adjustment, not recenter
+PASS positive yaw and downward pitch limits preserved
+PASS negative yaw and upward pitch limits preserved
+PASS standing sightline through physical opening reaches actual tank snow
+PASS seated shoulder view sees outer conditioner plate without solid obstruction
+PASS new session resets head forward
+PASS new session resets seated height

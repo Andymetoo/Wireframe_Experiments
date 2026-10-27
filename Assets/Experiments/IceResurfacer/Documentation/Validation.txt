@@ -1,72 +1,51 @@
-VALIDATION / AURORA R-54
-Checked 25 October 2026 in the existing Unity 6000.4.1f1 / URP repository.
+﻿VALIDATION / AURORA R-54
+26 October 2026. Current behavior and calibration: OperatorRealism.txt.
 
-Deterministic core: PASS, 19 scenarios.
-The actual source is compiled directly by the standalone .NET 9 harness.
-The integrated test uses driving and equipment commands from the default
-spawn, with no pose/cell writes, tank enlargement, or refills. It covers
-95.06% of the rink, achieves 79.6% finish and 90.6/100, uses 700.7 L flood
-water, dumps 2.92 m3 snow, and returns correctly with zero operator mistakes.
-Its 1750-second route is a coverage regression, not an efficient operator route.
-The full route omits the optional wash circuit; dedicated mechanism tests and
-the Unity cut/wash/flood lane exercise wash priming, recovery and dry-pump wear.
-The correction adds cut/wet-width measurements, per-tick articulated footprint
-bounds, water/snow conservation and manual snow-breaker interlock tests.
-Exact output and test scope: ../Validation~/Results.txt and README.txt.
+Deterministic core: PASS, 24 scenarios, compiling the actual Core source with
+.NET 9. Results.txt records exact measurements and the driven complete run.
+New checks cover actual bite/snow calibration, persistent overflow, conservation
+through dumping/recollection, safe jam reset, progressive unloading, roller
+contact on side/end/rounded boards, and the physical near-board water margin.
+The complete route uses controls only: no pose/cell/tank writes or refills.
+Its four board-contact penalties are retained. It is a coverage regression,
+not a suggested efficient operator route or proof of physical authenticity.
 
-Unity 6000.4.1f1 Play Mode on Direct3D11 / RTX 3050 Laptop GPU: PASS.
-The saved scene imports and initializes the arena, seated camera, independent
-conditioner, state texture and six audio layers. Both owned shaders compile.
-A genuine simulated cut/wash/flood lane updates the rendered ice and collects
-snow. Virtual Input System devices exercise RMB motion/release, forward
-precision throttle and service braking. The test reports zero runtime errors
-or exceptions in the final successful run. Static geometry remains batched.
-Exact output: ../Validation~/Unity-results.txt.
+Unity 6000.4.1f1 Play Mode / Direct3D11: PASS, zero runtime errors/exceptions.
+Saved scene, shaders, arena, articulated conditioner and six audio sources
+initialize. A real cut/wash/flood lane updates spatial ice and collects snow.
+Virtual Input System tests verify persistent rear/down views, ignored unlocked
+mouse motion, safe RMB transitions, original anatomical limits, Space rise and
+lowering, WASD, vehicle-relative rotation, R's 0.20-second recenter, retained E
+blade binding, Ctrl braking, pause/guide/focus gating, and new-session reset.
+Camera-results.txt records the individual camera assertions.
+Temporary MeshCollider ray tests verify that a raised sightline through the
+inspection opening reaches the actual snow surface and that a seated shoulder
+view reaches the outer conditioner without obstruction. They are removed after
+the check. Camera renders show the actual viewpoints, not composited images.
 
-Visual inspection of camera captures checked the enclosed arena, forward
-sightline, rear conditioner visibility, treated trail and signage depth.
-These are actual Unity renders. External inspection confirms the seat,
-platform, complete steering column, dashboard, pedals and access occupy the
-left side; the tank and engine are predominantly to the right. Every machine
-transform has positive scale. Rotating controls retain their animated meshes.
-Blade and towel measure 1.956 m; conditioner enclosure 2.076 m; the vehicle
-collision/reference envelope is 2.130 m.
-These camera captures exclude the IMGUI dashboard; separate player captures
-include the complete HUD. Exact geometry checks: ../Validation~/Layout-results.txt.
-Head return was corrected to return monotonically after RMB release;
-lettering now respects geometry depth; rear look includes a seated shoulder
-lean; the trailer drawbar follows the independent conditioner pose.
+Operations-results.txt records runtime fill/discharge/overflow/jam/dump checks,
+bounded pools, actual emitted particles, empty-tank visibility and pit growth.
+Rendering stress fixtures explicitly seed initial tank stock near full at the
+normal 3.54 m3 capacity. They exercise subsequent real simulation transfers;
+they do not establish a normal filling rate. Core fill/recovery tests do not
+write tank stock. A measured working CPU sample includes simulation, transform
+and snow-mesh updates, and state/map uploads every eight ticks. Its timings
+exclude IMGUI/GPU/display; see the report for measured allocation and duration.
 
-HUD development-player validation: PASS, 21 assertions at EACH of 1366x768
-and 1920x1080 (42 total). Normal instruments, guide, pause, welcome and results
-frames have zero measured text clipping. Visual inspection confirms contained
-dial spokes, separated survey marker/caption, clear blade labels and opaque
-modal backing. The final Windows development build succeeds.
-BuildLayoutPlayer
-creates an explicit development-player test scene only in the isolated copy.
-The test supplies mouse events to the actual OnGUI instruments and captures
-the player framebuffer at 1366x768 and 1920x1080. Results and text-fit findings
-are recorded in ../Validation~/HUD-player-results.txt and HUD-layout-issues.txt.
-Mouse messages target only the temporary player's own native window. They
-exercise native IMGUI routing without moving the OS cursor or activating the
-window. The probe is absent from the normal launch scene.
-Both handwheels are tested by native mouse dragging. Optional wheel scrolling
-is preserved but is not automated because native wheel routing uses the OS
-pointer position; the tests leave the user's pointer untouched.
+Native HUD development-player validation runs at 1366x768 and 1920x1080.
+HUD-player-results-* and HUD-layout-issues-* record actual native GUI events,
+text-fit checks and assertions, including the 3.5-turn blade range, hard stop
+and reversal. Captures include the complete player framebuffer and guide.
+The player probe is attached only to an isolated temporary scene, not the
+saved launch scene. Native mouse messages address only that player's own
+window; they do not move the OS pointer or activate its window. Scroll-wheel
+routing remains a human check because native wheel input uses the OS pointer.
 
-Limits
-No claim of a measured real-time frame budget follows from renderer count.
-The automated keyboard/head checks use virtual input with transient settings
-that bypass absent headless Game View focus, not native OS mouse interaction.
-Mouse ergonomics, dashboard layout at untested display scales, subjective
-audio, a human-driven full session and calibrated vehicle/ice behavior still
-require human playtesting. A temporary development player is used only for
-HUD verification; the delivered launch target remains the saved Unity scene.
-The conditioner edges are partly obscured by the seat/elevator at the extreme
-rear/down view, while the central working region and actual trail are visible.
+Human operator playtesting remains necessary for cursor ergonomics and focus
+transitions in a focused Game View, standing/shoulder comfort, board following,
+blade bite, snow density, jam response, audio, and full-session efficiency.
+No automated result proves physical authenticity or a guaranteed frame budget.
 
-Isolation
-No original game scenes, source, assets, package manifest, project settings,
-or build scene list were changed. The only new repository paths are the
-IceResurfacer experiment folder and Unity's adjacent folder .meta file.
-No commit or push was performed.
+All validation uses the experiment's disposable Validation~/UnityProject copy.
+The original open Editor, scenes, packages, ProjectSettings and other
+experiments are preserved. No branch, commit or push was made.

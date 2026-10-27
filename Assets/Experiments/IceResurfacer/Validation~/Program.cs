@@ -25,6 +25,11 @@ internal static class Program
         Test("left brush cleans board contact", Brush);
         Test("exit and tank interlocks prevent instant finish", Exit);
         Test("continuous controls and practice report", Controls);
+        Test("measured 20-yard snow calibration and excessive bite", SnowCalibration);
+        Test("full tank spills persist, conserve snow, jam and can be recovered", SpillRecovery);
+        Test("dump transfers snow progressively with operating interlocks", ProgressiveDump);
+        Test("guide roller preserves shallow tangential travel without penetration", GuideRoller);
+        Test("close board water edge uses physical distribution width", PerimeterWater);
         Test("complete route, return, unload and finish", FullRun);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
     }
@@ -141,19 +146,20 @@ internal static class Program
                 var cell = s.Ice.Cells[s.Ice.Index(col, row)];
                 bool cut = cell.CutDepthMm > .001f, wet = cell.FloodMm > .001f;
                 if (cut) cutColumns++; if (wet) wetColumns++;
-                Assert(cut == wet, "cut/water edges disagree at width " + width);
+                if(cut)Assert(wet||width>s.Config.WaterDistributionWidth,"cut within water spread was left dry");
+                if(wet)Assert(Math.Abs(s.Ice.CellX(col)-offset)<=s.Config.WaterDistributionWidth*.5f+.0001f,"water escaped distribution width");
                 if (cut) Assert(Math.Abs(s.Ice.CellX(col) - offset) <= width * .5f + .0001f,
                     "processed a cell centre beyond the blade edge");
             }
             float span = cutColumns * s.Ice.CellSize;
             Near(span, width, s.Ice.CellSize + .001f, "physical width was not propagated to processing");
-            Assert(cutColumns == wetColumns, "wet strip width differs from cutting width");
+            Near(wetColumns*s.Ice.CellSize,s.Config.WaterDistributionWidth,s.Ice.CellSize+.001f,"water spread lost width");
             if (width == 1.956f) { smallest = Math.Min(smallest, span); largest = Math.Max(largest, span); }
         }
         var reference = new SimulatorConfig();
         Near(reference.ConditionerWidth, 77f * .0254f, .001f, "default blade no longer matches 77-inch reference");
         Near(reference.VehicleHalfWidth * 2, 84f * .0254f, .004f, "vehicle width no longer matches 84-inch reference");
-        Console.WriteLine("  physical blade=1.956m, rasterized straight cut/wet span=" + smallest.ToString("F2") + "–" + largest.ToString("F2") + "m at 0.20m cells");
+        Console.WriteLine("  physical blade=1.956m, water=2.100m; rasterized cut=" + smallest.ToString("F2") + "–" + largest.ToString("F2") + "m at 0.10m cells");
     }
 
     static void TurnFootprint()
@@ -177,8 +183,9 @@ internal static class Program
                 {
                     float dx = s.Ice.CellX(i % s.Ice.Columns) - s.Conditioner.X;
                     float dz = s.Ice.CellZ(i / s.Ice.Columns) - s.Conditioner.Z;
-                    Assert(Math.Abs(dx * cos - dz * sin) <= s.Config.ConditionerWidth * .5f + .0001f,
-                        "turning treatment escaped the actual lateral blade extent");
+                    float bound=cell.CutDepthMm>previousCut[i]+.000001f?s.Config.ConditionerWidth:s.Config.WaterDistributionWidth;
+                    Assert(Math.Abs(dx * cos - dz * sin) <= bound * .5f + .0001f,
+                        "turning treatment escaped its actual lateral blade/water extent");
                     Assert(Math.Abs(dx * sin + dz * cos) <= s.Config.ConditionerLength * .5f + .0001f,
                         "turning treatment stamped at the vehicle instead of trailing conditioner");
                     touched++;
@@ -231,9 +238,9 @@ internal static class Program
         Assert(s.HorizontalSnowM3 > 0 && s.SnowTankM3 == 0 && s.Mistakes > 0, "augers-off failed to accumulate");
         float load = s.MachineLoad; s.Controls.HorizontalAuger = true; Tick(s, 1);
         Assert(s.VerticalSnowM3 > 0 && s.SnowTankM3 == 0, "horizontal auger bypassed vertical");
-        s.Controls.VerticalAuger = true; Tick(s, 3);
+        s.Controls.VerticalAuger = true; Tick(s, 10);
         Near(s.SnowTankM3, c.SnowCapacityM3, .00001f, "capacity-limited tank wrong");
-        Assert(load > .7f && s.EscapingSnowRate > 0, "overload/spill not observable");
+        Assert(load > .7f && s.SpilledSnowM3 > 0, "overload/spill not observable");
         Assert(s.SnowTankM3 <= c.SnowCapacityM3, "tank overflow stored beyond capacity");
     }
     static void SnowBreaker()
@@ -303,6 +310,129 @@ internal static class Program
         Assert(s.GetReport().Practice && s.GetReport().Score == 0, "practice scored");
     }
 
+    static float IceSnow(Simulation s)
+    {
+        double volume=0;
+        foreach(var cell in s.Ice.Cells)volume+=cell.SnowMm*s.Ice.CellSize*s.Ice.CellSize*.001;
+        return (float)volume;
+    }
+    static float ShavedSnow(Simulation s)
+    {
+        double volume=0;
+        foreach(var cell in s.Ice.Cells)volume+=cell.CutDepthMm*s.Ice.CellSize*s.Ice.CellSize*.001*s.Config.SnowExpansionRatio;
+        return (float)volume;
+    }
+    static Simulation MeasuredLane(float setting)
+    {
+        var s=new Simulation();Place(s,0,-15);Prepare(s);
+        s.Controls.BladeDepthMm=setting;s.Controls.Throttle=.42f;s.Controls.FloodFlow=0;
+        while(s.Vehicle.Z<-15+18.288f)s.Step(.02f);
+        s.Controls.Throttle=0;s.Controls.Brake=true;s.Controls.BladeDepthMm=0;Tick(s,5);
+        return s;
+    }
+    static void SnowCalibration()
+    {
+        float[] legacy={.047101f,.098188f};float[] settings={.35f,.8f};
+        float[] after=new float[2];
+        for(int i=0;i<2;i++)
+        {
+            var s=MeasuredLane(settings[i]);after[i]=s.SnowTankM3;
+            Console.WriteLine("  20-yard lane setting="+settings[i]+"mm: before="+legacy[i].ToString("F6")+" after="+after[i].ToString("F6")+"m3 ratio="+(after[i]/legacy[i]).ToString("F3")+" fill="+(after[i]/s.Config.SnowCapacityM3).ToString("P3"));
+            Assert(after[i]<legacy[i]*.34f&&after[i]>legacy[i]*.15f,"snow calibration outside physically accounted reduction");
+            Near(s.Config.SnowCapacityM3,3.54f,0,"compacted capacity changed to hide fill");
+            Near(s.SnowTankM3,ShavedSnow(s)+.0f+(IceSnow(new Simulation())-IceSnow(s)),.00001f,"calibration snow not sourced from actual cut and loose snow");
+        }
+        Assert(after[1]>after[0]*1.5f,"deep blade lost its extra material load");
+        var normal=new Simulation();var deep=new Simulation();Place(normal,0,-15);Place(deep,0,-15);Prepare(normal);Prepare(deep);
+        normal.Controls.Throttle=deep.Controls.Throttle=.42f;deep.Controls.BladeDepthMm=.8f;
+        normal.Vehicle.Speed=deep.Vehicle.Speed=1.26f;normal.Step(.02f);deep.Step(.02f);
+        Assert(deep.MachineLoad>normal.MachineLoad+.35f,"fully lowered blade lost excessive mechanical load");
+    }
+    static void SpillRecovery()
+    {
+        var s=new Simulation(new SimulatorConfig{SnowCapacityM3=.002f,ConditionerSnowCapacityM3=.001f,VerticalSnowCapacityM3=.001f});
+        Place(s,0,-15);Prepare(s);s.Controls.BladeDepthMm=.8f;s.Controls.FloodFlow=0;s.Controls.Throttle=.42f;
+        float initial=IceSnow(s);bool verticalSpray=false;
+        for(int i=0;i<1100;i++){s.Step(.02f);verticalSpray|=s.VerticalSpillRate>0;}
+        Assert(verticalSpray&&s.SpilledSnowM3>.002f&&s.ConveyorJammed,"full tank failed progressive spray/spill/jam");
+        Near(IceSnow(s)+s.HorizontalSnowM3+s.VerticalSnowM3+s.SnowTankM3+s.OffIceSnowM3,initial+ShavedSnow(s),.00002f,"overflow created or destroyed snow");
+        Assert(!s.TryClearConveyorJam()&&!s.StrokeSnowBreaker(),"running jam can be cleared unsafely");
+        int snowiest=0;
+        for(int i=0;i<s.Ice.Cells.Length;i++)if(s.Ice.Cells[i].SnowMm>s.Ice.Cells[snowiest].SnowMm)snowiest=i;
+        float x=s.Ice.CellX(snowiest%s.Ice.Columns),z=s.Ice.CellZ(snowiest/s.Ice.Columns);
+        Assert(s.Ice.Cells[snowiest].SnowMm>1,"spill not persistent spatial snow");
+        Stow(s);Place(s,0,-38.5f,(float)Math.PI);
+        s.Controls.TankLiftTarget=1;Tick(s,10);s.Controls.TankLiftTarget=0;Tick(s,6);
+        Assert(s.TryClearConveyorJam(),"stopped inspection/reset after dumping rejected");
+        float before=IceSnow(s);Place(s,x,z+1.1f);Prepare(s);s.Controls.BladeDepthMm=0;s.Controls.FloodFlow=0;
+        s.Controls.Brake=false;s.Controls.Throttle=.3f;Tick(s,1);
+        Assert(IceSnow(s)<before&&s.SnowTankM3>0,"dumped machine cannot recollect its spill");
+        Near(IceSnow(s)+s.HorizontalSnowM3+s.VerticalSnowM3+s.SnowTankM3+s.DumpedSnowM3+s.OffIceSnowM3,initial+ShavedSnow(s),.00003f,"spill/dump/recollection material balance failed");
+    }
+    static void ProgressiveDump()
+    {
+        var s=MeasuredLane(.8f);float tank=s.SnowTankM3;
+        Stow(s);Place(s,0,-38.5f,(float)Math.PI);s.Controls.TankLiftTarget=1;
+        Tick(s,3);Near(s.SnowTankM3,tank,.000001f,"snow disappeared before tank opened");
+        float before=0,after=0;bool flow=false;
+        for(int i=0;i<350;i++)
+        {
+            before=s.SnowTankM3;s.Step(.02f);after=s.SnowTankM3;
+            Assert(after<=before&&before-after<=s.Config.DumpM3PerSecond*.02f+.000001f,"dump teleported contents");
+            if(before>after){flow=true;Assert(s.TankLift>.8f&&s.DumpSnowRate>0,"dump volume lost without visible transfer rate");}
+            Near(after+s.DumpedSnowM3,tank,.000001f,"dump transfer broke conservation");
+        }
+        Assert(flow&&after==0,"progressive dump did not finish empty");
+        s.Controls.TankLiftTarget=0;Tick(s,6);Near(s.TankLift,0,0,"tank failed to stow");
+    }
+    static void RequireContained(Simulation s)
+    {
+        float sn=(float)Math.Sin(s.Vehicle.Heading),cs=(float)Math.Cos(s.Vehicle.Heading);
+        for(int row=0;row<3;row++)for(int col=0;col<3;col++)
+        {
+            float x=(col-1)*s.Config.VehicleHalfWidth,z=-s.Config.BodyRear+(s.Config.BodyFront+s.Config.BodyRear)*row*.5f;
+            Assert(s.Navigable(s.Vehicle.X+cs*x+sn*z,s.Vehicle.Z-sn*x+cs*z),"accepted penetrating body pose");
+        }
+        float rx=s.Vehicle.X+cs*s.Config.GuideRollerX+sn*s.Config.GuideRollerZ,rz=s.Vehicle.Z-sn*s.Config.GuideRollerX+cs*s.Config.GuideRollerZ;
+        for(int i=0;i<8;i++)Assert(s.Navigable(rx+(float)Math.Cos(i*Math.PI/4)*s.Config.GuideRollerRadius,rz+(float)Math.Sin(i*Math.PI/4)*s.Config.GuideRollerRadius),"guide penetrated boards");
+        s.Ice.BoardDistance(rx,rz,out float nx,out float nz);
+        Assert(s.Navigable(rx-nx*s.Config.GuideRollerRadius,rz-nz*s.Config.GuideRollerRadius),"guide circle penetrated between sampled points");
+    }
+    static void GuideRoller()
+    {
+        var s=new Simulation();Place(s,-11.6f,-12,-.08f);s.Controls.Throttle=.42f;s.Vehicle.Speed=1;
+        float start=s.Vehicle.Z;bool contact=false;
+        for(int i=0;i<400;i++){s.Step(.02f);RequireContained(s);contact|=s.GuideRollerContact;}
+        Assert(contact&&s.GuideRollerTravel>0&&s.Vehicle.Z-start>6&&s.Vehicle.Speed>.5f,"shallow guide contact stopped/stuck vehicle");
+        Console.WriteLine("  glancing board pass: travel="+(s.Vehicle.Z-start).ToString("F2")+"m retained speed="+s.Vehicle.Speed.ToString("F2")+"m/s roller="+s.GuideRollerTravel.ToString("F2")+"m");
+        var end=new Simulation();Place(end,-4,28.65f,(float)Math.PI*.5f-.08f);end.Controls.Throttle=.42f;end.Vehicle.Speed=1;
+        for(int i=0;i<150;i++){end.Step(.02f);RequireContained(end);}
+        Assert(end.Vehicle.X>-2,"end-board tangent did not carry machine");
+        var corner=new Simulation();float offset=6.97f/(float)Math.Sqrt(2);
+        Place(corner,-4.5f-offset,21.5f+offset,(float)Math.PI*.25f);corner.Vehicle.Speed=1;corner.Controls.Throttle=.42f;
+        float startX=corner.Vehicle.X;
+        for(int i=0;i<150;i++){corner.Step(.02f);RequireContained(corner);}
+        Assert(corner.Vehicle.X>startX+2,"rounded-board shallow contact stuck machine");
+        var impact=new Simulation();Place(impact,0,26.8f);impact.Vehicle.Speed=2;impact.Controls.Throttle=1;Tick(impact,1);
+        Assert(impact.Vehicle.Speed<.2f&&impact.Mistakes>0,"direct impact lost substantial deceleration");
+    }
+    static void PerimeterWater()
+    {
+        var s=new Simulation();Place(s,-11.865f,-12);Prepare(s);s.Controls.Throttle=.42f;
+        for(int i=0;i<350;i++){s.Step(.02f);RequireContained(s);}
+        float physicalMargin=s.Vehicle.X+s.Config.RinkWidth*.5f-s.Config.WaterDistributionWidth*.5f;
+        Assert(physicalMargin>=.05f&&physicalMargin<=.102f,"physical board pass margin outside 2-4 inch target");
+        float edge=float.MaxValue;
+        for(int col=0;col<s.Ice.Columns;col++)
+        {
+            var c=s.Ice.Cells[s.Ice.Index(col,s.Ice.IndexAt(0,-8)/s.Ice.Columns)];
+            if(c.FloodMm>.01f)edge=Math.Min(edge,s.Ice.CellX(col)-s.Ice.CellSize*.5f+s.Config.RinkWidth*.5f);
+        }
+        Assert(edge>=0&&edge<=.101f,"spatial wet edge has a large dry strip or crosses boards");
+        foreach(var cell in s.Ice.Cells)if(!cell.IsIce)Near(cell.FloodMm,0,0,"water went through rounded boards");
+        Console.WriteLine("  close-board physical margin="+(physicalMargin*1000).ToString("F0")+"mm; rasterized wet edge="+(edge*1000).ToString("F0")+"mm");
+    }
+
     readonly struct Point
     {
         public readonly float X, Z;
@@ -357,7 +487,7 @@ internal static class Program
         int workStart = route.Points.Count;
         for (int ring = 0; ring < 5; ring++)
         {
-            double inset = 1.48 + ring * 1.6;
+            double inset = 1.43 + ring * 1.6;
             if (ring > 0) route.Shift(1.6);
             route.Box(13 - inset, 30 - inset, Math.Max(4.6, 8.5 - inset));
                         if (ring == 0)
@@ -399,7 +529,7 @@ internal static class Program
             {
                 s.Controls.HorizontalAuger = s.Controls.VerticalAuger = true;
                 s.Controls.BladeDepthMm = s.Conditioner.Lift < .1f ? .3f : 0;
-                s.Controls.FloodFlow = s.Conditioner.Lift < .1f ? .24f : 0;
+                s.Controls.FloodFlow = s.Conditioner.Lift < .1f ? .23f : 0;
                 s.Controls.BoardBrush = true;
             }
             else
