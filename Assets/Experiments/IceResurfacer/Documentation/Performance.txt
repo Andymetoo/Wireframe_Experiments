@@ -1,6 +1,11 @@
 AURORA R-54 / MEASURED PERFORMANCE
 28 October 2026
 
+Historical operator-freedom performance snapshot. SurfaceServiceRefinement.txt
+contains the current refinement and its new measurement status. The figures
+below describe the preceding implementation; they do not measure the current
+5 cm surface field, new rendering response or nose-in service layout.
+
 Scope and status
 This report compares the captured previous implementation with the completed
 operator-freedom pass using explicit rendered-workload development players.

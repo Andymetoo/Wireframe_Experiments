@@ -118,16 +118,17 @@ internal static class Program
     static void RejectedDumpDriveRecovery()
     {
         var s = new Simulation(mode:SimulationMode.GuidedTraining);
-        s.Controls.Throttle = .42f; Tick(s, 10);
+        s.Controls.Throttle = -.65f; Tick(s, 20);
         Assert(s.HasEnteredRink, "fixture must drive from bay onto rink");
         s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 2);
         Assert(Math.Abs(s.Vehicle.Speed) < .001f, "fixture must stop");
         s.Controls.TankLiftTarget = .5f; Tick(s, .2f);
         Near(s.TankLift, 0, .00001f, "unsafe tank request must not lift on rink");
         s.Controls.Brake = false; s.Controls.Throttle = 1;
-        float z = s.Vehicle.Z; Tick(s, 1);
+        float z = s.Vehicle.Z,x=s.Vehicle.X; Tick(s, 1);
         Console.WriteLine("  rejected dump recovery: throttle=" + s.Controls.Throttle + ", brake=" + s.Controls.Brake + ", tank=" + s.TankLift + ", target=" + s.Controls.TankLiftTarget + ", speed=" + s.Vehicle.Speed + ", message=" + s.LastMessage);
-        Assert(s.Vehicle.Z > z + .1f && s.Vehicle.Speed > .2f, "rejected dump target immobilized a fully lowered machine");
+        float progress=(s.Vehicle.X-x)*(float)Math.Sin(s.Vehicle.Heading)+(s.Vehicle.Z-z)*(float)Math.Cos(s.Vehicle.Heading);
+        Assert(progress > .1f && s.Vehicle.Speed > .2f, "rejected dump target immobilized a fully lowered machine");
     }
     static void MachineryRecovery()
     {
@@ -279,19 +280,19 @@ internal static class Program
                 bool cut = cell.CutDepthMm > .001f, wet = cell.FloodMm > .001f;
                 if (cut) cutColumns++; if (wet) wetColumns++;
                 if(cut)Assert(wet||width>s.Config.WaterDistributionWidth,"cut within water spread was left dry");
-                if(wet)Assert(Math.Abs(s.Ice.CellX(col)-offset)<=s.Config.WaterDistributionWidth*.5f+s.Config.WaterFilmSpreadMeters+.0001f,"water escaped finite distribution plus film spread");
+                if(wet)Assert(Math.Abs(s.Ice.CellX(col)-offset)<=s.Config.WaterDistributionWidth*.5f+s.Config.WaterFilmSpreadMeters+s.Ice.CellSize*.5f+.0001f,"water escaped finite distribution plus fractional edge cells");
                 if (cut) Assert(Math.Abs(s.Ice.CellX(col) - offset) <= width * .5f + .0001f,
                     "processed a cell centre beyond the blade edge");
             }
             float span = cutColumns * s.Ice.CellSize;
             Near(span, width, s.Ice.CellSize + .001f, "physical width was not propagated to processing");
-            Near(wetColumns*s.Ice.CellSize,s.Config.WaterDistributionWidth,s.Ice.CellSize+s.Config.WaterFilmSpreadMeters*2+.001f,"water spread escaped calibrated width");
+            Near(wetColumns*s.Ice.CellSize,s.Config.WaterDistributionWidth,s.Ice.CellSize*2+s.Config.WaterFilmSpreadMeters*2+.001f,"water spread escaped finite film plus two partially covered edge cells");
             if (width == 1.956f) { smallest = Math.Min(smallest, span); largest = Math.Max(largest, span); }
         }
         var reference = new SimulatorConfig();
         Near(reference.ConditionerWidth, 77f * .0254f, .001f, "default blade no longer matches 77-inch reference");
         Near(reference.VehicleHalfWidth * 2, 84f * .0254f, .004f, "vehicle width no longer matches 84-inch reference");
-        Console.WriteLine("  physical blade=1.956m, water=2.100m; rasterized cut=" + smallest.ToString("F2") + "–" + largest.ToString("F2") + "m at 0.10m cells");
+        Console.WriteLine("  physical blade=1.956m, water=2.100m; rasterized cut=" + smallest.ToString("F2") + "–" + largest.ToString("F2") + "m at " + reference.CellSize.ToString("F2") + "m cells");
     }
 
     static void TurnFootprint()
@@ -315,13 +316,14 @@ internal static class Program
                 {
                     float dx = s.Ice.CellX(i % s.Ice.Columns) - s.Conditioner.X;
                     float dz = s.Ice.CellZ(i / s.Ice.Columns) - s.Conditioner.Z;
-                    float bound=cell.CutDepthMm>previousCut[i]+.000001f?s.Config.ConditionerWidth:s.Config.WaterDistributionWidth+s.Config.WaterFilmSpreadMeters*2;
-                    Assert(Math.Abs(dx * cos - dz * sin) <= bound * .5f + .0001f,
-                        "turning treatment escaped its actual lateral blade/water extent");
                     bool newlyCut=cell.CutDepthMm>previousCut[i]+.000001f;
+                    float bound=newlyCut?s.Config.ConditionerWidth:s.Config.WaterDistributionWidth+s.Config.WaterFilmSpreadMeters*2;
+                    float cellMargin=newlyCut?0:s.Ice.CellSize*.7071068f;
+                    Assert(Math.Abs(dx * cos - dz * sin) <= bound * .5f + cellMargin + .0001f,
+                        "turning treatment escaped its actual lateral blade/water extent");
                     float fore=dx*sin+dz*cos;
                     Assert(newlyCut?Math.Abs(fore)<=s.Config.ConditionerLength*.5f+.0001f:
-                        Math.Abs(fore-s.Config.FloodContactFore)<=s.Config.FloodContactLength*.5f+.0001f,
+                        Math.Abs(fore-s.Config.FloodContactFore)<=s.Config.FloodContactLength*.5f+cellMargin+.0001f,
                         "turning treatment stamped at the vehicle instead of trailing conditioner");
                     touched++;
                 }

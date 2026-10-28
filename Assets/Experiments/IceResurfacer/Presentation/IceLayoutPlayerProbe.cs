@@ -104,6 +104,11 @@ namespace IceResurfacer.Presentation
             game.NewSession(false);
             game.Dashboard.AuditLayout = true;
             yield return Capture("HUD-" + currentResolution + ".png", "normal HUD");
+            yield return Click("MachineLoad");
+            Check(game.DiagnosticsVisible,"Machine Load meter opens its demand explanation");
+            yield return Capture("HUD-"+currentResolution+"-diagnostics.png","load explanation and diagnostics");
+            yield return Click("MachineLoad");
+            Check(!game.DiagnosticsVisible,"Machine Load explanation closes without changing machinery");
 
             var controls = game.Sim.Controls;
             yield return HoldHydraulic("Conditioner",false);
@@ -174,13 +179,13 @@ namespace IceResurfacer.Presentation
             Check(game.Started && !game.Sim.Practice, "Scored-run launch button");
 
             // A legal partial run exercises the results UI; the separate deterministic
-            // full-sheet validation covers score and coverage. Drive on and reverse out
+            // full-sheet validation covers score and coverage. Back on and drive out
             // with raised, dry equipment, then brake before calling the normal finish path.
             game.NewSession(false);
             controls = game.Sim.Controls;
-            controls.Throttle = .6f;
-            for (int i = 0; i < 500; i++) game.Sim.Step(.02f);
             controls.Throttle = -.6f;
+            for (int i = 0; i < 1000; i++) game.Sim.Step(.02f);
+            controls.Throttle = .6f;
             for (int i = 0; i < 1400 && !game.Sim.InServiceBay; i++) game.Sim.Step(.02f);
             for (int i = 0; i < 180; i++) game.Sim.Step(.02f);
             controls.Throttle = 0; controls.Brake = true;

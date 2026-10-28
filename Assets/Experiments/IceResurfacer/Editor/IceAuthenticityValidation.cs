@@ -99,8 +99,10 @@ namespace IceResurfacer.Editor
             try
             {
                 game.NewSession(true); game.Dashboard.Compact = true;
-                Input(new[] { Key.W, Key.LeftShift }); Advance(11); Stop();
+                Input(new[] { Key.S, Key.LeftShift }); Advance(25); Stop();
                 Check(game.Sim.HasEnteredRink, "fixture genuinely drives from service bay onto ice before interaction");
+                // Input-recovery matrix uses a clear straight lane after the real reverse departure.
+                Place(0,-15);
                 Action[] actions = {
                     () => Input(new[] { Key.Period }),
                     () => { Input(new[] { Key.Digit1 }); Advance(.3f); Input(); },

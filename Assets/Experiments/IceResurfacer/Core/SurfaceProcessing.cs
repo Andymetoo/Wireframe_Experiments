@@ -30,9 +30,10 @@ namespace IceResurfacer.Core
             footprintCount=allCutCells=iceCutCells=0;totalFloodWeight=iceFloodWeight=0;
             float halfWater=Config.WaterDistributionWidth*.5f;
             float halfWidth=Math.Max(Config.ConditionerWidth*.5f,halfWater+Config.WaterFilmSpreadMeters);
+            float cellReach=Ice.CellSize*.707107f;
             float foreMin=Math.Min(-Config.ConditionerLength*.5f,Config.FloodContactFore-Config.FloodContactLength*.5f);
             float foreMax=Math.Max(Config.ConditionerLength*.5f,Config.FloodContactFore+Config.FloodContactLength*.5f);
-            float radius=halfWidth+Math.Max(Math.Abs(foreMin),Math.Abs(foreMax));
+            float radius=halfWidth+Math.Max(Math.Abs(foreMin),Math.Abs(foreMax))+cellReach;
             int x0=(int)Math.Floor((Conditioner.X-radius-Ice.MinX)/Ice.CellSize);
             int x1=(int)Math.Floor((Conditioner.X+radius-Ice.MinX)/Ice.CellSize);
             int z0=(int)Math.Floor((Conditioner.Z-radius-Ice.MinZ)/Ice.CellSize);
@@ -43,10 +44,10 @@ namespace IceResurfacer.Core
             {
                 float dx=Ice.CellX(col)-Conditioner.X,dz=Ice.CellZ(row)-Conditioner.Z;
                 float side=dx*cs-dz*sn,fore=dx*sn+dz*cs,absSide=Math.Abs(side);
-                if(absSide>halfWidth||fore<foreMin||fore>foreMax)continue;
+                if(absSide>halfWidth+cellReach||fore<foreMin-cellReach||fore>foreMax+cellReach)continue;
                 bool cutting=absSide<=Config.ConditionerWidth*.5f&&Math.Abs(fore)<=Config.ConditionerLength*.5f;
                 if(cutting)allCutCells++;
-                float weight=Math.Abs(fore-Config.FloodContactFore)<=Config.FloodContactLength*.5f?FloodWeight(absSide,halfWater):0;
+                float weight=FloodCellWeight(side,fore,halfWater,sn,cs,cellReach);
                 totalFloodWeight+=weight;
                 if(col<0||col>=Ice.Columns||row<0||row>=Ice.Rows)continue;
                 int index=Ice.Index(col,row);if(!Ice.Cells[index].IsIce)continue;
@@ -67,6 +68,25 @@ namespace IceResurfacer.Core
             if(Config.WaterFilmSpreadMeters<=0)return 0;
             float fringe=(side-halfWater)/Config.WaterFilmSpreadMeters;
             return Math.Max(0,1-fringe)*Config.WaterFilmFringeFraction/Config.WaterFilmSpreadMeters;
+        }
+
+        float FloodCellWeight(float side,float fore,float halfWater,float sn,float cs,float cellReach)
+        {
+            float length=Config.FloodContactLength*.5f,offset=fore-Config.FloodContactFore;
+            if(Math.Abs(offset)>length+cellReach||Math.Abs(side)>halfWater+Config.WaterFilmSpreadMeters+cellReach)return 0;
+            // Interior samples share a constant density. Only boundary/fringe
+            // cells need area sampling, avoiding four tests across the whole pad.
+            if(Math.Abs(side)<halfWater-cellReach&&Math.Abs(offset)<length-cellReach)
+                return (1-Config.WaterFilmFringeFraction)/Config.WaterDistributionWidth;
+            float quarter=Ice.CellSize*.25f,weight=0;
+            for(int x=-1;x<=1;x+=2)
+            for(int z=-1;z<=1;z+=2)
+            {
+                float sampleSide=side+quarter*(x*cs-z*sn);
+                float sampleFore=offset+quarter*(x*sn+z*cs);
+                if(Math.Abs(sampleFore)<=length)weight+=FloodWeight(Math.Abs(sampleSide),halfWater);
+            }
+            return weight*.25f;
         }
 
         void ProcessIce(float dt)
@@ -129,14 +149,10 @@ namespace IceResurfacer.Core
                 float bite=cutting?blade:0;
                 bool washContact=cutting&&washPerCell>0&&pressure>.7f;
                 if(waterDepth<=0&&bite<=0&&snowRemoved<=0&&cellPickup<=0&&!washContact)continue;
-                if(bite>0)cell.CutDepthMm+=bite;
-                if(cutting&&Vehicle.Speed<-.02f)
-                { cell.Scratch=Math.Min(1,cell.Scratch+blade*2.5f);cell.Quality=Math.Max(0,cell.Quality-blade); }
-                else if(bite>0)
-                { cell.Scratch=Math.Max(0,cell.Scratch-bite/Config.BladeBiteFraction*2.3f); }
+                Ice.ApplyBladeCut(ref cell,bite,Vehicle.Speed<-.02f);
                 cell.SnowMm-=snowRemoved;newSnow+=(snowRemoved+bite*Config.SnowExpansionRatio)*area*.001f;
                 if(washContact)
-                { cell.WashLiters+=washPerCell;cell.Scratch=Math.Max(0,cell.Scratch-washPerCell/area*.025f); }
+                { cell.WashLiters+=washPerCell;cell.Scratch=Math.Max(Ice.GrooveRoughness(cell),cell.Scratch-washPerCell/area*.025f); }
                 Ice.AddWater(ref cell,waterDepth,Time);
                 Ice.UpdateQuality(ref cell);cell.LastProcessTime=Time;Ice.Cells[index]=cell;
                 Ice.MarkCellChanged(index);anyChanged=true;
@@ -154,7 +170,7 @@ namespace IceResurfacer.Core
                 DepositRunoff(Conditioner.X+sn*Config.WashPickupContactFore,Conditioner.Z+cs*Config.WashPickupContactFore,washSpill);
             }
             HorizontalSnowM3+=newSnow;UpdateBoardBrush(dt,distance);
-            if(anyChanged)Ice.MarkChanged();
+            if(anyChanged)Ice.CommitChanges();
         }
 
         bool InPickup(int n)
@@ -198,7 +214,7 @@ namespace IceResurfacer.Core
                 moved+=amount*Ice.CellSize*Ice.CellSize*.001f;
             }
             if(moved<=0)return;
-            Ice.MarkChanged();
+            Ice.CommitChanges();
             // Sweeping redistributes snow toward the conditioner; it does not
             // award cutting coverage or teleport it directly into the tank.
             float tx=Vehicle.X-(float)Math.Cos(Vehicle.Heading)*.72f;
@@ -214,19 +230,10 @@ namespace IceResurfacer.Core
             // sitting idle. Driver/time/misuse values below stay live.
             if(reportRevision!=Ice.Revision)
             {
-                reportCovered=reportCut=reportWet=reportOverwater=0;reportQuality=reportWaterQuality=0;
-                for(int i=0;i<Ice.Cells.Length;i++)
-                {
-                    var cell=Ice.Cells[i];if(!cell.IsIce)continue;
-                    if(cell.Shavable)
-                    {
-                        if(cell.Covered)reportCovered++;
-                        if(cell.CutDepthMm>.08f*Config.BladeBiteFraction&&cell.SnowMm<.25f)reportCut++;
-                    }
-                    if(cell.FloodMm>.08f)reportWet++;
-                    if(cell.OverwaterMm>.05f)reportOverwater++;
-                    reportQuality+=cell.Quality;reportWaterQuality+=Clamp(cell.FloodMm/Config.GoodFloodDepthMm,0,1);
-                }
+                var totals=Ice.GetSurfaceTotals();
+                reportCovered=totals.Covered;reportCut=totals.Cut;
+                reportWet=totals.Wet;reportOverwater=totals.Overwater;
+                reportQuality=totals.Quality;reportWaterQuality=totals.WaterQuality;
                 reportRevision=Ice.Revision;
             }
             float coverage=(float)reportCovered/Math.Max(1,Ice.ShavableCellCount);

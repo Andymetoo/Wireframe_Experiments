@@ -3,14 +3,18 @@ using System;
 namespace IceResurfacer.Core
 {
     /// <summary>One coordinate authority for the southeast diagonal gate and backstage room.
-    /// Local Side points to a northbound parked operator's right; Outward points away from the ice.</summary>
+    /// Local Side points northeast; Outward points away from the ice toward the snow pit.</summary>
     public sealed class ServiceLayout
     {
         public const float Axis = .7071067811865475f;
         public readonly float GateX, GateZ, GateHalfWidth, RoomHalfWidth = 6f, RoomLength;
         public readonly float RoomStart = 1.6f, NeckStart = -1.1f;
-        public readonly float PitSide = -2f, PitOutward, PitHalfWidth = 2f, PitHalfLength = 1.2f;
-        public readonly float ParkSide = 1f, ParkOutward = 5.8f;
+        public readonly float PitSide = 0f, PitOutward, PitHalfWidth = 2f, PitHalfLength = 1.2f;
+        public readonly float ParkSide = 0f, ParkOutward = 5.8f;
+        // Machine faces into the room. Its fixed right-side fillers face the
+        // negative-Side wall, leaving a straight reverse route onto the ice.
+        public const float SupplySide = -5.45f, SupplyOutward = 6f;
+        public const float HolderSide = -5.40f, HolderOutward = 5.52f;
         public float InwardHeading { get { return -(float)Math.PI * .25f; } }
         public float OutwardHeading { get { return (float)Math.PI * .75f; } }
         public ServiceLayout(SimulatorConfig config)
@@ -47,8 +51,9 @@ namespace IceResurfacer.Core
         public bool InsideRoom(float x,float z)
         { ToLocal(x,z,out float side,out float outward); return Math.Abs(side)<RoomHalfWidth && outward>RoomStart+.1f && outward<RoomLength; }
         public void ParkingPose(out float x,out float z,out float heading)
-        { ToWorld(ParkSide,ParkOutward,out x,out z); heading=InwardHeading; }
-        public void SupplyAnchor(out float x,out float z) { ToWorld(5.45f,6f,out x,out z); }
+        { ToWorld(ParkSide,ParkOutward,out x,out z); heading=OutwardHeading; }
+        public void SupplyAnchor(out float x,out float z) { ToWorld(SupplySide,SupplyOutward,out x,out z); }
+        public void HoseHolder(out float x,out float z) { ToWorld(HolderSide,HolderOutward,out x,out z); }
         public void ContactNormal(float x,float z,out float nx,out float nz)
         {
             ToLocal(x,z,out float side,out float outward);

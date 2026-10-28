@@ -9,7 +9,7 @@ namespace IceResurfacer.Core
         public float RinkWidth = 26f;
         public float RinkLength = 60f;
         public float CornerRadius = 8.5f;
-        public float CellSize = 0.1f;
+        public float CellSize = 0.05f;
         public float GateHalfWidth = 2.7f;
         public float BayLength = 14f;
         public float Wheelbase = 1.96f;
@@ -58,7 +58,9 @@ namespace IceResurfacer.Core
         public float SensitiveCumulativeSafeCutMm = 0.55f;
         public float GoodFloodDepthMm = 0.30f;
         public float ExcessFloodDepthMm = 0.85f;
-        public float FreezeSeconds = 85f;
+        // Exponential phase-change time constant: 420 s leaves about 5%
+        // liquid after 21 minutes. Tunable scenario calibration, not a slab model.
+        public float FreezeSeconds = 420f;
         public float MinimumScoredCoverage = 0.95f;
 
         public void Validate()
@@ -79,7 +81,7 @@ namespace IceResurfacer.Core
             foreach (float value in values)
                 if (float.IsNaN(value) || float.IsInfinity(value))
                     throw new ArgumentException("Ice resurfacer configuration must contain finite numbers.");
-            if (RinkWidth < 10 || RinkWidth > 120 || RinkLength < 20 || RinkLength > 120 || CellSize < 0.08f || CellSize > 0.5f ||
+            if (RinkWidth < 10 || RinkWidth > 120 || RinkLength < 20 || RinkLength > 120 || CellSize < 0.05f || CellSize > 0.5f ||
                 CornerRadius < 0 || CornerRadius > Math.Min(RinkWidth, RinkLength) * .5f ||
                 Wheelbase <= 0 || DrawbarLength <= 0 || ConditionerWidth <= 0 || WaterDistributionWidth <= 0 ||
                 WaterDistributionWidth > VehicleHalfWidth*2 || ConditionerLength <= 0 || GuideRollerRadius <= 0 ||

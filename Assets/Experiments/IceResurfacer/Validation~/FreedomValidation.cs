@@ -64,7 +64,7 @@ internal static class FreedomValidation
         {
             var s=Collect();
             if(location==0)Place(s,0,0,.38f);
-            if(location==1){s.Layout.ToWorld(-2,8.15f,out float x,out float z);Place(s,x,z,s.Layout.OutwardHeading+.17f);}
+            if(location==1){s.Layout.ToWorld(s.Layout.PitSide,8.15f,out float x,out float z);Place(s,x,z,s.Layout.OutwardHeading+.17f);}
             if(location==2){s.Layout.ToWorld(2,7.9f,out float x,out float z);Place(s,x,z,s.Layout.InwardHeading+.8f);}
             double ice=IceSnow(s),ground=GroundSnow(s),stock=s.SnowTankM3;
             float px=s.Vehicle.X,pz=s.Vehicle.Z,heading=s.Vehicle.Heading;
@@ -98,9 +98,12 @@ internal static class FreedomValidation
         var s=new Simulation();Assert(s.Vehicle.X>13&&s.Vehicle.Z<-27&&s.InServiceBay,"southeast start not in room");
         Assert(!s.Navigable(0,-31),"central south invisible gate remains");
         s.Layout.ToWorld(0,0,out float gx,out float gz);Assert(s.Navigable(gx,gz),"southeast portal blocked");
-        s.Controls.Throttle=.4f;Tick(s,18);Assert(s.HasEnteredRink,"cannot drive from southeast parking onto ice");
-        s.Controls.Throttle=-.5f;Tick(s,40);Assert(s.InServiceBay,"cannot reverse from rink into service room");
-        Console.WriteLine("  diagonal gate="+gx.ToString("F3")+","+gz.ToString("F3")+"; entry and reverse exit under drive controls PASS");
+        Near(s.Vehicle.Heading,s.Layout.OutwardHeading,.0001,"default machine must face the pit");
+        s.Controls.Throttle=-.65f;Tick(s,18);Assert(s.HasEnteredRink,"cannot back from nose-in parking onto ice");
+        s.Controls.Throttle=.4f;
+        for(int i=0;i<1400&&!s.InServiceBay;i++)s.Step(.02f);
+        Assert(s.InServiceBay,"cannot drive forward from rink into service room");
+        Console.WriteLine("  diagonal gate="+gx.ToString("F3")+","+gz.ToString("F3")+"; reverse departure and forward return under drive controls PASS");
     }
     static void UnconventionalSession()
     {
@@ -108,10 +111,10 @@ internal static class FreedomValidation
         // is integrated. Deliberately runs equipment while leaving backstage.
         var s=new Simulation();s.Controls.HorizontalAuger=s.Controls.VerticalAuger=s.Controls.BoardBrush=true;
         s.Controls.ConditionerTarget=0;s.Controls.BladeDepthMm=.3f;s.Controls.FloodFlow=.35f;s.Controls.WashValve=.3f;
-        s.Controls.TankLiftTarget=.35f;s.Controls.Throttle=.35f;Tick(s,3);
+        s.Controls.TankLiftTarget=.35f;s.Controls.Throttle=-.35f;Tick(s,3);
         Assert(s.TryDismount(),"unconventional moving dismount failed");Tick(s,5);
         Assert(s.Controls.HorizontalAuger&&s.Controls.FloodFlow>.3f&&s.TankLift>.3f,"unconventional machinery state corrected");
-        Assert(s.TryBoard(1),"unconventional boarding failed");s.Controls.TankLiftTarget=0;s.Controls.Throttle=.4f;Tick(s,22);
+        Assert(s.TryBoard(1),"unconventional boarding failed");s.Controls.TankLiftTarget=0;s.Controls.Throttle=-.65f;Tick(s,25);
         Assert(s.HasEnteredRink&&s.SnowTankM3>.001f,"unconventional actual entry/cutting failed");
         s.Controls.Throttle=0;s.Controls.Brake=true;Tick(s,2);s.Controls.TankLiftTarget=1;Tick(s,10);Shake(s);
         Assert(s.DumpSnowOnIceM3>0&&s.PitSnowM3==0,"unconventional ice dump not spatial");
@@ -140,8 +143,20 @@ internal static class FreedomValidation
     static float Distance(Point p,VehicleState v){float x=p.X-v.X,z=p.Z-v.Z;return(float)Math.Sqrt(x*x+z*z);}
     public static void FullRun()
     {
-        var s=new Simulation();var route=new Route(s);
-        route.Line(11.5);route.Turn(-Math.PI/4,5);route.Line(route.X+4.5);route.Turn(Math.PI/2,6.92);
+        var s=new Simulation();s.Controls.Throttle=-.65f;
+        // Back out from the actual nose-in start, then turn within the rink.
+        // This prefix uses the drive controls, never a pose correction.
+        for(int i=0;i<2500;i++)
+        {
+            s.Layout.ToLocal(s.Vehicle.X,s.Vehicle.Z,out _,out float exitOutward);
+            if(exitOutward<=-14)break;
+            s.Step(.02f);
+            Assert(i<2499,"nose-in reverse departure blocked");
+        }
+        s.Controls.Throttle=0;s.Controls.Brake=true;Tick(s,2);s.Controls.Brake=false;
+        Assert(s.HasEnteredRink,"nose-in full run failed reverse entry");
+        var route=new Route(s);
+        route.Turn(Math.PI*.75,5);route.Line(route.X+4.5);route.Turn(Math.PI/2,6.92);
         int workStart=route.Points.Count;
         for(int ring=0;ring<5;ring++)
         {
@@ -159,7 +174,7 @@ internal static class FreedomValidation
         // A feasible connector clears the east boards before the southeast
         // approach. All arcs respect the machine's roughly 4.6 m turn radius.
         route.Turn(-Math.PI,4.6);route.Line(4);route.Turn(-Math.PI/2,5);
-        double targetSum=s.Layout.GateX+s.Layout.GateZ-1.4*Math.Sqrt(2);
+        double targetSum=s.Layout.GateX+s.Layout.GateZ+s.Layout.PitSide*Math.Sqrt(2);
         double turnSum=5*(Math.Sin(Math.PI/4)-(1-Math.Cos(Math.PI/4)));
         route.Line(targetSum-route.X-route.Z-turnSum);route.Turn(Math.PI/4,5);
         s.Layout.ToLocal((float)route.X,(float)route.Z,out _,out float outward);

@@ -1,0 +1,24 @@
+Aurora explicit rendered-workload benchmark / 2026-10-28 20:52:26Z
+Unity 6000.4.1f1 / NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11 / 1366x768
+OS Windows 11  (10.0.26200) / CPU 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz / development Mono player, VSync off, hidden offscreen window.
+One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session 1500 measured frames. Setup seeds poses/tanks solely to profile reproducible loads.
+GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.
+service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.
+late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.
+Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.
+scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame
+driving_full_hud,299,2.895,4.136,345.4,0.395,1.353,17544,21642,0,3,-5222400,-1,0,0.000
+resurfacing_full_hud,299,3.484,5.905,287.0,1.019,1.362,18143,30720,0,3,-58777600,-1,7672,0.292
+resurfacing_compact,299,2.754,5.243,363.1,1.005,1.309,9280,9764,0,2,-59228160,-1,7672,0.278
+snow_overflow,299,3.561,5.842,280.8,1.090,1.371,18265,31876,0,3,-58904576,-1,6760,0.290
+camera_changes,299,4.009,6.519,249.4,1.091,1.444,17606,18090,0,3,-59158528,-1,7672,0.316
+service_walking,299,1.957,2.847,511.0,0.327,1.116,9326,9806,0,2,-59252736,-1,0,0.000
+hose_filling,299,2.006,4.441,498.6,0.558,1.408,10053,11134,0,2,-58900480,-1,0,0.000
+hose_overflow,299,2.066,4.301,484.1,0.554,1.339,10278,10700,0,2,-58884096,-1,0,0.000
+dump_shakeout,299,2.573,3.675,388.6,0.343,1.202,18255,45979,0,3,-58904576,-1,0,0.000
+long_session,1499,3.532,6.544,283.2,1.095,1.294,17741,23504,0,9,-57360384,-1,29389,0.373
+on_foot_movement,299,2.101,3.077,475.9,0.346,1.198,9326,9806,0,2,-59322368,-1,0,0.000
+late_wet_sheet,299,4.819,10.502,207.5,1.536,1.364,17694,22002,0,3,-59191296,-1,599224,0.747
+Managed runtime errors: 0
+Long-session growth is a live-heap delta, not a leak diagnosis; inspect GC collections and final repeat before inferring leaks.
+Native hidden-window D3D presentation warnings: 11 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

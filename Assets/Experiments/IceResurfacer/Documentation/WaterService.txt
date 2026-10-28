@@ -17,7 +17,7 @@ interacts with the object under the center view. Pausing releases capture; F nea
 the left step or accessible rear platform boards and restores seated head view.
 
 Recommended refill procedure:
-1. Park in the marked southeast room space, facing through the diagonal gate.
+1. Park centered in the marked southeast room space, nose toward the snow pit.
 2. F, then walk around the rear to the water station on the machine's right.
 3. Aim at the wall nozzle and E to take it.
 4. Approach the labeled right rear ICE WATER or WASH WATER neck and E to couple.
@@ -25,7 +25,16 @@ Recommended refill procedure:
 6. E closes supply. E at the connected neck uncouples it.
 7. Repeat for the other reservoir if needed. Face the highlighted holder and E
    to return the hose; a 2.65 m reach and broad aim tolerance avoid pixel hunting.
-8. Walk to the left step or rear operator platform and F to board.
+8. Walk to the left step or rear operator platform and F to board. Back straight
+   onto the ice with S; drive forward into the room to approach the snow pit.
+
+The service HUD reports current routed length out of 11 m and TAUT near the
+limit. An aimed fixture outside interaction reach names its distance and required
+reach. Walking into the machine, walls, pit rim or hose limit names that specific
+obstruction. The port labels say E INTERACT; the live prompt distinguishes
+connection from disconnection. An upward glance can move the held nozzle farther
+from the reel, but steps that reduce an already excessive route remain allowed.
+There is no need to reset a session to get back toward hose slack.
 
 Free Simulation permits pressurized uncoupling or returning a running nozzle.
 The supply keeps flowing onto the floor until the operator actually closes it.
@@ -43,10 +52,40 @@ ServiceLayout is the authority for world geometry: a diagonal opening centered
 at (10.5104, -27.5104) in the southeast rounded corner of the 60 x 26 m rink.
 Local Side runs northeast; local Outward runs southeast. The 5.4 m opening leads
 into a 12 m wide, 14 m long backstage machine room. Rink size is unchanged.
-A north-west-facing parking space places the station on the operator's right.
-The pit is offset to the room's far left, leaving circulation space beside it.
+A southeast-facing parking pose uses Side=0, Outward=5.8 m and heading +135
+degrees. The snow pit is centered at Side=0, Outward=12 m, measuring 4 x 2.4 m.
+The machine can reverse straight through the centered portal without a steering
+correction. The supply anchor is at Side=-5.45, Outward=6 m; the nozzle holder is
+at Side=-5.40, Outward=5.52 m. This moves the wall fixture to the opposite room
+wall while keeping it on the parked machine's right. Cabinets move to the other
+wall. The physical cockpit, left boarding step and fixed machine-right filler
+necks retain their authored sides. Fixture rotation uses positive scales.
 Walls, doorway returns, pit lip and machine footprint constrain movement.
 There is no invisible docking point or heading snap.
+
+REACH DIAGNOSIS / 28 OCTOBER NOSE-IN REFINEMENT
+Previously, turning toward the pit left the reel across the machine from the
+fillers. The floor hose routes around the solid footprint, so straight-line
+distance alone understated its required length. Reproducing the former pit
+approach (Side=-2, Outward=8.1, nose toward pit) with the actual six-node route
+geometry gives the following values, including vertical end segments:
+
+Layout and machine pose                         Ice-water route  Wash route
+Former wall, former pit approach                 13.40 m          13.05 m
+New wall, centered default park                   6.28 m           6.61 m
+New wall, centered pit approach Outward=8.1        6.85 m           6.84 m
+
+These are numerical geometry reproductions, not measured player frame times or
+proof of the user's exact prior pose. The former approach exceeded the physical
+11 m hose and the walking constraint could therefore resemble an invisible wall.
+Both current service approaches have slack without standing inside the body.
+The hose remains 11 m; neither fill reach nor body collision was disabled.
+
+A second reproducible trap came from head movement: looking up could lengthen
+the held-nozzle route beyond 11 m, after which the old walking test rejected even
+steps back toward the reel. The new test accepts a shorter route while extended,
+so the operator can retreat normally. The persistent meter and obstruction
+message distinguish genuine hose tension from the visible machine/wall bounds.
 
 FILL-NECK REFERENCE
 The manufacturer's Model 546 manual identifies distinct rear-view wash-water
@@ -93,12 +132,21 @@ ServiceFreedomValidation.cs checks moving/unsafe exits with settings preserved,
 pressurized use, forgiving return, dropped-nozzle recovery, attached driving,
 breakaway, material conservation, and explicit training-only assistance.
 The existing ServiceValidation suite covers the guided safety workflow. Both
-passed as part of the 32-group aggregate core harness; Results.txt records the
-outcome. Runtime results and whole-frame performance are separate measurements.
+pass in the current isolated .NET service harness. New assertions check the
+centered nose-in pose, supply on the actual machine-right side, a 12-second
+straight reverse exit without steering or misuse, and reverse hose breakaway.
+The updated aggregate harness passes all 32 scenario groups. Runtime and
+performance remain separate measurements.
 Editor/IceServiceValidation.cs sends actual F/E/W input, walks around the machine
 to both reservoirs, fills/overflows, returns the nozzle with a deliberately
-imprecise view, boards, and drives through the new portal until hose breakaway.
-It checks mouse look without RMB and cursor release. See generated
+imprecise view, boards, and reverses through the portal until hose breakaway.
+Each ordinary walk step is checked for continuity and body clearance. Additional
+cases approach the visible body, walk to the actual hose limit, look up to extend
+the nozzle, and walk back toward slack with S before returning the same nozzle.
+It checks mouse look without RMB, cursor release, distant-fixture reach feedback,
+and persistent hose meters. The integrated Unity suite passes with zero managed
+errors. Service-results.txt records passes for both actual port approaches,
+body clearance, taut-hose retreat and the full fill/return/departure cycle. See
 Validation~/Service-results.txt for the executed result, rather than treating
 this implementation description as proof of a successful runtime test.
 

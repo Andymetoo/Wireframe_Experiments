@@ -13,7 +13,9 @@ and misuse; practice shows the surface review without a score. GUIDED TRAINING
 is an assisted practice variant: its safety restrictions explicitly identify
 training assistance. It uses the operator guide, not a scripted lesson campaign.
 
-Normal sessions start with 738 L flood water and 310 L wash water. ESC > REFILL
+The machine starts centered in the service room, nose toward the snow pit and
+rear toward the rink. Hold S to back straight through the southeast doorway;
+W approaches the pit. Normal sessions start with 738 L flood water and 310 L wash water. ESC > REFILL
 PRACTICE starts a NEW practice session with 35% flood and 30% wash water.
 
 Complete keyboard guide
@@ -77,8 +79,12 @@ head view and ordinary cockpit cursor. A moving dismount can incur misuse.
 Southeast service room and water
 The diagonal opening is in the southeast rounded corner of the unchanged
 60 x 26 m rink. A 5.4 m doorway joins a 12 m wide backstage room with a marked
-parking area, offset snow pit, workshop fittings and right-side water station.
-The parking reference faces northwest onto the rink. There is no docking snap.
+parking area, centered snow pit, workshop fittings and water station. The parking
+reference faces southeast into the room toward the pit. The wall supply is on
+the opposite room wall from the earlier layout, beside the machine's fixed
+right-side fillers. The left operator station and machine-side controls have
+not been mirrored. The centered rear aisle gives a straight reverse route onto
+the rink. There is no docking snap.
 
 For an orderly refill, stop and stow equipment, press F, and walk around the rear
 of the machine to the wall hose on its right. E takes the nozzle. E connects the
@@ -86,6 +92,10 @@ blue ICE WATER or teal WASH WATER rear fill neck. E opens/closes the wall supply
 Each tank fills separately; capacity is enforced and excess visibly overflows.
 Close supply, E to uncouple, then face the highlighted holder and E to return the
 hose. The holder tolerates a broad view and a 2.65 m approach. F boards again.
+The service HUD shows used hose length out of 11 m and TAUT near its limit.
+Aimed fixtures beyond arm reach report distance; blocked movement names the
+machine, wall, pit edge or hose. Looking upward can extend the held nozzle;
+walking back toward slack remains possible even while it is over the limit.
 
 Free Simulation allows pressurized uncoupling and departure with a connected
 hose. Water continues spilling until the wall supply actually closes. Pulling
@@ -96,7 +106,8 @@ remotely stowing it. The coupling is an explicit fictional recovery mechanism.
 See Documentation/WaterService.txt for geometry, accounting and source details.
 
 A practical resurfacing run
-Enter through the southeast doorway with equipment stowed for clearance. Lower
+Back out through the southeast doorway with equipment stowed for clearance;
+choose the forward route once clear of the gate. Lower
 the conditioner while creeping, start both conveyors and use about 0.35 mm nominal
 blade setting as an initial calibration. Open wash, allow roughly ten seconds
 for prime, then start pickup. Flood flow should suit speed; close it before long
@@ -140,33 +151,55 @@ coverage only. Water distribution and finish still measure the whole sheet;
 the excluded rim is not automatically credited. F2 shows the mask and actual
 cut/wash/flood cells. The deterministic tire-alignment test measures zero dry or
 unscored gaps, both before and after this pass; the reported foot-wide gap was
-not reproduced in straight parallel passes. The new finite fringe increased
-the measured strong wet band from 2.0 to 2.2 m at the test grid phase. Turning
-alignment and boundary recognition still need operator playtesting.
+not reproduced in straight parallel passes. The current 5 cm grid contains
+520 x 1200 real samples, with fractional water at footprint edges and smooth
+surface reconstruction. Its strong wet raster is 2.30 m; the GPU-visible wet
+response spans 2.367 m in the measured view, covering the actual 2.10 m towel.
+The thin fringe uses the same finite water supply. Turning alignment and
+boundary recognition still need operator playtesting.
+
+New ice starts dull and scored by skate grooves of differing physical depths.
+Shallow cutting can leave deeper grooves; deeper or repeated cuts remove more
+ice and produce more snow. Wet film gradually settles: with the configurable
+420-second freeze constant, about half remains liquid after five minutes and
+about 6% after twenty. Fresh, dry-shaved and settled ice keep distinct finishes.
+See Documentation/VisualIceRefinement.txt for calibration and measured examples.
 
 Estimated Machine Load is combined cutting, conveyor stock, running augers and
-congestion demand. Hover its meter or open F3 for the breakdown. F3 also names
+congestion demand. Click its meter or open F3 for the explanation and breakdown.
+The model starts at 13% idle demand; each running auger adds 8%/9%, and blade
+speed/depth, snow in the conveyors and congestion add the rest. At 100% load,
+the load multiplier allows 65% of normal acceleration (snow mass and tire grip
+apply separately). It changes drive/engine sound, and above 100% warns of
+overload. It does not change the configured top speed or impose a drive lock.
+Jams follow actual accumulated snow and conveyor capacity. This is an estimated
+mechanical-demand indicator, not measured engine horsepower or fuel consumption.
+F3 also names
 real drive inhibition/contact, raw input, accepted demand, traction, focus and
 cursor state. Free Simulation has no raised-tank or attached-hose travel lock.
 F4 updates text four times per second; F3 adds CPU work, GPU timing when available,
 GC allocation and draw-call diagnostics. Whole-frame before/after measurements
-and their environment are in Documentation/Performance.txt; a core timing alone
+and their environment are in Documentation/SurfaceServiceRefinement.txt; a core timing alone
 is not an FPS claim.
 
 Evidence and limits
-Documentation/OperatorFreedom.txt explains the current architecture and evidence.
-Documentation/IceCalibration.txt contains world-space width, mask and pickup tests.
-The aggregate core harness passed all 32 scenario groups; Results.txt records
-the outcome. Runtime and performance validation are separate measurements.
+Documentation/SurfaceServiceRefinement.txt records this follow-up and current evidence.
+Documentation/VisualIceRefinement.txt explains resolution, wear and settling.
+OperatorFreedom.txt and IceCalibration.txt retain the preceding measurements.
+The updated aggregate core harness passed all 32 scenario groups. The integrated
+Unity suite passed with zero managed errors, including actual walking to both
+fillers, named body/hose obstructions, and retreat from an overextended hose.
+Results.txt and Service-results.txt record the outcomes. Runtime and performance
+validation are separate measurements.
 Validation~/ contains deterministic reports, actual Unity captures, native HUD
 checks at 1366x768 / 1920x1080, and performance reports. Consult the final report
 files for executed outcomes; historical 25-27 October documents retain earlier
 measurements and intentionally superseded controls/layout restrictions.
 
-The current pass received the traditional control-station photograph and the
-user's tall seated-view photograph. They guide the inboard station, tapered
-body and sightlines. The mentioned annotated conditioner and board-gap pictures
-were not present. The Aurora is an original fictional machine, not a traced or
+The earlier control-station and tall seated-view photographs guide the inboard
+station, tapered body and sightlines. This follow-up uses the annotated
+conditioner screenshot to bring the visible film across the full towel.
+The Aurora is an original fictional machine, not a traced or
 manufacturer-certified Model 546 replica. Its approximately 4.35 m visible
 assembly is not the published 4.04 m manufacturer equipment envelope.
 
@@ -179,10 +212,14 @@ thermal-slab, granular-snow or full fluid simulation. Audio is synthesized.
 Human operator feel, wet-edge recognition in turns, hose comfort, camera presets,
 body proportions and audio balance remain important manual checks.
 
-The latest control-driven southeast route records 97.05% reachable coverage
-(95.16% against all ice, versus the prior 95.18% baseline), 82.2% finish and
-90.4 points, then returns and dumps without a pose reset. See
-Validation~/Southeast-full-run.txt for water, time, disposal and scoring details.
+The current control-driven route reverses out from nose-in parking, works the
+sheet, then returns forward and dumps without a pose reset: 96.67% reachable
+coverage, 95.14% whole-ice coverage, 97.04% water coverage, 77.0% finish and
+88.7 points. It uses 677 L over 1,787 simulated seconds, deposits 0.724 m3 into
+the pit and records zero misuse. See Validation~/Southeast-full-run.txt.
+These results supersede the earlier 28 October route's 97.05% reachable /
+95.16% whole-ice coverage, 82.2% finish and 90.4 points; changed calibration and
+driven route mean this is not an isolated comparison of the service layout.
 
 Validation and ownership
 Run the dependency-free .NET checks:

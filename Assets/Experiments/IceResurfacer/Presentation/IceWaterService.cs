@@ -34,7 +34,10 @@ namespace IceResurfacer.Presentation
         bool footLook;
         int lookWarmup;
         Target selected;
-        string prompt = "";
+        string prompt = "", movementStatus = "";
+        float movementStatusTime;
+        Target outOfReachTarget;
+        float targetDistance;
         float hoseLength;
         Vector3 holderPosition, supplyPosition, anchorPosition, drainPosition;
         float groundUpdate;
@@ -51,6 +54,7 @@ namespace IceResurfacer.Presentation
         public ParticleSystem OverflowParticles { get { return spray; } }
         public Vector3 FootPosition { get { return footPosition; } }
         public float HoseVisibleLength { get { return hoseLength; } }
+        public string MovementStatus { get { return movementStatus; } }
         public Vector3 HolderPosition { get { return holderPosition; } }
         public Vector3 SupplyPosition { get { return supplyPosition; } }
         public Vector3 BoardingPoint { get { return StepPoint(); } }
@@ -64,7 +68,8 @@ namespace IceResurfacer.Presentation
                 var s = game.Sim;
                 string state = s.HoseState == WaterHoseState.Stowed ? "HOSE STOWED" : s.HoseState == WaterHoseState.Carried ? "NOZZLE IN HAND" : s.HoseState == WaterHoseState.Dropped ? "LOOSE NOZZLE ON FLOOR" :
                     s.HoseState == WaterHoseState.Flood ? "ICE WATER CONNECTED" : "WASH WATER CONNECTED";
-                return state + "   |   SUPPLY " + Mathf.RoundToInt(s.SupplyValve*100) + "%   |   " + s.ServiceFlowLitersPerSecond.ToString("0.0") + " L/s" +
+                string reach=s.HoseState==WaterHoseState.Stowed?"":"  "+hoseLength.ToString("0.0")+" / 11 m"+(hoseLength>10.5f?" TAUT":"");
+                return state + reach + "   |   SUPPLY " + Mathf.RoundToInt(s.SupplyValve*100) + "%   |   " + s.ServiceFlowLitersPerSecond.ToString("0.0") + " L/s" +
                     (s.ServiceOverflowLitersPerSecond > .01f ? "   |   OVERFLOW — CLOSE WALL VALVE" : "");
             }
         }
@@ -95,7 +100,7 @@ namespace IceResurfacer.Presentation
             game.DriverCamera.transform.SetParent(game.World.CameraMount,false);
             game.DriverCamera.transform.localPosition=Vector3.zero;
             game.DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
-            prompt=""; spillWetness=0; levelUpdate=0;groundRevision=-1;groundUpdate=0;
+            prompt="";movementStatus="";movementStatusTime=0; spillWetness=0; levelUpdate=0;groundRevision=-1;groundUpdate=0;
             if(holderHighlight!=null)holderHighlight.gameObject.SetActive(false);
             if(spray!=null)spray.Clear();
         }
@@ -125,6 +130,8 @@ namespace IceResurfacer.Presentation
                 return;
             }
             UpdateFootLook(mouse,Mathf.Min(dt,.05f));
+            movementStatusTime=Mathf.Max(0,movementStatusTime-dt);
+            if(movementStatusTime==0)movementStatus="";
             if(keys!=null)
             {
                 Vector3 move=new Vector3((keys.dKey.isPressed?1:0)-(keys.aKey.isPressed?1:0),0,(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0));
@@ -135,6 +142,7 @@ namespace IceResurfacer.Presentation
             selected=FindTarget(mouse);
             holderHighlight.gameObject.SetActive(selected==Target.Holder&&s.HoseState==WaterHoseState.Carried);
             prompt=PromptFor(selected);
+            if(movementStatusTime>0)prompt=movementStatus;
             bool interact=keys!=null&&keys.eKey.wasPressedThisFrame;
             if(mouse!=null&&mouse.leftButton.wasPressedThisFrame)interact=true;
             if(interact&&selected!=Target.None)Interact(selected);
@@ -191,26 +199,34 @@ namespace IceResurfacer.Presentation
         }
         void MoveFoot(Vector3 movement)
         {
+            if(movement.sqrMagnitude<.000001f)return;
+            Vector3 before=footPosition;
             Vector3 next=footPosition+movement;
-            if(Walkable(next))footPosition=next;
+            if(Walkable(next,true,true))footPosition=next;
             else
             {
                 next=footPosition+new Vector3(movement.x,0,0);if(Walkable(next))footPosition=next;
                 next=footPosition+new Vector3(0,0,movement.z);if(Walkable(next))footPosition=next;
             }
+            if((footPosition-before).sqrMagnitude>=movement.sqrMagnitude*.80f){movementStatus="";movementStatusTime=0;}
         }
-        bool Walkable(Vector3 position,bool checkHose=true)
+        bool Blocked(string reason,bool show)
+        {if(show){movementStatus=reason;movementStatusTime=1.4f;}return false;}
+        bool Walkable(Vector3 position,bool checkHose=true,bool showBlock=false)
         {
             var s=game.Sim;
-            if(!s.Ice.IsInside(position.x,position.z,.22f)&&!s.Layout.ContainsFloor(position.x,position.z,.22f))return false;
-            if(s.Layout.ContainsPit(position.x,position.z,.22f))return false;
+            if(!s.Ice.IsInside(position.x,position.z,.22f)&&!s.Layout.ContainsFloor(position.x,position.z,.22f))return Blocked("Wall or boards ahead. Follow the clear aisle.",showBlock);
+            if(s.Layout.ContainsPit(position.x,position.z,.22f))return Blocked("Snow-pit edge. Walk around the marked rim.",showBlock);
             Vector3 local=game.World.Machine.InverseTransformPoint(position);
-            if(Mathf.Abs(local.x)<1.38f&&local.z> -1.88f&&local.z<2.84f)return false;
+            if(Mathf.Abs(local.x)<1.38f&&local.z> -1.88f&&local.z<2.84f)return Blocked("Machine ahead. Use the clear aisle beside the fill couplings.",showBlock);
             if(checkHose&&game.Sim.HoseState==WaterHoseState.Carried)
             {
                 Vector3 end=position+Vector3.up*1.68f+Quaternion.Euler(footPitch,footYaw,0)*new Vector3(.27f,-.56f,.44f);
-                if(BuildRoute(end,out float length)>0&&length>Simulation.ServiceHoseLengthMeters)
-                {game.Notice="Hose at its 11 m reach. Walk back toward the water station.";return false;}
+                // Turning the head can move the held nozzle beyond the limit.
+                // Always allow a shorter route back toward slack; otherwise an
+                // overextended hand creates a trap even while walking inward.
+                if(BuildRoute(end,out float length)>0&&length>Simulation.ServiceHoseLengthMeters&&length>=hoseLength-.0005f)
+                {return Blocked("Hose taut at 11 m. Walk toward the wall reel or return the nozzle before moving farther.",showBlock);}
             }
             return true;
         }
@@ -232,16 +248,23 @@ namespace IceResurfacer.Presentation
         {
             Ray ray=game.DriverCamera.ScreenPointToRay(footLook||mouse==null?new Vector3(Screen.width*.5f,Screen.height*.5f):new Vector3(mouse.position.ReadValue().x,mouse.position.ReadValue().y));
             Target best=Target.None;float score=float.MaxValue;
+            outOfReachTarget=Target.None;targetDistance=0;float distantScore=float.MaxValue;
             for(int i=1;i<=6;i++)
             {
                 Target t=(Target)i;Vector3 p=TargetPosition(t);Vector3 to=p-ray.origin;
                 if(t==Target.LooseNozzle&&game.Sim.HoseState!=WaterHoseState.Dropped)continue;
                 float distance=Vector3.Distance(footPosition+Vector3.up*1.15f,p);
-                if(distance>(t==Target.Holder?Simulation.ServiceHolderReachMeters:Simulation.ServiceReachMeters))continue;
+                float reach=t==Target.Holder?Simulation.ServiceHolderReachMeters:Simulation.ServiceReachMeters;
+                if(distance>reach+2)continue;
                 float along=Vector3.Dot(to,ray.direction);if(along<0)continue;
                 float miss=(to-ray.direction*along).magnitude;
                 float radius=t==Target.Holder&&game.Sim.HoseState==WaterHoseState.Carried?.86f:t==Target.Step?.65f:t==Target.LooseNozzle?.60f:.38f;
                 float aim=miss/radius;
+                if(distance>reach)
+                {
+                    if(aim<1&&aim<distantScore){outOfReachTarget=t;targetDistance=distance;distantScore=aim;}
+                    continue;
+                }
                 if(aim<1&&aim<score){best=t;score=aim;}
             }
             return best;
@@ -253,6 +276,12 @@ namespace IceResurfacer.Presentation
         string PromptFor(Target target)
         {
             var s=game.Sim;
+            if(target==Target.None&&outOfReachTarget!=Target.None)
+            {
+                string fixture=outOfReachTarget==Target.Holder?"hose holder":outOfReachTarget==Target.Supply?"wall valve":outOfReachTarget==Target.Flood?"ICE WATER inlet":outOfReachTarget==Target.Wash?"WASH WATER inlet":outOfReachTarget==Target.Step?"left boarding step":"loose nozzle";
+                float reach=outOfReachTarget==Target.Holder?Simulation.ServiceHolderReachMeters:Simulation.ServiceReachMeters;
+                return "Approach "+fixture+" - "+targetDistance.ToString("0.0")+" m away; reach "+reach.ToString("0.0")+" m";
+            }
             switch(target)
             {
                 case Target.Holder:return s.HoseState==WaterHoseState.Stowed?"E — Take hose":s.HoseState==WaterHoseState.Carried?"E — Return hose":s.HoseState==WaterHoseState.Dropped?"Retrieve the loose nozzle from the floor":"Hose is connected at the machine inlet";
@@ -399,9 +428,12 @@ namespace IceResurfacer.Presentation
         void BuildStation()
         {
             var layout=new ServiceLayout(game.calibration);
-            station=Group("Southeast service wall / right of parked machine",root,new Vector3(layout.GateX,0,layout.GateZ));
-            station.localRotation=Quaternion.Euler(0,-45,0);
-            Vector3 holder=new Vector3(5.40f,1.15f,-6.48f),supply=new Vector3(5.38f,1.25f,-5.28f),anchor=new Vector3(Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward);
+            // Rotate the complete fixture about its anchor depth to the opposite
+            // wall. Positive scales preserve lettering, pipe and valve geometry.
+            layout.ToWorld(0,Simulation.ServiceAnchorOutward*2,out float sx,out float sz);
+            station=Group("Southeast service wall / right of nose-in parked machine",root,new Vector3(sx,0,sz));
+            station.localRotation=Quaternion.Euler(0,135,0);
+            Vector3 holder=new Vector3(5.40f,1.15f,-6.48f),supply=new Vector3(5.38f,1.25f,-5.28f),anchor=new Vector3(-Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward);
             holderPosition=station.TransformPoint(holder);supplyPosition=station.TransformPoint(supply);anchorPosition=station.TransformPoint(anchor);
             Vector3 drain=new Vector3(4.6f,.025f,-7.35f);drainPosition=station.TransformPoint(drain);
             Box("Water station backing",station,new Vector3(5.85f,1.52f,-6.05f),new Vector3(.06f,1.40f,2.25f),paint);
@@ -456,7 +488,7 @@ namespace IceResurfacer.Presentation
             for(int i=-1;i<=1;i+=2)Box("Bayonet inlet lug",inlet,new Vector3(.07f,0,i*.059f),new Vector3(.027f,.027f,.035f),steel);
             Beam("Overflow standpipe",inlet,new Vector3(-.01f,-.07f,.13f),new Vector3(.11f,-.25f,.13f),.027f,steel);
             Label(name,inlet,new Vector3(.025f,.22f,0),.053f,Color.white,Quaternion.Euler(0,90,0));
-            Label("E  CONNECT",inlet,new Vector3(.025f,.15f,0),.034f,Color.white,Quaternion.Euler(0,90,0));
+            Label("E  INTERACT",inlet,new Vector3(.025f,.15f,0),.034f,Color.white,Quaternion.Euler(0,90,0));
             return Group(name+" hose attachment",inlet,new Vector3(.14f,0,0));
         }
         Transform Gauge(Vector3 position,Material material)

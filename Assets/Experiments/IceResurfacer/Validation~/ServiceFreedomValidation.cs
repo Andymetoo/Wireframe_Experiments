@@ -5,6 +5,19 @@ internal static class ServiceFreedomValidation
 {
     public static void Run()
     {
+        var parked=new Simulation(practice:true);
+        parked.Layout.ToLocal(parked.Vehicle.X,parked.Vehicle.Z,out float side,out float outward);
+        Near(side,0,.001f,"default parking centered on portal");
+        Near(outward,5.8f,.001f,"default parking leaves rear walking aisle");
+        Near(parked.Vehicle.Heading,parked.Layout.OutwardHeading,.001f,"default nose faces forward toward snow pit");
+        Check(parked.Layout.PitSide==0,"snow pit aligns with straight entry and reverse exit");
+        parked.Layout.SupplyAnchor(out float ax,out float az);
+        float rightX=(float)Math.Cos(parked.Vehicle.Heading),rightZ=-(float)Math.Sin(parked.Vehicle.Heading);
+        Check((ax-parked.Vehicle.X)*rightX+(az-parked.Vehicle.Z)*rightZ>5,"wall supply remains on fixed machine-right filler side after nose-in parking");
+        parked.Controls.Throttle=-1;Tick(parked,12);
+        parked.Layout.ToLocal(parked.Vehicle.X,parked.Vehicle.Z,out side,out outward);
+        Check(outward< -2&&Math.Abs(side)<.02f&&parked.Mistakes==0,"straight reverse exits centered portal with no collision or steering correction");
+
         var free=new Simulation(practice:true);
         free.Vehicle.X=free.Vehicle.Z=0;free.Vehicle.Heading=0;
         free.Conditioner.X=0;free.Conditioner.Z=-1.1f;
@@ -38,12 +51,12 @@ internal static class ServiceFreedomValidation
         var pull=new Simulation(practice:true);
         Check(pull.ConfigureWaterForServiceTest(.9f,.5f)&&pull.TryDismount()&&pull.TakeHose()&&pull.ConnectHose(WaterFillPort.Wash,4.6f)&&pull.SetSupplyValve(1)&&pull.TryBoard(),"prepare connected-hose departure fixture");
         Check(!pull.ServiceDriveInhibited,"attached hose does not inhibit travel in Free Simulation");
-        pull.Controls.Throttle=1;Tick(pull,1);
-        Check(pull.Vehicle.Speed>.1f,"vehicle actually moves with hose attached");
-        Tick(pull,11);
+        pull.Controls.Throttle=-1;Tick(pull,1);
+        Check(pull.Vehicle.Speed< -.1f,"vehicle actually reverses with hose attached");
+        Tick(pull,16);
         Check(pull.HoseBreakaways==1&&pull.HoseState==WaterHoseState.Dropped,"physical reach releases breakaway coupling once during driven departure");
         Check(pull.TotalServiceDrainLiters>0&&pull.SupplyValve==1,"wall supply continues spilling after breakaway until operator closes it");
-        Check(pull.EffectiveDriveDemand>.9f&&!pull.ServiceDriveInhibited,"broken coupling never leaves stale drive inhibition");
+        Check(pull.EffectiveDriveDemand< -.9f&&!pull.ServiceDriveInhibited,"broken coupling never leaves stale drive inhibition");
         Near((float)(pull.TotalServiceSuppliedLiters-pull.TotalServiceStoredLiters-pull.TotalServiceDrainLiters),0,.08f,"supply conserved across fill, overflow and loose-hose flow");
 
         var training=new Simulation(practice:true,mode:SimulationMode.GuidedTraining);

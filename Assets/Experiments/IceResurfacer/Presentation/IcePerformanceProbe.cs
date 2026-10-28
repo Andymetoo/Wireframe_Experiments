@@ -13,7 +13,7 @@ namespace IceResurfacer.Presentation
     // Explicit development-player benchmark. It is never attached to the launch scene.
     public sealed class IcePerformanceProbe : MonoBehaviour
     {
-        readonly string[] scenarios={"driving_full_hud","resurfacing_full_hud","resurfacing_compact","snow_overflow","camera_changes","service_walking","hose_filling","hose_overflow","dump_shakeout","long_session","on_foot_movement"};
+        readonly string[] scenarios={"driving_full_hud","resurfacing_full_hud","resurfacing_compact","snow_overflow","camera_changes","service_walking","hose_filling","hose_overflow","dump_shakeout","long_session","on_foot_movement","late_wet_sheet"};
         readonly List<double> frameMs=new List<double>(1500), cpuMs=new List<double>(1500), gpuMs=new List<double>(1500);
         readonly StringBuilder report=new StringBuilder();
         readonly FrameTiming[] timings=new FrameTiming[1];
@@ -25,9 +25,9 @@ namespace IceResurfacer.Presentation
         string output;
         int scenario=-1, frame, errors, gcStart, enduranceFrames=1500;
         long allocated, maxAllocated, simulationAllocated;
-        double lastFrame, cpuTotal, memoryStart;
+        double lastFrame, cpuTotal, memoryStart, surfaceRefreshTotal;
         Vector3 bayStart; float bayHeading;
-        bool active, finishing;
+        bool active, finishing, lateWetSheet;
         void Start()
         {
             var args=Environment.GetCommandLineArgs();
@@ -54,17 +54,20 @@ namespace IceResurfacer.Presentation
             frameMs.Capacity=cpuMs.Capacity=gpuMs.Capacity=enduranceFrames+1;
             report.AppendLine("GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.");
             report.AppendLine("service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.");
-            report.AppendLine("scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls");
+            report.AppendLine("late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.");
+            report.AppendLine("Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.");
+            report.AppendLine("scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame");
             active=true;Next();lastFrame=Time.realtimeSinceStartupAsDouble;
         }
         void Next()
         {
             scenario++; if(scenario>=scenarios.Length){Finish();return;}
+            lateWetSheet=scenarios[scenario]=="late_wet_sheet";
             game.NewSession(true);game.enabled=false;
             var s=game.Sim;var c=s.Controls;
             bayStart=new Vector3(s.Vehicle.X,0,s.Vehicle.Z);bayHeading=s.Vehicle.Heading;
             c.HydraulicHoldControls=false;
-            if(scenario<5||scenario==9)
+            if(scenario<5||scenario==9||lateWetSheet)
             {
                 Pose(s,-5,-15,0);c.Throttle=.42f;
                 if(scenario!=0){s.Conditioner.Lift=0;c.ConditionerTarget=0;c.BladeDepthMm=.35f;c.HorizontalAuger=c.VerticalAuger=true;c.FloodFlow=.32f;c.WashValve=.25f;}
@@ -78,14 +81,34 @@ namespace IceResurfacer.Presentation
             }
             if(scenario==8)
             {
-                float h=bayHeading+Mathf.PI;
-                Pose(s,bayStart.x+Mathf.Sin(h)*4.5f,bayStart.z+Mathf.Cos(h)*4.5f,h);
+                s.Layout.ToWorld(s.Layout.PitSide,s.Layout.PitOutward-3.85f,out float pitX,out float pitZ);
+                Pose(s,pitX,pitZ,s.Layout.OutwardHeading);
                 typeof(Simulation).GetProperty("SnowTankM3").SetValue(s,1.8f);c.TankLiftTarget=1;
             }
+            if(lateWetSheet)SeedLateWetSheet(s);
             game.Dashboard.Compact=scenario==2;
-            render(0);game.Surface.Refresh(s);
-            frame=0;frameMs.Clear();cpuMs.Clear();gpuMs.Clear();allocated=maxAllocated=simulationAllocated=0;cpuTotal=0;
+            render(0);game.Surface.Invalidate();game.Surface.Refresh(s);
+            frame=0;frameMs.Clear();cpuMs.Clear();gpuMs.Clear();allocated=maxAllocated=simulationAllocated=0;cpuTotal=surfaceRefreshTotal=0;
             memoryStart=GC.GetTotalMemory(false);gcStart=GC.CollectionCount(0);
+        }
+        static void SeedLateWetSheet(Simulation s)
+        {
+            const int stripeCount=16;
+            const float oldestAge=15*60;
+            // Explicit history fixture. Phase changes use the production water
+            // API; no clamped wetness or shader-only whole-sheet override.
+            typeof(Simulation).GetProperty("Time").SetValue(s,oldestAge);
+            for(int i=0;i<s.Ice.Cells.Length;i++)
+            {
+                var cell=s.Ice.Cells[i];if(!cell.IsIce)continue;
+                int row=i/s.Ice.Columns;
+                int stripe=Math.Min(stripeCount-1,row*stripeCount/s.Ice.Rows);
+                float age=oldestAge*stripe/(stripeCount-1);
+                s.Ice.AddWater(ref cell,.30f,s.Time-age);
+                s.Ice.ResolveLiquid(ref cell,s.Time);
+                s.Ice.UpdateQuality(ref cell);s.Ice.Cells[i]=cell;s.Ice.MarkCellChanged(i);
+            }
+            s.Ice.MarkChanged();
         }
         static void Pose(Simulation s,float x,float z,float heading)
         {
@@ -104,7 +127,7 @@ namespace IceResurfacer.Presentation
             }
             FrameTimingManager.CaptureFrameTimings();
             var s=game.Sim;var c=s.Controls;
-            if((scenario<5||scenario==9)&&s.Vehicle.Z>15)Pose(s,-5,-15,0);
+            if((scenario<5||scenario==9||lateWetSheet)&&s.Vehicle.Z>15)Pose(s,-5,-15,0);
             if(scenario==4)game.DriverCamera.transform.localRotation=Quaternion.Euler(25+15*Mathf.Sin(frame*.02f),120*Mathf.Sin(frame*.015f),0);
             if(scenario==5)game.DriverCamera.transform.rotation=Quaternion.Euler(12,frame*.45f,0);
             if(scenario==9&&frame%180==0)c.Steer=frame%360==0?.25f:-.25f;
@@ -117,7 +140,12 @@ namespace IceResurfacer.Presentation
                 moveFoot(walk*.036f);applyFoot();
             }
             s.Step(.02f);render(.02f);game.WaterService.UpdateViewAndEffects(true,.02f);
-            if(frame%8==0){game.Surface.Refresh(s);typeof(IceResurfacerGame).GetProperty("Report").SetValue(game,s.GetReport());}
+            if(frame%8==0)
+            {
+                game.Surface.Refresh(s);
+                if(frame>90)surfaceRefreshTotal+=game.Surface.LastRefreshMilliseconds;
+                typeof(IceResurfacerGame).GetProperty("Report").SetValue(game,s.GetReport());
+            }
             double work=(System.Diagnostics.Stopwatch.GetTimestamp()-started)*1000.0/System.Diagnostics.Stopwatch.Frequency;
             if(frame>90){cpuMs.Add(work);cpuTotal+=work;simulationAllocated+=GC.GetAllocatedBytesForCurrentThread()-before;}
             frame++;
@@ -132,7 +160,7 @@ namespace IceResurfacer.Presentation
                 frameMs.Sort();double sum=0;foreach(double value in frameMs)sum+=value;
                 double gpu=0;foreach(double value in gpuMs)gpu+=value;
                 int n=frameMs.Count;double mean=sum/Math.Max(1,n);
-                report.AppendLine(scenarios[scenario]+","+n+","+mean.ToString("F3")+","+frameMs[Math.Min(n-1,(int)(n*.95))].ToString("F3")+","+(1000/mean).ToString("F1")+","+(cpuTotal/Math.Max(1,cpuMs.Count)).ToString("F3")+","+(gpuMs.Count>0?(gpu/gpuMs.Count).ToString("F3"):"unavailable")+","+(allocated/Math.Max(1,n))+","+maxAllocated+","+(simulationAllocated/Math.Max(1,cpuMs.Count))+","+(GC.CollectionCount(0)-gcStart)+","+(GC.GetTotalMemory(false)-memoryStart)+","+(draws.Valid?draws.LastValue:-1));
+                report.AppendLine(scenarios[scenario]+","+n+","+mean.ToString("F3")+","+frameMs[Math.Min(n-1,(int)(n*.95))].ToString("F3")+","+(1000/mean).ToString("F1")+","+(cpuTotal/Math.Max(1,cpuMs.Count)).ToString("F3")+","+(gpuMs.Count>0?(gpu/gpuMs.Count).ToString("F3"):"unavailable")+","+(allocated/Math.Max(1,n))+","+maxAllocated+","+(simulationAllocated/Math.Max(1,cpuMs.Count))+","+(GC.CollectionCount(0)-gcStart)+","+(GC.GetTotalMemory(false)-memoryStart)+","+(draws.Valid?draws.LastValue:-1)+","+game.Surface.ActiveWetCells+","+(surfaceRefreshTotal/Math.Max(1,cpuMs.Count)).ToString("F3"));
                 Next();
             }
         }

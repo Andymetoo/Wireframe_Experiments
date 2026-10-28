@@ -5,6 +5,8 @@ Native mouse messages target only this player's own window; hydraulic checks adv
 Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
 The results capture follows an actual raised, dry entry and safe return through the normal finish path.
 PASS 1366x768 / Requested client resolution (actual 1366x768)
+PASS 1366x768 / Machine Load meter opens its demand explanation
+PASS 1366x768 / Machine Load explanation closes without changing machinery
 PASS 1366x768 / Conditioner held direction
 PASS 1366x768 / Conditioner springs to neutral on native mouse release
 PASS 1366x768 / Conditioner holds attained position after release
@@ -34,4 +36,4 @@ PASS 1366x768 / Unscored-practice launch button
 PASS 1366x768 / Scored-run launch button
 PASS 1366x768 / Legal partial run reaches results through normal finish path
 PASS: all player HUD checks.
-Native hidden-window D3D presentation warnings: 20 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 5 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

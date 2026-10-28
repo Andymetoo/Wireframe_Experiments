@@ -136,13 +136,14 @@ namespace IceResurfacer.Editor
                     Capture(game.DriverCamera,"Driver-start.png");
                     game.NewSession(false,true);
                     // Fast deterministic setup of a genuine treated straight lane. No state-texture painting.
-                    var sim=game.Sim; sim.Controls.HydraulicHoldControls=false; sim.Controls.Throttle=.42f;
+                    var sim=game.Sim; sim.Controls.HydraulicHoldControls=false; sim.Controls.Throttle=-.65f;
                     for(int i=0;i<1000;i++)sim.Step(.02f);
                     // Rendering fixture uses a centred lane after validating the new
                     // entrance drive. The independent full-run test never sets poses.
                     Require(sim.HasEnteredRink,"Southeast gate admits actual driven entry");
                     sim.Vehicle.X=0;sim.Vehicle.Z=-22;sim.Vehicle.Heading=0;sim.Vehicle.Speed=0;
                     sim.Conditioner.X=0;sim.Conditioner.Z=-23.1f;sim.Conditioner.Heading=0;
+                    sim.Controls.Throttle=.42f;
                     sim.Controls.ConditionerTarget=0;
                     sim.Controls.HorizontalAuger=true; sim.Controls.VerticalAuger=true;
                     for(int i=0;i<110;i++)sim.Step(.02f);

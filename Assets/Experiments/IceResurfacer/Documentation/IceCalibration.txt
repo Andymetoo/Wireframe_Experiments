@@ -1,6 +1,10 @@
 AURORA R-54 / ICE GEOMETRY, RECOVERY AND SURFACE UPDATE AUDIT
 28 October 2026
 
+Historical operator-freedom calibration snapshot. The subsequent visual pass
+uses a true 0.050 m grid, 420-second phase constant and depth-based wear.
+See VisualIceRefinement.txt for current defaults and measured overlap.
+
 Measured geometry and the operator's tire cue
 The source already used 1.370 m wheel track and 0.300 m tires: an outside
 tire edge is 0.835 m from the vehicle centerline. The blade is 1.956 m and

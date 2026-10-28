@@ -18,5 +18,5 @@ PASS forward dump door opens independently of shell
 PASS actual removed tank contents form a visible pit pile
 PASS empty tank hides internal snow surface
 PASS dump tank returns fully to lowered position
-Working simulation + presentation CPU sample (240 ticks): 0.410 ms/tick; managed allocation=0 bytes; 442 dynamic snow vertices, four 360-particle snow pools. Excludes IMGUI/GPU.
+Working simulation + presentation CPU sample (240 ticks): 3.465 ms/tick; managed allocation=0 bytes; 442 dynamic snow vertices, four 360-particle snow pools. Excludes IMGUI/GPU.
 PASS working auger emits actual snow into the bin

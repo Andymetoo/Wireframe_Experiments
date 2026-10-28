@@ -20,8 +20,8 @@ namespace IceResurfacer.Core
         public const float WashFillLocalZ = -.55f;
         public const float FloodFillHeight = 1.22f;
         public const float WashFillHeight = 1.48f;
-        public const float ServiceAnchorSide = 5.45f;
-        public const float ServiceAnchorOutward = 6f;
+        public const float ServiceAnchorSide = ServiceLayout.SupplySide;
+        public const float ServiceAnchorOutward = ServiceLayout.SupplyOutward;
         public float HoseLooseX { get; private set; }
         public float HoseLooseZ { get; private set; }
         public int HoseBreakaways { get; private set; }
@@ -85,7 +85,7 @@ namespace IceResurfacer.Core
             if (HoseState != WaterHoseState.Stowed) return ServiceReject("The hose is already in use; disconnect it at the machine inlet.");
             if (GuidedTraining && SupplyValve > .001f) return ServiceReject("Training assistance: close the wall supply valve before taking the nozzle.");
             HoseState = WaterHoseState.Carried;
-            Layout.ToWorld(ServiceAnchorSide-.05f,ServiceAnchorOutward+.48f,out float x,out float z);
+            Layout.HoseHolder(out float x,out float z);
             HoseLooseX=x;HoseLooseZ=z;
             LastMessage = "Hose in hand. Walk to the blue ICE WATER or teal WASH WATER inlet and press E.";
             return true;
@@ -96,8 +96,10 @@ namespace IceResurfacer.Core
             if (!OnFoot || HoseState != WaterHoseState.Carried) return ServiceReject("Take the hose from its wall holder first.");
             if (port != WaterFillPort.Flood && port != WaterFillPort.Wash) return ServiceReject("This is not a water fill inlet. Use the labeled ICE WATER or WASH WATER coupling.");
             if (!WithinReach(operatorDistance)) return ServiceReject("Walk closer to the selected fill inlet.");
-            if (!Finite(routeLength) || routeLength < 0 || routeLength > ServiceHoseLengthMeters)
-                return ServiceReject("The 11 m hose cannot reach this inlet. Park nearer the water station.");
+            if (!Finite(routeLength) || routeLength < 0)
+                return ServiceReject("No clear hose route to this inlet. Park with the right-side fillers beside the wall reel.");
+            if (routeLength > ServiceHoseLengthMeters)
+                return ServiceReject("Inlet route is "+routeLength.ToString("0.0")+" m; the hose reaches 11 m. Park nearer the wall reel.");
             if (GuidedTraining && (!InServiceBay || !EquipmentSafe || Math.Abs(Vehicle.Speed) > .035f || TankRaised))
                 return ServiceReject("Training assistance: connect to a stopped, stowed machine in the service bay.");
             if (GuidedTraining && SupplyValve > .001f) return ServiceReject("Training assistance: close the wall supply valve before coupling the hose.");
@@ -141,7 +143,7 @@ namespace IceResurfacer.Core
         public bool CheckHoseReach(float routedLength)
         {
             if (!HoseConnected || GuidedTraining || float.IsNaN(routedLength) || routedLength <= ServiceHoseLengthMeters) return false;
-            Layout.ToWorld(ServiceAnchorSide, ServiceAnchorOutward, out float ax, out float az);
+            Layout.SupplyAnchor(out float ax, out float az);
             VehiclePoint(FillPortLocalX + .14f, HoseState == WaterHoseState.Wash ? WashFillLocalZ : FloodFillLocalZ, out float x, out float z);
             float dx=x-ax,dz=z-az,d=(float)Math.Sqrt(dx*dx+dz*dz),scale=Math.Min(1,(ServiceHoseLengthMeters-1.4f)/Math.Max(.001f,d));
             HoseLooseX=ax+dx*scale;HoseLooseZ=az+dz*scale;
@@ -182,7 +184,7 @@ namespace IceResurfacer.Core
             ServiceFlowLitersPerSecond = ServiceOverflowLitersPerSecond = 0;
             if (HoseConnected && !GuidedTraining)
             {
-                Layout.ToWorld(ServiceAnchorSide, ServiceAnchorOutward, out float ax, out float az);
+                Layout.SupplyAnchor(out float ax, out float az);
                 VehiclePoint(FillPortLocalX + .14f, HoseState == WaterHoseState.Wash ? WashFillLocalZ : FloodFillLocalZ, out float x, out float z);
                 float dx=x-ax,dz=z-az;
                 CheckHoseReach((float)Math.Sqrt(dx*dx+dz*dz)+.9f);
@@ -195,7 +197,7 @@ namespace IceResurfacer.Core
             {
                 TotalServiceDrainLiters += supplied;
                 float spillX=HoseLooseX,spillZ=HoseLooseZ;
-                if(HoseState==WaterHoseState.Stowed) Layout.ToWorld(ServiceAnchorSide-.15f,ServiceAnchorOutward+.48f,out spillX,out spillZ);
+                if(HoseState==WaterHoseState.Stowed) Layout.HoseHolder(out spillX,out spillZ);
                 DepositRunoff(spillX,spillZ,supplied);
                 return;
             }

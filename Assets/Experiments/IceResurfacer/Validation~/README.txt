@@ -4,9 +4,10 @@ AURORA R-54 / VALIDATION
 Scope and authoritative results
 This folder is ignored by Unity because its name ends in ~. It contains the
 standalone core harness, isolated Unity project/build helpers, actual rendered
-evidence and measurements. Current behavior is documented in ../README.txt and
-../Documentation/OperatorFreedom.txt. Earlier 25-27 October documentation keeps
-historical metrics; it is not the current control or southeast-layout guide.
+evidence and measurements. Current behavior is documented in ../README.txt,
+../Documentation/SurfaceServiceRefinement.txt and VisualIceRefinement.txt in
+that same Documentation folder. OperatorFreedom.txt, IceCalibration.txt and
+Performance.txt retain the preceding pass, including earlier 28 October data.
 Generated reports establish the status of their own run. A source description
 or older image alone does not establish that the latest runtime checks passed.
 
@@ -25,24 +26,28 @@ Specialized entry points and reports:
   southeast gate tests; pass '-- route' after dotnet run options for FullRun.
 - Freedom-results.txt: unrestricted and unconventional operation, training
   isolation, moving dismount, arbitrary/angled dump locations and material totals.
-- Southeast-full-run.txt: the complete scored route from the production southeast
-  spawn through entry, resurfacing, return, angled unloading and finish.
+- Southeast-full-run.txt: the complete scored route from the centered nose-in
+  spawn through reverse departure, resurfacing, forward return, unloading and finish.
 - ServiceFreedomValidation.cs: invoked by the aggregate harness; moving/active
-  dismount, permissive hose operation, departure/breakaway, return and conservation.
+  dismount, centered straight reverse exit, hose departure/breakaway, return and conservation.
 - ServiceValidation.cs: the retained safe service sequence in Guided Training.
-- IceCalibrationProbe.csproj / Ice-calibration-results.txt: tire-aligned parallel
+- IceCalibrationProbe.csproj / Ice-visual-refinement-results.txt: real 5 cm state,
+  fractional film stamps, aging, residual gouge depth, tire-aligned parallel
   passes, liquid pickup, frozen-water balance, brush footprint and scoring mask.
+  Ice-calibration-results.txt retains the previous surface calibration.
 - IceWidthBeforeProbe.csproj / Ice-width-before-results.txt: the captured previous
   implementation's straight-pass width and alignment measurement.
 - Movement-before.txt: the original rejected dump-target travel-latch failure.
 
 Full-run comparison
-The current control-driven scored route records 97.05% combined treatment of
-shavable ice, 95.16% combined treatment of ALL ice, 97.25% water coverage,
-82.2% finish, 90.4 points, 674.8 L flood use, 0.723 m3 snow in the pit,
-1759 simulated seconds, zero misuse faults and a proper southeast return.
-The prior whole-ice coverage baseline was 95.18%. Compare 95.16% with that figure;
-the 97.05% result uses the new reachable mask. The score weights also changed.
+The current control-driven scored route records 96.67% combined treatment of
+shavable ice, 95.14% combined treatment of ALL ice, 97.04% water coverage,
+77.0% finish, 88.7 points, 677.0 L flood use, 0.724 m3 snow in the pit,
+1787 simulated seconds, zero misuse faults and a proper southeast return.
+The preceding operator-freedom route recorded 97.05% reachable / 95.16%
+whole-ice coverage, 82.2% finish and 90.4 points. Earlier whole-ice coverage
+was 95.18%. Reachable and whole-sheet denominators differ; current depth/aging
+calibration and the driven route also changed. This is not an isolated layout A/B.
 
 The full route only uses throttle, steering and equipment commands after the
 normal spawn. It does not write poses/cells/tanks, refill, change capacities or
@@ -55,12 +60,18 @@ is not counted again as an independent storage reservoir.
 Ice calibration interpretation
 Blade remains 1.956 m, towel 2.100 m, body 2.130 m, wheel track 1.370 m and tire
 width 0.300 m. The outside tire edge is 0.835 m from the centerline. At the test
-0.100 m grid phase, the strong wet band is 2.200 m after finite spreading versus
-2.000 m before. Both correctly tire-aligned straight tests have zero dry and
+0.050 m grid phase, the strong wet band is 2.300 m. The preceding 0.100 m
+implementation measured 2.200 m after finite spreading and its baseline 2.000 m.
+The current GPU shader-response mask spans 2.367 m at its 60% display threshold
+across the physical 2.100 m towel. This is not an objective perceived-width
+guarantee under every reflection angle. Correctly tire-aligned straight tests have zero dry and
 unscored cells between passes. The reported foot-wide gap was not reproduced by
 that test; turning, perspective and which visible edge is followed still require
 operator playtesting. Do not describe the test as proving that reported visual
-problem impossible. IceCalibration.txt explains thresholds and raster edges.
+problem impossible. VisualIceRefinement.txt explains current thresholds, real
+520 x 1200 samples, fractional edge stamps, residual depth and aging. The
+420-second phase constant retains 48.95% liquid at 5 minutes and 5.74% at 20;
+liquid plus frozen water is conserved.
 
 The new film uses limited existing water volume and leaves all non-ice cells
 dry. A 0.1524 m mask excludes physically inaccessible shaving perimeter only;
@@ -91,10 +102,14 @@ Runtime report map:
   independent quarter-turn valves, and full 3.5-turn blade-wheel travel.
 - Service-results.txt: actual F/E/W route around the southeast machine room,
   free mouse look, both fills/overflow, broad highlighted return, boarding,
-  driven hose breakaway and moving dismount with equipment state preserved.
+  reverse hose breakaway and moving dismount with equipment state preserved.
+  Every walk step checks continuity/body clearance; the taut-hose test looks up
+  to extend the nozzle and retreats with S without a reset. Reach/obstruction
+  messages and the persistent hose-length display are exercised.
 - Operations-results.txt: snow transfer and pooled visual/state behavior.
-- Ice-calibration-runtime-results.txt: tire overlap, scoring mask and before/
-  after pickup rendered from actual cells by IceCalibrationRuntimeValidation.
+- Ice-calibration-runtime-results.txt: tire overlap, scoring mask, before/after
+  pickup, GPU water-response width, residual-groove lanes and timed wet aging,
+  rendered from actual cells by IceCalibrationRuntimeValidation.
 Some rendering stress fixtures deliberately seed near-full initial snow stock.
 The complete core route does not. Check final generated results for runtime
 status; a pending rerun must not be summarized as a successful final run.
@@ -110,13 +125,23 @@ It checks real IMGUI interactions, spring/latching controls, valve and handwheel
 ranges, guide/pause/welcome/results/compact/service layouts and text clipping.
 HUD-player-results-<resolution>.txt and HUD-layout-issues-<resolution>.txt record
 those outcomes. HUD-* PNGs are actual native framebuffers, not mockups.
+Run isolated builds and native probes serially. A first 1366 run during an
+overlapping build showed automatic-pause behavior, likely from focus interference;
+unchanged-binary serial reruns passed with no measured clipping or managed errors. HUD capture
+FPS labels include synchronous scripted ticks, captures and automation waits;
+they are not benchmark results or focused-window latency measurements.
 
 Performance measurements
 RunPerformancePlayer.ps1 drives the separate opt-in performance player at
-1366x768 and 1920x1080. PerformanceBefore/ and PerformanceAfter/ hold CSV results
-from their respective builds; OperatorFreedomBefore/ preserves the captured
-previous implementation used for comparison. Refer to ../Documentation/Performance.txt
-for build/run details, scenario definitions, final measurements and limits.
+1366x768 and 1920x1080. PerformanceSurfaceService/ holds the CURRENT refinement's
+player reports, including the late-session wet-sheet workload. Both final runs
+complete with zero managed errors; ../Documentation/SurfaceServiceRefinement.txt
+contains all 12 scenarios at each resolution, comparisons and measurement limits.
+PerformanceBefore/, PerformanceAfter/ and PerformanceEndurance/ retain the prior
+operator-freedom comparison described in the historical Performance.txt.
+SurfaceServiceBefore/ preserves this follow-up's starting images and the first
+5 cm timing trace, Performance-5cm-before-bounded-updates-1366x768.csv, before
+additional update-cost work. OperatorFreedomBefore/ retains still earlier images.
 The current hidden-player comparison is a separate measurement task; do not
 infer improved FPS from passed mechanics tests or preliminary individual CSVs.
 F4 shows smoothed FPS/frame time at 4 Hz; F3 shows measured CPU work, available
@@ -129,15 +154,23 @@ clean captures without suppressing the log. Neither hidden-window performance
 nor a zero managed-error count establishes focused-window input latency.
 
 Evidence and remaining manual checks
-OperatorFreedomBefore/ contains the preserved before-view evidence. Current
+SurfaceServiceBefore/ contains this refinement's before-view evidence;
+OperatorFreedomBefore/ contains the preceding pass's comparison images. Current
 operator images include Operator-seated.png, Operator-standing-window.png,
 Operator-board-side-edge.png and Camera-preset-*.png. Southeast-entrance.png,
 Southeast-service-room.png and Service-*.png show the actual room/service flow.
 Ice overlap/mask/pickup and snow-operation images show simulated material state.
+Ice-water-response-top.png is the thresholded shader-response measurement.
+Ice-wear-before-top.png, Ice-wear-after-top.png, Ice-wear-before-oblique.png and
+Ice-wear-after-oblique.png compare untreated, shallow, deeper and wet cutting
+lanes. Ice-wet-age-00min.png,
+Ice-wet-age-05min.png, Ice-wet-age-15min.png and Ice-wet-age-25min.png show actual
+elapsed-time aging; the measurement views hide machinery to expose the surface.
 All are actual Unity camera renders; HUD captures separately include IMGUI.
 
-The supplied image pair is the traditional hydraulic station and the tall
-seated viewpoint. Mentioned conditioner/board-gap annotations were not attached.
+The earlier image pair shows the traditional hydraulic station and tall seated
+viewpoint. This follow-up includes the annotated conditioner screenshot used
+to guide visible film coverage across the towel.
 Automated tests do not establish manufacturer authenticity, subjective sound,
 real tire response, hose weight, long-term stability beyond the measured window,
 or final ergonomic comfort. Actual operator playtesting remains necessary.

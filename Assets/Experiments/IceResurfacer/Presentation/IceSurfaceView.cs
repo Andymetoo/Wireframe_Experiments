@@ -6,6 +6,7 @@ namespace IceResurfacer.Presentation
     // One mesh, one streaming state texture. No per-cell render objects or decals.
     public sealed class IceSurfaceView : System.IDisposable
     {
+        public const int AgingCellsPerRefresh = 65536;
         public Texture2D StateTexture { get; private set; }
         public Texture2D MapTexture { get; private set; }
         public Texture2D ProcessTexture { get; private set; }
@@ -15,10 +16,11 @@ namespace IceResurfacer.Presentation
         readonly Material material;
         readonly int[] wetCells;
         readonly bool[] wetFlags;
-        int wetCount;
+        int wetCount,wetCursor;
         bool firstRefresh=true,forceRefresh;
         public int DebugMode { get; private set; }
         public int LastCellsUpdated { get; private set; }
+        public int LastAgingCellsUpdated { get; private set; }
         public int ActiveWetCells { get { return wetCount; } }
         public double LastRefreshMilliseconds { get; private set; }
         public IceSurfaceView(IceField field, MeshRenderer renderer, Material template)
@@ -36,7 +38,11 @@ namespace IceResurfacer.Presentation
             material = new Material(template) { name = "Northline / spatial ice" };
             material.SetTexture("_StateTex", StateTexture);
             material.SetTexture("_ProcessTex",ProcessTexture);
-            material.SetVector("_GridSize",new Vector4(field.Columns,field.Rows,0,0));
+            material.SetVector("_GridSize",new Vector4(field.Columns,field.Rows,1f/field.Columns,1f/field.Rows));
+            // Sample the exact simulation rectangle, including a possible final
+            // partial row/column. Authored mesh UVs are not a second width authority.
+            material.SetVector("_GridWorld",new Vector4(field.MinX,field.MinZ,
+                1f/(field.Columns*field.CellSize),1f/(field.Rows*field.CellSize)));
             renderer.sharedMaterial = material;
         }
         public void Refresh(Simulation sim)
@@ -45,7 +51,13 @@ namespace IceResurfacer.Presentation
             var field = sim.Ice;
             bool all=firstRefresh||forceRefresh;
             int count=all?pixels.Length:field.DirtyCellCount;
-            LastCellsUpdated=count;
+            LastCellsUpdated=count;LastAgingCellsUpdated=0;
+            if(all)
+            {
+                // Explicit invalidation is exact, including removal of expired
+                // active entries. Ordinary refreshes never scan the full grid.
+                System.Array.Clear(wetFlags,0,wetFlags.Length);wetCount=wetCursor=0;
+            }
             for (int n = 0; n < count; n++)
             {
                 int i=all?n:field.DirtyCellIndex(n);
@@ -55,7 +67,7 @@ namespace IceResurfacer.Presentation
                 // These channels describe actual cell history; no cosmetic trail or
                 // coverage credit is generated outside the simulated footprints.
                 processPixels[i]=new Color(Mathf.Clamp01(c.CutDepthMm/.08f),Mathf.Clamp01(c.WashLiters/(field.CellSize*field.CellSize*.15f)),Mathf.Clamp01(c.FloodMm/.3f),c.Shavable?1:0);
-                if(c.LiquidMm>0&&!wetFlags[i]) { wetFlags[i]=true;wetCells[wetCount++]=i; }
+                if(wet>=.0001f&&!wetFlags[i]) { wetFlags[i]=true;wetCells[wetCount++]=i; }
                 if (!c.IsIce) mapPixels[i] = new Color32(13, 24, 32, 0);
                 else if(DebugMode==1)mapPixels[i]=!c.Shavable?new Color32(233,154,65,255):
                     c.Covered?new Color32(64,225,137,255):new Color32(65,112,130,255);
@@ -64,14 +76,27 @@ namespace IceResurfacer.Presentation
                 else if (c.Covered) mapPixels[i] = Color.Lerp(new Color(.3f, .51f, .58f), new Color(.27f, .88f, .73f), c.Quality);
                 else mapPixels[i] = Color.Lerp(new Color(.29f, .37f, .43f), new Color(.63f, .68f, .7f), c.Scratch);
             }
-            for(int n=wetCount-1;n>=0;n--)
+            bool stateChanged=count>0;
+            int agingCount=all?0:System.Math.Min(wetCount,AgingCellsPerRefresh);
+            for(int n=0;n<agingCount&&wetCount>0;n++)
             {
-                int i=wetCells[n];float wet=field.Wetness(i,sim.Time);
-                pixels[i].a=(byte)Mathf.Clamp(Mathf.RoundToInt(wet*255),0,255);
+                if(wetCursor>=wetCount)wetCursor=0;
+                int i=wetCells[wetCursor];float wet=field.Wetness(i,sim.Time);
+                // Wetness already clips the physical liquid result to [0,1].
+                // Float-to-byte rounding avoids a double Math.Round per sample.
+                byte alpha=(byte)(wet*255f+.5f);
+                if(pixels[i].a!=alpha){pixels[i].a=alpha;stateChanged=true;}
+                LastAgingCellsUpdated++;
                 if(wet<.0001f)
-                { wetFlags[i]=false;wetCells[n]=wetCells[--wetCount]; }
+                {
+                    wetFlags[i]=false;wetCells[wetCursor]=wetCells[--wetCount];
+                    // Visit the swapped entry next, rather than skipping it.
+                }
+                else wetCursor++;
             }
-            if(count>0||wetCount>0) { StateTexture.SetPixels32(pixels); StateTexture.Apply(false,false); }
+            // A final removal must upload its zero even when the active list is
+            // now empty. Unchanged quantized ages need no texture upload.
+            if(stateChanged) { StateTexture.SetPixels32(pixels); StateTexture.Apply(false,false); }
             if(count>0)
             {
                 ProcessTexture.SetPixels32(processPixels);ProcessTexture.Apply(false,false);

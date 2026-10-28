@@ -1,6 +1,11 @@
 AURORA R-54 / OPERATOR FREEDOM AND COORDINATED REFINEMENT
 28 October 2026
 
+Historical operator-freedom report. SurfaceServiceRefinement.txt is the current
+report for nose-in service layout, hose recovery, 5 cm surface state, rendered
+water width, slower wet aging, residual gouge depth and new validation results.
+The measurements below are retained as the preceding implementation's record.
+
 Current launch and controls
 Scenes/IceResurfacer.unity remains the entry point. The root README is the full
 current control guide. This document supersedes the control bindings, central

@@ -21,7 +21,7 @@ internal static class IceCalibrationValidation
     }
     public static void Run()
     {
-        TwoPassOverlap();Perimeter();Recovery();FreshFloodIsolation();PortalPickupBudget();WaterKernelFootprint();FrozenWater();Brush();BrushFloorCache();ReverseConservation();Untouched();Performance();
+        ResolutionAndAging();FractionalStamp();DepthDependentWear();TwoPassOverlap();Perimeter();Recovery();FreshFloodIsolation();PortalPickupBudget();WaterKernelFootprint();FrozenWater();Brush();BrushFloorCache();ReverseConservation();Untouched();IncrementalReport();Performance();
         Console.WriteLine("  Ice calibration PASS: tire-aligned contiguous passes, physical fringe, shaving mask, real liquid pickup, frozen balance, brush contact");
     }
 
@@ -137,6 +137,57 @@ internal static class IceCalibrationValidation
         Assert(cell.OverwaterMm>1&&cell.FrozenOverwaterMm>1,"frozen overwater defect silently disappeared");
     }
 
+    static void ResolutionAndAging()
+    {
+        var s=new Simulation();Near(s.Config.CellSize,.05f,0,"launch default is not genuine 5cm simulation data");
+        Assert(s.Ice.Columns==520&&s.Ice.Rows==1200,"5cm field dimensions differ from 60x26m rink");
+        int index=s.Ice.IndexAt(0,0);var cell=s.Ice.Cells[index];s.Ice.AddWater(ref cell,.3f,0);s.Ice.Cells[index]=cell;
+        foreach(int minute in new[]{1,5,15,20})
+        {
+            float seconds=minute*60,expected=(float)Math.Exp(-seconds/s.Config.FreezeSeconds);
+            Near(s.Ice.Wetness(index,seconds),expected,.00001,"visible wet fraction differs from conserved physical liquid aging");
+            Near(s.Ice.LiquidDepth(cell,seconds)+s.Ice.FrozenDepth(cell,seconds),.3,.0000001,"aging deleted surface water");
+            Console.WriteLine("  aging "+minute+"min: liquid/wet fraction="+(expected*100).ToString("F2")+"%, freeze time constant="+s.Config.FreezeSeconds.ToString("F0")+"s");
+        }
+        Assert(s.Ice.Wetness(index,20*60)>.05f,"earliest pass loses all wet response long before run end");
+    }
+    static void DepthDependentWear()
+    {
+        var shallow=new Simulation();Place(shallow,0,-12);Operate(shallow);shallow.Controls.BladeDepthMm=.15f;Tick(shallow,12);
+        var deep=new Simulation();Place(deep,0,-12);Operate(deep);deep.Controls.BladeDepthMm=.65f;Tick(deep,12);
+        double shallowDepth=0,deepDepth=0,shallowScratch=0,deepScratch=0;int samples=0;
+        float min=float.MaxValue,max=0;
+        for(int i=0;i<deep.Ice.Cells.Length;i++)
+        {
+            var a=shallow.Ice.Cells[i];var b=deep.Ice.Cells[i];if(!b.IsIce)continue;
+            min=Math.Min(min,b.InitialGougeDepthMm);max=Math.Max(max,b.InitialGougeDepthMm);
+            if(a.CutDepthMm<=.005f||b.CutDepthMm<=.005f)continue;
+            shallowDepth+=a.GougeDepthMm;deepDepth+=b.GougeDepthMm;shallowScratch+=a.Scratch;deepScratch+=b.Scratch;samples++;
+        }
+        Assert(samples>100,"gouge-depth test did not exercise a physical cutting pass");
+        Assert(max-min>.07f,"seeded wear has no meaningful range of actual depths");
+        Assert(deepDepth<shallowDepth*.35,"deep bite did not remove more actual groove depth");
+        Assert(deepScratch<shallowScratch*.5,"deeper physical cut did not improve the rendered roughness state");
+        Assert(deep.TotalSnowCollectedM3>shallow.TotalSnowCollectedM3,"deeper resurfacing did not produce more real snow");
+        Console.WriteLine("  wear: seeded groove depth="+min.ToString("F3")+".."+max.ToString("F3")+"mm; shallow/deep remaining mean="+
+            (shallowDepth/samples).ToString("F4")+"/"+(deepDepth/samples).ToString("F4")+"mm across "+samples+" cut cells");
+    }
+    static void FractionalStamp()
+    {
+        var s=new Simulation();Place(s,0,0);s.Controls.FloodFlow=.2f;s.Step(.02f);
+        float peak=0;int column=s.Ice.IndexAt(0,0)%s.Ice.Columns;
+        for(int row=0;row<s.Ice.Rows;row++)peak=Math.Max(peak,s.Ice.Cells[s.Ice.Index(column,row)].FloodMm);
+        int fractional=0;
+        for(int row=0;row<s.Ice.Rows;row++)
+        {
+            float depth=s.Ice.Cells[s.Ice.Index(column,row)].FloodMm;
+            if(depth>peak*.2f&&depth<peak*.8f)fractional++;
+        }
+        Assert(fractional>0,"finite towel boundary remains a binary center-in/out stamp");
+        Near(WaterMass(s),s.TotalFloodUsedLiters,.000001,"fractional stamp created or destroyed flood water");
+        Console.WriteLine("  fractional stamp: "+fractional+" partial longitudinal boundary rows; deposited "+WaterMass(s).ToString("F6")+"L equals emitted supply");
+    }
+
     static double TotalWater(Simulation s)
     {
         double sum=s.FloodWaterLiters+s.WashWaterLiters+WaterMass(s);
@@ -226,6 +277,55 @@ internal static class IceCalibrationValidation
         long bytes=GC.GetAllocatedBytesForCurrentThread()-allocated;watch.Stop();
         Console.WriteLine("  core 5000 active ticks: "+(watch.Elapsed.TotalMilliseconds/5000).ToString("F4")+"ms/tick, "+bytes+" managed bytes (CPU only; no Unity/render/UI)");
         Assert(bytes<1024,"new per-tick allocations in ice core");
+    }
+    static void IncrementalReport()
+    {
+        var s=new Simulation();CheckTotals(s,"initial field");
+        Place(s,0,-12);Operate(s);Tick(s,6);CheckTotals(s,"real cut and water");
+        s.Ice.DepositWater(0,-9,5,s.Time,.4f);s.Ice.DepositSnow(0,-9,.002f,.3f);
+        s.Ice.ClearDirtyCells();CheckTotals(s,"spill after renderer clears its dirty queue");
+        int index=s.Ice.IndexAt(0,-9);var c=s.Ice.Cells[index];
+        c.Covered=true;c.CutDepthMm=.1f;c.SnowMm=0;c.FloodMm=.5f;c.OverwaterMm=.2f;c.Quality=.7f;
+        s.Ice.Cells[index]=c;s.Ice.MarkCellChanged(index);
+        c.Covered=false;c.SnowMm=.4f;c.FloodMm=.02f;c.OverwaterMm=0;c.Quality=.1f;
+        s.Ice.Cells[index]=c;s.Ice.MarkCellChanged(index);s.Ice.CommitChanges();
+        CheckTotals(s,"repeated dirty cell changes and threshold reversals");
+        int other=s.Ice.IndexAt(2,-9);c=s.Ice.Cells[index];c.Quality=.3f;s.Ice.Cells[index]=c;s.Ice.MarkCellChanged(index);
+        c=s.Ice.Cells[other];c.Quality=.77f;c.FloodMm=.5f;s.Ice.Cells[other]=c;
+        s.Ice.MarkChanged();CheckTotals(s,"raw fixture invalidation after tracked mutations");
+        s.Ice.ClearDirtyCells();CheckTotals(s,"cleared presentation queue does not lose report state");
+        var watch=Stopwatch.StartNew();long before=GC.GetAllocatedBytesForCurrentThread();
+        for(int i=0;i<1000;i++)
+        {
+            c=s.Ice.Cells[index];c.Quality=i%2==0?.2f:.7f;s.Ice.Cells[index]=c;s.Ice.MarkCellChanged(index);s.Ice.CommitChanges();
+            s.GetReport();
+        }
+        long allocation=GC.GetAllocatedBytesForCurrentThread()-before;watch.Stop();
+        CheckTotals(s,"1000 incremental updates");Assert(allocation==0,"incremental reports allocate per update");
+        Console.WriteLine("  incremental report: independent full-scan counts/totals match; "+(watch.Elapsed.TotalMilliseconds/1000).ToString("F4")+"ms per changed report, "+allocation+" managed bytes");
+    }
+    static void CheckTotals(Simulation s,string phase)
+    {
+        int covered=0,cut=0,wet=0,over=0;double quality=0,water=0;
+        foreach(var c in s.Ice.Cells)
+        {
+            if(!c.IsIce)continue;
+            if(c.Shavable)
+            {
+                if(c.Covered)covered++;
+                if(c.CutDepthMm>.08f*s.Config.BladeBiteFraction&&c.SnowMm<.25f)cut++;
+            }
+            if(c.FloodMm>.08f)wet++;if(c.OverwaterMm>.05f)over++;
+            quality+=c.Quality;water+=Math.Max(0,Math.Min(1,c.FloodMm/s.Config.GoodFloodDepthMm));
+        }
+        var totals=s.Ice.GetSurfaceTotals();
+        Assert(totals.Covered==covered&&totals.Cut==cut&&totals.Wet==wet&&totals.Overwater==over,"incremental threshold count differs: "+phase);
+        Near(totals.Quality,quality,.0000001,"incremental quality sum differs: "+phase);
+        Near(totals.WaterQuality,water,.0000001,"incremental water sum differs: "+phase);
+        var report=s.GetReport();
+        Near(report.Coverage,(float)covered/s.Ice.ShavableCellCount,0,"reported coverage differs: "+phase);
+        Near(report.FinishQuality,(float)(quality/s.Ice.IceCellCount),0,"rounded reported quality differs: "+phase);
+        Near(report.WaterDistribution,(float)(water/s.Ice.IceCellCount),0,"rounded water distribution differs: "+phase);
     }
     static void ReverseConservation()
     {

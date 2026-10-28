@@ -1,0 +1,199 @@
+AURORA R-54 / CURRENT SURFACE AND SERVICE REFINEMENT
+28 October 2026
+
+This report supersedes the parking orientation, service-wall location, surface
+resolution, wet-aging and wear details in the earlier OperatorFreedom.txt pass.
+README.txt remains the launch/control guide. Historical reports retain their
+original measurements; the results below describe the current refinement.
+
+1. Nose-in parking and a clear reverse departure
+The machine starts centered in the southeast service room at Side=0,
+Outward=5.8 m, heading +135 degrees, facing the centered snow pit at Outward=12 m.
+Drive forward toward the pit and reverse straight onto the rink with S. The
+supply/reel moved to the opposite room wall, beside the machine's fixed right
+fillers. The physical left operator station, cockpit controls and right fill
+necks were not mirrored. The rear walking aisle remains clear.
+Evidence: ../Validation~/Southeast-service-room.png, Service-filling.png and
+Service-results.txt; geometry and procedure: WaterService.txt.
+
+2. The apparent invisible wall while handling the hose
+The former pit approach, facing into the room, required 13.40 m to reach the
+ice-water neck and 13.05 m to reach wash water around the solid body. The hose
+is only 11 m. The new station requires 6.28/6.61 m at default parking and
+6.85/6.84 m at the centered pit approach. These are reproduced geometry lengths,
+not a reconstruction of the user's exact earlier pose.
+
+The HUD now shows used hose meters, TAUT, fixture reach and the specific body,
+wall, pit or hose obstruction. Both ports are reachable from the clear aisle.
+A separate bug let an upward glance extend the hand beyond 11 m and then blocked
+even a retreat. Steps that shorten an overextended route now remain possible.
+Actual F/E/W input tests walk to both ports without teleporting or entering the
+body, reach the taut boundary, look up, retreat with S and return the nozzle.
+Evidence: ../Validation~/Service-results.txt and Service-hose-connected.png.
+
+3. Real surface detail and water covering the towel
+The annotated conditioner screenshot guides the visible film across the full
+towel. The previous shader gave thin edge film too little visual weight even
+where physical water was present; the revised response makes that film clearer.
+The field is now 520 x 1200 actual state samples at 5 cm spacing, four times the
+previous sample count. Fractional footprint-edge stamps conserve emitted water;
+continuous reconstruction smooths their appearance without inventing a wide
+water ribbon. The physical blade remains 1.956 m and the towel 2.100 m. A finite
+0.120 m fringe per side receives five percent of the same water supply.
+
+The current fixture measures a 2.300 m strong-wet raster and 2.367 m rendered
+water-response band across the towel. The rendered measurement thresholds a
+GPU shader response mask at 60% display intensity; it is not an objective
+perceptual-width guarantee under every reflection angle. Tire-aligned parallel
+passes have zero dry/unscored gaps. The earlier straight-pass baseline also had
+zero gaps, so the reported foot-wide gap was not reproduced in that fixture.
+Evidence: ../Validation~/Ice-calibration-runtime-results.txt,
+Ice-water-response-top.png, Tire-overlap-top.png and Tire-overlap-operator-Q.png.
+
+4. What Machine Load means and changes
+This is estimated mechanical demand: 13% idle, plus cutting, snow held in the
+conveyors, 8%/9% for running augers, and congestion/jam contributions. Existing
+physics is unchanged. At 100% load the load multiplier permits 65% of normal
+acceleration; snow mass and tire grip apply separately. Load affects engine
+sound and warns above 100%; it does not lower configured top speed or impose
+a drive lock. Jams depend on actual snow stock and conveyor capacity. It is not
+measured horsepower or fuel use. Click the meter or open F3 for the explanation.
+Evidence: ../Core/Simulation.cs, ../Presentation/IceDashboard.cs and ../README.txt.
+
+5. Wet film settles over minutes
+The exponential freeze constant is now 420 seconds. A fresh film retains
+48.95% of its initial liquid after five minutes and 5.74% after twenty. Rendered
+wet response follows actual remaining liquid, while liquid plus frozen water
+stays conserved. Pickup can remove only liquid and remains capacity limited.
+This is a configurable gameplay approximation, not a thermal rink solver.
+Evidence: ../Validation~/Ice-visual-refinement-results.txt and
+Ice-wet-age-00min.png, Ice-wet-age-05min.png, Ice-wet-age-15min.png,
+Ice-wet-age-25min.png. See VisualIceRefinement.txt for the full calibration.
+
+6. Worn ice and meaningful cutting depth
+Cells now retain initial and residual gouge depth; seeded wear measures about
+0.037-0.145 mm. Actual blade bite reduces that depth. A nominal .35 mm setting
+cuts .056 mm effectively with the retained bite fraction. Paired .15/.65 mm
+passes leave mean residual depths of .0251/.0006 mm across the same 11,480 cells.
+Deeper or repeated cuts remove more grooves but produce more conserved snow,
+increase load and retain overcut penalties. Washing cannot erase a physical
+groove. Untreated, dry-shaved, freshly wet and settled ice have distinct responses.
+Evidence: ../Validation~/Ice-visual-refinement-results.txt,
+Ice-wear-before-oblique.png, Ice-wear-after-oblique.png and Ice-wear-after-top.png.
+
+Executed validation
+All 32 core scenario groups pass. The final integrated Unity suite passes with
+zero managed errors, including actual service walking, hose recovery, rendered
+width, wear and aging. The control-driven run reverses out, works the sheet,
+returns forward and dumps without a pose reset: 96.67% reachable / 95.14%
+whole-ice combined coverage, 97.04% water coverage, 77.0% finish, 88.7 points,
+677 L, 0.724 m3 in the pit, 1,787 simulated seconds and zero misuse. Changed
+surface calibration and route make this a full-pass result, not an isolated
+service-layout comparison. Human steering, edge recognition and hose comfort
+still need operator playtesting.
+Evidence: ../Validation~/Results.txt, Unity-results.txt, Service-results.txt
+and Southeast-full-run.txt. Paths after the first filename in each evidence
+line are in the same Validation~ folder.
+
+Current player and performance measurements
+Serial native HUD runs pass at 1366x768 and 1920x1080 with no measured clipping
+or managed errors. A first 1366 run showed automatic-pause behavior during an
+overlapping isolated build and was invalidated; focus interference is the likely
+cause. The same binary passed both serial reruns without a product-code workaround.
+The final rebuilt probes also pass; hidden Direct3D presentation warnings were
+5 and 2 respectively. This does not measure focused-window input latency.
+Evidence: ../Validation~/HUD-player-results-1366x768.txt and
+HUD-player-results-1920x1080.txt.
+
+An initial 5 cm benchmark exposed costly large-sheet updates; its trace is kept
+at ../Validation~/SurfaceServiceBefore/Performance-5cm-before-bounded-updates-1366x768.csv.
+Surface reports now maintain incremental totals, checked against an independent
+full scan. The regression measures 0.0130 ms per changed report with no managed
+allocation; its cache costs about 5.6 MB per field. The 5,000-active-tick core
+sample measures 0.2494 ms/tick with no managed allocation. Both are CPU-only
+measurements excluding Unity, UI and graphics, and neither is an FPS result.
+
+Ordinary visual aging handles at most 65,536 wet entries per 0.16-second refresh.
+A nearly fully wet sheet takes about 1.6 seconds to sweep, compared with the
+420-second phase constant. The final runtime test observes at most 1/255 packed
+wet-alpha error across ten refreshes, within its 2/255 limit. Full clear, rewet
+and exact-invalidation tests pass. Dirty physical changes update immediately.
+Unchanged quantized alpha skips the GPU texture upload. Physical phase change,
+liquid pickup and water accounting are unchanged by this presentation schedule.
+
+Final player measurements: 28 October, 20:52:26/20:52:59 UTC
+Windows 11, i5-11400H, RTX 3050 Laptop GPU, Unity 6000.4.1f1, Direct3D11,
+development Mono player, VSync off, unlimited target rate, hidden/offscreen.
+Each rendered frame advances one deterministic 20 ms simulation tick. These
+are short fixed-workload throughput measurements on the same host, not normal
+real-time gameplay/Editor FPS, focused input latency or guaranteed frame times.
+
+There are 90 warmup frames, then 299 recorded intervals per ordinary scenario;
+long_session records 1,499 intervals (about 30 simulated seconds). Setup/warmup
+costs are excluded. CPU below is measured simulation/effects/service/surface
+work, excluding IMGUI/rendering; GPU uses positive FrameTiming samples only.
+CPU/GPU work can overlap and is not additive. GC is whole-frame bytes per frame.
+
+1366x768
+Workload                 Frames  Mean ms  P95 ms  CPU ms  GPU ms  GC B/frame
+driving_full_hud             299    2.895   4.136   0.395   1.353       17544
+resurfacing_full_hud         299    3.484   5.905   1.019   1.362       18143
+resurfacing_compact          299    2.754   5.243   1.005   1.309        9280
+snow_overflow               299    3.561   5.842   1.090   1.371       18265
+camera_changes              299    4.009   6.519   1.091   1.444       17606
+service_walking             299    1.957   2.847   0.327   1.116        9326
+hose_filling                299    2.006   4.441   0.558   1.408       10053
+hose_overflow               299    2.066   4.301   0.554   1.339       10278
+dump_shakeout               299    2.573   3.675   0.343   1.202       18255
+long_session               1499    3.532   6.544   1.095   1.294       17741
+on_foot_movement            299    2.101   3.077   0.346   1.198        9326
+late_wet_sheet              299    4.819  10.502   1.536   1.364       17694
+
+1920x1080
+Workload                 Frames  Mean ms  P95 ms  CPU ms  GPU ms  GC B/frame
+driving_full_hud             299    3.594   5.951   0.442   2.583       20874
+resurfacing_full_hud         299    4.178   6.951   1.140   2.552       21473
+resurfacing_compact          299    3.019   5.638   1.053   2.526       12610
+snow_overflow               299    4.122   7.285   1.217   2.598       21595
+camera_changes              299    3.316   5.587   0.998   2.761       20936
+service_walking             299    2.185   2.412   0.305   2.144       12656
+hose_filling                299    2.713   4.603   0.543   2.535       13373
+hose_overflow               299    2.823   4.779   0.584   2.545       13608
+dump_shakeout               299    4.029   5.936   0.441   2.319       21585
+long_session               1499    3.691   7.154   1.160   2.446       21066
+on_foot_movement            299    2.442   2.963   0.322   2.317       12656
+late_wet_sheet              299    4.076   9.474   1.470   2.554       21024
+
+All measured work blocks report zero allocation; the whole player plainly
+allocates, as the GC column shows. Draw-call reporting is unavailable (-1).
+Both runs record zero managed runtime errors. Hidden-window Direct3D presentation
+warnings are separately counted: 11 at 1366 and 17 at 1920. A negative live-heap
+delta after fixture cleanup/GC is not proof of no leaks. The current short runs
+do not repeat or extend the older 30,000-frame endurance evidence.
+
+service_walking preserves the earlier camera-sweep comparison; on_foot_movement
+executes collision-aware walking and camera routines. late_wet_sheet explicitly
+seeds real 0.30 mm film on all 599,224 ice cells in stripes aged 0-15 minutes;
+it is a full-sheet aging stress fixture, not a completed manual resurfacing run.
+Its Surface.Refresh cost averaged over ALL measured frames is 0.747 ms at 1366
+and 0.708 ms at 1920. The faster 1920 mean in this scenario reflects run/workload
+variation; it does not establish that higher resolution improves performance.
+
+Comparison (mean / p95 frame milliseconds)
+Workload                  Prior 10 cm       Initial 5 cm       Final 5 cm
+1366 full-HUD resurfacing   3.093 / 8.504     6.800 / 29.901     3.484 / 5.905
+1366 late wet sheet         not measured    12.070 / 68.570     4.819 / 10.502
+1920 full-HUD resurfacing   3.867 / 9.920     not measured       4.178 / 6.951
+
+The update work substantially reduces the first 5 cm run's spikes. Against the
+prior 10 cm implementation, full-HUD mean frame times are still 12.6%/8.0%
+higher at 1366/1920, while p95 values are lower in these samples. The 5 cm field
+contains four times as much state, and shader/layout behavior also changed;
+this is not an isolated resolution or optimization A/B experiment. Performance.txt
+preserves the preceding implementation's complete measurements.
+
+Final data: ../Validation~/PerformanceSurfaceService/Performance-1366x768.csv
+and Performance-1920x1080.csv in that same folder. The initial 5 cm trace is in
+SurfaceServiceBefore/ as cited above; prior 10 cm data is in PerformanceAfter/.
+HUD screenshot FPS labels include scripted ticking, readbacks and automation
+waits and must not be substituted for these performance measurements.

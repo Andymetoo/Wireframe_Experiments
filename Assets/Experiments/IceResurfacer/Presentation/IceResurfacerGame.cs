@@ -143,6 +143,7 @@ namespace IceResurfacer.Presentation
         }
         public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); } }
         public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseControls(); ReleaseLook(); }
+        public void ToggleDiagnostics() { DiagnosticsVisible=!DiagnosticsVisible; }
         public void Finish()
         {
             if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseControls(); ReleaseLook(); }

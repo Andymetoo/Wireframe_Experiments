@@ -18,6 +18,10 @@ namespace IceResurfacer.Core
         public float WashPickupResidualMm = .035f;
         public float FloodContactLength = .27f;
         public float FloodContactFore = -.44f;
+        public float MinimumGougeDepthMm = .024f;
+        public float TypicalGougeDepthMm = .060f;
+        public float DeepGougeDepthMm = .145f;
+        public float GougeRoughnessDepthMm = .080f;
         public float BrushPivotX = -.90f;
         public float BrushPivotZ = .50f;
         public float BrushArmLength = .38f;
@@ -28,7 +32,8 @@ namespace IceResurfacer.Core
         {
             float[] values={WheelTrack,TireWidth,ShavingPerimeterExclusion,
                 WaterFilmSpreadMeters,WaterFilmFringeFraction,WashPickupLitersPerSecond,
-                WashPickupContactLength,WashPickupContactFore,WashPickupResidualMm,FloodContactLength,FloodContactFore,BrushPivotX,BrushPivotZ,
+                WashPickupContactLength,WashPickupContactFore,WashPickupResidualMm,FloodContactLength,FloodContactFore,
+                MinimumGougeDepthMm,TypicalGougeDepthMm,DeepGougeDepthMm,GougeRoughnessDepthMm,BrushPivotX,BrushPivotZ,
                 BrushArmLength,BrushRadius,BrushRetractedDegrees};
             foreach(float value in values)
                 if(float.IsNaN(value)||float.IsInfinity(value))
@@ -41,6 +46,7 @@ namespace IceResurfacer.Core
                 FloodContactLength<=0||FloodContactLength>ConditionerLength||Math.Abs(FloodContactFore)>ConditionerLength||
                 Math.Abs(WashPickupContactFore)+WashPickupContactLength*.5f>ConditionerLength*.5f||
                 WashPickupResidualMm<0||WashPickupResidualMm>GoodFloodDepthMm||
+                MinimumGougeDepthMm<0||TypicalGougeDepthMm<=MinimumGougeDepthMm||DeepGougeDepthMm<TypicalGougeDepthMm||GougeRoughnessDepthMm<=0||
                 BrushArmLength<=0||BrushRadius<=0||BrushRetractedDegrees<0||BrushRetractedDegrees>100)
                 throw new ArgumentException("Invalid tire, film, pickup, perimeter or brush calibration.");
         }

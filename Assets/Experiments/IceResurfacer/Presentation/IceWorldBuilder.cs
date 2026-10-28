@@ -469,13 +469,14 @@ namespace IceResurfacer.Presentation
                 Label("SNOW PIT",bay,new Vector3(b.PitSide,2.45f,-b.RoomLength+.02f),.22f,Color.white,Quaternion.identity);
                 Label("MANUAL APPROACH / WATCH THE OUTLET",bay,new Vector3(b.PitSide,1.96f,-b.RoomLength+.02f),.080f,new Color(.94f,.7f,.28f),Quaternion.identity);
                 Label("SOUTHEAST  /  MACHINE ROOM",bay,new Vector3(0,4.22f,-1.57f),.14f,Color.white,Quaternion.Euler(0,180,0));
-                Label("PARK / FILL",bay,new Vector3(b.ParkSide,.023f,-b.ParkOutward-2.5f),.19f,new Color(.93f,.72f,.28f),Quaternion.Euler(270,180,0));
-                Box("Recessed workshop equipment cabinet",bay,new Vector3(-6.14f,1.15f,-5.6f),new Vector3(.32f,2.3f,2.7f),navy);
-                Label("MAINTENANCE\nFILTERS / HAND TOOLS",bay,new Vector3(-5.96f,1.55f,-5.6f),.07f,Color.white,Quaternion.Euler(0,90,0));
+                Label("PARK / FILL",bay,new Vector3(b.ParkSide,.023f,-b.ParkOutward+2.5f),.19f,new Color(.93f,.72f,.28f),Quaternion.Euler(270,0,0));
+                Label("NOSE TO PIT / REVERSE TO ICE",bay,new Vector3(b.ParkSide,.024f,-2.6f),.10f,new Color(.93f,.72f,.28f),Quaternion.Euler(270,0,0));
+                Box("Recessed workshop equipment cabinet",bay,new Vector3(6.14f,1.15f,-5.6f),new Vector3(.32f,2.3f,2.7f),navy);
+                Label("MAINTENANCE\nFILTERS / HAND TOOLS",bay,new Vector3(5.96f,1.55f,-5.6f),.07f,Color.white,Quaternion.Euler(0,-90,0));
                 // Closed cabinets remain outside the walkable clear wall margin.
-                for(int j=0;j<3;j++)Box("Cabinet drawer",bay,new Vector3(-5.96f,.48f+j*.34f,-5.6f),new Vector3(.025f,.27f,2.4f),steel);
-                Cylinder("Wash hose reel",bay,new Vector3(5.83f,1.45f,-6),.65f,.22f,cyan,Vector3.right);
-                Torus("Coiled wash hose",bay,new Vector3(5.69f,1.45f,-6),.26f,.04f,rubber,Quaternion.Euler(0,0,90));
+                for(int j=0;j<3;j++)Box("Cabinet drawer",bay,new Vector3(5.96f,.48f+j*.34f,-5.6f),new Vector3(.025f,.27f,2.4f),steel);
+                Cylinder("Wash hose reel",bay,new Vector3(-5.83f,1.45f,-6),.65f,.22f,cyan,Vector3.right);
+                Torus("Coiled wash hose",bay,new Vector3(-5.69f,1.45f,-6),.26f,.04f,rubber,Quaternion.Euler(0,0,90));
                 for(int i=0;i<3;i++)
                 {
                     float outward=3.8f+i*3.8f;

@@ -1,82 +1,81 @@
-AURORA R-54 / FINAL OPERATOR FREEDOM VALIDATION
+AURORA R-54 / FINAL SURFACE AND SERVICE REFINEMENT
 28 October 2026 / Unity 6000.4.1f1 / URP
 
-Core simulation: PASS, 32 deterministic scenarios (Results.txt).
-Includes unrestricted operation, moving exits, raised-tank travel, hose
-breakaway/recovery, spatial angled dumping, southeast entry/return, traction,
-material balance, tire alignment, shaving mask and real liquid pickup.
-Portal pickup respects even 0.0001001 L of remaining wash-tank capacity.
+Current behavior and six-request explanation:
+../Documentation/SurfaceServiceRefinement.txt
+Detailed ice calibration: ../Documentation/VisualIceRefinement.txt
+Controls and launch: ../README.txt
+The previous final report is preserved in SurfaceServiceBefore/.
 
-Unity Play Mode: PASS, every runtime suite; zero errors/exceptions.
-Camera persistence, Q/E/C/X, R/Space, remapped blade/hydraulic/water keys,
-mouse machinery, drive recovery, physical snow, southeast service, actual
-ice-cell textures and pickup captures are covered by their individual reports.
-The E preset exposes the real handwheel hub and all eight sampled rim points;
-the wheel clears the seatback, elevator, valve sweep and plunger.
+Implemented
+- Nose-in parking toward the centered pit, straight reverse departure, supply
+  and hose on the opposite wall beside the fixed machine-right fill ports.
+- Both fillers reachable with slack; named obstruction/length feedback and
+  retreat from a taut hose, including the upward-look overextension case.
+- Real 520 x 1200 state grid at 5 cm, fractional volume-conserving water edges,
+  continuous reconstruction, and visible water across the 2.100 m towel.
+- Clickable Machine Load explanation: estimated mechanical demand affects
+  acceleration and sound; it is not a horsepower reading or a travel lock.
+- 420-second exponential freeze constant; about 95% frozen after 21 minutes.
+- Dull, irregular skate wear backed by residual groove depth; light cuts can
+  leave deeper grooves, while deeper/repeated cutting generates more snow.
 
-Native player HUD: PASS at 1366x768 and 1920x1080.
-Seven captured interface states per resolution; no measured text clipping.
-Native pointer tests operate the real valves, handwheel and hydraulic controls.
-FPS values inside those automation captures include scripted work/waits and
-capture cost; they are not the separate performance benchmark measurements.
+Core simulation: PASS, all 32 deterministic scenario groups (Results.txt).
+Incremental report totals match independent full scans, including repeated
+cell changes, raw fixture invalidation and cleared renderer dirty queues.
+Changed-report sample: 0.0130 ms, zero managed bytes in the .NET harness.
+5000 active simulation ticks: 0.2494 ms/tick, zero managed bytes. These core
+measurements exclude Unity, rendering, HUD and presentation and are not FPS.
+The exact summary cache adds approximately 5.6 MB of fixed storage per field.
 
-Conventional scored run (continuous control-driven route, no pose/cell/tank
-writes or refill helper): 1759 simulated seconds, proper southeast return,
-97.05% reachable combined coverage, 95.16% whole-ice combined coverage,
-97.25% water coverage, 82.2% finish, 90.4 points, 674.8 L flood use,
-0.723 m3 delivered to the pit and zero misuse faults.
-The previous comparable whole-ice result was 95.18%. The new shaving mask
-and score weights make the 97.05% headline and score different denominators.
+Unity Play Mode: PASS, all suites; zero managed errors/exceptions.
+Actual keyboard walking reaches both fillers, returns the nozzle and recovers
+from hose tension; driven entry, departure, breakaway and unloading pass.
+Rendered response-mask width is 2.367 m at the disclosed threshold, not a
+perceptual-width guarantee under every reflection angle. Wear and actual-liquid
+aging captures show the intended changes. Geometry remains blade 1.956 m/towel 2.1 m.
+Whole-wet visual aging visits at most 65,536 old cells per ordinary refresh;
+new/dirty changes remain immediate. Maximum observed alpha error is 1/255
+across ten 0.16-second refreshes. Clear, rewet, final texture upload and exact
+full invalidation checks pass. Physical phase change and pickup remain exact.
 
-Unconventional Free Simulation session: completed without reset; 2.37%
-coverage, 10.5 points, seven faults, 12.65 L floor water and 0.01350 m3
-dumped onto ice. Poor resulting conditions affect score without route gates.
+Native development player: PASS at 1366x768 and 1920x1080.
+Real mouse messages validate load explanation, full blade-wheel travel,
+independent valves, pumps, switches, held hydraulics, pause and session flows.
+Eight captured interface states per resolution; no measured text clipping.
+Final hidden-window native presentation warnings: 5 / 2 respectively.
+An earlier 1366 run was interrupted consistently with focus-loss auto-pause;
+serial reruns passed. No control workaround or weakened assertion was applied.
 
-Tire-aligned overlap: outside tire 0.835 m; blade 1.956 m; towel 2.100 m.
-Strong wet band 2.200 m, full low-volume raster 2.400 m at 0.100 m grid.
-Second center 1.935 m aligns its inside tire edge with the measured 1.100 m
-strong-wet boundary. Nominal towel overlap 0.165 m; zero dry/unscored gaps.
-The separate ideal continuous towel-edge alignment yields 0.215 m overlap.
-The old straight-pass fixture also had zero gaps; the reported foot-wide
-operator-view gap was not reproduced. Curved/perspective alignment needs
-operator playtesting. Water spread uses finite volume and cannot cross boards.
-Pickup recovers 3.757 L in five seconds with matching surface loss/tank gain.
+Continuous control-driven full route, without pose/cell/tank writes:
+1787 simulated seconds; 96.67% reachable combined coverage; 95.14% whole-ice
+combined coverage; 97.04% water coverage; 77.0% finish; 88.7 points; 677.0 L
+flood use; 0.724 m3 delivered to the pit; zero misuse; proper southeast return.
+It starts nose-in, reverses onto the rink, works the sheet and returns forward.
+Surface calibration and route differ from the preceding pass; this is not an
+isolated service-layout comparison. See Southeast-full-run.txt.
 
-Measured active resurfacing / full HUD, before -> after:
-Resolution    Mean frame ms      P95 frame ms       FPS
-1366x768      8.860 -> 3.093      41.283 -> 8.504    112.9 -> 323.3
-1920x1080     8.715 -> 3.867      42.957 -> 9.920    114.7 -> 258.6
-These are fixed-workload hidden-player measurements on the RTX 3050 Laptop
-GPU / i5-11400H, not focused-window or Editor FPS guarantees. Raw workloads,
-CPU/GPU, mixed allocation results, extended-run behavior and native D3D
-presentation warnings are documented in ../Documentation/Performance.txt.
-Extended rendered run: 29999 measured frames / 600 simulated seconds,
-5.103 ms mean, 13.501 ms P95, zero managed runtime errors. The six sampled
-1000-frame windows varied from 3.748 to 6.315 ms, ending at 4.698 ms.
-Sampled live managed heap stayed between 19.30 and 20.39 MB (decimal), ending
-below its first window, with 324 collections during the long scenario.
-This is bounded observed behavior, not proof of leak-free multi-hour play.
-The hidden player also recorded 167 native presentation warnings, separately.
+Rendered performance: PASS, 12 workloads at each resolution, zero managed errors.
+Final CSV files: PerformanceSurfaceService/Performance-<resolution>.csv
+Resolution       Active full HUD mean / p95     Whole-wet mean / p95
+1366x768                  3.484 / 5.905 ms             4.819 / 10.502 ms
+1920x1080                 4.178 / 6.951 ms             4.076 / 9.474 ms
+Whole-wet fixture has 599,224 active cells aged 0..15 min and real conserved film.
+It is an explicit stress setup, not a claim of a control-driven completed run.
+The first unoptimized 5 cm / 1366 run was 6.800 / 29.901 ms active and
+12.070 / 68.570 ms whole-wet. Incremental totals and bounded visual aging remove
+those repeated full-grid bursts. Previous 10 cm active means were 3.093 / 3.867 ms;
+finer ice has a modest mean cost while active p95 improves from 8.504 / 9.920 ms.
 
-Visual evidence (actual Unity renders, not generated concept images):
-Before: OperatorFreedomBefore/Driver-running.png,
-        OperatorFreedomBefore/Cockpit-hydraulic-controls.png.
-After:  Driver-running.png, Operator-seated.png, Camera-preset-E.png,
-        Camera-preset-Q.png, Camera-preset-C.png, Camera-preset-X.png.
-World:  Southeast-entrance.png, Southeast-service-room.png, Service-bay.png.
-Service: Service-filling.png, Service-overflow.png, Service-hose-breakaway.png,
-         Free-simulation-on-foot.png.
-Ice: Tire-overlap-top.png, Tire-overlap-operator-Q.png,
-     Ice-shaving-mask-debug.png, Ice-affected-cells-debug.png,
-     Overwater-before-pickup.png, Overwater-after-pickup.png,
-     Overwater-before-pickup-normal.png, Overwater-after-pickup-normal.png.
-The pickup measurement captures hide the vehicle to expose the actual cells;
-the water and simulation remain unchanged. Route and stress fixtures clearly
-identify any initial test poses/stocks separately from the full driven route.
+Environment: RTX 3050 Laptop GPU, i5-11400H, Windows 11, development Mono player,
+D3D11, VSync off, hidden offscreen benchmark. One 20 ms simulation tick/rendered
+frame; 90 warmup then 299 measured frames/scenario, 1499 for long_session.
+Short workload throughput is not focused-window latency, an Editor FPS claim
+or a guarantee on other systems. Final performance native warnings: 11 / 17.
+Whole-frame GC remains 18,143 / 21,473 bytes per active full-HUD frame; a zero
+work-allocation reading is not a claim that the Unity player allocates nothing.
+Live-heap deltas alone are not leak diagnoses. Draw-call counters unavailable.
+See the current refinement report for the full comparison and limitations.
 
-Remaining operator checks: reference-height comfort, Q/E reach at both stances,
-tire-to-strip judgment through turns, bay/pit approach feel, subtle traction,
-water/brush appearance, hose ergonomics and synthesized sound balance.
-Only the two attached reference photos were available; the mentioned
-conditioner annotation and board-gap image were not attached.
-Preservation-results.txt records the experiment boundary and build-source check.
+Ownership: only Assets/Experiments/IceResurfacer/ changed. Original Editor
+sessions were not stopped or switched. No branch, commit or push was made.
