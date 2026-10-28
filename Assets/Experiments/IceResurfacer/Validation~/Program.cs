@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using IceResurfacer.Core;
 
@@ -34,7 +34,10 @@ internal static class Program
         Test("dump transfers snow progressively with operating interlocks", ProgressiveDump);
         Test("guide roller preserves shallow tangential travel without penetration", GuideRoller);
         Test("close board water edge uses physical distribution width", PerimeterWater);
-        Test("complete route, return, unload and finish", FullRun);
+        Test("Free Simulation consequences, geometry, traction and guided separation", FreedomValidation.Run);
+        Test("southeast hose freedom, breakaway and recovery", ServiceFreedomValidation.Run);
+        Test("tire overlap, liquid recovery, perimeter mask and finite spread", IceCalibrationValidation.Run);
+        Test("complete scored southeast route, return and angled unload", FreedomValidation.FullRun);
         Test("water service state, capacities, conservation and recovery", ServiceValidation.Run);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
     }
@@ -49,6 +52,8 @@ internal static class Program
     static void Tick(Simulation s, float seconds) { for (int i = 0; i < (int)Math.Round(seconds / .02f); i++) s.Step(.02f); }
     static void Place(Simulation s, float x, float z, float heading = 0)
     {
+        if(Math.Abs(x)<.001f&&Math.Abs(z+38.5f)<.001f)
+        { s.Layout.ToWorld(s.Layout.PitSide,s.Layout.PitOutward-3.85f,out x,out z);heading=s.Layout.OutwardHeading; }
         s.Vehicle.X = x; s.Vehicle.Z = z; s.Vehicle.Heading = heading; s.Vehicle.Speed = 0;
         s.Conditioner.Heading = heading;
         s.Conditioner.X = x - (float)Math.Sin(heading) * (s.Config.HitchBehindAxle + s.Config.DrawbarLength);
@@ -112,7 +117,7 @@ internal static class Program
     }
     static void RejectedDumpDriveRecovery()
     {
-        var s = new Simulation();
+        var s = new Simulation(mode:SimulationMode.GuidedTraining);
         s.Controls.Throttle = .42f; Tick(s, 10);
         Assert(s.HasEnteredRink, "fixture must drive from bay onto rink");
         s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 2);
@@ -164,7 +169,7 @@ internal static class Program
     }
     static void HydraulicHold()
     {
-        var s = new Simulation(); Place(s, 0, 0);
+        var s = new Simulation(mode:SimulationMode.GuidedTraining); Place(s, 0, 0);
         s.SetConditionerHydraulic(-1); Tick(s, .4f);
         Assert(s.Conditioner.Lift > .5f && s.Conditioner.Lift < .9f, "conditioner teleported or moved opposite command");
         float height = s.Conditioner.Lift; s.SetConditionerHydraulic(0); Tick(s, 1);
@@ -186,12 +191,12 @@ internal static class Program
         s.Controls.Throttle = 0; s.SetTankHydraulic(-1); Tick(s, 1); s.SetTankHydraulic(0);
         Near(s.TankLift, 0, .000001f, "dump lower end stop");
         s.Controls.Throttle = -1; Tick(s, 1);
-        Assert(s.Vehicle.Speed < -.2f && s.DriveInhibitReason.Length == 0, "lowered tank does not release drive");
+        Assert(s.Vehicle.Speed < -.2f && s.DriveInhibitReason.Length == 0, "lowered tank does not release drive: speed="+s.Vehicle.Speed+" pose="+s.Vehicle.X+","+s.Vehicle.Z+" reason="+s.DriveInhibitReason);
         s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 1);
         s.Controls.HorizontalAuger = true; s.SetTankHydraulic(1); Tick(s, 1);
         Near(s.TankLift, 0, .000001f, "tank lifted with operating auger");
         s.SetTankHydraulic(0);
-        var edge = new Simulation(); Place(edge, 0, -38.5f, (float)Math.PI);
+        var edge = new Simulation(mode:SimulationMode.GuidedTraining); Place(edge, 0, -38.5f, (float)Math.PI);
         edge.Controls.Brake = true; edge.Controls.Throttle = 1; edge.SetTankHydraulic(1); Tick(edge, .1f);
         Near(edge.TankLift, 0, .000001f, "simultaneous W and dump raise must not start a lift");
         edge.Controls.Throttle = 0; edge.SetTankHydraulic(1); Tick(edge, .02f); edge.SetTankHydraulic(0);
@@ -236,7 +241,7 @@ internal static class Program
     {
         var s = new Simulation(); Place(s, 0, 25); s.Controls.Throttle = 1; Tick(s, 10);
         Assert(s.Vehicle.Z <= 27.5f && s.Mistakes > 0, "machine passed end boards");
-        Assert(!s.Navigable(8, -31) && s.Navigable(0, -31), "gate opening mismatch");
+        Assert(!s.Navigable(0,-31)&&s.Navigable(s.Layout.GateX,s.Layout.GateZ),"southeast gate opening mismatch");
         Assert(!s.Ice.IsInside(12, 29), "rounded corner accepted outside cell");
     }
     static void Tracking()
@@ -274,13 +279,13 @@ internal static class Program
                 bool cut = cell.CutDepthMm > .001f, wet = cell.FloodMm > .001f;
                 if (cut) cutColumns++; if (wet) wetColumns++;
                 if(cut)Assert(wet||width>s.Config.WaterDistributionWidth,"cut within water spread was left dry");
-                if(wet)Assert(Math.Abs(s.Ice.CellX(col)-offset)<=s.Config.WaterDistributionWidth*.5f+.0001f,"water escaped distribution width");
+                if(wet)Assert(Math.Abs(s.Ice.CellX(col)-offset)<=s.Config.WaterDistributionWidth*.5f+s.Config.WaterFilmSpreadMeters+.0001f,"water escaped finite distribution plus film spread");
                 if (cut) Assert(Math.Abs(s.Ice.CellX(col) - offset) <= width * .5f + .0001f,
                     "processed a cell centre beyond the blade edge");
             }
             float span = cutColumns * s.Ice.CellSize;
             Near(span, width, s.Ice.CellSize + .001f, "physical width was not propagated to processing");
-            Near(wetColumns*s.Ice.CellSize,s.Config.WaterDistributionWidth,s.Ice.CellSize+.001f,"water spread lost width");
+            Near(wetColumns*s.Ice.CellSize,s.Config.WaterDistributionWidth,s.Ice.CellSize+s.Config.WaterFilmSpreadMeters*2+.001f,"water spread escaped calibrated width");
             if (width == 1.956f) { smallest = Math.Min(smallest, span); largest = Math.Max(largest, span); }
         }
         var reference = new SimulatorConfig();
@@ -310,10 +315,13 @@ internal static class Program
                 {
                     float dx = s.Ice.CellX(i % s.Ice.Columns) - s.Conditioner.X;
                     float dz = s.Ice.CellZ(i / s.Ice.Columns) - s.Conditioner.Z;
-                    float bound=cell.CutDepthMm>previousCut[i]+.000001f?s.Config.ConditionerWidth:s.Config.WaterDistributionWidth;
+                    float bound=cell.CutDepthMm>previousCut[i]+.000001f?s.Config.ConditionerWidth:s.Config.WaterDistributionWidth+s.Config.WaterFilmSpreadMeters*2;
                     Assert(Math.Abs(dx * cos - dz * sin) <= bound * .5f + .0001f,
                         "turning treatment escaped its actual lateral blade/water extent");
-                    Assert(Math.Abs(dx * sin + dz * cos) <= s.Config.ConditionerLength * .5f + .0001f,
+                    bool newlyCut=cell.CutDepthMm>previousCut[i]+.000001f;
+                    float fore=dx*sin+dz*cos;
+                    Assert(newlyCut?Math.Abs(fore)<=s.Config.ConditionerLength*.5f+.0001f:
+                        Math.Abs(fore-s.Config.FloodContactFore)<=s.Config.FloodContactLength*.5f+.0001f,
                         "turning treatment stamped at the vehicle instead of trailing conditioner");
                     touched++;
                 }
@@ -372,7 +380,7 @@ internal static class Program
     }
     static void SnowBreaker()
     {
-        var s = new Simulation(); Place(s, 0, -12); Prepare(s);
+        var s = new Simulation(mode:SimulationMode.GuidedTraining); Place(s, 0, -12); Prepare(s);
         s.Controls.Throttle = .4f; s.Controls.HorizontalAuger = false; Tick(s, 8);
         Assert(s.HorizontalSnowM3 > s.Config.SnowBreakerStrokeM3, "test did not accumulate throat material");
         float horizontal = s.HorizontalSnowM3, vertical = s.VerticalSnowM3;
@@ -410,7 +418,7 @@ internal static class Program
     {
         var s = new Simulation(new SimulatorConfig { FloodCapacityLiters = 20 }); Place(s, 0, 0); s.Controls.FloodFlow = 1; Tick(s, 15);
         Near(s.FloodWaterLiters, 0, .0001f, "water tank not finite");
-        int i = s.Ice.IndexAt(0, -1.1f); Assert(s.Ice.Cells[i].OverwaterMm > 1 && s.Mistakes > 0, "pooling has no consequence");
+        int i = s.Ice.IndexAt(s.Conditioner.X,s.Conditioner.Z+s.Config.FloodContactFore); Assert(s.Ice.Cells[i].OverwaterMm > 1 && s.Mistakes > 0, "pooling at the actual trailing towel has no consequence");
         Assert(s.GetReport().OverwaterFraction > 0, "overwater scoring missing");
     }
     static void Brush()
@@ -423,7 +431,7 @@ internal static class Program
     }
     static void Exit()
     {
-        var s = new Simulation(); Assert(!s.TryFinish(), "can finish at initial spawn");
+        var s = new Simulation(mode:SimulationMode.GuidedTraining); Assert(!s.TryFinish(), "training can finish at initial spawn");
         Place(s, 0, 0); s.Step(.02f); s.Controls.TankLiftTarget = 1; Tick(s, 1); Near(s.TankLift, 0, 0, "tank lifted on ice");
         s.Controls.TankLiftTarget = 0; Place(s, 0, -28, (float)Math.PI); s.Controls.Throttle = .3f; s.Controls.ConditionerTarget = 0; s.Conditioner.Lift = 0;
         Tick(s, 9); Assert(!s.ProperExit, "lowered threshold crossing accepted");

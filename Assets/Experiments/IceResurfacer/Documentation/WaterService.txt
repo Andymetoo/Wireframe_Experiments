@@ -1,82 +1,108 @@
-AURORA R-54 / WATER SERVICE
+AURORA R-54 / SOUTHEAST SERVICE ROOM AND OPERATOR FREEDOM
+28 October 2026
 
 Normal scored and practice sessions begin with 738 L of ice-making water and
-310 L of wash water. These are independent simulation reservoirs. The explicit
-refill-practice option starts a fresh practice session with partially empty tanks;
-it does not change normal starts or refill a scored machine automatically.
+310 L of wash water. The independent reservoirs and supply balance are retained.
+REFILL PRACTICE explicitly starts a fresh practice session with partial tanks.
 
 OPERATION
-1. Stop inside the service bay. Retract the blade, raise the conditioner, stop
-   both augers, brush and pickup pump, close wash/flood valves, lower dump tank.
-2. Press F to step down at the machine's left boarding step.
-3. Walk with WASD; hold RMB to look. Releasing RMB keeps the viewed direction.
-   Walk around the back of the machine to the water station on the right wall.
-4. Aim at the wall nozzle and press E (or left-click) to take it.
-5. Carry it to a labeled right-side ICE WATER or WASH WATER fill inlet. Aim at
-   that coupling and press E. Each inlet fills only its own tank.
-6. Return to the wall supply handle; E opens it. Watch the repeated tank levels
-   and the physical sight tubes. E closes the wall supply.
-7. With the wall valve closed, E at the connected inlet uncouples the nozzle.
-   Repeat for the other inlet if needed, then E at the wall holder stows it.
-8. Return to the left boarding step and press F. WASD resumes normal driving.
+F leaves the operator station in Free Simulation anywhere, even on ice, moving,
+with the tank raised, conditioner down, or other machinery running. Controls and
+actual equipment positions persist. The released pedal allows hydrostatic coast;
+unsafe operation is not silently corrected. The exit position is chosen beside
+the left step, then a clear rear/opposite-side position if a wall blocks it.
 
-E remains the blade-depth increase shortcut while seated; on foot it is context
-interaction. F is safe dismount/board. A connected hose prevents travel and gives
-specific close/disconnect/return instructions. Carrying a hose prevents boarding
-until it is stowed or connected. Boarding while coupled is allowed but travel
-remains inhibited, and F permits recovery. Pause freezes filling and foot motion.
+On foot, move with WASD and look with the mouse; RMB is not required. E or click
+interacts with the object under the center view. Pausing releases capture; F near
+the left step or accessible rear platform boards and restores seated head view.
 
-CALIBRATION AND MATERIAL ACCOUNTING
-The fictional station supplies 12 L/s at full opening, deliberately accelerated
-for practice: about 61.5 s for an empty 738 L tank and 25.8 s for 310 L. Wall E
-uses fully closed/open endpoints; the underlying supply model supports partial
-flow. This is a bay-specific assumption, not a claim about a real Zamboni fill
-rate. The two capacities preserve the established prototype calibration.
+Recommended refill procedure:
+1. Park in the marked southeast room space, facing through the diagonal gate.
+2. F, then walk around the rear to the water station on the machine's right.
+3. Aim at the wall nozzle and E to take it.
+4. Approach the labeled right rear ICE WATER or WASH WATER neck and E to couple.
+5. E at the wall supply opens flow. Watch the independent gauges and repeater.
+6. E closes supply. E at the connected neck uncouples it.
+7. Repeat for the other reservoir if needed. Face the highlighted holder and E
+   to return the hose; a 2.65 m reach and broad aim tolerance avoid pixel hunting.
+8. Walk to the left step or rear operator platform and F to board.
 
-The core updates at the existing 0.02 s fixed simulation cadence. Supplied liters,
-actual stored gain, overflow liters and drain discharge are recorded separately.
-At capacity, overflow goes to the floor/drain instead of increasing tank storage.
-An open but disconnected hose drains its supply and does not fill either tank.
-The float-valued tank state introduces only sub-0.1 L numerical tolerance in the
-multi-tank validation; totals use double accumulators. No supply is charged to
-the resurfacing-consumption counters.
+Free Simulation permits pressurized uncoupling or returning a running nozzle.
+The supply keeps flowing onto the floor until the operator actually closes it.
+Boarding with a carried hose leaves the nozzle on the floor. E picks it up again.
+Driving while connected is permitted: as routed hose length exceeds 11 m, the
+breakaway coupling releases, leaving a loose nozzle and warning. Wall supply
+continues spilling. This is a recoverable fictional coupling, not a claim that
+an actual Model 546 contains a drive-away safety release.
 
-GEOMETRY, INPUT AND PERFORMANCE
-The 11 m procedural hose stores reserve on the existing wall reel. Its floor
-route uses a fixed six-node visibility graph around the machine's expanded
-footprint; a raised final segment reaches the coupling. Carry movement rejects
-positions beyond the available route length. A hanging tail remains visible
-when the nozzle is stowed. This is a bounded geometric hose, not rope physics.
+Guided Training alone labels and enforces safe service/dismount restrictions.
+These checks do not affect scored or practice Free Simulation.
 
-The on-foot camera is grounded at 1.68 m, bounded inside the service bay, blocked
-by the machine/conditioner footprint and kept out of the dump pit. World target
-selection uses the same camera ray as the visible nozzle/handle and a 2 m reach.
-Input mode transitions preserve the seated camera mount and head orientation.
+WORLD LAYOUT
+ServiceLayout is the authority for world geometry: a diagonal opening centered
+at (10.5104, -27.5104) in the southeast rounded corner of the 60 x 26 m rink.
+Local Side runs northeast; local Outward runs southeast. The 5.4 m opening leads
+into a 12 m wide, 14 m long backstage machine room. Rink size is unchanged.
+A north-west-facing parking space places the station on the operator's right.
+The pit is offset to the room's far left, leaving circulation space beside it.
+Walls, doorway returns, pit lip and machine footprint constrain movement.
+There is no invisible docking point or heading snap.
 
-Hose routing reuses buffers. Overflow uses one 160-particle pool with a shared
-rounded droplet mesh, a short water stream and bounded localized wet geometry.
-The mesh is obtained once during initialization, not created per particle/frame.
-Three original synthesized audio
-layers distinguish tank filling, drain overflow and mechanical coupling. These
-are state-driven procedural sounds, not recordings of a real machine.
+FILL-NECK REFERENCE
+The manufacturer's Model 546 manual identifies distinct rear-view wash-water
+and ice-making-water fills (chapter 5, figure 5.2). The manufacturer-authored
+2019 Circle Check fuel-machine diagram also labels both fills separately on its
+rear view, while explicitly noting that details vary across models/options:
+https://cdn4.sportngin.com/attachments/document/051a-3512134/546_Operating_Instructions_English.pdf
+https://zamboni.com/wp-content/uploads/safetymailing/CircleCheckList_fuel.pdf
+The 546 specification lists the separate wash system/poly tank and sight gauge:
+https://zamboni.com/wp-content/uploads/specs/546_specs.pdf
+
+The Aurora keeps two visibly separate necks on the fixed right rear water-tank
+structure, behind the lifting snow-bin shell, with distinct fill heights and
+sight tubes. These positions are an original ergonomic interpretation of the
+rear fills; exact Model 546 dimensions or a universal fill-side arrangement are
+not established by the source diagrams. Nothing is attached to the moving bin.
+
+CALIBRATION AND ACCOUNTING
+The fictional wall station delivers up to 12 L/s, accelerated for practice;
+11 m hose length, 1.8 m/s walking, 1.68 m walking eye height, 2 m ordinary reach,
+and 2.65 m holder reach are gameplay calibration values. Tank capacities retain
+the previous reference values. The wall handle uses full closed/open endpoints,
+while the core accepts partial opening. This is not a manufacturer fill rate.
+
+Supplied, stored, overflow and discharged liters are accumulated independently.
+Capacity clamps actual tank gain. Disconnected supply and overflow remain in the
+spatial environment accounting. The floor displays persistent water deposits;
+non-pit dumped snow similarly remains at actual environmental cells. Already
+supplied water is never credited to both tanks. The float tank state introduces
+small rounding tolerances; cumulative totals use double precision.
+
+IMPLEMENTATION AND PERFORMANCE
+The hose uses six reusable visibility-graph nodes around the machine footprint,
+a grounded route, and a raised segment to the selected neck. It cannot stretch
+through the body. This is geometric routing, not a rope/elasticity solver.
+Two fixed environment meshes render tracked accessible floor cells at 5 Hz when
+material state changes; no objects are created as snow or water accumulates.
+Overflow retains one 160-particle shared-mesh droplet pool. Three synthesized
+audio layers distinguish filling, spillage and coupling. The optional CPU sample
+covers presentation work only, not GPU rendering or total application frame time.
 
 VALIDATION
-Validation~/ServiceValidation.cs covers normal starts, independent capacities,
-safe dismount, wrong port/reach/length rejection, disconnected flow, partial wall
-opening, pressurized coupling prevention, fill/overflow conservation, departure
-interlock and full recovery. It runs in the deterministic .NET suite.
+ServiceFreedomValidation.cs checks moving/unsafe exits with settings preserved,
+pressurized use, forgiving return, dropped-nozzle recovery, attached driving,
+breakaway, material conservation, and explicit training-only assistance.
+The existing ServiceValidation suite covers the guided safety workflow. Both
+passed as part of the 32-group aggregate core harness; Results.txt records the
+outcome. Runtime results and whole-frame performance are separate measurements.
+Editor/IceServiceValidation.cs sends actual F/E/W input, walks around the machine
+to both reservoirs, fills/overflows, returns the nozzle with a deliberately
+imprecise view, boards, and drives through the new portal until hose breakaway.
+It checks mouse look without RMB and cursor release. See generated
+Validation~/Service-results.txt for the executed result, rather than treating
+this implementation description as proof of a successful runtime test.
 
-Editor/IceServiceValidation.cs drives real Input System F/E/WASD through the
-on-foot loop, walks around the actual initial machine to the wall and both
-inlets, fills and overflows, returns the nozzle, reboards and resumes travel.
-It emits Service-results.txt and four service screenshots when explicitly run
-by the Unity integration validator. Consult those generated results for the
-current run status rather than treating this implementation description as
-proof that the runtime suite has executed.
-
-OPERATOR CALIBRATION STILL NEEDED
-Walk speed, hose reach/weight feel, handle reach, fill acceleration, audio timbre
-and relative levels require human operator playtesting. Hose routing does not
-simulate dynamic self-collision or every small fitting. The wet floor is a local
-visual discharge representation, not a fluid solver; liters remain accounted in
-the deterministic model. There is no animated human body.
+Remaining operator checks: subjective eye height, hose weight/reach feel, fill
+acceleration, fixture visibility, audio balance, unusual wall-side dismounts and
+working-room clearance. The prototype does not model a human body, flowing-floor
+fluid dynamics, dynamic hose self-collision, or physical personal injury.

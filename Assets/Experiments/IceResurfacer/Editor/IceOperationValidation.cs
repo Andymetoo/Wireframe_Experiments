@@ -64,8 +64,8 @@ namespace IceResurfacer.Editor
                     Check(ps.emission.rateOverTime.constant==0,"stopped augers cease emission: "+ps.name);
                 Check(ps.main.maxParticles<=360,"bounded particle pool: "+ps.name);
             }
-            s.Vehicle.X=0;s.Vehicle.Z=-38.5f;s.Vehicle.Heading=Mathf.PI;s.Vehicle.Speed=0;
-            s.Conditioner.Heading=Mathf.PI;s.Conditioner.X=0;s.Conditioner.Z=-37.4f;
+            s.Layout.ToWorld(s.Layout.PitSide,s.Layout.PitOutward-3.85f,out s.Vehicle.X,out s.Vehicle.Z);s.Vehicle.Heading=s.Layout.OutwardHeading;s.Vehicle.Speed=0;
+            s.Conditioner.Heading=s.Vehicle.Heading;s.Conditioner.X=s.Vehicle.X-Mathf.Sin(s.Vehicle.Heading)*1.1f;s.Conditioner.Z=s.Vehicle.Z-Mathf.Cos(s.Vehicle.Heading)*1.1f;
             c.TankLiftTarget=1;
             float full=s.SnowTankM3;
             for(int i=0;i<1000&&s.DumpedSnowM3<full*.35f;i++)s.Step(.02f);
@@ -79,7 +79,7 @@ namespace IceResurfacer.Editor
             Check(game.World.TankDoor.localEulerAngles.x>180,"forward dump door opens independently of shell");
             var pitMesh=game.World.PitSnow.GetComponent<MeshFilter>().sharedMesh;
             Check(pitMesh.bounds.max.y>.1f,"actual removed tank contents form a visible pit pile");
-            camera.transform.position=new Vector3(3.8f,3.2f,-42.0f);camera.transform.LookAt(new Vector3(0,1.1f,-40.1f));
+            camera.transform.position=game.World.Machine.TransformPoint(3.8f,3.2f,3.5f);camera.transform.LookAt(game.World.Machine.TransformPoint(0,1.1f,2.8f));
             IceResurfacerEditor.Capture(camera,"Snow-dumping.png",1920,1080);
             for(int i=0;i<700;i++)s.Step(.02f);
             for(int cycle=0;cycle<6;cycle++)
@@ -93,7 +93,7 @@ namespace IceResurfacer.Editor
             Check(s.TankLift==0,"dump tank returns fully to lowered position");
             IceResurfacerEditor.Capture(camera,"Snow-dumped-pit.png",1920,1080);
             UnityEngine.Object.Destroy(cameraObject);
-            s.TryClearConveyorJam();s.Vehicle.Z=-15;s.Vehicle.Heading=0;s.Conditioner.Z=-16.1f;s.Conditioner.Heading=0;
+            s.TryClearConveyorJam();s.Vehicle.X=0;s.Vehicle.Z=-15;s.Vehicle.Heading=0;s.Conditioner.X=0;s.Conditioner.Z=-16.1f;s.Conditioner.Heading=0;
             s.Conditioner.Lift=0;c.ConditionerTarget=0;c.HorizontalAuger=c.VerticalAuger=true;c.Throttle=.42f;c.Brake=false;c.BladeDepthMm=.35f;
             for(int i=0;i<50;i++){s.Step(.02f);render(.02f);}
             // Whole CPU sample includes the live cut/snow mesh and two streaming

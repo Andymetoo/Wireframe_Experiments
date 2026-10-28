@@ -4,14 +4,14 @@ namespace IceResurfacer.Core
 {
     /// <summary>SI units unless a field explicitly names another unit. Dynamics are calibration values, not manufacturer guarantees.</summary>
     [Serializable]
-    public sealed class SimulatorConfig
+    public sealed partial class SimulatorConfig
     {
         public float RinkWidth = 26f;
         public float RinkLength = 60f;
         public float CornerRadius = 8.5f;
         public float CellSize = 0.1f;
         public float GateHalfWidth = 2.7f;
-        public float BayLength = 12f;
+        public float BayLength = 14f;
         public float Wheelbase = 1.96f;
         public float VehicleHalfWidth = 1.065f;
         public float BodyFront = 2.5f;
@@ -26,7 +26,7 @@ namespace IceResurfacer.Core
         public float DrawbarLength = 0.65f;
         public float MaxSteeringRadians = 0.412f;
         public float SteeringRate = 0.55f;
-        public float ForwardSpeed = 3.0f;
+        public float ForwardSpeed = 2.65f;
         public float ReverseSpeed = 1.0f;
         public float Acceleration = 0.48f;
         public float HydrostaticDeceleration = 0.35f;
@@ -63,6 +63,8 @@ namespace IceResurfacer.Core
 
         public void Validate()
         {
+            ValidateIceCalibration();
+            ValidateFreedomCalibration();
             float[] values = { RinkWidth, RinkLength, CornerRadius, CellSize, GateHalfWidth, BayLength,
                 Wheelbase, VehicleHalfWidth, BodyFront, BodyRear, ConditionerWidth, WaterDistributionWidth,
                 GuideRollerX, GuideRollerZ, GuideRollerRadius, BladeBiteFraction, BladeWheelTurns, ConveyorJamSeconds, ConditionerLength,
@@ -84,7 +86,7 @@ namespace IceResurfacer.Core
                 BladeBiteFraction <= 0 || BladeBiteFraction > 1 || BladeWheelTurns < 3 || BladeWheelTurns > 4 || ConveyorJamSeconds <= 0 ||
                 FloodCapacityLiters <= 0 || WashCapacityLiters <= 0 || SnowCapacityM3 <= 0 ||
                 ConditionerLiftSeconds <= 0 || TankLiftSeconds <= 0 || FreezeSeconds <= 0 ||
-                GateHalfWidth <= VehicleHalfWidth || BayLength <= BodyFront + BodyRear ||
+                GateHalfWidth <= VehicleHalfWidth || BayLength < 12f || BayLength <= BodyFront + BodyRear ||
                 MaxSteeringRadians <= 0 || MaxSteeringRadians >= 1.2f || SteeringRate <= 0 ||
                 ForwardSpeed <= 0 || ReverseSpeed <= 0 || Acceleration <= 0 || HydrostaticDeceleration <= 0 ||
                 ServiceBrakeDeceleration <= 0 || MaxBladeDepthMm <= 0 || RecommendedBladeDepthMm <= 0 ||
@@ -132,6 +134,8 @@ namespace IceResurfacer.Core
     public struct RunReport
     {
         public float Coverage, FinishQuality, OverwaterFraction, MissedFraction, Score, ElapsedSeconds;
+        public float ShavingCoverage, WaterCoverage, WaterDistribution, OperationalEfficiency;
+        public float CoveragePoints, FinishPoints, WaterPoints, OverwaterPoints, EfficiencyPoints, HandlingPoints, MisusePenalty;
         public int Mistakes, TankDumps;
         public bool ProperExit, Complete, Practice;
     }

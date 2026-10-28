@@ -11,5 +11,8 @@
     <Compile Include="../Core/**/*.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ServiceValidation.cs" />
+    <Compile Include="FreedomValidation.cs" />
+    <Compile Include="ServiceFreedomValidation.cs" />
+    <Compile Include="IceCalibrationValidation.cs" />
   </ItemGroup>
 </Project>

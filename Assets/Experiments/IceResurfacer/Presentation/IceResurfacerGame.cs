@@ -2,6 +2,7 @@ using IceResurfacer.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using SimulationMode = IceResurfacer.Core.SimulationMode;
 
 namespace IceResurfacer.Presentation
 {
@@ -26,9 +27,15 @@ namespace IceResurfacer.Presentation
         public IceWaterService WaterService { get; private set; }
         public IcePhysicalControls PhysicalControls { get; private set; }
         public bool DiagnosticsVisible { get; private set; }
+        public bool PerformanceVisible { get; private set; } = true;
+        public int SurfaceDebugMode { get; private set; }
+        public bool Standing { get; private set; }
+        [Range(-.08f,.12f)] public float operatorEyeHeight = .06f;
+        public string CameraView { get; private set; } = "Forward";
+        public IcePerformanceMeter Performance { get; private set; }
         public float RawThrottle { get; private set; }
         public bool HasFocus { get; private set; } = true;
-        bool keyboardLift;
+        bool keyboardLift, keyboardTank;
         string observedMessage;
         IceMachineAudio machineAudio;
         ParticleSystem water;
@@ -36,7 +43,7 @@ namespace IceResurfacer.Presentation
         Transform drawbar;
         float accumulator, surveyTimer, yaw, pitch=5, wheelRoll, lastLift, lastTankLift, breakerAnimation;
         const float RecenterSeconds=.2f;
-        float recenterTime=RecenterSeconds, recenterYaw, recenterPitch, stance;
+        float recenterTime=RecenterSeconds, recenterYaw, recenterPitch, targetYaw, targetPitch=5, stance, controlLean;
         Vector2 instrumentCursor;
         Mouse lookMouse;
         int lookWarmup;
@@ -91,6 +98,7 @@ namespace IceResurfacer.Presentation
             water=Particles("Water at distribution towel",new Color(.25f,.62f,.76f,.65f),.018f);
             var waterShape=water.shape; waterShape.scale=new Vector3(calibration.WaterDistributionWidth,.05f,.15f);
             dashboard=new IceDashboard();
+            Performance=new IcePerformanceMeter();
             PhysicalControls=new IcePhysicalControls(this);
             WaterService=gameObject.AddComponent<IceWaterService>(); WaterService.Initialize(this);
             NewSession(false,false);
@@ -114,18 +122,19 @@ namespace IceResurfacer.Presentation
             renderer.sharedMaterial=new Material(litTemplate) { name=label+" material", color=color };
             renderer.shadowCastingMode=ShadowCastingMode.Off; ps.Play(); return ps;
         }
-        public void NewSession(bool practice,bool start=true)
+        public void NewSession(bool practice,bool start=true,SimulationMode mode=SimulationMode.FreeSimulation)
         {
             ReleaseControls();
             ReleaseLook();
             snowView?.Reset();
-            Surface?.Dispose(); Sim=new Simulation(calibration,practice,546);
+            Surface?.Dispose(); Sim=new Simulation(calibration,practice,546,mode);
             Sim.Controls.HydraulicHoldControls=true;
             WaterService?.ResetSession();
             Surface=new IceSurfaceView(Sim.Ice,World.IceMesh,iceTemplate);
+            Surface.SetDebugMode(SurfaceDebugMode);
             Started=start; Paused=false; HelpVisible=false; Looking=false;
             accumulator=0; surveyTimer=0; yaw=0; pitch=5; Notice=""; observedMistakes=0; breakerAnimation=0;
-            recenterTime=RecenterSeconds; stance=0;
+            recenterTime=RecenterSeconds; stance=0; controlLean=0; Standing=false; CameraView="Forward";
             Report=Sim.GetReport(); Surface.Refresh(Sim); UpdateMachine(0);
             observedMessage=Sim.LastMessage;
             DriverCamera.transform.localPosition=Vector3.zero;
@@ -141,7 +150,7 @@ namespace IceResurfacer.Presentation
         }
         public void Service()
         {
-            Notice="Stop and stow equipment in the bay. F steps off; take the wall hose with E, connect a labelled inlet, then open the wall valve.";
+            Notice="F steps off. Walk to the right-side wall hose, E takes the nozzle, connects an inlet and operates supply. Close supply before returning it.";
         }
         public void StartServicePractice()
         {
@@ -151,7 +160,7 @@ namespace IceResurfacer.Presentation
         }
         public void ReleaseControls()
         {
-            PhysicalControls?.Release(); dashboard?.ReleaseInteractions(); keyboardLift=false;
+            PhysicalControls?.Release(); dashboard?.ReleaseInteractions(); keyboardLift=keyboardTank=false;
             if(Sim!=null) { Sim.SetConditionerHydraulic(0); Sim.SetTankHydraulic(0); }
         }
         public void OperateSnowBreaker()
@@ -163,18 +172,21 @@ namespace IceResurfacer.Presentation
         void Update()
         {
             if(Sim==null) return;
+            Performance.BeginFrame(Time.unscaledDeltaTime);
             var keys=Keyboard.current;
             if(keys!=null)
             {
                 if(keys.escapeKey.wasPressedThisFrame) TogglePause();
                 if(keys.f1Key.wasPressedThisFrame) ToggleHelp();
                 if(keys.f3Key.wasPressedThisFrame) DiagnosticsVisible=!DiagnosticsVisible;
+                if(keys.f4Key.wasPressedThisFrame) PerformanceVisible=!PerformanceVisible;
+                if(keys.f2Key.wasPressedThisFrame) { SurfaceDebugMode=(SurfaceDebugMode+1)%3; Surface.SetDebugMode(SurfaceDebugMode); }
                 if(keys.tabKey.wasPressedThisFrame) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
             }
             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;
             bool wasOnFoot=Sim.OnFoot;
             WaterService.HandleInput(running,Time.deltaTime);
-            if(wasOnFoot!=Sim.OnFoot) { ReleaseControls(); ReleaseLook(); }
+            if(wasOnFoot!=Sim.OnFoot) { ReleaseControls(); if(!Sim.OnFoot)ReleaseLook(); else { Looking=false; lookMouse=null; } }
             bool driving=running&&!Sim.OnFoot;
             var c=Sim.Controls;
             RawThrottle=keys!=null?(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0):0;
@@ -192,9 +204,14 @@ namespace IceResurfacer.Presentation
                 if(keys.digit4Key.wasPressedThisFrame)c.BoardBrush=!c.BoardBrush;
                 if(keys.digit5Key.wasPressedThisFrame)c.WashPump=!c.WashPump;
                 if(keys.digit6Key.wasPressedThisFrame)OperateSnowBreaker();
+                bool shift=keys.leftShiftKey.isPressed||keys.rightShiftKey.isPressed;
+                if(keys.digit7Key.isPressed) { keyboardTank=true; Sim.SetTankHydraulic(shift?-1:1); }
+                else if(keyboardTank) { Sim.SetTankHydraulic(0); keyboardTank=false; }
+                float waterChange=((keys.rightBracketKey.isPressed?1:0)-(keys.leftBracketKey.isPressed?1:0))*Time.deltaTime*.22f;
+                if(shift)c.WashValve=Mathf.Clamp01(c.WashValve+waterChange);else c.FloodFlow=Mathf.Clamp01(c.FloodFlow+waterChange);
                 if(keys.jKey.wasPressedThisFrame) { Sim.TryClearConveyorJam(); Notice=Sim.LastMessage; }
-                if(keys.qKey.isPressed)c.BladeDepthMm=Mathf.Max(0,c.BladeDepthMm-Time.deltaTime*.15f);
-                if(keys.eKey.isPressed)c.BladeDepthMm=Mathf.Min(calibration.MaxBladeDepthMm,c.BladeDepthMm+Time.deltaTime*.15f);
+                if(keys.commaKey.isPressed)c.BladeDepthMm=Mathf.Max(0,c.BladeDepthMm-Time.deltaTime*.08f);
+                if(keys.periodKey.isPressed)c.BladeDepthMm=Mathf.Min(calibration.MaxBladeDepthMm,c.BladeDepthMm+Time.deltaTime*.08f);
             }
             if(!Sim.OnFoot)UpdateLook(running,Time.deltaTime);
             PhysicalControls.UpdateInput(driving&&!Looking, dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
@@ -212,16 +229,87 @@ namespace IceResurfacer.Presentation
             machineAudio.SetState(Sim,running,Mathf.Abs(Sim.Conditioner.Lift-lastLift)>.0001f||Mathf.Abs(Sim.TankLift-lastTankLift)>.0001f);
             lastLift=Sim.Conditioner.Lift;
             lastTankLift=Sim.TankLift;
+            Performance.EndWork();
+        }
+        public void SelectCameraView(string view)
+        {
+            CameraView=view;
+            controlLean=view=="Controls"?-.18f:0;
+            if(view=="Forward") { targetYaw=0; targetPitch=5; }
+            else
+            {
+                Vector3 target;
+                if(view=="Controls")
+                {
+                    var controls=new Bounds(World.ConditionerLever.TransformPoint(0,.225f,0),Vector3.zero);
+                    controls.Encapsulate(World.DumpLever.TransformPoint(0,.225f,0));
+                    controls.Encapsulate(World.WashValve.TransformPoint(-.09f,.064f,0));
+                    controls.Encapsulate(World.FloodLever.TransformPoint(-.09f,.064f,0));
+                    controls.Encapsulate(World.BladeWheel.position);
+                    target=controls.center;
+                }
+                else if(view=="Conditioner")
+                    target=World.Conditioner.TransformPoint(-calibration.WaterDistributionWidth*.5f-.045f,.07f,-.12f);
+                else target=World.Conditioner.TransformPoint(.45f,.03f,-2.6f);
+                float angle=view=="Conditioner"?-170:view=="Rear"?155:75;
+                // Solve from the final shoulder lean, not the old camera position;
+                // otherwise a side/down preset can end up staring into the seat.
+                for(int i=0;i<3;i++)
+                {
+                    Vector3 eye=World.CameraMount.TransformPoint(HeadOffset(angle));
+                    Vector3 local=World.CameraMount.InverseTransformDirection(target-eye);
+                    float desiredYaw=Mathf.Atan2(local.x,local.z)*Mathf.Rad2Deg;
+                    // The controls span forward levers to a rearward blade wheel.
+                    // A world-space box centre biases the view toward the distant
+                    // levers and can leave the near handwheel outside the frame.
+                    if(view=="Controls")desiredYaw=ControlViewYaw(eye);
+                    if(view=="Conditioner"&&desiredYaw>0)desiredYaw-=360;
+                    targetYaw=Mathf.Clamp(desiredYaw,-170,170);
+                    targetPitch=Mathf.Clamp(-Mathf.Atan2(local.y,new Vector2(local.x,local.z).magnitude)*Mathf.Rad2Deg,-55,80);
+                    angle=targetYaw;
+                }
+            }
+            recenterYaw=yaw;recenterPitch=pitch;recenterTime=0;
+        }
+        float ControlViewYaw(Vector3 eye)
+        {
+            float minimum=180,maximum=-180;
+            IncludeControlBearing(World.ConditionerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.HorizontalAugerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.VerticalAugerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.DumpLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.WashValve.TransformPoint(-.115f,.064f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.FloodLever.TransformPoint(-.115f,.064f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.SnowBreakerPlunger.TransformPoint(-.105f,.22f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.SnowBreakerPlunger.TransformPoint(.105f,.22f,0),eye,ref minimum,ref maximum);
+            // Include the rim, not only its hub, for every handwheel setting.
+            for(int i=0;i<16;i++)
+            {
+                float angle=i*Mathf.PI/8;
+                Vector3 rim=World.BladeWheel.TransformPoint(Mathf.Cos(angle)*.148f,0,Mathf.Sin(angle)*.148f);
+                IncludeControlBearing(rim,eye,ref minimum,ref maximum);
+            }
+            return (minimum+maximum)*.5f;
+        }
+        void IncludeControlBearing(Vector3 point,Vector3 eye,ref float minimum,ref float maximum)
+        {
+            Vector3 direction=World.CameraMount.InverseTransformDirection(point-eye);
+            float bearing=Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg;
+            minimum=Mathf.Min(minimum,bearing);maximum=Mathf.Max(maximum,bearing);
         }
         void UpdateLook(bool running,float dt)
         {
             var mouse=Mouse.current;
             var keys=Keyboard.current;
             bool held=running&&mouse!=null&&mouse.rightButton.isPressed;
-            bool recenter=running&&keys!=null&&keys.rKey.wasPressedThisFrame;
-            if(recenter)
+            bool preset=false;
+            if(running&&keys!=null)
             {
-                recenterYaw=yaw; recenterPitch=pitch; recenterTime=0;
+                if(keys.rKey.wasPressedThisFrame)Standing=!Standing;
+                if(keys.xKey.wasPressedThisFrame){SelectCameraView("Forward");preset=true;}
+                if(keys.qKey.wasPressedThisFrame){SelectCameraView("Conditioner");preset=true;}
+                if(keys.eKey.wasPressedThisFrame){SelectCameraView("Controls");preset=true;}
+                if(keys.cKey.wasPressedThisFrame){SelectCameraView("Rear");preset=true;}
             }
             if(held)
             {
@@ -235,10 +323,11 @@ namespace IceResurfacer.Presentation
                 }
                 Vector2 delta=lookWarmup>0?Vector2.zero:mouse.delta.ReadValue();
                 if(lookWarmup>0)lookWarmup--;
-                if(!recenter&&delta.sqrMagnitude>0)
+                if(!preset&&delta.sqrMagnitude>0)
                 {
                     // A deliberate new look interrupts a recenter at its current pose.
                     recenterTime=RecenterSeconds;
+                    CameraView="Manual";
                     yaw=Mathf.Clamp(yaw+delta.x*.11f,-170,170);
                     pitch=Mathf.Clamp(pitch-delta.y*.11f,-55,80);
                 }
@@ -249,18 +338,22 @@ namespace IceResurfacer.Presentation
             {
                 recenterTime=Mathf.Min(RecenterSeconds,recenterTime+dt);
                 float t=Mathf.SmoothStep(0,1,recenterTime/RecenterSeconds);
-                yaw=Mathf.Lerp(recenterYaw,0,t); pitch=Mathf.Lerp(recenterPitch,5,t);
+                yaw=Mathf.Lerp(recenterYaw,targetYaw,t); pitch=Mathf.Lerp(recenterPitch,targetPitch,t);
             }
             if(running)
-                stance=Mathf.MoveTowards(stance,keys!=null&&keys.spaceKey.isPressed?1:0,dt/.25f);
-            float shoulder=Mathf.SmoothStep(0,1,Mathf.InverseLerp(90,135,Mathf.Abs(yaw)));
-            float rise=Mathf.SmoothStep(0,1,stance);
-            Vector3 lean=new Vector3((yaw>0?.52f:-.30f)*shoulder,.03f*shoulder+.48f*rise,.10f*rise);
+                stance=Mathf.MoveTowards(stance,Standing||keys!=null&&keys.spaceKey.isPressed?1:0,dt/.25f);
+            Vector3 lean=HeadOffset(yaw);
             if(running)
                 DriverCamera.transform.localPosition=Vector3.Lerp(DriverCamera.transform.localPosition,lean,1-Mathf.Exp(-10*dt));
             // yaw/pitch are the rendered pose, not an RMB-dependent target. There is
             // no trailing rotation filter to drift after release, pause or focus loss.
             DriverCamera.transform.localRotation=Quaternion.Euler(pitch,yaw,0);
+        }
+        Vector3 HeadOffset(float angle)
+        {
+            float shoulder=Mathf.SmoothStep(0,1,Mathf.InverseLerp(90,135,Mathf.Abs(angle)));
+            float rise=Mathf.SmoothStep(0,1,stance);
+            return new Vector3((angle>0?.52f:-.40f)*shoulder,.03f*shoulder+.48f*rise+operatorEyeHeight,.10f*rise+controlLean);
         }
         void ReleaseLook()
         {
@@ -304,7 +397,16 @@ namespace IceResurfacer.Presentation
             if(c.HorizontalAuger&&!Sim.ConveyorJammed)World.HorizontalAuger.Rotate(Vector3.right,dt*390*(1-Sim.ConveyorCongestion*.35f),Space.Self);
             if(c.VerticalAuger&&!Sim.ConveyorJammed)World.VerticalAuger.Rotate(Vector3.up,dt*540*(1-Sim.ConveyorCongestion*.5f),Space.Self);
             if(World.BrushArm!=null)
-                World.BrushArm.localRotation=Quaternion.Euler(0,0,c.BoardBrush?0:-33);
+            {
+                World.BrushArm.localRotation=Quaternion.Euler(0,-(1-Sim.BrushDeployment)*calibration.BrushRetractedDegrees,0);
+                World.Brush.position=new Vector3(Sim.BrushWorldX,.15f+(1-Sim.BrushDeployment)*.15f,Sim.BrushWorldZ);
+                Vector3 from=World.BrushArm.position,to=World.Brush.position+Vector3.up*.05f;
+                World.BrushLink.position=(from+to)*.5f;
+                World.BrushLink.rotation=Quaternion.FromToRotation(Vector3.up,to-from);
+                World.BrushLink.localScale=new Vector3(.065f,(to-from).magnitude*.5f,.065f);
+                World.BrushRoller.position=World.Brush.position+Vector3.up*.20f;
+                World.BrushRoller.rotation=World.Machine.rotation;
+            }
             if(c.BoardBrush)World.Brush.Rotate(Vector3.up,dt*540,Space.Self);
             snowView.Update(Sim,dt);
             water.transform.position=World.WaterOutlet.position;
@@ -331,6 +433,7 @@ namespace IceResurfacer.Presentation
         }
         void OnDestroy()
         {
+            Performance?.Dispose();
             Surface?.Dispose(); dashboard?.Dispose();
             if(World==null)return;
             RenderSettings.ambientMode=oldAmbientMode; RenderSettings.ambientLight=oldAmbient;

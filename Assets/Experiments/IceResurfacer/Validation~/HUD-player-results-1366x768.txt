@@ -28,10 +28,10 @@ PASS 1366x768 / Guide button closes
 PASS 1366x768 / Pause button
 PASS 1366x768 / Resume button
 PASS 1366x768 / Service help explains physical hose without silently topping up tanks
-PASS 1366x768 / Finish button enforces unfinished-run guard
+PASS 1366x768 / Free Simulation may finish a partial session without a progression guard
 PASS 1366x768 / New-session button
 PASS 1366x768 / Unscored-practice launch button
 PASS 1366x768 / Scored-run launch button
 PASS 1366x768 / Legal partial run reaches results through normal finish path
 PASS: all player HUD checks.
-Native hidden-window D3D presentation warnings: 39 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 20 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

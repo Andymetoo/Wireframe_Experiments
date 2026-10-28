@@ -1,0 +1,262 @@
+AURORA R-54 / MEASURED PERFORMANCE
+28 October 2026
+
+Scope and status
+This report compares the captured previous implementation with the completed
+operator-freedom pass using explicit rendered-workload development players.
+The final workload comparison records substantially lower measured CPU work at
+both resolutions. Full-HUD resurfacing mean frame intervals change from 8.860 to
+3.093 ms at 1366x768 and 8.715 to 3.867 ms at 1920x1080. Allocation changes are
+mixed, and the 1920x1080 GPU timing is essentially unchanged. These are hidden
+fixed-workload results with the limits below. The extended run records bounded
+sampled heap but variable, sometimes higher frame costs; it does not prove
+indefinite stability. Only the final after/endurance reports are used here.
+
+Environment and method
+Windows 11 (10.0.26200), Intel Core i5-11400H at 2.70 GHz, NVIDIA GeForce RTX 3050
+Laptop GPU, Unity 6000.4.1f1, Direct3D11, Windows development Mono player.
+VSync is off and application target frame rate is unlimited. The owned player
+window is hidden/offscreen; the user's open Editor and project settings are
+unchanged. Both 1366x768 and 1920x1080 are measured separately.
+
+The benchmark advances one deterministic 20 ms simulation tick per rendered
+frame, with live machinery, ice, snow, water, hose effects and IMGUI. Thus FPS
+means throughput for this fixed workload: simulation time may advance faster
+than wall time. These are not normal real-time gameplay FPS, Editor FPS, or
+focused-window input-latency measurements. Different arena geometry, lighting
+and HUD between revisions are part of the full-pass comparison; this is not
+an isolated single-optimization A/B test.
+
+Each ordinary scenario has 90 warmup frames and a 300-frame measurement budget.
+The collector's strict boundary records 299 frame intervals. The normal long
+scenario budgets 1500 frames and records 1499 intervals. Fixture setup seeds
+positions or tank stock to produce reproducible loads. Driving fixtures can
+restart their profiling lane; unlike the separate full gameplay route, these
+performance fixtures are not demonstrations of a completed manual run.
+
+Mean_frame and p95_frame cover the whole rendered player loop. CPU_work times
+the explicit simulation tick, machine effects, service presentation and periodic
+surface/report update. It excludes keyboard/mouse input polling, IMGUI, rendering
+and GPU work. The added on-foot movement scenario includes the real movement
+collision/camera routines inside CPU_work. GPU time averages only positive
+FrameTiming samples; unavailable data must remain unavailable. Draw calls are
+-1 in the supplied baseline because that recorder is unavailable, not because
+the scene renders no draws.
+
+Whole-frame GC allocation uses the Unity profiler recorder. The separate
+GC.GetAllocatedBytesForCurrentThread work counter reports zero in these Mono
+player samples; that is not proof of zero allocations. Whole-frame measurements
+show substantial nonzero allocation, including IMGUI and instrumentation.
+GC collections are generation-zero counter deltas. Managed growth is a live-heap
+delta between scenario setup and completion, including warmup and garbage still
+awaiting collection; negative growth is possible and does not prove leak freedom.
+
+The service_walking name is retained for the matched baseline service/camera
+fixture. It does not execute walking movement. The final on_foot_movement
+scenario additionally calls the actual collision-aware MoveFoot/ApplyFootCamera
+routines. It has no old counterpart, so no before/after speedup is assigned.
+
+Baseline results
+Source: Validation~/PerformanceBefore/Performance-1366x768.csv.
+Frame/CPU/GPU columns are milliseconds; GC is bytes per whole rendered frame.
+
+1366x768                    Mean    p95     FPS     CPU     GPU      GC
+driving_full_hud            12.369  41.644    80.8   4.898   2.536   14730
+resurfacing_full_hud         8.860  41.283   112.9   4.910   2.476   15913
+resurfacing_compact          6.557  40.248   152.5   4.923   1.342    7121
+snow_overflow               8.912  41.078   112.2   4.902   2.096   15747
+camera_changes              7.789  42.576   128.4   5.147   1.432   15185
+service_walking             6.789  40.270   147.3   4.793   2.199    6826
+hose_filling               10.222  40.485    97.8   4.821   2.290    7360
+hose_overflow               8.903  40.221   112.3   4.795   2.567    7462
+dump_shakeout              10.458  40.808    95.6   4.810   2.132   15376
+long_session                8.210  41.228   121.8   5.089   2.043   15077
+
+Source: Validation~/PerformanceBefore/Performance-1920x1080.csv.
+
+1920x1080                   Mean    p95     FPS     CPU     GPU      GC
+driving_full_hud             8.622  43.301   116.0   5.236   2.385   18060
+resurfacing_full_hud         8.715  42.957   114.7   5.213   2.403   19243
+resurfacing_compact          7.852  41.494   127.4   5.101   2.336   10451
+snow_overflow               8.613  42.737   116.1   5.305   2.422   19077
+camera_changes             10.358  43.750    96.5   5.290   2.513   18515
+service_walking             7.925  41.622   126.2   4.951   2.416   10156
+hose_filling                7.738  41.293   129.2   4.935   2.435   10557
+hose_overflow               9.031  41.598   110.7   5.152   3.919   10914
+dump_shakeout               9.200  46.947   108.7   5.639   1.899   18706
+long_session                9.297  45.506   107.6   5.536   2.337   18402
+
+Baseline means vary by run/resolution and the 95th-percentile intervals cluster
+near 40-47 ms. The hidden presentation path and host scheduling remain part of
+this harness. A higher resolution occasionally reports a faster mean; that is
+not evidence that adding pixels improves the simulation. Managed runtime error
+counts were zero. Native hidden D3D presentation warnings were 13 at 1366x768
+and 28 at 1920x1080, counted separately by the launcher.
+
+Final comparison
+Final 1366x768 source: Validation~/PerformanceAfter/Performance-1366x768.csv,
+run header 2026-10-28 19:05:45Z. Same units and sample counts as the baseline.
+
+1366x768                    Mean    p95     FPS     CPU     GPU      GC
+driving_full_hud             2.386   3.639   419.0   0.158   1.292   18654
+resurfacing_full_hud         3.093   8.504   323.3   0.948   1.294   19253
+resurfacing_compact          2.530   8.212   395.2   0.980   1.252   10390
+snow_overflow               3.156   8.513   316.8   0.960   1.304   19376
+camera_changes              3.331   8.707   300.2   1.000   1.322   18716
+service_walking             1.906   3.242   524.7   0.153   1.064   10420
+hose_filling                2.314   4.997   432.1   0.424   1.373   10831
+hose_overflow               2.070   4.259   483.2   0.390   1.347   11056
+dump_shakeout               2.547   4.636   392.6   0.296   1.294   19466
+long_session                3.335   9.071   299.9   1.021   1.226   18851
+on_foot_movement             1.388   2.071   720.6   0.130   1.123   10420
+
+At 1366x768, active full-HUD resurfacing changes from 8.860 to 3.093 ms mean
+frame interval and 41.283 to 8.504 ms p95. Explicit CPU work changes from
+4.910 to 0.948 ms. These are approximately 65% less mean frame time and 81%
+less measured CPU work for this hidden fixed-workload comparison. The whole-
+frame allocation tradeoff is 15913 to 19253 B/frame, approximately 21% more.
+Compact HUD records 2.530 ms and 10390 B/frame in the final active fixture;
+the CPU-work values themselves are similar to full HUD within run variation.
+Managed errors are zero; native hidden D3D warnings are 19. Draw calls remain
+unavailable (-1), and the independent work-allocation API still reports zero.
+
+Final 1920x1080 source: Validation~/PerformanceAfter/Performance-1920x1080.csv,
+run header 2026-10-28 19:06:37Z.
+
+1920x1080                   Mean    p95     FPS     CPU     GPU      GC
+driving_full_hud             2.919   4.398   342.6   0.185   2.480   16434
+resurfacing_full_hud         3.867   9.920   258.6   1.090   2.407   17033
+resurfacing_compact          3.788  10.579   264.0   1.239   2.351    8170
+snow_overflow               3.582   8.976   279.2   1.011   2.444   17156
+camera_changes              3.616   9.101   276.6   1.021   2.481   16496
+service_walking             2.138   2.634   467.8   0.138   2.071    8200
+hose_filling                2.374   4.345   421.2   0.359   2.250    8601
+hose_overflow               2.426   4.533   412.1   0.373   2.249    8836
+dump_shakeout               2.690   4.774   371.7   0.312   2.321   17246
+long_session                3.510   9.192   284.9   1.051   2.303   16626
+on_foot_movement             2.517   3.397   397.3   0.148   2.276    8200
+
+At 1920x1080, active full-HUD resurfacing changes from 8.715 to 3.867 ms mean
+frame interval and 42.957 to 9.920 ms p95. CPU work changes from 5.213 to
+1.090 ms: approximately 56% less mean frame time and 79% less CPU work.
+GPU time is 2.403 versus 2.407 ms; no meaningful GPU improvement is established
+for that fixture. Some GPU cases increased: dump_shakeout records 1.899 versus
+2.321 ms. Whole-frame allocation changes from 19243 to 17033 B/frame,
+approximately 11.5% less. This differs from the increase at 1366x768, so there
+is no blanket allocation-reduction claim. Final full HUD versus compact is
+3.867 versus 3.788 ms and 17033 versus 8170 B/frame; compact saves allocation
+without a large measured frame-time change in this particular sample.
+
+All ten matched workloads have lower mean frame intervals and measured CPU
+work in these final runs. The separate actual on-foot fixture records 1.388 ms
+at 1366x768 and 2.517 ms at 1920x1080; it has no baseline. Both final runs report
+zero managed runtime errors. Native hidden D3D warnings are 19 and 21. Positive
+GPU samples are available; draw-call counts remain unavailable. Larger-resolution
+allocation values are not consistently higher, underscoring that these are
+observations of whole player/UI runs, not a controlled allocation microbenchmark.
+
+Optimization findings
+The former survey path regenerated channels for all 156000 grid samples even
+when no ice changed. The new IceField records changed indices in fixed arrays;
+cut/snow/finish/process/map channels refresh only affected cells, active wet
+cells drive fading, and unchanged process/map textures skip uploads. Physical
+surface-score totals are cached by revision. Time and live handling/misuse
+values remain current. These changes target measured CPU work without reducing
+the grid resolution or substituting a cosmetic trail for real processing.
+
+Snow and water effects remain in bounded particle pools. The hose route reuses
+six graph nodes and its buffers. Persistent ground water/snow use two bounded
+meshes, refreshed at 5 Hz only when material revisions change. There are no
+per-cell scene objects, per-frame creation of mesh objects, or growing lists of
+spill particles. FPS and cached performance readouts update at 4 Hz. The rest
+of the IMGUI machinery/diagnostic text still renders through the existing UI.
+
+This pass adds geometry, inboard controls, room lights, film/recovery state and
+diagnostic/UI content. Lower CPU_work alone would not prove lower whole-frame
+cost, lower GPU cost or lower allocation. Here the recorded frame intervals also
+improve, but allocation is mixed and the active 1920x1080 GPU cost is unchanged.
+Full-HUD allocation remains roughly 17-19 KB per frame in the final active
+samples. Periodic collections and remaining frame spikes still merit targeted
+IMGUI/profiler work; the independent work API's zero is not an allocation fix.
+
+Extended-session check
+Source: Validation~/PerformanceEndurance/Performance-1920x1080.csv,
+run header 2026-10-28 19:07:36Z. The long phase budgets 30000 rendered frames
+and records 29999 measured intervals, approximately 600 simulated seconds plus
+warmup. Its measured intervals span approximately 153 seconds of render wall
+time. This is separate from the complete gameplay route's 1759 simulated seconds.
+
+Long-phase result: mean 5.103 ms, p95 13.501 ms, throughput 196.0 FPS,
+CPU_work 1.506 ms, positive-sample GPU 2.272 ms. Whole-frame GC averages
+16446 B/frame and peaks at 90979 B; 324 generation-zero collections occur.
+The independent work-allocation API again reads zero. Managed live-heap change
+over the phase is -11845632 B, which reflects collection rather than proving
+that the program has no leaks. Managed runtime errors are zero; the launcher
+counts 167 separate native hidden-window presentation warnings.
+
+The six windows sample the last 1000 frame intervals and current live heap:
+
+Phase frame   Approx. sim time   Mean last1000 ms   Managed heap B    GC0 count
+ 5000              100 s              3.748           20348928           154
+10000              200 s              4.758           20230144           208
+15000              300 s              5.555           20369408           263
+20000              400 s              5.540           20393984           318
+25000              500 s              6.315           19296256           374
+30000              600 s              4.698           19640320           429
+
+The GC0 window column is the process counter, not collections within one window.
+Sampled heap stays between approximately 19.3 and 20.4 MB (decimal), with the
+last sample below the first and no monotonic rise across these observations.
+Frame cost is not flat: windows rise to 6.315 ms before falling to 4.698 ms.
+The extended mean/p95 of 5.103/13.501 ms are higher than the shorter final
+long_session sample's 3.510/9.192 ms. This captures real variation and additional
+late-session cost; the benchmark does not isolate its cause or justify a claim
+that degradation is absent. Longer normal-player profiling should examine active
+surface history, periodic work, UI allocation and host/presentation effects.
+
+The observation is bounded in duration. It provides no evidence of unbounded
+managed growth within the sampled window, but it is not a general leak test,
+native-memory audit or proof of stable performance over hours of real play.
+
+Diagnostics and remaining limits
+F4 toggles the smoothed FPS/frame-time overlay, visible by default. F3 adds
+measured simulation/view CPU work, GPU time when available, whole-frame GC and
+available draw counts. Machine load and drive causes are separate from CPU load.
+
+FPS labels visible inside HUD-*.png are NOT these performance measurements.
+Those screenshots come from the native input/layout probe, which performs
+synchronous scripted ticks, ReadPixels captures and automation waits. Its meter
+may show a low results-screen rate or a much higher normal-HUD rate because it
+is measuring that artificial capture cadence. Use the Performance CSVs for the
+comparison; normal play's meter measures its own actual rendered cadence. The
+fourteen native HUD states passed interaction/layout checks with no measured
+text clipping, independently of this performance benchmark.
+
+The native GfxDeviceD3D11Base::PresentFrame presentation warnings do not arrive
+through Application.logMessageReceived. Launchers count them independently;
+zero managed errors must not be summarized as zero native warnings. The probe
+hides the Development Console overlay for clean evidence but retains log output.
+Neither these hidden player runs nor the core tests establish focused-window
+latency, subjective smoothness, audio comfort or actual Editor performance.
+
+No automatic profiler result replaces a focused Editor/normal-player check with
+the user's usual settings. Relevant next manual checks are a sustained ordinary
+resurfacing run, aggressive versus calm steering, full versus compact HUD,
+repeated service/dump cycles, and camera transitions on the user's display.
+
+Reproduction and files
+Use the isolated project under Validation~/UnityProject so the live project
+and its settings are untouched. IcePerformanceBuild.Build adds the opt-in probe
+to a temporary scene and emits Validation~/PerformanceBuild/AuroraPerformance.exe.
+Run RunPerformancePlayer.ps1 with -WindowMode Offscreen, -Width/-Height and
+-OutputFolder; -EnduranceFrames 30000 selects the extended workload. The probe
+is never attached to the ordinary launch scene. The before source snapshot is
+under Validation~/OperatorFreedomBefore. PerformanceBefore/ contains the baseline;
+PerformanceAfter/ contains the final ordinary runs identified by the timestamps
+above; PerformanceEndurance/ contains the final extended run. Earlier preliminary
+after measurements are not used in the comparison.
+
+Primary local evidence: PerformanceBefore/*.csv, final after/endurance CSVs,
+their player logs, IcePerformanceProbe.cs, IcePerformanceBuild.cs and
+RunPerformancePlayer.ps1. Core/runtime/HUD pass reports test correctness and
+layout separately; passing them is not a substitute for these measurements.

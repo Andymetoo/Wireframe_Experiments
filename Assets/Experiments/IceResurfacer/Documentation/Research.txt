@@ -1,6 +1,11 @@
 ICE RESURFACER / TECHNICAL REFERENCE AND CALIBRATION
 Research checked 25 October 2026. Fictional machine: AURORA R-54.
 
+Historical source/calibration record. Manufacturer references remain useful;
+the 28 October OperatorFreedom.txt and README supersede the former central
+south gate, blanket handling restrictions, controls and scenario scoring.
+Safe manufacturer procedures are reference guidance, not Free Simulation gates.
+
 Reference provenance
 
 The principal source is Zamboni Company's Model 546 Operating Instructions,

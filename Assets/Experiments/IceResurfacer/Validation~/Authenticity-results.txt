@@ -25,11 +25,20 @@ PASS CTRL stops through the real keyboard path
 PASS snow breaker: W reaches drive and releases brake
 PASS snow breaker: actual forward travel resumes ()
 PASS CTRL stops through the real keyboard path
-PASS rejected on-ice dump: W reaches drive and releases brake
-PASS rejected on-ice dump: actual forward travel resumes ()
+PASS free on-ice dump: W reaches drive and releases brake
+PASS free on-ice dump: actual forward travel resumes ()
 PASS CTRL stops through the real keyboard path
 PASS standing/sitting: W reaches drive and releases brake
 PASS standing/sitting: actual forward travel resumes ()
+PASS 7 raises tank while W continues Free Simulation travel
+PASS 7 release centres dump command
+PASS Shift+7 lowers the same physical tank
+PASS right bracket adjusts only flood water
+PASS Shift+right bracket adjusts only wash water
+PASS F4 toggles performance readout
+PASS F2 exposes actual shaving mask
+PASS F2 exposes affected cut/wash/flood cells
+PASS F2 returns to normal ice rendering
 PASS CTRL stops through the real keyboard path
 PASS LMB ray picks the real conditioner lever knob
 PASS physical push commands conditioner LOWER

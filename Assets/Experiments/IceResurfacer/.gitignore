@@ -3,4 +3,8 @@ Validation~/bin/
 Validation~/obj/
 Validation~/UnityProject/
 Validation~/Build/
+Validation~/PerformanceBuild/
+Validation~/OperatorFreedomBefore/Core/
+Validation~/OperatorFreedomBefore/Presentation/
+Validation~/OperatorFreedomBefore/Shaders/
 Validation~/*.log

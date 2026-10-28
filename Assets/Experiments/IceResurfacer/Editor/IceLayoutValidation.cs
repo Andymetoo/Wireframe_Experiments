@@ -32,7 +32,7 @@ namespace IceResurfacer.Editor
             Require(LocalX(w.CameraMount)<-.5f&&game.World.Machine.InverseTransformPoint(w.CameraMount.position).y>1.65f,"Realistic left seated eye position");
             Require(LocalX(w.BodyTank)>0,"Tank body is physically offset toward the operator's right");
             Require(LocalX(w.SnowBreakerPlunger)>LocalX(w.Seat),"Manual plunger is within reach to operator's right");
-            Require(LocalX(w.Brush)<-1,"Board brush remains on the left");
+            Require(LocalX(w.Brush)<-.8f,"Board brush remains on the left while retracted");
             foreach(var t in w.Machine.GetComponentsInChildren<Transform>())
                 Require(t.localScale.x>0&&t.localScale.y>0&&t.localScale.z>0,"Positive physical transform scale: "+t.name);
             float blade=w.CuttingBladeMesh.bounds.size.x*w.CuttingBlade.lossyScale.x;

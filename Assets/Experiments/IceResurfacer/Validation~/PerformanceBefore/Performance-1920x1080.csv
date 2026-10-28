@@ -1,0 +1,19 @@
+Aurora explicit rendered-workload benchmark / 2026-10-28 16:40:39Z
+Unity 6000.4.1f1 / NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11 / 1920x1080
+OS Windows 11  (10.0.26200) / CPU 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz / development Mono player, VSync off, hidden offscreen window.
+One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session 1500 measured frames. Setup seeds poses/tanks solely to profile reproducible loads.
+GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.
+scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls
+driving_full_hud,299,8.622,43.301,116.0,5.236,2.385,18060,21352,0,10,2359296,-1
+resurfacing_full_hud,299,8.715,42.957,114.7,5.213,2.403,19243,39698,0,6,-7024640,-1
+resurfacing_compact,299,7.852,41.494,127.4,5.101,2.336,10451,10896,0,4,-7999488,-1
+snow_overflow,299,8.613,42.737,116.1,5.305,2.422,19077,110430,0,4,1409024,-1
+camera_changes,299,10.358,43.750,96.5,5.290,2.513,18515,18960,0,6,-13721600,-1
+service_walking,299,7.925,41.622,126.2,4.951,2.416,10156,10598,0,2,864256,-1
+hose_filling,299,7.738,41.293,129.2,4.935,2.435,10557,11654,0,2,1028096,-1
+hose_overflow,299,9.031,41.598,110.7,5.152,3.919,10914,46996,0,4,-14168064,-1
+dump_shakeout,299,9.200,46.947,108.7,5.639,1.899,18706,26412,0,4,1400832,-1
+long_session,1499,9.297,45.506,107.6,5.536,2.337,18402,46322,0,23,-13623296,-1
+Managed runtime errors: 0
+Long-session growth is a live-heap delta, not a leak diagnosis; inspect GC collections and final repeat before inferring leaks.
+Native hidden-window D3D presentation warnings: 28 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

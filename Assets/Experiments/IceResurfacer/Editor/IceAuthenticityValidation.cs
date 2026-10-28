@@ -99,10 +99,10 @@ namespace IceResurfacer.Editor
             try
             {
                 game.NewSession(true); game.Dashboard.Compact = true;
-                Input(new[] { Key.W, Key.LeftShift }); Advance(8); Stop();
+                Input(new[] { Key.W, Key.LeftShift }); Advance(11); Stop();
                 Check(game.Sim.HasEnteredRink, "fixture genuinely drives from service bay onto ice before interaction");
                 Action[] actions = {
-                    () => Input(new[] { Key.E }),
+                    () => Input(new[] { Key.Period }),
                     () => { Input(new[] { Key.Digit1 }); Advance(.3f); Input(); },
                     () => Input(new[] { Key.Digit2 }),
                     () => Input(new[] { Key.Digit3 }),
@@ -114,11 +114,28 @@ namespace IceResurfacer.Editor
                     () => { Input(new[] { Key.Space }); Advance(.2f); Input(); }
                 };
                 string[] names = { "blade adjustment", "conditioner hold/release", "horizontal auger", "vertical auger",
-                    "board brush", "wash valve/pump", "flood water", "snow breaker", "rejected on-ice dump", "standing/sitting" };
+                    "board brush", "wash valve/pump", "flood water", "snow breaker", "free on-ice dump", "standing/sitting" };
                 for (int i = 0; i < actions.Length; i++)
                 {
                     Stop(); actions[i](); Input(); Resume(names[i]);
                 }
+                Input(new[]{Key.Digit7,Key.W});Advance(.3f);
+                Check(game.Sim.Controls.TankHydraulic==1&&game.Sim.TankRaised&&game.Sim.Vehicle.Speed>0,"7 raises tank while W continues Free Simulation travel");
+                Input();Check(game.Sim.Controls.TankHydraulic==0,"7 release centres dump command");
+                float loweringSeconds=game.Sim.TankLift*game.Sim.Config.TankLiftSeconds+.2f;
+                Input(new[]{Key.Digit7,Key.LeftShift});Advance(loweringSeconds);Input();
+                Check(!game.Sim.TankRaised,"Shift+7 lowers the same physical tank");
+                float flood=game.Sim.Controls.FloodFlow,wash=game.Sim.Controls.WashValve;
+                Input(new[]{Key.RightBracket});
+                Check(game.Sim.Controls.FloodFlow>flood&&game.Sim.Controls.WashValve==wash,"right bracket adjusts only flood water");
+                Input();flood=game.Sim.Controls.FloodFlow;
+                Input(new[]{Key.LeftShift,Key.RightBracket});
+                Check(game.Sim.Controls.WashValve>wash&&game.Sim.Controls.FloodFlow==flood,"Shift+right bracket adjusts only wash water");
+                Input();bool fps=game.PerformanceVisible;
+                Input(new[]{Key.F4});Check(game.PerformanceVisible!=fps,"F4 toggles performance readout");Input();
+                Input(new[]{Key.F2});Check(game.Surface.DebugMode==1,"F2 exposes actual shaving mask");Input();
+                Input(new[]{Key.F2});Check(game.Surface.DebugMode==2,"F2 exposes affected cut/wash/flood cells");Input();
+                Input(new[]{Key.F2});Check(game.Surface.DebugMode==0,"F2 returns to normal ice rendering");Input();
                 Stop();
                 Vector2 dragged = GrabLower(); Advance(.2f);
                 Input(new[] { Key.W }, 1, dragged); Advance(.4f);
@@ -175,7 +192,9 @@ namespace IceResurfacer.Editor
         }
         static void CaptureShakeout()
         {
-            game.NewSession(true); Place(0, -38.5f, Mathf.PI); Input(new[] { Key.LeftCtrl });
+            game.NewSession(true);
+            var layout=game.Sim.Layout;layout.ToWorld(layout.PitSide,layout.PitOutward-3.85f,out float px,out float pz);
+            Place(px,pz,layout.OutwardHeading+.06f); Input(new[] { Key.LeftCtrl });
             var s = game.Sim;
             typeof(Simulation).GetProperty("SnowTankM3").SetValue(s, .8f);
             observations.Add("Shakeout rendering fixture seeds 0.8 m3 tank stock and pit-aligned pose only. Subsequent transfers use production hydraulics and conserved DumpSnowRate; core tests collect their stock by cutting.");
@@ -198,8 +217,8 @@ namespace IceResurfacer.Editor
             {
                 var camera = cameraObject.AddComponent<Camera>(); camera.enabled = false;
                 camera.fieldOfView = 53; camera.nearClipPlane = .05f; camera.farClipPlane = 150;
-                camera.transform.position = new Vector3(3.8f, 3.2f, -42f);
-                camera.transform.LookAt(new Vector3(0, 1.1f, -40.1f));
+                camera.transform.position = game.World.Machine.TransformPoint(3.8f,3.2f,3.5f);
+                camera.transform.LookAt(game.World.Machine.TransformPoint(0,1.1f,2.8f));
                 IceResurfacerEditor.Capture(camera, "Authenticity-dump-shakeout.png", 1920, 1080);
             }
             finally { UnityEngine.Object.DestroyImmediate(cameraObject); }

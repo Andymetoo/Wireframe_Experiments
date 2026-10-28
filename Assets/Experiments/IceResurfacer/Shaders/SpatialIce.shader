@@ -5,6 +5,8 @@ Shader "IceResurfacer/SpatialIce"
         _StateTex ("Scratch / snow / finish / wet", 2D) = "white" {}
         _ProcessTex ("Actual cut / wash / flood history", 2D) = "black" {}
         _BaseColor ("Ice tint", Color) = (0.36,0.56,0.62,1)
+        _DebugMode ("0 normal / 1 shaving mask / 2 actual cut wash flood", Float) = 0
+        _GridSize ("Simulation cell grid", Vector) = (260,600,0,0)
     }
     SubShader
     {
@@ -26,6 +28,8 @@ Shader "IceResurfacer/SpatialIce"
             TEXTURE2D(_ProcessTex); SAMPLER(sampler_ProcessTex);
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseColor;
+            float _DebugMode;
+            float4 _GridSize;
             CBUFFER_END
             struct Attributes { float4 positionOS:POSITION; float2 uv:TEXCOORD0; };
             struct Varyings { float4 positionCS:SV_POSITION; float3 positionWS:TEXCOORD0; float2 uv:TEXCOORD1; float fog:TEXCOORD2; };
@@ -40,9 +44,19 @@ Shader "IceResurfacer/SpatialIce"
             half4 frag(Varyings i):SV_Target
             {
                 float4 s = SAMPLE_TEXTURE2D(_StateTex,sampler_StateTex,i.uv);
-                float3 process = SAMPLE_TEXTURE2D(_ProcessTex,sampler_ProcessTex,i.uv).rgb;
+                float4 processState = SAMPLE_TEXTURE2D(_ProcessTex,sampler_ProcessTex,i.uv);
+                float3 process=processState.rgb;
                 float2 p = i.positionWS.xz;
                 float aa = max(.018, length(fwidth(p))*.65);
+                if(_DebugMode>.5)
+                {
+                    half3 debugColor=_DebugMode<1.5?
+                        lerp(half3(.92,.48,.12),lerp(half3(.18,.38,.46),half3(.15,.86,.48),process.r),step(.5,processState.a)):
+                        half3(process.r,process.g,process.b);
+                    float2 cell=abs(frac(i.uv*_GridSize.xy)-.5);
+                    float grid=1-smoothstep(.42,.49,max(cell.x,cell.y));
+                    return half4(lerp(debugColor*.5,debugColor,grid),1);
+                }
                 float noise = hash21(floor(p*90));
                 float2 tile = floor(p*.9);
                 float direction = hash21(tile)*6.283;

@@ -10,7 +10,11 @@ namespace IceResurfacer.Core
         public readonly VehicleState Vehicle = new VehicleState();
         public readonly ConditionerState Conditioner = new ConditionerState();
         public readonly IceField Ice;
+        public readonly ServiceLayout Layout;
+        public readonly EnvironmentField Environment;
         public readonly bool Practice;
+        public readonly SimulationMode Mode;
+        public bool GuidedTraining { get { return Mode == SimulationMode.GuidedTraining; } }
         public float Time { get; private set; }
         public float FloodWaterLiters { get; private set; }
         public float WashWaterLiters { get; private set; }
@@ -28,13 +32,20 @@ namespace IceResurfacer.Core
         public int TankShakeoutCount { get; private set; }
         public bool BoardContact { get; private set; }
         public float EffectiveDriveDemand { get; private set; }
+        public float TractionSlip { get; private set; }
+        public float LateralVelocity { get; private set; }
+        public float TractionGrip { get; private set; } = 1f;
+        public float RaisedTankTravelSeconds { get; private set; }
+        public float LoadCutting { get; private set; }
+        public float LoadConveyors { get; private set; }
+        public float LoadCongestion { get; private set; }
         public string DriveInhibitReason
         {
             get
             {
                 if (Finished) return "Run finished. Start a new session to drive.";
                 if (ServiceDriveInhibited) return ServiceDriveInhibitReason;
-                if (TankRaised) return "Snow tank raised. Hold the dump lever LOWER until fully stowed.";
+                if (GuidedTraining && TankRaised) return "Training assistance: snow tank raised. Hold the dump lever LOWER until fully stowed.";
                 if (Controls.Brake) return "Service brake applied. Release CTRL to drive.";
                 if (BoardContact && Math.Abs(Vehicle.Speed) < .05f && Math.Abs(Controls.Throttle) > .01f)
                     return "Board or wall contact. Reverse clear, then steer away from the wall.";
@@ -55,18 +66,28 @@ namespace IceResurfacer.Core
         public int TankDumps { get; private set; }
         public int SnowBreakerStrokes { get; private set; }
         public float DumpedSnowM3 { get; private set; }
+        public float PitSnowM3 { get; private set; }
+        public float DumpSnowOnIceM3 { get; private set; }
+        public float DumpOriginX { get; private set; }
+        public float DumpOriginY { get; private set; }
+        public float DumpOriginZ { get; private set; }
+        public float DumpVelocityX { get; private set; }
+        public float DumpVelocityY { get; private set; }
+        public float DumpVelocityZ { get; private set; }
+        public float DumpLandingX { get; private set; }
+        public float DumpLandingZ { get; private set; }
         public float TotalSnowCollectedM3 { get; private set; }
         public float TotalFloodUsedLiters { get; private set; }
         public float TotalWashUsedLiters { get; private set; }
         public bool HasEnteredRink { get; private set; }
         public bool Finished { get; private set; }
         public string LastMessage { get; private set; } = "Drive through the gate. Lower with the blade out, then engage both augers.";
-        public bool InServiceBay { get { return Vehicle.Z < -Config.RinkLength * .5f - 2.6f && Math.Abs(Vehicle.X) < Config.GateHalfWidth - Config.VehicleHalfWidth; } }
-        public bool InDumpZone { get { return InServiceBay && Vehicle.Z <= -Config.RinkLength * .5f - Config.BayLength + 4.3f && Math.Abs(Vehicle.X) < 1.5f && Math.Cos(Vehicle.Heading) < -.85f; } }
+        public bool InServiceBay { get { return Layout.InsideRoom(Vehicle.X,Vehicle.Z); } }
+        public bool InDumpZone { get { ComputeDumpTrajectory(out float x,out float y,out float z,out float vx,out float vy,out float vz); float t=FallTime(y,vy);return Layout.ContainsPit(x+vx*t,z+vz*t,.35f); } }
         public bool EquipmentSafe { get { return Conditioner.Lift >= .97f && Controls.BladeDepthMm <= .001f && !Controls.HorizontalAuger && !Controls.VerticalAuger && !Controls.BoardBrush && !Controls.WashPump && Controls.WashValve <= .001f && Controls.FloodFlow <= .001f; } }
         public bool ProperExit { get { return HasEnteredRink && !exitUnsafe && InServiceBay && ConditionerFullyOutside() && EquipmentSafe; } }
 
-        readonly float[] faultTimes = new float[16];
+        readonly float[] faultTimes = new float[20];
         readonly int[] footprint;
         int footprintCount;
         float remainder, jamTime;
@@ -76,20 +97,27 @@ namespace IceResurfacer.Core
         float lastConditionerX, lastConditionerZ;
         const float FixedStep = .02f;
 
-        public Simulation(SimulatorConfig config = null, bool practice = false, int seed = 546)
+        public Simulation(SimulatorConfig config = null, bool practice = false, int seed = 546, SimulationMode mode = SimulationMode.FreeSimulation)
         {
             Config = config ?? new SimulatorConfig();
             Config.Validate();
             Practice = practice;
+            Mode = mode;
+            Layout = new ServiceLayout(Config);
+            Environment = new EnvironmentField(Config,Layout);
             Ice = new IceField(Config, seed);
-            Vehicle.Z = -Config.RinkLength * .5f - 4f;
-            Conditioner.Z = Vehicle.Z - Config.HitchBehindAxle - Config.DrawbarLength;
+            Layout.ParkingPose(out Vehicle.X,out Vehicle.Z,out Vehicle.Heading);
+            Conditioner.Heading=Vehicle.Heading;
+            Conditioner.X = Vehicle.X - (float)Math.Sin(Vehicle.Heading)*(Config.HitchBehindAxle+Config.DrawbarLength);
+            Conditioner.Z = Vehicle.Z - (float)Math.Cos(Vehicle.Heading)*(Config.HitchBehindAxle+Config.DrawbarLength);
             lastConditionerX = Conditioner.X; lastConditionerZ = Conditioner.Z;
             FloodWaterLiters = Config.FloodCapacityLiters;
             WashWaterLiters = Config.WashCapacityLiters;
-            float extent=Math.Max(Config.ConditionerWidth,Config.WaterDistributionWidth)+Config.ConditionerLength+.5f;
+            float extent=Math.Max(Config.ConditionerWidth,Config.WaterDistributionWidth)+2*Config.WaterFilmSpreadMeters+Config.ConditionerLength+.5f;
             footprint = new int[(int)Math.Ceiling(extent / Config.CellSize) * (int)Math.Ceiling(extent / Config.CellSize)];
             for (int i = 0; i < faultTimes.Length; i++) faultTimes[i] = -1000;
+            UpdateBoardBrush(0,0);
+            LastMessage=GuidedTraining?"Guided Training assistance is active. Enter through the southeast gate with equipment raised.":"Free Simulation: machinery remains under your control. Enter through the southeast gate when ready.";
         }
 
         public void Step(float dt)
@@ -125,8 +153,10 @@ namespace IceResurfacer.Core
             UpdateTank(dt);
             TickWaterService(dt);
             float excessBite=Math.Max(0,Controls.BladeDepthMm/Config.RecommendedBladeDepthMm-1);
-            MachineLoad = Clamp(.13f + HorizontalSnowM3 / Config.ConditionerSnowCapacityM3 * .75f + VerticalSnowM3 / Config.VerticalSnowCapacityM3 * .55f +
-                (Conditioner.Lift < .15f ? Math.Abs(Vehicle.Speed)*(Controls.BladeDepthMm*.14f+excessBite*excessBite*.22f) : 0) + (Controls.HorizontalAuger ? .08f : 0) + (Controls.VerticalAuger ? .09f : 0)+ConveyorCongestion*.35f+(ConveyorJammed?.5f:0), 0, 1.8f);
+            LoadCutting = Conditioner.Lift < .15f ? Math.Abs(Vehicle.Speed)*(Controls.BladeDepthMm*.14f+excessBite*excessBite*.22f) : 0;
+            LoadConveyors = HorizontalSnowM3/Config.ConditionerSnowCapacityM3*.75f+VerticalSnowM3/Config.VerticalSnowCapacityM3*.55f+(Controls.HorizontalAuger?.08f:0)+(Controls.VerticalAuger?.09f:0);
+            LoadCongestion = ConveyorCongestion*.35f+(ConveyorJammed?.5f:0);
+            MachineLoad = Clamp(.13f+LoadCutting+LoadConveyors+LoadCongestion,0,1.8f);
             if (MachineLoad > 1.0f) Fault(2, "Conveyor overload: retract blade and stop. Switch both augers OFF before inspecting a jam.");
         }
 
@@ -138,10 +168,10 @@ namespace IceResurfacer.Core
             Controls.TankHydraulic = Clamp(Controls.TankHydraulic, -1, 1);
             Controls.BladeDepthMm = Clamp(Controls.BladeDepthMm, 0, Config.MaxBladeDepthMm);
             Controls.WashValve = Clamp(Controls.WashValve, 0, 1); Controls.FloodFlow = Clamp(Controls.FloodFlow, 0, 1);
-            if (TankRaised && (Controls.HorizontalAuger || Controls.VerticalAuger))
+            if (GuidedTraining && TankRaised && (Controls.HorizontalAuger || Controls.VerticalAuger))
             {
                 Controls.HorizontalAuger = Controls.VerticalAuger = false;
-                LastMessage = "Augers cannot engage while the snow tank is raised. Lower the dump tank first.";
+                LastMessage = "Training assistance: augers are held OFF while the snow tank is raised. Lower the dump tank first.";
             }
         }
 
@@ -163,9 +193,10 @@ namespace IceResurfacer.Core
         {
             Vehicle.SteeringAngle = MoveTowards(Vehicle.SteeringAngle, Controls.Steer * Config.MaxSteeringRadians, Config.SteeringRate * dt);
             float command = Controls.Throttle;
-            // A refused hydraulic request is not a raised tank. The old target
-            // check latched travel off even when the dump interlock kept it down.
-            if (TankRaised || ServiceDriveInhibited)
+            // Only instructional assistance may inhibit travel for raised tanks
+            // or attached hoses. Free Simulation preserves the hazardous state.
+            bool trainingBrake=GuidedTraining&&(TankRaised||ServiceDriveInhibited);
+            if (trainingBrake || ServiceDriveInhibited)
             {
                 if (Math.Abs(command) > .1f) LastMessage = DriveInhibitReason;
                 command = 0;
@@ -175,15 +206,26 @@ namespace IceResurfacer.Core
             float speed = Vehicle.Speed;
             float massFactor = 1f / (1f + SnowTankM3 * .09f);
             float rate;
-            if (Controls.Brake || TankRaised || ServiceDriveInhibited) { target = 0; rate = Config.ServiceBrakeDeceleration; }
+            if (Controls.Brake || trainingBrake) { target = 0; rate = Config.ServiceBrakeDeceleration; }
             else if (Math.Abs(command) < .01f) { target = 0; rate = Config.HydrostaticDeceleration + Math.Abs(speed) * .12f; }
             else if (speed * command < -.005f) { target = 0; rate = Config.ServiceBrakeDeceleration; }
             else rate = Config.Acceleration * massFactor * Math.Max(.20f, 1f - MachineLoad * .35f);
-            float nextSpeed = MoveTowards(speed, target, rate * dt);
+            float lateralDemand=speed*speed*Math.Abs((float)Math.Tan(Vehicle.SteeringAngle))/Config.Wheelbase;
+            bool onIce=Ice.IsInside(Vehicle.X,Vehicle.Z);
+            float availableGrip=Config.IceLateralGrip*(1-TankLift*Config.RaisedTankGripPenalty);
+            float accelerationSlip=onIce&&Math.Abs(command)>.85f&&Math.Abs(target-speed)>.5f?.10f:0;
+            float wantedSlip=onIce?Clamp((lateralDemand-availableGrip)/availableGrip*.6f+accelerationSlip,0,.55f):0;
+            TractionSlip=MoveTowards(TractionSlip,wantedSlip,dt*(wantedSlip>TractionSlip?1.1f:Config.TireSlipRecovery));
+            TractionGrip=1-TractionSlip*.30f;
+            float nextSpeed = MoveTowards(speed, target, rate * TractionGrip * dt);
             float travel = (speed + nextSpeed) * .5f * dt;
-            float turn = travel * (float)Math.Tan(Vehicle.SteeringAngle) / Config.Wheelbase;
+            float turn = travel * (float)Math.Tan(Vehicle.SteeringAngle) / Config.Wheelbase*(1-TractionSlip*.22f);
             float direction = Vehicle.Heading + turn * .5f;
-            float x = Vehicle.X + (float)Math.Sin(direction) * travel, z = Vehicle.Z + (float)Math.Cos(direction) * travel;
+            float desiredLateral=-Math.Sign(Vehicle.SteeringAngle)*Config.MaximumLateralSlip*TractionSlip*Math.Sign(speed);
+            LateralVelocity=MoveTowards(LateralVelocity,desiredLateral,dt*.35f);
+            float lateralTravel=LateralVelocity*dt;
+            float x = Vehicle.X + (float)Math.Sin(direction) * travel+(float)Math.Cos(direction)*lateralTravel;
+            float z = Vehicle.Z + (float)Math.Cos(direction) * travel-(float)Math.Sin(direction)*lateralTravel;
             float heading = Wrap(Vehicle.Heading + turn);
             GuideRollerContact=false;
             BoardContact=false;
@@ -220,15 +262,20 @@ namespace IceResurfacer.Core
                         sliding=true;
                     }
                 }
-                if(!sliding)Vehicle.Speed=0;
+                if(!sliding){Vehicle.Speed=0;LateralVelocity=0;}
             }
             float rs=(float)Math.Sin(Vehicle.Heading),rc=(float)Math.Cos(Vehicle.Heading);
             float rollerX=Vehicle.X+rc*Config.GuideRollerX+rs*Config.GuideRollerZ;
             float rollerZ=Vehicle.Z-rs*Config.GuideRollerX+rc*Config.GuideRollerZ;
-            GuideRollerContact=Ice.BoardDistance(rollerX,rollerZ,out _,out _)>-Config.GuideRollerRadius-.025f;
+            GuideRollerContact=!Layout.IsPortal(rollerX,rollerZ)&&Ice.BoardDistance(rollerX,rollerZ,out _,out _)>-Config.GuideRollerRadius-.025f&&Ice.IsInside(Vehicle.X,Vehicle.Z);
             if(GuideRollerContact)GuideRollerTravel+=Vehicle.Speed*dt;
             if (Ice.IsInside(Vehicle.X, Vehicle.Z, 2f)) HasEnteredRink = true;
             if (Vehicle.Speed < -.12f && Conditioner.Lift < .8f) Fault(5, "Raise the conditioner before reversing; the lowered blade scores the surface.");
+            if(TankRaised&&Math.Abs(Vehicle.Speed)>.15f)
+            {
+                RaisedTankTravelSeconds+=dt;
+                Fault(16,"Raised tank: higher centre of mass reduces cornering grip. Lower it when safe; travel remains under your control.");
+            }
         }
 
         bool BodyFits(float x, float z, float heading)
@@ -255,6 +302,8 @@ namespace IceResurfacer.Core
 
         void ContactNormal(float x,float z,float heading,out float nx,out float nz)
         {
+            if(!Ice.IsInside(x,z)&&Layout.ContainsFloor(x,z))
+            { Layout.ContactNormal(x,z,out nx,out nz);return; }
             nx=0;nz=0;float worst=float.MinValue;
             float sn=(float)Math.Sin(heading),cs=(float)Math.Cos(heading);
             for(int i=0;i<10;i++)
@@ -264,14 +313,14 @@ namespace IceResurfacer.Core
                 float px=x+cs*lx+sn*lz,pz=z-sn*lx+cs*lz;
                 float d=Ice.BoardDistance(px,pz,out float tx,out float tz)+(i==9?Config.GuideRollerRadius:0);
                 // The service-bay opening is a union, not a solid south board.
-                if(Math.Abs(px)<Config.GateHalfWidth-.05f&&pz<-Config.RinkLength*.5f+.1f)continue;
+                if(Layout.ContainsVehicleFloor(px,pz))continue;
                 if(d>worst){worst=d;nx=tx;nz=tz;}
             }
         }
 
         public bool Navigable(float x, float z)
         {
-            return Ice.IsInside(x, z, .02f) || (Math.Abs(x) <= Config.GateHalfWidth - .02f && z >= -Config.RinkLength * .5f - Config.BayLength + .05f && z <= -Config.RinkLength * .5f + .1f);
+            return Ice.IsInside(x, z, .02f) || Layout.ContainsVehicleFloor(x,z);
         }
 
         void UpdateConditioner(float dt)
@@ -292,153 +341,29 @@ namespace IceResurfacer.Core
         void CheckExit()
         {
             if (!HasEnteredRink) return;
-            float halfZ = Config.RinkLength * .5f;
-            if (Conditioner.Z > -halfZ + Config.ConditionerWidth && Vehicle.Z > -halfZ + Config.ConditionerWidth) exitUnsafe = false;
-            float envelope = Math.Abs((float)Math.Sin(Conditioner.Heading)) * Config.ConditionerWidth * .5f + Math.Abs((float)Math.Cos(Conditioner.Heading)) * Config.ConditionerLength * .5f;
-            if (Conditioner.Z - envelope < -halfZ && Conditioner.Z + envelope > -halfZ - .2f && !EquipmentSafe)
+            if(Ice.IsInside(Conditioner.X,Conditioner.Z,Config.ConditionerWidth)&&Ice.IsInside(Vehicle.X,Vehicle.Z,Config.ConditionerWidth))exitUnsafe=false;
+            Layout.ToLocal(Conditioner.X,Conditioner.Z,out float side,out float outward);
+            float relative=Conditioner.Heading-Layout.OutwardHeading;
+            float envelope=Math.Abs((float)Math.Sin(relative))*Config.ConditionerWidth*.5f+Math.Abs((float)Math.Cos(relative))*Config.ConditionerLength*.5f;
+            if(Math.Abs(side)<Config.GateHalfWidth&&outward+envelope>-.3f&&outward-envelope<.3f&&!EquipmentSafe)
             {
                 exitUnsafe = true;
-                Fault(6, "Threshold: retract blade, stop augers and water, stow brush, and fully lift conditioner before leaving.");
+                Fault(6, "Equipment crossing the threshold while working: blade wear, snow loss and runoff. Raise/stow for a clean exit.");
             }
         }
 
         bool ConditionerFullyOutside()
         {
-            float envelope = Math.Abs((float)Math.Sin(Conditioner.Heading)) * Config.ConditionerWidth * .5f + Math.Abs((float)Math.Cos(Conditioner.Heading)) * Config.ConditionerLength * .5f;
-            return Conditioner.Z + envelope < -Config.RinkLength * .5f - .1f;
-        }
-
-        void FindFootprint()
-        {
-            footprintCount = 0;
-            float width=Math.Max(Config.ConditionerWidth,Config.WaterDistributionWidth);
-            float radius = (width + Config.ConditionerLength) * .5f;
-            int x0 = Math.Max(0, (int)Math.Floor((Conditioner.X - radius - Ice.MinX) / Ice.CellSize));
-            int x1 = Math.Min(Ice.Columns - 1, (int)Math.Floor((Conditioner.X + radius - Ice.MinX) / Ice.CellSize));
-            int z0 = Math.Max(0, (int)Math.Floor((Conditioner.Z - radius - Ice.MinZ) / Ice.CellSize));
-            int z1 = Math.Min(Ice.Rows - 1, (int)Math.Floor((Conditioner.Z + radius - Ice.MinZ) / Ice.CellSize));
-            float sn = (float)Math.Sin(Conditioner.Heading), cs = (float)Math.Cos(Conditioner.Heading);
-            for (int row = z0; row <= z1; row++)
-            for (int col = x0; col <= x1; col++)
-            {
-                float dx = Ice.CellX(col) - Conditioner.X, dz = Ice.CellZ(row) - Conditioner.Z;
-                float side = dx * cs - dz * sn, fore = dx * sn + dz * cs;
-                int i = Ice.Index(col, row);
-                if (Ice.Cells[i].IsIce && Math.Abs(side) <= width * .5f && Math.Abs(fore) <= Config.ConditionerLength * .5f)
-                    footprint[footprintCount++] = i;
-            }
-        }
-
-        void ProcessIce(float dt)
-        {
-            float pressure = Clamp(1f - Conditioner.Lift / .25f, 0, 1);
-            float distance = (float)Math.Sqrt((Conditioner.X - lastConditionerX) * (Conditioner.X - lastConditionerX) + (Conditioner.Z - lastConditionerZ) * (Conditioner.Z - lastConditionerZ));
-            float advance = Math.Min(1f, distance / Config.ConditionerLength);
-            float flood = Math.Min(FloodWaterLiters, Controls.FloodFlow * Config.FloodMaxLitersPerSecond * dt);
-            float wash = Math.Min(WashWaterLiters, Controls.WashValve * Config.WashMaxLitersPerSecond * dt);
-            FloodWaterLiters -= flood; TotalFloodUsedLiters += flood;
-            WashWaterLiters -= wash;
-            if (wash > .00001f && pressure > .8f && footprintCount > 0) WashPrimeSeconds = Math.Min(30, WashPrimeSeconds + dt);
-            else if (Controls.WashValve <= .001f) WashPrimeSeconds = Math.Max(0, WashPrimeSeconds - dt * 2f);
-            bool pumpReady = WashPrimeSeconds >= 10f && pressure > .8f && footprintCount > 0;
-            if (Controls.WashPump && !pumpReady)
-            {
-                PumpDamage = Math.Min(1, PumpDamage + dt * .007f);
-                Fault(7, "Wash pickup pump is dry. Prime with the wash valve for 10 seconds before starting it.");
-            }
-            float recovery = Controls.WashPump && pumpReady ? wash * Config.WashRecoveryFraction * (1f - PumpDamage * .75f) : 0;
-            WashWaterLiters = Math.Min(Config.WashCapacityLiters, WashWaterLiters + recovery);
-            TotalWashUsedLiters += wash - recovery;
-            if (flood > 0 && Math.Abs(Vehicle.Speed) < .12f) Fault(8, "Flood water is pooling while stopped. Close the flow lever.");
-            if (Controls.WashValve > .01f && WashWaterLiters <= .001f) Fault(9, "Wash-water tank empty: shut the valve and service in the bay.");
-            if (Controls.FloodFlow > .01f && FloodWaterLiters <= .001f) Fault(10, "Ice-making water tank empty: service in the bay.");
-            if (footprintCount == 0) return;
-            float area = Ice.CellSize * Ice.CellSize;
-            float sn=(float)Math.Sin(Conditioner.Heading),cs=(float)Math.Cos(Conditioner.Heading);
-            int cutCount=0,waterCount=0;
-            for(int n=0;n<footprintCount;n++)
-            {
-                int i=footprint[n];
-                float side=Math.Abs((Ice.CellX(i%Ice.Columns)-Conditioner.X)*cs-(Ice.CellZ(i/Ice.Columns)-Conditioner.Z)*sn);
-                if(side<=Config.ConditionerWidth*.5f)cutCount++;
-                if(side<=Config.WaterDistributionWidth*.5f)waterCount++;
-            }
-            float floodDepth = waterCount>0?flood/(waterCount*area):0;
-            float washDepth = cutCount>0?(wash-recovery)/(cutCount*area):0;
-            float washPerCell = cutCount>0?wash/cutCount:0;
-            float blade = ActualBladeDepthMm * pressure * advance;
-            float newSnow = 0;
-            for (int n = 0; n < footprintCount; n++)
-            {
-                int index = footprint[n]; var cell = Ice.Cells[index];
-                float side=Math.Abs((Ice.CellX(index%Ice.Columns)-Conditioner.X)*cs-(Ice.CellZ(index/Ice.Columns)-Conditioner.Z)*sn);
-                bool cutting=side<=Config.ConditionerWidth*.5f;
-                float waterDepth=(side<=Config.WaterDistributionWidth*.5f?floodDepth:0)+(cutting?washDepth:0);
-                float snowRemoved = cutting?Math.Min(cell.SnowMm, pressure * advance * .6f):0;
-                float bite=cutting?blade:0;
-                if (cutting&&Vehicle.Speed < -.02f)
-                {
-                    cell.Scratch = Math.Min(1, cell.Scratch + blade * 2.5f);
-                    cell.Quality = Math.Max(0, cell.Quality - blade);
-                }
-                else if (bite > 0)
-                {
-                    cell.CutDepthMm += bite;
-                    cell.Scratch = Math.Max(0, cell.Scratch - bite / Config.BladeBiteFraction * 2.3f);
-                }
-                cell.SnowMm -= snowRemoved;
-                newSnow += (snowRemoved + bite * Config.SnowExpansionRatio) * area * .001f;
-                if (cutting&&washPerCell > 0 && pressure > .7f)
-                {
-                    cell.WashLiters += washPerCell;
-                    cell.Scratch = Math.Max(0, cell.Scratch - washPerCell / area * .025f);
-                }
-                if (waterDepth > 0)
-                {
-                    cell.FloodMm = Ice.LiquidDepth(cell, Time) + waterDepth;
-                    cell.LastWetTime = Time;
-                    float excessLimit = Config.ExcessFloodDepthMm * (cell.Sensitive ? .78f : 1f);
-                    cell.OverwaterMm = Math.Max(cell.OverwaterMm, Math.Max(0, cell.FloodMm - excessLimit));
-                }
-                float film = Clamp(cell.FloodMm / Config.GoodFloodDepthMm, 0, 1);
-                float clean = 1f - cell.Scratch;
-                float overcut = Math.Max(0, cell.CutDepthMm/Config.BladeBiteFraction - (cell.Sensitive ? Config.SensitiveCumulativeSafeCutMm : Config.CumulativeSafeCutMm));
-                float finish = Clamp(clean * .58f + film * .32f + Clamp(cell.WashLiters / (area * .1f), 0, 1) * .10f - cell.SnowMm * .45f - cell.OverwaterMm * .35f - overcut * .5f, 0, 1);
-                cell.Quality = finish;
-                if (cell.CutDepthMm > .08f*Config.BladeBiteFraction && cell.FloodMm > .08f && cell.SnowMm < .25f) cell.Covered = true;
-                cell.LastProcessTime = Time;
-                Ice.Cells[index] = cell;
-            }
-            HorizontalSnowM3 += newSnow;
-            if (Controls.BoardBrush && pressure > .8f && advance > 0) BrushEdge(distance);
-        }
-
-        void BrushEdge(float distance)
-        {
-            // The brush extends to the operator's LEFT and sweeps only actual perimeter contact.
-            float sn = (float)Math.Sin(Vehicle.Heading), cs = (float)Math.Cos(Vehicle.Heading);
-            float bx = Vehicle.X - cs * (Config.VehicleHalfWidth + .28f), bz = Vehicle.Z + sn * (Config.VehicleHalfWidth + .28f);
-            if (Ice.IsInside(bx, bz, .60f)) return;
-            if (bx < Ice.MinX - .4f || bx > -Ice.MinX + .4f || bz < Ice.MinZ - .4f || bz > -Ice.MinZ + .4f) return;
-            int cx = Math.Max(0, Math.Min(Ice.Columns - 1, (int)Math.Floor((bx - Ice.MinX) / Ice.CellSize)));
-            int cz = Math.Max(0, Math.Min(Ice.Rows - 1, (int)Math.Floor((bz - Ice.MinZ) / Ice.CellSize)));
-            for (int z = Math.Max(0, cz - 2); z <= Math.Min(Ice.Rows - 1, cz + 2); z++)
-            for (int x = Math.Max(0, cx - 2); x <= Math.Min(Ice.Columns - 1, cx + 2); x++)
-            {
-                int i = Ice.Index(x, z); var cell = Ice.Cells[i];
-                if (!cell.IsIce || Ice.IsInside(Ice.CellX(x), Ice.CellZ(z), .65f)) continue;
-                float amount = Math.Min(cell.SnowMm, distance * .6f);
-                cell.SnowMm -= amount;
-                cell.Quality = Math.Min(1, cell.Quality + amount * .1f);
-                HorizontalSnowM3 += amount * Ice.CellSize * Ice.CellSize * .001f;
-                Ice.Cells[i] = cell;
-            }
+            Layout.ToLocal(Conditioner.X,Conditioner.Z,out _,out float outward);
+            float relative=Conditioner.Heading-Layout.OutwardHeading;
+            float envelope=Math.Abs((float)Math.Sin(relative))*Config.ConditionerWidth*.5f+Math.Abs((float)Math.Cos(relative))*Config.ConditionerLength*.5f;
+            return outward-envelope>.25f;
         }
 
         void ConveySnow(float dt)
         {
             EscapingSnowRate = 0;DischargeSnowRate=0;VerticalSpillRate=0;
-            float crowd=Clamp((SnowTankM3/Config.SnowCapacityM3-.85f)/.15f,0,1);
+            float crowd=TankLift<.08f?Clamp((SnowTankM3/Config.SnowCapacityM3-.85f)/.15f,0,1):0;
             ConveyorCongestion=Math.Max(crowd,jamTime/Config.ConveyorJamSeconds);
             if (Controls.HorizontalAuger&&!ConveyorJammed)
             {
@@ -446,10 +371,12 @@ namespace IceResurfacer.Core
                 HorizontalSnowM3 -= transported; VerticalSnowM3 += transported;
             }
             float rejected=0;
-            if (Controls.VerticalAuger && !TankRaised&&!ConveyorJammed)
+            if (Controls.VerticalAuger && !ConveyorJammed)
             {
                 float delivered=Math.Min(VerticalSnowM3,Config.VerticalCapacityM3PerSecond*dt*(1-crowd*.6f));
-                float transported = Math.Min(delivered,Math.Max(0, Config.SnowCapacityM3 - SnowTankM3));
+                // The elevated bin inlet no longer meets the fixed conveyor chute.
+                // Keep the motor running; existing snow misses the bin physically.
+                float transported = TankLift<.08f?Math.Min(delivered,Math.Max(0, Config.SnowCapacityM3 - SnowTankM3)):0;
                 VerticalSnowM3 -= delivered; SnowTankM3 += transported; TotalSnowCollectedM3 += transported;
                 DischargeSnowRate=transported/dt;
                 rejected=delivered-transported;
@@ -459,7 +386,9 @@ namespace IceResurfacer.Core
                     SpillAtDischarge(rejected);
                 }
             }
-            jamTime=rejected>0?Math.Min(Config.ConveyorJamSeconds,jamTime+dt):Math.Max(0,jamTime-dt*.15f);
+            // A missed elevated bin is an open chute, not a mechanical blockage.
+            // Only material rejected by the connected/full bin builds backpressure.
+            jamTime=rejected>0&&TankLift<.08f?Math.Min(Config.ConveyorJamSeconds,jamTime+dt):Math.Max(0,jamTime-dt*.15f);
             if(jamTime>=Config.ConveyorJamSeconds-.0001f)ConveyorJammed=true;
             float spill = Math.Max(0, HorizontalSnowM3 - Config.ConditionerSnowCapacityM3) + Math.Max(0, VerticalSnowM3 - Config.VerticalSnowCapacityM3);
             HorizontalSnowM3 = Math.Min(HorizontalSnowM3, Config.ConditionerSnowCapacityM3);
@@ -469,9 +398,10 @@ namespace IceResurfacer.Core
                 SpilledSnowM3+=spill;
                 float deposited=Ice.DepositSnow(Conditioner.X,Conditioner.Z,spill,.45f);
                 OffIceSnowM3+=spill-deposited;
+                if(spill>deposited)Environment.Deposit(Conditioner.X,Conditioner.Z,spill-deposited,0);
             }
             EscapingSnowRate=(spill+rejected)/dt;
-            if(EscapingSnowRate>0)Fault(11,"Snow is spilling onto the ice. Retract blade, stop and empty the tank.");
+            if(EscapingSnowRate>0)Fault(11,TankRaised?"Raised bin no longer meets the conveyor outlet: snow is spilling beside the machine.":"Snow is spilling beside the machine. Reduce incoming snow or empty the tank.");
             if(ConveyorJammed)Fault(14,"AUGER JAM: stop, retract blade and switch BOTH augers OFF. Empty tank, then use J to reset after inspection.");
             if (SnowTankM3 >= Config.SnowCapacityM3 * .98f) Fault(12, "Snow tank full. Stop cutting and return to the dump bay.");
         }
@@ -485,6 +415,7 @@ namespace IceResurfacer.Core
                 float x=Vehicle.X+cs*side*1.1f+sn*.25f,z=Vehicle.Z-sn*side*1.1f+cs*.25f;
                 float deposited=Ice.DepositSnow(x,z,volume*.5f,.4f);
                 OffIceSnowM3+=volume*.5f-deposited;
+                if(volume*.5f>deposited)Environment.Deposit(x,z,volume*.5f-deposited,0);
             }
         }
 
@@ -500,13 +431,13 @@ namespace IceResurfacer.Core
         {
             DumpSnowRate=0;
             bool safe = InDumpZone && EquipmentSafe && Math.Abs(Vehicle.Speed) < .035f && !ServiceDriveInhibited;
-            bool mayRaise = safe && Math.Abs(Controls.Throttle) < .01f;
+            bool mayRaise = !GuidedTraining || (safe && Math.Abs(Controls.Throttle) < .01f);
             float target = Controls.HydraulicHoldControls
                 ? Clamp(TankLift + Controls.TankHydraulic * dt / Config.TankLiftSeconds, 0, 1)
                 : Controls.TankLiftTarget;
             if (target > TankLift && !mayRaise)
             {
-                LastMessage = "Dump raise refused: face the far-bay pit, release W/S, stop, stow equipment and clear the service hose. Hold LOWER to stow a raised tank.";
+                LastMessage = "Training assistance: raise over the pit while stopped, controls neutral, equipment stowed and hose clear. Free Simulation removes this assistance.";
                 target = TankLift;
             }
             // A rejected request must never remain a latent movement interlock.
@@ -520,7 +451,7 @@ namespace IceResurfacer.Core
                     shakeLow = Math.Min(shakeLow, TankLift);
                     if (shakePeak - shakeLow >= .035f) shakeArmed = true;
                 }
-                if (shakeArmed && TankLift - shakeLow >= .025f && TankLift > previousLift && safe)
+                if (shakeArmed && TankLift - shakeLow >= .025f && TankLift > previousLift && (!GuidedTraining||safe))
                 {
                     ResidualSnowM3 *= .28f;
                     if (ResidualSnowM3 < .0001f) ResidualSnowM3 = 0;
@@ -529,7 +460,10 @@ namespace IceResurfacer.Core
                 }
                 if (!shakeArmed && TankLift > shakePeak) shakePeak = shakeLow = TankLift;
             }
-            if (TankLift > .8f && safe && SnowTankM3 > 0)
+            ComputeDumpTrajectory(out float ox,out float oy,out float oz,out float vx,out float vy,out float vz);
+            DumpOriginX=ox;DumpOriginY=oy;DumpOriginZ=oz;DumpVelocityX=vx;DumpVelocityY=vy;DumpVelocityZ=vz;
+            float fall=FallTime(oy,vy);DumpLandingX=ox+vx*fall;DumpLandingZ=oz+vz*fall;
+            if (TankLift > .8f && (!GuidedTraining||safe) && SnowTankM3 > 0)
             {
                 if (!dumping)
                 {
@@ -543,10 +477,42 @@ namespace IceResurfacer.Core
                 float amount = Math.Min(Math.Max(0, SnowTankM3 - ResidualSnowM3), Config.DumpM3PerSecond * dt);
                 SnowTankM3 -= amount; DumpedSnowM3 += amount;
                 DumpSnowRate=amount/dt;
-                LastMessage = amount > 0 ? "Snow falling into the pit. Hold position; lower the tank before travelling."
+                if(amount>0)DepositDump(amount);
+                LastMessage = amount > 0 ? (Layout.ContainsPit(DumpLandingX,DumpLandingZ)?"Snow falling into the pit under the actual outlet.":"Snow dumping onto the ground under the outlet. It remains in the environment.")
                     : "Residual snow in bin. Briefly lower a few degrees, then raise to dislodge it. Repeat as needed.";
             }
             if (TankLift < .1f) { dumping = false; shakeArmed = false; }
+        }
+
+        void ComputeDumpTrajectory(out float x,out float y,out float z,out float vx,out float vy,out float vz)
+        {
+            // Same hinge/outlet coordinates as the authored tank, with gravity
+            // and vehicle momentum. No attraction or snapping toward the pit.
+            float angle=TankLift*58f*(float)Math.PI/180f;
+            float localZ=2.46f+.16f*(float)Math.Sin(angle)+.12f*(float)Math.Cos(angle);
+            y=.78f+.16f*(float)Math.Cos(angle)-.12f*(float)Math.Sin(angle);
+            float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
+            x=Vehicle.X+cs*.20f+sn*localZ;z=Vehicle.Z-sn*.20f+cs*localZ;
+            float forward=Vehicle.Speed+Config.DumpExitSpeed;
+            vx=sn*forward+cs*LateralVelocity;vz=cs*forward-sn*LateralVelocity;vy=-.18f;
+        }
+        static float FallTime(float height,float verticalSpeed)
+        {return (verticalSpeed+(float)Math.Sqrt(verticalSpeed*verticalSpeed+2*9.81f*Math.Max(.01f,height)))/9.81f;}
+        void DepositDump(float amount)
+        {
+            float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
+            for(int sample=0;sample<9;sample++)
+            {
+                float lateral=(sample-4)*.15f;
+                float x=DumpLandingX+cs*lateral,z=DumpLandingZ-sn*lateral,volume=amount/9f;
+                if(Layout.ContainsPit(x,z)){PitSnowM3+=volume;continue;}
+                float onIce=Ice.IsInside(x,z)?Ice.DepositSnow(x,z,volume,.22f):0;
+                DumpSnowOnIceM3+=onIce;
+                float ground=volume-onIce;
+                OffIceSnowM3+=ground;
+                if(ground>0)Environment.Deposit(x,z,ground,0);
+            }
+            if(!Layout.ContainsPit(DumpLandingX,DumpLandingZ))Fault(17,"Snow deposited outside the pit. The material remains on the ice or floor and may be recollected.");
         }
 
         /// <summary>
@@ -556,9 +522,9 @@ namespace IceResurfacer.Core
         /// </summary>
         public bool StrokeSnowBreaker()
         {
-            if (Finished || ConveyorJammed || TankRaised || Conditioner.Lift > .15f || !Controls.VerticalAuger)
+            if (Finished || ConveyorJammed || (GuidedTraining&&(TankRaised || Conditioner.Lift > .15f || !Controls.VerticalAuger)))
             {
-                LastMessage = ConveyorJammed?"Jam: stop BOTH augers before inspection/reset. Do not use the running snow breaker to clear a physical jam.":"Snow breaker: lower the conditioner and tank, and run the vertical auger first.";
+                LastMessage = Finished?"Session finished. Start a new session to operate machinery.":ConveyorJammed?"Jam: stop BOTH augers before inspection/reset. Do not use the running snow breaker to clear a physical jam.":"Training assistance: lower the conditioner and tank, and run the vertical auger before the snow breaker.";
                 return false;
             }
             float moved = Math.Min(HorizontalSnowM3, Math.Min(Config.SnowBreakerStrokeM3,
@@ -581,36 +547,22 @@ namespace IceResurfacer.Core
 
         public bool TryFinish()
         {
+            if(!GuidedTraining)
+            {
+                Finished=true;
+                LastMessage=Practice?"Free Simulation session complete; review actual surface conditions.":"Scored Free Simulation complete; condition and consequences determine the result.";
+                return true;
+            }
             if (ServiceDriveInhibited || SupplyValve > .001f)
-            { LastMessage = ServiceDriveInhibited ? ServiceDriveInhibitReason : "Close the wall water supply and return the hose before finishing."; return false; }
-            if (!HasEnteredRink) { LastMessage = "Enter the rink and resurface before completing the run."; return false; }
+            { LastMessage = "Training assistance: close the wall supply, clear the hose and return to the controls before finishing."; return false; }
+            if (!HasEnteredRink) { LastMessage = "Training assistance: enter the rink and resurface before completing the run."; return false; }
             if (!ProperExit || Math.Abs(Vehicle.Speed) > .035f || TankRaised)
-            { LastMessage = "Finish requires a proper raised exit, stopped in the bay, all equipment off, and tank lowered."; return false; }
+            { LastMessage = "Training assistance: finishing requires a proper raised exit, stopped in the bay, equipment off and tank lowered."; return false; }
             if (SnowTankM3 > .005f || HorizontalSnowM3 > .001f || VerticalSnowM3 > .001f)
-            { LastMessage = "Clear remaining conveyor snow on the rink, then empty the snow tank in the bay before finishing."; return false; }
+            { LastMessage = "Training assistance: clear conveyor snow and empty the tank before finishing."; return false; }
             Finished = true;
             LastMessage = Practice ? "Practice complete. Review the surface map; no score recorded." : "Run complete. Surface coverage and finish are measured from the actual ice.";
             return true;
-        }
-
-        public RunReport GetReport()
-        {
-            int covered = 0, overwater = 0; double quality = 0;
-            for (int i = 0; i < Ice.Cells.Length; i++)
-            {
-                var cell = Ice.Cells[i]; if (!cell.IsIce) continue;
-                if (cell.Covered) covered++; if (cell.OverwaterMm > .05f) overwater++;
-                quality += cell.Quality;
-            }
-            float coverage = (float)covered / Ice.IceCellCount, q = (float)(quality / Ice.IceCellCount), over = (float)overwater / Ice.IceCellCount;
-            float tank = TotalSnowCollectedM3 < .005f || (DumpedSnowM3 >= TotalSnowCollectedM3 * .98f && SnowTankM3 < .005f) ? 1 : 0;
-            return new RunReport
-            {
-                Coverage = coverage, MissedFraction = 1 - coverage, FinishQuality = q, OverwaterFraction = over,
-                Score = Practice ? 0 : Clamp(coverage * 45 + q * 35 + (1 - over) * 10 + tank * 5 + (ProperExit ? 5 : 0) - Mistakes * 1.2f, 0, 100),
-                Mistakes = Mistakes, TankDumps = TankDumps, ProperExit = ProperExit,
-                Complete = Finished && coverage >= Config.MinimumScoredCoverage, Practice = Practice, ElapsedSeconds = Time
-            };
         }
 
         void Fault(int id, string message)

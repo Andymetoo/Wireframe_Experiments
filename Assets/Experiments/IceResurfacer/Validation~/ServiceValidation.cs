@@ -9,7 +9,7 @@ internal static class ServiceValidation
         Near(normal.FloodWaterLiters, 738, .001f, "normal flood start full");
         Near(normal.WashWaterLiters, 310, .001f, "normal wash start full");
         Check(!normal.ConfigureWaterForServiceTest(.4f, .4f), "scored sessions cannot use partial-water fixture");
-        var s = new Simulation(practice:true);
+        var s = new Simulation(practice:true,mode:SimulationMode.GuidedTraining);
         Check(s.ConfigureWaterForServiceTest(.5f, .25f), "practice partial fixture");
         s.Vehicle.Speed = .2f;
         Check(!s.TryDismount(), "moving dismount rejected");
@@ -34,7 +34,7 @@ internal static class ServiceValidation
         Check(s.SetSupplyValve(0), "close wall valve");
         Check(s.ConnectHose(WaterFillPort.Flood, 5), "couple flood");
         Check(s.TryBoard(), "may board with connected hose for departure warning");
-        Check(!s.TryFinish() && s.LastMessage.Contains("disconnect"), "finish blocked while hose remains connected with recovery guidance");
+        Check(!s.TryFinish() && s.LastMessage.Contains("hose") && s.LastMessage.Contains("Training assistance"), "training finish blocked while hose remains connected with labeled recovery guidance");
         s.Controls.Throttle = 1; Tick(s, 2);
         Near(s.Vehicle.Speed, 0, .001f, "connected hose prevents driving");
         Check(s.ServiceDriveInhibitReason.Contains("disconnect"), "interlock explains recovery");

@@ -1,6 +1,12 @@
 VALIDATION / AURORA R-54
 27 October 2026. Behavior/calibration: Authenticity.txt and WaterService.txt.
 
+Historical 27 October validation snapshot. Metrics and failures below are
+retained as that date's evidence. The 28 October implementation is described
+in OperatorFreedom.txt and the main README; current Validation~/ reports may
+now contain newer runs with southeast layout, new controls and revised scoring.
+Consult those reports and Performance.txt for the current measured outcomes.
+
 Deterministic core: PASS, 29 scenarios using actual Core source with .NET 9.
 Movement-before.txt retains the original failing reproduction: throttle 1,
 brake false, tank 0, rejected target 0.5 and speed 0. Results.txt records the

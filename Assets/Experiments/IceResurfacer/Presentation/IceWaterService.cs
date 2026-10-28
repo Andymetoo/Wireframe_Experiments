@@ -9,10 +9,11 @@ namespace IceResurfacer.Presentation
     /// <summary>Grounded service walk, physical coupling interactions and bounded procedural hose.</summary>
     public sealed class IceWaterService : MonoBehaviour
     {
-        enum Target { None, Holder, Supply, Flood, Wash, Step }
+        enum Target { None, Holder, Supply, Flood, Wash, Step, LooseNozzle }
         IceResurfacerGame game;
         Transform root, nozzle, supplyHandle, floodInlet, washInlet, overflowOutlet;
         Transform floodGauge, washGauge, spillSheet;
+        Transform holderHighlight, station;
         LineRenderer hose, runoff;
         ParticleSystem spray;
         AudioSource filling, overflowing, coupling;
@@ -35,10 +36,11 @@ namespace IceResurfacer.Presentation
         Target selected;
         string prompt = "";
         float hoseLength;
-        Vector3 holderPosition = new Vector3(4.04f,1.15f,-35.98f);
-        Vector3 supplyPosition = new Vector3(4.02f,1.25f,-34.78f);
-        Vector3 anchorPosition = new Vector3(4.10f,1.26f,-35.50f);
-        readonly Vector3 drainPosition = new Vector3(3.26f,.025f,-36.85f);
+        Vector3 holderPosition, supplyPosition, anchorPosition, drainPosition;
+        float groundUpdate;
+        int groundRevision=-1;
+        Mesh groundWaterMesh, groundSnowMesh;
+        Vector3[] groundWaterVertices,groundSnowVertices;
 
         public string Prompt { get { return prompt; } }
         public bool OnFoot { get { return game != null && game.Sim != null && game.Sim.OnFoot; } }
@@ -49,13 +51,18 @@ namespace IceResurfacer.Presentation
         public ParticleSystem OverflowParticles { get { return spray; } }
         public Vector3 FootPosition { get { return footPosition; } }
         public float HoseVisibleLength { get { return hoseLength; } }
+        public Vector3 HolderPosition { get { return holderPosition; } }
+        public Vector3 SupplyPosition { get { return supplyPosition; } }
+        public Vector3 BoardingPoint { get { return StepPoint(); } }
+        public bool HolderHighlighted { get { return holderHighlight!=null && holderHighlight.gameObject.activeSelf; } }
+        public bool FootLookActive { get { return footLook; } }
         public string Status
         {
             get
             {
                 if (game == null || game.Sim == null) return "";
                 var s = game.Sim;
-                string state = s.HoseState == WaterHoseState.Stowed ? "HOSE STOWED" : s.HoseState == WaterHoseState.Carried ? "NOZZLE IN HAND" :
+                string state = s.HoseState == WaterHoseState.Stowed ? "HOSE STOWED" : s.HoseState == WaterHoseState.Carried ? "NOZZLE IN HAND" : s.HoseState == WaterHoseState.Dropped ? "LOOSE NOZZLE ON FLOOR" :
                     s.HoseState == WaterHoseState.Flood ? "ICE WATER CONNECTED" : "WASH WATER CONNECTED";
                 return state + "   |   SUPPLY " + Mathf.RoundToInt(s.SupplyValve*100) + "%   |   " + s.ServiceFlowLitersPerSecond.ToString("0.0") + " L/s" +
                     (s.ServiceOverflowLitersPerSecond > .01f ? "   |   OVERFLOW — CLOSE WALL VALVE" : "");
@@ -83,11 +90,13 @@ namespace IceResurfacer.Presentation
         public void ResetSession()
         {
             if (game == null) return;
+            if(groundWaterMesh==null)BuildGroundMaterials();
             EndFootLook();
             game.DriverCamera.transform.SetParent(game.World.CameraMount,false);
             game.DriverCamera.transform.localPosition=Vector3.zero;
             game.DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
-            prompt=""; spillWetness=0; levelUpdate=0;
+            prompt=""; spillWetness=0; levelUpdate=0;groundRevision=-1;groundUpdate=0;
+            if(holderHighlight!=null)holderHighlight.gameObject.SetActive(false);
             if(spray!=null)spray.Clear();
         }
 
@@ -95,7 +104,7 @@ namespace IceResurfacer.Presentation
         {
             if(game==null||game.Sim==null)return;
             var keys=Keyboard.current; var mouse=Mouse.current; var s=game.Sim;
-            if(!running){ EndFootLook(); prompt=""; return; }
+            if(!running){ EndFootLook(); prompt="";if(holderHighlight!=null)holderHighlight.gameObject.SetActive(false); return; }
             if(keys!=null&&keys.fKey.wasPressedThisFrame)
             {
                 if(!s.OnFoot)
@@ -105,14 +114,14 @@ namespace IceResurfacer.Presentation
                 }
                 else
                 {
-                    float distance=Vector3.Distance(footPosition,StepPoint());
+                    float distance=BoardingDistance();
                     if(s.TryBoard(distance))EndWalk();
                     game.Notice=s.LastMessage;
                 }
             }
             if(!s.OnFoot)
             {
-                prompt=s.InServiceBay?"F  SERVICE / DISMOUNT — stop and stow equipment":"";
+                prompt="F  DISMOUNT";
                 return;
             }
             UpdateFootLook(mouse,Mathf.Min(dt,.05f));
@@ -124,9 +133,10 @@ namespace IceResurfacer.Presentation
             }
             ApplyFootCamera();
             selected=FindTarget(mouse);
+            holderHighlight.gameObject.SetActive(selected==Target.Holder&&s.HoseState==WaterHoseState.Carried);
             prompt=PromptFor(selected);
             bool interact=keys!=null&&keys.eKey.wasPressedThisFrame;
-            if(mouse!=null&&!mouse.rightButton.isPressed&&mouse.leftButton.wasPressedThisFrame&&mouse.position.ReadValue().y>Screen.height*.24f)interact=true;
+            if(mouse!=null&&mouse.leftButton.wasPressedThisFrame)interact=true;
             if(interact&&selected!=Target.None)Interact(selected);
         }
 
@@ -134,11 +144,11 @@ namespace IceResurfacer.Presentation
         {
             var camera=game.DriverCamera.transform;
             seatedPosition=camera.localPosition; seatedRotation=camera.localRotation;
-            footPosition=StepPoint();
-            footYaw=game.World.Machine.eulerAngles.y+90; footPitch=5;
+            footPosition=FindExitPosition();
+            footYaw=game.World.Machine.eulerAngles.y-90; footPitch=5;
             camera.SetParent(transform,true);
             ApplyFootCamera();
-            Cursor.lockState=CursorLockMode.None;Cursor.visible=true;
+            footLook=false;
         }
         void EndWalk()
         {
@@ -151,9 +161,14 @@ namespace IceResurfacer.Presentation
         {
             Vector3 point=game.World.Machine.TransformPoint(new Vector3(-1.67f,0,-.45f));point.y=0;return point;
         }
+        float BoardingDistance()
+        {
+            Vector3 rear=game.World.Machine.TransformPoint(new Vector3(-.65f,0,-2.12f));rear.y=0;
+            return Mathf.Min(Vector3.Distance(footPosition,StepPoint()),Vector3.Distance(footPosition,rear));
+        }
         void UpdateFootLook(Mouse mouse,float dt)
         {
-            bool held=mouse!=null&&mouse.rightButton.isPressed;
+            bool held=mouse!=null;
             if(held)
             {
                 if(!footLook){savedCursor=mouse.position.ReadValue();lookWarmup=2;Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;}
@@ -184,12 +199,14 @@ namespace IceResurfacer.Presentation
                 next=footPosition+new Vector3(0,0,movement.z);if(Walkable(next))footPosition=next;
             }
         }
-        bool Walkable(Vector3 position)
+        bool Walkable(Vector3 position,bool checkHose=true)
         {
-            if(Mathf.Abs(position.x)>4.12f||position.z< -40.70f||position.z> -32.45f)return false;
+            var s=game.Sim;
+            if(!s.Ice.IsInside(position.x,position.z,.22f)&&!s.Layout.ContainsFloor(position.x,position.z,.22f))return false;
+            if(s.Layout.ContainsPit(position.x,position.z,.22f))return false;
             Vector3 local=game.World.Machine.InverseTransformPoint(position);
             if(Mathf.Abs(local.x)<1.38f&&local.z> -1.88f&&local.z<2.84f)return false;
-            if(game.Sim.HoseState==WaterHoseState.Carried)
+            if(checkHose&&game.Sim.HoseState==WaterHoseState.Carried)
             {
                 Vector3 end=position+Vector3.up*1.68f+Quaternion.Euler(footPitch,footYaw,0)*new Vector3(.27f,-.56f,.44f);
                 if(BuildRoute(end,out float length)>0&&length>Simulation.ServiceHoseLengthMeters)
@@ -198,37 +215,53 @@ namespace IceResurfacer.Presentation
             return true;
         }
 
+        Vector3 FindExitPosition()
+        {
+            // Prefer the left step, then the aisle behind or the opposite side.
+            // Every candidate uses the same ground and obstruction checks as walking.
+            Vector3[] local={new Vector3(-1.67f,0,-.45f),new Vector3(-1.67f,0,-1.65f),new Vector3(1.67f,0,-.45f),new Vector3(0,0,-2.25f),new Vector3(-1.67f,0,2.5f)};
+            for(int i=0;i<local.Length;i++){Vector3 p=game.World.Machine.TransformPoint(local[i]);p.y=0;if(Walkable(p,false))return p;}
+            Vector3 origin=game.World.Machine.position;origin.y=0;
+            for(float radius=1.6f;radius<=4.4f;radius+=.35f)
+                for(int n=0;n<24;n++){float a=n*Mathf.PI/12;Vector3 p=origin+new Vector3(Mathf.Sin(a)*radius,0,Mathf.Cos(a)*radius);if(Walkable(p,false))return p;}
+            // Only a deliberately invalid injected pose can exhaust these samples.
+            return StepPoint();
+        }
+
         Target FindTarget(Mouse mouse)
         {
             Ray ray=game.DriverCamera.ScreenPointToRay(footLook||mouse==null?new Vector3(Screen.width*.5f,Screen.height*.5f):new Vector3(mouse.position.ReadValue().x,mouse.position.ReadValue().y));
             Target best=Target.None;float score=float.MaxValue;
-            for(int i=1;i<=5;i++)
+            for(int i=1;i<=6;i++)
             {
                 Target t=(Target)i;Vector3 p=TargetPosition(t);Vector3 to=p-ray.origin;
+                if(t==Target.LooseNozzle&&game.Sim.HoseState!=WaterHoseState.Dropped)continue;
                 float distance=Vector3.Distance(footPosition+Vector3.up*1.15f,p);
-                if(distance>Simulation.ServiceReachMeters)continue;
+                if(distance>(t==Target.Holder?Simulation.ServiceHolderReachMeters:Simulation.ServiceReachMeters))continue;
                 float along=Vector3.Dot(to,ray.direction);if(along<0)continue;
                 float miss=(to-ray.direction*along).magnitude;
-                float radius=t==Target.Step?.65f:.33f;
-                if(miss<radius&&miss<score){best=t;score=miss;}
+                float radius=t==Target.Holder&&game.Sim.HoseState==WaterHoseState.Carried?.86f:t==Target.Step?.65f:t==Target.LooseNozzle?.60f:.38f;
+                float aim=miss/radius;
+                if(aim<1&&aim<score){best=t;score=aim;}
             }
             return best;
         }
         Vector3 TargetPosition(Target target)
         {
-            switch(target){case Target.Holder:return holderPosition;case Target.Supply:return supplyPosition;case Target.Flood:return floodInlet.position;case Target.Wash:return washInlet.position;case Target.Step:return StepPoint()+Vector3.up*.45f;default:return Vector3.zero;}
+            switch(target){case Target.Holder:return holderPosition;case Target.Supply:return supplyPosition;case Target.Flood:return floodInlet.position;case Target.Wash:return washInlet.position;case Target.Step:return StepPoint()+Vector3.up*.45f;case Target.LooseNozzle:return new Vector3(game.Sim.HoseLooseX,.09f,game.Sim.HoseLooseZ);default:return Vector3.zero;}
         }
         string PromptFor(Target target)
         {
             var s=game.Sim;
             switch(target)
             {
-                case Target.Holder:return s.HoseState==WaterHoseState.Stowed?"E / CLICK  Take hose nozzle":s.HoseState==WaterHoseState.Carried?"E / CLICK  Return hose nozzle":"Hose is connected at the machine inlet";
+                case Target.Holder:return s.HoseState==WaterHoseState.Stowed?"E — Take hose":s.HoseState==WaterHoseState.Carried?"E — Return hose":s.HoseState==WaterHoseState.Dropped?"Retrieve the loose nozzle from the floor":"Hose is connected at the machine inlet";
                 case Target.Supply:return s.SupplyValve>.01f?"E / CLICK  Close wall supply valve":"E / CLICK  Open wall supply valve";
                 case Target.Flood:return s.HoseState==WaterHoseState.Flood?"E / CLICK  Disconnect ICE WATER hose":"E / CLICK  Connect ICE WATER — "+s.FloodWaterLiters.ToString("0")+" / 738 L";
                 case Target.Wash:return s.HoseState==WaterHoseState.Wash?"E / CLICK  Disconnect WASH WATER hose":"E / CLICK  Connect WASH WATER — "+s.WashWaterLiters.ToString("0")+" / 310 L";
                 case Target.Step:return "F  Board the left operator station";
-                default:return "WASD walk  •  RMB look  •  Aim at hose, valve or inlet and press E  •  F board at left step";
+                case Target.LooseNozzle:return "E — Pick up loose hose nozzle";
+                default:return "WASD walk  •  Mouse look  •  E interact  •  F board at left step";
             }
         }
         void Interact(Target target)
@@ -243,7 +276,8 @@ namespace IceResurfacer.Presentation
                     bool same=(target==Target.Flood&&s.HoseState==WaterHoseState.Flood)||(target==Target.Wash&&s.HoseState==WaterHoseState.Wash);
                     BuildRoute(TargetPosition(target),out float length);
                     success=same?s.DisconnectHose(distance):s.ConnectHose(target==Target.Flood?WaterFillPort.Flood:WaterFillPort.Wash,length,distance);break;
-                case Target.Step:if(s.TryBoard(Vector3.Distance(footPosition,StepPoint()))){EndWalk();success=true;}break;
+                case Target.Step:if(s.TryBoard(BoardingDistance())){EndWalk();success=true;}break;
+                case Target.LooseNozzle:success=s.PickUpDroppedHose(distance);break;
             }
             if(success){coupling.pitch=target==Target.Supply?.8f:1.15f;coupling.PlayOneShot(couplingClip,.26f);}
             game.Notice=s.LastMessage;
@@ -253,11 +287,18 @@ namespace IceResurfacer.Presentation
         {
             if(game==null||game.Sim==null)return;
             var s=game.Sim;
-            if(s.OnFoot)ApplyFootCamera();
+            if(s.OnFoot)
+            {
+                // The vehicle can coast after a moving exit. Resolve its actual
+                // footprint against the walker without changing any machine state.
+                if(!Walkable(footPosition,false))footPosition=FindExitPosition();
+                ApplyFootCamera();
+            }
             supplyHandle.localRotation=Quaternion.Euler(s.SupplyValve*90,0,0);
             Transform inlet=s.HoseState==WaterHoseState.Wash?washInlet:floodInlet;
             Vector3 endpoint=s.HoseConnected?inlet.position:s.HoseState==WaterHoseState.Carried?
-                game.DriverCamera.transform.TransformPoint(new Vector3(.27f,-.56f,.44f)):holderPosition;
+                game.DriverCamera.transform.TransformPoint(new Vector3(.27f,-.56f,.44f)):s.HoseState==WaterHoseState.Dropped?new Vector3(s.HoseLooseX,.09f,s.HoseLooseZ):holderPosition;
+            if(s.HoseState==WaterHoseState.Carried)s.SetCarriedHosePosition(endpoint.x,endpoint.z);
             nozzle.position=endpoint;
             nozzle.rotation=s.HoseConnected?inlet.rotation:Quaternion.Euler(0,0,-28);
             hose.enabled=true;
@@ -265,6 +306,7 @@ namespace IceResurfacer.Presentation
             {
                 int count=BuildRoute(endpoint,out hoseLength);hose.positionCount=count;
                 for(int i=0;i<count;i++)hose.SetPosition(i,route[i]);
+                if(running&&s.CheckHoseReach(hoseLength))game.Notice=s.LastMessage;
             }
             else
             {
@@ -300,6 +342,7 @@ namespace IceResurfacer.Presentation
             UpdateGauge(washGauge,s.WashWaterLiters/s.Config.WashCapacityLiters);
             levelUpdate-=dt;
             if(levelUpdate<=0){levelUpdate=.2f;levels.text="ICE WATER  "+s.FloodWaterLiters.ToString("0")+" / 738 L\nWASH WATER  "+s.WashWaterLiters.ToString("0")+" / 310 L\n"+(s.ServiceOverflowLitersPerSecond>.01f?"OVERFLOW — CLOSE SUPPLY":"SUPPLY  "+s.ServiceFlowLitersPerSecond.ToString("0.0")+" L/s");}
+            UpdateGroundMaterials(dt);
         }
 
         // A short visibility graph routes the floor hose around the machine footprint.
@@ -307,7 +350,7 @@ namespace IceResurfacer.Presentation
         int BuildRoute(Vector3 endpoint,out float length)
         {
             Transform machine=game.World.Machine;
-            Vector3 groundStart=new Vector3(4.02f,.03f,anchorPosition.z);
+            Vector3 groundStart=anchorPosition-station.right*.12f;groundStart.y=.03f;
             Vector3 localEnd=machine.InverseTransformPoint(endpoint);
             Vector3 groundEnd=endpoint;
             if(game.Sim!=null&&game.Sim.HoseConnected)groundEnd=machine.TransformPoint(new Vector3(1.53f,0,localEnd.z));
@@ -355,39 +398,54 @@ namespace IceResurfacer.Presentation
 
         void BuildStation()
         {
-            Box("Water station backing",root,new Vector3(4.40f,1.52f,-35.55f),new Vector3(.06f,1.40f,2.25f),paint);
-            Beam("Wall supply riser",root,new Vector3(4.25f,.18f,-34.78f),new Vector3(4.25f,2.40f,-34.78f),.052f,steel);
-            Beam("Supply branch",root,new Vector3(4.25f,1.25f,-34.78f),supplyPosition,.052f,steel);
-            Cylinder("Supply valve gland",root,supplyPosition,.11f,.07f,steel,Vector3.right);
-            supplyHandle=Group("Wall supply valve 90 degree pivot",root,supplyPosition+Vector3.left*.055f);
+            var layout=new ServiceLayout(game.calibration);
+            station=Group("Southeast service wall / right of parked machine",root,new Vector3(layout.GateX,0,layout.GateZ));
+            station.localRotation=Quaternion.Euler(0,-45,0);
+            Vector3 holder=new Vector3(5.40f,1.15f,-6.48f),supply=new Vector3(5.38f,1.25f,-5.28f),anchor=new Vector3(Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward);
+            holderPosition=station.TransformPoint(holder);supplyPosition=station.TransformPoint(supply);anchorPosition=station.TransformPoint(anchor);
+            Vector3 drain=new Vector3(4.6f,.025f,-7.35f);drainPosition=station.TransformPoint(drain);
+            Box("Water station backing",station,new Vector3(5.85f,1.52f,-6.05f),new Vector3(.06f,1.40f,2.25f),paint);
+            Beam("Wall supply riser",station,new Vector3(5.70f,.18f,-5.28f),new Vector3(5.70f,2.40f,-5.28f),.052f,steel);
+            Beam("Supply branch",station,new Vector3(5.70f,1.25f,-5.28f),supply,.052f,steel);
+            Cylinder("Supply valve gland",station,supply,.11f,.07f,steel,Vector3.right);
+            supplyHandle=Group("Wall supply valve 90 degree pivot",station,supply+Vector3.left*.055f);
             Beam("Wall valve handle",supplyHandle,Vector3.zero,new Vector3(0,0,-.17f),.033f,blue);
             Beam("Wall valve handle return",supplyHandle,new Vector3(0,0,-.17f),new Vector3(-.07f,0,-.17f),.033f,blue);
-            Beam("Supply to hose reel",root,new Vector3(4.21f,1.25f,-34.78f),anchorPosition,.04f,steel);
+            Beam("Supply to hose reel",station,new Vector3(5.66f,1.25f,-5.28f),anchor,.04f,steel);
             for(int i=0;i<3;i++)
             {
-                Cylinder("Pipe wall clamp",root,new Vector3(4.27f,.35f+i*.9f,-34.78f),.074f,.035f,rubber,Vector3.up);
-                Beam("Pipe clamp bracket",root,new Vector3(4.27f,.35f+i*.9f,-34.78f),new Vector3(4.38f,.35f+i*.9f,-34.78f),.025f,steel);
+                Cylinder("Pipe wall clamp",station,new Vector3(5.72f,.35f+i*.9f,-5.28f),.074f,.035f,rubber,Vector3.up);
+                Beam("Pipe clamp bracket",station,new Vector3(5.72f,.35f+i*.9f,-5.28f),new Vector3(5.83f,.35f+i*.9f,-5.28f),.025f,steel);
             }
-            Box("Nozzle holder",root,holderPosition+Vector3.right*.16f,new Vector3(.14f,.21f,.15f),steel);
+            Box("Nozzle holder",station,holder+Vector3.right*.16f,new Vector3(.14f,.21f,.15f),steel);
+            Material highlight=Mat("Nozzle return highlight",new Color(1,.72f,.16f),0,.5f);
+            highlight.EnableKeyword("_EMISSION");highlight.SetColor("_EmissionColor",new Color(.45f,.25f,.025f));
+            holderHighlight=Group("Forgiving nozzle holder highlight",station,holder+Vector3.right*.08f);
+            for(int side=-1;side<=1;side+=2)
+            {
+                Beam("Holder highlight vertical",holderHighlight,new Vector3(0,-.23f,side*.25f),new Vector3(0,.23f,side*.25f),.028f,highlight);
+                Beam("Holder highlight horizontal",holderHighlight,new Vector3(0,side*.23f,-.25f),new Vector3(0,side*.23f,.25f),.028f,highlight);
+            }
+            holderHighlight.gameObject.SetActive(false);
             nozzle=Group("Service nozzle / carried and coupled",root,holderPosition);
             Cylinder("Hose bayonet coupling",nozzle,Vector3.zero,.075f,.13f,steel,Vector3.right);
             Cylinder("Nozzle reinforced grip",nozzle,new Vector3(.10f,0,0),.058f,.13f,rubber,Vector3.right);
             for(int i=-1;i<=1;i+=2)Box("Coupling lug",nozzle,new Vector3(0,0,i*.043f),new Vector3(.035f,.027f,.025f),steel);
-            Label("WATER SERVICE",root,new Vector3(4.34f,2.16f,-35.50f),.105f,Color.white,Quaternion.Euler(0,-90,0));
-            Label("SUPPLY\nE  OPEN / CLOSE",root,new Vector3(4.33f,1.72f,-34.78f),.065f,Color.white,Quaternion.Euler(0,-90,0));
-            Label("NOZZLE\n11 m HOSE",root,new Vector3(4.33f,.82f,-35.98f),.060f,Color.white,Quaternion.Euler(0,-90,0));
-            levels=Label("ICE WATER  738 / 738 L\nWASH WATER  310 / 310 L",root,new Vector3(4.33f,2.05f,-37.0f),.070f,Color.white,Quaternion.Euler(0,-90,0));
-            Box("Tank level repeater panel",root,new Vector3(4.36f,2.05f,-37),new Vector3(.035f,.63f,1.65f),rubber);
-            Box("Service floor drain recess",root,drainPosition,new Vector3(.85f,.025f,.65f),rubber);
-            for(int i=0;i<9;i++)Box("Drain grate bar",root,drainPosition+new Vector3(-.36f+i*.09f,.016f,0),new Vector3(.027f,.014f,.60f),steel);
-            spillSheet=Box("Persistent service drain wetness",root,drainPosition+new Vector3(-.25f,-.005f,.20f),new Vector3(1,.003f,1),waterMaterial);
+            Label("WATER SERVICE",station,new Vector3(5.79f,2.16f,-6),.105f,Color.white,Quaternion.Euler(0,-90,0));
+            Label("SUPPLY\nE  OPEN / CLOSE",station,new Vector3(5.78f,1.72f,-5.28f),.065f,Color.white,Quaternion.Euler(0,-90,0));
+            Label("NOZZLE\nE  RETURN HOSE",station,new Vector3(5.78f,.82f,-6.48f),.060f,Color.white,Quaternion.Euler(0,-90,0));
+            levels=Label("ICE WATER  738 / 738 L\nWASH WATER  310 / 310 L",station,new Vector3(5.78f,2.05f,-7.50f),.070f,Color.white,Quaternion.Euler(0,-90,0));
+            Box("Tank level repeater panel",station,new Vector3(5.81f,2.05f,-7.50f),new Vector3(.035f,.63f,1.65f),rubber);
+            Box("Service floor drain recess",station,drain,new Vector3(.85f,.025f,.65f),rubber);
+            for(int i=0;i<9;i++)Box("Drain grate bar",station,drain+new Vector3(-.36f+i*.09f,.016f,0),new Vector3(.027f,.014f,.60f),steel);
+            spillSheet=Box("Persistent service drain wetness",station,drain+new Vector3(-.25f,-.005f,.20f),new Vector3(1,.003f,1),waterMaterial);
         }
         void BuildPorts()
         {
-            floodInlet=Port("ICE WATER",new Vector3(1.105f,1.10f,1.36f),blue);
-            washInlet=Port("WASH WATER",new Vector3(1.105f,1.10f,.44f),teal);
-            floodGauge=Gauge(new Vector3(1.115f,.78f,1.36f),blue);
-            washGauge=Gauge(new Vector3(1.115f,.78f,.44f),teal);
+            floodInlet=Port("ICE WATER",new Vector3(Simulation.FillPortLocalX,Simulation.FloodFillHeight,Simulation.FloodFillLocalZ),blue);
+            washInlet=Port("WASH WATER",new Vector3(Simulation.FillPortLocalX,Simulation.WashFillHeight,Simulation.WashFillLocalZ),teal);
+            floodGauge=Gauge(new Vector3(Simulation.FillPortLocalX+.01f,.80f,Simulation.FloodFillLocalZ),blue);
+            washGauge=Gauge(new Vector3(Simulation.FillPortLocalX+.01f,1.06f,Simulation.WashFillLocalZ),teal);
         }
         Transform Port(string name,Vector3 position,Material material)
         {
@@ -412,6 +470,55 @@ namespace IceResurfacer.Presentation
         static void UpdateGauge(Transform gauge,float fraction)
         {
             fraction=Mathf.Clamp01(fraction);gauge.localScale=new Vector3(.024f,Mathf.Max(.002f,.27f*fraction),.043f);gauge.localPosition=new Vector3(0,-.135f+.135f*fraction,0);
+        }
+        void BuildGroundMaterials()
+        {
+            var field=game.Sim.Environment;
+            int count=field.Cells.Length;
+            groundWaterVertices=new Vector3[count*9];groundSnowVertices=new Vector3[count*5];
+            int[] waterIndices=new int[count*24],snowIndices=new int[count*18];
+            for(int i=0;i<count;i++)
+            {
+                for(int j=0;j<8;j++)
+                {
+                    int t=i*24+j*3;waterIndices[t]=i*9;waterIndices[t+1]=i*9+1+(j+1)%8;waterIndices[t+2]=i*9+1+j;
+                }
+                int[] pyramid={0,4,1,1,4,2,2,4,3,3,4,0,0,2,3,0,1,2};
+                for(int j=0;j<18;j++)snowIndices[i*18+j]=i*5+pyramid[j];
+            }
+            groundWaterMesh=GroundMesh("Spatial floor runoff / conserved liters",groundWaterVertices,waterIndices,waterMaterial);
+            groundSnowMesh=GroundMesh("Spatial dumped floor snow / conserved volume",groundSnowVertices,snowIndices,Mat("Floor snow deposits",new Color(.82f,.88f,.90f),0,.14f));
+        }
+        Mesh GroundMesh(string name,Vector3[] vertices,int[] triangles,Material material)
+        {
+            Transform node=Group(name,root,Vector3.zero);
+            var mesh=new Mesh{name=name,indexFormat=IndexFormat.UInt32};mesh.MarkDynamic();mesh.vertices=vertices;mesh.triangles=triangles;
+            Vector3[] normals=new Vector3[vertices.Length];for(int i=0;i<normals.Length;i++)normals[i]=Vector3.up;mesh.normals=normals;
+            mesh.bounds=new Bounds(new Vector3(0,1,-10),new Vector3(120,6,150));
+            node.gameObject.AddComponent<MeshFilter>().sharedMesh=mesh;
+            var renderer=node.gameObject.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.Off;
+            return mesh;
+        }
+        void UpdateGroundMaterials(float dt)
+        {
+            groundUpdate-=dt;if(groundUpdate>0)return;groundUpdate=.2f;
+            var field=game.Sim.Environment;if(groundRevision==field.Revision)return;groundRevision=field.Revision;
+            for(int i=0;i<field.Cells.Length;i++)
+            {
+                float x=field.CellX(i%field.Columns),z=field.CellZ(i/field.Columns);
+                var cell=field.Cells[i];bool floor=game.Sim.Layout.ContainsFloor(x,z)&&!game.Sim.Ice.IsInside(x,z);
+                float radius=floor?Mathf.Min(.49f,Mathf.Sqrt(cell.WaterLiters*.12f)):0;
+                float y=radius>.005f?.024f:-.25f;
+                int w=i*9;groundWaterVertices[w]=new Vector3(x,y,z);
+                for(int j=0;j<8;j++){float a=j*Mathf.PI*.25f;groundWaterVertices[w+1+j]=new Vector3(x+Mathf.Cos(a)*radius,y,z+Mathf.Sin(a)*radius);}
+                float snowRadius=floor?Mathf.Min(.49f,Mathf.Pow(cell.SnowM3,.333333f)*1.1f):0;
+                float height=snowRadius>.005f?cell.SnowM3*3/Mathf.Max(.001f,4*snowRadius*snowRadius):0;
+                float sy=snowRadius>.005f?.032f:-.25f;int s=i*5;
+                groundSnowVertices[s]=new Vector3(x-snowRadius,sy,z-snowRadius);groundSnowVertices[s+1]=new Vector3(x-snowRadius,sy,z+snowRadius);
+                groundSnowVertices[s+2]=new Vector3(x+snowRadius,sy,z+snowRadius);groundSnowVertices[s+3]=new Vector3(x+snowRadius,sy,z-snowRadius);
+                groundSnowVertices[s+4]=new Vector3(x,sy+Mathf.Min(height,2.8f),z);
+            }
+            groundWaterMesh.SetVertices(groundWaterVertices);groundSnowMesh.SetVertices(groundSnowVertices);
         }
         void BuildEffects()
         {
@@ -469,6 +576,6 @@ namespace IceResurfacer.Presentation
         LineRenderer Line(string name,Material material,float width,int count)
         {var go=Group(name,root,Vector3.zero);var line=go.gameObject.AddComponent<LineRenderer>();line.sharedMaterial=material;line.useWorldSpace=true;line.startWidth=line.endWidth=width;line.positionCount=count;line.shadowCastingMode=ShadowCastingMode.On;line.receiveShadows=true;return line;}
         void OnDisable(){EndFootLook();}
-        void OnDestroy(){foreach(var material in ownedMaterials)if(material!=null)Destroy(material);if(fillClip!=null)Destroy(fillClip);if(overflowClip!=null)Destroy(overflowClip);if(couplingClip!=null)Destroy(couplingClip);}
+        void OnDestroy(){foreach(var material in ownedMaterials)if(material!=null)Destroy(material);if(fillClip!=null)Destroy(fillClip);if(overflowClip!=null)Destroy(overflowClip);if(couplingClip!=null)Destroy(couplingClip);if(groundWaterMesh!=null)Destroy(groundWaterMesh);if(groundSnowMesh!=null)Destroy(groundSnowMesh);}
     }
 }

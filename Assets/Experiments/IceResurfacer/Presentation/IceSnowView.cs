@@ -119,8 +119,8 @@ namespace IceResurfacer.Presentation
                 tank.SetTank(height,Mathf.Min(height*.15f,.035f)*(1-fill),Mathf.Clamp01(sim.TankLift)*(1-fill));
                 tankValue=fill;tankTilt=sim.TankLift;
             }
-            if(sim.DumpedSnowM3!=pitValue)
-            { pit.Set(sim.DumpedSnowM3/(3.5f*1.6f),0,true);pitValue=sim.DumpedSnowM3; }
+            if(sim.PitSnowM3!=pitValue)
+            { pit.Set(sim.PitSnowM3/(3.5f*1.6f),0,true);pitValue=sim.PitSnowM3; }
             bool active=dt>0;
             Rate(discharge,active?sim.DischargeSnowRate:0,world.TankDischarge.position,world.Machine.forward*.45f+Vector3.down*.25f);
             // A box spray emits on both sides; the ice receives the same transfer
@@ -130,11 +130,10 @@ namespace IceResurfacer.Presentation
             overflow.transform.rotation=world.Machine.rotation;
             Rate(overflow,active?sim.VerticalSpillRate:0,world.Machine.TransformPoint(0,1.96f,.20f),world.Machine.right*.25f);
             Rate(conditioner,active?Mathf.Max(0,sim.EscapingSnowRate-sim.VerticalSpillRate):0,world.SnowOutlet.position,Vector3.up*.3f);
-            Vector3 toPit=world.PitSnow.position-world.DumpOutlet.position;toPit.y=0;
-            // Choose horizontal velocity from the actual fall time to the pit floor.
-            // A fixed multiplier sent particles beyond the pit at some lift angles.
-            float fallTime=Mathf.Sqrt(2*Mathf.Max(.08f,world.DumpOutlet.position.y-world.PitSnow.position.y)/9.81f);
-            Rate(dump,active?sim.DumpSnowRate:0,world.DumpOutlet.position,toPit/Mathf.Max(.2f,fallTime));
+            // Render the same ballistic discharge as Core. Never steer particles
+            // toward the pit: off-centre and on-ice dumps must visibly miss it.
+            float fallTime=(sim.DumpVelocityY+Mathf.Sqrt(sim.DumpVelocityY*sim.DumpVelocityY+2*9.81f*Mathf.Max(.08f,sim.DumpOriginY)))/9.81f;
+            Rate(dump,active?sim.DumpSnowRate:0,new Vector3(sim.DumpOriginX,sim.DumpOriginY,sim.DumpOriginZ),new Vector3(sim.DumpVelocityX,sim.DumpVelocityY,sim.DumpVelocityZ));
             var dumpMain=dump.main;dumpMain.startSize=sim.ResidualSnowM3>0&&sim.SnowTankM3<=sim.ResidualSnowM3+.001f?.075f:.10f;
             dumpMain.startLifetime=Mathf.Clamp(fallTime,.2f,1.5f);
             // Paused particle pools must not continue shedding material or falling.

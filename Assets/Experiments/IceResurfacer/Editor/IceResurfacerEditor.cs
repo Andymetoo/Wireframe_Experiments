@@ -56,7 +56,7 @@ namespace IceResurfacer.Editor
             Require(!ShaderUtil.ShaderHasError(ice.shader),"Spatial ice shader compiles");
             Require(!ShaderUtil.ShaderHasError(AssetDatabase.LoadAssetAtPath<Shader>(Root+"Resources/WorldText.shader")),"World text shader compiles");
             Require(AssetDatabase.LoadAssetAtPath<SceneAsset>(ScenePath)!=null,"Saved scene imports");
-            var sim=new Core.Simulation();
+            var sim=new Core.Simulation(mode:Core.SimulationMode.GuidedTraining);
             Require(sim.Ice.IceCellCount>30000,"Spatial ice grid initialized");
             Require(!sim.TryFinish(),"Fresh session cannot finish before entering rink");
             Debug.Log("ICE VALIDATION: assets and initial simulation passed. Use standalone validation for mechanics.");
@@ -138,6 +138,11 @@ namespace IceResurfacer.Editor
                     // Fast deterministic setup of a genuine treated straight lane. No state-texture painting.
                     var sim=game.Sim; sim.Controls.HydraulicHoldControls=false; sim.Controls.Throttle=.42f;
                     for(int i=0;i<1000;i++)sim.Step(.02f);
+                    // Rendering fixture uses a centred lane after validating the new
+                    // entrance drive. The independent full-run test never sets poses.
+                    Require(sim.HasEnteredRink,"Southeast gate admits actual driven entry");
+                    sim.Vehicle.X=0;sim.Vehicle.Z=-22;sim.Vehicle.Heading=0;sim.Vehicle.Speed=0;
+                    sim.Conditioner.X=0;sim.Conditioner.Z=-23.1f;sim.Conditioner.Heading=0;
                     sim.Controls.ConditionerTarget=0;
                     sim.Controls.HorizontalAuger=true; sim.Controls.VerticalAuger=true;
                     for(int i=0;i<110;i++)sim.Step(.02f);
@@ -220,15 +225,12 @@ namespace IceResurfacer.Editor
                 }
                 if(layoutStarted&&IceLayoutValidation.Tick())
                 {
-                    IceCameraValidation.Run(game,testKeyboard,testMouse);
-                    IceOperationValidation.Run(game);
-                    IceAuthenticityValidation.Run(game,testKeyboard,testMouse);
-                    IcePhysicalValidation.Run(game,testKeyboard,testMouse);
-                    IceServiceValidation.Run(game,testKeyboard,testMouse);
-                    resultReport+="Physical hold controls, movement recovery, service hose/fill/overflow: PASS (Authenticity-results.txt / Service-results.txt)\n";
-                    resultReport+="Snow surface/discharge/overflow/jam/dump/pit rendering and bounded pools: PASS (Operations-results.txt)\n";
-                    resultReport+="Persistent camera, Space stance, R recenter and camera sightlines: PASS (Camera-results.txt)\n";
-                    resultReport+="Physical left operator layout and true-width geometry: PASS\n";
+                    Suite("Camera and sightlines",()=>IceCameraValidation.Run(game,testKeyboard,testMouse));
+                    Suite("Snow operation rendering",()=>IceOperationValidation.Run(game));
+                    Suite("Input and drive recovery",()=>IceAuthenticityValidation.Run(game,testKeyboard,testMouse));
+                    Suite("Physical controls",()=>IcePhysicalValidation.Run(game,testKeyboard,testMouse));
+                    Suite("Southeast service and freedom",()=>IceServiceValidation.Run(game,testKeyboard,testMouse));
+                    Suite("Ice overlap / pickup rendering",()=>IceCalibrationRuntimeValidation.Run(game));
                     resultReport+="Final runtime error/exception count: "+failures+"\n";
                     File.WriteAllText(Root+"Validation~/Unity-results.txt",resultReport);
                     Debug.Log("ICE UNITY SMOKE COMPLETE\n"+resultReport);
@@ -252,6 +254,11 @@ namespace IceResurfacer.Editor
             File.WriteAllBytes(Root+"Validation~/"+name,texture.EncodeToPNG());
             camera.targetTexture=old; RenderTexture.active=previous;
             UnityEngine.Object.Destroy(texture); target.Release(); UnityEngine.Object.Destroy(target);
+        }
+        static void Suite(string name,Action run)
+        {
+            try{run();resultReport+=name+": PASS\n";}
+            catch(Exception e){resultReport+=name+": FAIL "+e.Message+"\n";Debug.LogError(name+": "+e);}
         }
         static void Require(bool condition,string message) { if(!condition)throw new InvalidOperationException(message); }
         static void RestoreInput()

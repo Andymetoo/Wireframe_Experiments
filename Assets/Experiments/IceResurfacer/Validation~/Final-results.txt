@@ -1,0 +1,82 @@
+AURORA R-54 / FINAL OPERATOR FREEDOM VALIDATION
+28 October 2026 / Unity 6000.4.1f1 / URP
+
+Core simulation: PASS, 32 deterministic scenarios (Results.txt).
+Includes unrestricted operation, moving exits, raised-tank travel, hose
+breakaway/recovery, spatial angled dumping, southeast entry/return, traction,
+material balance, tire alignment, shaving mask and real liquid pickup.
+Portal pickup respects even 0.0001001 L of remaining wash-tank capacity.
+
+Unity Play Mode: PASS, every runtime suite; zero errors/exceptions.
+Camera persistence, Q/E/C/X, R/Space, remapped blade/hydraulic/water keys,
+mouse machinery, drive recovery, physical snow, southeast service, actual
+ice-cell textures and pickup captures are covered by their individual reports.
+The E preset exposes the real handwheel hub and all eight sampled rim points;
+the wheel clears the seatback, elevator, valve sweep and plunger.
+
+Native player HUD: PASS at 1366x768 and 1920x1080.
+Seven captured interface states per resolution; no measured text clipping.
+Native pointer tests operate the real valves, handwheel and hydraulic controls.
+FPS values inside those automation captures include scripted work/waits and
+capture cost; they are not the separate performance benchmark measurements.
+
+Conventional scored run (continuous control-driven route, no pose/cell/tank
+writes or refill helper): 1759 simulated seconds, proper southeast return,
+97.05% reachable combined coverage, 95.16% whole-ice combined coverage,
+97.25% water coverage, 82.2% finish, 90.4 points, 674.8 L flood use,
+0.723 m3 delivered to the pit and zero misuse faults.
+The previous comparable whole-ice result was 95.18%. The new shaving mask
+and score weights make the 97.05% headline and score different denominators.
+
+Unconventional Free Simulation session: completed without reset; 2.37%
+coverage, 10.5 points, seven faults, 12.65 L floor water and 0.01350 m3
+dumped onto ice. Poor resulting conditions affect score without route gates.
+
+Tire-aligned overlap: outside tire 0.835 m; blade 1.956 m; towel 2.100 m.
+Strong wet band 2.200 m, full low-volume raster 2.400 m at 0.100 m grid.
+Second center 1.935 m aligns its inside tire edge with the measured 1.100 m
+strong-wet boundary. Nominal towel overlap 0.165 m; zero dry/unscored gaps.
+The separate ideal continuous towel-edge alignment yields 0.215 m overlap.
+The old straight-pass fixture also had zero gaps; the reported foot-wide
+operator-view gap was not reproduced. Curved/perspective alignment needs
+operator playtesting. Water spread uses finite volume and cannot cross boards.
+Pickup recovers 3.757 L in five seconds with matching surface loss/tank gain.
+
+Measured active resurfacing / full HUD, before -> after:
+Resolution    Mean frame ms      P95 frame ms       FPS
+1366x768      8.860 -> 3.093      41.283 -> 8.504    112.9 -> 323.3
+1920x1080     8.715 -> 3.867      42.957 -> 9.920    114.7 -> 258.6
+These are fixed-workload hidden-player measurements on the RTX 3050 Laptop
+GPU / i5-11400H, not focused-window or Editor FPS guarantees. Raw workloads,
+CPU/GPU, mixed allocation results, extended-run behavior and native D3D
+presentation warnings are documented in ../Documentation/Performance.txt.
+Extended rendered run: 29999 measured frames / 600 simulated seconds,
+5.103 ms mean, 13.501 ms P95, zero managed runtime errors. The six sampled
+1000-frame windows varied from 3.748 to 6.315 ms, ending at 4.698 ms.
+Sampled live managed heap stayed between 19.30 and 20.39 MB (decimal), ending
+below its first window, with 324 collections during the long scenario.
+This is bounded observed behavior, not proof of leak-free multi-hour play.
+The hidden player also recorded 167 native presentation warnings, separately.
+
+Visual evidence (actual Unity renders, not generated concept images):
+Before: OperatorFreedomBefore/Driver-running.png,
+        OperatorFreedomBefore/Cockpit-hydraulic-controls.png.
+After:  Driver-running.png, Operator-seated.png, Camera-preset-E.png,
+        Camera-preset-Q.png, Camera-preset-C.png, Camera-preset-X.png.
+World:  Southeast-entrance.png, Southeast-service-room.png, Service-bay.png.
+Service: Service-filling.png, Service-overflow.png, Service-hose-breakaway.png,
+         Free-simulation-on-foot.png.
+Ice: Tire-overlap-top.png, Tire-overlap-operator-Q.png,
+     Ice-shaving-mask-debug.png, Ice-affected-cells-debug.png,
+     Overwater-before-pickup.png, Overwater-after-pickup.png,
+     Overwater-before-pickup-normal.png, Overwater-after-pickup-normal.png.
+The pickup measurement captures hide the vehicle to expose the actual cells;
+the water and simulation remain unchanged. Route and stress fixtures clearly
+identify any initial test poses/stocks separately from the full driven route.
+
+Remaining operator checks: reference-height comfort, Q/E reach at both stances,
+tire-to-strip judgment through turns, bay/pit approach feel, subtle traction,
+water/brush appearance, hose ergonomics and synthesized sound balance.
+Only the two attached reference photos were available; the mentioned
+conditioner annotation and board-gap image were not attached.
+Preservation-results.txt records the experiment boundary and build-source check.

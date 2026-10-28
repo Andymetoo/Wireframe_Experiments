@@ -1,0 +1,172 @@
+AURORA R-54 / OPERATOR FREEDOM AND COORDINATED REFINEMENT
+28 October 2026
+
+Current launch and controls
+Scenes/IceResurfacer.unity remains the entry point. The root README is the full
+current control guide. This document supersedes the control bindings, central
+south service location, blanket dismount/raised-tank/hose travel restrictions,
+and earlier score weights described in the 25-27 October historical documents.
+Those documents retain their original measurements and failure reproduction.
+
+Mode separation and input authority
+SimulationMode.FreeSimulation is the default for both scored and practice
+sessions. Practice determines whether a score is displayed; it does not decide
+which machinery actions are allowed. GuidedTraining is a distinct mode that
+adds explicit safety assistance. The welcome panel names all three choices.
+This is an assisted practice mode with an operator guide, not a new multi-stage
+scripted curriculum. Training-only reasons identify themselves in the UI.
+
+OperatorControls remains the single machinery command state. Keyboard inputs,
+physical controls and HUD write the same valve openings, auger states, blade
+setting and hydraulic spool commands. Held hydraulic controls spring to neutral
+on release, focus/pause or dismount; the attained cylinder position remains.
+A released mouse drag cannot capture driving input. F3 reports requested pedal,
+accepted demand, brake/contact, actual tank state, hose, focus and cursor state.
+The original rejected-target drive latch remains a regression case in assisted
+mode; Free Simulation does not use tank elevation or a connected hose as drive
+interlocks. On foot, the absent pedal is released into hydrostatic coasting.
+
+Free actions and physical consequences
+A player can operate conveyors, valves, brush, conditioner and dump hydraulics
+away from the rink or pit; dismount while moving/on ice/with equipment active;
+and drive with a raised tank or connected hose. No action moves the machine
+into a preferred dock pose. Actual wall/pit obstruction, hydraulic travel,
+conveyor jam/capacity and pump condition remain meaningful mechanical limits.
+
+Raised-tank cornering reduces grip and records misuse. Cutting/transport overload
+can jam or spill snow. Dumping follows the actual moving outlet and gravity-
+inspired fall, with lateral distribution across the opening. Material goes to
+the pit, spatial ice cells or the persistent floor map according to landing
+geometry. Residual shakeout still requires actual lower/raise motion and uses
+the same outlet. Overflows are not counted twice as stored snow. Unconventional
+techniques are judged by resulting conditions, not conformity to a route.
+
+Dismount chooses clear ground around the machine, avoiding walls/pit/body, and
+keeps existing machinery state. The moving vehicle may coast after the operator
+leaves it. Accessible rear-platform boarding provides recovery when a wall
+blocks the usual left step. A carried nozzle may be left on the floor when
+boarding and recovered with E. Exceeding attached hose reach releases a fictional
+breakaway coupling, spills live supply and reports a fault; it does not freeze
+travel. There is no vehicle teleport or whole-session reset in these recoveries.
+
+Camera and reference geometry
+Q targets the actual left conditioner/brush geometry; E targets the inboard
+control station; C looks back across the fresh strip. Presets use a smooth
+approximately 0.2-second transition, persist when released, and can be continued
+with RMB look. R toggles stance, Space temporarily stands, and X returns forward.
+Comma/period replace the former Q/E blade controls. Standing does not recenter.
+The pause panel provides -8 to +12 cm eye-height adjustment. On foot, ordinary
+mouse movement controls view and E interacts through the center aim. Capture
+releases for pause/guide and returns to the ordinary seated cursor on boarding.
+
+The supplied traditional hydraulic-station image and actual tall seated-view
+photo are the current reference pair. The inboard control bank, compact valve
+area, tapered/beveled forward body, console transition and operator sightlines
+use those references. The described conditioner annotation and board-gap images
+were not attached; no assertion of matching those missing views is made.
+Machine geometry is original and stays within the existing fictional scale;
+manufacturer specifications inform proportions, not an exact CAD replica.
+
+One world layout
+ServiceLayout owns the southeast portal, local basis, room bounds, parking,
+pit and supply anchor. Simulation collision/exit/starting pose, room geometry,
+service interactions, walking and tests use that authority. The portal center
+is (10.5104, -27.5104), tangent to the 45-degree point of the southeast rounded
+corner. Its local Side is northeast and Outward is southeast. The 5.4 m opening
+leads to a 12 m wide, 14 m long room. The rink remains 60 x 26 m with 8.5 m corners.
+The east stand end and enclosing building were adjusted for actual room space.
+
+The machine parks facing inward/northwest; the hose station is on its right.
+Distinct fixed rear-quarter fill necks serve the original 738 L and 310 L tanks.
+Primary manufacturer rear-view diagrams support independent rear fills; the
+Aurora neck positions and breakaway are disclosed fictional implementation
+choices. WaterService.txt records the source URLs and servicing calibration.
+
+Surface geometry, recovery and scoring
+The blade remains 1.956 m, water towel 2.100 m, body 2.130 m, wheel track 1.370 m,
+and tire width 0.300 m. The outside tire edge is therefore 0.835 m from center.
+The two-pass test found no foot-wide physical dry strip in the captured previous
+straight-pass implementation. It also finds no dry/unscored gap after the new
+finite lateral water fringe. The new strong wet band measures 2.2 m at the
+specific 0.1 m grid phase, versus 2.0 m before; the low-volume fringe is wider.
+This improves the visible edge without enlarging the real blade or adding free
+water. Perspective, turning/articulation and which boundary a player follows
+still need human calibration. IceCalibration.txt gives the exact thresholds.
+
+A configurable 0.1524 m shaving exclusion follows the rounded boards. Combined
+coverage/shaving use the reachable mask; water/finish still measure the complete
+sheet. F2 cycles normal, shaving-mask, and actual cut/wash/flood channel views.
+Cells outside the rink do not receive lateral film through boards. Outside-
+rink discharge goes into the separate spatial floor material map.
+
+Flood water has distinct liquid and frozen quantities. A primed, functioning
+pickup pump can collect only liquid within the real squeegee contact strip,
+subject to pump capacity, filtering and available wash-tank space. Recovery
+returns measured liters to that reservoir and retains a thin residual film.
+Frozen water is not erased. Overwater defects retain their frozen component;
+only actual recovery improves the liquid contribution. Sequential cut, pickup
+and trailing towel footprints follow the machine's actual contact geometry.
+The board brush transfers snow only within its deployed disc, producing a
+nearby windrow for the conditioner rather than awarding automatic coverage.
+
+The results panel separates coverage, surface quality, water distribution,
+excess water, missed patches, water-use efficiency, tank/return handling and
+misuse. Point weights are 40 + 30 + 10 + 10 + 5 + 5, less recorded misuse.
+The prior 95.18% / 85.2-point run is a historical baseline, not a claim that the
+new weights and mask should yield an identical score. Current route results
+and their comparison are recorded in the generated validation reports.
+
+The control-driven southeast full run in Southeast-full-run.txt reaches
+97.05% reachable combined coverage, or 95.16% when measured against ALL ice
+cells for comparison with the prior 95.18% baseline. It records 97.25% water
+coverage, 82.2% finish, 90.4 points, 674.8 L flood use, 0.723 m3 in the pit,
+1759 simulated seconds, zero misuse faults and a proper return. It never
+teleports the machine or edits cells/tanks during the route. The changed mask
+and score weights explain why the current score is not directly comparable.
+The unconventional session finishes without reset at 2.37% coverage / 10.5
+points, with seven faults, tracked floor water and 0.01350 m3 dumped onto ice.
+Low results describe its actual misuse and limited treatment, not a route ban.
+
+Performance work and evidence
+The F4 FPS/frame-time meter is visible by default and refreshes text at 4 Hz.
+F3 adds measured update CPU work, GPU timing when the platform supplies it,
+last-frame GC allocation and draw-call counters. It also breaks Estimated
+Machine Load into cutting, conveyors/augers and congestion contributions.
+
+Surface change tracking avoids regenerating untouched channels; active wet
+cells alone update fading, unchanged textures skip upload, and surface score
+totals are cached by revision. Floor deposits use two bounded meshes updated
+at 5 Hz only when material state changes. Hose routing uses reusable arrays;
+water/snow pools are bounded. There are no per-cell scene objects. These code
+changes are not themselves proof of a frame-rate improvement: use
+Performance.txt for measured before/after player results, resolutions, scope,
+profiler availability and limitations.
+
+The aggregate core harness passed all 32 scenario groups, recorded in
+Validation~/Results.txt. Full runtime and hidden-player performance
+results are separate checks; the control-driven route alone does not prove them.
+Validation~/Freedom-results.txt covers mode isolation, free operation, spatial
+dumps, traction, manual southeast entry/exit and unconventional use without a
+reset. Ice-calibration-results.txt and Ice-width-before-results.txt measure
+world-space tire alignment, board fringe, shaving mask and liquid recovery.
+Service-results.txt covers actual Input System F/E/W walking around the machine,
+independent fills/overflow, broad highlighted return, restored cursor/camera,
+driven hose breakaway and moving active-equipment dismount. Camera, physical
+controls, operation and native HUD reports provide the complementary checks.
+Only the final generated reports establish pass/fail status; documentation
+should not substitute for running the supplied harnesses.
+
+Remaining limits and operator checks
+This is a deterministic kinematic simulator with mild slip, not a full tire,
+suspension or rollover solver. Maximum forward speed is configurable and now
+2.65 m/s (9.54 km/h); acceleration/hydrostatic braking remain calibrated.
+There is no injury simulation, thermal slab model, granular snow compaction,
+full fluid solver, dynamic hose self-collision, or maintenance workshop repair.
+Pump wear is restored by a new session, not magically by filling water.
+Audio is synthesized rather than machine recordings.
+
+Please assess Q/E sightlines and mouse reach at both stances, tire-to-strip
+alignment through real turns, doorway/pit approaches, modest traction at
+ordinary versus abrupt steering, wet-floor appearance, hose weight/return feel
+and sound balance. Automated geometry and input checks constrain the design;
+they do not replace the former operator's judgment.

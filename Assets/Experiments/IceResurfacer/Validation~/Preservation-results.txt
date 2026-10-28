@@ -1,10 +1,14 @@
-PASS 27 October 2026: all changed and untracked files remain inside Assets/Experiments/IceResurfacer/.
+PASS 28 October 2026: all changed and untracked paths remain inside Assets/Experiments/IceResurfacer/.
 PASS: other experiments, Packages and ProjectSettings have no tracked differences.
-PASS: all 25 runtime/editor/core/shader/material/scene files match SHA256 hashes of the isolated final development build source.
-PASS: 32 inspected metadata files have valid unique GUIDs.
-PASS: saved launch scene is unchanged; new mechanisms initialize through its existing runtime builder.
-PASS: isolated project owns temporary scene/settings/Library/builds.
+PASS: all 34 runtime/editor/core/shader/material/scene assets match SHA256 hashes in the isolated validation project.
+PASS: 53 metadata files have valid unique GUIDs; no required asset metadata is missing.
+PASS: git diff --check is clean.
+PASS: updated launch scene retains the runtime builder and explicitly saves the modest operator eye-height setting.
+PASS: isolated project owns temporary scenes, settings, Library and development builds.
+PASS: final core suite reports 32 scenarios; Unity runtime suites report zero errors/exceptions.
 PASS: native HUD tests target only their own hidden/offscreen nonactivating windows; no OS pointer moved.
 PASS: both 1366x768 and 1920x1080 native HUD reports pass with no measured text clipping.
-LIMIT: native hidden-window D3D11 presentation warnings are retained and counted separately; focused-window latency still needs human testing.
+PASS: both final workload comparisons and the extended player run report zero managed runtime errors.
+LIMIT: native hidden-window D3D11 presentation warnings are counted separately in each report; focused-window latency requires manual testing.
+LIMIT: final post-build source change corrects one Guided Training label from 'south gate' to 'southeast gate'; tested mechanics/rendering are unchanged. The isolated source copy includes that text correction; saved validation executables precede it.
 Original open Editor sessions were not stopped or switched. No branch, commit or push was made.

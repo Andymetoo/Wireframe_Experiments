@@ -162,11 +162,12 @@ namespace IceResurfacer.Presentation
                 "Service help explains physical hose without silently topping up tanks");
             game.Notice = "";
             yield return Click("Finish");
-            Check(!game.Sim.Finished && game.Notice.Length > 0, "Finish button enforces unfinished-run guard");
+            Check(game.Sim.Finished, "Free Simulation may finish a partial session without a progression guard");
+            game.NewSession(false);
             yield return Click("NewSession");
             Check(!game.Started, "New-session button");
             yield return Capture("HUD-" + currentResolution + "-welcome.png", "welcome panel");
-            yield return ClickAt(new Vector2(752, 490));
+            yield return ClickAt(new Vector2(950, 480));
             Check(game.Started && game.Sim.Practice, "Unscored-practice launch button");
             game.NewSession(false, false);
             yield return ClickAt(new Vector2(510, 490));
@@ -178,9 +179,10 @@ namespace IceResurfacer.Presentation
             game.NewSession(false);
             controls = game.Sim.Controls;
             controls.Throttle = .6f;
-            for (int i = 0; i < 3000 && game.Sim.Vehicle.Z < -game.Sim.Config.RinkLength * .5f + 7; i++) game.Sim.Step(.02f);
+            for (int i = 0; i < 500; i++) game.Sim.Step(.02f);
             controls.Throttle = -.6f;
-            for (int i = 0; i < 5000 && game.Sim.Vehicle.Z > -game.Sim.Config.RinkLength * .5f - 6; i++) game.Sim.Step(.02f);
+            for (int i = 0; i < 1400 && !game.Sim.InServiceBay; i++) game.Sim.Step(.02f);
+            for (int i = 0; i < 180; i++) game.Sim.Step(.02f);
             controls.Throttle = 0; controls.Brake = true;
             for (int i = 0; i < 250; i++) game.Sim.Step(.02f);
             game.Finish();
@@ -383,6 +385,10 @@ namespace IceResurfacer.Presentation
 
         void Update()
         {
+            // The explicit HUD probe disables Game.Update, so sample its real
+            // player frame cadence here instead of freezing the startup sample.
+            if(active&&!complete&&game!=null&&game.Performance!=null)
+            {game.Performance.BeginFrame(Time.unscaledDeltaTime);game.Performance.EndWork();}
             if (active && !complete && Time.realtimeSinceStartup - startedAt > 120)
             { failures.Add("Development-player probe exceeded its 120-second timeout."); Finish(); }
         }

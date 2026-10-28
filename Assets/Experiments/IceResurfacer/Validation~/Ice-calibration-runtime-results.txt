@@ -1,0 +1,43 @@
+PASS measured strong-boundary tire alignment preserves positive nominal towel overlap
+PASS texture flood sample agrees with actual cell at x=-0.45
+PASS texture flood sample agrees with actual cell at x=-0.35
+PASS texture flood sample agrees with actual cell at x=-0.25
+PASS texture flood sample agrees with actual cell at x=-0.15
+PASS texture flood sample agrees with actual cell at x=-0.05
+PASS texture flood sample agrees with actual cell at x=0.05
+PASS texture flood sample agrees with actual cell at x=0.15
+PASS texture flood sample agrees with actual cell at x=0.25
+PASS texture flood sample agrees with actual cell at x=0.35
+PASS texture flood sample agrees with actual cell at x=0.45
+PASS texture flood sample agrees with actual cell at x=0.55
+PASS texture flood sample agrees with actual cell at x=0.65
+PASS texture flood sample agrees with actual cell at x=0.75
+PASS texture flood sample agrees with actual cell at x=0.85
+PASS texture flood sample agrees with actual cell at x=0.95
+PASS texture flood sample agrees with actual cell at x=1.05
+PASS texture flood sample agrees with actual cell at x=1.15
+PASS texture flood sample agrees with actual cell at x=1.25
+PASS texture flood sample agrees with actual cell at x=1.35
+PASS texture flood sample agrees with actual cell at x=1.45
+PASS texture flood sample agrees with actual cell at x=1.55
+PASS texture flood sample agrees with actual cell at x=1.65
+PASS texture flood sample agrees with actual cell at x=1.75
+PASS texture flood sample agrees with actual cell at x=1.85
+PASS texture flood sample agrees with actual cell at x=1.95
+PASS texture flood sample agrees with actual cell at x=2.05
+PASS texture flood sample agrees with actual cell at x=2.15
+PASS texture flood sample agrees with actual cell at x=2.25
+PASS texture flood sample agrees with actual cell at x=2.35
+PASS tire-aligned adjacent passes have zero dry or unscored cells between their centers
+World measurement: wheel track=1.370m, tire width=.300m, outside tire=.835m. First strong wet edge=1.100m; second center=1.935m; second inside tire=1.100m.
+Measured-boundary nominal towel overlap=0.165m; ideal continuous towel-edge alignment overlap=0.215m. The measured wet boundary is a cell extent, so those two reference alignments differ.
+First blade raster=2.000m; strong wet raster=2.200m; all-liquid raster=2.400m. Raster tolerance=.100m cells; physical blade1.956m/towel2.100m; film fringe<=.120m/side.
+PASS six-inch perimeter mask excludes shaving only; water and quality still use all ice
+PASS recovery fixture makes room in the independent wash tank
+PASS primed physical squeegee collects existing standing water over time
+PASS surface-water removal equals metered pickup
+PASS recovered water is routed into the wash reservoir
+PASS overwater improves only after actual liquid removal
+Pickup captured after5s driving back over the patch: 3.757L, pump limited; no blade cutting and no instant erase. The before/after uses actual-cell debug colors because liquid specular alone is view dependent.
+Recovery measurement captures temporarily hide machine/conditioner geometry to expose the cells under the squeegee and towel; simulated water, motion and materials are unchanged.
+Fixtures place two straight starts for repeatable geometry. All passes and water changes then run the real fixed-step simulation. Full route validation separately uses continuous driving.

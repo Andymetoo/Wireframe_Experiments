@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IceResurfacer.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using SimulationMode = IceResurfacer.Core.SimulationMode;
 
 namespace IceResurfacer.Presentation
 {
@@ -161,6 +162,11 @@ namespace IceResurfacer.Presentation
                     Box(new Rect(100, 580, 1400, 40), Navy);
                     Label(new Rect(118, 588, 1364, 25), hoverHint, small, White);
                 }
+                if(game.PerformanceVisible)
+                {
+                    Box(new Rect(28,865,340,27),Navy);
+                    Label(new Rect(38,868,320,23),game.Performance.Summary,small,Muted);
+                }
             }
             finally
             {
@@ -178,6 +184,7 @@ namespace IceResurfacer.Presentation
             Label(new Rect(386, 37, 130, 46), (Mathf.Abs(s.Vehicle.Speed) * 3.6f).ToString("0.0"), number, Mint);
             Label(new Rect(389, 82, 150, 24), s.Vehicle.Speed < -.02f ? "km/h   REVERSE" : "km/h   FORWARD", small, Muted);
             Meter(new Rect(542, 43, 149, 49), "MACHINE LOAD", s.MachineLoad, Mathf.RoundToInt(s.MachineLoad * 100) + "%", s.MachineLoad > .85f ? Amber : Mint);
+            if(new Rect(535,35,170,70).Contains(Event.current.mousePosition))hoverHint="Estimated Machine Load: combined blade cutting, conveyor stock, running augers and congestion. F3 shows the contribution of each.";
             Meter(new Rect(719, 43, 155, 49), "FLOOD WATER", s.FloodWaterLiters / s.Config.FloodCapacityLiters, s.FloodWaterLiters.ToString("0") + " L", Mint);
             Meter(new Rect(901, 43, 155, 49), "WASH WATER", s.WashWaterLiters / s.Config.WashCapacityLiters, s.WashWaterLiters.ToString("0") + " L", Mint);
             float snow = s.SnowTankM3 / s.Config.SnowCapacityM3;
@@ -189,10 +196,23 @@ namespace IceResurfacer.Presentation
             var s = game.Sim; var r = game.Report;
             Box(new Rect(1330, 24, 242, 523), Navy);
             Label(new Rect(1350, 40, 200, 23), "SURFACE SURVEY", heading, White);
-            Rect map = new Rect(1381, 78, 140, 323.08f);
+            Rect map = new Rect(1351, 78, 200, 323.08f);
             Box(map, Inset);
             if (game.Surface != null && game.Surface.MapTexture != null)
-                GUI.DrawTexture(map, game.Surface.MapTexture, ScaleMode.StretchToFill, true);
+            {
+                Vector2 top=MapPoint(map,-s.Config.RinkWidth*.5f,s.Config.RinkLength*.5f,s.Config);
+                Vector2 bottom=MapPoint(map,s.Config.RinkWidth*.5f,-s.Config.RinkLength*.5f,s.Config);
+                GUI.DrawTexture(new Rect(top,bottom-top), game.Surface.MapTexture, ScaleMode.StretchToFill, true);
+            }
+            var layout=s.Layout;
+            layout.ToWorld(-layout.RoomHalfWidth,layout.RoomStart,out float ax,out float az);
+            layout.ToWorld(layout.RoomHalfWidth,layout.RoomStart,out float bx,out float bz);
+            layout.ToWorld(layout.RoomHalfWidth,layout.RoomLength,out float cx,out float cz);
+            layout.ToWorld(-layout.RoomHalfWidth,layout.RoomLength,out float dx,out float dz);
+            Vector2 a=MapPoint(map,ax,az,s.Config),b=MapPoint(map,bx,bz,s.Config),cc=MapPoint(map,cx,cz,s.Config),d=MapPoint(map,dx,dz,s.Config);
+            Line(a,b,2,Muted);Line(b,cc,2,Muted);Line(cc,d,2,Muted);Line(d,a,2,Muted);
+            Vector2 gate=MapPoint(map,layout.GateX,layout.GateZ,s.Config);
+            Box(new Rect(gate.x-3,gate.y-3,6,6),Mint);
             Vector2 p = MapPoint(map, s.Vehicle.X, s.Vehicle.Z, s.Config);
             p.x = Mathf.Clamp(p.x, map.x + 3, map.xMax - 3);
             p.y = Mathf.Clamp(p.y, map.y + 8, map.yMax - 8);
@@ -206,7 +226,7 @@ namespace IceResurfacer.Presentation
                 Vector2 right = new Vector2(Mathf.Cos(s.Conditioner.Heading), Mathf.Sin(s.Conditioner.Heading));
                 Line(tail - right * 5.3f, tail + right * 5.3f, 3, Amber);
             }
-            Label(new Rect(1350, 410, 204, 24), "SOUTH GATE / SERVICE", small, Muted);
+            Label(new Rect(1350, 410, 204, 24), "SE GATE / SERVICE", small, Muted);
             Label(new Rect(1350, 440, 204, 23), "COVERAGE     " + (r.Coverage * 100).ToString("0.0") + "%", heading, Mint);
             Label(new Rect(1350, 466, 204, 22), "FINISH            " + (r.FinishQuality * 100).ToString("0") + "%", small, White);
             Box(new Rect(1350, 503, 9, 9), Mint); Label(new Rect(1365, 498, 66, 19), "Finished", small, Muted);
@@ -214,14 +234,18 @@ namespace IceResurfacer.Presentation
         }
 
         static Vector2 MapPoint(Rect rect, float x, float z, SimulatorConfig config)
-        { return new Vector2(rect.x + (x / config.RinkWidth + .5f) * rect.width, rect.y + (.5f - z / config.RinkLength) * rect.height); }
+        {
+            float minX=-config.RinkWidth*.5f,maxX=config.RinkWidth*.5f+12;
+            float minZ=-config.RinkLength*.5f-13,maxZ=config.RinkLength*.5f;
+            return new Vector2(rect.x+(x-minX)/(maxX-minX)*rect.width,rect.y+(maxZ-z)/(maxZ-minZ)*rect.height);
+        }
 
         void CompactRack(IceResurfacerGame game)
         {
             var s=game.Sim;var c=s.Controls;
             Box(new Rect(100,805,1400,95),Navy);
             Label(new Rect(120,820,1010,26),"CUT "+c.BladeDepthMm.ToString("0.00")+" mm    FLOOD "+(c.FloodFlow*100).ToString("0")+"%    WASH "+(c.WashValve*100).ToString("0")+"%    AUGERS "+(c.HorizontalAuger?"H ON":"H OFF")+" / "+(c.VerticalAuger?"V ON":"V OFF"),heading,White);
-            Label(new Rect(120,857,1010,26),"RMB look down, release to grab a physical control.  1 / Shift+1 lower / raise.  F service.  F1 guide.",small,Muted);
+            Label(new Rect(390,857,740,26),"Q edge / E controls / C rear / X forward / R stand / F exit",small,Muted);
             if(Button(new Rect(1170,820,310,52),"EXPAND CONTROLS  [TAB]",Slate)){Compact=false;game.ReleaseControls();}
         }
         void ServicePanel(IceResurfacerGame game)
@@ -230,7 +254,7 @@ namespace IceResurfacer.Presentation
             Label(new Rect(242,706,1116,45),"WATER SERVICE  /  "+game.WaterService.Status,heading,Mint);
             Label(new Rect(242,757,1116,30),game.WaterService.Prompt,text,White);
             Label(new Rect(242,794,1116,38),game.Notice,small,Amber);
-            Label(new Rect(242,839,1116,25),"WASD walk   RMB look   E interact   F board near the steps   ESC pause",small,Muted);
+            Label(new Rect(242,839,1116,25),"WASD walk   Mouse look   E interact   F board near the steps   ESC releases cursor",small,Muted);
         }
         void DriveWarning(IceResurfacerGame game)
         {
@@ -242,26 +266,28 @@ namespace IceResurfacer.Presentation
         void Diagnostics(IceResurfacerGame game)
         {
             var s=game.Sim;var c=s.Controls;
-            Box(new Rect(545,238,755,294),Modal);
-            Label(new Rect(565,251,715,26),"DRIVE DIAGNOSTICS  [F3 hides]",heading,Mint);
+            Box(new Rect(545,228,755,340),Modal);
+            Label(new Rect(565,241,715,26),"MACHINE DIAGNOSTICS  [F3]  /  SURFACE MASK [F2]",heading,Mint);
             string reason=!game.Started?"Start a run":game.Paused?"Paused":game.HelpVisible?"Guide open":s.Finished?"Run finished":s.DriveInhibitReason;
             string body="Keyboard W/S: "+game.RawThrottle.ToString("0.00")+"   Pedal: "+c.Throttle.ToString("0.00")+"   Accepted: "+s.EffectiveDriveDemand.ToString("0.00")+
                 "\nDirection: "+(c.Throttle>0?"forward":c.Throttle<0?"reverse":"neutral")+"   Velocity: "+s.Vehicle.Speed.ToString("0.000")+" m/s   Brake: "+(c.Brake?"CTRL held":"released")+
                 "\nTank: "+(s.TankLift*100).ToString("0.0")+"%   Hose: "+s.HoseState+"   Load: "+s.MachineLoad.ToString("0.00")+
                 "\nBoard/wall contact: "+s.BoardContact+"   Roller: "+s.GuideRollerContact+
                 "\nFocus: "+game.HasFocus+"   RMB: "+game.Looking+"   HUD capture: "+(springControl!=0)+
-                "\nGround: level kinematic surface (no Rigidbody sleep / wheel raycasts)"+
+                "\nGrip: "+s.TractionGrip.ToString("0.00")+"   Slip: "+s.TractionSlip.ToString("0.00")+"   Lateral: "+s.LateralVelocity.ToString("0.00")+" m/s"+
+                "\nLoad: cutting "+s.LoadCutting.ToString("0.00")+" + conveyors "+s.LoadConveyors.ToString("0.00")+" + congestion "+s.LoadCongestion.ToString("0.00")+
+                "\n"+game.Performance.Details+
                 "\nTravel: "+(string.IsNullOrEmpty(reason)?"permitted":reason);
-            Label(new Rect(565,291,715,226),body,small,White);
+            Label(new Rect(565,279,715,279),body,small,White);
         }
 
         void Guidance(IceResurfacerGame game)
         {
             var s = game.Sim;
             Box(new Rect(28, 135, 492, 155), Navy);
-            string mode = s.Practice ? "PRACTICE  /  UNSCORED" : "SCORED RUN";
+            string mode = (s.GuidedTraining?"TRAINING ASSISTANCE": "FREE SIMULATION")+(s.Practice?" / PRACTICE":" / SCORED");
             Label(new Rect(46, 148, 450, 25), mode + "     " + Duration(s.Time), heading, Mint);
-            Label(new Rect(46, 183, 452, 92), NextAction(s), text, White);
+            Label(new Rect(46, 183, 452, 92), s.GuidedTraining?NextAction(s):"Operate freely; snow, water, wear and scoring follow actual conditions. F steps off anywhere. Q views the edge; E views the controls.", text, White);
             if (s.MachineLoad > .85f || s.EscapingSnowRate > .001f || s.PumpDamage > .05f)
             {
                 Box(new Rect(28, 302, 492, 96), new Color(.26f, .10f, .065f, .97f));
@@ -280,7 +306,7 @@ namespace IceResurfacer.Presentation
             var c = s.Controls;
             if (s.TankLift > .8f && s.SnowTankM3 > .0001f) return s.DumpSnowRate>0?"UNLOADING  /  Snow is falling into the pit. Hold position.":"RESIDUAL SNOW  /  Briefly lower a few degrees, then raise to release clumps. Repeat, then lower fully.";
             if (s.TankRaised) return "STOW TANK  /  Hold the dump lever LOWER until the tank is fully down, then release.";
-            if (s.InServiceBay && !s.HasEnteredRink) return "ENTER THE RINK  /  W drives through the south gate. Keep the conditioner raised until fully on ice.";
+            if (s.InServiceBay && !s.HasEnteredRink) return "ENTER THE RINK  /  W drives through the southeast gate. Keep the conditioner raised until fully on ice.";
             if (s.InServiceBay && s.SnowTankM3 > .005f && !s.InDumpZone) return "APPROACH THE DUMP PIT  /  Drive toward the far end, centred and facing the pit. Stop at the yellow line.";
             if (s.InDumpZone && s.SnowTankM3 > .005f && Mathf.Abs(s.Vehicle.Speed) > .035f) return "STOP TO DUMP  /  Hold CTRL until stationary, then stow equipment and raise the snow-tank lever.";
             if (s.InDumpZone && s.SnowTankM3 > .005f) return "EMPTY THE TANK  /  Hold RAISE. To release residue, briefly lower and raise again. Hold LOWER to stow.";
@@ -352,10 +378,10 @@ namespace IceResurfacer.Presentation
             if (Button(ControlRect("Service"), "REFILL HELP", Slate)) game.Service();
             if (Button(ControlRect("Finish"), "FINISH RUN", new Color(.14f, .37f, .31f))) game.Finish();
             if (Button(ControlRect("NewSession"), "NEW SESSION", Slate)) game.NewSession(false, false);
-            Label(new Rect(1225, 852, 255, 24), s.InDumpZone ? "DUMP PIT ALIGNED" : s.InServiceBay ? "PIT AT FAR END OF BAY" : "DUMP OFF ICE ONLY", small, s.InDumpZone ? Mint : Muted);
+            Label(new Rect(1225, 852, 255, 24), s.InDumpZone ? "DISCHARGE OVER PIT" : s.InServiceBay ? "PIT AT FAR END OF BAY" : "SNOW LANDS WHERE IT FALLS", small, s.InDumpZone ? Mint : Muted);
             GUI.enabled = true;
             Box(new Rect(100, 880, 1400, 20), Navy);
-            Label(new Rect(120, 881, 1380, 19), game.Looking ? "HEAD LOOK  /  Release RMB to keep this view and use instruments. R recenters. Hold SPACE to rise." : "W/S drive   A/D steer   SHIFT precision   CTRL brake   SPACE rise   RMB look   R centre   F service   TAB compact   F3 diagnostics", small, Muted);
+            Label(new Rect(390, 881, 1100, 19), game.Looking ? "HEAD LOOK  /  Release RMB to keep this view. X forward. R stand / sit. SPACE temporary rise." : "W/S drive  A/D steer  CTRL brake  RMB look  Q edge  E controls  C rear  X forward  R stand  F exit  TAB compact", small, Muted);
         }
 
         float HydraulicLever(int hint,Rect rect,float value,string help)
@@ -471,63 +497,69 @@ namespace IceResurfacer.Presentation
 
         void Welcome(IceResurfacerGame game)
         {
-            Box(new Rect(360, 189, 835, 365), Modal);
-            Box(new Rect(360, 189, 6, 365), Amber);
+            Box(new Rect(360, 165, 835, 440), Modal);
+            Box(new Rect(360, 165, 6, 440), Amber);
             Label(new Rect(396, 216, 730, 25), "NORTHLINE  /  BETWEEN SESSIONS", heading, Mint);
             Label(new Rect(394, 256, 740, 47), "A clean sheet is in your hands.", title, White);
-            Label(new Rect(396, 319, 740, 71), "Drive a full resurfacing pass from the operator's seat. Manage the blade, snow conveyors and water while watching the actual finish behind your conditioner.", text, Muted);
-            Label(new Rect(396, 405, 740, 34), "WASD drive  /  RMB look  /  R recenter  /  SPACE rise  /  MOUSE instruments", heading, White);
-            if (Button(new Rect(397, 465, 225, 50), "START SCORED RUN", new Color(.18f, .40f, .33f))) game.NewSession(false);
-            if (Button(new Rect(640, 465, 225, 50), "UNSCORED PRACTICE", Slate)) game.NewSession(true);
-            if (Button(new Rect(884, 465, 290, 50), "READ THE OPERATOR GUIDE", Slate)) game.ToggleHelp();
+            Label(new Rect(396, 319, 740, 76), "Free Simulation lets you operate every control, step off anywhere and deal with the consequences. Choose scored or unscored. Training assistance adds explicit safety restrictions.", text, Muted);
+            Label(new Rect(396, 405, 740, 34), "WASD drive  /  RMB look  /  Q edge  /  E controls  /  R stand  /  X forward", heading, White);
+            if (Button(new Rect(397, 457, 365, 49), "FREE SIMULATION / SCORED", new Color(.18f, .40f, .33f))) game.NewSession(false);
+            if (Button(new Rect(780, 457, 365, 49), "FREE SIMULATION / PRACTICE", Slate)) game.NewSession(true);
+            if (Button(new Rect(397, 522, 365, 49), "GUIDED TRAINING / ASSISTED", Slate)) game.NewSession(true,true,SimulationMode.GuidedTraining);
+            if (Button(new Rect(780, 522, 365, 49), "READ THE OPERATOR GUIDE", Slate)) game.ToggleHelp();
         }
 
         void Pause(IceResurfacerGame game)
         {
-            Box(new Rect(430, 235, 700, 350), Modal);
+            Box(new Rect(430, 210, 700, 420), Modal);
             Label(new Rect(468, 264, 624, 44), "Operator break", title, White);
             Label(new Rect(470, 322, 618, 45), "The machine and ice simulation are paused.", text, Muted);
             if (Button(new Rect(470, 391, 180, 49), "RESUME", new Color(.18f, .40f, .33f))) game.TogglePause();
             if (Button(new Rect(670, 391, 190, 49), "OPERATOR GUIDE", Slate)) game.ToggleHelp();
             if (Button(new Rect(870, 391, 220, 49), "NEW SESSION", Slate)) game.NewSession(false, false);
-            Label(new Rect(470, 468, 620, 20), "ESC returns to the seat.", small, Muted);
+            Label(new Rect(470, 460, 620, 24), "Seated eye height adjustment: "+(game.operatorEyeHeight*100).ToString("+0;-0;0")+" cm", small, Muted);
+            game.operatorEyeHeight=GUI.HorizontalSlider(new Rect(470,493,620,18),game.operatorEyeHeight,-.08f,.12f);
             if(Button(new Rect(470,512,620,45),"REFILL PRACTICE  /  START WITH PARTLY EMPTY TANKS",Slate))game.StartServicePractice();
+            Label(new Rect(470,581,620,24),"ESC resumes. Free Simulation preserves your machinery settings.",small,Muted);
         }
 
         void Help(IceResurfacerGame game)
         {
-            Box(new Rect(180, 125, 1240, 490), Modal);
+            Box(new Rect(180, 125, 1240, 555), Modal);
             Box(new Rect(180, 125, 1240, 3), Amber);
             Label(new Rect(214, 150, 950, 44), "Operator's quick guide", title, White);
             if (Button(new Rect(1254, 151, 132, 36), "CLOSE  F1", Slate)) game.ToggleHelp();
             Label(new Rect(216, 218, 550, 25), "01  PREPARE & RESURFACE", heading, Mint);
-            Label(new Rect(216, 255, 550, 280), "Enter with conditioner raised and blade out. Once fully on ice, creep forward, lower the conditioner and engage both augers.\n\nSet wheel near 0.35 mm (0.056 mm bite). Open wash water, wait 10 seconds, then start the pickup pump. Apply flood water while moving.\n\nOverlap the visible wet edge slightly. Use the left brush near boards. Reduce cut and flood in goal areas and on repeated overlaps. Jam: stop BOTH augers before J reset.", text, White);
+            Label(new Rect(216, 255, 550, 280), "Enter through the southeast door. Lower the conditioner, run both augers and set the blade near 0.35 mm. Open wash, prime for 10 seconds, then run pickup.\n\nAlign the outer tire with the previous wet edge. Flood can spread a little beyond the blade. F2 reveals the shaving mask and affected cells. Pickup can recover still-liquid excess.\n\nFree Simulation allows unsafe operation. Training assistance labels its restrictions. Scoring follows the actual ice, not one prescribed route.", text, White);
             Box(new Rect(795, 220, 1, 314), Slate);
             Label(new Rect(826, 218, 550, 25), "02  RETURN & EMPTY", heading, Mint);
-            Label(new Rect(826, 255, 550, 280), "Retract blade, close flood, clear conveyors, then stop augers and pump. Close wash, stow brush. Hold RAISE before the threshold.\n\nAt the far pit, stop and hold tank RAISE. Briefly lower / raise to free residue; hold LOWER to stow.\n\nWater: F steps off in the bay. E takes hose, connects a labelled inlet, and opens wall supply. Close supply, disconnect and return hose. F boards at steps.", text, White);
-            Label(new Rect(216, 558, 1170, 24), "Hold 1 lower / Shift+1 raise   2/3 augers   4 brush   5 pump   6 plunger   Q/E blade   J jam reset   TAB compact", small, Muted);
-            Label(new Rect(216, 585, 1170, 24), "CTRL brake   SPACE rise   RMB look, release keeps view   R recenter   F service   F3 diagnostics   F1 guide   ESC pause", small, Muted);
+            Label(new Rect(826, 255, 550, 280), "Stow equipment for safe travel through the threshold. Dump toward the pit at the rear of the service room; snow lands where the outlet sends it. Brief lower / raise movements shake out residue.\n\nF steps off. Mouse looks freely on foot; WASD walks. E takes, connects and returns the hose and operates supply. The wall station is right of the parked machine.\n\nClose supply, uncouple, return the nozzle and F to board. Driving beyond hose reach breaks the coupling and spills water.", text, White);
+            Label(new Rect(216, 554, 1170, 24), "1 / Shift+1 lower / raise conditioner   2/3 augers   4 brush   5 pump   6 plunger   7 / Shift+7 raise / lower tank", small, Muted);
+            Label(new Rect(216, 581, 1170, 24), "[ / ] flood   Shift+[ / ] wash   , / . fine blade   J jam reset   F mount / dismount   TAB compact", small, Muted);
+            Label(new Rect(216, 608, 1170, 24), "Q conditioner   E controls   C rear   X forward   R stand / sit   SPACE hold to stand   RMB persistent head look", small, Muted);
+            Label(new Rect(216, 635, 1170, 24), "W/S drive   A/D steer   SHIFT precision   CTRL brake   F1 guide   F2 surface mask   F3 diagnostics   F4 FPS   ESC pause", small, Muted);
         }
 
         void Results(IceResurfacerGame game)
         {
             var r = game.Report; var s = game.Sim;
-            Box(new Rect(365, 162, 835, 442), Modal);
-            Label(new Rect(399, 186, 755, 24), r.Practice ? "PRACTICE REVIEW  /  NO SCORE RECORDED" : r.Complete ? "FULL RUN COMPLETE" : "RUN RETURNED  /  PARTIAL SHEET", heading, Mint);
+            Box(new Rect(365, 162, 835, 477), Modal);
+            Label(new Rect(399, 186, 755, 24), r.Practice ? "PRACTICE REVIEW  /  NO SCORE RECORDED" : r.Complete ? "FULL RUN COMPLETE" : "SESSION COMPLETE  /  PARTIAL SHEET", heading, Mint);
             Label(new Rect(397, 223, 530, 45), r.Practice ? "Your surface, reviewed." : r.Score.ToString("0.0") + "  /  100", title, White);
             Label(new Rect(970, 232, 190, 24), Duration(r.ElapsedSeconds), heading, Muted);
-            ReportLine(399, 294, "COVERAGE", (r.Coverage * 100).ToString("0.0") + "%", r.Practice ? "" : (r.Coverage * 45).ToString("0.0") + " / 45");
-            ReportLine(399, 329, "FINISH QUALITY", (r.FinishQuality * 100).ToString("0.0") + "%", r.Practice ? "" : (r.FinishQuality * 35).ToString("0.0") + " / 35");
-            ReportLine(399, 364, "MISSED STRIPS", (r.MissedFraction * 100).ToString("0.0") + "%", "");
-            ReportLine(790, 294, "OVERWATERED", (r.OverwaterFraction * 100).ToString("0.0") + "%", r.Practice ? "" : ((1 - r.OverwaterFraction) * 10).ToString("0.0") + " / 10");
-            bool emptied = s.TotalSnowCollectedM3 < .005f || (s.DumpedSnowM3 >= s.TotalSnowCollectedM3 * .98f && s.SnowTankM3 < .005f);
-            ReportLine(790, 329, "TANK HANDLING", r.TankDumps + " dumps", r.Practice ? "" : (emptied ? "5" : "0") + " / 5");
-            ReportLine(790, 364, "EXIT PROCEDURE", r.ProperExit ? "Correct" : "Incomplete", r.Practice ? "" : (r.ProperExit ? "5" : "0") + " / 5");
-            Label(new Rect(400, 415, 750, 26), r.Mistakes + " operator mistakes" + (r.Practice ? "  /  practice feedback only" : "  /  -" + (r.Mistakes * 1.2f).ToString("0.0") + " points"), text, r.Mistakes > 0 ? Amber : Mint);
-            Label(new Rect(400, 454, 748, 42), r.Complete ? "The sheet is covered. Inspect the survey for remaining finish differences." : "Grey areas were not fully processed. A complete sheet requires at least 95% actual surface coverage.", small, Muted);
-            if (Button(new Rect(401, 524, 229, 46), "NEW SCORED RUN", new Color(.18f, .40f, .33f))) game.NewSession(false);
-            if (Button(new Rect(651, 524, 229, 46), "NEW PRACTICE", Slate)) game.NewSession(true);
-            if (Button(new Rect(902, 524, 261, 46), "OPERATOR GUIDE", Slate)) game.ToggleHelp();
+            ReportLine(399,294,"COVERAGE",(r.Coverage*100).ToString("0.0")+"%",r.Practice?"":r.CoveragePoints.ToString("0.0")+" / 40");
+            ReportLine(399,329,"SURFACE QUALITY",(r.FinishQuality*100).ToString("0.0")+"%",r.Practice?"":r.FinishPoints.ToString("0.0")+" / 30");
+            ReportLine(399,364,"WATER DISTRIBUTION",(r.WaterDistribution*100).ToString("0.0")+"%",r.Practice?"":r.WaterPoints.ToString("0.0")+" / 10");
+            ReportLine(399,399,"MISSED PATCHES",(r.MissedFraction*100).ToString("0.0")+"%","");
+            ReportLine(790,294,"EXCESS WATER",(r.OverwaterFraction*100).ToString("0.0")+"%",r.Practice?"":r.OverwaterPoints.ToString("0.0")+" / 10");
+            ReportLine(790,329,"WATER EFFICIENCY",(r.OperationalEfficiency*100).ToString("0.0")+"%",r.Practice?"":r.EfficiencyPoints.ToString("0.0")+" / 5");
+            ReportLine(790,364,"TANK / SAFE RETURN",r.TankDumps+" dumps",r.Practice?"":r.HandlingPoints.ToString("0.0")+" / 5");
+            ReportLine(790,399,"EQUIPMENT MISUSE",r.Mistakes+" faults",r.Practice?"":"-"+r.MisusePenalty.ToString("0.0"));
+            Label(new Rect(400,445,750,54),"Shaving mask excludes the outer 15.24 cm. Water and finish still include the whole sheet. Flood reached "+(r.WaterCoverage*100).ToString("0.0")+"%; shaved "+(r.ShavingCoverage*100).ToString("0.0")+"% of reachable ice.",small,Muted);
+            Label(new Rect(400,505,748,32),r.Complete?"Complete sheet. Inspect the survey for finish differences.":"Partial sheet: completion requires 95% combined treatment of reachable ice.",small,Muted);
+            if(Button(new Rect(401,564,229,46),"NEW SCORED RUN",new Color(.18f,.40f,.33f)))game.NewSession(false);
+            if(Button(new Rect(651,564,229,46),"NEW PRACTICE",Slate))game.NewSession(true);
+            if(Button(new Rect(902,564,261,46),"OPERATOR GUIDE",Slate))game.ToggleHelp();
         }
 
         void ReportLine(float x, float y, string label, string value, string points)

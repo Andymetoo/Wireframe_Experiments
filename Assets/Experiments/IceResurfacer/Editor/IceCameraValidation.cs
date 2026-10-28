@@ -46,7 +46,7 @@ namespace IceResurfacer.Editor
             {
                 // Initial physical-layout captures intentionally set transforms. Use
                 // the designated recenter input to restore the runtime head state.
-                Step(false,default,true,Key.R);for(int i=0;i<15;i++)Step();
+                Step(false,default,true,Key.X);for(int i=0;i<15;i++)Step();
                 Quaternion forward=Head.localRotation;
                 Step(true,new Vector2(10000,-10000));Step(true,new Vector2(10000,-10000));
                 Same(forward,"cursor lock acquisition deltas are discarded");
@@ -75,22 +75,33 @@ namespace IceResurfacer.Editor
                 game.World.Machine.rotation=machine;
                 for(int i=0;i<100;i++)Step();
                 Same(down,"returning to seated height preserves head orientation");
-                Check(Head.localPosition.y<.001f&&Head.localPosition.z<.001f,"Space release smoothly returns to seated eyes");
+                Check(Mathf.Abs(Head.localPosition.y-game.operatorEyeHeight)<.001f&&Head.localPosition.z<.001f,"Space release smoothly returns to adjustable seated eyes");
+                Step(false,default,true,Key.R);for(int i=0;i<40;i++)Step();
+                Check(game.Standing&&Head.localPosition.y>.48f,"R toggles persistent raised stance after release");Same(down,"R standing preserves head orientation");
+                Step(false,default,true,Key.R);for(int i=0;i<40;i++)Step();Check(!game.Standing,"second R sits down");
                 game.TogglePause();Step(false,default,false);Same(down,"pause does not recenter");game.TogglePause();
                 game.ToggleHelp();Step(false,default,false);Same(down,"guide does not recenter");game.ToggleHelp();
                 typeof(IceResurfacerGame).GetMethod("OnApplicationFocus",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,new object[]{false});
                 Step(false,default,false);Same(down,"focus loss does not recenter");
                 Aim(-155,60,true);Quaternion start=Head.localRotation;
-                Step(false,default,true,Key.R,Key.Space);
-                Check(Quaternion.Angle(Head.localRotation,Quaternion.Euler(5,0,0))>90&&Quaternion.Angle(start,Head.localRotation)>0,"R begins a smooth recenter without teleporting");
+                Step(false,default,true,Key.X,Key.Space);
+                Check(Quaternion.Angle(Head.localRotation,Quaternion.Euler(5,0,0))>90&&Quaternion.Angle(start,Head.localRotation)>0,"X begins a smooth recenter without teleporting");
                 for(int i=0;i<4;i++)Step(false,default,true,Key.Space);
                 Check(Quaternion.Angle(Head.localRotation,Quaternion.Euler(5,0,0))>20,"recenter remains animated at 0.10 seconds");
                 for(int i=0;i<5;i++)Step(false,default,true,Key.Space);
                 Same(Quaternion.Euler(5,0,0),"recenter reaches forward after 0.20 seconds");
                 Check(Head.localPosition.y>.47f,"recenter preserves raised stance");
                 float blade=game.Sim.Controls.BladeDepthMm;
-                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.E));InputSystem.Update();update.Invoke(game,null);
-                Check(game.Sim.Controls.BladeDepthMm>blade,"E remains blade adjustment, not recenter");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));InputSystem.Update();update.Invoke(game,null);
+                Check(game.Sim.Controls.BladeDepthMm>blade,"period deepens blade without a camera-key conflict");
+                foreach(var key in new[]{Key.Q,Key.E,Key.C,Key.X})
+                {
+                    Step();Step(false,default,true,key);for(int i=0;i<20;i++)Step();
+                    var preset=Head.localRotation;for(int i=0;i<25;i++)Step(false,new Vector2(50,50));Same(preset,key+" preset persists after release");
+                    Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y))<=170.01f,key+" respects head yaw limit");
+                    passes.Add(key+" calibrated pose: local eyes="+Head.localPosition+" angles="+Head.localEulerAngles);
+                    IceResurfacerEditor.Capture(game.DriverCamera,"Camera-preset-"+key+".png",1920,1080);
+                }
                 Aim(-100,45,false);Step(true);Step(true);Step(true,new Vector2(10000,-10000));
                 Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)-170)<.001f&&Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.x)-80)<.001f,"positive yaw and downward pitch limits preserved");
                 Step(true,new Vector2(-20000,20000));
@@ -119,13 +130,30 @@ namespace IceResurfacer.Editor
                     var collider=renderer.gameObject.AddComponent<MeshCollider>();collider.sharedMesh=filter.sharedMesh;colliders.Add(collider);
                 }
                 Physics.SyncTransforms();
-                Vector3 opening=game.World.TankPivot.TransformPoint(-.39f,1.06f,-1.88f);
-                Vector3 ray=(opening-Head.position).normalized;
-                Check(Physics.Raycast(Head.position,ray,out var hit,6)&&hit.transform==game.World.TankSnow,"standing sightline through physical opening reaches actual tank snow");
+                int visibleSnow=0;RaycastHit hit=default;string firstHit="none";
+                for(int x=0;x<5;x++)for(int z=0;z<5;z++)
+                {
+                    Vector3 opening=game.World.TankPivot.TransformPoint(-.49f+x*.10f,1.06f,-1.94f+z*.12f);
+                    if(Physics.Raycast(Head.position,(opening-Head.position).normalized,out hit,6))
+                    {firstHit=hit.transform.name;if(hit.transform==game.World.TankSnow)visibleSnow++;}
+                }
+                Check(visibleSnow>=2,"standing opening exposes actual snow over multiple rays ("+visibleSnow+"/25; last hit "+firstHit+")");
                 Aim(-170,72,false);Physics.SyncTransforms();
                 Vector3 edge=game.World.Conditioner.TransformPoint(-game.Sim.Config.WaterDistributionWidth*.5f-.007f,.075f,-.1f);
                 Check(Physics.Raycast(Head.position,(edge-Head.position).normalized,out hit,4)&&hit.transform.IsChildOf(game.World.Conditioner),"seated shoulder view sees outer conditioner plate without solid obstruction");
                 IceResurfacerEditor.Capture(game.DriverCamera,"Operator-board-side-edge.png",1920,1080);
+                Step();Step(false,default,true,Key.E);for(int i=0;i<30;i++)Step();
+                Physics.SyncTransforms();
+                Vector3 hub=game.World.BladeWheel.TransformPoint(0,.034f,0);
+                Check(Physics.Raycast(Head.position,(hub-Head.position).normalized,out hit,3)&&hit.transform.IsChildOf(game.World.BladeWheel),"E preset exposes actual blade hub without seat or manifold obstruction");
+                int visibleRim=0;
+                for(int i=0;i<8;i++)
+                {
+                    float angle=i*Mathf.PI/4;
+                    Vector3 rim=game.World.BladeWheel.TransformPoint(Mathf.Cos(angle)*.13f,.012f,Mathf.Sin(angle)*.13f);
+                    if(Physics.Raycast(Head.position,(rim-Head.position).normalized,out hit,3)&&hit.transform.IsChildOf(game.World.BladeWheel))visibleRim++;
+                }
+                Check(visibleRim>=6,"E preset exposes blade rim for mouse operation ("+visibleRim+"/8 rays)");
             }
             finally { foreach(var collider in colliders)UnityEngine.Object.DestroyImmediate(collider); }
         }

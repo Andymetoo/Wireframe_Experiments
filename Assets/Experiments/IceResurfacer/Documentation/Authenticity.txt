@@ -1,6 +1,11 @@
 AURORA R-54 / DRIVE RELIABILITY AND HYDRAULIC ACCOUNTING
 27 October 2026
 
+Historical 27 October reproduction and measurement record. The 28 October
+OperatorFreedom.txt and main README supersede its central south layout,
+camera bindings and blanket free-operation tank/hose/service restrictions.
+The original failed movement reproduction below is retained as evidence.
+
 Confirmed reproduction, not an assumed motor-power problem
 The previous code inhibited drive whenever TankLift > 0.02 OR the requested
 TankLiftTarget > 0.02. The bottom-centre dump control was a maintained slider.

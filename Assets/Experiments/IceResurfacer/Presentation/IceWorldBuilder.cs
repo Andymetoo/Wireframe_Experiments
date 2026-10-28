@@ -10,7 +10,7 @@ namespace IceResurfacer.Presentation
     public sealed class IceWorld
     {
         public Transform Machine, Conditioner, CameraMount, SteeringWheel, TankPivot;
-        public Transform HorizontalAuger, VerticalAuger, Brush, BrushArm, BladeWheel;
+        public Transform HorizontalAuger, VerticalAuger, Brush, BrushArm, BrushLink, BrushRoller, BladeWheel;
         public Transform WashValve, FloodLever, ConditionerLever, WaterOutlet, SnowOutlet, TankSnow;
         public Transform OperatorStation, Seat, SteeringColumn, Dashboard, Pedals, AccessSteps;
         public Transform SnowBreakerPlunger, BodyTank, HorizontalAugerLever, VerticalAugerLever;
@@ -43,6 +43,7 @@ namespace IceResurfacer.Presentation
             readonly Transform root;
             readonly Material template;
             readonly SimulatorConfig config;
+            readonly ServiceLayout serviceLayout;
             readonly IceWorld world = new IceWorld();
             Material white, navy, cyan, steel, rubber, black, orange, red, yellow, concrete;
             Material roof, glass, lightMat, pale, snow, cloth, blue, lettering;
@@ -53,6 +54,7 @@ namespace IceResurfacer.Presentation
                 this.root = root;
                 this.template = template;
                 this.config = config;
+                serviceLayout = new ServiceLayout(config);
                 world.WorkingWidth = config.ConditionerWidth;
             }
 
@@ -225,7 +227,7 @@ namespace IceResurfacer.Presentation
                 for(int i=0;i<boundary.Count;i++)
                 {
                     Vector3 a=boundary[i], b=boundary[(i+1)%boundary.Count];
-                    if(a.z < -29.999f && b.z < -29.999f && Mathf.Abs((a.x+b.x)*.5f)<2.77f)continue;
+                    if(serviceLayout.IsPortal((a.x+b.x)*.5f,(a.z+b.z)*.5f))continue;
                     Vector3 outward = new Vector3(-(b-a).z,0,(b-a).x).normalized*thickness;
                     Vector3 al=a+Vector3.up*y0, bl=b+Vector3.up*y0, ah=a+Vector3.up*y1, bh=b+Vector3.up*y1;
                     Quad(v,tri,al,ah,bh,bl);
@@ -239,12 +241,12 @@ namespace IceResurfacer.Presentation
             void Arena()
             {
                 var arena=Group("NORTHLINE ICE CENTRE / enclosed arena",root);
-                Box("Foundation",arena,new Vector3(0,-.24f,-3),new Vector3(49,.45f,89),concrete);
-                Box("Roof canopy",arena,new Vector3(0,12.7f,-2),new Vector3(48,.28f,88),roof);
-                Box("East insulated wall",arena,new Vector3(23,6,-2),new Vector3(.4f,13,88),pale);
+                Box("Foundation",arena,new Vector3(2,-.24f,-3),new Vector3(53,.45f,89),concrete);
+                Box("Roof canopy",arena,new Vector3(2,12.7f,-2),new Vector3(52,.28f,88),roof);
+                Box("East insulated wall",arena,new Vector3(27,6,-2),new Vector3(.4f,13,88),pale);
                 Box("West insulated wall",arena,new Vector3(-23,6,-2),new Vector3(.4f,13,88),pale);
-                Box("North insulated wall",arena,new Vector3(0,6,41),new Vector3(46,13,.4f),pale);
-                Box("Service exterior wall",arena,new Vector3(0,6,-45),new Vector3(46,13,.4f),pale);
+                Box("North insulated wall",arena,new Vector3(2,6,41),new Vector3(50,13,.4f),pale);
+                Box("Service exterior wall",arena,new Vector3(2,6,-45),new Vector3(50,13,.4f),pale);
                 var edge=RinkBoundary();
                 RingBand("White impact dasher",arena,edge,.13f,1.13f,.17f,white);
                 RingBand("Yellow kick strip",arena,edge,.015f,.17f,.19f,yellow);
@@ -253,7 +255,7 @@ namespace IceResurfacer.Presentation
                 for(int i=0;i<edge.Count;i+=5)
                 {
                     var p=edge[i];
-                    if(p.z < -29.9f && Mathf.Abs(p.x)<2.9f)continue;
+                    if(serviceLayout.IsPortal(p.x,p.z))continue;
                     Cylinder("Glass support",arena,p+Vector3.up*1.87f,.028f,1.34f,steel,Vector3.up);
                 }
                 var vertices=new List<Vector3>{new Vector3(0,.005f,0)};
@@ -347,7 +349,7 @@ namespace IceResurfacer.Presentation
                 BatchMeshes(world.AcceleratorPedal);
                 BatchMeshes(world.BrakePedal);
                 BatchMeshes(world.VerticalAuger);
-                BatchMeshes(world.BrushArm,new HashSet<Transform>{world.Brush});
+                BatchMeshes(world.BrushArm,new HashSet<Transform>{world.Brush,world.BrushLink,world.BrushRoller});
                 BatchMeshes(world.Brush);
                 BatchMeshes(world.Conditioner,new HashSet<Transform>{world.HorizontalAuger,world.CuttingBlade});
                 BatchMeshes(world.HorizontalAuger);
@@ -361,23 +363,28 @@ namespace IceResurfacer.Presentation
                     for(int row=0;row<6;row++)
                     {
                         float x=side*(15.25f+row*.92f), y=.45f+row*.52f;
-                        Box("Concrete riser",stands,new Vector3(x,y*.5f,0),new Vector3(.93f,y,56),concrete);
+                        // Southeast machine-room access occupies the former end
+                        // of the east stand. Its risers stop before the portal.
+                        Box("Concrete riser",stands,new Vector3(x,y*.5f,side>0?3:0),new Vector3(.93f,y,side>0?50:56),concrete);
                         for(int block=0;block<4;block++)
                         {
                             float z=-21+block*14;
-                            Box("Moulded seat bench",stands,new Vector3(x,y+.25f,z),new Vector3(.65f,.16f,11.8f),blue);
-                            Box("Continuous seat backs",stands,new Vector3(x+side*.28f,y+.57f,z),new Vector3(.13f,.62f,11.8f),blue);
-                            for(int seat=0;seat<16;seat++)
-                                Box("Seat partition",stands,new Vector3(x,y+.3f,z-5.7f+seat*.75f),new Vector3(.63f,.10f,.026f),navy);
+                            if(side>0&&block==0)z=-18;
+                            float length=side>0&&block==0?5.8f:11.8f;
+                            Box("Moulded seat bench",stands,new Vector3(x,y+.25f,z),new Vector3(.65f,.16f,length),blue);
+                            Box("Continuous seat backs",stands,new Vector3(x+side*.28f,y+.57f,z),new Vector3(.13f,.62f,length),blue);
+                            for(int seat=0;seat<(side>0&&block==0?8:16);seat++)
+                                Box("Seat partition",stands,new Vector3(x,y+.3f,z-length*.5f+.2f+seat*.75f),new Vector3(.63f,.10f,.026f),navy);
                         }
                     }
                     for(int aisle=0;aisle<5;aisle++)
                     {
                         float z=-28+aisle*14;
+                        if(side>0&&aisle==0)z=-22;
                         Beam("Aisle rail",stands,new Vector3(side*14.9f,1.1f,z),new Vector3(side*20.9f,4.55f,z),.055f,steel);
                     }
-                    Box("Upper walkway",stands,new Vector3(side*21.3f,3.6f,0),new Vector3(1.1f,.24f,62),concrete);
-                    Beam("Gallery handrail",stands,new Vector3(side*21.7f,4.6f,-31),new Vector3(side*21.7f,4.6f,31),.065f,steel);
+                    Box("Upper walkway",stands,new Vector3(side*21.3f,3.6f,side>0?4.5f:0),new Vector3(1.1f,.24f,side>0?53:62),concrete);
+                    Beam("Gallery handrail",stands,new Vector3(side*21.7f,4.6f,side>0?-22:-31),new Vector3(side*21.7f,4.6f,31),.065f,steel);
                 }
                 for(int row=0;row<5;row++)
                 {
@@ -431,38 +438,53 @@ namespace IceResurfacer.Presentation
 
             void ServiceBay(Transform parent)
             {
-                var bay=Group("South service gate and snow pit",parent);
-                Box("Threshold steel sill",bay,new Vector3(0,.025f,-30),new Vector3(5.4f,.05f,.23f),steel);
-                Box("Gate opened left",bay,new Vector3(-2.82f,.61f,-31.25f),new Vector3(.18f,1.2f,2.5f),white);
-                Box("Gate opened right",bay,new Vector3(2.82f,.61f,-31.25f),new Vector3(.18f,1.2f,2.5f),white);
-                Box("Left gate glass",bay,new Vector3(-2.82f,1.88f,-31.25f),new Vector3(.025f,1.3f,2.5f),glass);
-                Box("Right gate glass",bay,new Vector3(2.82f,1.88f,-31.25f),new Vector3(.025f,1.3f,2.5f),glass);
+                var b=serviceLayout;
+                var bay=Group("Southeast diagonal portal / backstage maintenance room",parent,new Vector3(b.GateX,0,b.GateZ));
+                bay.localRotation=Quaternion.Euler(0,-45,0);
+                Box("Threshold steel sill",bay,new Vector3(0,.018f,0),new Vector3(b.GateHalfWidth*2,.035f,.23f),steel);
+                Box("Machine room concrete apron",bay,new Vector3(0,-.015f,-(b.RoomStart+b.RoomLength)*.5f),new Vector3(b.RoomHalfWidth*2,.025f,b.RoomLength-b.RoomStart),concrete);
+                Box("Backstage ceiling",bay,new Vector3(0,4.8f,-(b.RoomStart+b.RoomLength)*.5f),new Vector3(b.RoomHalfWidth*2+.2f,.16f,b.RoomLength-b.RoomStart+.2f),pale);
+                Box("Portal overhead lintel",bay,new Vector3(0,4.3f,-.8f),new Vector3(b.GateHalfWidth*2+.8f,.65f,1.5f),pale);
+                Box("Rolled maintenance door",bay,new Vector3(0,3.98f,-.85f),new Vector3(b.GateHalfWidth*2,.22f,.40f),steel);
                 for(int side=-1;side<=1;side+=2)
                 {
-                    Box("Bay perimeter wall",bay,new Vector3(side*4.6f,1.5f,-37),new Vector3(.25f,3,11.5f),pale);
-                    Cylinder("Yellow protection bollard",bay,new Vector3(side*2.9f,.55f,-30),.16f,1.1f,yellow,Vector3.up);
-                    Box("Bay lane marker",bay,new Vector3(side*2.4f,.012f,-36.5f),new Vector3(.10f,.009f,10.6f),yellow);
+                    Box("Gate opened along portal jamb",bay,new Vector3(side*(b.GateHalfWidth+.12f),.61f,-.75f),new Vector3(.18f,1.2f,1.5f),white);
+                    Box("Open gate glass",bay,new Vector3(side*(b.GateHalfWidth+.12f),1.88f,-.75f),new Vector3(.025f,1.3f,1.5f),glass);
+                    Box("Machine room side wall",bay,new Vector3(side*(b.RoomHalfWidth+.12f),2.4f,-(b.RoomStart+b.RoomLength)*.5f),new Vector3(.24f,4.8f,b.RoomLength-b.RoomStart+.24f),pale);
+                    Box("Portal front return wall",bay,new Vector3(side*(b.RoomHalfWidth+b.GateHalfWidth)*.5f,2.4f,-b.RoomStart),new Vector3(b.RoomHalfWidth-b.GateHalfWidth,4.8f,.24f),pale);
+                    Box("Portal upright",bay,new Vector3(side*(b.GateHalfWidth+.15f),2.1f,-.75f),new Vector3(.18f,4.2f,1.75f),steel);
+                    Cylinder("Portal protection bollard",bay,new Vector3(side*(b.GateHalfWidth+.27f),.55f,.12f),.16f,1.1f,yellow,Vector3.up);
+                    Box("Service parking reference",bay,new Vector3(b.ParkSide+side*1.55f,.015f,-b.ParkOutward),new Vector3(.055f,.008f,4.6f),yellow);
                     for(int i=0;i<7;i++)
                     {
-                        var stripe=Box("Pit caution stripe",bay,new Vector3(side*2.1f,.02f,-40.5f+i*.17f),new Vector3(.4f,.012f,.08f),orange);
+                        var stripe=Box("Pit caution stripe",bay,new Vector3(b.PitSide+side*(b.PitHalfWidth+.14f),.02f,-b.PitOutward-.65f+i*.22f),new Vector3(.28f,.012f,.10f),orange);
                         stripe.localRotation=Quaternion.Euler(0,35,0);
                     }
                 }
-                Box("Snow pit recess",bay,new Vector3(0,.007f,-41.9f),new Vector3(3.8f,.01f,1.9f),black);
-                world.PitSnow=SnowSurface("Accumulating dumped snow / physical pit",bay,new Vector3(0,.04f,-41.9f));
-                Box("Pit rear curb",bay,new Vector3(0,.14f,-42.85f),new Vector3(4.1f,.28f,.18f),yellow);
-                for(int i=0;i<15;i++)Box("Pit grate bar",bay,new Vector3(-1.75f+i*.25f,.028f,-41.9f),new Vector3(.035f,.025f,1.8f),steel);
-                Label("SNOW DISCHARGE",bay,new Vector3(0,2.45f,-43.4f),.24f,Color.white,Quaternion.identity);
-                Label("STOP  /  BRAKE  /  DISCHARGE",bay,new Vector3(0,1.96f,-43.4f),.105f,new Color(.94f,.7f,.28f),Quaternion.identity);
-                Label("SERVICE",bay,new Vector3(0,.02f,-32),.29f,new Color(.93f,.72f,.28f),Quaternion.Euler(270,180,0));
-                Box("Safety instruction plaque",bay,new Vector3(-4.4f,1.6f,-35.2f),new Vector3(.035f,.85f,1.2f),navy);
-                Label("WATER OFF\nRAISE CONDITIONER\nCLEAR AUGERS",bay,new Vector3(-4.37f,1.6f,-35.2f),.07f,Color.white,Quaternion.Euler(0,90,0));
-                // Match equipment is parked off the playable ice for the resurfacing session.
-                Goal(bay,new Vector3(7,0,-33),15);
-                Goal(bay,new Vector3(-7,0,-33),-15);
-                Cylinder("Wash hose reel",bay,new Vector3(4.4f,1.45f,-35.5f),.65f,.22f,cyan,Vector3.right);
-                Torus("Coiled wash hose",bay,new Vector3(4.26f,1.45f,-35.5f),.26f,.04f,rubber,Quaternion.Euler(0,0,90));
-                Cylinder("Service water standpipe",bay,new Vector3(4.15f,.65f,-35.5f),.055f,1.3f,steel,Vector3.up);
+                Box("Machine room rear wall",bay,new Vector3(0,2.4f,-b.RoomLength-.12f),new Vector3(b.RoomHalfWidth*2+.3f,4.8f,.24f),pale);
+                Box("Snow pit recess",bay,new Vector3(b.PitSide,.007f,-b.PitOutward),new Vector3(b.PitHalfWidth*2,.012f,b.PitHalfLength*2),black);
+                world.PitSnow=SnowSurface("Accumulating dumped snow / physical pit",bay,new Vector3(b.PitSide,.04f,-b.PitOutward));
+                Box("Pit rear curb",bay,new Vector3(b.PitSide,.14f,-b.PitOutward-b.PitHalfLength),new Vector3(b.PitHalfWidth*2+.2f,.28f,.18f),yellow);
+                for(int i=0;i<16;i++)Box("Pit grate bar",bay,new Vector3(b.PitSide-1.87f+i*.25f,.028f,-b.PitOutward),new Vector3(.035f,.025f,b.PitHalfLength*2-.1f),steel);
+                Label("SNOW PIT",bay,new Vector3(b.PitSide,2.45f,-b.RoomLength+.02f),.22f,Color.white,Quaternion.identity);
+                Label("MANUAL APPROACH / WATCH THE OUTLET",bay,new Vector3(b.PitSide,1.96f,-b.RoomLength+.02f),.080f,new Color(.94f,.7f,.28f),Quaternion.identity);
+                Label("SOUTHEAST  /  MACHINE ROOM",bay,new Vector3(0,4.22f,-1.57f),.14f,Color.white,Quaternion.Euler(0,180,0));
+                Label("PARK / FILL",bay,new Vector3(b.ParkSide,.023f,-b.ParkOutward-2.5f),.19f,new Color(.93f,.72f,.28f),Quaternion.Euler(270,180,0));
+                Box("Recessed workshop equipment cabinet",bay,new Vector3(-6.14f,1.15f,-5.6f),new Vector3(.32f,2.3f,2.7f),navy);
+                Label("MAINTENANCE\nFILTERS / HAND TOOLS",bay,new Vector3(-5.96f,1.55f,-5.6f),.07f,Color.white,Quaternion.Euler(0,90,0));
+                // Closed cabinets remain outside the walkable clear wall margin.
+                for(int j=0;j<3;j++)Box("Cabinet drawer",bay,new Vector3(-5.96f,.48f+j*.34f,-5.6f),new Vector3(.025f,.27f,2.4f),steel);
+                Cylinder("Wash hose reel",bay,new Vector3(5.83f,1.45f,-6),.65f,.22f,cyan,Vector3.right);
+                Torus("Coiled wash hose",bay,new Vector3(5.69f,1.45f,-6),.26f,.04f,rubber,Quaternion.Euler(0,0,90));
+                for(int i=0;i<3;i++)
+                {
+                    float outward=3.8f+i*3.8f;
+                    Box("Workshop strip light",bay,new Vector3(0,4.63f,-outward),new Vector3(3.1f,.09f,.22f),lightMat);
+                    var lamp=Group("Workshop pool light",bay,new Vector3(0,4.25f,-outward)).gameObject.AddComponent<Light>();
+                    lamp.type=LightType.Point;lamp.range=8;lamp.intensity=3.2f;lamp.color=new Color(.86f,.94f,1);lamp.shadows=LightShadows.None;
+                }
+                Goal(parent,new Vector3(-7,0,-34),-15);
+                Goal(parent,new Vector3(-11,0,-34),15);
             }
 
             void Goal(Transform parent, Vector3 position, float heading)
@@ -502,8 +524,10 @@ namespace IceResurfacer.Presentation
                     Box("Northline board advertisement",parent,new Vector3(side*12.89f,.67f,-9),new Vector3(.02f,.65f,5.8f),cyan);
                     Label("NORTHLINE  /  ICE WORKS",parent,new Vector3(side*12.87f,.69f,-9),.11f,Color.white,Quaternion.Euler(0,-side*90,0));
                 }
-                Box("Service exit overhead",parent,new Vector3(0,4.1f,-31),new Vector3(7,.8f,.15f),navy);
-                Label("SERVICE  /  SNOW PIT",parent,new Vector3(0,4.1f,-30.9f),.24f,new Color(.68f,.89f,.78f),Quaternion.identity);
+                var sign=Group("Southeast service exit sign",parent,new Vector3(serviceLayout.GateX,0,serviceLayout.GateZ));
+                sign.localRotation=Quaternion.Euler(0,-45,0);
+                Box("Service exit overhead",sign,new Vector3(0,4.22f,.07f),new Vector3(5.3f,.5f,.12f),navy);
+                Label("SERVICE  /  SNOW PIT",sign,new Vector3(0,4.22f,.15f),.16f,new Color(.68f,.89f,.78f),Quaternion.identity);
             }
 
             void Scoreboard(Transform parent)
@@ -525,10 +549,10 @@ namespace IceResurfacer.Presentation
             {
                 var machine=world.Machine=Group("AURORA R-54 / rear axle origin",root);
                 Box("Steel underframe",machine,new Vector3(0,.47f,.77f),new Vector3(1.65f,.23f,3),black);
-                Box("Lower glacier body sill",machine,new Vector3(0,.67f,.75f),new Vector3(1.85f,.35f,2.9f),cyan);
+                BevelBox("Chamfered glacier body sill",machine,new Vector3(0,.67f,.75f),new Vector3(1.85f,.35f,2.9f),.10f,cyan);
                 Box("Rear crossmember",machine,new Vector3(0,.79f,-.71f),new Vector3(1.95f,.15f,.24f),steel);
                 Box("Right equipment deck",machine,new Vector3(.48f,.83f,-.37f),new Vector3(.99f,.13f,1),steel);
-                Box("Engine compartment / right of operator",machine,new Vector3(.46f,1.08f,-.02f),new Vector3(.85f,.74f,.8f),navy);
+                BevelBox("Shaped engine cover / right of operator",machine,new Vector3(.46f,1.08f,-.02f),new Vector3(.85f,.74f,.8f),.10f,navy);
                 for(int i=0;i<8;i++)Box("Engine cooling louvre",machine,new Vector3(.895f,1.02f+i*.052f,-.08f),new Vector3(.025f,.018f,.48f),black);
                 Tank(machine);
                 Wheels(machine);
@@ -567,11 +591,18 @@ namespace IceResurfacer.Presentation
                 var shell=world.BodyTank;
                 Box("Tank internal floor",shell,new Vector3(0,-.48f,0),new Vector3(1.56f,.06f,2.10f),steel);
                 for(int side=-1;side<=1;side+=2)
-                    Box("Tank side wall",shell,new Vector3(side*.763f,0,0),new Vector3(.034f,1.02f,2.10f),white);
+                {
+                    // Keep the machinery envelope and hollow storage, but break the
+                    // block silhouette with a broad shoulder and a taper at the nose.
+                    float x=side*.763f, top=side*.64f;
+                    Panel("Tank lower side skin",shell,new Vector3(x,-.51f,-1.05f),new Vector3(x,.29f,-1.05f),new Vector3(side*.72f,.24f,1.05f),new Vector3(side*.72f,-.51f,1.05f),white);
+                    Panel("Tank sloped upper shoulder",shell,new Vector3(x,.29f,-1.05f),new Vector3(top,.515f,-1.05f),new Vector3(side*.60f,.43f,1.05f),new Vector3(side*.72f,.24f,1.05f),white);
+                    Beam("Tank shoulder fold seam",shell,new Vector3(x,.29f,-1.05f),new Vector3(side*.72f,.24f,1.05f),.012f,steel);
+                }
                 Box("Tank rear wall",shell,new Vector3(0,0,-1.032f),new Vector3(1.56f,1.02f,.036f),white);
                 world.TankDoor=Group("Forward dump door hinge",tank,new Vector3(.20f,1.02f,.052f));
-                Box("Opening snow dump door",world.TankDoor,new Vector3(0,-.51f,0),new Vector3(1.56f,1.02f,.036f),white);
-                Box("Tank roof forward panel",tank,new Vector3(.20f,1.025f,-.59f),new Vector3(1.56f,.045f,1.32f),white);
+                BevelBox("Tapered opening snow dump door",world.TankDoor,new Vector3(0,-.55f,0),new Vector3(1.44f,.94f,.055f),.06f,white);
+                Panel("Sloping forward tank crown",tank,new Vector3(-.44f,1.025f,-1.25f),new Vector3(.84f,1.025f,-1.25f),new Vector3(.80f,.94f,.07f),new Vector3(-.40f,.94f,.07f),white);
                 Box("Roof rear rim",tank,new Vector3(.20f,1.025f,-2.005f),new Vector3(1.56f,.045f,.05f),white);
                 Box("Roof rear left rim",tank,new Vector3(-.56f,1.025f,-1.625f),new Vector3(.04f,.045f,.71f),white);
                 Box("Roof between window and inlet",tank,new Vector3(.085f,1.025f,-1.625f),new Vector3(.09f,.045f,.71f),white);
@@ -590,8 +621,9 @@ namespace IceResurfacer.Presentation
                 world.TankCylinderBarrels=new Transform[2];world.TankCylinderRods=new Transform[2];
                 for(int side=-1;side<=1;side+=2)
                 {
-                    Box("Tank glacier stripe",tank,new Vector3(.20f+side*.786f,.39f,-.93f),new Vector3(.016f,.26f,1.56f),cyan);
-                    Label("AURORA",tank,new Vector3(.20f+side*.799f,.73f,-.92f),.12f,new Color(.035f,.12f,.16f),Quaternion.Euler(0,side*90,0));
+                    var stripe=Box("Tank glacier stripe",tank,new Vector3(.20f+side*.751f,.39f,-.93f),new Vector3(.016f,.23f,1.56f),cyan);
+                    stripe.localRotation=Quaternion.Euler(0,-side*1.17f,0);
+                    Label("AURORA",tank,new Vector3(.20f+side*.77f,.69f,-1.10f),.10f,new Color(.035f,.12f,.16f),Quaternion.Euler(0,side*90,0));
                     Label("R - 54",tank,new Vector3(.20f+side*.8f,.39f,-.9f),.073f,Color.white,Quaternion.Euler(0,side*90,0));
                     int i=(side+1)/2;
                     world.TankCylinderBarrels[i]=Cylinder("Tank lift cylinder barrel / articulated",machine,Vector3.zero,.095f,1,navy,Vector3.up);
@@ -609,6 +641,13 @@ namespace IceResurfacer.Presentation
                 surface.gameObject.AddComponent<MeshFilter>();
                 surface.gameObject.AddComponent<MeshRenderer>().sharedMaterial=snow;
                 return surface;
+            }
+
+            void Panel(string name,Transform parent,Vector3 a,Vector3 b,Vector3 c,Vector3 d,Material material)
+            {
+                var vertices=new List<Vector3>();var triangles=new List<int>();
+                Quad(vertices,triangles,a,b,c,d);Quad(vertices,triangles,d,c,b,a);
+                MeshObject(name,parent,vertices,triangles,material);
             }
 
             void Wheels(Transform machine)
@@ -684,10 +723,10 @@ namespace IceResurfacer.Presentation
                 Cylinder("Pressure dial bezel",dash,new Vector3(.18f,.077f,.015f),.093f,.018f,steel,Vector3.up);
                 Cylinder("Pressure dial face",dash,new Vector3(.18f,.089f,.015f),.077f,.008f,black,Vector3.up);
                 Beam("Pressure dial needle",dash,new Vector3(.18f,.097f,.015f),new Vector3(.195f,.097f,.042f),.006f,orange);
-                Beam("Operator work lamp stalk",deck,new Vector3(.10f,1.35f,.50f),new Vector3(.10f,1.65f,.50f),.018f,steel);
-                Box("Shielded operator work lamp",deck,new Vector3(.10f,1.67f,.48f),new Vector3(.12f,.055f,.06f),black);
-                Box("Operator lamp downward diffuser",deck,new Vector3(.10f,1.64f,.48f),new Vector3(.095f,.008f,.044f),lightMat);
-                var taskLamp=Group("Operator instrument illumination",deck,new Vector3(.10f,1.615f,.48f)).gameObject.AddComponent<Light>();
+                Beam("Operator work lamp stalk",deck,new Vector3(-.20f,1.35f,.64f),new Vector3(-.20f,1.65f,.64f),.018f,steel);
+                Box("Shielded operator work lamp",deck,new Vector3(-.20f,1.67f,.62f),new Vector3(.12f,.055f,.06f),black);
+                Box("Operator lamp downward diffuser",deck,new Vector3(-.20f,1.64f,.62f),new Vector3(.095f,.008f,.044f),lightMat);
+                var taskLamp=Group("Operator instrument illumination",deck,new Vector3(-.20f,1.615f,.62f)).gameObject.AddComponent<Light>();
                 taskLamp.type=LightType.Point;taskLamp.range=1.6f;taskLamp.intensity=.18f;
                 taskLamp.color=new Color(.83f,.92f,1f);taskLamp.shadows=LightShadows.None;
                 var pedals=world.Pedals=Group("Left operator pedal floor",deck,new Vector3(0,.923f,.36f));
@@ -705,7 +744,9 @@ namespace IceResurfacer.Presentation
                 }
                 Cylinder("Accelerator hinge pin",pedals,new Vector3(.11f,.035f,-.025f),.028f,.11f,steel,Vector3.right);
                 Cylinder("Brake hinge pin",pedals,new Vector3(-.10f,.035f,-.025f),.028f,.14f,steel,Vector3.right);
-                var panel=Group("Left outboard four spool hydraulic valve bank",deck,new Vector3(-.38f,1.14f,.27f));
+                // Group the machinery controls inboard, as in the supplied
+                // traditional station, and leave the left shoulder sightline open.
+                var panel=Group("Inboard four spool hydraulic valve bank",deck,new Vector3(.24f,1.14f,.50f));
                 BevelBox("Valve bank steel chassis",panel,Vector3.zero,new Vector3(.23f,.16f,.73f),.025f,navy);
                 Box("Brushed hydraulic label fascia",panel,new Vector3(.045f,.085f,0),new Vector3(.12f,.012f,.70f),steel);
                 world.ConditionerLever=Lever("Conditioner lift lever",panel,new Vector3(-.035f,.10f,.255f),"LIFT",orange);
@@ -728,7 +769,10 @@ namespace IceResurfacer.Presentation
                 world.WashValveMount=Group("Wash valve fixed bearing",waterPanel,new Vector3(0,.02f,-.115f));
                 world.FloodLever=WaterValve("ICE WATER",world.FloodValveMount,blue);
                 world.WashValve=WaterValve("WASH",world.WashValveMount,cyan);
-                world.BladeWheel=Group("Blade depth handwheel",deck,new Vector3(.45f,1.39f,-.36f));
+                // Beside the operator and forward of the seatback. Keep the rim
+                // clear of the elevator shroud and above the water valve grips.
+                const float bladeControlX=.48f,bladeControlZ=.04f;
+                world.BladeWheel=Group("Blade depth handwheel",deck,new Vector3(bladeControlX,1.61f,bladeControlZ));
                 Torus("Blade handwheel rim",world.BladeWheel,Vector3.zero,.13f,.018f,orange,Quaternion.identity);
                 for(int i=0;i<3;i++)
                 {
@@ -737,11 +781,12 @@ namespace IceResurfacer.Presentation
                 }
                 Cylinder("Handwheel crank",world.BladeWheel,new Vector3(.11f,.045f,0),.032f,.09f,black,Vector3.up);
                 Cylinder("Blade handwheel machined hub",world.BladeWheel,Vector3.zero,.055f,.07f,steel,Vector3.up);
-                Cylinder("Blade spindle fixed bearing",deck,new Vector3(.45f,1.31f,-.36f),.075f,.09f,navy,Vector3.up);
-                Cylinder("Blade spindle lower collar",deck,new Vector3(.45f,.69f,-.36f),.058f,.09f,steel,Vector3.up);
-                Box("Blade travel index plate",deck,new Vector3(.45f,1.27f,-.53f),new Vector3(.25f,.018f,.09f),navy);
-                Label("BLADE  /  3.5 TURNS",deck,new Vector3(.45f,1.283f,-.53f),.015f,Color.white,Quaternion.Euler(270,180,0));
-                Beam("Blade adjustment spindle",deck,new Vector3(.45f,.48f,-.36f),new Vector3(.45f,1.36f,-.36f),.022f,steel);
+                Cylinder("Blade spindle fixed bearing",deck,new Vector3(bladeControlX,1.53f,bladeControlZ),.075f,.09f,navy,Vector3.up);
+                Cylinder("Blade spindle lower collar",deck,new Vector3(bladeControlX,.69f,bladeControlZ),.058f,.09f,steel,Vector3.up);
+                Beam("Blade index support",deck,new Vector3(bladeControlX,1.495f,bladeControlZ),new Vector3(bladeControlX+.10f,1.495f,bladeControlZ-.17f),.018f,steel);
+                Box("Blade travel index plate",deck,new Vector3(bladeControlX+.10f,1.49f,bladeControlZ-.17f),new Vector3(.25f,.018f,.09f),navy);
+                Label("BLADE  /  3.5 TURNS",deck,new Vector3(bladeControlX+.10f,1.503f,bladeControlZ-.17f),.015f,Color.white,Quaternion.Euler(270,180,0));
+                Beam("Blade adjustment spindle",deck,new Vector3(bladeControlX,.48f,bladeControlZ),new Vector3(bladeControlX,1.58f,bladeControlZ),.022f,steel);
                 // Accessible manual plunger sits inboard/right of the operator. Only the
                 // rod and T-handle move; the guide and guard remain fixed to the deck.
                 Cylinder("Snow breaker fixed guide",deck,new Vector3(.43f,1.22f,.36f),.075f,.36f,navy,Vector3.up);
@@ -840,6 +885,7 @@ namespace IceResurfacer.Presentation
                     Cylinder("Flood outlet nozzle",c,new Vector3(x,.08f,-.42f),.014f,.05f,black,Vector3.down);
                 }
                 Beam("Wash water manifold",c,new Vector3(-half+.1f,.42f,-.19f),new Vector3(half-.1f,.42f,-.19f),.042f,cyan);
+                Box("Wash pickup squeegee contact",c,new Vector3(0,.027f,config.WashPickupContactFore),new Vector3(width,.025f,config.WashPickupContactLength),rubber);
                 Beam("Flood distribution manifold",c,new Vector3(-wetWidth*.5f+.02f,.11f,-.42f),new Vector3(wetWidth*.5f-.02f,.11f,-.42f),.035f,steel);
                 world.WaterOutlet=Group("Visible flood emission",c,new Vector3(0,.09f,-.43f));
                 world.SnowOutlet=Group("Escaping snow at conditioner",c,new Vector3(half-.2f,.16f,-.41f));
@@ -880,11 +926,16 @@ namespace IceResurfacer.Presentation
 
             void Brush(Transform machine)
             {
-                world.BrushArm=Group("Board brush articulated arm / left side",machine,new Vector3(-.9f,.38f,.5f));
-                Beam("Board brush link",world.BrushArm,Vector3.zero,new Vector3(-.34f,-.18f,0),.048f,steel);
-                world.Brush=Group("Rotating board brush",world.BrushArm,new Vector3(-.35f,-.23f,0));
+                world.BrushArm=Group("Board brush articulated arm / left side",machine,new Vector3(config.BrushPivotX,.38f,config.BrushPivotZ));
+                world.BrushLink=Beam("Board brush link / compliant extension",world.BrushArm,Vector3.zero,new Vector3(-config.BrushArmLength,-.18f,0),.065f,steel);
+                Cylinder("Brush deployment hinge",world.BrushArm,Vector3.zero,.13f,.18f,navy,Vector3.up);
+                world.Brush=Group("Rotating board brush",world.BrushArm,new Vector3(-config.BrushArmLength,-.23f,0));
                 Cylinder("Brush motor housing",world.Brush,new Vector3(0,.15f,0),.15f,.19f,black,Vector3.up);
                 Cylinder("Brush plate",world.Brush,new Vector3(0,.055f,0),.42f,.055f,cyan,Vector3.up);
+                world.BrushRoller=Group("Brush contact roller carriage",world.BrushArm);
+                Beam("Brush contact roller stalk",world.BrushRoller,Vector3.zero,new Vector3(-.15f,0,0),.033f,steel);
+                Cylinder("Board brush kickplate contact roller",world.BrushRoller,new Vector3(-.15f,0,0),.16f,.13f,rubber,Vector3.up);
+                BatchMeshes(world.BrushRoller);
                 for(int i=0;i<32;i++)
                 {
                     float a=i*Mathf.PI/16;

@@ -82,7 +82,7 @@ namespace IceResurfacer.Presentation
             target[5]=.10f;
             target[6]=(c.VerticalAuger?.15f:0)*(1+congestion*.6f);
             target[7]=Mathf.Clamp01(speed/3)*.14f+Mathf.Abs(c.Throttle)*Mathf.Clamp01(sim.MachineLoad)*.08f+deceleration*.08f;
-            target[8]=sim.GuideRollerContact?Mathf.Clamp01(speed)*.09f:0;
+            target[8]=(sim.GuideRollerContact?Mathf.Clamp01(speed)*.09f:0)+sim.TractionSlip*.10f;
             target[9]=Mathf.Clamp01((sim.DumpSnowRate+sim.DischargeSnowRate+sim.EscapingSnowRate)*10)*.27f;
             for(int i=0;i<layers.Length;i++)layers[i].volume=Mathf.Lerp(layers[i].volume,target[i]*factor,1-Mathf.Exp(-6*Time.unscaledDeltaTime));
             layers[0].pitch=.76f+Mathf.Abs(c.Throttle)*.12f+speed*.075f+Mathf.Clamp01(sim.MachineLoad)*.08f;
@@ -90,6 +90,7 @@ namespace IceResurfacer.Presentation
             layers[2].pitch=sim.ConveyorJammed?.38f:1-congestion*.23f;
             layers[6].pitch=sim.ConveyorJammed?.34f:1-congestion*.29f;
             layers[7].pitch=.72f+speed*.15f+Mathf.Clamp01(sim.MachineLoad)*.12f;
+            layers[8].pitch=.8f+sim.TractionSlip*.5f;
             layers[3].pitch=.91f+Mathf.Clamp01(hydraulicDemand)*.11f;
             lastSpeed=speed;
         }

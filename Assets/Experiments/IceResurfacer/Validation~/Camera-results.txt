@@ -10,18 +10,35 @@ PASS raised stance retains WASD without applying service brake
 PASS turning vehicle preserves local head orientation
 PASS vehicle turn naturally carries world viewpoint
 PASS returning to seated height preserves head orientation
-PASS Space release smoothly returns to seated eyes
+PASS Space release smoothly returns to adjustable seated eyes
+PASS R toggles persistent raised stance after release
+PASS R standing preserves head orientation
+PASS second R sits down
 PASS pause does not recenter
 PASS guide does not recenter
 PASS focus loss does not recenter
-PASS R begins a smooth recenter without teleporting
+PASS X begins a smooth recenter without teleporting
 PASS recenter remains animated at 0.10 seconds
 PASS recenter reaches forward after 0.20 seconds
 PASS recenter preserves raised stance
-PASS E remains blade adjustment, not recenter
+PASS period deepens blade without a camera-key conflict
+PASS Q preset persists after release
+PASS Q respects head yaw limit
+Q calibrated pose: local eyes=(-0.40, 0.09, 0.00) angles=(70.62, 190.00, 0.00)
+PASS E preset persists after release
+PASS E respects head yaw limit
+E calibrated pose: local eyes=(0.00, 0.06, -0.18) angles=(29.94, 54.51, 0.00)
+PASS C preset persists after release
+PASS C respects head yaw limit
+C calibrated pose: local eyes=(0.52, 0.09, 0.00) angles=(30.76, 167.91, 0.00)
+PASS X preset persists after release
+PASS X respects head yaw limit
+X calibrated pose: local eyes=(0.00, 0.06, 0.00) angles=(5.00, 0.00, 0.00)
 PASS positive yaw and downward pitch limits preserved
 PASS negative yaw and upward pitch limits preserved
-PASS standing sightline through physical opening reaches actual tank snow
+PASS standing opening exposes actual snow over multiple rays (2/25; last hit Batched IceResurfacer / Porcelain enamel)
 PASS seated shoulder view sees outer conditioner plate without solid obstruction
+PASS E preset exposes actual blade hub without seat or manifold obstruction
+PASS E preset exposes blade rim for mouse operation (8/8 rays)
 PASS new session resets head forward
 PASS new session resets seated height

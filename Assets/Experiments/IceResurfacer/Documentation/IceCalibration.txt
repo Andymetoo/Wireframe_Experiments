@@ -1,0 +1,116 @@
+AURORA R-54 / ICE GEOMETRY, RECOVERY AND SURFACE UPDATE AUDIT
+28 October 2026
+
+Measured geometry and the operator's tire cue
+The source already used 1.370 m wheel track and 0.300 m tires: an outside
+tire edge is 0.835 m from the vehicle centerline. The blade is 1.956 m and
+the water towel is 2.100 m. These dimensions have not been enlarged. A
+second straight pass whose inside tire exterior follows the preceding
+continuous physical towel edge at 1.050 m has 1.050 - 0.835 = 0.215 m of
+nominal towel overlap. This ideal continuous-edge reference differs from
+following the rasterized strong-wet boundary measured below.
+
+The captured before implementation produced a 2.000 m strong wet band at
+the tested grid phase. Its correctly tire-aligned second pass also had zero
+dry or unscored cells between pass centers. The reported one-foot gap was
+therefore NOT reproduced as a straight-pass width defect. Camera sightline,
+choice of visible boundary, trailer articulation and operator alignment
+remain relevant human tests; the measurements do not disprove that feedback.
+See Validation~/Ice-width-before-results.txt and IceWidthBeforeProbe.cs.
+
+The new finite film has a maximum 0.120 m lateral fringe per towel side.
+Five percent of the source distribution feeds a tapered fringe, with the
+remaining supply in the physical towel footprint. It is the same water,
+not extra water or free coverage. The boards clip/retain that fringe and
+concentrate its available volume on the ice; no non-ice cell receives it.
+Off-ice release is separately deposited into the spatial floor runoff map.
+This is a conservative lateral distribution approximation, not a fluid solver.
+
+At the repeatable test's 0.100 m grid phase, the new strong wet band is
+2.200 m (+10% versus the before test), while the low-volume fringe's full
+raster is 2.400 m. Raster cell extents may exceed the 2.340 m analytic film
+width by one sample: physical selection is by cell center. The second
+center is 1.935 m; its inside tire edge at 1.100 m exactly follows the first
+strong wet edge. The measured configuration's nominal towel overlap is
+2.100 - 1.935 = 0.165 m. There are zero dry cells and zero unscored cells between
+the pass centers. Strong wet means at least 0.08 mm retained water; full
+film means at least 0.001 mm. A visible fringe is not a separate cut credit.
+The close-board pass reaches the boundary within the 0.100 m sample grid,
+and all non-ice cells remain dry. Physical blade and body dimensions stay
+unchanged. Actual affected cells are rendered; there is no cosmetic wide trail.
+
+Shaving, water, finish and scoring
+The configurable ShavingPerimeterExclusion is 0.1524 m (six inches). The
+rounded rink has 149804 ice samples, of which 146888 are in the shaving mask.
+Combined coverage and separate shaving coverage use that reachable mask.
+Water coverage, water distribution, overwater and surface quality still
+measure the entire ice sheet. An untouched excluded rim is not automatically
+declared finished. F2 cycles normal ice, the shaving mask, and actual
+cut/wash/flood channels; the minimap follows the same diagnostic selection.
+
+The breakdown is coverage 40 points, whole-sheet finish 30, water
+distribution 10, avoiding excess 10, material efficiency 5, and disposal/
+safe return 5. Actual misuse deducts 1.2 per recorded fault, capped at 30.
+Material efficiency compares useful retained film with water consumed; it
+does not test a mandatory route or forbid repeat passes. Practice still
+calculates conditions while displaying no score.
+
+Liquid pickup and material balance
+FloodMm now retains both phases. LiquidMm and its update time describe the
+remaining liquid; FrozenFloodMm is material that has frozen when resolved.
+Time changes phase without deleting stored water. Freezing is still the
+prototype's exponential temperature-free approximation, resolved lazily.
+The pickup contact region is the real 1.956 m blade span by a 0.320 m
+squeegee strip at conditioner-local z=-0.120 m. Fresh flood water lands at
+the separately authored trailing towel (z=-0.440 m, length 0.270 m), behind
+the pickup. The pump cannot immediately recycle new flood water while
+travelling forward. It works only with the conditioner contacting the ice and
+a primed, functioning pump. Fresh wash return and existing surface water
+share a 1.45 L/s calibrated pump limit. A 0.035 mm film remains behind.
+Wash tank free capacity limits recovery; a full reservoir cannot erase water.
+Recovered surface water enters the independent wash tank, with the existing
+filter/recovery factor limiting collection. No fresh flood tank is credited.
+
+Overwater defects keep their frozen portion. Liquid recovery removes only
+the recoverable portion of a defect, and recomputes actual surface quality.
+Waiting alone does not erase an overwater penalty. Frozen water cannot enter
+the pickup reservoir. A core regression drove back over a patch and recovered
+3.757 L in five seconds; ice mass loss and wash tank gain agreed within
+0.003 L. The sum of cell overwater depth fell from 2012.32 to 1674.13 mm
+only after that recovery.
+Those sums are diagnostic integrals across samples, not one physical depth.
+Editor before/after screenshots use a smaller patch and hide machine geometry
+for the measurement capture so the finite pickup strip and retained film
+underneath the equipment are visible in the actual-cell display.
+At the open gate, runoff is deposited after the tick's pickup has used its
+sampled availability, so fresh spill cannot inflate the pump or tank-capacity
+budget. A near-full wash-tank regression checks this mixed ice/floor case.
+
+Board brush
+The arm extends from (-0.90, 0.38, +0.50) in machine-local coordinates with
+a 0.38 m arm and 0.25 m brush radius. Retraction swings 85 degrees. Its actual
+world center is constrained inward by board contact so the disc does not
+penetrate the kickplate. Only cells inside the deployed brush disc lose
+snow, which is moved into a local windrow in front of the conditioner.
+It does not award cut coverage or teleport material into a tank. Running
+the brush with the conditioner raised or outside the rink remains allowed.
+
+CPU work and limitations
+The old surface update regenerated every channel of all 156000 texture
+samples on each survey update, even when the sheet was unchanged. The new
+field records changed cells in fixed arrays. Cut/snow/finish/process/map
+channels refresh only for those cells; wet fading touches only active wet
+cells using a precomputed interpolation table. Unchanged process and map
+textures skip upload. Surface report totals are cached by physical revision;
+elapsed time, handling and misuse remain live. There are no per-cell objects.
+Brush removal invalidates those totals even when its windrow lands on the
+floor. Zero-weight spill-kernel samples do not alter untouched surface quality.
+Raw cell edits made by explicit fixtures must call Ice.MarkChanged and
+Surface.Invalidate; ordinary processing and deposits track changes directly.
+
+Validation~/Ice-calibration-results.txt records core timing and zero managed
+allocation over 5000 fixed ticks. That CPU-only figure is NOT FPS and excludes
+Unity, IMGUI and rendering. Use the before/after player performance reports
+for whole-frame measurements. Operator feel, exact wet-boundary recognition
+from the seated reference, tilted turns and analog water settings require
+actual operator playtesting despite deterministic straight-pass success.

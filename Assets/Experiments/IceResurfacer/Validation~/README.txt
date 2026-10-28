@@ -1,86 +1,143 @@
-﻿Ice Resurfacer validation
-27 October 2026
+AURORA R-54 / VALIDATION
+28 October 2026
 
-Run actual Core source with the dependency-free .NET 9 harness:
+Scope and authoritative results
+This folder is ignored by Unity because its name ends in ~. It contains the
+standalone core harness, isolated Unity project/build helpers, actual rendered
+evidence and measurements. Current behavior is documented in ../README.txt and
+../Documentation/OperatorFreedom.txt. Earlier 25-27 October documentation keeps
+historical metrics; it is not the current control or southeast-layout guide.
+Generated reports establish the status of their own run. A source description
+or older image alone does not establish that the latest runtime checks passed.
+
+Deterministic core
+Run the actual Core source with .NET 9:
   dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release -p:UseSharedCompilation=false
-Unity ignores this directory because its name ends in ~.
+Current aggregate result: PASS, 32 deterministic scenario groups, recorded in
+Results.txt. It covers deterministic drive/braking/reverse, contact/guide rollers,
+trailing footprints, separate conveyors, priming/pump wear, water/snow balance,
+real jams and recovery, residual dumping, scoring/practice, repeated control/
+resume sequences, Free Simulation versus training, hose recovery, finite film,
+pickup, the shaving mask and the complete southeast route.
 
-Results.txt records 29 deterministic scenarios: original driving, independent
-conveyors, wash priming/recovery, water, brush, practice/scoring and interlocks;
-physical cut/water footprints and conservation; snow-breaker assistance;
-measured snow calibration; spill/jam/dump/recollection conservation; progressive
-dumping; side/end/rounded board contacts; close-board water margin; and an
-integrated scored route from the production default spawn.
-New scenarios reproduce the rejected-dump travel latch, exercise 24 accumulated
-control/restart cases at centre and board edge, hold/release hydraulics, live
-interlock recovery, conserved residual shakeout and the complete water-service
-lifecycle. Movement-before.txt is the captured failing pre-fix reproduction.
+Specialized entry points and reports:
+- FreedomProbe.csproj: free operation, actual landing geometry, traction and
+  southeast gate tests; pass '-- route' after dotnet run options for FullRun.
+- Freedom-results.txt: unrestricted and unconventional operation, training
+  isolation, moving dismount, arbitrary/angled dump locations and material totals.
+- Southeast-full-run.txt: the complete scored route from the production southeast
+  spawn through entry, resurfacing, return, angled unloading and finish.
+- ServiceFreedomValidation.cs: invoked by the aggregate harness; moving/active
+  dismount, permissive hose operation, departure/breakaway, return and conservation.
+- ServiceValidation.cs: the retained safe service sequence in Guided Training.
+- IceCalibrationProbe.csproj / Ice-calibration-results.txt: tire-aligned parallel
+  passes, liquid pickup, frozen-water balance, brush footprint and scoring mask.
+- IceWidthBeforeProbe.csproj / Ice-width-before-results.txt: the captured previous
+  implementation's straight-pass width and alignment measurement.
+- Movement-before.txt: the original rejected dump-target travel-latch failure.
 
-The complete route uses only throttle/steer/equipment commands. It never
-writes poses or cells, changes tank capacity, or refills. Five nested perimeter
-circuits and nine overlapping oval circuits cover the sheet before clearing,
-exiting, aligning with the pit, dumping, lowering and finishing. The outer route
-is 0.05 m closer to the boards than the earlier coarse-grid regression and
-uses 23% flood demand. Four board-contact penalties are retained. This route
-is a regression harness, not an in-game autopilot or an efficient operator plan.
-Individual mechanism tests deliberately use pose fixtures and small capacities
-to isolate behavior. Material balance counts actual cut depth, loose snow,
-conveyor buffers, tank, pit and accounted off-ice losses; cumulative spill
-throughput is not counted as a second storage reservoir.
+Full-run comparison
+The current control-driven scored route records 97.05% combined treatment of
+shavable ice, 95.16% combined treatment of ALL ice, 97.25% water coverage,
+82.2% finish, 90.4 points, 674.8 L flood use, 0.723 m3 snow in the pit,
+1759 simulated seconds, zero misuse faults and a proper southeast return.
+The prior whole-ice coverage baseline was 95.18%. Compare 95.16% with that figure;
+the 97.05% result uses the new reachable mask. The score weights also changed.
 
-20-yard before/after measurements compare the original source/configuration
-against the current source at the same nominal blade settings and 42% throttle
-from rest, then blade-out/brake/conveyor purge. The previous implementation did
-not fill the tank over that distance. See Results.txt for observed volumes,
-OperatorRealism.txt for the actual bite model and its calibration assumptions.
-Reference blade stays 1.956 m; water distribution is 2.100 m; grid is 0.10 m.
-Cut and water have separate physical bounds. Water-only cells earn no cut
-coverage. Default close-board physical margin is 85 mm, rasterized margin 100 mm.
+The full route only uses throttle, steering and equipment commands after the
+normal spawn. It does not write poses/cells/tanks, refill, change capacities or
+snap to the pit. It is a regression harness, not an in-game autopilot or an
+optimal operating pattern. Individual mechanism tests use disclosed fixtures
+and smaller reservoirs to isolate effects. Material balance counts actual stored
+ice/snow/water in cells, conveyors, tank, pit and floor. Cumulative throughput
+is not counted again as an independent storage reservoir.
 
-Repeatable Unity / input / rendering validation
+Ice calibration interpretation
+Blade remains 1.956 m, towel 2.100 m, body 2.130 m, wheel track 1.370 m and tire
+width 0.300 m. The outside tire edge is 0.835 m from the centerline. At the test
+0.100 m grid phase, the strong wet band is 2.200 m after finite spreading versus
+2.000 m before. Both correctly tire-aligned straight tests have zero dry and
+unscored cells between passes. The reported foot-wide gap was not reproduced by
+that test; turning, perspective and which visible edge is followed still require
+operator playtesting. Do not describe the test as proving that reported visual
+problem impossible. IceCalibration.txt explains thresholds and raster edges.
+
+The new film uses limited existing water volume and leaves all non-ice cells
+dry. A 0.1524 m mask excludes physically inaccessible shaving perimeter only;
+water/finish still assess the complete sheet. Pickup removes only real liquid
+within its contact region, under pump and wash-tank limits. Frozen material
+cannot disappear. CPU timings printed by this core harness exclude Unity, UI
+and graphics and are not FPS measurements.
+
+Unity / actual input / rendering
 StageUnityValidation.ps1 creates an isolated project at Validation~/UnityProject
-with its own Settings, Packages and Library. Use -UpdateOnly on later runs.
-If scripts are disabled locally, invoke with:
+with its own Settings, Packages and Library. Run without -UpdateOnly the first
+time; use -UpdateOnly subsequently:
   powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/StageUnityValidation.ps1 -UpdateOnly
-
-Run installed Unity 6000.4.1f1 against that copy with -batchmode -force-d3d11
+Run installed Unity 6000.4.1f1 against THAT copy with -batchmode -force-d3d11
 and -executeMethod IceResurfacer.Editor.IceResurfacerEditor.RunBatch.
-Do not pass -quit: the method enters real Play Mode and exits after checking.
-Unity licensing must be accessible to the validation process. No license,
-shared project settings, packages, or live user scene are changed by the tests.
-Reports and camera captures initially land in the copy's own experiment
-Validation~ directory. Copy the successful reports/images here after the run.
+Do not add -quit: the method enters actual Play Mode and exits after its checks.
+The validator needs access to the local Unity license. The original open Editor,
+its scene, project settings, packages and build-scene list remain untouched.
+Reports and images first land in the copy's own experiment Validation~ directory;
+copy the successful final reports/captures here after the run.
 
-Unity-results.txt: saved scene, shader, spatial lane, audio and runtime errors.
-Camera-results.txt: real Input System camera behavior, stance and sightlines.
-Authenticity-results.txt: real game Update keyboard/mouse recovery matrix,
-focus/pause/release, board recovery and actual shakeout emission.
-Physical-controls-results.txt: rendered-part ray picking, both latched augers,
-spring controls, independent quarter-turn valves and full blade-wheel travel.
-Service-results.txt: actual F/E/WASD route around the machine, both inlet fills,
-overflow, nozzle return, reboarding and travel recovery.
-Operations-results.txt: actual snow visual/state behavior and CPU/allocation
-sample. Rendering stress fixtures seed initial tank stock near full; ordinary
-fill rate is measured by the core harness without tank writes.
+Runtime report map:
+- Unity-results.txt: launch/assets/shader/spatial lane/audio and managed errors.
+- Camera-results.txt: persistent RMB, Q/E/C/X presets, R/Space, eye/sightline tests.
+- Authenticity-results.txt: actual game Update input, drive recovery, release,
+  focus/pause, contact recovery and shakeout emission.
+- Physical-controls-results.txt: ray picking, latched augers, held hydraulics,
+  independent quarter-turn valves, and full 3.5-turn blade-wheel travel.
+- Service-results.txt: actual F/E/W route around the southeast machine room,
+  free mouse look, both fills/overflow, broad highlighted return, boarding,
+  driven hose breakaway and moving dismount with equipment state preserved.
+- Operations-results.txt: snow transfer and pooled visual/state behavior.
+- Ice-calibration-runtime-results.txt: tire overlap, scoring mask and before/
+  after pickup rendered from actual cells by IceCalibrationRuntimeValidation.
+Some rendering stress fixtures deliberately seed near-full initial snow stock.
+The complete core route does not. Check final generated results for runtime
+status; a pending rerun must not be summarized as a successful final run.
 
-Then run -executeMethod IceResurfacer.Editor.IceResurfacerEditor.BuildLayoutPlayer
-against the isolated copy. It adds the probe only to a temporary scene and
-builds Validation~/Build/AuroraLayout.exe. Run RunLayoutPlayer.ps1 with Width
-1366 / Height 768, then Width 1920 / Height 1080. The helper starts hidden,
-verifies alpha zero and a non-interactive owned window, and supplies native
-messages without moving the user's OS pointer or activating the window.
-It checks switches/levers, three and 3.5 complete blade turns, stops/reversal,
-quarter-turn wash/flood handles, spring return, guide/pause/start/results,
-compact/service layouts, clipping and captures.
-Native wheel scrolling and human ergonomics remain manual checks.
-Use -WindowMode Offscreen for the final capture path. Unity's hidden-window
-D3D11 presentation diagnostics are counted separately by the launcher because
-they bypass the managed log callback. The opt-in probe disables the Development
-Console overlay for clean HUD captures; player logs retain the warnings.
+Native HUD verification
+Run -executeMethod IceResurfacer.Editor.IceResurfacerEditor.BuildLayoutPlayer
+against the isolated project. It adds a probe to a temporary scene and builds
+Validation~/Build/AuroraLayout.exe. Run RunLayoutPlayer.ps1 with -Width 1366
+-Height 768, then -Width 1920 -Height 1080; -WindowMode Offscreen is the capture
+path. The helper uses only its owned hidden/non-activating window, sends native
+messages and does not move the user's OS pointer or change the open Editor.
+It checks real IMGUI interactions, spring/latching controls, valve and handwheel
+ranges, guide/pause/welcome/results/compact/service layouts and text clipping.
+HUD-player-results-<resolution>.txt and HUD-layout-issues-<resolution>.txt record
+those outcomes. HUD-* PNGs are actual native framebuffers, not mockups.
 
-Camera images: Operator-seated.png, Operator-standing-window.png,
-Operator-board-side-edge.png, Operator-full-tank-window.png,
-Operator-auger-discharge.png. Operation images: Snow-overflow.png,
-Snow-dumping.png, Snow-dumped-pit.png. These are actual Unity camera renders;
-HUD-* images separately include the player's native IMGUI framebuffer.
-No simulation check proves physically authentic driving or a GPU frame budget.
+Performance measurements
+RunPerformancePlayer.ps1 drives the separate opt-in performance player at
+1366x768 and 1920x1080. PerformanceBefore/ and PerformanceAfter/ hold CSV results
+from their respective builds; OperatorFreedomBefore/ preserves the captured
+previous implementation used for comparison. Refer to ../Documentation/Performance.txt
+for build/run details, scenario definitions, final measurements and limits.
+The current hidden-player comparison is a separate measurement task; do not
+infer improved FPS from passed mechanics tests or preliminary individual CSVs.
+F4 shows smoothed FPS/frame time at 4 Hz; F3 shows measured CPU work, available
+GPU timing, last-frame allocation and draw calls during normal play.
+
+Unity's hidden-window Direct3D11 presentation warnings bypass the managed log
+callback. The launchers count them separately in report footers and preserve
+player logs. The opt-in layout probe hides the Development Console overlay for
+clean captures without suppressing the log. Neither hidden-window performance
+nor a zero managed-error count establishes focused-window input latency.
+
+Evidence and remaining manual checks
+OperatorFreedomBefore/ contains the preserved before-view evidence. Current
+operator images include Operator-seated.png, Operator-standing-window.png,
+Operator-board-side-edge.png and Camera-preset-*.png. Southeast-entrance.png,
+Southeast-service-room.png and Service-*.png show the actual room/service flow.
+Ice overlap/mask/pickup and snow-operation images show simulated material state.
+All are actual Unity camera renders; HUD captures separately include IMGUI.
+
+The supplied image pair is the traditional hydraulic station and the tall
+seated viewpoint. Mentioned conditioner/board-gap annotations were not attached.
+Automated tests do not establish manufacturer authenticity, subjective sound,
+real tire response, hose weight, long-term stability beyond the measured window,
+or final ergonomic comfort. Actual operator playtesting remains necessary.

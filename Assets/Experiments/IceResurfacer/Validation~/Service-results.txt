@@ -1,26 +1,35 @@
-PASS interactive service station initialized in launch scene
+PASS interactive southeast service station initialized in launch scene
 PASS normal session starts full
+PASS gate is in actual southeast rounded corner
+PASS hose station is on parked machine's RIGHT
+PASS rear-quarter fill necks remain on right fixed water-tank structure
 PASS explicit practice partial-tank fixture
-PASS F safely dismounts to grounded service camera
-PASS on-foot viewpoint remains at grounded standing height
-PASS WASD reaches wall station around solid machine footprint
-PASS E takes physical wall nozzle
-PASS carried hose has bounded physical route
-PASS physical flood inlet couples independently
-PASS visible nozzle ends at connected inlet
-PASS E opens real wall supply valve
-PASS connected flood tank fills at measured 12 L/s; wash remains unchanged
-PASS full tank stores no excess; real overflow continues
-PASS overflow emits a bounded visible stream
-PASS overflow uses rounded mesh droplets instead of opaque billboard quads
-Service presentation CPU sample (240 calls, connected hose plus live overflow): 0.009 ms/call; managed allocation=0 bytes. Includes periodic tank-label refresh, excludes simulation, IMGUI and GPU. Fixed 160-droplet pool and reusable six-node hose route.
-PASS wall valve stops supply
-PASS E releases the depressurized flood coupling
-PASS same nozzle connects independently to wash inlet
-PASS wash tank fills and overflows independently
-PASS nozzle returns to wall holder through normal interaction
-PASS walk back to left step and F restore seated camera
-PASS machine resumes forward travel after both service cycles
-PASS overflow liters recorded independently of tank storage
-PASS runtime supply equals stored volume plus drain flow within float tolerance
-Runtime captures are rendered scene evidence. Mechanical feel and walking comfort still require operator playtesting.
+PASS actual F dismounts to grounded service camera
+PASS on-foot viewpoint remains grounded
+PASS on-foot mouse look works without RMB
+PASS pause releases on-foot cursor capture
+PASS actual E takes physical wall nozzle after walking around machine
+PASS carried hose has bounded route around solid machine
+PASS right rear flood inlet couples independently
+PASS visible nozzle terminates at connected fill neck
+PASS actual E opens wall supply
+PASS 12 L/s fill affects only connected flood reservoir
+PASS capacity is capped and excess water overflows
+PASS overflow uses fixed bounded 160-droplet pool
+PASS overflow retains rounded mesh droplets
+Service presentation CPU sample, connected hose and overflow, 240 calls: 0.017 ms/call; 0 managed bytes. Excludes simulation, rendering/GPU and IMGUI; persistent floor meshes update at 5 Hz only when material state changes.
+PASS normal E disconnects flood hose
+PASS same nozzle connects separate wash reservoir
+PASS wash reservoir fills and overflows independently
+PASS wash nozzle disconnects normally
+PASS holder highlights with forgiving half-meter aim tolerance
+PASS E snaps nozzle home from practical two-meter approach
+PASS walk back and F restores seated camera
+PASS boarding releases free-look cursor for physical cockpit controls
+PASS machine drives after full service procedure
+PASS runtime supply is conserved into tank storage plus discharge
+PASS actual driven departure releases hose when its routed reach is exceeded
+PASS breakaway spills and permits continued driving without stale locks
+PASS actual F permits moving on-ice exit with raised tank and operating equipment
+PASS free dismount preserves attained hydraulics, conveyors, pump and both water valves
+Service route uses keyboard F/E/W and ordinary walk collision; Aim supplies deterministic head orientation. No operator/vehicle pose writes during the service procedure or driven departure; session-start presentation poses are synchronized before testing.

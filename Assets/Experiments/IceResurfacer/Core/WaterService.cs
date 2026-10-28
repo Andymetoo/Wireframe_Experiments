@@ -3,7 +3,7 @@ using System;
 namespace IceResurfacer.Core
 {
     public enum WaterFillPort { None, Flood, Wash }
-    public enum WaterHoseState { Stowed, Carried, Flood, Wash }
+    public enum WaterHoseState { Stowed, Carried, Flood, Wash, Dropped }
 
     public sealed partial class Simulation
     {
@@ -12,6 +12,19 @@ namespace IceResurfacer.Core
         public const float ServiceMaximumFlowLitersPerSecond = 12f;
         public const float ServiceHoseLengthMeters = 11f;
         public const float ServiceReachMeters = 2f;
+        public const float ServiceHolderReachMeters = 2.65f;
+        // Separate rear-quarter filler necks, fixed to the water-tank structure,
+        // never the lifting snow bin. Coordinates are shared with the scene.
+        public const float FillPortLocalX = 1.02f;
+        public const float FloodFillLocalZ = .05f;
+        public const float WashFillLocalZ = -.55f;
+        public const float FloodFillHeight = 1.22f;
+        public const float WashFillHeight = 1.48f;
+        public const float ServiceAnchorSide = 5.45f;
+        public const float ServiceAnchorOutward = 6f;
+        public float HoseLooseX { get; private set; }
+        public float HoseLooseZ { get; private set; }
+        public int HoseBreakaways { get; private set; }
         public bool OnFoot { get; private set; }
         public WaterHoseState HoseState { get; private set; }
         public float SupplyValve { get; private set; }
@@ -22,26 +35,28 @@ namespace IceResurfacer.Core
         public double TotalServiceOverflowLiters { get; private set; }
         public double TotalServiceDrainLiters { get; private set; }
         public bool HoseConnected { get { return HoseState == WaterHoseState.Flood || HoseState == WaterHoseState.Wash; } }
-        public bool ServiceDriveInhibited { get { return HoseConnected || OnFoot; } }
+        public bool ServiceDriveInhibited { get { return OnFoot || (GuidedTraining && HoseConnected); } }
         public string ServiceDriveInhibitReason
         {
             get
             {
-                if (HoseConnected) return "Water hose connected: close the wall valve, disconnect at the inlet, and return the nozzle before driving.";
-                return OnFoot ? "Operator on foot: return to the left boarding step and press F to drive." : "";
+                if (GuidedTraining && HoseConnected) return "Training assistance: water hose connected. Close the wall valve and disconnect before driving.";
+                return OnFoot ? "Operator on foot: return to the left step or rear platform and press F to drive." : "";
             }
         }
 
         public bool TryDismount()
         {
             if (OnFoot) return true;
-            if (!InServiceBay || Math.Abs(Vehicle.Speed) > .035f)
-                return ServiceReject("Stop fully inside the service bay before dismounting with F.");
-            if (!EquipmentSafe || TankRaised)
-                return ServiceReject("Stow the conditioner, retract the blade, stop augers/brush/pump, close both water valves and lower the snow tank before dismounting.");
+            if (GuidedTraining && (!InServiceBay || Math.Abs(Vehicle.Speed) > .035f))
+                return ServiceReject("Training assistance: stop inside the service bay before dismounting. Free Simulation permits exits anywhere.");
+            if (GuidedTraining && (!EquipmentSafe || TankRaised))
+                return ServiceReject("Training assistance: stow equipment before dismounting. Free Simulation leaves your machinery settings unchanged.");
             OnFoot = true;
             Controls.Throttle = Controls.Steer = 0;
-            LastMessage = "Service mode: WASD walk, RMB look, E use hose/valve/inlet, F board at the left step.";
+            LastMessage = Math.Abs(Vehicle.Speed) > .15f ? "Moving dismount: the unoccupied machine is coasting. Stay clear; F boards when near the step." :
+                "On foot: mouse look, WASD walk, E interact, F board at the left step. Machinery remains as you left it.";
+            if(Math.Abs(Vehicle.Speed)>.5f)Fault(19,LastMessage);
             return true;
         }
 
@@ -49,20 +64,29 @@ namespace IceResurfacer.Core
         {
             if (!OnFoot) return true;
             if (!Finite(distanceToStep) || distanceToStep > ServiceReachMeters)
-                return ServiceReject("Return to the left boarding step and press F.");
+                return ServiceReject("Return to the left step or rear operator platform and press F.");
+            if (HoseState == WaterHoseState.Carried && GuidedTraining)
+                return ServiceReject("Training assistance: return the hose nozzle to its wall holder before boarding.");
             if (HoseState == WaterHoseState.Carried)
-                return ServiceReject("Return the hose nozzle to its wall holder before boarding.");
+            {
+                // Boarding frees the operator's hands. The hose is left on the
+                // floor, not deleted or silently returned to its remote holder.
+                HoseState = WaterHoseState.Dropped;
+            }
             OnFoot = false;
-            LastMessage = HoseConnected ? ServiceDriveInhibitReason : "Seated. Water hose clear; ready to drive.";
+            LastMessage = HoseConnected ? (GuidedTraining ? ServiceDriveInhibitReason : "Hose still attached. Driving beyond its reach releases the breakaway coupling and spills water.") :
+                HoseState == WaterHoseState.Dropped ? "Seated. Nozzle left on the floor; retrieve it with E when back on foot." : "Seated. Ready to drive.";
             return true;
         }
 
         public bool TakeHose(float distanceToHolder = 0)
         {
-            if (!OnFoot || !InServiceBay || !WithinReach(distanceToHolder)) return ServiceReject("Walk to the hose holder in service mode.");
+            if (!OnFoot || !HolderReach(distanceToHolder)) return ServiceReject("Walk to the hose holder and press E.");
             if (HoseState != WaterHoseState.Stowed) return ServiceReject("The hose is already in use; disconnect it at the machine inlet.");
-            if (SupplyValve > .001f) return ServiceReject("Close the wall supply valve before taking the nozzle.");
+            if (GuidedTraining && SupplyValve > .001f) return ServiceReject("Training assistance: close the wall supply valve before taking the nozzle.");
             HoseState = WaterHoseState.Carried;
+            Layout.ToWorld(ServiceAnchorSide-.05f,ServiceAnchorOutward+.48f,out float x,out float z);
+            HoseLooseX=x;HoseLooseZ=z;
             LastMessage = "Hose in hand. Walk to the blue ICE WATER or teal WASH WATER inlet and press E.";
             return true;
         }
@@ -74,9 +98,9 @@ namespace IceResurfacer.Core
             if (!WithinReach(operatorDistance)) return ServiceReject("Walk closer to the selected fill inlet.");
             if (!Finite(routeLength) || routeLength < 0 || routeLength > ServiceHoseLengthMeters)
                 return ServiceReject("The 11 m hose cannot reach this inlet. Park nearer the water station.");
-            if (!InServiceBay || !EquipmentSafe || Math.Abs(Vehicle.Speed) > .035f || TankRaised)
-                return ServiceReject("Connect only to a stopped, safely stowed machine in the service bay.");
-            if (SupplyValve > .001f) return ServiceReject("Close the wall supply valve before coupling the hose.");
+            if (GuidedTraining && (!InServiceBay || !EquipmentSafe || Math.Abs(Vehicle.Speed) > .035f || TankRaised))
+                return ServiceReject("Training assistance: connect to a stopped, stowed machine in the service bay.");
+            if (GuidedTraining && SupplyValve > .001f) return ServiceReject("Training assistance: close the wall supply valve before coupling the hose.");
             HoseState = port == WaterFillPort.Flood ? WaterHoseState.Flood : WaterHoseState.Wash;
             LastMessage = "Hose coupled to " + (port == WaterFillPort.Flood ? "ice-making water" : "wash water") + ". Open the wall supply valve to fill.";
             return true;
@@ -85,19 +109,52 @@ namespace IceResurfacer.Core
         public bool DisconnectHose(float operatorDistance = 0)
         {
             if (!OnFoot || !HoseConnected || !WithinReach(operatorDistance)) return ServiceReject("Walk to the connected machine inlet to uncouple the hose.");
-            if (SupplyValve > .001f) return ServiceReject("Close the wall supply valve before disconnecting the pressurized hose.");
+            if (GuidedTraining && SupplyValve > .001f) return ServiceReject("Training assistance: close the wall supply valve before disconnecting the pressurized hose.");
             HoseState = WaterHoseState.Carried;
-            LastMessage = "Hose disconnected. Connect the other tank or return the nozzle to its wall holder.";
+            LastMessage = SupplyValve > .001f ? "Pressurized hose uncoupled: water is spilling from the nozzle. Close the wall supply to stop it." : "Hose disconnected. Connect the other tank or return the nozzle to its wall holder.";
             return true;
         }
 
         public bool ReturnHose(float distanceToHolder = 0)
         {
-            if (!OnFoot || HoseState != WaterHoseState.Carried || !WithinReach(distanceToHolder)) return ServiceReject("Carry the disconnected nozzle to its wall holder.");
-            if (SupplyValve > .001f) return ServiceReject("Close the wall supply valve before stowing the hose.");
+            if (!OnFoot || HoseState != WaterHoseState.Carried || !HolderReach(distanceToHolder)) return ServiceReject("Carry the disconnected nozzle near the highlighted wall holder and press E.");
+            if (GuidedTraining && SupplyValve > .001f) return ServiceReject("Training assistance: close the wall supply valve before stowing the hose.");
             HoseState = WaterHoseState.Stowed;
-            LastMessage = "Nozzle secured. Return to the left boarding step and press F.";
+            LastMessage = SupplyValve > .001f ? "Nozzle secured, but water is still running to the floor. Close the wall supply valve." : "Nozzle secured. Return to the left boarding step and press F.";
             return true;
+        }
+
+        public bool PickUpDroppedHose(float distanceToNozzle = 0)
+        {
+            if (!OnFoot || HoseState != WaterHoseState.Dropped || !WithinReach(distanceToNozzle))
+                return ServiceReject("Walk to the loose nozzle on the floor and press E.");
+            HoseState = WaterHoseState.Carried;
+            LastMessage = SupplyValve > .001f ? "Nozzle recovered. Water is flowing; close the wall supply or connect a tank." : "Nozzle recovered. Connect a tank or return it to the highlighted holder.";
+            return true;
+        }
+
+        public void SetCarriedHosePosition(float x, float z)
+        {
+            if (HoseState == WaterHoseState.Carried && Finite(x) && Finite(z)) { HoseLooseX = x; HoseLooseZ = z; }
+        }
+
+        public bool CheckHoseReach(float routedLength)
+        {
+            if (!HoseConnected || GuidedTraining || float.IsNaN(routedLength) || routedLength <= ServiceHoseLengthMeters) return false;
+            Layout.ToWorld(ServiceAnchorSide, ServiceAnchorOutward, out float ax, out float az);
+            VehiclePoint(FillPortLocalX + .14f, HoseState == WaterHoseState.Wash ? WashFillLocalZ : FloodFillLocalZ, out float x, out float z);
+            float dx=x-ax,dz=z-az,d=(float)Math.Sqrt(dx*dx+dz*dz),scale=Math.Min(1,(ServiceHoseLengthMeters-1.4f)/Math.Max(.001f,d));
+            HoseLooseX=ax+dx*scale;HoseLooseZ=az+dz*scale;
+            HoseState=WaterHoseState.Dropped;HoseBreakaways++;
+            LastMessage="Hose pulled taut: breakaway coupling released. The machine can move; close the wall supply and retrieve the loose nozzle with E.";
+            Fault(18,LastMessage);
+            return true;
+        }
+
+        void VehiclePoint(float localX,float localZ,out float x,out float z)
+        {
+            float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
+            x=Vehicle.X+localX*cs+localZ*sn;z=Vehicle.Z-localX*sn+localZ*cs;
         }
 
         public bool SetSupplyValve(float opening, float distanceToValve = 0)
@@ -123,6 +180,13 @@ namespace IceResurfacer.Core
         void TickWaterService(float dt)
         {
             ServiceFlowLitersPerSecond = ServiceOverflowLitersPerSecond = 0;
+            if (HoseConnected && !GuidedTraining)
+            {
+                Layout.ToWorld(ServiceAnchorSide, ServiceAnchorOutward, out float ax, out float az);
+                VehiclePoint(FillPortLocalX + .14f, HoseState == WaterHoseState.Wash ? WashFillLocalZ : FloodFillLocalZ, out float x, out float z);
+                float dx=x-ax,dz=z-az;
+                CheckHoseReach((float)Math.Sqrt(dx*dx+dz*dz)+.9f);
+            }
             if (SupplyValve <= .001f) return;
             float supplied = ServiceMaximumFlowLitersPerSecond * SupplyValve * dt;
             TotalServiceSuppliedLiters += supplied;
@@ -130,6 +194,9 @@ namespace IceResurfacer.Core
             if (!HoseConnected)
             {
                 TotalServiceDrainLiters += supplied;
+                float spillX=HoseLooseX,spillZ=HoseLooseZ;
+                if(HoseState==WaterHoseState.Stowed) Layout.ToWorld(ServiceAnchorSide-.15f,ServiceAnchorOutward+.48f,out spillX,out spillZ);
+                DepositRunoff(spillX,spillZ,supplied);
                 return;
             }
             bool flood = HoseState == WaterHoseState.Flood;
@@ -143,10 +210,16 @@ namespace IceResurfacer.Core
             TotalServiceOverflowLiters += overflow;
             TotalServiceDrainLiters += overflow;
             ServiceOverflowLitersPerSecond = overflow / dt;
+            if(overflow>0)
+            {
+                VehiclePoint(FillPortLocalX+.11f,(flood?FloodFillLocalZ:WashFillLocalZ)+.13f,out float sx,out float sz);
+                DepositRunoff(sx,sz,overflow);
+            }
         }
 
         bool ServiceReject(string message) { LastMessage = message; return false; }
         static bool Finite(float value) { return !float.IsNaN(value) && !float.IsInfinity(value); }
         static bool WithinReach(float distance) { return Finite(distance) && distance >= 0 && distance <= ServiceReachMeters; }
+        static bool HolderReach(float distance) { return Finite(distance) && distance >= 0 && distance <= ServiceHolderReachMeters; }
     }
 }

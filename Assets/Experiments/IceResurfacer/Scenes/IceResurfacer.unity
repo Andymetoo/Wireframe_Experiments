@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1001}
   - component: {fileID: 1002}
   m_Layer: 0
-  m_Name: AURORA R-54 / Northline ice resurfacing
+  m_Name: AURORA R-54 / Northline southeast operator simulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   litTemplate: {fileID: 2100000, guid: 9687812929e5450f9025d47534f820cb, type: 2}
   iceTemplate: {fileID: 2100000, guid: a282cbfbb1844c0a8ccbc98b8b3ad322, type: 2}
+  operatorEyeHeight: 0.06
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
