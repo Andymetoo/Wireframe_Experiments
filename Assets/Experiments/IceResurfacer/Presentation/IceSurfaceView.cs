@@ -8,8 +8,10 @@ namespace IceResurfacer.Presentation
     {
         public Texture2D StateTexture { get; private set; }
         public Texture2D MapTexture { get; private set; }
+        public Texture2D ProcessTexture { get; private set; }
         readonly Color32[] pixels;
         readonly Color32[] mapPixels;
+        readonly Color32[] processPixels;
         readonly Material material;
         public IceSurfaceView(IceField field, MeshRenderer renderer, Material template)
         {
@@ -19,8 +21,12 @@ namespace IceResurfacer.Presentation
                 { name = "Live surface survey", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Point };
             pixels = new Color32[field.Columns * field.Rows];
             mapPixels = new Color32[pixels.Length];
+            processPixels = new Color32[pixels.Length];
+            ProcessTexture = new Texture2D(field.Columns,field.Rows,TextureFormat.RGBA32,false,true)
+                { name="Ice / actual cut, wash, flood",wrapMode=TextureWrapMode.Clamp,filterMode=FilterMode.Bilinear };
             material = new Material(template) { name = "Northline / spatial ice" };
             material.SetTexture("_StateTex", StateTexture);
+            material.SetTexture("_ProcessTex",ProcessTexture);
             renderer.sharedMaterial = material;
         }
         public void Refresh(Simulation sim)
@@ -31,17 +37,21 @@ namespace IceResurfacer.Presentation
                 var c = field.Cells[i];
                 float wet = field.Wetness(i, sim.Time);
                 pixels[i] = new Color(c.Scratch, Mathf.Clamp01(c.SnowMm / 1.5f), c.Quality, wet);
+                // These channels describe actual cell history; no cosmetic trail or
+                // coverage credit is generated outside the simulated footprints.
+                processPixels[i]=new Color(Mathf.Clamp01(c.CutDepthMm/.08f),Mathf.Clamp01(c.WashLiters/(field.CellSize*field.CellSize*.15f)),Mathf.Clamp01(c.FloodMm/.3f),1);
                 if (!c.IsIce) mapPixels[i] = new Color32(13, 24, 32, 0);
                 else if (c.OverwaterMm > .15f) mapPixels[i] = new Color32(233, 154, 65, 255);
                 else if (c.Covered) mapPixels[i] = Color.Lerp(new Color(.3f, .51f, .58f), new Color(.27f, .88f, .73f), c.Quality);
                 else mapPixels[i] = Color.Lerp(new Color(.29f, .37f, .43f), new Color(.63f, .68f, .7f), c.Scratch);
             }
             StateTexture.SetPixels32(pixels); StateTexture.Apply(false, false);
+            ProcessTexture.SetPixels32(processPixels);ProcessTexture.Apply(false,false);
             MapTexture.SetPixels32(mapPixels); MapTexture.Apply(false, false);
         }
         public void Dispose()
         {
-            Object.Destroy(StateTexture); Object.Destroy(MapTexture); Object.Destroy(material);
+            Object.Destroy(StateTexture); Object.Destroy(MapTexture); Object.Destroy(ProcessTexture); Object.Destroy(material);
         }
     }
 }

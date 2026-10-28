@@ -77,7 +77,7 @@ namespace IceResurfacer.Editor
             try
             {
                 c.Throttle=0;c.Brake=false;c.HorizontalAuger=false;c.VerticalAuger=false;
-                c.BladeDepthMm=0;c.WashValve=0;c.FloodFlow=0;c.ConditionerTarget=0;
+                c.BladeDepthMm=0;c.WashValve=0;c.FloodFlow=0;c.ConditionerHydraulic=0;
                 game.Sim.Vehicle.SteeringAngle=0;update.Invoke(game,new object[]{0f});
                 Transform[] pivots={w.SteeringWheel,w.HorizontalAugerLever,w.VerticalAugerLever,w.BladeWheel,w.WashValve,w.FloodLever,w.ConditionerLever,w.AcceleratorPedal,w.BrakePedal};
                 var rotations=new Quaternion[pivots.Length];
@@ -85,7 +85,7 @@ namespace IceResurfacer.Editor
                 Quaternion cameraRotation=game.DriverCamera.transform.localRotation;
                 Quaternion wheelRotation=w.FrontWheels[0].localRotation;
                 c.Throttle=.6f;c.Brake=true;c.HorizontalAuger=true;c.VerticalAuger=true;
-                c.BladeDepthMm=.3f;c.WashValve=.4f;c.FloodFlow=.6f;c.ConditionerTarget=.35f;
+                c.BladeDepthMm=.3f;c.WashValve=.4f;c.FloodFlow=.6f;c.ConditionerHydraulic=.7f;
                 game.Sim.Vehicle.SteeringAngle=.25f;update.Invoke(game,new object[]{0f});
                 for(int i=0;i<pivots.Length;i++)
                 {

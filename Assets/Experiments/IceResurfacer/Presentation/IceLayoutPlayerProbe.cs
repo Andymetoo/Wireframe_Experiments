@@ -47,6 +47,11 @@ namespace IceResurfacer.Presentation
             { Debug.LogError("Aurora validation output must be the experiment's Validation~ directory."); Application.Quit(1); yield break; }
             Directory.CreateDirectory(outputDirectory);
             Application.runInBackground = true;
+            // Native offscreen D3D presentation diagnostics can reopen the developer
+            // console between capture yields. Keep that overlay out of this opt-in
+            // HUD fixture; all managed errors still fail below, and the launcher
+            // records native presentation diagnostics separately in the report.
+            Debug.developerConsoleEnabled=false;
             Application.logMessageReceived += OnLog;
             startedAt = Time.realtimeSinceStartup;
             active = true;
@@ -101,8 +106,7 @@ namespace IceResurfacer.Presentation
             yield return Capture("HUD-" + currentResolution + ".png", "normal HUD");
 
             var controls = game.Sim.Controls;
-            yield return DragLever("Conditioner", .37f);
-            Check(Mathf.Abs(controls.ConditionerTarget - .37f) < .025f, "Continuous conditioner lever");
+            yield return HoldHydraulic("Conditioner",false);
             yield return Click("HorizontalAuger");
             Check(controls.HorizontalAuger, "Horizontal auger switch");
             yield return Click("VerticalAuger");
@@ -116,14 +120,13 @@ namespace IceResurfacer.Presentation
             controls.BladeDepthMm=0;
             yield return ValidateBladeTurns();
             float washBefore = controls.WashValve;
-            yield return RotateDial("WashValve");
-            Check(controls.WashValve > washBefore + .1f && controls.WashValve < 1, "Continuous wash-valve drag");
+            yield return RotateWater("WashValve",.38f);
+            Check(Mathf.Abs(controls.WashValve-.38f)<.035f, "Analog quarter-turn wash handle");
             yield return Click("WashPump");
             Check(controls.WashPump, "Pickup pump switch");
-            yield return DragLever("Flood", .43f);
-            Check(Mathf.Abs(controls.FloodFlow - .43f) < .025f, "Continuous flood lever");
-            yield return DragLever("TankLift", .61f);
-            Check(Mathf.Abs(controls.TankLiftTarget - .61f) < .025f, "Continuous tank-lift lever");
+            yield return RotateWater("Flood",.43f);
+            Check(Mathf.Abs(controls.FloodFlow - .43f) < .035f, "Independent analog quarter-turn flood handle");
+            yield return HoldHydraulic("TankLift",true);
 
             // The manual actuator has its own real interlock. This UI fixture supplies a
             // lowered conditioner and running vertical auger; it never changes ice cells.
@@ -153,9 +156,10 @@ namespace IceResurfacer.Presentation
             game.Sim.Step(.2f);
             controls.FloodFlow = 0;
             game.Notice = "";
+            float serviceHelpWater=game.Sim.FloodWaterLiters;
             yield return Click("Service");
-            Check(Mathf.Abs(game.Sim.FloodWaterLiters - game.Sim.Config.FloodCapacityLiters) < .01f && game.Notice.Contains("replenished"),
-                "Refill/service button");
+            Check(game.Sim.FloodWaterLiters==serviceHelpWater && game.Notice.Contains("hose"),
+                "Service help explains physical hose without silently topping up tanks");
             game.Notice = "";
             yield return Click("Finish");
             Check(!game.Sim.Finished && game.Notice.Length > 0, "Finish button enforces unfinished-run guard");
@@ -182,9 +186,46 @@ namespace IceResurfacer.Presentation
             game.Finish();
             Check(game.Sim.Finished && game.Sim.ProperExit, "Legal partial run reaches results through normal finish path");
             yield return Capture("HUD-" + currentResolution + "-results.png", "results panel");
+            game.NewSession(false);
+            game.Dashboard.Compact=true;
+            yield return Capture("HUD-"+currentResolution+"-compact.png","compact operator view");
+            game.Dashboard.Compact=false;
+            game.StartServicePractice();
+            game.Sim.TryDismount();
+            typeof(IceWaterService).GetMethod("BeginWalk",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game.WaterService,null);
+            game.WaterService.HandleInput(true,0);
+            game.WaterService.UpdateViewAndEffects(true,.25f);
+            yield return Capture("HUD-"+currentResolution+"-service.png","service panel");
         }
 
         IEnumerator Click(string key) { yield return ClickAt(IceDashboard.ControlRect(key).center); }
+
+        IEnumerator HoldHydraulic(string key,bool raise)
+        {
+            Rect rect=IceDashboard.ControlRect(key);
+            Vector2 point=new Vector2(rect.center.x,raise?rect.y+12:rect.yMax-12);
+            var s=game.Sim;var c=s.Controls;
+            yield return Send(EventType.MouseDown,point);
+            float demand=key=="Conditioner"?c.ConditionerHydraulic:c.TankHydraulic;
+            Check(raise?demand>.99f:demand<-.99f,key+" held direction");
+            for(int i=0;i<25;i++)s.Step(.02f);
+            float attained=key=="Conditioner"?s.Conditioner.Lift:s.TankLift;
+            yield return Send(EventType.MouseUp,point);
+            demand=key=="Conditioner"?c.ConditionerHydraulic:c.TankHydraulic;
+            Check(demand==0,key+" springs to neutral on native mouse release");
+            for(int i=0;i<25;i++)s.Step(.02f);
+            Check(Mathf.Abs(attained-(key=="Conditioner"?s.Conditioner.Lift:s.TankLift))<.0001f,key+" holds attained position after release");
+        }
+        IEnumerator RotateWater(string key,float fraction)
+        {
+            Rect rect=IceDashboard.ControlRect(key);float r=rect.width*.35f;
+            Vector2 begin=rect.center+Vector2.left*r;
+            float angle=(180-fraction*90)*Mathf.Deg2Rad;
+            Vector2 end=rect.center+new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*r;
+            yield return Send(EventType.MouseDown,begin);
+            yield return Send(EventType.MouseDrag,end);
+            yield return Send(EventType.MouseUp,end);
+        }
 
         IEnumerator ValidateBladeTurns()
         {
@@ -368,7 +409,8 @@ namespace IceResurfacer.Presentation
             var report = new StringBuilder();
             report.AppendLine("Aurora native development-player HUD validation / Unity " + Application.unityVersion);
             report.AppendLine("Actual player framebuffer captures include the world and live IMGUI instruments.");
-            report.AppendLine("Native mouse messages target only this player's own window; no simulation is advanced during instrument clicks.");
+            report.AppendLine("The opt-in probe disables the Development Console overlay; native presentation diagnostics remain in the player log and are counted by the launcher.");
+            report.AppendLine("Native mouse messages target only this player's own window; hydraulic checks advance fixed simulation ticks while held and after release.");
             report.AppendLine("Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.");
             report.AppendLine("The results capture follows an actual raised, dry entry and safe return through the normal finish path.");
             foreach (string pass in passes) report.AppendLine(pass);

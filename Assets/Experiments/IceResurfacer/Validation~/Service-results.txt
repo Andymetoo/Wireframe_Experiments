@@ -1,0 +1,26 @@
+PASS interactive service station initialized in launch scene
+PASS normal session starts full
+PASS explicit practice partial-tank fixture
+PASS F safely dismounts to grounded service camera
+PASS on-foot viewpoint remains at grounded standing height
+PASS WASD reaches wall station around solid machine footprint
+PASS E takes physical wall nozzle
+PASS carried hose has bounded physical route
+PASS physical flood inlet couples independently
+PASS visible nozzle ends at connected inlet
+PASS E opens real wall supply valve
+PASS connected flood tank fills at measured 12 L/s; wash remains unchanged
+PASS full tank stores no excess; real overflow continues
+PASS overflow emits a bounded visible stream
+PASS overflow uses rounded mesh droplets instead of opaque billboard quads
+Service presentation CPU sample (240 calls, connected hose plus live overflow): 0.009 ms/call; managed allocation=0 bytes. Includes periodic tank-label refresh, excludes simulation, IMGUI and GPU. Fixed 160-droplet pool and reusable six-node hose route.
+PASS wall valve stops supply
+PASS E releases the depressurized flood coupling
+PASS same nozzle connects independently to wash inlet
+PASS wash tank fills and overflows independently
+PASS nozzle returns to wall holder through normal interaction
+PASS walk back to left step and F restore seated camera
+PASS machine resumes forward travel after both service cycles
+PASS overflow liters recorded independently of tank storage
+PASS runtime supply equals stored volume plus drain flow within float tolerance
+Runtime captures are rendered scene evidence. Mechanical feel and walking comfort still require operator playtesting.

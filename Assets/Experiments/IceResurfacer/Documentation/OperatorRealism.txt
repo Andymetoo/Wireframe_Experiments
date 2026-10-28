@@ -1,6 +1,10 @@
 AURORA R-54 / OPERATOR VISIBILITY AND PHYSICAL SYSTEMS
 26 October 2026
 
+Retained measurement/reference record. The 27 October controls, drive recovery,
+hydraulic shakeout and water-service implementation supersede control/service
+descriptions here; see Authenticity.txt, WaterService.txt and the main README.
+
 Launch: Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity
 Open the saved scene and press Play; choose scored or practice.
 

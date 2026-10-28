@@ -104,6 +104,10 @@ namespace IceResurfacer.Core
     {
         public float Throttle, Steer;
         public bool Brake;
+        // Live controls use spring-centred hydraulic spool commands. Explicit
+        // targets remain available for deterministic fixtures and calibration.
+        public bool HydraulicHoldControls;
+        public float ConditionerHydraulic, TankHydraulic;
         public float ConditionerTarget = 1f;
         public bool HorizontalAuger, VerticalAuger, BoardBrush;
         public float BladeDepthMm;

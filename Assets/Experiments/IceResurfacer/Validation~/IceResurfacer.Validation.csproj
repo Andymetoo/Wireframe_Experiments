@@ -10,5 +10,6 @@
   <ItemGroup>
     <Compile Include="../Core/**/*.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ServiceValidation.cs" />
   </ItemGroup>
 </Project>

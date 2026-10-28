@@ -91,7 +91,8 @@ $validationDirectory = $PSScriptRoot.Replace('\','/')
 $playerPath = Join-Path $PSScriptRoot 'Build/AuroraLayout.exe'
 # BitBlt presentation supports the validation-only layered transparent window.
 # This per-process switch leaves the project's normal rendering settings intact.
-$arguments = "-force-d3d11 -force-d3d11-bitblt-model -popupwindow -screen-fullscreen 0 -screen-width $Width -screen-height $Height -logFile `"$validationDirectory/Layout-player-${Width}x${Height}.log`" --aurora-validation-output `"$validationDirectory`" --aurora-validation-width $Width --aurora-validation-height $Height"
+$presentationMode = if ($WindowMode -eq 'Transparent') { '-force-d3d11-bitblt-model' } else { '' }
+$arguments = "-force-d3d11 $presentationMode -popupwindow -screen-fullscreen 0 -screen-width $Width -screen-height $Height -logFile `"$validationDirectory/Layout-player-${Width}x${Height}.log`" --aurora-validation-output `"$validationDirectory`" --aurora-validation-width $Width --aurora-validation-height $Height"
 $child = Start-Process -FilePath $playerPath -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $deadline = [DateTime]::UtcNow.AddSeconds(150)
 try {
@@ -101,6 +102,10 @@ try {
         $child.Refresh()
     }
     if (!$child.HasExited) { throw 'Validation player exceeded launcher timeout.' }
+    $nativeLog = Join-Path $PSScriptRoot "Layout-player-${Width}x${Height}.log"
+    $nativePresentationWarnings = @(Select-String -LiteralPath $nativeLog -SimpleMatch 'GfxDeviceD3D11Base::PresentFrame()').Count
+    $nativeReport = Join-Path $PSScriptRoot "HUD-player-results-${Width}x${Height}.txt"
+    Add-Content -LiteralPath $nativeReport -Encoding UTF8 -Value "Native hidden-window D3D presentation warnings: $nativePresentationWarnings (see player log). These bypass the managed error callback; this harness does not establish focused-window latency."
     Write-Output "Validation player exited: $($child.ExitCode)"
     exit $child.ExitCode
 } finally {

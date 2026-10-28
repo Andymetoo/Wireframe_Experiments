@@ -12,7 +12,7 @@ namespace IceResurfacer.Presentation
         readonly Surface tank, pit;
         readonly ParticleSystem discharge, overflow, conditioner, dump;
         readonly ParticleSystem[] pools;
-        float tankValue=-1,pitValue=-1;
+        float tankValue=-1,pitValue=-1,tankTilt=-1;
 
         sealed class Surface
         {
@@ -20,9 +20,11 @@ namespace IceResurfacer.Presentation
             public readonly MeshRenderer Renderer;
             readonly Vector3[] vertices;
             readonly float[] profile;
+            readonly float length;
             const int X=12,Z=16;
             public Surface(Transform target,IceWorld world,float width,float length,bool pile)
             {
+                this.length=length;
                 Mesh=new Mesh { name=target.name+" / reusable surface" }; Mesh.MarkDynamic();
                 world.Meshes.Add(Mesh);
                 Renderer=target.GetComponent<MeshRenderer>();
@@ -55,6 +57,16 @@ namespace IceResurfacer.Presentation
             {
                 Renderer.enabled=height>.00001f;
                 for(int i=0;i<vertices.Length;i++)vertices[i].y=pile?height*profile[i]:height+profile[i]*roughness;
+                Mesh.vertices=vertices;Mesh.RecalculateNormals();Mesh.RecalculateBounds();
+            }
+            public void SetTank(float height,float roughness,float tilt)
+            {
+                Renderer.enabled=height>.00001f;
+                // Linear fore/aft weighting integrates to zero over the same triangles.
+                // Contents migrate toward the opening as the bin pitches; the mesh's
+                // integrated bulk volume remains the same Core-owned stored quantity.
+                for(int i=0;i<vertices.Length;i++)
+                    vertices[i].y=height*(1+vertices[i].z/length*1.6f*tilt)+profile[i]*roughness;
                 Mesh.vertices=vertices;Mesh.RecalculateNormals();Mesh.RecalculateBounds();
             }
         }
@@ -94,17 +106,18 @@ namespace IceResurfacer.Presentation
         public void Reset()
         {
             foreach(var ps in pools)ps.Clear();
-            tankValue=-1;pitValue=-1;
+            tankValue=-1;pitValue=-1;tankTilt=-1;
         }
         public void Update(Simulation sim,float dt)
         {
             float fill=Mathf.Clamp01(sim.SnowTankM3/sim.Config.SnowCapacityM3);
-            if(Mathf.Abs(fill-tankValue)>.00001f)
+            if(Mathf.Abs(fill-tankValue)>.00001f||Mathf.Abs(sim.TankLift-tankTilt)>.0001f)
             {
                 // The tank stores loose-snow equivalents (3.54 m3) in the
                 // roughly 2.83 m3 physical shell via 1.25:1 compaction.
                 float height=fill*2.83f/(1.488f*2.026f);
-                tank.Set(height,Mathf.Min(height,.035f)*(1-fill),false);tankValue=fill;
+                tank.SetTank(height,Mathf.Min(height*.15f,.035f)*(1-fill),Mathf.Clamp01(sim.TankLift)*(1-fill));
+                tankValue=fill;tankTilt=sim.TankLift;
             }
             if(sim.DumpedSnowM3!=pitValue)
             { pit.Set(sim.DumpedSnowM3/(3.5f*1.6f),0,true);pitValue=sim.DumpedSnowM3; }
@@ -118,7 +131,12 @@ namespace IceResurfacer.Presentation
             Rate(overflow,active?sim.VerticalSpillRate:0,world.Machine.TransformPoint(0,1.96f,.20f),world.Machine.right*.25f);
             Rate(conditioner,active?Mathf.Max(0,sim.EscapingSnowRate-sim.VerticalSpillRate):0,world.SnowOutlet.position,Vector3.up*.3f);
             Vector3 toPit=world.PitSnow.position-world.DumpOutlet.position;toPit.y=0;
-            Rate(dump,active?sim.DumpSnowRate:0,world.DumpOutlet.position,toPit*1.5f+Vector3.up*.25f);
+            // Choose horizontal velocity from the actual fall time to the pit floor.
+            // A fixed multiplier sent particles beyond the pit at some lift angles.
+            float fallTime=Mathf.Sqrt(2*Mathf.Max(.08f,world.DumpOutlet.position.y-world.PitSnow.position.y)/9.81f);
+            Rate(dump,active?sim.DumpSnowRate:0,world.DumpOutlet.position,toPit/Mathf.Max(.2f,fallTime));
+            var dumpMain=dump.main;dumpMain.startSize=sim.ResidualSnowM3>0&&sim.SnowTankM3<=sim.ResidualSnowM3+.001f?.075f:.10f;
+            dumpMain.startLifetime=Mathf.Clamp(fallTime,.2f,1.5f);
             // Paused particle pools must not continue shedding material or falling.
             foreach(var ps in pools)
             {

@@ -20,6 +20,7 @@ namespace IceResurfacer.Editor
             var update=typeof(IceResurfacerGame).GetMethod("UpdateMachine",BindingFlags.Instance|BindingFlags.NonPublic);
             var render=(Action<float>)Delegate.CreateDelegate(typeof(Action<float>),game,update);
             var s=game.Sim;var c=s.Controls;
+            c.HydraulicHoldControls=false; // legacy deterministic route fixture; live controls use hold commands.
             // Explicit rendering stress fixture: seed only the initial tank stock.
             // All subsequent flow, spill, jam and dump use the real simulation.
             // This is NOT evidence that normal play fills the tank this quickly.
@@ -81,8 +82,14 @@ namespace IceResurfacer.Editor
             camera.transform.position=new Vector3(3.8f,3.2f,-42.0f);camera.transform.LookAt(new Vector3(0,1.1f,-40.1f));
             IceResurfacerEditor.Capture(camera,"Snow-dumping.png",1920,1080);
             for(int i=0;i<700;i++)s.Step(.02f);
+            for(int cycle=0;cycle<6;cycle++)
+            {
+                s.SetTankHydraulic(-1);for(int i=0;i<18;i++)s.Step(.02f);
+                s.SetTankHydraulic(1);for(int i=0;i<18;i++)s.Step(.02f);
+                s.SetTankHydraulic(0);for(int i=0;i<25;i++)s.Step(.02f);
+            }
             render(.02f);Check(s.SnowTankM3==0&&!snowRenderer.enabled,"empty tank hides internal snow surface");
-            c.TankLiftTarget=0;for(int i=0;i<300;i++)s.Step(.02f);render(.02f);
+            s.SetTankHydraulic(-1);for(int i=0;i<300;i++)s.Step(.02f);s.SetTankHydraulic(0);render(.02f);
             Check(s.TankLift==0,"dump tank returns fully to lowered position");
             IceResurfacerEditor.Capture(camera,"Snow-dumped-pit.png",1920,1080);
             UnityEngine.Object.Destroy(cameraObject);

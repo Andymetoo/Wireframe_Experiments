@@ -23,14 +23,27 @@ Hold SPACE: smoothly raise eyes 0.48 m with a small 0.10 m forward lean.
 Release SPACE: return to seated height, preserving head direction both ways.
 WASD and instruments work while seated or raised. Pause, guide and focus loss
 preserve head direction; only R or a new session intentionally recenters.
-Mouse: drag amber levers; rotate handwheels clockwise/counterclockwise, or
-scroll over them. Continuous values drive both the mechanisms and 3D controls.
-1: conditioner up/down; 2: horizontal auger; 3: vertical auger; 4: left brush;
+Mouse: look down at the real station, release RMB, then grab physical controls.
+The four black-knob levers operate conditioner, horizontal auger, vertical auger
+and dump tank. Pull toward the seat to raise; push forward to lower. Conditioner
+and dump levers spring to neutral on release and hold their attained position.
+Auger levers latch RUN/OFF independently. Matching HUD controls write exactly
+the same machine state. TAB switches between the full rack and compact HUD.
+Wash and flood use independent L-shaped valves with 90-degree travel: drag from
+9 o'clock CLOSED to 6 o'clock OPEN. Water follows actual partial valve settings.
+Rotate or scroll the blade wheel for fine adjustment; mechanical end stops
+remain 3.5 turns apart. Click the physical plunger for a down-and-return stroke.
+Hold 1: lower conditioner; Shift+1: raise conditioner (changed from toggle).
+2: horizontal auger; 3: vertical auger; 4: left brush;
 5: wash pickup pump; 6: one snow-breaker plunger stroke;
 Q/E: shallower/deeper blade screw setting. Blade wheel travel: 3.5 full turns.
 J: jam inspection/reset, only stopped with blade out and BOTH augers off,
 tank lowered and enough capacity available. Dump first if the tank is full.
-F1: operator guide (pauses the run). ESC: pause. Focus loss also pauses.
+F: safely dismount in bay / board at left step. On foot: WASD walk, RMB look,
+E or click interacts with hose, fill ports and wall supply. E still deepens
+the blade while seated. F3: optional drive diagnostics, hidden by default.
+F1: operator guide (pauses the run). ESC: pause. Focus loss also pauses and
+releases spring controls. Mouse gestures never capture keyboard throttle.
 
 A complete working run
 1. Drive through the south gate with conditioner raised, blade out, tank down.
@@ -55,9 +68,41 @@ A complete working run
    brush. Fully raise the conditioner BEFORE crossing the south threshold.
 6. Drive toward the snow pit at the FAR end of the service bay, centered and
    facing south. Stop near the pit, unload the snow tank, wait until empty,
-   then lower it. Finish Run evaluates the actual sheet. Refill
-   replenishes water and repairs pump wear for another pass. An unsafe exit
+   briefly lower and raise it to release adhered residue, then hold LOWER
+   until fully stowed. Finish Run evaluates the actual sheet. Refill using
+   the physical hose station; normal sessions still start full. An unsafe exit
    must be corrected by re-entering the rink and performing a proper exit.
+
+Water servicing
+Normal sessions start with 738 L flood water and 310 L wash water. For a refill
+test, ESC > REFILL PRACTICE replaces the run with a new practice session having
+35% flood and 30% wash water.
+1. Stop inside the bay. Raise conditioner, retract blade, turn augers, brush,
+   pickup pump and both water valves off; fully lower the snow tank.
+2. Press F. Walk around the machine to the right wall hose.
+3. Aim at the holder and E to take the nozzle. Walk to the blue ICE WATER or
+   teal WASH WATER inlet; aim and E to couple. The 11 m hose must reach.
+4. Return to the wall valve and E to open. The selected tank fills progressively
+   at 12 L/s. The other tank is unchanged. Watch the sight tubes/header/repeater.
+5. At capacity, excess exits the overflow standpipe and drains visibly, with a
+   distinct splash layer. Close wall supply with E before uncoupling.
+6. E at the connected inlet to disconnect. Connect the other inlet if needed,
+   or E at the wall holder to return the nozzle. Return to the left step and F.
+An attached hose inhibits travel and names the recovery steps. No invisible
+tank top-up is performed. Documentation/WaterService.txt explains assumptions.
+Water service does not repair mechanical wear; pump condition resets with a
+new session. The former instant top-up/repair shortcut is no longer a player
+control. A full maintenance workshop remains outside this prototype.
+
+Movement reliability
+A refused dump request used to leave a nonzero target while the tank was fully
+down. The drive interpreted that target as a raised tank indefinitely. The
+new drive checks actual tank elevation and live service interlocks; a rejected
+request clears its target. Ordinary controls never gate keyboard throttle.
+Live warnings explain raised tank, hose, brake and board contact. F3 shows raw
+keyboard input, requested/accepted demand, velocity, brakes, interlock reason,
+focus, mouse capture and ground-model status. It is opt-in only.
+Validation~/Movement-before.txt records the pre-fix failed reproduction.
 
 Scoring and recovery
 Coverage 45 points; whole-sheet finish 35; avoiding overwatering 10;
@@ -79,7 +124,8 @@ wash priming/recovery/wear; snow accumulation, overflow and visible particles;
 spatial scratch/snow/cut/wash/flood/quality state; wet-to-dry appearance;
 sensitive crease regions; threshold/exit and tank-handling rules; scored and
 practice sessions; original mesh-built arena and machine, lighting, URP ice,
-mechanism/control animations, six original synthesized sound layers.
+mechanism/control animations, ten original machine sound loops with mechanical
+transients, plus fill/overflow/coupling sound at the service station.
 
 Scope and calibration still requiring work
 This is a playable prototype, not a manufacturer-certified training simulator.
@@ -87,7 +133,7 @@ Driving is a deterministic kinematic model, not a tire-friction/Rigidbody
 solver. Turning radius, acceleration, load, water rates, freeze time and
 scoring need human playtesting. Ice freezing is an elapsed-time approximation;
 there is no thermal slab model, fluid solver, granular snow compaction, engine
-fuel/emissions, hose elasticity, blade deformation, maintenance workshop or
+fuel/emissions, hose elasticity, blade deformation, a full maintenance workshop or
 dynamic rollover. Original synthesized audio is functional rather than a
 recording of a real machine. Art and reflections can receive further polish.
 
@@ -108,7 +154,10 @@ Snow volume now follows the actual effective bite, not the nominal screw
 setting. The chosen 0.16 bite fraction is an explicit calibration assumption,
 not a manufacturer specification. Full-depth cutting still increases load,
 snow, scoring damage and overcutting relative to a normal setting.
-See Documentation/OperatorRealism.txt for current measurements and limitations.
+See Documentation/OperatorRealism.txt for retained measurements and
+Documentation/Authenticity.txt for the 27 October 2026 reliability/control pass.
+The photograph mentioned in the request was not in the supplied attachment;
+the original station geometry follows the written mechanical layout.
 
 Files and validation
 Core/                 Plain C# state and mechanics, no Unity dependencies.

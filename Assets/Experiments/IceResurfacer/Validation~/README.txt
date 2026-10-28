@@ -1,16 +1,20 @@
 ﻿Ice Resurfacer validation
-26 October 2026
+27 October 2026
 
 Run actual Core source with the dependency-free .NET 9 harness:
   dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release -p:UseSharedCompilation=false
 Unity ignores this directory because its name ends in ~.
 
-Results.txt records 24 deterministic scenarios: original driving, independent
+Results.txt records 29 deterministic scenarios: original driving, independent
 conveyors, wash priming/recovery, water, brush, practice/scoring and interlocks;
 physical cut/water footprints and conservation; snow-breaker assistance;
 measured snow calibration; spill/jam/dump/recollection conservation; progressive
 dumping; side/end/rounded board contacts; close-board water margin; and an
 integrated scored route from the production default spawn.
+New scenarios reproduce the rejected-dump travel latch, exercise 24 accumulated
+control/restart cases at centre and board edge, hold/release hydraulics, live
+interlock recovery, conserved residual shakeout and the complete water-service
+lifecycle. Movement-before.txt is the captured failing pre-fix reproduction.
 
 The complete route uses only throttle/steer/equipment commands. It never
 writes poses or cells, changes tank capacity, or refills. Five nested perimeter
@@ -49,6 +53,12 @@ Validation~ directory. Copy the successful reports/images here after the run.
 
 Unity-results.txt: saved scene, shader, spatial lane, audio and runtime errors.
 Camera-results.txt: real Input System camera behavior, stance and sightlines.
+Authenticity-results.txt: real game Update keyboard/mouse recovery matrix,
+focus/pause/release, board recovery and actual shakeout emission.
+Physical-controls-results.txt: rendered-part ray picking, both latched augers,
+spring controls, independent quarter-turn valves and full blade-wheel travel.
+Service-results.txt: actual F/E/WASD route around the machine, both inlet fills,
+overflow, nozzle return, reboarding and travel recovery.
 Operations-results.txt: actual snow visual/state behavior and CPU/allocation
 sample. Rendering stress fixtures seed initial tank stock near full; ordinary
 fill rate is measured by the core harness without tank writes.
@@ -60,8 +70,13 @@ builds Validation~/Build/AuroraLayout.exe. Run RunLayoutPlayer.ps1 with Width
 verifies alpha zero and a non-interactive owned window, and supplies native
 messages without moving the user's OS pointer or activating the window.
 It checks switches/levers, three and 3.5 complete blade turns, stops/reversal,
-wash handwheel, interlocks, guide/pause/start/results, clipping and captures.
+quarter-turn wash/flood handles, spring return, guide/pause/start/results,
+compact/service layouts, clipping and captures.
 Native wheel scrolling and human ergonomics remain manual checks.
+Use -WindowMode Offscreen for the final capture path. Unity's hidden-window
+D3D11 presentation diagnostics are counted separately by the launcher because
+they bypass the managed log callback. The opt-in probe disables the Development
+Console overlay for clean HUD captures; player logs retain the warnings.
 
 Camera images: Operator-seated.png, Operator-standing-window.png,
 Operator-board-side-edge.png, Operator-full-tank-window.png,

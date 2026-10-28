@@ -11,6 +11,10 @@ internal static class Program
         Test("fixed-step deterministic across render cadence", Determinism);
         Test("hydrostatic coast and service braking", Coasting);
         Test("reversal brakes through zero", Reversal);
+        Test("rejected dump command cannot latch forward drive off on ice", RejectedDumpDriveRecovery);
+        Test("repeated machinery stop/interact/resume at centre and boards", MachineryRecovery);
+        Test("spring-centred hydraulics hold position and preserve tank interlocks", HydraulicHold);
+        Test("visible contact inhibit recovers by reversing clear", ContactRecovery);
         Test("board collision contains machine", Boundaries);
         Test("conditioner follows inside turn", Tracking);
         Test("only actual trailing footprint is processed", Footprint);
@@ -31,6 +35,7 @@ internal static class Program
         Test("guide roller preserves shallow tangential travel without penetration", GuideRoller);
         Test("close board water edge uses physical distribution width", PerimeterWater);
         Test("complete route, return, unload and finish", FullRun);
+        Test("water service state, capacities, conservation and recovery", ServiceValidation.Run);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
     }
 
@@ -104,6 +109,128 @@ internal static class Program
     {
         var s = new Simulation(); Place(s, 0, 0); s.Vehicle.Speed = 1.5f; s.Controls.Throttle = -1;
         s.Step(.02f); Assert(s.Vehicle.Speed > 1.4f, "reverse jumped instantly"); Tick(s, 3); Assert(s.Vehicle.Speed < -.1f, "reverse never engages");
+    }
+    static void RejectedDumpDriveRecovery()
+    {
+        var s = new Simulation();
+        s.Controls.Throttle = .42f; Tick(s, 10);
+        Assert(s.HasEnteredRink, "fixture must drive from bay onto rink");
+        s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 2);
+        Assert(Math.Abs(s.Vehicle.Speed) < .001f, "fixture must stop");
+        s.Controls.TankLiftTarget = .5f; Tick(s, .2f);
+        Near(s.TankLift, 0, .00001f, "unsafe tank request must not lift on rink");
+        s.Controls.Brake = false; s.Controls.Throttle = 1;
+        float z = s.Vehicle.Z; Tick(s, 1);
+        Console.WriteLine("  rejected dump recovery: throttle=" + s.Controls.Throttle + ", brake=" + s.Controls.Brake + ", tank=" + s.TankLift + ", target=" + s.Controls.TankLiftTarget + ", speed=" + s.Vehicle.Speed + ", message=" + s.LastMessage);
+        Assert(s.Vehicle.Z > z + .1f && s.Vehicle.Speed > .2f, "rejected dump target immobilized a fully lowered machine");
+    }
+    static void MachineryRecovery()
+    {
+        Action<Simulation>[] interactions = {
+            s => s.Controls.BladeDepthMm = .8f,
+            s => s.SetConditionerHydraulic(-1),
+            s => s.Controls.HorizontalAuger = true,
+            s => s.Controls.VerticalAuger = true,
+            s => s.Controls.BoardBrush = true,
+            s => s.Controls.FloodFlow = .37f,
+            s => s.Controls.WashValve = .43f,
+            s => s.Controls.WashPump = true,
+            s => s.StrokeSnowBreaker(),
+            s => s.SetTankHydraulic(1),
+            s => { s.SetConditionerHydraulic(-1); s.Controls.HorizontalAuger = s.Controls.VerticalAuger = true; s.Controls.BladeDepthMm = .8f; },
+            s => { s.Controls.WashValve = .35f; s.Controls.WashPump = true; s.Controls.FloodFlow = .45f; s.Controls.BoardBrush = true; }
+        };
+        foreach (float x in new[] { 0f, -11.865f })
+        {
+            var s = new Simulation(); Place(s, x, -14);
+            for (int i = 0; i < interactions.Length; i++)
+            {
+                s.Controls.Throttle = .42f; s.Controls.Brake = false; Tick(s, 1);
+                s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 1);
+                Near(s.Vehicle.Speed, 0, .001f, "stop before interaction " + i);
+                interactions[i](s); Tick(s, .3f);
+                s.SetConditionerHydraulic(0); s.SetTankHydraulic(0);
+                s.Controls.Throttle = 1; s.Controls.Brake = false;
+                float start = s.Vehicle.Z; Tick(s, 1);
+                Assert(s.Vehicle.Z > start + .08f && s.Vehicle.Speed > .12f,
+                    "machinery interaction " + i + " blocked travel at x=" + x + ": " + s.DriveInhibitReason);
+                RequireContained(s);
+                // Close water before the next stop; maintained auger/blade/load
+                // states intentionally remain to exercise cumulative combinations.
+                s.Controls.FloodFlow = s.Controls.WashValve = 0; s.Controls.WashPump = false;
+            }
+        }
+        Console.WriteLine("  24 accumulated machinery interactions resumed through normal throttle at centre and 85 mm board-margin fixtures.");
+    }
+    static void HydraulicHold()
+    {
+        var s = new Simulation(); Place(s, 0, 0);
+        s.SetConditionerHydraulic(-1); Tick(s, .4f);
+        Assert(s.Conditioner.Lift > .5f && s.Conditioner.Lift < .9f, "conditioner teleported or moved opposite command");
+        float height = s.Conditioner.Lift; s.SetConditionerHydraulic(0); Tick(s, 1);
+        Near(s.Conditioner.Lift, height, .000001f, "neutral conditioner drifts");
+        s.SetConditionerHydraulic(1); Tick(s, 1); s.SetConditionerHydraulic(0);
+        Near(s.Conditioner.Lift, 1, .000001f, "raise travel/end stop");
+        s.Controls.HorizontalAuger = true; s.Controls.VerticalAuger = true; Tick(s, 1);
+        Assert(s.Controls.HorizontalAuger && s.Controls.VerticalAuger, "maintained auger positions released themselves");
+        s.Controls.HorizontalAuger = s.Controls.VerticalAuger = false;
+        Place(s, 0, -38.5f, (float)Math.PI);
+        s.SetTankHydraulic(1); Tick(s, .5f); s.SetTankHydraulic(0);
+        float lift = s.TankLift; Tick(s, 1);
+        Near(s.TankLift, lift, .000001f, "neutral dump cylinder drifts");
+        s.Controls.Throttle = 1; Tick(s, 1);
+        Near(s.Vehicle.Speed, 0, .000001f, "actual raised tank failed travel interlock");
+        Assert(s.DriveInhibitReason.Contains("LOWER"), "raised tank fails actionable explanation");
+        s.Controls.HorizontalAuger = s.Controls.VerticalAuger = true; Tick(s, .02f);
+        Assert(!s.Controls.HorizontalAuger && !s.Controls.VerticalAuger, "augers operated with raised tank");
+        s.Controls.Throttle = 0; s.SetTankHydraulic(-1); Tick(s, 1); s.SetTankHydraulic(0);
+        Near(s.TankLift, 0, .000001f, "dump lower end stop");
+        s.Controls.Throttle = -1; Tick(s, 1);
+        Assert(s.Vehicle.Speed < -.2f && s.DriveInhibitReason.Length == 0, "lowered tank does not release drive");
+        s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 1);
+        s.Controls.HorizontalAuger = true; s.SetTankHydraulic(1); Tick(s, 1);
+        Near(s.TankLift, 0, .000001f, "tank lifted with operating auger");
+        s.SetTankHydraulic(0);
+        var edge = new Simulation(); Place(edge, 0, -38.5f, (float)Math.PI);
+        edge.Controls.Brake = true; edge.Controls.Throttle = 1; edge.SetTankHydraulic(1); Tick(edge, .1f);
+        Near(edge.TankLift, 0, .000001f, "simultaneous W and dump raise must not start a lift");
+        edge.Controls.Throttle = 0; edge.SetTankHydraulic(1); Tick(edge, .02f); edge.SetTankHydraulic(0);
+        Assert(edge.TankRaised && edge.TankLift < .02f, "first physical cylinder movement must count as raised");
+        edge.Controls.Brake = false; edge.Controls.Throttle = 1; Tick(edge, .02f);
+        Near(edge.Vehicle.Speed, 0, .000001f, "early lift travel window allowed movement");
+        edge.Controls.Throttle = 0; edge.SetTankHydraulic(-1); Tick(edge, .1f); edge.SetTankHydraulic(0);
+        Assert(!edge.TankRaised, "tiny initial lift cannot be recovered by LOWER");
+        edge.Controls.HorizontalAuger = true; edge.SetTankHydraulic(1); Tick(edge, .02f);
+        Near(edge.TankLift, 0, .000001f, "running auger allowed first hydraulic tick");
+        edge.Controls.HorizontalAuger = false; edge.SetTankHydraulic(0);
+        Assert(edge.TryDismount(), "fixture cannot safely dismount at the pit");
+        edge.SetTankHydraulic(1); Tick(edge, .1f);
+        Near(edge.TankLift, 0, .000001f, "on-foot operator could raise dump tank");
+        Assert(edge.TakeHose() && edge.ConnectHose(WaterFillPort.Flood, 6) && edge.TryBoard(), "hose safety fixture failed");
+        edge.SetTankHydraulic(1); Tick(edge, .1f);
+        Near(edge.TankLift, 0, .000001f, "connected hose allowed dump tank raising");
+    }
+    static void ContactRecovery()
+    {
+        var s = new Simulation(); Place(s, 0, 27.45f); s.Controls.Throttle = 1; Tick(s, 2);
+        Assert(s.BoardContact && s.Vehicle.Speed == 0 && s.DriveInhibitReason.Contains("Reverse"), "direct contact did not explain recovery");
+        float z = s.Vehicle.Z; s.Controls.Throttle = -1; Tick(s, 1);
+        Assert(s.Vehicle.Z < z - .1f && s.Vehicle.Speed < -.2f, "board contact latched reverse");
+        s.Controls.Throttle = 0; s.Controls.Brake = true; Tick(s, 1);
+        Assert(s.DriveInhibitReason.Contains("CTRL"), "brake has no recovery hint");
+        s.Controls.Brake = false; s.Controls.Throttle = 1; Tick(s, .3f);
+        Assert(s.Vehicle.Speed > .05f, "braking or reversal latched drive");
+    }
+
+    static void Shakeout(Simulation s)
+    {
+        for (int i = 0; i < 8 && s.SnowTankM3 > .000001f; i++)
+        {
+            s.SetTankHydraulic(-1); Tick(s, .36f);
+            s.SetTankHydraulic(1); Tick(s, .36f);
+            s.SetTankHydraulic(0); Tick(s, .5f);
+        }
+        s.Controls.HydraulicHoldControls = false;
     }
     static void Boundaries()
     {
@@ -382,7 +509,11 @@ internal static class Program
             if(before>after){flow=true;Assert(s.TankLift>.8f&&s.DumpSnowRate>0,"dump volume lost without visible transfer rate");}
             Near(after+s.DumpedSnowM3,tank,.000001f,"dump transfer broke conservation");
         }
-        Assert(flow&&after==0,"progressive dump did not finish empty");
+        Assert(flow&&after>0&&s.ResidualSnowM3>0,"initial dump must leave physically adhered residual snow");
+        float stuck=after; Tick(s, 2); Near(s.SnowTankM3,stuck,.000001f,"stationary residue vanished");
+        Shakeout(s);
+        Assert(s.TankShakeoutCount>0&&s.SnowTankM3==0,"controlled hydraulic shakeout did not clear residual snow");
+        Near(s.DumpedSnowM3,tank,.000001f,"shakeout created or destroyed snow");
         s.Controls.TankLiftTarget=0;Tick(s,6);Near(s.TankLift,0,0,"tank failed to stow");
     }
     static void RequireContained(Simulation s)
@@ -547,7 +678,7 @@ internal static class Program
         }
         Stow(s);
         Assert(s.ProperExit, "correct raised threshold exit rejected: " + s.Vehicle.X + "," + s.Vehicle.Z + " " + s.LastMessage);
-        s.Controls.TankLiftTarget = 1; Tick(s, 20); s.Controls.TankLiftTarget = 0; Tick(s, 6);
+        s.Controls.TankLiftTarget = 1; Tick(s, 20); Shakeout(s); s.Controls.TankLiftTarget = 0; Tick(s, 6);
         Assert(s.SnowTankM3 < .005f && s.TankDumps > 0, "dump did not empty tank");
         Assert(s.TryFinish(), "run did not finish: " + s.LastMessage);
         var report = s.GetReport();

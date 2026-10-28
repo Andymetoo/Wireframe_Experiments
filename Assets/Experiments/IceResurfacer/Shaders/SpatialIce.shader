@@ -3,6 +3,7 @@ Shader "IceResurfacer/SpatialIce"
     Properties
     {
         _StateTex ("Scratch / snow / finish / wet", 2D) = "white" {}
+        _ProcessTex ("Actual cut / wash / flood history", 2D) = "black" {}
         _BaseColor ("Ice tint", Color) = (0.36,0.56,0.62,1)
     }
     SubShader
@@ -22,6 +23,7 @@ Shader "IceResurfacer/SpatialIce"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             TEXTURE2D(_StateTex); SAMPLER(sampler_StateTex);
+            TEXTURE2D(_ProcessTex); SAMPLER(sampler_ProcessTex);
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseColor;
             CBUFFER_END
@@ -38,6 +40,7 @@ Shader "IceResurfacer/SpatialIce"
             half4 frag(Varyings i):SV_Target
             {
                 float4 s = SAMPLE_TEXTURE2D(_StateTex,sampler_StateTex,i.uv);
+                float3 process = SAMPLE_TEXTURE2D(_ProcessTex,sampler_ProcessTex,i.uv).rgb;
                 float2 p = i.positionWS.xz;
                 float aa = max(.018, length(fwidth(p))*.65);
                 float noise = hash21(floor(p*90));
@@ -45,9 +48,16 @@ Shader "IceResurfacer/SpatialIce"
                 float direction = hash21(tile)*6.283;
                 float scratch = pow(saturate(sin(dot(p,float2(cos(direction),sin(direction)))*145)),44);
                 scratch *= smoothstep(.1,.6,hash21(tile+4))*s.r;
+                // A second, interrupted family gives skate crossings rather than
+                // uniform stripes; derivatives suppress distant shimmer.
+                float crossing=pow(saturate(sin(dot(p,float2(.63,.78))*188+hash21(tile)*13)),56);
+                crossing*=s.r*smoothstep(.65,.83,hash21(tile+19));
+                float scratchVisibility=1-smoothstep(.014,.08,length(fwidth(p)));
                 half3 color = lerp(half3(.68,.77,.79),_BaseColor.rgb,s.b*.7+s.a*.15);
+                color=lerp(color,half3(.66,.76,.79),process.r*(1-process.b)*.28);
+                color=lerp(color,color*half3(.93,.975,1),process.g*.16);
                 color = lerp(color,half3(.87,.9,.91),s.g*.7);
-                color += scratch*.22 + (noise-.5)*.025*s.r;
+                color += (scratch*.18+crossing*.11)*scratchVisibility + (noise-.5)*.018*s.r;
                 float blueLine = band(abs(p.y)-7.6,.15,aa);
                 float redLine = max(band(p.y,.075,aa),band(abs(p.y)-26,.05,aa));
                 float center = band(length(p)-4.5,.045,aa);
@@ -69,7 +79,8 @@ Shader "IceResurfacer/SpatialIce"
                 color=lerp(color,half3(.16,.34,.38),emblem*.6);
                 InputData input=(InputData)0;
                 input.positionWS=i.positionWS;
-                input.normalWS=normalize(half3((noise-.5)*s.r*.035,1,0));
+                float micro=(noise-.5)*s.r*.024*(1-s.a*.85)*scratchVisibility;
+                input.normalWS=normalize(half3(micro,1,micro*.43));
                 input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.positionWS);
                 input.shadowCoord=TransformWorldToShadowCoord(i.positionWS);
                 input.bakedGI=SampleSH(input.normalWS);
@@ -77,7 +88,7 @@ Shader "IceResurfacer/SpatialIce"
                 input.shadowMask=half4(1,1,1,1);
                 SurfaceData surface=(SurfaceData)0;
                 surface.albedo=color; surface.alpha=1; surface.metallic=.08;
-                surface.smoothness=lerp(.25,.94,saturate(s.b*.8+s.a*.5));
+                surface.smoothness=lerp(.27,.94,saturate(s.b*.65+process.r*.08+process.g*.08+s.a*.55));
                 surface.occlusion=1; surface.normalTS=half3(0,0,1);
                 half4 lit=UniversalFragmentPBR(input,surface);
                 // Soft ceiling-strip glints supplement probes in this enclosed arena.
@@ -85,7 +96,8 @@ Shader "IceResurfacer/SpatialIce"
                 float2 roof=p+reflected.xz*(10/max(.08,reflected.y));
                 float strip=pow(saturate(1-abs(frac(roof.x/7+.5)-.5)*15),3);
                 strip*=pow(saturate(1-abs(frac(roof.y/10+.5)-.5)*5),3);
-                lit.rgb+=half3(.64,.77,.83)*strip*(.03+s.a*.12+s.b*.035);
+                float fresnel=pow(1-saturate(dot(input.normalWS,input.viewDirectionWS)),3);
+                lit.rgb+=half3(.64,.77,.83)*strip*(.018+s.a*.14+s.b*.025)*( .6+fresnel*.7);
                 lit.rgb=MixFog(lit.rgb,i.fog); return lit;
             }
             ENDHLSL

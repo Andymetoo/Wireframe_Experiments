@@ -1,51 +1,69 @@
-﻿VALIDATION / AURORA R-54
-26 October 2026. Current behavior and calibration: OperatorRealism.txt.
+VALIDATION / AURORA R-54
+27 October 2026. Behavior/calibration: Authenticity.txt and WaterService.txt.
 
-Deterministic core: PASS, 24 scenarios, compiling the actual Core source with
-.NET 9. Results.txt records exact measurements and the driven complete run.
-New checks cover actual bite/snow calibration, persistent overflow, conservation
-through dumping/recollection, safe jam reset, progressive unloading, roller
-contact on side/end/rounded boards, and the physical near-board water margin.
-The complete route uses controls only: no pose/cell/tank writes or refills.
-Its four board-contact penalties are retained. It is a coverage regression,
-not a suggested efficient operator route or proof of physical authenticity.
+Deterministic core: PASS, 29 scenarios using actual Core source with .NET 9.
+Movement-before.txt retains the original failing reproduction: throttle 1,
+brake false, tank 0, rejected target 0.5 and speed 0. Results.txt records the
+fixed recovery and 24 cumulative stop/interact/resume combinations at centre
+and near boards. Actual raised-tank, hose, on-foot and contact interlocks
+remain operative, identify their causes and have tested recovery paths.
 
-Unity 6000.4.1f1 Play Mode / Direct3D11: PASS, zero runtime errors/exceptions.
-Saved scene, shaders, arena, articulated conditioner and six audio sources
-initialize. A real cut/wash/flood lane updates spatial ice and collects snow.
-Virtual Input System tests verify persistent rear/down views, ignored unlocked
-mouse motion, safe RMB transitions, original anatomical limits, Space rise and
-lowering, WASD, vehicle-relative rotation, R's 0.20-second recenter, retained E
-blade binding, Ctrl braking, pause/guide/focus gating, and new-session reset.
-Camera-results.txt records the individual camera assertions.
-Temporary MeshCollider ray tests verify that a raised sightline through the
-inspection opening reaches the actual snow surface and that a seated shoulder
-view reaches the outer conditioner without obstruction. They are removed after
-the check. Camera renders show the actual viewpoints, not composited images.
+The complete control-driven scored route reaches 95.18% coverage, 77.7% finish,
+85.2 score, 672.3 L flood consumption and about 0.72 m3 snow in 1759 simulated
+seconds. Its four board-contact mistakes remain. No pose/cell/tank writes or
+refills occur in that full route. It is a coverage regression, not a suggested
+efficient operator route or proof of physical authenticity.
 
-Operations-results.txt records runtime fill/discharge/overflow/jam/dump checks,
-bounded pools, actual emitted particles, empty-tank visibility and pit growth.
-Rendering stress fixtures explicitly seed initial tank stock near full at the
-normal 3.54 m3 capacity. They exercise subsequent real simulation transfers;
-they do not establish a normal filling rate. Core fill/recovery tests do not
-write tank stock. A measured working CPU sample includes simulation, transform
-and snow-mesh updates, and state/map uploads every eight ticks. Its timings
-exclude IMGUI/GPU/display; see the report for measured allocation and duration.
+Unity 6000.4.1f1 / Direct3D11 on RTX 3050 Laptop GPU: PASS, zero runtime errors
+or exceptions. Assets, shaders, scene startup, 14 audio sources and actual
+cut/wash/flood/snow transfer initialize and operate. Runtime evidence:
+- Camera-results.txt: persistent head look, R recenter, Space, sightlines.
+- Authenticity-results.txt: real Update keyboard/mouse recovery, W during
+  physical lever drag, lost release, pause/guide/focus cleanup, reverse/boards.
+- Physical-controls-results.txt: eight physical ray targets; independent
+  maintained augers; progressive spring hydraulics; partial 90-degree water
+  handles and synchronized transforms; complete 3.5-turn blade end stops.
+- Service-results.txt: F dismount, actual WASD route around machine, E at
+  physical holder/ports/supply, independent fills and overflow, close/uncouple,
+  return, reboard and resume travel. Invalid connection and reach states,
+  partial supply flow and material balance also have core coverage.
+- Operations-results.txt: live snow discharge, congestion/jam/overflow,
+  dumping/pit growth and bounded pools. Authenticity includes residual shakeout.
 
-Native HUD development-player validation runs at 1366x768 and 1920x1080.
-HUD-player-results-* and HUD-layout-issues-* record actual native GUI events,
-text-fit checks and assertions, including the 3.5-turn blade range, hard stop
-and reversal. Captures include the complete player framebuffer and guide.
-The player probe is attached only to an isolated temporary scene, not the
-saved launch scene. Native mouse messages address only that player's own
-window; they do not move the OS pointer or activate its window. Scroll-wheel
-routing remains a human check because native wheel input uses the OS pointer.
+Rendering stress fixtures explicitly seed initial snow stock to expose full
+bin/overflow and shakeout states. Subsequent transfers use production logic.
+They do not establish normal fill rates. Core snow tests collect their stock.
+Final CPU timings are in Operations-results.txt and Service-results.txt.
+They exclude IMGUI/GPU/display and are not claims of a total frame budget.
+The service sample includes active routed hose and overflow, with 0 managed
+bytes in the measured 240-call steady-state window.
 
-Human operator playtesting remains necessary for cursor ergonomics and focus
-transitions in a focused Game View, standing/shoulder comfort, board following,
-blade bite, snow density, jam response, audio, and full-session efficiency.
-No automated result proves physical authenticity or a guaranteed frame budget.
+Native development-player checks and framebuffer captures use separate
+1366x768 and 1920x1080 processes. See HUD-player-results-<resolution>.txt and
+HUD-layout-issues-<resolution>.txt for the current outcomes. They exercise
+actual native mouse events, spring release, analog valves, blade turns/stops,
+controls/help, guide/pause/welcome/results, compact and service layouts.
+The native hidden-window harness logs Unity D3D11 PresentFrame presentation
+warnings that bypass the managed callback. The launcher counts these separately;
+this does not establish normal focused-player input latency. The opt-in probe
+disables only the Development Console overlay; warnings remain in logs/reports.
+The validation window is hidden/offscreen, nonactivating and process-owned;
+no OS pointer is moved. Native wheel routing remains a human test.
 
-All validation uses the experiment's disposable Validation~/UnityProject copy.
-The original open Editor, scenes, packages, ProjectSettings and other
-experiments are preserved. No branch, commit or push was made.
+All camera screenshots are actual runtime renders. HUD screenshots include
+the actual player framebuffer; none are composited concept images. Important
+new captures: Cockpit-hydraulic-controls.png, Water-valves-{closed,partial,open}.png,
+Service-{bay,hose-connected,filling,overflow}.png,
+Authenticity-dump-shakeout.png and HUD-<resolution>-{compact,service}.png.
+Driver-running.png / Conditioner-trail.png show the working ice footprint.
+
+Operator playtesting remains necessary for mouse reach/feel, arbitrary desktop
+focus transitions, walking comfort, audio timbre/balance, snow adhesion, blade
+bite and board-following feel. The dynamics remain kinematic; hose, wet floor
+and snow are bounded approximations. No manufacturer training claim is made.
+The referenced photograph was not present in the supplied attachment.
+
+Only this experiment is modified. Unity uses Validation~/UnityProject with its
+own Library, settings and temporary validation scene. The original open Editor,
+other experiments, packages and project settings are preserved. No branch,
+commit or push was created. Preservation-results.txt records scope/hash checks.

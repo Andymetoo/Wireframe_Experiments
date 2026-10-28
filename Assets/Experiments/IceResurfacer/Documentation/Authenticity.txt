@@ -1,0 +1,108 @@
+AURORA R-54 / DRIVE RELIABILITY AND HYDRAULIC ACCOUNTING
+27 October 2026
+
+Confirmed reproduction, not an assumed motor-power problem
+The previous code inhibited drive whenever TankLift > 0.02 OR the requested
+TankLiftTarget > 0.02. The bottom-centre dump control was a maintained slider.
+On ice, UpdateTank correctly refused to raise the tank, but left that target
+latched. UpdateVehicle continued suppressing throttle although the tank was
+physically fully down. UpdateTank also overwrote the movement message with
+the dump-procedure warning. A mouse adjustment to that slider could therefore
+leave an otherwise healthy machine unable to resume forward movement.
+
+The standalone regression was added BEFORE changing the production code:
+1. Start in the service bay, drive onto the rink for 10 seconds.
+2. Release throttle, apply service brake for 2 seconds.
+3. Request 50% dump lift while stopped on the rink; wait 0.2 seconds.
+4. Release brake, apply full forward throttle for 1 second.
+Before: throttle=1, brake=false, actual lift=0, requested lift=0.5, speed=0.
+The new assertion failed. Validation~/Movement-before.txt retains this result.
+After: rejected target clears to actual lift=0; speed reaches 0.45816 m/s.
+This is a reproducible cause of the reported symptom. The precise controls
+used during the user's earlier two manual incidents were not recorded.
+
+Correction
+Only an actually raised tank and actual service safety conditions inhibit
+travel. Rejected lift requests are reset to attained position. Real dump,
+hose, on-foot, braking and collision restrictions remain in effect and have
+live actionable DriveInhibitReason text. No motor force, pose, velocity or
+vehicle-state reset is used to escape the fault. Attempting an operation
+which an interlock prevented does not create a repeated scoring penalty.
+Actual unsafe operation and board impacts retain their existing consequences.
+The first actual cylinder tick now counts as raised (0.001 normalized lift
+tolerance), closing the former 0.02 threshold's initial travel window. Raising
+requires released W/S, a stopped safe machine, no connected hose and a seated
+operator. Lowering remains available. These edge combinations have regressions.
+
+Audit of the full implemented movement chain
+- Keyboard.current W/S and Ctrl are polled every Update. No selected UI
+  element, hot-control ID, mouse drag or free-look flag gates throttle.
+- Main run state gates input for welcome, pause, guide and finished states.
+  The new service mode explicitly gates seated drive and explains recovery.
+- Ctrl is a momentary polled service brake, not a latched parking brake.
+- W/S request forward/reverse directly; no hidden transmission selector exists.
+- Reverse demand brakes through zero before accelerating backward.
+- Hydraulic/conveyor load reduces acceleration, with a positive lower bound;
+  ordinary equipment does not switch engine power off.
+- This experiment uses deterministic planar kinematics, not a Rigidbody,
+  WheelCollider or tire-ground-contact solver. Sleeping, rigidbody velocity
+  constraints and wheel loss-of-ground states are consequently not involved.
+- Vehicle/roller containment uses BodyFits and Navigable. Conditioner and
+  blade have spatial surface effects, not collision bodies capable of wedging
+  the chassis. Direct wall contact is reported with reverse-clear guidance.
+- Shallow guide contact projects travel along the board tangent and accepts
+  only tested contained poses. Existing side/end/corner tests remain passing.
+- Spring controls release on LMB release, missing pointer ownership, pause,
+  guide, RMB capture, focus loss, new session and service transitions. No
+  interaction state is allowed to silently become a drive-mode gate.
+
+Core evidence
+Validation~/Results.txt records 29 passing deterministic scenarios. New cases
+include the rejected-dump regression; 24 accumulated stop/interact/resume
+combinations at rink centre and an 85 mm board margin; momentary hydraulic
+travel/neutral/end stops; maintained independent augers; genuine raised-tank
+and contact recovery; and the hose/refill service state machine.
+Existing whole-sheet route remains a control-driven run without pose, cell,
+water or snow writes: 95.18% coverage, 85.2 score, 672.3 L flood water,
+approximately 0.72 m3 dumped snow and four recorded contact mistakes.
+The maximum-setting 20-yard lane remains 0.021871 m3, cutting width 1.956 m,
+water width 2.100 m, blade travel 3.5 turns and board margin 85 mm.
+
+Runtime evidence scope
+Editor/IceAuthenticityValidation exercises the real Game.Update input path
+with virtual keyboard/mouse devices: drive from bay, stop and resume after
+individual controls, LMB capture and release outside view, W during physical
+drag, pause/guide, RMB, stance, focus-loss cleanup, braking/reversing, board
+margin and direct-contact recovery. Editor/IcePhysicalValidation separately
+checks mechanical picking, valve/wheel gestures and rendered transform sync.
+Authenticity-results.txt and Physical-controls-results.txt, when generated by the
+current Unity validation run, are the runtime results; source tests alone
+are not evidence that Unity input or rendering passed.
+Virtual headless devices do not prove subjective feel or every OS/Game View
+focus condition. Operator playtesting remains required for those questions.
+
+Hydraulic and snow assumptions
+Live controls use ConditionerHydraulic/TankHydraulic in [-1,1], with zero
+holding attained cylinder position. Conditioner travel remains 2.1 seconds;
+tank travel remains 5.5 seconds. HydraulicHoldControls is enabled for every
+live session. Explicit position targets remain only for existing deterministic
+calibration fixtures and do not represent a second player control state.
+Hold 1 lowers the conditioner; hold Shift+1 raises it. LMB grabs physical
+controls; release centres hydraulic spools. Auger clicks latch independently.
+WASD, Ctrl brake, RMB persistent look, R recenter and Space rise are retained.
+Tab toggles compact controls; F3 toggles diagnostics. F enters/exits safe bay
+service mode and E operates nearby service fittings while on foot. Q/E remain
+blade adjustments while seated. No transmission or parking-brake latch added.
+
+Dumping initially retains 2.5% of current stock as adhered snow. A real
+lowering movement of at least 0.035 normalized lift (about 2 degrees of the
+58-degree arc), followed by at least 0.025 raising movement, frees 72% of the
+remaining adhered layer. Each subsequent release diminishes geometrically;
+residue below 0.1 L releases completely. These are documented fictional
+adhesion assumptions, not manufacturer specifications. Released snow still
+passes through the capped 0.35 m3/s outlet and increases DumpedSnowM3 by exactly
+the amount removed from SnowTankM3. The surface and pooled particles read
+ResidualSnowM3 and DumpSnowRate; no cosmetic amount is added to the pit.
+Core tests verify stationary residual, deliberate small-motion release,
+monotonic depletion and tank-plus-pit volume conservation. Runtime shakeout
+captures use a disclosed 0.8 m3 initial rendering stock fixture.

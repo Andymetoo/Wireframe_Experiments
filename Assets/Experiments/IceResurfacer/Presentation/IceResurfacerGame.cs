@@ -23,6 +23,13 @@ namespace IceResurfacer.Presentation
         public string Notice { get; set; } = "";
         IceDashboard dashboard;
         public IceDashboard Dashboard { get { return dashboard; } }
+        public IceWaterService WaterService { get; private set; }
+        public IcePhysicalControls PhysicalControls { get; private set; }
+        public bool DiagnosticsVisible { get; private set; }
+        public float RawThrottle { get; private set; }
+        public bool HasFocus { get; private set; } = true;
+        bool keyboardLift;
+        string observedMessage;
         IceMachineAudio machineAudio;
         ParticleSystem water;
         IceSnowView snowView;
@@ -84,6 +91,8 @@ namespace IceResurfacer.Presentation
             water=Particles("Water at distribution towel",new Color(.25f,.62f,.76f,.65f),.018f);
             var waterShape=water.shape; waterShape.scale=new Vector3(calibration.WaterDistributionWidth,.05f,.15f);
             dashboard=new IceDashboard();
+            PhysicalControls=new IcePhysicalControls(this);
+            WaterService=gameObject.AddComponent<IceWaterService>(); WaterService.Initialize(this);
             NewSession(false,false);
         }
         static Quaternion[] Capture(Transform[] targets)
@@ -107,28 +116,43 @@ namespace IceResurfacer.Presentation
         }
         public void NewSession(bool practice,bool start=true)
         {
+            ReleaseControls();
             ReleaseLook();
             snowView?.Reset();
             Surface?.Dispose(); Sim=new Simulation(calibration,practice,546);
+            Sim.Controls.HydraulicHoldControls=true;
+            WaterService?.ResetSession();
             Surface=new IceSurfaceView(Sim.Ice,World.IceMesh,iceTemplate);
             Started=start; Paused=false; HelpVisible=false; Looking=false;
             accumulator=0; surveyTimer=0; yaw=0; pitch=5; Notice=""; observedMistakes=0; breakerAnimation=0;
             recenterTime=RecenterSeconds; stance=0;
             Report=Sim.GetReport(); Surface.Refresh(Sim); UpdateMachine(0);
+            observedMessage=Sim.LastMessage;
             DriverCamera.transform.localPosition=Vector3.zero;
             DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
             Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
         }
-        public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseLook(); } }
-        public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseLook(); }
+        public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); } }
+        public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseControls(); ReleaseLook(); }
         public void Finish()
         {
-            if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseLook(); }
+            if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseControls(); ReleaseLook(); }
             else Notice=Sim.LastMessage;
         }
         public void Service()
         {
-            Notice=Sim.Refill()?"Water replenished and pickup pump serviced.":Sim.LastMessage;
+            Notice="Stop and stow equipment in the bay. F steps off; take the wall hose with E, connect a labelled inlet, then open the wall valve.";
+        }
+        public void StartServicePractice()
+        {
+            NewSession(true);
+            Sim.ConfigureWaterForServiceTest(.35f,.30f);
+            Notice="Refill practice: tanks start partly empty. F steps off. E handles nozzle, inlets and supply valve.";
+        }
+        public void ReleaseControls()
+        {
+            PhysicalControls?.Release(); dashboard?.ReleaseInteractions(); keyboardLift=false;
+            if(Sim!=null) { Sim.SetConditionerHydraulic(0); Sim.SetTankHydraulic(0); }
         }
         public void OperateSnowBreaker()
         {
@@ -144,16 +168,25 @@ namespace IceResurfacer.Presentation
             {
                 if(keys.escapeKey.wasPressedThisFrame) TogglePause();
                 if(keys.f1Key.wasPressedThisFrame) ToggleHelp();
+                if(keys.f3Key.wasPressedThisFrame) DiagnosticsVisible=!DiagnosticsVisible;
+                if(keys.tabKey.wasPressedThisFrame) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
             }
             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;
+            bool wasOnFoot=Sim.OnFoot;
+            WaterService.HandleInput(running,Time.deltaTime);
+            if(wasOnFoot!=Sim.OnFoot) { ReleaseControls(); ReleaseLook(); }
+            bool driving=running&&!Sim.OnFoot;
             var c=Sim.Controls;
-            c.Throttle=running&&keys!=null?(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0):0;
+            RawThrottle=keys!=null?(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0):0;
+            c.Throttle=driving?RawThrottle:0;
             if(keys!=null&&(keys.leftShiftKey.isPressed||keys.rightShiftKey.isPressed))c.Throttle*=.42f;
-            c.Steer=running&&keys!=null?(keys.dKey.isPressed?1:0)-(keys.aKey.isPressed?1:0):0;
-            c.Brake=running&&keys!=null&&(keys.leftCtrlKey.isPressed||keys.rightCtrlKey.isPressed);
-            if(running&&keys!=null)
+            c.Steer=driving&&keys!=null?(keys.dKey.isPressed?1:0)-(keys.aKey.isPressed?1:0):0;
+            c.Brake=driving&&keys!=null&&(keys.leftCtrlKey.isPressed||keys.rightCtrlKey.isPressed);
+            dashboard.CheckPointerRelease(this);
+            if(driving&&keys!=null)
             {
-                if(keys.digit1Key.wasPressedThisFrame)c.ConditionerTarget=c.ConditionerTarget>.5f?0:1;
+                if(keys.digit1Key.isPressed) { keyboardLift=true; Sim.SetConditionerHydraulic(keys.leftShiftKey.isPressed||keys.rightShiftKey.isPressed?1:-1); }
+                else if(keyboardLift) { Sim.SetConditionerHydraulic(0); keyboardLift=false; }
                 if(keys.digit2Key.wasPressedThisFrame)c.HorizontalAuger=!c.HorizontalAuger;
                 if(keys.digit3Key.wasPressedThisFrame)c.VerticalAuger=!c.VerticalAuger;
                 if(keys.digit4Key.wasPressedThisFrame)c.BoardBrush=!c.BoardBrush;
@@ -163,16 +196,19 @@ namespace IceResurfacer.Presentation
                 if(keys.qKey.isPressed)c.BladeDepthMm=Mathf.Max(0,c.BladeDepthMm-Time.deltaTime*.15f);
                 if(keys.eKey.isPressed)c.BladeDepthMm=Mathf.Min(calibration.MaxBladeDepthMm,c.BladeDepthMm+Time.deltaTime*.15f);
             }
-            UpdateLook(running,Time.deltaTime);
+            if(!Sim.OnFoot)UpdateLook(running,Time.deltaTime);
+            PhysicalControls.UpdateInput(driving&&!Looking, dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
             if(running)
             {
                 accumulator+=Mathf.Min(Time.deltaTime,.12f);
                 while(accumulator>=.02f) { Sim.Step(.02f); accumulator-=.02f; }
-                if(Sim.Mistakes>observedMistakes) { Notice=Sim.LastMessage; observedMistakes=Sim.Mistakes; }
+                if(Sim.LastMessage!=observedMessage||Sim.Mistakes>observedMistakes)
+                { Notice=Sim.LastMessage; observedMessage=Sim.LastMessage; observedMistakes=Sim.Mistakes; }
                 surveyTimer-=Time.deltaTime;
                 if(surveyTimer<=0) { Surface.Refresh(Sim); Report=Sim.GetReport(); surveyTimer=.16f; }
             }
             UpdateMachine(running?Time.deltaTime:0);
+            WaterService.UpdateViewAndEffects(running,Time.deltaTime);
             machineAudio.SetState(Sim,running,Mathf.Abs(Sim.Conditioner.Lift-lastLift)>.0001f||Mathf.Abs(Sim.TankLift-lastTankLift)>.0001f);
             lastLift=Sim.Conditioner.Lift;
             lastTankLift=Sim.TankLift;
@@ -261,6 +297,7 @@ namespace IceResurfacer.Presentation
             World.VerticalAugerLever.localRotation=verticalLeverRest*Quaternion.Euler(c.VerticalAuger?-24:18,0,0);
             World.AcceleratorPedal.localRotation=acceleratorRest*Quaternion.Euler(Mathf.Abs(c.Throttle)*16,0,0);
             World.BrakePedal.localRotation=brakeRest*Quaternion.Euler(c.Brake?18:0,0,0);
+            PhysicalControls?.Animate();
             breakerAnimation=Mathf.Max(0,breakerAnimation-dt);
             float stroke=breakerAnimation>.35f?( .60f-breakerAnimation)/.25f:breakerAnimation/.35f;
             World.SnowBreakerPlunger.localPosition=breakerRest-Vector3.up*(Mathf.Clamp01(stroke)*.18f);
@@ -286,7 +323,12 @@ namespace IceResurfacer.Presentation
             if(Sim==null)return;
             dashboard.Draw(this);
         }
-        void OnApplicationFocus(bool focus) { if(!Application.isBatchMode&&!focus&&Started&&!Sim.Finished) { Paused=true; ReleaseLook(); } }
+        void OnApplicationFocus(bool focus)
+        {
+            HasFocus=focus;
+            if(!focus)ReleaseControls();
+            if(!Application.isBatchMode&&!focus&&Started&&!Sim.Finished) { Paused=true; ReleaseLook(); }
+        }
         void OnDestroy()
         {
             Surface?.Dispose(); dashboard?.Dispose();

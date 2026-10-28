@@ -130,13 +130,13 @@ namespace IceResurfacer.Editor
                 if(frame==30)
                 {
                     Require(game.DriverCamera!=null&&game.World.IceMesh!=null,"Camera and surface spawned");
-                    Require(game.GetComponentsInChildren<AudioSource>().Length==6,"Six audio layers running");
+                    Require(game.GetComponentsInChildren<AudioSource>().Length==14,"Ten machine loops, mechanical transients and three water-service sources initialize");
                     Require(game.World.Conditioner!=game.World.Machine,"Independent conditioner transform");
                     Require(game.DriverCamera.transform.IsChildOf(game.World.CameraMount),"Seated camera attached");
                     Capture(game.DriverCamera,"Driver-start.png");
                     game.NewSession(false,true);
                     // Fast deterministic setup of a genuine treated straight lane. No state-texture painting.
-                    var sim=game.Sim; sim.Controls.Throttle=.42f;
+                    var sim=game.Sim; sim.Controls.HydraulicHoldControls=false; sim.Controls.Throttle=.42f;
                     for(int i=0;i<1000;i++)sim.Step(.02f);
                     sim.Controls.ConditionerTarget=0;
                     sim.Controls.HorizontalAuger=true; sim.Controls.VerticalAuger=true;
@@ -206,7 +206,7 @@ namespace IceResurfacer.Editor
                     Require(!ShaderUtil.ShaderHasError(game.World.IceMesh.sharedMaterial.shader),"Live ice shader has no compilation errors");
                     int renderers=game.GetComponentsInChildren<Renderer>().Length;
                     resultReport="Unity "+Application.unityVersion+" Play Mode validation\n"+
-                        "Saved launch scene, camera, world, conditioner, state texture, six audio sources: PASS\n"+
+                        "Saved launch scene, camera, world, conditioner, state textures, fourteen audio sources: PASS\n"+
                         "Genuine simulated cut/wash/flood lane and snow conveyance: PASS\n"+
                         "Input System: persistent RMB motion/release, W+Shift precision pedal, Ctrl brake: PASS\n"+
                         "Runtime renderers: "+renderers+"\n"+
@@ -222,6 +222,10 @@ namespace IceResurfacer.Editor
                 {
                     IceCameraValidation.Run(game,testKeyboard,testMouse);
                     IceOperationValidation.Run(game);
+                    IceAuthenticityValidation.Run(game,testKeyboard,testMouse);
+                    IcePhysicalValidation.Run(game,testKeyboard,testMouse);
+                    IceServiceValidation.Run(game,testKeyboard,testMouse);
+                    resultReport+="Physical hold controls, movement recovery, service hose/fill/overflow: PASS (Authenticity-results.txt / Service-results.txt)\n";
                     resultReport+="Snow surface/discharge/overflow/jam/dump/pit rendering and bounded pools: PASS (Operations-results.txt)\n";
                     resultReport+="Persistent camera, Space stance, R recenter and camera sightlines: PASS (Camera-results.txt)\n";
                     resultReport+="Physical left operator layout and true-width geometry: PASS\n";

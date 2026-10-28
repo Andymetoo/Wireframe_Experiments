@@ -1,7 +1,10 @@
-﻿PASS 26 October 2026: Git began clean; all changed/untracked files remain inside Assets/Experiments/IceResurfacer/.
-PASS: Packages and ProjectSettings have no tracked differences from the initial repository state.
-PASS: All 14 runtime/editor C# files match SHA256 hashes of the isolated source used for final Unity validation and development build.
-PASS: Owned asset metadata GUIDs are valid.
-PASS: The isolated project owns its temporary player scene, player preferences/settings, build products and Library. The normal launch scene is unchanged.
-PASS: Native HUD validation uses only the temporary player's own hidden, non-interactive window and does not move the user's OS cursor.
-No original Editor was stopped or switched. No branch, commit or push was made.
+PASS 27 October 2026: all changed and untracked files remain inside Assets/Experiments/IceResurfacer/.
+PASS: other experiments, Packages and ProjectSettings have no tracked differences.
+PASS: all 25 runtime/editor/core/shader/material/scene files match SHA256 hashes of the isolated final development build source.
+PASS: 32 inspected metadata files have valid unique GUIDs.
+PASS: saved launch scene is unchanged; new mechanisms initialize through its existing runtime builder.
+PASS: isolated project owns temporary scene/settings/Library/builds.
+PASS: native HUD tests target only their own hidden/offscreen nonactivating windows; no OS pointer moved.
+PASS: both 1366x768 and 1920x1080 native HUD reports pass with no measured text clipping.
+LIMIT: native hidden-window D3D11 presentation warnings are retained and counted separately; focused-window latency still needs human testing.
+Original open Editor sessions were not stopped or switched. No branch, commit or push was made.

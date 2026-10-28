@@ -11,11 +11,12 @@ PASS bounded particle pool: Congested vertical discharge spilling sideways
 PASS bounded particle pool: Conditioner snow spill
 PASS bounded particle pool: Snow unloading through forward door
 PASS bounded particle pool: Water at distribution towel
+PASS bounded particle pool: Tank overflow water outlet
 PASS dump emits visible pooled particles while tank volume decreases
 PASS tilted tank visibly empties progressively with a live discharge rate
 PASS forward dump door opens independently of shell
 PASS actual removed tank contents form a visible pit pile
 PASS empty tank hides internal snow surface
 PASS dump tank returns fully to lowered position
-Working simulation + presentation CPU sample (240 ticks): 3.697 ms/tick; managed allocation=0 bytes; 442 dynamic snow vertices, four 360-particle snow pools. Excludes IMGUI/GPU.
+Working simulation + presentation CPU sample (240 ticks): 6.558 ms/tick; managed allocation=0 bytes; 442 dynamic snow vertices, four 360-particle snow pools. Excludes IMGUI/GPU.
 PASS working auger emits actual snow into the bin
