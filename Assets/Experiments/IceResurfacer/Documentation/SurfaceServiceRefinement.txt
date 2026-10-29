@@ -1,6 +1,10 @@
 AURORA R-54 / CURRENT SURFACE AND SERVICE REFINEMENT
 28 October 2026
 
+Historical completed baseline. OperatorAuthenticity.txt records the subsequent
+operator/snow/camera pass; its README and measurements supersede changed details.
+The results below are preserved as evidence of this earlier implementation.
+
 This report supersedes the parking orientation, service-wall location, surface
 resolution, wet-aging and wear details in the earlier OperatorFreedom.txt pass.
 README.txt remains the launch/control guide. Historical reports retain their

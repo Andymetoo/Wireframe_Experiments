@@ -205,6 +205,7 @@ namespace IceResurfacer.Editor
                     "free dismount preserves attained hydraulics, conveyors, pump and both water valves");
                 Capture("Free-simulation-on-foot.png",game.DriverCamera.transform.position,game.World.Machine.position+Vector3.up);
                 results.Add("Service route uses keyboard F/E/W and ordinary walk collision; Aim supplies deterministic head orientation. No operator/vehicle pose writes during the service procedure or driven departure; session-start presentation poses are synchronized before testing.");
+                IceServiceGeometryValidation.Run(game);
                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Service-results.txt",results);
             }
             finally

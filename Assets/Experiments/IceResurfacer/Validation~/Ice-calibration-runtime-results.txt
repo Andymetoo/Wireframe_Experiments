@@ -64,10 +64,9 @@ PASS texture flood sample agrees with actual cell at x=2.28
 PASS texture flood sample agrees with actual cell at x=2.33
 PASS texture flood sample agrees with actual cell at x=2.38
 PASS texture flood sample agrees with actual cell at x=2.43
-PASS texture flood sample agrees with actual cell at x=2.48
 PASS tire-aligned adjacent passes have zero dry or unscored cells between their centers
-World measurement: wheel track=1.370m, tire width=.300m, outside tire=.835m. First strong wet edge=1.150m; second center=1.985m; second inside tire=1.150m.
-Measured-boundary nominal towel overlap=0.115m; ideal continuous towel-edge alignment overlap=0.215m. The measured wet boundary is a cell extent, so those two reference alignments differ.
+World measurement: wheel track=1.370m, nominal tire width=0.215m, outside tire=0.7925m. First strong wet edge=1.150m; second center=1.943m; second inside tire=1.150m.
+Measured-boundary nominal towel overlap=0.157m; ideal continuous towel-edge alignment overlap=0.257m. The measured wet boundary is a cell extent, so those two reference alignments differ.
 First blade raster=2.000m; strong wet raster=2.300m; all-liquid raster=2.400m. Cell size=0.050m; physical blade1.956m/towel2.100m; film fringe<=.120m/side.
 PASS six-inch perimeter mask excludes shaving only; water and quality still use all ice
 PASS recovery fixture makes room in the independent wash tank
@@ -80,12 +79,18 @@ Recovery measurement captures temporarily hide machine/conditioner geometry to e
 Fixtures place two straight starts for repeatable geometry. All passes and water changes then run the real fixed-step simulation. Full route validation separately uses continuous driving.
 PASS real light, deeper and clean dry cuts retain distinguishable groove severity
 Wear comparison lanes left to right: blade .08mm dry / .22mm dry / .60mm dry / .60mm with water. Actual mean residual Scratch=0.505 / 0.223 / 0.060. No cosmetic scratch erasure.
-PASS actual liquid wetness decreases at age 0s (0.9250)
-PASS actual liquid wetness decreases at age 300s (0.4529)
-PASS actual liquid wetness decreases at age 900s (0.1084)
-PASS actual liquid wetness decreases at age 1500s (0.0260)
+PASS actual liquid wetness decreases at age 0s (0.8663)
+PASS actual liquid wetness decreases at age 300s (0.4241)
+PASS actual liquid wetness decreases at age 900s (0.1016)
+PASS actual liquid wetness decreases at age 1500s (0.0243)
 PASS visible wet aging changes phase without deleting retained water
 Aging captures use real fixed-step elapsed time at fresh/5/15/25 minutes; freeze constant=420s. Machine, conditioner and the separate articulating drawbar are hidden only in measurement captures to expose the surface. Cubic reconstruction has finite support of two 5cm samples; no full-sheet blur or cosmetic water ribbon.
+PASS narrow visually wet seam contains real uncut cells, without lowered coverage rules
+PASS categorical map retains every actual 5cm state sample
+Minimap seam fixture: 80 missing interior cells, all actually wet but uncut; 5 also carry excess loose snow. Normal appearance can be continuously wet because water and cubic shading cross the narrow blade gap. Point-sampled overview is subpixel at this scale; hover detail retains exact cells. No states or scoring thresholds are filled in.
+PASS identical-state reflection comparison changes no flood volume or physical wear
+PASS ceiling-fixture polish remains localized at identical camera/water state (mean RGB delta 0.00022)
+Reflection comparison uses the same camera, water and groove state. Added lights/probes/render targets: zero. Existing ceiling diffuser positions replace periodic invented glints; 9106 pixels differ by more than three combined RGB levels.
 PASS explicit whole-wet invalidation updates every cell exactly
 PASS dirty liquid removal is visible immediately outside the aging cursor
 PASS whole-wet aging refresh 1 respects the 65536-cell budget

@@ -14,6 +14,7 @@ namespace IceResurfacer.Presentation
         readonly Color32[] mapPixels;
         readonly Color32[] processPixels;
         readonly Material material;
+        readonly SimulatorConfig config;
         readonly int[] wetCells;
         readonly bool[] wetFlags;
         int wetCount,wetCursor;
@@ -23,8 +24,9 @@ namespace IceResurfacer.Presentation
         public int LastAgingCellsUpdated { get; private set; }
         public int ActiveWetCells { get { return wetCount; } }
         public double LastRefreshMilliseconds { get; private set; }
-        public IceSurfaceView(IceField field, MeshRenderer renderer, Material template)
+        public IceSurfaceView(IceField field, MeshRenderer renderer, Material template, SimulatorConfig calibration = null)
         {
+            config=calibration??new SimulatorConfig();
             StateTexture = new Texture2D(field.Columns, field.Rows, TextureFormat.RGBA32, false, true)
                 { name = "Ice / scratch, snow, finish, wet", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
             MapTexture = new Texture2D(field.Columns, field.Rows, TextureFormat.RGBA32, false)
@@ -72,9 +74,7 @@ namespace IceResurfacer.Presentation
                 else if(DebugMode==1)mapPixels[i]=!c.Shavable?new Color32(233,154,65,255):
                     c.Covered?new Color32(64,225,137,255):new Color32(65,112,130,255);
                 else if(DebugMode==2)mapPixels[i]=new Color(Mathf.Clamp01(c.CutDepthMm/.05f),Mathf.Clamp01(c.WashLiters/(field.CellSize*field.CellSize*.1f)),Mathf.Clamp01(c.FloodMm/.3f),1);
-                else if (c.OverwaterMm > .15f) mapPixels[i] = new Color32(233, 154, 65, 255);
-                else if (c.Covered) mapPixels[i] = Color.Lerp(new Color(.3f, .51f, .58f), new Color(.27f, .88f, .73f), c.Quality);
-                else mapPixels[i] = Color.Lerp(new Color(.29f, .37f, .43f), new Color(.63f, .68f, .7f), c.Scratch);
+                else mapPixels[i] = TreatmentColor(IceCoverage.Classify(c,config));
             }
             bool stateChanged=count>0;
             int agingCount=all?0:System.Math.Min(wetCount,AgingCellsPerRefresh);
@@ -109,6 +109,20 @@ namespace IceResurfacer.Presentation
         {
             mode=Mathf.Clamp(mode,0,2);if(DebugMode==mode)return;
             DebugMode=mode;material.SetFloat("_DebugMode",mode);forceRefresh=true;
+        }
+        public static Color32 TreatmentColor(IceTreatmentState state)
+        {
+            switch(state)
+            {
+                case IceTreatmentState.Uncut:return new Color32(110,126,137,255);
+                case IceTreatmentState.CutButDry:return new Color32(183,135,209,255);
+                case IceTreatmentState.WetButUncut:return new Color32(73,155,220,255);
+                case IceTreatmentState.SnowCovered:return new Color32(229,234,230,255);
+                case IceTreatmentState.Overwatered:return new Color32(233,154,65,255);
+                case IceTreatmentState.Resurfaced:return new Color32(69,224,186,255);
+                case IceTreatmentState.ShavingExcluded:return new Color32(80,105,112,255);
+                default:return new Color32(13,24,32,0);
+            }
         }
         // Useful after explicit fixture writes; normal simulation dirties cells.
         public void Invalidate() { forceRefresh=true; }

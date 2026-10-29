@@ -86,14 +86,16 @@ MonoBehaviour:
     VerticalSnowCapacityM3: 0.055
     SnowBreakerStrokeM3: 0.004
     SnowExpansionRatio: 3.1
+    LooseSnowPickupDepthMm: 6
     DumpM3PerSecond: 0.35
     MaxBladeDepthMm: 0.8
     BladeBiteFraction: 0.16
+    MaximumEffectiveBladeDepthMm: 0.6
     BladeWheelTurns: 3.5
     ConveyorJamSeconds: 6
     RecommendedBladeDepthMm: 0.35
-    CumulativeSafeCutMm: 1.2
-    SensitiveCumulativeSafeCutMm: 0.55
+    CumulativeSafeCutMm: 0.8
+    SensitiveCumulativeSafeCutMm: 0.65
     GoodFloodDepthMm: 0.3
     ExcessFloodDepthMm: 0.85
     FreezeSeconds: 420
@@ -104,7 +106,7 @@ MonoBehaviour:
     RaisedTankGripPenalty: 0.22
     DumpExitSpeed: 0.65
     WheelTrack: 1.37
-    TireWidth: 0.3
+    TireWidth: 0.215
     ShavingPerimeterExclusion: 0.1524
     WaterFilmSpreadMeters: 0.12
     WaterFilmFringeFraction: 0.05

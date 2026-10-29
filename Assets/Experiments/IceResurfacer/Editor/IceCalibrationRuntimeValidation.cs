@@ -76,7 +76,7 @@ namespace IceResurfacer.Editor
                     Check(Mathf.Abs(pixel.b-Mathf.Clamp01(c.FloodMm/.3f))<.005f,"texture flood sample agrees with actual cell at x="+x.ToString("F2"));
                 }
                 Check(gaps==0,"tire-aligned adjacent passes have zero dry or unscored cells between their centers");
-                lines.Add("World measurement: wheel track=1.370m, tire width=.300m, outside tire=.835m. First strong wet edge="+firstEdge.ToString("F3")+
+                lines.Add("World measurement: wheel track="+game.Sim.Config.WheelTrack.ToString("F3")+"m, nominal tire width="+game.Sim.Config.TireWidth.ToString("F3")+"m, outside tire="+outside.ToString("F4")+"m. First strong wet edge="+firstEdge.ToString("F3")+
                     "m; second center="+center.ToString("F3")+"m; second inside tire="+(center-outside).ToString("F3")+"m.");
                 lines.Add("Measured-boundary nominal towel overlap="+measuredTowelOverlap.ToString("F3")+
                     "m; ideal continuous towel-edge alignment overlap="+(game.Sim.Config.WaterDistributionWidth*.5f-outside).ToString("F3")+
@@ -116,6 +116,8 @@ namespace IceResurfacer.Editor
                 lines.Add("Recovery measurement captures temporarily hide machine/conditioner geometry to expose the cells under the squeegee and towel; simulated water, motion and materials are unchanged.");
                 lines.Add("Fixtures place two straight starts for repeatable geometry. All passes and water changes then run the real fixed-step simulation. Full route validation separately uses continuous driving.");
                 CaptureWearAndAging(camera);
+                ValidateMapSurfaceAgreement(camera);
+                CaptureReflectionPolish(camera);
                 ValidateAgingBudget();
                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Ice-calibration-runtime-results.txt",lines);
             }
@@ -129,6 +131,68 @@ namespace IceResurfacer.Editor
         {double sum=0;foreach(var c in s.Ice.Cells)sum+=c.FloodMm*s.Ice.CellSize*s.Ice.CellSize;return sum;}
         static float Overwater(Simulation s)
         {float sum=0;foreach(var c in s.Ice.Cells)sum+=c.OverwaterMm;return sum;}
+
+        static void ValidateMapSurfaceAgreement(Camera camera)
+        {
+            game.NewSession(true);Place(0,-12);WorkingPass();Place(2.05f,-12);WorkingPass();
+            game.Sim.Controls.Throttle=game.Sim.Controls.FloodFlow=0;Refresh();
+            var s=game.Sim;var field=s.Ice;int gaps=0,wetUncut=0,snowy=0;
+            Color32[] map=game.Surface.MapTexture.GetPixels32();
+            for(int row=0;row<field.Rows;row++)
+            {
+                float z=field.CellZ(row);if(z< -9||z> -5)continue;
+                for(int col=0;col<field.Columns;col++)
+                {
+                    float x=field.CellX(col);if(x<.3f||x>1.75f)continue;
+                    int i=field.Index(col,row);var cell=field.Cells[i];
+                    Color32 expected=IceSurfaceView.TreatmentColor(IceCoverage.Classify(cell,s.Config));
+                    if(map[i].r!=expected.r||map[i].g!=expected.g||map[i].b!=expected.b)
+                        throw new InvalidOperationException("Minimap classification texture disagrees with actual ice cell "+i);
+                    if(cell.Covered)continue;
+                    gaps++;
+                    if(cell.CutDepthMm<=IceCoverage.RequiredCutMm(s.Config)&&cell.FloodMm>IceCoverage.RequiredFloodMm)wetUncut++;
+                    if(cell.SnowMm>=IceCoverage.MaximumLooseSnowMm)snowy++;
+                }
+            }
+            Check(gaps>0&&wetUncut==gaps,"narrow visually wet seam contains real uncut cells, without lowered coverage rules");
+            Check(map.Length==field.Cells.Length,"categorical map retains every actual 5cm state sample");
+            camera.orthographic=true;camera.orthographicSize=2.1f;
+            camera.transform.SetPositionAndRotation(new Vector3(1.025f,6,-7),Quaternion.Euler(90,0,0));
+            CaptureExposedIce(camera,"Minimap-wet-uncut-seam-normal.png");
+            game.Surface.SetDebugMode(2);game.Surface.Refresh(s);
+            CaptureExposedIce(camera,"Minimap-wet-uncut-seam-actual.png");
+            game.Surface.SetDebugMode(0);game.Surface.Refresh(s);
+            File.WriteAllBytes("Assets/Experiments/IceResurfacer/Validation~/Minimap-treatment-map.png",game.Surface.MapTexture.EncodeToPNG());
+            lines.Add("Minimap seam fixture: "+gaps+" missing interior cells, all actually wet but uncut; "+snowy+" also carry excess loose snow. Normal appearance can be continuously wet because water and cubic shading cross the narrow blade gap. Point-sampled overview is subpixel at this scale; hover detail retains exact cells. No states or scoring thresholds are filled in.");
+        }
+
+        static void CaptureReflectionPolish(Camera camera)
+        {
+            game.NewSession(true);Place(0,-12);WorkingPass(.35f,.43f);
+            game.Sim.Controls.Throttle=game.Sim.Controls.FloodFlow=0;Refresh();
+            var material=game.World.IceMesh.sharedMaterial;double water=WaterMass(game.Sim);
+            camera.orthographic=false;camera.fieldOfView=62;
+            camera.transform.SetPositionAndRotation(new Vector3(-2.4f,1.85f,-10),Quaternion.LookRotation(new Vector3(2.4f,-1.85f,9)));
+            material.SetFloat("_FixtureReflectionPolish",0);CaptureExposedIce(camera,"Ice-reflection-before.png");
+            material.SetFloat("_FixtureReflectionPolish",1);CaptureExposedIce(camera,"Ice-reflection-after.png");
+            Check(Math.Abs(water-WaterMass(game.Sim))<.0000001,"identical-state reflection comparison changes no flood volume or physical wear");
+            var before=new Texture2D(2,2);var after=new Texture2D(2,2);
+            try
+            {
+                before.LoadImage(File.ReadAllBytes("Assets/Experiments/IceResurfacer/Validation~/Ice-reflection-before.png"));
+                after.LoadImage(File.ReadAllBytes("Assets/Experiments/IceResurfacer/Validation~/Ice-reflection-after.png"));
+                var a=before.GetPixels32();var b=after.GetPixels32();long difference=0;int changed=0;
+                for(int i=0;i<a.Length;i++)
+                {
+                    int delta=Math.Abs(a[i].r-b[i].r)+Math.Abs(a[i].g-b[i].g)+Math.Abs(a[i].b-b[i].b);
+                    difference+=delta;if(delta>3)changed++;
+                }
+                double mean=difference/(a.Length*3.0*255);
+                Check(changed>100&&mean<.04,"ceiling-fixture polish remains localized at identical camera/water state (mean RGB delta "+mean.ToString("F5")+")");
+                lines.Add("Reflection comparison uses the same camera, water and groove state. Added lights/probes/render targets: zero. Existing ceiling diffuser positions replace periodic invented glints; "+changed+" pixels differ by more than three combined RGB levels.");
+            }
+            finally {UnityEngine.Object.Destroy(before);UnityEngine.Object.Destroy(after);camera.orthographic=true;}
+        }
         static void CaptureOperatorEdge(string name)
         {
             game.SelectCameraView("Conditioner");

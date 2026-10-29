@@ -1,0 +1,43 @@
+PASS slow 0 degree approach reports actual pit rim
+PASS overlay rejected pose remains obstructed at 0 degrees
+PASS fixed collision overlay initialized
+PASS F3 uses six reused line renderers beside the existing hose renderers
+PASS ordinary reverse clears pit with unchanged heading at 0 degrees
+PASS slow -15 degree approach reports actual pit rim
+PASS overlay rejected pose remains obstructed at -15 degrees
+PASS fixed collision overlay initialized
+PASS F3 uses six reused line renderers beside the existing hose renderers
+PASS ordinary reverse clears pit with unchanged heading at -15 degrees
+PASS slow 15 degree approach reports actual pit rim
+PASS overlay rejected pose remains obstructed at 15 degrees
+PASS fixed collision overlay initialized
+PASS F3 uses six reused line renderers beside the existing hose renderers
+PASS ordinary reverse clears pit with unchanged heading at 15 degrees
+PASS slow -30 degree approach reports actual pit rim
+PASS overlay rejected pose remains obstructed at -30 degrees
+PASS fixed collision overlay initialized
+PASS F3 uses six reused line renderers beside the existing hose renderers
+PASS ordinary reverse clears pit with unchanged heading at -30 degrees
+PASS slow 30 degree approach reports actual pit rim
+PASS overlay rejected pose remains obstructed at 30 degrees
+PASS fixed collision overlay initialized
+PASS F3 uses six reused line renderers beside the existing hose renderers
+PASS ordinary reverse clears pit with unchanged heading at 30 degrees
+PASS slow 90 degree approach reports actual pit rim
+PASS overlay rejected pose remains obstructed at 90 degrees
+PASS fixed collision overlay initialized
+PASS F3 uses six reused line renderers beside the existing hose renderers
+PASS ordinary reverse clears pit with unchanged heading at 90 degrees
+PASS raising near actual glass stops the moving shell at contact
+PASS contact is below glass top and normal points onto ice
+PASS rendered tank shares core 58 degree lift geometry
+PASS core and rendered moving contact pivots agree
+PASS actual Unity presentation reverses clear with tank held at attained lift
+PASS persistent floor-water mesh exists
+PASS wet-floor clipping footprint is a serialized material property available to SRP batching
+PASS actual nonzero water produces vertices above floor at source
+PASS localized source gradually spreads to drain in runtime
+PASS runtime floor liters plus physical drain conserve input
+PASS finite puddle is visibly different after draining at identical camera state (55290 pixels)
+20 L explicit floor source after 80 simulated seconds: 0.4716 L retained, 19.5284 L drained; 21 nonzero cells.
+Fixture pose writes occur only at new-session setup. Approaches and recovery use normal throttle, and tank lifting uses its held hydraulic control.

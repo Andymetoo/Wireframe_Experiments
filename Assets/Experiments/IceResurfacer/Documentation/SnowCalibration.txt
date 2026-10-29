@@ -1,0 +1,186 @@
+AURORA R-54 / SNOW PRODUCTION AND CONVEYOR CONSEQUENCES
+28 October 2026
+
+This calibration supersedes the old constant .16 bite fraction above the normal
+.35 mm handwheel setting. It preserves the normal operating range, 3.5-turn
+wheel, 5 cm ice grid, driving geometry, actual tank capacity, snow expansion and
+incremental surface reporting. Snow is never added by the gauge or particles.
+
+Primary reference and model limits
+
+The supplied 526 Operating Instructions English.pdf is the primary traditional
+machine reference. PDF page 84, printed 9-5, was checked as a rendered image:
+with a new 5-inch blade, four handwheel turns adjust the blade approximately
+.08 inch (2.032 mm). That is adjustment travel, not a universal prediction of
+ice removed during a resurfacing pass. Blade angle, runners, ice and setup matter.
+The manual describes .08 inch below the runners as a heavy cut; it does not
+publish the Aurora's bite function, throughput, snow density or compaction model.
+Chapter 7 describes visible conveyor delivery, stopping before a completely full
+bin plugs the vertical conveyor, and reducing ground speed or cut under excess
+load. The optional reverse mechanism is not represented by the prototype.
+
+The 526 capacities are 2.83 m3 physical snow volume / 3.54 m3 compacted rating,
+727 L ice-making water and 273 L wash water. The previous manufacturer 546
+reference has the same snow ratings and 1.956 m blade, but 738/310 L water.
+Aurora retains the 546 water values; this pass does not silently claim a 526
+water configuration. See Research.txt for the older 546 provenance and root
+OperatorAuthenticity documentation for geometry/reference comparisons.
+
+The simulation stores one equivalent bulk-snow quantity throughout the ice,
+trough, conveyors, bin, pit and floor. Shaved solid ice expands by the unchanged
+3.1 ratio. The 3.54 m3 stored rating is shown in a roughly 2.83 m3 shell via a
+fixed 1.25:1 visual compaction conversion. This is a consistent accounting
+approximation, not measured snow density or a granular compaction solver.
+
+Baseline experiment, before changing runtime
+
+Snow-calibration-before.csv records 18 deterministic apparatus measurements:
+.15/.35/.80 settings, both augers on, both off, and horizontal on/vertical off,
+each on initially worn ice and again on the exact resulting surface.
+
+The fixture prescribes straight conditioner poses over the full rounded sheet
+at 1 m/s, with 1.95 m lane spacing and .10 m advance. It calls the real footprint,
+surface-processing and conveyor methods on true 5 cm cells. Perimeter poses
+deliberately isolate machinery; they are not a physically driven route or
+evidence of board clearance. Each second pass starts with empty apparatus
+reservoirs and copies the entire first-pass ice state, including deposits. This
+isolates repeated cutting after servicing; it is not a simulated dump cycle.
+The separately driven scored run and real dumping tests cover those operations.
+Both passes are dry, with no fresh flood or wash water.
+
+The baseline maximum effective cut was only .128 mm. It removed .191752 m3 of
+solid ice, made .594432 m3 of expanded shavings and picked up .297108 m3 of loose
+snow. The resulting .891539 m3 filled 25.18% of the tank. A second dry pass
+stored .594390 m3, or 16.79%. Enabled conveyors had no escaped snow and drained
+fully; their capacity did not explain the low fill. Initial snow is approximately
+.12-.43 mm and its first-pass stock was .297111 m3. No evidence justified
+inflating that stock, changing the snow expansion ratio or shrinking the bin.
+
+The old stopped-auger spill was placed at the conditioner center. It repeatedly
+re-entered the blade footprint. The maximum first pass therefore recorded
+1.041901 m3 of spill transfers despite only .8915 m3 of unique source material.
+Transfers can revisit the same material; cumulative spilled or collected volume
+must never be counted as a new source or added again to current stock.
+
+Calibration and measured results
+
+At and below .35, effective bite remains setting * .16. Above .35:
+  t = (setting - .35) / (.80 - .35)
+  actual bite = setting * .16 + (.60 - .80 * .16) * t * t
+
+MaximumEffectiveBladeDepthMm=.60 is an explicit Aurora calibration for operator
+review. It is not a manufacturer specification or a literal conversion of the
+manual's adjustment travel. The .15/.35 settings still cut .024/.056 mm;
+the .80 maximum now cuts .600 mm per complete straight traversal. Overlap and
+repeated passages remove more material, including already smooth ice.
+
+Both augers enabled, fully drained reservoirs; volumes in m3:
+
+ Setting  Pass  Actual bite  Shaved solid  Expanded snow  Tank before  Tank now
+   .15      1     .024        .035954       .111456        .408566     .408567
+   .15      2     .024        .035954       .111456        .111447     .111447
+   .35      1     .056        .083892       .260064        .557173     .557173
+   .35      2     .056        .083892       .260064        .260078     .260078
+   .80      1     .600        .898838      2.786399        .891539    3.083510
+   .80      2     .600        .898838      2.786399        .594390    2.786396
+
+Maximum first/second fills are 87.10% / 78.71%. Normal .35 fills remain
+15.74% / 7.35%, and .15 fills 11.54% / 3.15%. There is still no enabled-auger
+spill in these isolated cases. First-pass mean remaining gouges are .035010,
+.008777 and .000000 mm for .15/.35/.80 respectively. Second-pass means are
+.012948, .001046 and zero. New first/second mean dry quality values are
+.3055/.4545, .4827/.5376 and .5452/.3416. Dry quality intentionally lacks the
+fresh-water contribution; it is not an overall resurfacing score.
+
+The source meters separately expose TotalShavedIceM3, TotalExpandedShavingsM3
+and TotalLooseSnowPickupM3. The latter is gross pickup and includes recollected
+spills. Current material balance is initial loose snow + expanded new shavings
+= surface snow + trough + vertical conveyor + bin + pit + floor. SpilledSnowM3,
+TotalSnowCollectedM3 and DumpedSnowM3 are transfer histories, not extra stock.
+Independent full scans validate the source meters and current stock. The 18
+new cases have maximum balance residual below .000015 m3; before calibration
+it was below .000043 m3. These are float accumulation residuals, not permitted
+unmetered snow creation. See Snow-calibration-after.txt for every measurement.
+
+Deep-cut load includes an additional term proportional to the extra actual
+bite. At 1 m/s, .35 keeps its existing .349 estimated load; maximum load rises
+from .7757 to about 1.4837 before tank crowding. The first maximum full-sheet
+mean is 1.4848, peak 1.5328. This is the existing approximate mechanical demand
+model, not horsepower. Existing acceleration resistance uses that load; nominal
+steering, turning radius, normal acceleration response and top speed stay fixed.
+
+Finite snow accumulation, side escape and recovery
+
+The horizontal trough holds .080 m3; the vertical conveyor holds .055 m3.
+Their capacities remain .012/.010 m3 per second. Excess horizontal material
+splits equally between the two conditioner side exits at the side plates. Each
+finite deposit lands just outside the current blade path in a .16 m radius
+kernel. Nearby solid boards constrain the deposit inward; the open portal can
+receive floor snow. The two emission rates are exactly half of the actual
+overflow transfer, and are zero while the trough still has room.
+
+LooseSnowPickupDepthMm=6 replaces the old .6 mm/pass loose-material clearing
+limit. Shaving solid ice remains a separate, much shallower process. This lets
+the blade gather a windrow without requiring many artificial repeated passes.
+Every gathered cubic meter still enters the finite trough and conveyors; if
+they cannot handle the incoming material it escapes again. Initial worn snow
+is thinner than either limit, so normal first-pass collected volume is unchanged.
+
+SnowTransportCondition exposes independent flags so simultaneous conditions
+remain understandable:
+- Horizontal OFF: snow stays in the trough, then leaves both low side exits.
+- Vertical OFF: the horizontal auger fills the throat; congestion backs up into
+  the trough and eventually the same low side exits. No upper discharge occurs.
+- Full connected bin: accepted volume stops at capacity; rejected upper
+  throughput spills and sustained backpressure eventually latches a jam.
+- Jam: conveyor transport stops; further incoming snow reaches low side exits.
+- Raised bin: the fixed upper outlet misses the bin. Snow leaves the upper
+  chute without falsely building a blockage/jam merely because the bin is up.
+
+Upper rejection originates at the authored fixed downspout (.28,1.78,.75 m
+relative to the axle), not a broad box floating across the vehicle. Core and
+particles share a bounded path deflected toward the nearest equipment side.
+That path approximates the body deflection; it is not per-grain collision.
+
+Three reusable meshes show tank stock, pit stock and actual finite trough
+bunching behind the auger grille. Five bounded 360-particle pools show accepted
+delivery, upper escape, left/right low escape and dumping. Persistent deposits
+live in the existing spatial snow field. No particles create a second material
+quantity, and no per-snowflake GameObjects are allocated.
+
+The focused default-capacity test creates .043669 m3 of actual side escape,
+finds persistent snow on both sides, then traverses both windrows with blade
+out and both augers running. A later empty revisit collects nothing twice.
+The complete stock residual is .00000016 m3. Additional checks distinguish all
+failure states, enforce board retention and preserve zero-weight kernel cells.
+Editor/IceOperationValidation adds control-state-driven motion/cutting captures
+before and after recovery; its initial poses are disclosed in Operations-results.
+
+Excessive cutting is not paint damage
+
+The old quality formula divided cumulative actual cut by .16 before testing
+nominal thresholds. Applying that formula to the new nonlinear maximum would
+misclassify one .600 mm pass as 3.75 mm. Thresholds now use actual accumulated
+removal: .80 mm ordinary / .65 mm sensitive. Crossing them reduces uniformity
+quality; coverage requirements are unchanged. Two maximum full-sheet passes
+produce about .4073 mm mean excess above those local thresholds. No routine
+paint penalty exists. A paint model requires a real remaining-ice-thickness
+field above paint and is explicitly future work. The simulation also does not
+resolve every frozen flood layer as a separate slab; accumulated cut and
+retained water are treatment histories rather than an absolute ice-height map.
+
+Validation and performance
+
+SnowCalibrationValidation.Run() covers source accounting, blade mapping,
+unchanged normal load, two-sided finite escape, recovery/no double collection,
+failure distinctions and board clipping. MeasureFullSheet() is the separate
+18-case apparatus calibration. Existing aggregate and driven full-route results
+are recorded by the parent validation run. No Unity/native performance claim
+is inferred from the apparatus measurements. The final player measurements at
+1366x768 and 1920x1080 include actual operation and snow presentation.
+
+Remaining operator questions: whether the .600 mm extreme feels sufficiently
+aggressive; whether the retained .056 mm normal bite matches desired routine
+removal; how visible snow bunching, spill reach and clearing look at working
+speed. These are playtest calibrations, not a claim of validated rink thermals,
+snow density, machine power or manufacturer operating performance.

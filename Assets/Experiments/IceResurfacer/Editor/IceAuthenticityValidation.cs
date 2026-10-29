@@ -181,6 +181,7 @@ namespace IceResurfacer.Editor
                     "direct board contact explains reverse-clear recovery");
                 Input(new[] { Key.S }); Advance(1);
                 Check(game.Sim.Vehicle.Speed < -.1f, "reverse clears direct board contact without a state reset");
+                CameraMounting();
                 CaptureShakeout();
                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Authenticity-results.txt", observations);
             }
@@ -191,6 +192,20 @@ namespace IceResurfacer.Editor
                 InputSystem.QueueStateEvent(mouse, new MouseState()); InputSystem.Update();
                 game.enabled = enabled;
             }
+        }
+        static void CameraMounting()
+        {
+            game.NewSession(true);Input();IceCameraValidation.Aim(-121,37,false);
+            Quaternion normal=game.DriverCamera.transform.localRotation;Vector3 normalPosition=game.DriverCamera.transform.localPosition;
+            Input(new[]{Key.C,Key.W});
+            Check(game.ChaseActive&&game.Sim.Controls.Throttle==1,"held C activates external chase without taking drive input");
+            Input(new[]{Key.C,Key.F});
+            Check(game.Sim.OnFoot&&!game.ChaseActive&&game.HeldQuicklook=="","F dismounts directly from chase and clears seated inspection state");
+            Input();Input(new[]{Key.E});
+            Check(game.Sim.OnFoot&&!game.ChaseActive&&game.HeldQuicklook=="","on-foot E remains an interaction input and never starts seated inspection");
+            Input();Input(new[]{Key.F});Input();
+            Check(!game.Sim.OnFoot&&game.DriverCamera.transform.parent==game.World.CameraMount,"F boards back onto the physical seat after a chase dismount");
+            Check(Quaternion.Angle(normal,game.DriverCamera.transform.localRotation)<.001f&&Vector3.Distance(normalPosition,game.DriverCamera.transform.localPosition)<.00001f,"boarding restores the normal viewpoint saved before held C");
         }
         static void CaptureShakeout()
         {

@@ -1,0 +1,115 @@
+AURORA R-54 — OPERATOR STATION AND TEMPORARY INSPECTION VIEWS
+2026-10-28
+
+Reference and physical controls
+-------------------------------
+The locally supplied 526 Operating Instructions, printed page 5-3 (PDF page 48),
+and the operator's annotated control-station photograph establish the traditional
+hydraulic order. Viewed from the seat toward the inboard bank, it is VERTICAL
+AUGER, CONDITIONER LIFT, HORIZONTAL AUGER, DUMP TANK. The actual lever assemblies,
+pivots and mouse targets have been relocated; this is not a label-only change.
+The two augers remain maintained controls. Lift and dump remain spring-centered
+hydraulics while held. The blade handwheel, separate flood/wash valves and snow
+breaker remain distinct mechanisms at the operator's right.
+
+The fictional R-54 retains its existing left operator station, seat-mounted eye,
+61-degree lens, adjustable seated eye offset and approximately 3.5-turn blade
+handwheel. The model is informed by the supplied photographs; it is not a scan or
+an exact reproduction of either commercial model. No drive ratio, steering limit,
+wheelbase, acceleration or turn-radius change is made by the camera code.
+
+Current inputs
+--------------
+Hold Q: inspect the left conditioner edge and brush, looking about nine o'clock
+(yaw -95 degrees) and 75 degrees down, with a 0.28 m left lean. Board and room-wall
+clearance constrain the lean.
+Hold E: inspect the physical levers, water valves and blade wheel with a small
+0.18 m rearward ergonomic lean and a bearing solved from the actual controls.
+Hold C: actual external camera above and behind the whole machine. Reversing
+does not reverse the camera. RMB adjusts its orbit while held.
+Release Q/E/C: smoothly restore the exact prior normal local orientation and eye
+position. Overlapping holds use C > E > Q; a single original snapshot survives
+the entire overlapping sequence. Wall clearance still applies if the vehicle
+moves while looking away. X cancels inspection and smoothly recenters forward.
+
+RMB: persistent manual seated free-look; releasing RMB exposes the instrument
+cursor and keeps that orientation. Deliberate RMB motion can interrupt a return.
+R: toggle standing. Space: temporarily stand. Both preserve head orientation.
+F: mount/dismount, including directly from chase. On-foot E still interacts and
+does not invoke the seated inspection camera. Normal on-foot mouse-look remains.
+The lower-right cursor does not automatically move the camera; explicit hold-E
+avoids unwanted assistance while operating the controls.
+
+Chase implementation
+--------------------
+The existing driver camera is detached from its seat parent only during chase;
+there is no second simulation or vehicle controller. Its target is body-relative,
+with exponential position and rotation smoothing. The segment to the camera is
+clipped against the shared rink/room outline and portal height. A retracted lens
+looks over the machine instead of settling at seat height inside its body.
+No additional rendering pass, reflection probe or per-frame object allocation
+is introduced. A camera cannot restore a saved lean through a wall that the
+vehicle has approached during inspection; in that case the orientation restores
+exactly and the eye translation is constrained to the available clearance.
+
+Wheel geometry and visibility
+-----------------------------
+Both front wheel pivots use the authoritative steering angle; all four wheels roll
+from simulated speed. The 1.370 m track and 1.960 m wheelbase are retained. Tire
+section width is now 0.215 m, matching the manual's LT215/85R16 nominal section,
+rather than the unsupported 0.300 m visual width. This also updates the tire-based
+overlap guide rather than silently changing only the render mesh.
+
+The old broad underframe, full-length lower sill, rub rails and front mudguards
+crossed or concealed the swept wheel volume. The chassis is now central, the
+body sills/rub rails stop between the axles, and front splash guards sit inboard.
+The instrument work lamp previously sat directly on the seat-to-tire-crown ray;
+its housing, stalk, diffuser and light move 0.18 m inboard over the dashboard.
+That removes a real near obstruction without moving the seat or widening the tire.
+The floor/tank bottom has actual tire clearance. The tank's snow mesh begins at
+the top of that steel floor (tank-local y=0.085 m), so a small genuine load remains
+visible through the inspection opening instead of being buried beneath the floor.
+The bumper, lamps and front skin now meet the existing 2.500 m forward physical
+envelope. Geometry was adjusted without exaggerating wheel angles.
+
+Evidence and validation
+-----------------------
+Validation~/OperatorAuthenticityBefore/ retains the prior views and reports.
+The current batch suite uses the real Input System and UpdateLook implementation
+for held Q/E/C, exact custom/forward/backward/downward restoration, overlap order,
+RMB return interruption, standing, recentering, pause, focus and mounting behavior.
+It checks front steering/rolling transforms, real mesh obstruction and swept tire
+clearance, and captures Operator-steering-left/center/right.png from the seat.
+The same names with -inspection.png add a natural down-glance (yaw -4 degrees,
+pitch 21 degrees) at the unchanged seat position. Forward images retain yaw 0,
+pitch 5 degrees. Upper-tread rays sample the real carcass across its width and
+stop at the target; outboard silhouette rays that miss a narrow tire and continue
+to a headlamp beyond it are recorded separately, not mistaken for obstructions.
+Actual lever ray visibility/order and each mechanism's independent input mapping
+are checked separately. Camera-results.txt and Physical-controls-results.txt are
+the machine-readable evidence; see Unity-results.txt for the overall suite outcome.
+Capture names are Camera-preset-Q/E/C/X.png, Operator-board-side-edge.png,
+Operator-standing-window.png, and Operator-steering-left/center/right.png.
+
+The integrated Unity rerun passed the complete camera/sightline, physical-control
+and input/mounting suites, with zero final runtime errors. Default seated tread
+visibility measured 18/39 rays at full left, 9/39 centered and 6/39 at full right.
+Both front tires cleared the sampled swept mesh volume at all three steering
+positions; front and rear rolling also passed. Q includes the actual conditioner
+edge at viewport (0.25,0.30) and brush at (0.74,0.18). The standing inspection window
+again exposes real snow above its steel floor. R during E and releasing Space
+during Q preserve the requested stance after the original orientation returns.
+The preserved 0.215 m tire shows different exposed tread and sidewall shapes in
+the left/center/right inspection captures, without changing steering response.
+
+The centered actual mesh envelope, including fittings, measured body dimensions
+2.336 x 2.176 x 3.550 m and conditioner dimensions 2.132 x 0.708 x 1.347 m (X/Y/Z).
+The aligned assembly length is 4.175 m. This includes fittings and is not an exact
+manufacturer-envelope match; the retained 2.130 m nominal body width and 4.040 m
+commercial lowered-length reference should not be represented as measured mesh
+bounds. The overall pass report records native-player validation and performance.
+
+Operator calibration still benefits from a manual check of the left/down lean,
+seat height for the supplied tall operator, perceived tire exposure, and chase
+following distance. These are ergonomic calibration questions, not changes to
+the previously validated driving response.

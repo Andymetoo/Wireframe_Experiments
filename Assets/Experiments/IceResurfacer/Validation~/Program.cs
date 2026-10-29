@@ -37,6 +37,9 @@ internal static class Program
         Test("Free Simulation consequences, geometry, traction and guided separation", FreedomValidation.Run);
         Test("southeast hose freedom, breakaway and recovery", ServiceFreedomValidation.Run);
         Test("tire overlap, liquid recovery, perimeter mask and finite spread", IceCalibrationValidation.Run);
+        Test("snow production, side escape and recoverable deposits", SnowCalibrationValidation.Run);
+        Test("truthful minimap states and measured wet-but-uncut slivers", MinimapValidation.Run);
+        Test("visible pit contact, reverse recovery and finite floor drainage", () => ServiceCollisionValidation.Run());
         Test("complete scored southeast route, return and angled unload", FreedomValidation.FullRun);
         Test("water service state, capacities, conservation and recovery", ServiceValidation.Run);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
@@ -475,7 +478,8 @@ internal static class Program
         {
             var s=MeasuredLane(settings[i]);after[i]=s.SnowTankM3;
             Console.WriteLine("  20-yard lane setting="+settings[i]+"mm: before="+legacy[i].ToString("F6")+" after="+after[i].ToString("F6")+"m3 ratio="+(after[i]/legacy[i]).ToString("F3")+" fill="+(after[i]/s.Config.SnowCapacityM3).ToString("P3"));
-            Assert(after[i]<legacy[i]*.34f&&after[i]>legacy[i]*.15f,"snow calibration outside physically accounted reduction");
+            if(i==0)Assert(after[i]<legacy[i]*.34f&&after[i]>legacy[i]*.15f,"normal snow calibration changed");
+            Near(s.Config.EffectiveBladeDepth(settings[i]),i==0?.056f:.60f,.000001f,"effective cutting calibration differs from the measured model");
             Near(s.Config.SnowCapacityM3,3.54f,0,"compacted capacity changed to hide fill");
             Near(s.SnowTankM3,ShavedSnow(s)+.0f+(IceSnow(new Simulation())-IceSnow(s)),.00001f,"calibration snow not sourced from actual cut and loose snow");
         }

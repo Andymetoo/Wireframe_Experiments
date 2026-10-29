@@ -1,0 +1,88 @@
+PASS CTRL stops through the real keyboard path
+PASS fixture genuinely drives from service bay onto ice before interaction
+PASS CTRL stops through the real keyboard path
+PASS blade adjustment: W reaches drive and releases brake
+PASS blade adjustment: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS conditioner hold/release: W reaches drive and releases brake
+PASS conditioner hold/release: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS horizontal auger: W reaches drive and releases brake
+PASS horizontal auger: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS vertical auger: W reaches drive and releases brake
+PASS vertical auger: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS board brush: W reaches drive and releases brake
+PASS board brush: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS wash valve/pump: W reaches drive and releases brake
+PASS wash valve/pump: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS flood water: W reaches drive and releases brake
+PASS flood water: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS snow breaker: W reaches drive and releases brake
+PASS snow breaker: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS free on-ice dump: W reaches drive and releases brake
+PASS free on-ice dump: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS standing/sitting: W reaches drive and releases brake
+PASS standing/sitting: actual forward travel resumes ()
+PASS 7 raises tank while W continues Free Simulation travel
+PASS 7 release centres dump command
+PASS Shift+7 lowers the same physical tank
+PASS right bracket adjusts only flood water
+PASS Shift+right bracket adjusts only wash water
+PASS F4 toggles performance readout
+PASS F2 exposes actual shaving mask
+PASS F2 exposes affected cut/wash/flood cells
+PASS F2 returns to normal ice rendering
+PASS CTRL stops through the real keyboard path
+PASS LMB ray picks the real conditioner lever knob
+PASS physical push commands conditioner LOWER
+PASS W continues driving during an actively captured mechanical drag
+PASS polled LMB release outside the view clears drag and centres spool
+PASS CTRL stops through the real keyboard path
+PASS mouse drag/release outside window: W reaches drive and releases brake
+PASS mouse drag/release outside window: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS LMB ray picks the real conditioner lever knob
+PASS physical push commands conditioner LOWER
+PASS pause while dragging releases capture and hydraulic demand
+PASS pause/resume during drag: W reaches drive and releases brake
+PASS pause/resume during drag: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS F1 opens guide
+PASS guide close: W reaches drive and releases brake
+PASS guide close: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS LMB ray picks the real conditioner lever knob
+PASS physical push commands conditioner LOWER
+PASS RMB releases mechanical capture and keeps drive input independent
+PASS RMB release: W reaches drive and releases brake
+PASS RMB release: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS LMB ray picks the real conditioner lever knob
+PASS physical push commands conditioner LOWER
+PASS focus loss releases spring-centred controls even if MouseUp was lost
+PASS focus-loss control cleanup: W reaches drive and releases brake
+PASS focus-loss control cleanup: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS S reverses after a stopped equipment interaction
+PASS W brakes through reverse and resumes forward
+PASS CTRL stops through the real keyboard path
+PASS 85 mm board-margin stop: W reaches drive and releases brake
+PASS 85 mm board-margin stop: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS near-board conditioner interaction: W reaches drive and releases brake
+PASS near-board conditioner interaction: actual forward travel resumes ()
+PASS CTRL stops through the real keyboard path
+PASS direct board contact explains reverse-clear recovery
+PASS reverse clears direct board contact without a state reset
+Shakeout rendering fixture seeds 0.8 m3 tank stock and pit-aligned pose only. Subsequent transfers use production hydraulics and conserved DumpSnowRate; core tests collect their stock by cutting.
+PASS stationary raised bin retains its adhered residual snow
+PASS small measured lowering/raising movement releases residual snow through the dump outlet
+PASS runtime shakeout conserves tank plus pit volume
+PASS residual shakeout emits visible pooled falling snow

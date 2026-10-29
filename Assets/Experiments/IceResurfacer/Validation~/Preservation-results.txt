@@ -1,16 +1,11 @@
-PASS 28 October 2026: all changed/untracked paths remain inside Assets/Experiments/IceResurfacer/.
-PASS: other experiments, Packages and ProjectSettings have no tracked differences.
-PASS: all 35 runtime/editor/core/shader/material/scene/assembly assets match SHA256 hashes in the isolated validation project used for the final runs/builds.
-PASS: 55 metadata files have valid unique GUIDs; all imported assets have required metadata.
-PASS: git diff --check is clean.
-PASS: updated launch scene explicitly saves 5 cm ice, 420 s freeze and groove-depth defaults, while retaining the modest operator eye-height setting.
-PASS: isolated project owns temporary scenes, settings, Library and development builds.
-PASS: final core suite reports 32 passing groups; all final Unity runtime suites report zero errors/exceptions.
-PASS: whole-wet visual-aging regression passes budget, immediate dirty updates, 1/255 observed alpha error, complete removal, rewetting and exact invalidation.
-PASS: native HUD tests target only their owned hidden nonactivating windows; no OS pointer moved.
-PASS: final rebuilt 1366x768 and 1920x1080 native HUD reports pass with no measured text clipping.
-PASS: final rendered benchmarks complete all 12 workloads at each resolution with zero managed runtime errors.
-LIMIT: native hidden-window D3D11 presentation warnings are counted separately in each report; focused-window latency requires manual testing.
-LIMIT: whole-wet stress is an explicitly seeded conserved-film fixture, not a control-driven full resurfacing run. The separate full core route uses controls only.
-LIMIT: the finer field and fixed summary cache cost memory; reported frame measurements are short workload samples, not an Editor FPS guarantee.
-Original open Editor sessions were not stopped or switched. No branch, commit or push was made.
+﻿AURORA R-54 / OPERATOR AUTHENTICITY PRESERVATION AUDIT
+28 October 2026
+Root vs isolated runtime/editor/assets compared: 86
+Source/stage mismatches: 0
+Missing imported asset metas: 0
+Duplicate imported asset GUIDs: 0
+Changed/untracked paths outside IceResurfacer: 0
+No branch, commit or push performed.
+Original Unity Editor left open; all batch runs/builds used Validation~/UnityProject.
+ProjectSettings and Packages were only changed in the ignored validation copy.
+Whitespace diff check passed. Native builds and result files belong to this experiment.

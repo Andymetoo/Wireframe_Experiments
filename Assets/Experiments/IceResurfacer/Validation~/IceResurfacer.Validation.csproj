@@ -14,5 +14,8 @@
     <Compile Include="FreedomValidation.cs" />
     <Compile Include="ServiceFreedomValidation.cs" />
     <Compile Include="IceCalibrationValidation.cs" />
+    <Compile Include="SnowCalibrationValidation.cs" />
+    <Compile Include="MinimapValidation.cs" />
+    <Compile Include="ServiceCollisionValidation.cs" />
   </ItemGroup>
 </Project>

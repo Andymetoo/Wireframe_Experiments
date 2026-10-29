@@ -4,10 +4,10 @@ namespace IceResurfacer.Core
 {
     public sealed partial class SimulatorConfig
     {
-        // Published wheel track plus the authored 300 mm traction tire. These
+        // Published wheel track plus the 526's LT215/85R16 nominal section. These
         // define the operator's alignment cue, independently of body width.
         public float WheelTrack = 1.37f;
-        public float TireWidth = .30f;
+        public float TireWidth = .215f;
         public float ShavingPerimeterExclusion = .1524f;
         // A finite fringe supplied by the same flood liters, not extra water.
         public float WaterFilmSpreadMeters = .12f;

@@ -7,6 +7,8 @@ The results capture follows an actual raised, dry entry and safe return through 
 PASS 1920x1080 / Requested client resolution (actual 1920x1080)
 PASS 1920x1080 / Machine Load meter opens its demand explanation
 PASS 1920x1080 / Machine Load explanation closes without changing machinery
+PASS 1920x1080 / Native map pointer selects actual ice for magnified treatment inspection
+PASS 1920x1080 / Survey inspection does not apply water or alter machinery
 PASS 1920x1080 / Conditioner held direction
 PASS 1920x1080 / Conditioner springs to neutral on native mouse release
 PASS 1920x1080 / Conditioner holds attained position after release
@@ -35,5 +37,6 @@ PASS 1920x1080 / New-session button
 PASS 1920x1080 / Unscored-practice launch button
 PASS 1920x1080 / Scored-run launch button
 PASS 1920x1080 / Legal partial run reaches results through normal finish path
+PASS 1920x1080 / F3 fixture reaches the actual pit rim through normal controls
 PASS: all player HUD checks.
-Native hidden-window D3D presentation warnings: 2 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 11 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

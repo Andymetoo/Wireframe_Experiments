@@ -32,6 +32,8 @@ namespace IceResurfacer.Presentation
         public bool Standing { get; private set; }
         [Range(-.08f,.12f)] public float operatorEyeHeight = .06f;
         public string CameraView { get; private set; } = "Forward";
+        public bool ChaseActive { get { return chaseCamera!=null&&chaseCamera.Active; } }
+        public string HeldQuicklook { get { return quicklook; } }
         public IcePerformanceMeter Performance { get; private set; }
         public float RawThrottle { get; private set; }
         public bool HasFocus { get; private set; } = true;
@@ -44,6 +46,12 @@ namespace IceResurfacer.Presentation
         float accumulator, surveyTimer, yaw, pitch=5, wheelRoll, lastLift, lastTankLift, breakerAnimation;
         const float RecenterSeconds=.2f;
         float recenterTime=RecenterSeconds, recenterYaw, recenterPitch, targetYaw, targetPitch=5, stance, controlLean;
+        IceChaseCamera chaseCamera;
+        string quicklook="", savedCameraView;
+        bool savedHead, restoringHead, suppressQuicklook, preservedOffset;
+        float savedYaw, savedPitch, savedControlLean, sideLean, savedSideLean, savedStance, restoreTime;
+        Vector3 savedHeadPosition, restorePosition;
+        Quaternion savedHeadRotation, restoreRotation;
         Vector2 instrumentCursor;
         Mouse lookMouse;
         int lookWarmup;
@@ -79,6 +87,7 @@ namespace IceResurfacer.Presentation
             var cameraObject=new GameObject("Seated operator / independent head look");
             cameraObject.transform.SetParent(World.CameraMount,false);
             DriverCamera=cameraObject.AddComponent<Camera>();
+            chaseCamera=new IceChaseCamera(this);
             // A modest 64 -> 61 degree lens adjustment plus the real 2.10 m water
             // spread projects the wet half-width about 14% wider on each side.
             DriverCamera.fieldOfView=61; DriverCamera.nearClipPlane=.035f; DriverCamera.farClipPlane=180;
@@ -126,15 +135,16 @@ namespace IceResurfacer.Presentation
         {
             ReleaseControls();
             ReleaseLook();
+            chaseCamera?.Leave();quicklook="";savedHead=restoringHead=suppressQuicklook=preservedOffset=false;
             snowView?.Reset();
             Surface?.Dispose(); Sim=new Simulation(calibration,practice,546,mode);
             Sim.Controls.HydraulicHoldControls=true;
             WaterService?.ResetSession();
-            Surface=new IceSurfaceView(Sim.Ice,World.IceMesh,iceTemplate);
+            Surface=new IceSurfaceView(Sim.Ice,World.IceMesh,iceTemplate,Sim.Config);
             Surface.SetDebugMode(SurfaceDebugMode);
             Started=start; Paused=false; HelpVisible=false; Looking=false;
             accumulator=0; surveyTimer=0; yaw=0; pitch=5; Notice=""; observedMistakes=0; breakerAnimation=0;
-            recenterTime=RecenterSeconds; stance=0; controlLean=0; Standing=false; CameraView="Forward";
+            recenterTime=RecenterSeconds; stance=0; controlLean=sideLean=0; Standing=false; CameraView="Forward";
             Report=Sim.GetReport(); Surface.Refresh(Sim); UpdateMachine(0);
             observedMessage=Sim.LastMessage;
             DriverCamera.transform.localPosition=Vector3.zero;
@@ -186,6 +196,7 @@ namespace IceResurfacer.Presentation
             }
             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;
             bool wasOnFoot=Sim.OnFoot;
+            if(running&&!wasOnFoot&&keys!=null&&keys.fKey.wasPressedThisFrame)RestoreSeatedCameraBeforeDismount();
             WaterService.HandleInput(running,Time.deltaTime);
             if(wasOnFoot!=Sim.OnFoot) { ReleaseControls(); if(!Sim.OnFoot)ReleaseLook(); else { Looking=false; lookMouse=null; } }
             bool driving=running&&!Sim.OnFoot;
@@ -215,7 +226,7 @@ namespace IceResurfacer.Presentation
                 if(keys.periodKey.isPressed)c.BladeDepthMm=Mathf.Min(calibration.MaxBladeDepthMm,c.BladeDepthMm+Time.deltaTime*.08f);
             }
             if(!Sim.OnFoot)UpdateLook(running,Time.deltaTime);
-            PhysicalControls.UpdateInput(driving&&!Looking, dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
+            PhysicalControls.UpdateInput(driving&&!Looking&&!ChaseActive, dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
             if(running)
             {
                 accumulator+=Mathf.Min(Time.deltaTime,.12f);
@@ -234,15 +245,22 @@ namespace IceResurfacer.Presentation
         }
         public void SelectCameraView(string view)
         {
+            chaseCamera.Leave();
             CameraView=view;
             controlLean=view=="Controls"?-.18f:0;
+            sideLean=view=="Conditioner"?-.28f:0;
+            preservedOffset=false;
             if(view=="Forward") { targetYaw=0; targetPitch=5; }
+            else if(view=="Conditioner") { targetYaw=-95;targetPitch=75; }
+            else if(view=="Rear"||view=="Chase") { CameraView="Chase";chaseCamera.Enter();return; }
             else
             {
                 Vector3 target;
                 if(view=="Controls")
                 {
                     var controls=new Bounds(World.ConditionerLever.TransformPoint(0,.225f,0),Vector3.zero);
+                    controls.Encapsulate(World.VerticalAugerLever.TransformPoint(0,.225f,0));
+                    controls.Encapsulate(World.HorizontalAugerLever.TransformPoint(0,.225f,0));
                     controls.Encapsulate(World.DumpLever.TransformPoint(0,.225f,0));
                     controls.Encapsulate(World.WashValve.TransformPoint(-.09f,.064f,0));
                     controls.Encapsulate(World.FloodLever.TransformPoint(-.09f,.064f,0));
@@ -272,6 +290,41 @@ namespace IceResurfacer.Presentation
             }
             recenterYaw=yaw;recenterPitch=pitch;recenterTime=0;
         }
+        void ChangeQuicklook(string next)
+        {
+            if(next==quicklook)return;
+            if(!savedHead&&next!="")
+            {
+                savedHead=true;savedYaw=yaw;savedPitch=pitch;savedControlLean=controlLean;savedSideLean=sideLean;savedStance=stance;
+                savedCameraView=CameraView;savedHeadPosition=DriverCamera.transform.localPosition;savedHeadRotation=DriverCamera.transform.localRotation;
+            }
+            chaseCamera.Leave();
+            yaw=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.y);
+            pitch=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.x);
+            quicklook=next;restoringHead=false;
+            if(next!="")SelectCameraView(next);
+            else if(savedHead)
+            {
+                restoringHead=true;restoreTime=0;restorePosition=DriverCamera.transform.localPosition;restoreRotation=DriverCamera.transform.localRotation;
+                controlLean=savedControlLean;sideLean=savedSideLean;CameraView=savedCameraView;
+                recenterTime=RecenterSeconds;
+            }
+        }
+        // Dismount must save the normal seated pose, not the temporary external pose.
+        // IceWaterService continues to own all on-foot camera and interaction inputs.
+        public void RestoreSeatedCameraBeforeDismount()
+        {
+            chaseCamera.Leave();
+            if(savedHead)
+            {
+                yaw=savedYaw;pitch=savedPitch;controlLean=savedControlLean;sideLean=savedSideLean;CameraView=savedCameraView;
+                DriverCamera.transform.localPosition=savedHeadPosition;DriverCamera.transform.localRotation=savedHeadRotation;preservedOffset=true;
+            }
+            quicklook="";savedHead=restoringHead=false;suppressQuicklook=true;recenterTime=RecenterSeconds;
+        }
+        // Explicit validation/benchmark entry uses the same presentation update
+        // as held C, without manufacturing keyboard events or changing physics.
+        public void TickInspectionCamera(float dt) { if(ChaseActive)chaseCamera.Tick(dt); }
         float ControlViewYaw(Vector3 eye)
         {
             float minimum=180,maximum=-180;
@@ -306,11 +359,19 @@ namespace IceResurfacer.Presentation
             bool preset=false;
             if(running&&keys!=null)
             {
-                if(keys.rKey.wasPressedThisFrame)Standing=!Standing;
-                if(keys.xKey.wasPressedThisFrame){SelectCameraView("Forward");preset=true;}
-                if(keys.qKey.wasPressedThisFrame){SelectCameraView("Conditioner");preset=true;}
-                if(keys.eKey.wasPressedThisFrame){SelectCameraView("Controls");preset=true;}
-                if(keys.cKey.wasPressedThisFrame){SelectCameraView("Rear");preset=true;}
+                if(keys.rKey.wasPressedThisFrame){Standing=!Standing;preservedOffset=false;}
+                bool anyQuicklook=keys.qKey.isPressed||keys.eKey.isPressed||keys.cKey.isPressed;
+                if(!anyQuicklook)suppressQuicklook=false;
+                // A single snapshot survives overlapping holds. The strongest held
+                // inspection wins, then the next held view, then the original pose.
+                string next=suppressQuicklook?"":keys.cKey.isPressed?"Chase":keys.eKey.isPressed?"Controls":keys.qKey.isPressed?"Conditioner":"";
+                if(next!=quicklook){ChangeQuicklook(next);preset=true;}
+                if(keys.xKey.wasPressedThisFrame)
+                {
+                    chaseCamera.Leave();quicklook="";savedHead=restoringHead=false;suppressQuicklook=anyQuicklook;
+                    yaw=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.y);pitch=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.x);
+                    SelectCameraView("Forward");preset=true;
+                }
             }
             if(held)
             {
@@ -326,15 +387,43 @@ namespace IceResurfacer.Presentation
                 if(lookWarmup>0)lookWarmup--;
                 if(!preset&&delta.sqrMagnitude>0)
                 {
-                    // A deliberate new look interrupts a recenter at its current pose.
-                    recenterTime=RecenterSeconds;
-                    CameraView="Manual";
-                    yaw=Mathf.Clamp(yaw+delta.x*.11f,-170,170);
-                    pitch=Mathf.Clamp(pitch-delta.y*.11f,-55,80);
+                    if(ChaseActive)chaseCamera.Orbit(delta);
+                    else
+                    {
+                        // A deliberate look interrupts the return at the currently
+                        // rendered orientation, including a partially returned C.
+                        if(restoringHead)
+                        {
+                            yaw=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.y);
+                            pitch=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.x);
+                        }
+                        recenterTime=RecenterSeconds;
+                        CameraView=quicklook==""?"Manual":quicklook;restoringHead=false;preservedOffset=false;
+                        if(quicklook=="")savedHead=false;
+                        yaw=Mathf.Clamp(yaw+delta.x*.11f,-170,170);
+                        pitch=Mathf.Clamp(pitch-delta.y*.11f,-55,80);
+                    }
                 }
             }
             else if(Looking)ReleaseLook();
             Looking=held;
+            if(ChaseActive) { if(running)TickInspectionCamera(dt);return; }
+            if(restoringHead)
+            {
+                if(running)restoreTime=Mathf.Min(RecenterSeconds,restoreTime+dt);
+                float t=Mathf.SmoothStep(0,1,restoreTime/RecenterSeconds);
+                DriverCamera.transform.localPosition=ConstrainHeadOffset(Vector3.Lerp(restorePosition,savedHeadPosition,t));
+                DriverCamera.transform.localRotation=Quaternion.Slerp(restoreRotation,savedHeadRotation,t);
+                if(restoreTime>=RecenterSeconds)
+                {
+                    yaw=savedYaw;pitch=savedPitch;restoringHead=savedHead=false;
+                    // Restore the saved view exactly, but do not permanently pin
+                    // its seated height if the operator changed stance during Q/E.
+                    preservedOffset=Mathf.Abs(stance-savedStance)<.00001f;
+                    DriverCamera.transform.localPosition=ConstrainHeadOffset(savedHeadPosition);DriverCamera.transform.localRotation=savedHeadRotation;
+                }
+                return;
+            }
             if(running&&recenterTime<RecenterSeconds)
             {
                 recenterTime=Mathf.Min(RecenterSeconds,recenterTime+dt);
@@ -342,10 +431,15 @@ namespace IceResurfacer.Presentation
                 yaw=Mathf.Lerp(recenterYaw,targetYaw,t); pitch=Mathf.Lerp(recenterPitch,targetPitch,t);
             }
             if(running)
-                stance=Mathf.MoveTowards(stance,Standing||keys!=null&&keys.spaceKey.isPressed?1:0,dt/.25f);
+            {
+                float newStance=Mathf.MoveTowards(stance,Standing||keys!=null&&keys.spaceKey.isPressed?1:0,dt/.25f);
+                if(newStance!=stance)preservedOffset=false;
+                stance=newStance;
+            }
             Vector3 lean=HeadOffset(yaw);
-            if(running)
+            if(running&&!preservedOffset)
                 DriverCamera.transform.localPosition=Vector3.Lerp(DriverCamera.transform.localPosition,lean,1-Mathf.Exp(-10*dt));
+            if(running)DriverCamera.transform.localPosition=ConstrainHeadOffset(DriverCamera.transform.localPosition);
             // yaw/pitch are the rendered pose, not an RMB-dependent target. There is
             // no trailing rotation filter to drift after release, pause or focus loss.
             DriverCamera.transform.localRotation=Quaternion.Euler(pitch,yaw,0);
@@ -354,7 +448,25 @@ namespace IceResurfacer.Presentation
         {
             float shoulder=Mathf.SmoothStep(0,1,Mathf.InverseLerp(90,135,Mathf.Abs(angle)));
             float rise=Mathf.SmoothStep(0,1,stance);
-            return new Vector3((angle>0?.52f:-.40f)*shoulder,.03f*shoulder+.48f*rise+operatorEyeHeight,.10f*rise+controlLean);
+            Vector3 offset=new Vector3((angle>0?.52f:-.40f)*shoulder+sideLean,.03f*shoulder+.48f*rise+operatorEyeHeight,.10f*rise+controlLean);
+            return ConstrainHeadOffset(offset);
+        }
+        Vector3 ConstrainHeadOffset(Vector3 offset)
+        {
+            // A left inspection lean stops at the real boards/room wall. The
+            // seated origin is always retained as the fallback at a close board.
+            Vector3 origin=World.CameraMount.position,point=World.CameraMount.TransformPoint(offset);
+            if(!(Sim.Ice.IsInside(point.x,point.z,.08f)||Sim.Layout.ContainsFloor(point.x,point.z,.08f)))
+            {
+                float low=0,high=1;
+                for(int i=0;i<10;i++)
+                {
+                    float middle=(low+high)*.5f;Vector3 sample=Vector3.Lerp(origin,point,middle);
+                    if(Sim.Ice.IsInside(sample.x,sample.z,.08f)||Sim.Layout.ContainsFloor(sample.x,sample.z,.08f))low=middle;else high=middle;
+                }
+                offset.x*=low;offset.z*=low;
+            }
+            return offset;
         }
         void ReleaseLook()
         {

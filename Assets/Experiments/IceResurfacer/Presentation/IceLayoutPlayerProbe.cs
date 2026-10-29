@@ -109,6 +109,12 @@ namespace IceResurfacer.Presentation
             yield return Capture("HUD-"+currentResolution+"-diagnostics.png","load explanation and diagnostics");
             yield return Click("MachineLoad");
             Check(!game.DiagnosticsVisible,"Machine Load explanation closes without changing machinery");
+            float surveyWater=game.Sim.FloodWaterLiters;
+            yield return ClickAt(new Vector2(1419.5f,211));
+            Check(game.Dashboard.InspectedSurveyCell>=0,"Native map pointer selects actual ice for magnified treatment inspection");
+            Check(game.Sim.FloodWaterLiters==surveyWater,"Survey inspection does not apply water or alter machinery");
+            yield return Capture("HUD-"+currentResolution+"-survey.png","magnified exact-cell survey and treatment legend");
+            yield return ClickAt(new Vector2(530,130));
 
             var controls = game.Sim.Controls;
             yield return HoldHydraulic("Conditioner",false);
@@ -193,6 +199,20 @@ namespace IceResurfacer.Presentation
             game.Finish();
             Check(game.Sim.Finished && game.Sim.ProperExit, "Legal partial run reaches results through normal finish path");
             yield return Capture("HUD-" + currentResolution + "-results.png", "results panel");
+            // Drive into the real pit boundary from the normal nose-in spawn.
+            // This also audits the F3 contact panel with a populated rejection.
+            game.NewSession(false);
+            game.Sim.Controls.Throttle=.08f;
+            for(int i=0;i<3000&&!game.Sim.BoardContact;i++)game.Sim.Step(.02f);
+            Check(game.Sim.LastMovementContact.Obstacle==MovementObstacle.PitRim,"F3 fixture reaches the actual pit rim through normal controls");
+            typeof(IceResurfacerGame).GetMethod("UpdateMachine",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game,new object[]{0f});
+            game.ToggleDiagnostics();
+            game.SelectCameraView("Chase");game.TickInspectionCamera(2f);
+            yield return Capture("HUD-"+currentResolution+"-pit-contact.png","F3 rejected pose, speed, reason and pit outlines");
+            game.Dashboard.Compact=true;
+            yield return Capture("HUD-"+currentResolution+"-pit-overlay.png","compact F3 keeps the actual pit and footprint outlines visible");
+            game.Dashboard.Compact=false;
+            game.ToggleDiagnostics();
             game.NewSession(false);
             game.Dashboard.Compact=true;
             yield return Capture("HUD-"+currentResolution+"-compact.png","compact operator view");

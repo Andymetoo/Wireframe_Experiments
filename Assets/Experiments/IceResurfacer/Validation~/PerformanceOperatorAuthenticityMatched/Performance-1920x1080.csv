@@ -1,0 +1,27 @@
+Aurora explicit rendered-workload benchmark / 2026-10-29 01:30:48Z
+Unity 6000.4.1f1 / NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11 / 1920x1080
+OS Windows 11  (10.0.26200) / CPU 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz / development Mono player, VSync off, hidden offscreen window.
+One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session 1500 measured frames. Setup seeds poses/tanks solely to profile reproducible loads.
+GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.
+service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.
+late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.
+conditioner_side_escape starts with an explicitly seeded near-full trough, then real maximum-depth shaving with both augers off. chase_resurfacing runs the actual external camera while resurfacing and steering. These are added workloads; the preceding twelve retain their setup/order.
+Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.
+scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame,moving_frames,cutting_frames,shaved_ice_m3,flood_used_liters
+driving_full_hud,299,2.923,3.832,342.2,0.428,2.533,18024,22122,0,3,-5042176,-1,0,0.000,299,0,0.000000,0.000
+resurfacing_full_hud,299,3.352,5.780,298.3,1.044,2.525,18623,32224,0,3,-58662912,-1,7672,0.270,299,299,0.000732,3.461
+resurfacing_compact,299,2.878,5.295,347.4,1.015,2.506,9316,9800,0,2,-59314176,-1,7672,0.282,299,299,0.000732,3.461
+snow_overflow,299,3.403,5.773,293.8,1.036,2.577,18960,35444,0,3,-58650624,-1,6368,0.252,299,299,0.006509,3.461
+camera_changes,299,3.302,5.560,302.8,1.011,2.879,18086,18570,0,3,-59121664,-1,7672,0.261,299,299,0.000732,3.461
+service_walking,299,2.393,2.691,417.8,0.304,2.320,9326,9806,0,2,-59371520,-1,0,0.000,0,0,0.000000,0.000
+hose_filling,299,2.461,3.136,406.3,0.431,2.392,10129,36586,0,2,-58994688,-1,0,0.000,0,0,0.000000,-71.997
+hose_overflow,299,2.473,3.261,404.4,0.444,2.399,10278,10700,0,2,-58970112,-1,0,0.000,0,0,0.000000,0.000
+dump_shakeout,299,3.545,5.221,282.1,0.688,2.305,18786,54287,0,3,-58839040,-1,0,0.000,0,0,0.000000,0.000
+long_session,1499,4.415,7.897,226.5,1.330,2.448,18216,23984,0,9,-59064320,-1,29389,0.442,1488,1499,0.003486,17.303
+on_foot_movement,299,2.738,3.282,365.2,0.348,2.549,9326,9806,0,2,-59412480,-1,0,0.000,0,0,0.000000,0.000
+late_wet_sheet,299,4.122,9.910,242.6,1.571,2.549,18174,22482,0,3,-59174912,-1,599224,0.759,299,299,0.000732,3.461
+conditioner_side_escape,299,3.136,5.068,318.9,0.813,2.796,19253,20468,0,3,-58638336,-1,0,0.211,299,299,0.006888,0.000
+chase_resurfacing,299,3.550,5.972,281.7,1.105,2.938,18086,18570,0,3,-59248640,-1,7606,0.281,299,299,0.000715,3.461
+Managed runtime errors: 0
+Long-session growth is a live-heap delta, not a leak diagnosis; inspect GC collections and final repeat before inferring leaks.
+Native hidden-window D3D presentation warnings: 18 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

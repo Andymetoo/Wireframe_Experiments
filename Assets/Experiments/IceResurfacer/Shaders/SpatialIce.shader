@@ -8,6 +8,7 @@ Shader "IceResurfacer/SpatialIce"
         _DebugMode ("0 normal / 1 shaving mask / 2 actual cut wash flood", Float) = 0
         _GridSize ("Simulation grid / reciprocal", Vector) = (520,1200,0.001923077,0.000833333)
         _GridWorld ("Grid minimum / inverse extent", Vector) = (-13,-30,0.03846154,0.01666667)
+        _FixtureReflectionPolish ("Authored ceiling fixture highlights", Float) = 1
     }
     SubShader
     {
@@ -32,6 +33,7 @@ Shader "IceResurfacer/SpatialIce"
             float _DebugMode;
             float4 _GridSize;
             float4 _GridWorld;
+            float _FixtureReflectionPolish;
             CBUFFER_END
             struct Attributes { float4 positionOS:POSITION; float2 uv:TEXCOORD0; };
             struct Varyings { float4 positionCS:SV_POSITION; float3 positionWS:TEXCOORD0; float2 uv:TEXCOORD1; float fog:TEXCOORD2; };
@@ -132,12 +134,17 @@ Shader "IceResurfacer/SpatialIce"
                 // interface. The response is continuous and zero at zero water;
                 // it does not substitute a wide painted trail for actual liquid.
                 float wetFilm=1-exp2(-max(0,s.a)*12);
+                // Persistent loose snow is actual deposited material. Thick
+                // windrows obscure underlying wet sheen and skate grooves;
+                // normal thin initial wear keeps its established appearance.
+                float snowCover=smoothstep(.24,1,s.g);
+                wetFilm*=1-snowCover*.92;
                 float dryCut=process.r*(1-wetFilm)*(1-process.b);
                 float finished=saturate(s.b*.72+process.b*.28);
                 half3 color=lerp(half3(.66,.71,.72),half3(.56,.69,.73),finished);
                 color=lerp(color,half3(.73,.79,.80),dryCut*.48);
                 color=lerp(color,color*half3(.78,.87,.91),wetFilm*.58);
-                color=lerp(color,half3(.87,.89,.89),s.g*.65);
+                color=lerp(color,half3(.87,.89,.89),s.g*lerp(.65,.92,snowCover));
                 color+=(frost-.5)*.055*remainingWear+(noise-.5)*.015*remainingWear*grainVisibility;
                 float blueLine = band(abs(p.y)-7.6,.15,aa);
                 float redLine = max(band(p.y,.075,aa),band(abs(p.y)-26,.05,aa));
@@ -161,7 +168,7 @@ Shader "IceResurfacer/SpatialIce"
                 // Residual groove severity comes from the actual ice cell. A
                 // shallow scrape leaves deep marks; water fills their appearance
                 // while the physical residual still controls the dry finish.
-                float visibleWear=remainingWear*(1-wetFilm*.80);
+                float visibleWear=remainingWear*(1-wetFilm*.80)*(1-snowCover);
                 color+=(groovesA.x+groovesB.x+groovesC.x)*.25*visibleWear;
                 color-=(groovesA.y+groovesB.y+groovesC.y)*.055*visibleWear;
                 InputData input=(InputData)0;
@@ -187,7 +194,23 @@ Shader "IceResurfacer/SpatialIce"
                 float strip=pow(saturate(1-abs(frac(roof.x/7+.5)-.5)*15),3);
                 strip*=pow(saturate(1-abs(frac(roof.y/10+.5)-.5)*5),3);
                 float fresnel=pow(1-saturate(dot(input.normalWS,input.viewDirectionWS)),3);
-                lit.rgb+=half3(.64,.77,.83)*strip*(.004+wetFilm*.16+finished*.014)*( .6+fresnel*.7);
+                float reflection=strip*(.004+wetFilm*.16+finished*.014)*(.6+fresnel*.7);
+                if(_FixtureReflectionPolish>.5)
+                {
+                    // Match the existing eighteen diffusers at x=+/-8 m,
+                    // z=-34+8*n, height9.25 m. No added lights, probes or scene
+                    // captures: only the nearest rectangular ceiling emitter.
+                    float2 ceiling=p+reflected.xz*((9.25-i.positionWS.y)/max(.08,reflected.y));
+                    float2 fixture=float2(ceiling.x<0?-8:8,-34+clamp(round((ceiling.y+34)/8),0,8)*8);
+                    float2 blur=float2(.12,.08)+(1-wetFilm)*float2(.75,.45)+max(fwidth(ceiling),.025);
+                    float2 halfSize=float2(1.25,.255);
+                    float2 edge=1-smoothstep(halfSize-blur,halfSize+blur,abs(ceiling-fixture));
+                    float highlight=edge.x*edge.y*smoothstep(.02,.18,reflected.y);
+                    // Keep a broad subdued reflection as liquid freezes. Fresh
+                    // water has a clearer highlight, never a mirror of the arena.
+                    reflection=highlight*(.006+wetFilm*.19+finished*.012)*(.58+fresnel*.62);
+                }
+                lit.rgb+=half3(.64,.77,.83)*reflection;
                 lit.rgb=MixFog(lit.rgb,i.fog); return lit;
             }
             ENDHLSL

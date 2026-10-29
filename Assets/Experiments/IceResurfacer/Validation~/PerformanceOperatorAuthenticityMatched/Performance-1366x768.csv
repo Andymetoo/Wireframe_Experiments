@@ -1,0 +1,27 @@
+Aurora explicit rendered-workload benchmark / 2026-10-29 01:30:15Z
+Unity 6000.4.1f1 / NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11 / 1366x768
+OS Windows 11  (10.0.26200) / CPU 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz / development Mono player, VSync off, hidden offscreen window.
+One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session 1500 measured frames. Setup seeds poses/tanks solely to profile reproducible loads.
+GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.
+service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.
+late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.
+conditioner_side_escape starts with an explicitly seeded near-full trough, then real maximum-depth shaving with both augers off. chase_resurfacing runs the actual external camera while resurfacing and steering. These are added workloads; the preceding twelve retain their setup/order.
+Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.
+scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame,moving_frames,cutting_frames,shaved_ice_m3,flood_used_liters
+driving_full_hud,299,3.043,4.167,328.6,0.405,1.318,22464,26562,0,4,-6549504,-1,0,0.000,299,0,0.000000,0.000
+resurfacing_full_hud,299,3.609,5.982,277.1,1.031,1.324,23063,36664,0,3,-56983552,-1,7672,0.289,299,299,0.000732,3.461
+resurfacing_compact,299,3.191,5.488,313.4,1.118,1.285,13756,14240,0,2,-57569280,-1,7672,0.310,299,299,0.000732,3.461
+snow_overflow,299,3.252,5.383,307.5,0.981,1.355,23400,39884,0,3,-56971264,-1,6368,0.254,299,299,0.006509,3.461
+camera_changes,299,3.201,5.486,312.4,0.987,1.448,22526,23010,0,3,-57389056,-1,7672,0.268,299,299,0.000732,3.461
+service_walking,299,1.792,2.503,558.0,0.316,1.120,13766,14246,0,2,-57671680,-1,0,0.000,0,0,0.000000,0.000
+hose_filling,299,1.813,3.167,551.6,0.440,1.262,14579,41202,0,2,-54931456,-1,0,0.000,0,0,0.000000,-71.997
+hose_overflow,299,1.669,2.965,599.2,0.434,1.213,14718,15140,0,2,-57245696,-1,0,0.000,0,0,0.000000,0.000
+dump_shakeout,299,2.733,3.894,366.0,0.574,1.206,23226,58727,0,3,-57180160,-1,0,0.000,0,0,0.000000,0.000
+long_session,1499,3.324,6.293,300.8,1.069,1.271,22661,28424,0,11,-56537088,-1,29389,0.349,1488,1499,0.003486,17.303
+on_foot_movement,299,1.683,2.382,594.2,0.333,1.234,13766,14246,0,2,-57757696,-1,0,0.000,0,0,0.000000,0.000
+late_wet_sheet,299,3.814,8.995,262.2,1.419,1.325,22614,26922,0,3,-57491456,-1,599224,0.686,299,299,0.000732,3.461
+conditioner_side_escape,299,3.012,4.887,332.0,0.796,1.345,23693,24908,0,3,-56934400,-1,0,0.224,299,299,0.006888,0.000
+chase_resurfacing,299,3.607,5.960,277.2,1.073,1.464,22526,23010,0,3,-57569280,-1,7606,0.292,299,299,0.000715,3.461
+Managed runtime errors: 0
+Long-session growth is a live-heap delta, not a leak diagnosis; inspect GC collections and final repeat before inferring leaks.
+Native hidden-window D3D presentation warnings: 18 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

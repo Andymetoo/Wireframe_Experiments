@@ -1,0 +1,81 @@
+AURORA R-54 / FINAL SURFACE AND SERVICE REFINEMENT
+28 October 2026 / Unity 6000.4.1f1 / URP
+
+Current behavior and six-request explanation:
+../Documentation/SurfaceServiceRefinement.txt
+Detailed ice calibration: ../Documentation/VisualIceRefinement.txt
+Controls and launch: ../README.txt
+The previous final report is preserved in SurfaceServiceBefore/.
+
+Implemented
+- Nose-in parking toward the centered pit, straight reverse departure, supply
+  and hose on the opposite wall beside the fixed machine-right fill ports.
+- Both fillers reachable with slack; named obstruction/length feedback and
+  retreat from a taut hose, including the upward-look overextension case.
+- Real 520 x 1200 state grid at 5 cm, fractional volume-conserving water edges,
+  continuous reconstruction, and visible water across the 2.100 m towel.
+- Clickable Machine Load explanation: estimated mechanical demand affects
+  acceleration and sound; it is not a horsepower reading or a travel lock.
+- 420-second exponential freeze constant; about 95% frozen after 21 minutes.
+- Dull, irregular skate wear backed by residual groove depth; light cuts can
+  leave deeper grooves, while deeper/repeated cutting generates more snow.
+
+Core simulation: PASS, all 32 deterministic scenario groups (Results.txt).
+Incremental report totals match independent full scans, including repeated
+cell changes, raw fixture invalidation and cleared renderer dirty queues.
+Changed-report sample: 0.0130 ms, zero managed bytes in the .NET harness.
+5000 active simulation ticks: 0.2494 ms/tick, zero managed bytes. These core
+measurements exclude Unity, rendering, HUD and presentation and are not FPS.
+The exact summary cache adds approximately 5.6 MB of fixed storage per field.
+
+Unity Play Mode: PASS, all suites; zero managed errors/exceptions.
+Actual keyboard walking reaches both fillers, returns the nozzle and recovers
+from hose tension; driven entry, departure, breakaway and unloading pass.
+Rendered response-mask width is 2.367 m at the disclosed threshold, not a
+perceptual-width guarantee under every reflection angle. Wear and actual-liquid
+aging captures show the intended changes. Geometry remains blade 1.956 m/towel 2.1 m.
+Whole-wet visual aging visits at most 65,536 old cells per ordinary refresh;
+new/dirty changes remain immediate. Maximum observed alpha error is 1/255
+across ten 0.16-second refreshes. Clear, rewet, final texture upload and exact
+full invalidation checks pass. Physical phase change and pickup remain exact.
+
+Native development player: PASS at 1366x768 and 1920x1080.
+Real mouse messages validate load explanation, full blade-wheel travel,
+independent valves, pumps, switches, held hydraulics, pause and session flows.
+Eight captured interface states per resolution; no measured text clipping.
+Final hidden-window native presentation warnings: 5 / 2 respectively.
+An earlier 1366 run was interrupted consistently with focus-loss auto-pause;
+serial reruns passed. No control workaround or weakened assertion was applied.
+
+Continuous control-driven full route, without pose/cell/tank writes:
+1787 simulated seconds; 96.67% reachable combined coverage; 95.14% whole-ice
+combined coverage; 97.04% water coverage; 77.0% finish; 88.7 points; 677.0 L
+flood use; 0.724 m3 delivered to the pit; zero misuse; proper southeast return.
+It starts nose-in, reverses onto the rink, works the sheet and returns forward.
+Surface calibration and route differ from the preceding pass; this is not an
+isolated service-layout comparison. See Southeast-full-run.txt.
+
+Rendered performance: PASS, 12 workloads at each resolution, zero managed errors.
+Final CSV files: PerformanceSurfaceService/Performance-<resolution>.csv
+Resolution       Active full HUD mean / p95     Whole-wet mean / p95
+1366x768                  3.484 / 5.905 ms             4.819 / 10.502 ms
+1920x1080                 4.178 / 6.951 ms             4.076 / 9.474 ms
+Whole-wet fixture has 599,224 active cells aged 0..15 min and real conserved film.
+It is an explicit stress setup, not a claim of a control-driven completed run.
+The first unoptimized 5 cm / 1366 run was 6.800 / 29.901 ms active and
+12.070 / 68.570 ms whole-wet. Incremental totals and bounded visual aging remove
+those repeated full-grid bursts. Previous 10 cm active means were 3.093 / 3.867 ms;
+finer ice has a modest mean cost while active p95 improves from 8.504 / 9.920 ms.
+
+Environment: RTX 3050 Laptop GPU, i5-11400H, Windows 11, development Mono player,
+D3D11, VSync off, hidden offscreen benchmark. One 20 ms simulation tick/rendered
+frame; 90 warmup then 299 measured frames/scenario, 1499 for long_session.
+Short workload throughput is not focused-window latency, an Editor FPS claim
+or a guarantee on other systems. Final performance native warnings: 11 / 17.
+Whole-frame GC remains 18,143 / 21,473 bytes per active full-HUD frame; a zero
+work-allocation reading is not a claim that the Unity player allocates nothing.
+Live-heap deltas alone are not leak diagnoses. Draw-call counters unavailable.
+See the current refinement report for the full comparison and limitations.
+
+Ownership: only Assets/Experiments/IceResurfacer/ changed. Original Editor
+sessions were not stopped or switched. No branch, commit or push was made.

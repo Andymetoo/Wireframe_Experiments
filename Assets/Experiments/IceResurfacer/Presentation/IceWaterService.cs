@@ -12,13 +12,13 @@ namespace IceResurfacer.Presentation
         enum Target { None, Holder, Supply, Flood, Wash, Step, LooseNozzle }
         IceResurfacerGame game;
         Transform root, nozzle, supplyHandle, floodInlet, washInlet, overflowOutlet;
-        Transform floodGauge, washGauge, spillSheet;
+        Transform floodGauge, washGauge;
         Transform holderHighlight, station;
         LineRenderer hose, runoff;
         ParticleSystem spray;
         AudioSource filling, overflowing, coupling;
         AudioClip fillClip, overflowClip, couplingClip;
-        Material steel, rubber, blue, teal, paint, waterMaterial, textMaterial;
+        Material steel, rubber, blue, teal, paint, waterMaterial, floorWaterMaterial, textMaterial;
         Font font;
         TextMesh levels;
         readonly List<Material> ownedMaterials = new List<Material>();
@@ -30,7 +30,7 @@ namespace IceResurfacer.Presentation
         Vector3 footPosition, seatedPosition;
         Quaternion seatedRotation;
         Vector2 savedCursor;
-        float footYaw, footPitch, spillWetness, levelUpdate;
+        float footYaw, footPitch, levelUpdate;
         bool footLook;
         int lookWarmup;
         Target selected;
@@ -44,6 +44,7 @@ namespace IceResurfacer.Presentation
         int groundRevision=-1;
         Mesh groundWaterMesh, groundSnowMesh;
         Vector3[] groundWaterVertices,groundSnowVertices;
+        Color32[] groundWaterColors;
 
         public string Prompt { get { return prompt; } }
         public bool OnFoot { get { return game != null && game.Sim != null && game.Sim.OnFoot; } }
@@ -57,6 +58,7 @@ namespace IceResurfacer.Presentation
         public string MovementStatus { get { return movementStatus; } }
         public Vector3 HolderPosition { get { return holderPosition; } }
         public Vector3 SupplyPosition { get { return supplyPosition; } }
+        public Vector3 FloorDrainPosition { get { return drainPosition; } }
         public Vector3 BoardingPoint { get { return StepPoint(); } }
         public bool HolderHighlighted { get { return holderHighlight!=null && holderHighlight.gameObject.activeSelf; } }
         public bool FootLookActive { get { return footLook; } }
@@ -84,12 +86,20 @@ namespace IceResurfacer.Presentation
             teal = Mat("Wash inlet / teal",new Color(.08f,.57f,.49f),.3f,.52f);
             paint = Mat("Water station / cream enamel",new Color(.73f,.76f,.70f),.2f,.35f);
             waterMaterial = Mat("Water station / wet water",new Color(.20f,.48f,.57f),.15f,.94f);
+            floorWaterMaterial=new Material(Resources.Load<Shader>("WetFloor")){name="Finite shallow water / darkened concrete"};
+            var floorLayout=new ServiceLayout(game.calibration);
+            floorWaterMaterial.SetVector("_Gate",new Vector4(floorLayout.GateX,floorLayout.GateZ,0,0));
+            floorWaterMaterial.SetVector("_Room",new Vector4(floorLayout.RoomHalfWidth,floorLayout.RoomStart,floorLayout.RoomLength,floorLayout.GateHalfWidth));
+            floorWaterMaterial.SetVector("_Pit",new Vector4(floorLayout.PitSide,floorLayout.PitOutward,floorLayout.PitHalfWidth,floorLayout.PitHalfLength));
+            floorWaterMaterial.SetVector("_Rink",new Vector4(game.calibration.RinkWidth*.5f,game.calibration.RinkLength*.5f,game.calibration.CornerRadius,0));
+            ownedMaterials.Add(floorWaterMaterial);
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             var shader = Shader.Find("IceResurfacer/WorldText");
             textMaterial = new Material(shader != null ? shader : font.material.shader) { name="Water service lettering",mainTexture=font.material.mainTexture };
             ownedMaterials.Add(textMaterial);
             root.gameObject.AddComponent<IceWorldTextAtlas>().Initialize(font,textMaterial);
             BuildStation(); BuildPorts(); BuildEffects(); BuildAudio();
+            root.gameObject.AddComponent<IceCollisionOverlay>().Initialize(game);
         }
 
         public void ResetSession()
@@ -100,7 +110,7 @@ namespace IceResurfacer.Presentation
             game.DriverCamera.transform.SetParent(game.World.CameraMount,false);
             game.DriverCamera.transform.localPosition=Vector3.zero;
             game.DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
-            prompt="";movementStatus="";movementStatusTime=0; spillWetness=0; levelUpdate=0;groundRevision=-1;groundUpdate=0;
+            prompt="";movementStatus="";movementStatusTime=0;levelUpdate=0;groundRevision=-1;groundUpdate=0;
             if(holderHighlight!=null)holderHighlight.gameObject.SetActive(false);
             if(spray!=null)spray.Clear();
         }
@@ -360,10 +370,7 @@ namespace IceResurfacer.Presentation
             {
                 Vector3 landing=new Vector3(spillOrigin.x,.035f,spillOrigin.z);
                 runoff.SetPosition(0,spillOrigin);runoff.SetPosition(1,landing);
-                runoff.SetPosition(2,Vector3.Lerp(landing,drainPosition,.65f)+Vector3.up*.003f);runoff.SetPosition(3,drainPosition);
             }
-            spillWetness=Mathf.MoveTowards(spillWetness,spill>.01f?1:0,dt*(spill>.01f?.18f:.015f));
-            spillSheet.gameObject.SetActive(spillWetness>.001f);spillSheet.localScale=new Vector3(.8f+spillWetness*.8f,.003f,1+spillWetness*.8f);
             filling.volume=Mathf.Lerp(filling.volume,running&&s.HoseConnected?s.ServiceFlowLitersPerSecond/12*.20f:0,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
             overflowing.volume=Mathf.Lerp(overflowing.volume,spill/12*.24f,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
             filling.pitch=.8f+.4f*(1-(s.HoseState==WaterHoseState.Wash?s.WashWaterLiters/s.Config.WashCapacityLiters:s.FloodWaterLiters/s.Config.FloodCapacityLiters));
@@ -430,10 +437,11 @@ namespace IceResurfacer.Presentation
             var layout=new ServiceLayout(game.calibration);
             // Rotate the complete fixture about its anchor depth to the opposite
             // wall. Positive scales preserve lettering, pipe and valve geometry.
-            layout.ToWorld(0,Simulation.ServiceAnchorOutward*2,out float sx,out float sz);
+            float wallInset=6-layout.RoomHalfWidth;
+            layout.ToWorld(wallInset,Simulation.ServiceAnchorOutward*2,out float sx,out float sz);
             station=Group("Southeast service wall / right of nose-in parked machine",root,new Vector3(sx,0,sz));
             station.localRotation=Quaternion.Euler(0,135,0);
-            Vector3 holder=new Vector3(5.40f,1.15f,-6.48f),supply=new Vector3(5.38f,1.25f,-5.28f),anchor=new Vector3(-Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward);
+            Vector3 holder=new Vector3(5.40f,1.15f,-6.48f),supply=new Vector3(5.38f,1.25f,-5.28f),anchor=new Vector3(wallInset-Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward);
             holderPosition=station.TransformPoint(holder);supplyPosition=station.TransformPoint(supply);anchorPosition=station.TransformPoint(anchor);
             Vector3 drain=new Vector3(4.6f,.025f,-7.35f);drainPosition=station.TransformPoint(drain);
             Box("Water station backing",station,new Vector3(5.85f,1.52f,-6.05f),new Vector3(.06f,1.40f,2.25f),paint);
@@ -470,7 +478,6 @@ namespace IceResurfacer.Presentation
             Box("Tank level repeater panel",station,new Vector3(5.81f,2.05f,-7.50f),new Vector3(.035f,.63f,1.65f),rubber);
             Box("Service floor drain recess",station,drain,new Vector3(.85f,.025f,.65f),rubber);
             for(int i=0;i<9;i++)Box("Drain grate bar",station,drain+new Vector3(-.36f+i*.09f,.016f,0),new Vector3(.027f,.014f,.60f),steel);
-            spillSheet=Box("Persistent service drain wetness",station,drain+new Vector3(-.25f,-.005f,.20f),new Vector3(1,.003f,1),waterMaterial);
         }
         void BuildPorts()
         {
@@ -507,18 +514,18 @@ namespace IceResurfacer.Presentation
         {
             var field=game.Sim.Environment;
             int count=field.Cells.Length;
-            groundWaterVertices=new Vector3[count*9];groundSnowVertices=new Vector3[count*5];
-            int[] waterIndices=new int[count*24],snowIndices=new int[count*18];
+            groundWaterVertices=new Vector3[count*4];groundSnowVertices=new Vector3[count*5];groundWaterColors=new Color32[count*4];
+            Vector2[] waterUV=new Vector2[count*4];
+            int[] waterIndices=new int[count*6],snowIndices=new int[count*18];
             for(int i=0;i<count;i++)
             {
-                for(int j=0;j<8;j++)
-                {
-                    int t=i*24+j*3;waterIndices[t]=i*9;waterIndices[t+1]=i*9+1+(j+1)%8;waterIndices[t+2]=i*9+1+j;
-                }
+                int w=i*4,t=i*6;
+                waterIndices[t]=w;waterIndices[t+1]=w+2;waterIndices[t+2]=w+1;waterIndices[t+3]=w;waterIndices[t+4]=w+3;waterIndices[t+5]=w+2;
+                waterUV[w]=Vector2.zero;waterUV[w+1]=Vector2.right;waterUV[w+2]=Vector2.one;waterUV[w+3]=Vector2.up;
                 int[] pyramid={0,4,1,1,4,2,2,4,3,3,4,0,0,2,3,0,1,2};
                 for(int j=0;j<18;j++)snowIndices[i*18+j]=i*5+pyramid[j];
             }
-            groundWaterMesh=GroundMesh("Spatial floor runoff / conserved liters",groundWaterVertices,waterIndices,waterMaterial);
+            groundWaterMesh=GroundMesh("Spatial floor runoff / conserved liters",groundWaterVertices,waterIndices,floorWaterMaterial);groundWaterMesh.uv=waterUV;
             groundSnowMesh=GroundMesh("Spatial dumped floor snow / conserved volume",groundSnowVertices,snowIndices,Mat("Floor snow deposits",new Color(.82f,.88f,.90f),0,.14f));
         }
         Mesh GroundMesh(string name,Vector3[] vertices,int[] triangles,Material material)
@@ -539,10 +546,17 @@ namespace IceResurfacer.Presentation
             {
                 float x=field.CellX(i%field.Columns),z=field.CellZ(i/field.Columns);
                 var cell=field.Cells[i];bool floor=game.Sim.Layout.ContainsFloor(x,z)&&!game.Sim.Ice.IsInside(x,z);
-                float radius=floor?Mathf.Min(.49f,Mathf.Sqrt(cell.WaterLiters*.12f)):0;
-                float y=radius>.005f?.024f:-.25f;
-                int w=i*9;groundWaterVertices[w]=new Vector3(x,y,z);
-                for(int j=0;j<8;j++){float a=j*Mathf.PI*.25f;groundWaterVertices[w+1+j]=new Vector3(x+Mathf.Cos(a)*radius,y,z+Mathf.Sin(a)*radius);}
+                bool waterFloor=game.Sim.Layout.ContainsFloor(cell.WaterX,cell.WaterZ)&&!game.Sim.Layout.ContainsPit(cell.WaterX,cell.WaterZ)&&!game.Sim.Ice.IsInside(cell.WaterX,cell.WaterZ);
+                float radius=waterFloor?Mathf.Min(.70f,Mathf.Sqrt(cell.WaterLiters*.20f)):0;
+                float y=radius>.005f?.002f:-.25f;int w=i*4;
+                Vector3 centre=new Vector3(cell.WaterX,y,cell.WaterZ);
+                byte opacity=(byte)Mathf.RoundToInt(Mathf.Clamp01(.25f+cell.WaterLiters*.3f)*255);
+                for(int j=0;j<4;j++)
+                {
+                    Vector3 point=centre+new Vector3(j==0||j==3?-radius:radius,0,j<2?-radius:radius);
+                    if(radius>0)point=ClipFloorWater(centre,point);
+                    groundWaterVertices[w+j]=point;groundWaterColors[w+j]=new Color32(255,255,255,opacity);
+                }
                 float snowRadius=floor?Mathf.Min(.49f,Mathf.Pow(cell.SnowM3,.333333f)*1.1f):0;
                 float height=snowRadius>.005f?cell.SnowM3*3/Mathf.Max(.001f,4*snowRadius*snowRadius):0;
                 float sy=snowRadius>.005f?.032f:-.25f;int s=i*5;
@@ -550,12 +564,24 @@ namespace IceResurfacer.Presentation
                 groundSnowVertices[s+2]=new Vector3(x+snowRadius,sy,z+snowRadius);groundSnowVertices[s+3]=new Vector3(x+snowRadius,sy,z-snowRadius);
                 groundSnowVertices[s+4]=new Vector3(x,sy+Mathf.Min(height,2.8f),z);
             }
-            groundWaterMesh.SetVertices(groundWaterVertices);groundSnowMesh.SetVertices(groundSnowVertices);
+            groundWaterMesh.SetVertices(groundWaterVertices);groundWaterMesh.SetColors(groundWaterColors);groundSnowMesh.SetVertices(groundSnowVertices);
+        }
+        Vector3 ClipFloorWater(Vector3 centre,Vector3 point)
+        {
+            var s=game.Sim;
+            if(s.Layout.ContainsFloor(point.x,point.z,.02f)&&!s.Layout.ContainsPit(point.x,point.z)&&!s.Ice.IsInside(point.x,point.z))return point;
+            float low=0,high=1;
+            for(int n=0;n<7;n++)
+            {
+                float middle=(low+high)*.5f;Vector3 p=Vector3.Lerp(centre,point,middle);
+                if(s.Layout.ContainsFloor(p.x,p.z,.02f)&&!s.Layout.ContainsPit(p.x,p.z)&&!s.Ice.IsInside(p.x,p.z))low=middle;else high=middle;
+            }
+            return Vector3.Lerp(centre,point,low);
         }
         void BuildEffects()
         {
             hose=Line("Live service hose",rubber,.035f,16);hose.numCornerVertices=5;hose.numCapVertices=4;
-            runoff=Line("Water overflow to bay drain",waterMaterial,.045f,4);runoff.numCornerVertices=4;
+            runoff=Line("Water falling at actual overflow source",waterMaterial,.025f,2);runoff.numCornerVertices=2;
             overflowOutlet=Group("Tank overflow water outlet",root,Vector3.zero);
             spray=overflowOutlet.gameObject.AddComponent<ParticleSystem>();spray.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
             var main=spray.main;main.playOnAwake=false;main.loop=true;main.maxParticles=160;main.startLifetime=.55f;main.startSpeed=.16f;main.startSize=.025f;main.startColor=new Color(.40f,.68f,.75f);main.gravityModifier=1;main.simulationSpace=ParticleSystemSimulationSpace.World;

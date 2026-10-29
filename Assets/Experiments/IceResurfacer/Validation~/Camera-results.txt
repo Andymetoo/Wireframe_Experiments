@@ -22,23 +22,179 @@ PASS recenter remains animated at 0.10 seconds
 PASS recenter reaches forward after 0.20 seconds
 PASS recenter preserves raised stance
 PASS period deepens blade without a camera-key conflict
-PASS Q preset persists after release
-PASS Q respects head yaw limit
-Q calibrated pose: local eyes=(-0.40, 0.09, 0.00) angles=(70.63, 190.00, 0.00)
-PASS E preset persists after release
-PASS E respects head yaw limit
-E calibrated pose: local eyes=(0.00, 0.06, -0.18) angles=(29.94, 54.51, 0.00)
-PASS C preset persists after release
-PASS C respects head yaw limit
-C calibrated pose: local eyes=(0.52, 0.09, 0.00) angles=(30.76, 167.91, 0.00)
-PASS X preset persists after release
-PASS X respects head yaw limit
-X calibrated pose: local eyes=(0.00, 0.06, 0.00) angles=(5.00, 0.00, 0.00)
+PASS Q remains active while held
+PASS operator quicklook stays attached to physical seated eyes
+PASS Q looks down at nine o'clock with a small left lean
+Q held pose: machine eyes=(-1.05, 1.96, -0.48) local angles=(75.00, 265.00, 0.00)
+PASS Q release animates instead of snapping
+PASS Q release restores the exact custom prior orientation
+PASS Q release restores the exact prior eye position
+PASS E remains active while held
+PASS operator quicklook stays attached to physical seated eyes
+E held pose: machine eyes=(-0.76, 1.96, -0.66) local angles=(29.49, 53.53, 0.00)
+PASS E release animates instead of snapping
+PASS E release restores the exact custom prior orientation
+PASS E release restores the exact prior eye position
+PASS C remains active while held
+PASS C is an external camera rather than a head rotation
+PASS C frames the whole machine from above and behind ((-0.65, 3.30, -6.10))
+C held pose: machine eyes=(-0.65, 3.30, -6.10) local angles=(18.61, 5.58, 0.00)
+PASS C release animates instead of snapping
+PASS C release restores the exact custom prior orientation
+PASS C release restores the exact prior eye position
+PASS E has deterministic priority over held Q
+PASS C has deterministic priority over held Q and E
+PASS releasing C returns to the still-held E inspection
+PASS releasing E returns to the still-held Q inspection
+PASS overlapping holds retain the original normal view snapshot
+PASS overlapping holds restore the original eye position
+PASS dismount preparation restores the actual normal seated orientation
+PASS dismount preparation removes the external camera parent
+PASS X cancels a held inspection and recenters until all inspection keys are released
+PASS Q restores prior forward/rear/down orientation (0.00, 5.00)
+PASS Q restores prior forward/rear/down eyes (0.00, 5.00)
+PASS E restores prior forward/rear/down orientation (0.00, 5.00)
+PASS E restores prior forward/rear/down eyes (0.00, 5.00)
+PASS C restores prior forward/rear/down orientation (0.00, 5.00)
+PASS C restores prior forward/rear/down eyes (0.00, 5.00)
+PASS Q restores prior forward/rear/down orientation (160.00, 12.00)
+PASS Q restores prior forward/rear/down eyes (160.00, 12.00)
+PASS E restores prior forward/rear/down orientation (160.00, 12.00)
+PASS E restores prior forward/rear/down eyes (160.00, 12.00)
+PASS C restores prior forward/rear/down orientation (160.00, 12.00)
+PASS C restores prior forward/rear/down eyes (160.00, 12.00)
+PASS Q restores prior forward/rear/down orientation (-30.00, 74.00)
+PASS Q restores prior forward/rear/down eyes (-30.00, 74.00)
+PASS E restores prior forward/rear/down orientation (-30.00, 74.00)
+PASS E restores prior forward/rear/down eyes (-30.00, 74.00)
+PASS C restores prior forward/rear/down orientation (-30.00, 74.00)
+PASS C restores prior forward/rear/down eyes (-30.00, 74.00)
+PASS RMB interrupts a return from its rendered pose without a stale-angle jump
+PASS R during E preserves the original head orientation on release
+PASS R during E retains the requested standing height after inspection returns
+PASS Space during Q preserves the original head orientation on release
+PASS releasing Space during Q returns to seated height without retaining a stale raised offset
+PASS chase camera remains within real floor/wall envelope at (-11.50, 0.00, 0.00)
+PASS tight-turn chase remains within wall clearance through 40 consecutive frames at (-11.50, 0.00, 0.00)
+PASS chase smooths tight-turn displacement through 40 consecutive frames at (-11.50, 0.00, 0.00)
+PASS chase camera remains within real floor/wall envelope at (0.00, 0.00, 27.00)
+PASS tight-turn chase remains within wall clearance through 40 consecutive frames at (0.00, 0.00, 27.00)
+PASS chase smooths tight-turn displacement through 40 consecutive frames at (0.00, 0.00, 27.00)
+PASS chase camera remains within real floor/wall envelope at (0.00, 0.00, 6.35)
+PASS tight-turn chase remains within wall clearance through 40 consecutive frames at (0.00, 0.00, 6.35)
+PASS chase smooths tight-turn displacement through 40 consecutive frames at (0.00, 0.00, 6.35)
+PASS restored shoulder eyes stay inside the boards when the vehicle moves during inspection
 PASS positive yaw and downward pitch limits preserved
 PASS negative yaw and upward pitch limits preserved
 PASS standing opening exposes actual snow over multiple rays (2/25; last hit Batched IceResurfacer / Porcelain enamel)
 PASS seated shoulder view sees outer conditioner plate without solid obstruction
+Q frame: actual outer conditioner=(0.25, 0.30, 1.84); board brush=(0.74, 0.18, 1.56) (viewport coordinates).
+PASS Q includes the actual outer conditioner edge in the frame
+PASS Q includes the actual board brush in the same frame
 PASS E preset exposes actual blade hub without seat or manifold obstruction
 PASS E preset exposes blade rim for mouse operation (8/8 rays)
+PASS physical lever order from the seated E view: Vertical auger lever
+PASS E has an unobstructed ray to Vertical auger lever
+PASS physical lever order from the seated E view: Conditioner lift lever
+PASS E has an unobstructed ray to Conditioner lift lever
+PASS physical lever order from the seated E view: Horizontal auger lever
+PASS E has an unobstructed ray to Horizontal auger lever
+PASS physical lever order from the seated E view: Snow dump hydraulic lever
+PASS E has an unobstructed ray to Snow dump hydraulic lever
+Wheel sightline camera: machine-local eyes=(-0.760, 1.960, -0.480), head angles=(5.000, 0.000, 0.000), vertical FOV=61.0
+PASS front wheel 0 steering matches authoritative angle at -1
+PASS front wheel 0 preserves physical track and wheelbase
+PASS actual front tire swept surface clears machine meshes at steering -1, wheel 0
+PASS front wheel 1 steering matches authoritative angle at -1
+PASS front wheel 1 preserves physical track and wheelbase
+PASS actual front tire swept surface clears machine meshes at steering -1, wheel 1
+Tire sightline steering=-1, ray=0, machine-local target=(-0.915, 0.256, 2.212), viewport=(0.465, 0.061, 2.831), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=1, machine-local target=(-0.871, 0.112, 2.111), viewport=(0.474, 0.000, 2.743), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=2, machine-local target=(-0.804, 0.043, 1.958), viewport=(0.489, -0.055, 2.596), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=3, machine-local target=(-0.732, 0.067, 1.793), viewport=(0.507, -0.090, 2.430), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=4, machine-local target=(-0.674, 0.177, 1.662), viewport=(0.524, -0.090, 2.289), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=5, machine-local target=(-0.647, 0.344, 1.598), viewport=(0.533, -0.048, 2.211), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=6, machine-local target=(-0.656, 0.524, 1.620), viewport=(0.530, 0.022, 2.217), first hit=Tank lift cylinder barrel / articulated, own tire=False
+Tire sightline steering=-1, ray=7, machine-local target=(-0.700, 0.668, 1.721), viewport=(0.517, 0.097, 2.305), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=-1, ray=8, machine-local target=(-0.767, 0.737, 1.874), viewport=(0.498, 0.149, 2.452), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=-1, ray=9, machine-local target=(-0.839, 0.713, 2.039), viewport=(0.481, 0.169, 2.618), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=-1, ray=10, machine-local target=(-0.897, 0.603, 2.170), viewport=(0.468, 0.155, 2.759), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=-1, ray=11, machine-local target=(-0.924, 0.436, 2.234), viewport=(0.463, 0.116, 2.837), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Outer-face silhouette probes at steering -1: 4/12. These targets lie outside the carcass; rays may miss it and hit fittings beyond the wheel.
+First crown obstruction steering=-1: Batched IceResurfacer / Aurora glacier enamel, hit=(-0.646, 0.845, 1.093), target=(-0.609, 0.487, 1.598)
+First crown obstruction steering=-1: Tank lift cylinder barrel / articulated, hit=(-0.653, 0.874, 1.179), target=(-0.624, 0.578, 1.632)
+First crown obstruction steering=-1: Tank lift chrome piston / telescoping, hit=(-0.695, 0.956, 1.325), target=(-0.679, 0.715, 1.758)
+First crown obstruction steering=-1: Batched IceResurfacer / Aurora midnight blue, hit=(-0.630, 0.878, 1.490), target=(-0.610, 0.715, 1.788)
+First crown obstruction steering=-1: Batched IceResurfacer / Porcelain enamel, hit=(-0.549, 0.887, 1.078), target=(-0.471, 0.487, 1.658)
+First crown obstruction steering=-1: Batched IceResurfacer / Brushed stainless steel, hit=(-0.550, 0.865, 1.389), target=(-0.510, 0.655, 1.747)
+PASS seated front-left upper tread has unoccluded visible surface at steering -1 (18/39 actual-tire rays)
+Crown nonvisible steering=-1: outside frame = 3
+Crown nonvisible steering=-1: Batched IceResurfacer / Aurora glacier enamel = 4
+Crown nonvisible steering=-1: Tank lift cylinder barrel / articulated = 2
+Crown nonvisible steering=-1: Tank lift chrome piston / telescoping = 4
+Crown nonvisible steering=-1: Batched IceResurfacer / Aurora midnight blue = 5
+Crown nonvisible steering=-1: Batched IceResurfacer / Porcelain enamel = 2
+Crown nonvisible steering=-1: Batched IceResurfacer / Brushed stainless steel = 1
+PASS front wheel 0 steering matches authoritative angle at 0
+PASS front wheel 0 preserves physical track and wheelbase
+PASS actual front tire swept surface clears machine meshes at steering 0, wheel 0
+PASS front wheel 1 steering matches authoritative angle at 0
+PASS front wheel 1 preserves physical track and wheelbase
+PASS actual front tire swept surface clears machine meshes at steering 0, wheel 1
+Tire sightline steering=0, ray=0, machine-local target=(-0.795, 0.256, 2.283), viewport=(0.492, 0.074, 2.901), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=1, machine-local target=(-0.795, 0.112, 2.173), viewport=(0.492, 0.013, 2.804), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=2, machine-local target=(-0.795, 0.043, 2.006), viewport=(0.492, -0.044, 2.643), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=3, machine-local target=(-0.795, 0.067, 1.826), viewport=(0.491, -0.081, 2.462), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=4, machine-local target=(-0.795, 0.177, 1.682), viewport=(0.490, -0.084, 2.310), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=5, machine-local target=(-0.795, 0.344, 1.613), viewport=(0.490, -0.044, 2.226), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=6, machine-local target=(-0.795, 0.524, 1.637), viewport=(0.490, 0.026, 2.234), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=7, machine-local target=(-0.795, 0.668, 1.747), viewport=(0.491, 0.102, 2.331), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=0, ray=8, machine-local target=(-0.795, 0.737, 1.914), viewport=(0.491, 0.156, 2.492), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=False
+Tire sightline steering=0, ray=9, machine-local target=(-0.795, 0.713, 2.094), viewport=(0.492, 0.177, 2.673), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=False
+Tire sightline steering=0, ray=10, machine-local target=(-0.795, 0.603, 2.238), viewport=(0.492, 0.165, 2.826), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=0, ray=11, machine-local target=(-0.795, 0.436, 2.307), viewport=(0.492, 0.128, 2.909), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Outer-face silhouette probes at steering 0: 2/12. These targets lie outside the carcass; rays may miss it and hit fittings beyond the wheel.
+First crown obstruction steering=0: Batched IceResurfacer / Aurora glacier enamel, hit=(-0.760, 0.845, 1.093), target=(-0.760, 0.487, 1.598)
+First crown obstruction steering=0: Tank lift cylinder barrel / articulated, hit=(-0.702, 0.885, 1.165), target=(-0.685, 0.578, 1.635)
+First crown obstruction steering=0: Tank lift chrome piston / telescoping, hit=(-0.700, 0.958, 1.332), target=(-0.685, 0.715, 1.773)
+First crown obstruction steering=0: Batched IceResurfacer / Aurora midnight blue, hit=(-0.629, 0.871, 1.490), target=(-0.610, 0.715, 1.773)
+PASS seated front-left upper tread has unoccluded visible surface at steering 0 (9/39 actual-tire rays)
+Crown nonvisible steering=0: outside frame = 3
+Crown nonvisible steering=0: Batched IceResurfacer / Aurora glacier enamel = 7
+Crown nonvisible steering=0: Tank lift cylinder barrel / articulated = 2
+Crown nonvisible steering=0: Tank lift chrome piston / telescoping = 9
+Crown nonvisible steering=0: Batched IceResurfacer / Aurora midnight blue = 9
+Measured mesh envelope with centered wheels: body=(2.336, 2.176, 3.550)m, body forward=2.500m; conditioner=(2.132, 0.708, 1.347)m; aligned overall length=4.175m. Includes physical fittings; not a manufacturer-envelope claim.
+PASS front wheel 0 steering matches authoritative angle at 1
+PASS front wheel 0 preserves physical track and wheelbase
+PASS actual front tire swept surface clears machine meshes at steering 1, wheel 0
+PASS front wheel 1 steering matches authoritative angle at 1
+PASS front wheel 1 preserves physical track and wheelbase
+PASS actual front tire swept surface clears machine meshes at steering 1, wheel 1
+Tire sightline steering=1, ray=0, machine-local target=(-0.656, 0.256, 2.300), viewport=(0.523, 0.077, 2.918), first hit=Tank lift cylinder barrel / articulated, own tire=False
+Tire sightline steering=1, ray=1, machine-local target=(-0.700, 0.112, 2.199), viewport=(0.513, 0.018, 2.830), first hit=Tank lift cylinder barrel / articulated, own tire=False
+Tire sightline steering=1, ray=2, machine-local target=(-0.767, 0.043, 2.046), viewport=(0.498, -0.034, 2.683), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=1, ray=3, machine-local target=(-0.839, 0.067, 1.881), viewport=(0.480, -0.067, 2.517), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=1, ray=4, machine-local target=(-0.897, 0.177, 1.750), viewport=(0.463, -0.065, 2.376), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=1, ray=5, machine-local target=(-0.924, 0.344, 1.686), viewport=(0.454, -0.025, 2.299), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=1, ray=6, machine-local target=(-0.915, 0.524, 1.708), viewport=(0.457, 0.043, 2.304), first hit=Batched IceResurfacer / Aurora glacier enamel, own tire=False
+Tire sightline steering=1, ray=7, machine-local target=(-0.871, 0.668, 1.809), viewport=(0.471, 0.114, 2.393), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=1, ray=8, machine-local target=(-0.804, 0.737, 1.962), viewport=(0.489, 0.164, 2.539), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=1, ray=9, machine-local target=(-0.732, 0.713, 2.127), viewport=(0.507, 0.182, 2.705), first hit=Batched IceResurfacer / Tire and hydraulic rubber, own tire=True
+Tire sightline steering=1, ray=10, machine-local target=(-0.674, 0.603, 2.258), viewport=(0.519, 0.168, 2.846), first hit=Tank lift chrome piston / telescoping, own tire=False
+Tire sightline steering=1, ray=11, machine-local target=(-0.647, 0.436, 2.322), viewport=(0.525, 0.130, 2.924), first hit=Tank lift chrome piston / telescoping, own tire=False
+Outer-face silhouette probes at steering 1: 3/12. These targets lie outside the carcass; rays may miss it and hit fittings beyond the wheel.
+First crown obstruction steering=1: Batched IceResurfacer / Aurora glacier enamel, hit=(-0.865, 0.845, 1.139), target=(-0.899, 0.487, 1.658)
+First crown obstruction steering=1: Tank lift chrome piston / telescoping, hit=(-0.700, 1.042, 1.467), target=(-0.679, 0.715, 2.162)
+First crown obstruction steering=1: Batched IceResurfacer / Aurora midnight blue, hit=(-0.657, 0.915, 1.612), target=(-0.624, 0.578, 2.288)
+First crown obstruction steering=1: Batched IceResurfacer / Brushed stainless steel, hit=(-0.555, 0.865, 1.440), target=(-0.466, 0.390, 2.273)
+PASS seated front-left upper tread has unoccluded visible surface at steering 1 (6/39 actual-tire rays)
+Crown nonvisible steering=1: outside frame = 3
+Crown nonvisible steering=1: Batched IceResurfacer / Aurora glacier enamel = 9
+Crown nonvisible steering=1: Tank lift chrome piston / telescoping = 6
+Crown nonvisible steering=1: Batched IceResurfacer / Aurora midnight blue = 14
+Crown nonvisible steering=1: Batched IceResurfacer / Brushed stainless steel = 1
+PASS all three seated steering poses expose at least six real upper-tread rays; see per-pose obstruction and viewport diagnostics above
+PASS front and rear tires roll under actual vehicle motion
 PASS new session resets head forward
 PASS new session resets seated height

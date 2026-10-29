@@ -19,6 +19,8 @@ namespace IceResurfacer.Editor
             observations.Clear();game.enabled=false;
             var update=typeof(IceResurfacerGame).GetMethod("UpdateMachine",BindingFlags.Instance|BindingFlags.NonPublic);
             var render=(Action<float>)Delegate.CreateDelegate(typeof(Action<float>),game,update);
+            ValidateSideEscape(game,render);
+            game.NewSession(true);
             var s=game.Sim;var c=s.Controls;
             c.HydraulicHoldControls=false; // legacy deterministic route fixture; live controls use hold commands.
             // Explicit rendering stress fixture: seed only the initial tank stock.
@@ -101,7 +103,7 @@ namespace IceResurfacer.Editor
             var watch=new Stopwatch();long allocated=GC.GetAllocatedBytesForCurrentThread();watch.Start();
             for(int i=0;i<240;i++){s.Step(.02f);render(.02f);if(i%8==0)game.Surface.Refresh(s);}
             watch.Stop();allocated=GC.GetAllocatedBytesForCurrentThread()-allocated;
-            observations.Add("Working simulation + presentation CPU sample (240 ticks): "+(watch.Elapsed.TotalMilliseconds/240).ToString("F3")+" ms/tick; managed allocation="+allocated+" bytes; 442 dynamic snow vertices, four 360-particle snow pools. Excludes IMGUI/GPU.");
+            observations.Add("Working simulation + presentation CPU sample (240 ticks): "+(watch.Elapsed.TotalMilliseconds/240).ToString("F3")+" ms/tick; managed allocation="+allocated+" bytes; 663 reusable snow vertices, five 360-particle snow pools. Excludes IMGUI/GPU.");
             IceCameraValidation.Aim(21,29,true);
             foreach(var ps in game.GetComponentsInChildren<ParticleSystem>())
             {
@@ -110,6 +112,64 @@ namespace IceResurfacer.Editor
             }
             IceResurfacerEditor.Capture(game.DriverCamera,"Operator-auger-discharge.png",1920,1080);
             File.WriteAllLines(Output+"Operations-results.txt",observations);
+        }
+
+        static void PlaceSnowPass(Core.Simulation s,float x,float z,float blade,bool augers)
+        {
+            s.Vehicle.X=x;s.Vehicle.Z=z;s.Vehicle.Heading=0;s.Vehicle.Speed=s.Vehicle.SteeringAngle=0;
+            s.Conditioner.X=x;s.Conditioner.Z=z-s.Config.HitchBehindAxle-s.Config.DrawbarLength;s.Conditioner.Heading=0;
+            s.Conditioner.Lift=0;s.Controls.HydraulicHoldControls=false;s.Controls.ConditionerTarget=0;
+            s.Controls.BladeDepthMm=blade;s.Controls.HorizontalAuger=s.Controls.VerticalAuger=augers;
+            s.Controls.Throttle=.38f;s.Controls.Steer=s.Controls.FloodFlow=s.Controls.WashValve=0;s.Controls.Brake=false;
+        }
+        static double SurfaceSnow(Core.Simulation s)
+        {double value=0;foreach(var cell in s.Ice.Cells)value+=cell.SnowMm*s.Ice.CellSize*s.Ice.CellSize*.001;return value;}
+        static void ValidateSideEscape(IceResurfacerGame game,Action<float> render)
+        {
+            game.NewSession(true);var s=game.Sim;PlaceSnowPass(s,0,-20,.8f,false);
+            observations.Add("Side-escape fixture explicitly sets an initial center-ice pose; subsequent motion, cutting, accumulation and recovery use simulation ticks. No tank or snow is injected.");
+            bool earlyRetained=false;
+            for(int i=0;i<2300&&s.Vehicle.Z<19;i++)
+            {
+                s.Step(.02f);
+                if(s.HorizontalSnowM3>.01f&&s.HorizontalSnowM3<s.Config.ConditionerSnowCapacityM3*.8f&&s.SpilledSnowM3==0)earlyRetained=true;
+            }
+            render(.02f);game.Surface.Refresh(s);
+            Check(earlyRetained,"stopped augers visibly retain initial finite trough stock before any snow escape");
+            Check(s.ConditionerLeftEscapeRate>0&&s.ConditionerRightEscapeRate>0,"shaving with horizontal auger OFF has simultaneous left/right material escape");
+            Check(s.SnowTankM3==0&&s.HorizontalSnowM3<=s.Config.ConditionerSnowCapacityM3,"off-auger fixture cannot hide escaped snow in the tank or exceed trough capacity");
+            int sidePools=0;
+            foreach(var ps in game.GetComponentsInChildren<ParticleSystem>())if(ps.name.Contains("side escape"))
+            {
+                ps.Simulate(.3f,true,false);sidePools++;
+                Check(ps.particleCount>0&&ps.main.maxParticles<=360,"bounded source-driven side snow particles: "+ps.name);
+            }
+            Check(sidePools==2,"exactly two pooled conditioner-side emitters exist");
+            var trough=game.World.Conditioner.Find("Snow bunching in the finite conditioner trough");
+            Check(trough!=null&&trough.GetComponent<MeshRenderer>().enabled,"finite accumulated trough snow is rendered behind the auger grille");
+            double before=SurfaceSnow(s),escaped=s.SpilledSnowM3;float end=s.Vehicle.Z;
+            var cameraObject=new GameObject("Snow side-escape evidence camera");var camera=cameraObject.AddComponent<Camera>();
+            camera.enabled=false;camera.fieldOfView=55;camera.nearClipPlane=.04f;camera.farClipPlane=100;
+            camera.transform.position=game.World.Conditioner.TransformPoint(-3.7f,2.3f,-4.2f);
+            camera.transform.LookAt(game.World.Conditioner.position+Vector3.up*.12f);
+            IceResurfacerEditor.Capture(camera,"Snow-disabled-augers-both-sides.png",1920,1080);
+            camera.orthographic=true;camera.orthographicSize=6;
+            camera.transform.position=new Vector3(0,22,end-6);camera.transform.rotation=Quaternion.Euler(90,0,0);
+            IceResurfacerEditor.Capture(camera,"Snow-windrows-before-recovery.png",1920,1080);
+            for(int pass=0;pass<2;pass++)for(int side=-1;side<=1;side+=2)
+            {
+                PlaceSnowPass(s,side*1.265f,-20,0,true);
+                for(int i=0;i<2200&&s.Vehicle.Z<end;i++)s.Step(.02f);
+            }
+            s.Controls.BladeDepthMm=s.Controls.Throttle=0;s.Controls.Brake=true;
+            for(int i=0;i<600;i++)s.Step(.02f);
+            render(.02f);game.Surface.Refresh(s);
+            double recovered=before-SurfaceSnow(s);
+            Check(recovered>escaped*.8&&s.SnowTankM3>escaped,"enabled augers recover persistent side windrows with the blade retracted");
+            Check(s.ConditionerLeftEscapeRate==0&&s.ConditionerRightEscapeRate==0,"side emission stops when actual escaping transfer stops");
+            IceResurfacerEditor.Capture(camera,"Snow-windrows-after-recovery.png",1920,1080);
+            observations.Add("Live side fixture escaped "+escaped.ToString("F6")+" m3; subsequent surface pickup removed "+recovered.ToString("F6")+" m3 including incidental original loose snow. Detailed conservation and empty-revisit assertions are in the core snow probe.");
+            UnityEngine.Object.DestroyImmediate(cameraObject);
         }
     }
 }

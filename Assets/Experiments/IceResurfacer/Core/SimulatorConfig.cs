@@ -45,17 +45,23 @@ namespace IceResurfacer.Core
         public float VerticalSnowCapacityM3 = 0.055f;
         public float SnowBreakerStrokeM3 = 0.004f;
         public float SnowExpansionRatio = 3.1f;
+        // Plowing loose material is distinct from shaving solid ice. Removed
+        // windrows still pass through the finite trough and conveyor capacities.
+        public float LooseSnowPickupDepthMm = 6f;
         public float DumpM3PerSecond = 0.35f;
         public float MaxBladeDepthMm = .8f;
-        // Nominal screw setting is not a fully engaged rectangular bite. The
-        // floating shoes/rake admit this fraction as actual shaved ice depth.
-        // Prototype calibration: expose both quantities, never scale the tank UI.
+        // Normal operating range retains its established response. Above the
+        // recommended setting, progressive engagement reaches this actual bite.
+        // Aurora calibration, not a conversion of manufacturer screw travel.
         public float BladeBiteFraction = .16f;
+        public float MaximumEffectiveBladeDepthMm = .60f;
         public float BladeWheelTurns = 3.5f;
         public float ConveyorJamSeconds = 6f;
         public float RecommendedBladeDepthMm = 0.35f;
-        public float CumulativeSafeCutMm = 1.2f;
-        public float SensitiveCumulativeSafeCutMm = 0.55f;
+        // Actual cumulative material removed. These govern surface-uniformity
+        // quality only; no remaining slab thickness or paint damage is modeled.
+        public float CumulativeSafeCutMm = .80f;
+        public float SensitiveCumulativeSafeCutMm = .65f;
         public float GoodFloodDepthMm = 0.30f;
         public float ExcessFloodDepthMm = 0.85f;
         // Exponential phase-change time constant: 420 s leaves about 5%
@@ -69,13 +75,13 @@ namespace IceResurfacer.Core
             ValidateFreedomCalibration();
             float[] values = { RinkWidth, RinkLength, CornerRadius, CellSize, GateHalfWidth, BayLength,
                 Wheelbase, VehicleHalfWidth, BodyFront, BodyRear, ConditionerWidth, WaterDistributionWidth,
-                GuideRollerX, GuideRollerZ, GuideRollerRadius, BladeBiteFraction, BladeWheelTurns, ConveyorJamSeconds, ConditionerLength,
+                GuideRollerX, GuideRollerZ, GuideRollerRadius, BladeBiteFraction, MaximumEffectiveBladeDepthMm, BladeWheelTurns, ConveyorJamSeconds, ConditionerLength,
                 HitchBehindAxle, DrawbarLength, MaxSteeringRadians, SteeringRate, ForwardSpeed, ReverseSpeed,
                 Acceleration, HydrostaticDeceleration, ServiceBrakeDeceleration, ConditionerLiftSeconds,
                 TankLiftSeconds, FloodCapacityLiters, WashCapacityLiters, SnowCapacityM3, FloodMaxLitersPerSecond,
                 WashMaxLitersPerSecond, WashRecoveryFraction, HorizontalCapacityM3PerSecond,
                 VerticalCapacityM3PerSecond, ConditionerSnowCapacityM3, VerticalSnowCapacityM3, SnowBreakerStrokeM3,
-                SnowExpansionRatio, DumpM3PerSecond, MaxBladeDepthMm, RecommendedBladeDepthMm,
+                SnowExpansionRatio, LooseSnowPickupDepthMm, DumpM3PerSecond, MaxBladeDepthMm, RecommendedBladeDepthMm,
                 CumulativeSafeCutMm, SensitiveCumulativeSafeCutMm, GoodFloodDepthMm, ExcessFloodDepthMm,
                 FreezeSeconds, MinimumScoredCoverage };
             foreach (float value in values)
@@ -86,6 +92,7 @@ namespace IceResurfacer.Core
                 Wheelbase <= 0 || DrawbarLength <= 0 || ConditionerWidth <= 0 || WaterDistributionWidth <= 0 ||
                 WaterDistributionWidth > VehicleHalfWidth*2 || ConditionerLength <= 0 || GuideRollerRadius <= 0 ||
                 BladeBiteFraction <= 0 || BladeBiteFraction > 1 || BladeWheelTurns < 3 || BladeWheelTurns > 4 || ConveyorJamSeconds <= 0 ||
+                MaximumEffectiveBladeDepthMm < MaxBladeDepthMm*BladeBiteFraction || MaximumEffectiveBladeDepthMm > 2 ||
                 FloodCapacityLiters <= 0 || WashCapacityLiters <= 0 || SnowCapacityM3 <= 0 ||
                 ConditionerLiftSeconds <= 0 || TankLiftSeconds <= 0 || FreezeSeconds <= 0 ||
                 GateHalfWidth <= VehicleHalfWidth || BayLength < 12f || BayLength <= BodyFront + BodyRear ||
@@ -96,11 +103,21 @@ namespace IceResurfacer.Core
                 VehicleHalfWidth <= 0 || BodyFront <= 0 || BodyRear <= 0 || HitchBehindAxle < 0 ||
                 FloodMaxLitersPerSecond <= 0 || WashMaxLitersPerSecond <= 0 || WashRecoveryFraction < 0 || WashRecoveryFraction > 1 ||
                 HorizontalCapacityM3PerSecond <= 0 || VerticalCapacityM3PerSecond <= 0 || SnowExpansionRatio < 1 || DumpM3PerSecond <= 0 ||
+                LooseSnowPickupDepthMm <= 0 || LooseSnowPickupDepthMm > 50 ||
                 RecommendedBladeDepthMm < 0 || RecommendedBladeDepthMm > MaxBladeDepthMm ||
                 CumulativeSafeCutMm <= 0 || SensitiveCumulativeSafeCutMm <= 0 ||
                 GoodFloodDepthMm <= 0 || ExcessFloodDepthMm < GoodFloodDepthMm ||
                 MinimumScoredCoverage <= 0 || MinimumScoredCoverage > 1)
                 throw new ArgumentException("Ice resurfacer configuration has invalid geometry, dynamics, or capacity.");
+        }
+
+        public float EffectiveBladeDepth(float settingMm)
+        {
+            settingMm=Simulation.Clamp(settingMm,0,MaxBladeDepthMm);
+            float normal=settingMm*BladeBiteFraction;
+            if(settingMm<=RecommendedBladeDepthMm||MaxBladeDepthMm<=RecommendedBladeDepthMm)return normal;
+            float deep=(settingMm-RecommendedBladeDepthMm)/(MaxBladeDepthMm-RecommendedBladeDepthMm);
+            return normal+(MaximumEffectiveBladeDepthMm-MaxBladeDepthMm*BladeBiteFraction)*deep*deep;
         }
     }
 

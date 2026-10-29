@@ -181,6 +181,7 @@ namespace IceResurfacer.Core
 
         void TickWaterService(float dt)
         {
+            Environment.TickWater(dt,Ice,Layout);
             ServiceFlowLitersPerSecond = ServiceOverflowLitersPerSecond = 0;
             if (HoseConnected && !GuidedTraining)
             {

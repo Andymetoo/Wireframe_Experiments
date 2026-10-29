@@ -18,6 +18,11 @@ namespace IceResurfacer.Core
         public float BrushWorldZ { get; private set; }
         public bool BrushContact { get; private set; }
         public float BrushSweptSnowM3 { get; private set; }
+        // Cumulative source/transfer meters. Loose pickup includes subsequent
+        // recovery of deposited snow; it is not a second material source.
+        public double TotalShavedIceM3 { get; private set; }
+        public double TotalExpandedShavingsM3 { get; private set; }
+        public double TotalLooseSnowPickupM3 { get; private set; }
 
         void FindFootprint()
         {
@@ -133,6 +138,7 @@ namespace IceResurfacer.Core
             float washDepth=iceCutCells>0?washOnIce/(iceCutCells*area):0;
             float washPerCell=allCutCells>0?wash/allCutCells:0;
             float blade=ActualBladeDepthMm*pressure*advance,newSnow=0;bool anyChanged=false;
+            double shaved=0,loosePickup=0;
             for(int n=0;n<footprintCount;n++)
             {
                 int index=footprint[n];var cell=Ice.Cells[index];
@@ -145,12 +151,13 @@ namespace IceResurfacer.Core
                     actuallyPickedUp+=cellPickup;
                 }
                 float waterDepth=(totalFloodWeight>0?flood*footprintWaterWeight[n]/totalFloodWeight/area:0)+(cutting?washDepth:0);
-                float snowRemoved=cutting?Math.Min(cell.SnowMm,pressure*advance*.6f):0;
+                float snowRemoved=cutting?Math.Min(cell.SnowMm,pressure*advance*Config.LooseSnowPickupDepthMm):0;
                 float bite=cutting?blade:0;
                 bool washContact=cutting&&washPerCell>0&&pressure>.7f;
                 if(waterDepth<=0&&bite<=0&&snowRemoved<=0&&cellPickup<=0&&!washContact)continue;
                 Ice.ApplyBladeCut(ref cell,bite,Vehicle.Speed<-.02f);
                 cell.SnowMm-=snowRemoved;newSnow+=(snowRemoved+bite*Config.SnowExpansionRatio)*area*.001f;
+                shaved+=(double)bite*area*.001;loosePickup+=(double)snowRemoved*area*.001;
                 if(washContact)
                 { cell.WashLiters+=washPerCell;cell.Scratch=Math.Max(Ice.GrooveRoughness(cell),cell.Scratch-washPerCell/area*.025f); }
                 Ice.AddWater(ref cell,waterDepth,Time);
@@ -169,6 +176,7 @@ namespace IceResurfacer.Core
                 DepositRunoff(Conditioner.X+sn*Config.FloodContactFore,Conditioner.Z+cs*Config.FloodContactFore,floodSpill);
                 DepositRunoff(Conditioner.X+sn*Config.WashPickupContactFore,Conditioner.Z+cs*Config.WashPickupContactFore,washSpill);
             }
+            TotalShavedIceM3+=shaved;TotalExpandedShavingsM3+=shaved*Config.SnowExpansionRatio;TotalLooseSnowPickupM3+=loosePickup;
             HorizontalSnowM3+=newSnow;UpdateBoardBrush(dt,distance);
             if(anyChanged)Ice.CommitChanges();
         }

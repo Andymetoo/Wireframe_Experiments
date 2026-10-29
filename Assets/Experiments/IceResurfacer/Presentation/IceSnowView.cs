@@ -5,14 +5,14 @@ using UnityEngine.Rendering;
 namespace IceResurfacer.Presentation
 {
     // Sampled visuals of simulation transfers, never a second material simulation.
-    // Two reusable vertex buffers and four bounded particle pools; no frame objects.
+    // Three reusable vertex buffers and five bounded particle pools; no frame objects.
     public sealed class IceSnowView
     {
         readonly IceWorld world;
-        readonly Surface tank, pit;
-        readonly ParticleSystem discharge, overflow, conditioner, dump;
+        readonly Surface tank, pit, trough;
+        readonly ParticleSystem discharge, overflow, leftEscape, rightEscape, dump;
         readonly ParticleSystem[] pools;
-        float tankValue=-1,pitValue=-1,tankTilt=-1;
+        float tankValue=-1,pitValue=-1,tankTilt=-1,troughValue=-1;
 
         sealed class Surface
         {
@@ -76,11 +76,17 @@ namespace IceResurfacer.Presentation
             this.world=world;
             tank=new Surface(world.TankSnow,world,1.488f,2.026f,false);
             pit=new Surface(world.PitSnow,world,3.5f,1.6f,true);
+            var troughObject=new GameObject("Snow bunching in the finite conditioner trough");
+            troughObject.transform.SetParent(world.Conditioner,false);troughObject.transform.localPosition=new Vector3(0,.12f,-.20f);
+            troughObject.AddComponent<MeshFilter>();
+            troughObject.AddComponent<MeshRenderer>().sharedMaterial=world.TankSnow.GetComponent<MeshRenderer>().sharedMaterial;
+            trough=new Surface(troughObject.transform,world,1.80f,.50f,false);
             discharge=Pool("Snow conveyed into inspection bin",root,template,.035f,.55f);
             overflow=Pool("Congested vertical discharge spilling sideways",root,template,.06f,1.8f);
-            conditioner=Pool("Conditioner snow spill",root,template,.055f,.6f);
+            leftEscape=Pool("Conditioner LEFT side escape / actual snow",root,template,.045f,.6f);
+            rightEscape=Pool("Conditioner RIGHT side escape / actual snow",root,template,.045f,.6f);
             dump=Pool("Snow unloading through forward door",root,template,.10f,1.5f);
-            pools=new[]{discharge,overflow,conditioner,dump};
+            pools=new[]{discharge,overflow,leftEscape,rightEscape,dump};
         }
         ParticleSystem Pool(string name,Transform root,Material template,float size,float lifetime)
         {
@@ -106,7 +112,7 @@ namespace IceResurfacer.Presentation
         public void Reset()
         {
             foreach(var ps in pools)ps.Clear();
-            tankValue=-1;pitValue=-1;tankTilt=-1;
+            tankValue=-1;pitValue=-1;tankTilt=-1;troughValue=-1;
         }
         public void Update(Simulation sim,float dt)
         {
@@ -121,15 +127,31 @@ namespace IceResurfacer.Presentation
             }
             if(sim.PitSnowM3!=pitValue)
             { pit.Set(sim.PitSnowM3/(3.5f*1.6f),0,true);pitValue=sim.PitSnowM3; }
+            if(Mathf.Abs(sim.HorizontalSnowM3-troughValue)>.000001f)
+            {
+                float height=sim.HorizontalSnowM3/(1.80f*.50f);
+                trough.Set(height,Mathf.Min(height*.25f,.014f),false);troughValue=sim.HorizontalSnowM3;
+            }
             bool active=dt>0;
             Rate(discharge,active?sim.DischargeSnowRate:0,world.TankDischarge.position,world.Machine.forward*.45f+Vector3.down*.25f);
-            // A box spray emits on both sides; the ice receives the same transfer
-            // volume through Simulation.SpillAtDischarge, independently of particles.
-            var overflowShape=overflow.shape;overflowShape.enabled=true;overflowShape.shapeType=ParticleSystemShapeType.Box;
-            overflowShape.scale=new Vector3(1.9f,.12f,.2f);
-            overflow.transform.rotation=world.Machine.rotation;
-            Rate(overflow,active?sim.VerticalSpillRate:0,world.Machine.TransformPoint(0,1.96f,.20f),world.Machine.right*.25f);
-            Rate(conditioner,active?Mathf.Max(0,sim.EscapingSnowRate-sim.VerticalSpillRate):0,world.SnowOutlet.position,Vector3.up*.3f);
+            // Upper rejection/missed raised bin originates at the fixed chute,
+            // separate from low conditioner-side overflow. Core supplies the
+            // same trajectory used to place its finite persistent deposit.
+            Rate(overflow,active?sim.VerticalSpillRate:0,new Vector3(sim.UpperSnowOriginX,sim.UpperSnowOriginY,sim.UpperSnowOriginZ),
+                new Vector3(sim.UpperSnowVelocityX,sim.UpperSnowVelocityY,sim.UpperSnowVelocityZ));
+            float upperTime=(sim.UpperSnowVelocityY+Mathf.Sqrt(sim.UpperSnowVelocityY*sim.UpperSnowVelocityY+2*9.81f*Mathf.Max(.01f,sim.UpperSnowOriginY)))/9.81f;
+            var upperMain=overflow.main;upperMain.startLifetime=upperTime;
+            // Side emitters originate at the real side plates, while Core owns
+            // the matching finite deposits. Board-constrained landing points
+            // also turn the spray inward instead of throwing it through boards.
+            float exitY=world.Conditioner.TransformPoint(0,.16f,0).y;
+            float flight=(.30f+Mathf.Sqrt(.09f+2*9.81f*Mathf.Max(.01f,exitY)))/9.81f;
+            var leftOrigin=new Vector3(sim.ConditionerLeftExitX,exitY,sim.ConditionerLeftExitZ);
+            var rightOrigin=new Vector3(sim.ConditionerRightExitX,exitY,sim.ConditionerRightExitZ);
+            Rate(leftEscape,active?sim.ConditionerLeftEscapeRate:0,leftOrigin,new Vector3((sim.ConditionerLeftLandingX-leftOrigin.x)/flight,.30f,(sim.ConditionerLeftLandingZ-leftOrigin.z)/flight));
+            Rate(rightEscape,active?sim.ConditionerRightEscapeRate:0,rightOrigin,new Vector3((sim.ConditionerRightLandingX-rightOrigin.x)/flight,.30f,(sim.ConditionerRightLandingZ-rightOrigin.z)/flight));
+            var leftMain=leftEscape.main;leftMain.startLifetime=flight;
+            var rightMain=rightEscape.main;rightMain.startLifetime=flight;
             // Render the same ballistic discharge as Core. Never steer particles
             // toward the pit: off-centre and on-ice dumps must visibly miss it.
             float fallTime=(sim.DumpVelocityY+Mathf.Sqrt(sim.DumpVelocityY*sim.DumpVelocityY+2*9.81f*Mathf.Max(.08f,sim.DumpOriginY)))/9.81f;

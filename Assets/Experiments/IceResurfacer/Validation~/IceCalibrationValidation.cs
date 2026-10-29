@@ -56,7 +56,7 @@ internal static class IceCalibrationValidation
         float secondCenter=firstEdge+tireOuter;
         float theoreticalWetOverlap=s.Config.WaterDistributionWidth*.5f-tireOuter;
         float actualMeasuredOverlap=s.Config.WaterDistributionWidth-secondCenter;
-        Near(tireOuter,.835f,.0001,"tire exterior geometry changed");
+        Near(tireOuter,.7925f,.0001,"215mm nominal tire and 1.37m track disagree");
         Assert(theoreticalWetOverlap>.2f,"tire cue cannot create intended physical overlap");
         Assert(actualMeasuredOverlap>0,"measured strong-boundary alignment leaves no nominal towel overlap");
         Place(s,secondCenter,-12);Operate(s);Tick(s,12);
@@ -190,7 +190,7 @@ internal static class IceCalibrationValidation
 
     static double TotalWater(Simulation s)
     {
-        double sum=s.FloodWaterLiters+s.WashWaterLiters+WaterMass(s);
+        double sum=s.FloodWaterLiters+s.WashWaterLiters+WaterMass(s)+s.Environment.DrainedWaterLiters;
         foreach(var cell in s.Environment.Cells)sum+=cell.WaterLiters;
         return sum;
     }

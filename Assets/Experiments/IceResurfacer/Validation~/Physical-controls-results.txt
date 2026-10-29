@@ -1,3 +1,4 @@
+PASS actual mounted assemblies follow operator-left to right VERTICAL / CONDITIONER / HORIZONTAL / DUMP
 PASS screen ray selects Conditioner hydraulic lever
 PASS screen ray selects Horizontal auger lever
 PASS screen ray selects Vertical auger lever
@@ -8,13 +9,18 @@ PASS screen ray selects Blade handwheel
 PASS screen ray selects Snow-breaker plunger
 PASS auger remains latched after mouse release
 PASS auger RUN detent is physically distinct from neutral
+PASS relocated auger pick does not actuate another hydraulic system
 PASS auger remains latched after mouse release
 PASS auger RUN detent is physically distinct from neutral
+PASS relocated auger pick does not actuate another hydraulic system
 PASS vertical auger remains independent when horizontal is stopped
 PASS pushing the physical lever requests conditioner lowering
 PASS conditioner lowering takes time
 PASS released spring control returns neutral and holds attained height
 PASS rendered hydraulic lever springs to neutral
+PASS relocated conditioner gesture leaves tank and augers untouched
+PASS rightmost dump lever raises only the snow tank while held
+PASS dump lever springs to neutral and holds attained tank angle on release
 PASS both hydraulic mechanisms have extended physical piston rods
 PASS ice-making handle arc gives 25 % actual flow
 PASS physical handle angle matches authoritative flow

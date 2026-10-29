@@ -2,6 +2,11 @@ using System;
 
 namespace IceResurfacer.Core
 {
+    [Flags]
+    public enum SnowTransportCondition
+    {
+        None=0,HorizontalStopped=1,VerticalStopped=2,Congested=4,TankFull=8,Jammed=16,RaisedBin=32
+    }
     /// <summary>Deterministic kinematic machine and material balance. No frame, audio, input, or Unity dependencies.</summary>
     public sealed partial class Simulation
     {
@@ -27,6 +32,24 @@ namespace IceResurfacer.Core
         public float EscapingSnowRate { get; private set; }
         public float DischargeSnowRate { get; private set; }
         public float VerticalSpillRate { get; private set; }
+        public float ConditionerLeftEscapeRate { get; private set; }
+        public float ConditionerRightEscapeRate { get; private set; }
+        public float ConditionerSnowFill { get { return Clamp(HorizontalSnowM3/Config.ConditionerSnowCapacityM3,0,1); } }
+        public SnowTransportCondition SnowCondition { get; private set; }
+        public float ConditionerLeftExitX { get; private set; }
+        public float ConditionerLeftExitZ { get; private set; }
+        public float ConditionerRightExitX { get; private set; }
+        public float ConditionerRightExitZ { get; private set; }
+        public float ConditionerLeftLandingX { get; private set; }
+        public float ConditionerLeftLandingZ { get; private set; }
+        public float ConditionerRightLandingX { get; private set; }
+        public float ConditionerRightLandingZ { get; private set; }
+        public float UpperSnowOriginX { get; private set; }
+        public float UpperSnowOriginY { get; private set; }
+        public float UpperSnowOriginZ { get; private set; }
+        public float UpperSnowVelocityX { get; private set; }
+        public float UpperSnowVelocityY { get; private set; }
+        public float UpperSnowVelocityZ { get; private set; }
         public float DumpSnowRate { get; private set; }
         public float ResidualSnowM3 { get; private set; }
         public int TankShakeoutCount { get; private set; }
@@ -48,7 +71,7 @@ namespace IceResurfacer.Core
                 if (GuidedTraining && TankRaised) return "Training assistance: snow tank raised. Hold the dump lever LOWER until fully stowed.";
                 if (Controls.Brake) return "Service brake applied. Release CTRL to drive.";
                 if (BoardContact && Math.Abs(Vehicle.Speed) < .05f && Math.Abs(Controls.Throttle) > .01f)
-                    return "Board or wall contact. Reverse clear, then steer away from the wall.";
+                    return LastMovementContact.Reason+" contact. Reverse clear, then steer away from the obstacle.";
                 if (Vehicle.Speed * Controls.Throttle < -.005f) return "Braking through zero before changing direction. Keep the requested pedal held.";
                 return "";
             }
@@ -59,7 +82,7 @@ namespace IceResurfacer.Core
         public bool ConveyorJammed { get; private set; }
         public bool GuideRollerContact { get; private set; }
         public float GuideRollerTravel { get; private set; }
-        public float ActualBladeDepthMm { get { return Controls.BladeDepthMm*Config.BladeBiteFraction; } }
+        public float ActualBladeDepthMm { get { return Config.EffectiveBladeDepth(Controls.BladeDepthMm); } }
         public float WashPrimeSeconds { get; private set; }
         public float PumpDamage { get; private set; }
         public int Mistakes { get; private set; }
@@ -117,6 +140,7 @@ namespace IceResurfacer.Core
             footprint = new int[(int)Math.Ceiling(extent / Config.CellSize) * (int)Math.Ceiling(extent / Config.CellSize)];
             for (int i = 0; i < faultTimes.Length; i++) faultTimes[i] = -1000;
             UpdateBoardBrush(0,0);
+            UpdateSnowExitPositions();
             LastMessage=GuidedTraining?"Guided Training assistance is active. Enter through the southeast gate with equipment raised.":"Free Simulation: machinery remains under your control. Enter through the southeast gate when ready.";
         }
 
@@ -152,12 +176,18 @@ namespace IceResurfacer.Core
             ConveySnow(dt);
             UpdateTank(dt);
             TickWaterService(dt);
+            UpdateMachineLoad();
+            if (MachineLoad > 1.0f) Fault(2, "High machine load: reduce cutting depth or ground speed; inspect the conveyor state.");
+        }
+
+        void UpdateMachineLoad()
+        {
             float excessBite=Math.Max(0,Controls.BladeDepthMm/Config.RecommendedBladeDepthMm-1);
-            LoadCutting = Conditioner.Lift < .15f ? Math.Abs(Vehicle.Speed)*(Controls.BladeDepthMm*.14f+excessBite*excessBite*.22f) : 0;
+            float deeperBite=Math.Max(0,ActualBladeDepthMm-Controls.BladeDepthMm*Config.BladeBiteFraction);
+            LoadCutting = Conditioner.Lift < .15f ? Math.Abs(Vehicle.Speed)*(Controls.BladeDepthMm*.14f+excessBite*excessBite*.22f+deeperBite*1.5f) : 0;
             LoadConveyors = HorizontalSnowM3/Config.ConditionerSnowCapacityM3*.75f+VerticalSnowM3/Config.VerticalSnowCapacityM3*.55f+(Controls.HorizontalAuger?.08f:0)+(Controls.VerticalAuger?.09f:0);
             LoadCongestion = ConveyorCongestion*.35f+(ConveyorJammed?.5f:0);
             MachineLoad = Clamp(.13f+LoadCutting+LoadConveyors+LoadCongestion,0,1.8f);
-            if (MachineLoad > 1.0f) Fault(2, "Conveyor overload: retract blade and stop. Switch both augers OFF before inspecting a jam.");
         }
 
         void ClampControls()
@@ -229,18 +259,22 @@ namespace IceResurfacer.Core
             float heading = Wrap(Vehicle.Heading + turn);
             GuideRollerContact=false;
             BoardContact=false;
-            if (BodyFits(x, z, heading))
+            if (ProbeVehiclePose(x, z, heading,out MovementContact rejected))
             {
                 Vehicle.X = x; Vehicle.Z = z; Vehicle.Heading = heading; Vehicle.Speed = nextSpeed;
             }
             else
             {
+                LastMovementContact=rejected;LastMovementContactTime=Time;
                 BoardContact=true;
                 if (Math.Abs(speed) > .15f) Fault(4, "Board or service wall contact. Brake and steer clear.");
                 // Project a shallow contact onto the local board tangent. A small
                 // alignment correction follows the roller instead of repeatedly
                 // steering the nose through the wall. Every accepted pose is tested.
-                ContactNormal(x,z,heading,out float nx,out float nz);
+                float nx=rejected.NormalX,nz=rejected.NormalZ;
+                // Preserve the established rink/guide-roller contact response.
+                // Service contact uses the actual rejected sample's boundary.
+                if(rejected.Obstacle==MovementObstacle.RinkBoards)ContactNormal(x,z,heading,out nx,out nz);
                 float dx=x-Vehicle.X,dz=z-Vehicle.Z;
                 float normal=dx*nx+dz*nz;
                 float incidence=Math.Abs(normal)/Math.Max(.000001f,Math.Abs(travel));
@@ -249,7 +283,9 @@ namespace IceResurfacer.Core
                 {
                     float sx=dx-normal*nx,sz=dz-normal*nz;
                     float tangent=(float)Math.Atan2(sx*Math.Sign(travel),sz*Math.Sign(travel));
-                    float aligned=Wrap(Vehicle.Heading+Clamp(Wrap(tangent-Vehicle.Heading),-.018f,.018f));
+                    float aligned=rejected.Obstacle==MovementObstacle.RinkBoards
+                        ?Wrap(Vehicle.Heading+Clamp(Wrap(tangent-Vehicle.Heading),-.018f,.018f))
+                        :Vehicle.Heading;
                     float ax=Vehicle.X+sx*.96f,az=Vehicle.Z+sz*.96f;
                     if(BodyFits(ax,az,aligned))
                     {
@@ -280,24 +316,7 @@ namespace IceResurfacer.Core
 
         bool BodyFits(float x, float z, float heading)
         {
-            float sn = (float)Math.Sin(heading), cs = (float)Math.Cos(heading);
-            for (int row = 0; row < 3; row++)
-            for (int col = 0; col < 3; col++)
-            {
-                float lx = (col - 1) * Config.VehicleHalfWidth;
-                float lz = -Config.BodyRear + (Config.BodyFront + Config.BodyRear) * row * .5f;
-                if (!Navigable(x + cs * lx + sn * lz, z - sn * lx + cs * lz)) return false;
-            }
-            float rx=x+cs*Config.GuideRollerX+sn*Config.GuideRollerZ;
-            float rz=z-sn*Config.GuideRollerX+cs*Config.GuideRollerZ;
-            for(int i=0;i<8;i++)
-            {
-                float a=i*(float)Math.PI*.25f;
-                if(!Navigable(rx+(float)Math.Cos(a)*Config.GuideRollerRadius,rz+(float)Math.Sin(a)*Config.GuideRollerRadius))return false;
-            }
-            Ice.BoardDistance(rx,rz,out float nx,out float nz);
-            if(!Navigable(rx-nx*Config.GuideRollerRadius,rz-nz*Config.GuideRollerRadius))return false;
-            return true;
+            return ProbeVehiclePose(x,z,heading,out _);
         }
 
         void ContactNormal(float x,float z,float heading,out float nx,out float nz)
@@ -363,6 +382,8 @@ namespace IceResurfacer.Core
         void ConveySnow(float dt)
         {
             EscapingSnowRate = 0;DischargeSnowRate=0;VerticalSpillRate=0;
+            ConditionerLeftEscapeRate=ConditionerRightEscapeRate=0;
+            UpdateSnowExitPositions();
             float crowd=TankLift<.08f?Clamp((SnowTankM3/Config.SnowCapacityM3-.85f)/.15f,0,1):0;
             ConveyorCongestion=Math.Max(crowd,jamTime/Config.ConveyorJamSeconds);
             if (Controls.HorizontalAuger&&!ConveyorJammed)
@@ -390,33 +411,83 @@ namespace IceResurfacer.Core
             // Only material rejected by the connected/full bin builds backpressure.
             jamTime=rejected>0&&TankLift<.08f?Math.Min(Config.ConveyorJamSeconds,jamTime+dt):Math.Max(0,jamTime-dt*.15f);
             if(jamTime>=Config.ConveyorJamSeconds-.0001f)ConveyorJammed=true;
-            float spill = Math.Max(0, HorizontalSnowM3 - Config.ConditionerSnowCapacityM3) + Math.Max(0, VerticalSnowM3 - Config.VerticalSnowCapacityM3);
+            float spill = Math.Max(0, HorizontalSnowM3 - Config.ConditionerSnowCapacityM3);
+            float verticalExcess=Math.Max(0, VerticalSnowM3-Config.VerticalSnowCapacityM3);
             HorizontalSnowM3 = Math.Min(HorizontalSnowM3, Config.ConditionerSnowCapacityM3);
             VerticalSnowM3 = Math.Min(VerticalSnowM3, Config.VerticalSnowCapacityM3);
             if (spill > 0)
             {
                 SpilledSnowM3+=spill;
-                float deposited=Ice.DepositSnow(Conditioner.X,Conditioner.Z,spill,.45f);
-                OffIceSnowM3+=spill-deposited;
-                if(spill>deposited)Environment.Deposit(Conditioner.X,Conditioner.Z,spill-deposited,0);
+                ConditionerLeftEscapeRate=ConditionerRightEscapeRate=spill*.5f/dt;
+                DepositEscapedSnow(ConditionerLeftLandingX,ConditionerLeftLandingZ,spill*.5f,.16f);
+                DepositEscapedSnow(ConditionerRightLandingX,ConditionerRightLandingZ,spill*.5f,.16f);
             }
-            EscapingSnowRate=(spill+rejected)/dt;
-            if(EscapingSnowRate>0)Fault(11,TankRaised?"Raised bin no longer meets the conveyor outlet: snow is spilling beside the machine.":"Snow is spilling beside the machine. Reduce incoming snow or empty the tank.");
+            if(verticalExcess>0){SpillAtDischarge(verticalExcess);VerticalSpillRate+=verticalExcess/dt;}
+            EscapingSnowRate=(spill+rejected+verticalExcess)/dt;
+            bool blockedThroat=VerticalSnowM3>=Config.VerticalSnowCapacityM3*.95f&&HorizontalSnowM3>0;
+            ConveyorCongestion=Math.Max(Math.Max(crowd,jamTime/Config.ConveyorJamSeconds),blockedThroat?1:0);
+            SnowCondition=SnowTransportCondition.None;
+            if(!Controls.HorizontalAuger)SnowCondition|=SnowTransportCondition.HorizontalStopped;
+            if(!Controls.VerticalAuger)SnowCondition|=SnowTransportCondition.VerticalStopped;
+            if(ConveyorCongestion>.01f)SnowCondition|=SnowTransportCondition.Congested;
+            if(SnowTankM3>=Config.SnowCapacityM3*.98f)SnowCondition|=SnowTransportCondition.TankFull;
+            if(ConveyorJammed)SnowCondition|=SnowTransportCondition.Jammed;
+            if(TankLift>=.08f)SnowCondition|=SnowTransportCondition.RaisedBin;
+            if(EscapingSnowRate>0)Fault(11,TankLift>=.08f&&rejected>0?"Raised bin misses the upper conveyor outlet: snow is falling beside the machine.":
+                !Controls.HorizontalAuger?"Horizontal auger OFF: full conditioner trough is shedding snow from both sides.":
+                !Controls.VerticalAuger?"Vertical auger OFF: the transfer throat is full; snow is backing up to the conditioner side exits.":
+                ConveyorJammed?"Jammed conveyors: incoming snow is spilling from the conditioner side exits.":
+                "Snow transport is congested. Reduce incoming snow or empty the tank.");
             if(ConveyorJammed)Fault(14,"AUGER JAM: stop, retract blade and switch BOTH augers OFF. Empty tank, then use J to reset after inspection.");
             if (SnowTankM3 >= Config.SnowCapacityM3 * .98f) Fault(12, "Snow tank full. Stop cutting and return to the dump bay.");
+        }
+
+        void UpdateSnowExitPositions()
+        {
+            float sn=(float)Math.Sin(Conditioner.Heading),cs=(float)Math.Cos(Conditioner.Heading);
+            float side=Math.Max(Config.ConditionerWidth,Config.WaterDistributionWidth)*.5f+.015f,fore=-.20f;
+            ConditionerLeftExitX=Conditioner.X-cs*side+sn*fore;ConditionerLeftExitZ=Conditioner.Z+sn*side+cs*fore;
+            ConditionerRightExitX=Conditioner.X+cs*side+sn*fore;ConditionerRightExitZ=Conditioner.Z-sn*side+cs*fore;
+            float lx=ConditionerLeftExitX-cs*.20f,lz=ConditionerLeftExitZ+sn*.20f;
+            float rx=ConditionerRightExitX+cs*.20f,rz=ConditionerRightExitZ-sn*.20f;
+            ConstrainSnowAtBoards(ref lx,ref lz);ConstrainSnowAtBoards(ref rx,ref rz);
+            ConditionerLeftLandingX=lx;ConditionerLeftLandingZ=lz;ConditionerRightLandingX=rx;ConditionerRightLandingZ=rz;
+        }
+
+        void ConstrainSnowAtBoards(ref float x,ref float z)
+        {
+            if(!Ice.IsInside(Conditioner.X,Conditioner.Z)||Layout.IsPortal(x,z))return;
+            float distance=Ice.BoardDistance(x,z,out float nx,out float nz);
+            if(distance>-.17f){x+=nx*(distance+.17f);z+=nz*(distance+.17f);}
+        }
+
+        void DepositEscapedSnow(float x,float z,float volume,float radius)
+        {
+            float deposited=Ice.DepositSnow(x,z,volume,radius);
+            OffIceSnowM3+=volume-deposited;
+            if(volume>deposited)Environment.Deposit(x,z,volume-deposited,0);
         }
 
         void SpillAtDischarge(float volume)
         {
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
             SpilledSnowM3+=volume;
-            for(int side=-1;side<=1;side+=2)
+            // Fixed equipment-side downspout: same authored .28/1.78/.75 m
+            // origin as TankDischarge. Escaped material deflects off the body
+            // toward its nearest side; this is a bounded transfer trajectory,
+            // not a particle collision solver or a second material source.
+            UpperSnowOriginX=Vehicle.X+cs*.28f+sn*.75f;UpperSnowOriginY=1.78f;
+            UpperSnowOriginZ=Vehicle.Z-sn*.28f+cs*.75f;UpperSnowVelocityY=-.25f;
+            float x=Vehicle.X+cs*(Config.VehicleHalfWidth+.18f)+sn*.75f;
+            float z=Vehicle.Z-sn*(Config.VehicleHalfWidth+.18f)+cs*.75f;
+            if(Ice.IsInside(Vehicle.X,Vehicle.Z)&&!Layout.IsPortal(x,z))
             {
-                float x=Vehicle.X+cs*side*1.1f+sn*.25f,z=Vehicle.Z-sn*side*1.1f+cs*.25f;
-                float deposited=Ice.DepositSnow(x,z,volume*.5f,.4f);
-                OffIceSnowM3+=volume*.5f-deposited;
-                if(volume*.5f>deposited)Environment.Deposit(x,z,volume*.5f-deposited,0);
+                float distance=Ice.BoardDistance(x,z,out float nx,out float nz);
+                if(distance>-.26f){x+=nx*(distance+.26f);z+=nz*(distance+.26f);}
             }
+            float flight=FallTime(UpperSnowOriginY,UpperSnowVelocityY);
+            UpperSnowVelocityX=(x-UpperSnowOriginX)/flight;UpperSnowVelocityZ=(z-UpperSnowOriginZ)/flight;
+            DepositEscapedSnow(x,z,volume,.25f);
         }
 
         public bool TryClearConveyorJam()
@@ -443,7 +514,14 @@ namespace IceResurfacer.Core
             // A rejected request must never remain a latent movement interlock.
             Controls.TankLiftTarget = target;
             float previousLift = TankLift;
-            TankLift = MoveTowards(TankLift, target, dt / Config.TankLiftSeconds);
+            float nextLift=MoveTowards(TankLift,target,dt/Config.TankLiftSeconds);
+            if(!ProbeTankPose(Vehicle.X,Vehicle.Z,Vehicle.Heading,nextLift,out MovementContact tankContact))
+            {
+                LastMovementContact=tankContact;LastMovementContactTime=Time;
+                LastMessage=tankContact.Reason+". Reverse clear before continuing the lift.";
+                Controls.TankLiftTarget=TankLift;
+            }
+            else TankLift=nextLift;
             if (dumping && TankLift > .72f)
             {
                 if (TankLift < previousLift)

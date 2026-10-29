@@ -81,6 +81,11 @@ PASS near-board conditioner interaction: actual forward travel resumes ()
 PASS CTRL stops through the real keyboard path
 PASS direct board contact explains reverse-clear recovery
 PASS reverse clears direct board contact without a state reset
+PASS held C activates external chase without taking drive input
+PASS F dismounts directly from chase and clears seated inspection state
+PASS on-foot E remains an interaction input and never starts seated inspection
+PASS F boards back onto the physical seat after a chase dismount
+PASS boarding restores the normal viewpoint saved before held C
 Shakeout rendering fixture seeds 0.8 m3 tank stock and pit-aligned pose only. Subsequent transfers use production hydraulics and conserved DumpSnowRate; core tests collect their stock by cutting.
 PASS stationary raised bin retains its adhered residual snow
 PASS small measured lowering/raising movement releases residual snow through the dump outlet

@@ -180,7 +180,7 @@ namespace IceResurfacer.Core
         {
             float area=CellSize*CellSize;
             float film=Simulation.Clamp(cell.FloodMm/config.GoodFloodDepthMm,0,1);
-            float overcut=Math.Max(0,cell.CutDepthMm/config.BladeBiteFraction-
+            float overcut=Math.Max(0,cell.CutDepthMm-
                 (cell.Sensitive?config.SensitiveCumulativeSafeCutMm:config.CumulativeSafeCutMm));
             cell.Quality=Simulation.Clamp((1-cell.Scratch)*.58f+film*.32f+
                 Simulation.Clamp(cell.WashLiters/(area*.1f),0,1)*.10f-cell.SnowMm*.45f-cell.OverwaterMm*.35f-overcut*.5f,0,1);
@@ -305,6 +305,7 @@ namespace IceResurfacer.Core
                 int i=Index(col,row); if(!Cells[i].IsIce)continue;
                 float dx=CellX(col)-x,dz=CellZ(row)-z;
                 float weight=Math.Max(0,1-(dx*dx+dz*dz)/(radius*radius));
+                if(weight<=0)continue;
                 if(pass==0)total+=weight;
                 else if(total>0)
                 {

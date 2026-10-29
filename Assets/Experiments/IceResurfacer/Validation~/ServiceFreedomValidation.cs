@@ -13,7 +13,7 @@ internal static class ServiceFreedomValidation
         Check(parked.Layout.PitSide==0,"snow pit aligns with straight entry and reverse exit");
         parked.Layout.SupplyAnchor(out float ax,out float az);
         float rightX=(float)Math.Cos(parked.Vehicle.Heading),rightZ=-(float)Math.Sin(parked.Vehicle.Heading);
-        Check((ax-parked.Vehicle.X)*rightX+(az-parked.Vehicle.Z)*rightZ>5,"wall supply remains on fixed machine-right filler side after nose-in parking");
+        Check((ax-parked.Vehicle.X)*rightX+(az-parked.Vehicle.Z)*rightZ>4.5f,"wall supply remains on fixed machine-right filler side with clear walking aisle");
         parked.Controls.Throttle=-1;Tick(parked,12);
         parked.Layout.ToLocal(parked.Vehicle.X,parked.Vehicle.Z,out side,out outward);
         Check(outward< -2&&Math.Abs(side)<.02f&&parked.Mistakes==0,"straight reverse exits centered portal with no collision or steering correction");
