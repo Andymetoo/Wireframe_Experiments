@@ -1,0 +1,196 @@
+PASS rendered water-response capture loads
+PASS rendered visible wet band spans the physical towel (2.289m)
+PASS rendered response stays within finite supplied film plus interpolation support
+Rendered wet width is measured from a 1920x1080 GPU response capture at 60% display intensity; it is not inferred from core cell extents. One image pixel=0.00556m.
+PASS measured strong-boundary tire alignment preserves positive nominal towel overlap
+PASS render coordinates map physical cell centers to exact state-texture centers
+PASS state texture retains the full 520x1200 simulation grid
+PASS texture flood sample agrees with actual cell at x=-0.47
+PASS texture flood sample agrees with actual cell at x=-0.42
+PASS texture flood sample agrees with actual cell at x=-0.37
+PASS texture flood sample agrees with actual cell at x=-0.32
+PASS texture flood sample agrees with actual cell at x=-0.27
+PASS texture flood sample agrees with actual cell at x=-0.22
+PASS texture flood sample agrees with actual cell at x=-0.17
+PASS texture flood sample agrees with actual cell at x=-0.12
+PASS texture flood sample agrees with actual cell at x=-0.07
+PASS texture flood sample agrees with actual cell at x=-0.02
+PASS texture flood sample agrees with actual cell at x=0.03
+PASS texture flood sample agrees with actual cell at x=0.08
+PASS texture flood sample agrees with actual cell at x=0.13
+PASS texture flood sample agrees with actual cell at x=0.18
+PASS texture flood sample agrees with actual cell at x=0.23
+PASS texture flood sample agrees with actual cell at x=0.28
+PASS texture flood sample agrees with actual cell at x=0.33
+PASS texture flood sample agrees with actual cell at x=0.38
+PASS texture flood sample agrees with actual cell at x=0.43
+PASS texture flood sample agrees with actual cell at x=0.48
+PASS texture flood sample agrees with actual cell at x=0.53
+PASS texture flood sample agrees with actual cell at x=0.58
+PASS texture flood sample agrees with actual cell at x=0.63
+PASS texture flood sample agrees with actual cell at x=0.68
+PASS texture flood sample agrees with actual cell at x=0.73
+PASS texture flood sample agrees with actual cell at x=0.78
+PASS texture flood sample agrees with actual cell at x=0.83
+PASS texture flood sample agrees with actual cell at x=0.88
+PASS texture flood sample agrees with actual cell at x=0.93
+PASS texture flood sample agrees with actual cell at x=0.98
+PASS texture flood sample agrees with actual cell at x=1.03
+PASS texture flood sample agrees with actual cell at x=1.08
+PASS texture flood sample agrees with actual cell at x=1.13
+PASS texture flood sample agrees with actual cell at x=1.18
+PASS texture flood sample agrees with actual cell at x=1.23
+PASS texture flood sample agrees with actual cell at x=1.28
+PASS texture flood sample agrees with actual cell at x=1.33
+PASS texture flood sample agrees with actual cell at x=1.38
+PASS texture flood sample agrees with actual cell at x=1.43
+PASS texture flood sample agrees with actual cell at x=1.48
+PASS texture flood sample agrees with actual cell at x=1.53
+PASS texture flood sample agrees with actual cell at x=1.58
+PASS texture flood sample agrees with actual cell at x=1.63
+PASS texture flood sample agrees with actual cell at x=1.68
+PASS texture flood sample agrees with actual cell at x=1.73
+PASS texture flood sample agrees with actual cell at x=1.78
+PASS texture flood sample agrees with actual cell at x=1.83
+PASS texture flood sample agrees with actual cell at x=1.88
+PASS texture flood sample agrees with actual cell at x=1.93
+PASS texture flood sample agrees with actual cell at x=1.98
+PASS texture flood sample agrees with actual cell at x=2.03
+PASS texture flood sample agrees with actual cell at x=2.08
+PASS texture flood sample agrees with actual cell at x=2.13
+PASS texture flood sample agrees with actual cell at x=2.18
+PASS texture flood sample agrees with actual cell at x=2.23
+PASS texture flood sample agrees with actual cell at x=2.28
+PASS texture flood sample agrees with actual cell at x=2.33
+PASS texture flood sample agrees with actual cell at x=2.38
+PASS texture flood sample agrees with actual cell at x=2.43
+PASS tire-aligned adjacent passes have zero dry or unscored cells between their centers
+World measurement: wheel track=1.370m, nominal tire width=0.215m, outside tire=0.7925m. First strong wet edge=1.150m; second center=1.943m; second inside tire=1.150m.
+Measured-boundary nominal towel overlap=0.157m; ideal continuous towel-edge alignment overlap=0.257m. The measured wet boundary is a cell extent, so those two reference alignments differ.
+First blade raster=2.000m; strong wet raster=2.300m; all-liquid raster=2.400m. Cell size=0.050m; physical blade1.956m/towel2.100m; film fringe<=.120m/side.
+PASS six-inch perimeter mask excludes shaving only; water and quality still use all ice
+PASS recovery fixture makes room in the independent wash tank
+PASS primed physical squeegee collects existing standing water over time
+PASS surface-water removal equals metered pickup
+PASS recovered water is routed into the wash reservoir
+PASS overwater improves only after actual liquid removal
+Pickup captured after5s driving back over the patch: 4.096L, pump limited; no blade cutting and no instant erase. The before/after uses actual-cell debug colors because liquid specular alone is view dependent.
+Recovery measurement captures temporarily hide machine/conditioner geometry to expose the cells under the squeegee and towel; simulated water, motion and materials are unchanged.
+Fixtures place two straight starts for repeatable geometry. All passes and water changes then run the real fixed-step simulation. Full route validation separately uses continuous driving.
+PASS real light, deeper and clean dry cuts retain distinguishable groove severity
+Wear comparison lanes left to right: blade .08mm dry / .22mm dry / .60mm dry / .60mm with water. Actual mean residual Scratch=0.505 / 0.223 / 0.060. No cosmetic scratch erasure.
+PASS actual liquid wetness decreases at age 0s (0.8663)
+PASS actual liquid wetness decreases at age 300s (0.4241)
+PASS actual liquid wetness decreases at age 600s (0.2076)
+PASS actual liquid wetness decreases at age 1200s (0.0497)
+PASS actual liquid wetness decreases at age 1800s (0.0119)
+PASS visible wet aging changes phase without deleting retained water
+PASS physical comparison patch remains framed in Ice-wet-age-00min.png
+PASS physical comparison patch remains framed in Ice-wet-age-30min.png
+PASS actual rendered wet strip visibly loses dark liquid absorption after30min (RGB rise 16.74/255)
+Same physical wet-strip pixel samples: fresh meanRGB=171.60,30min=188.34; camera frames the strip with180m far plane, correcting the old30m arena clipping artifact.
+Aging captures use real fixed-step elapsed time at fresh/5/10/20/30 minutes; freeze constant=420s. Machine, conditioner and the separate articulating drawbar are hidden only in measurement captures to expose the surface. Cubic reconstruction has finite support of two 5cm samples; no full-sheet blur or cosmetic water ribbon.
+PASS stationary 5s water mass remains finite and fully accounted
+PASS stationary wet footprint expands through actual neighbour redistribution at 5s
+Stationary flood 5s: released 9.000L, liquid 8.947L, frozen 0.053L, wetarea 2.130m2, peak 9.811mm; no ice runoff at this interior location.
+PASS stationary 15s water mass remains finite and fully accounted
+PASS stationary wet footprint expands through actual neighbour redistribution at 15s
+Stationary flood 15s: released 27.000L, liquid 26.524L, frozen 0.476L, wetarea 4.335m2, peak 19.774mm; no ice runoff at this interior location.
+PASS stationary 30s water mass remains finite and fully accounted
+PASS stationary wet footprint expands through actual neighbour redistribution at 30s
+Stationary flood 30s: released 53.999L, liquid 52.118L, frozen 1.882L, wetarea 7.160m2, peak 29.294mm; no ice runoff at this interior location.
+PASS physical comparison patch remains framed in Ice-stationary-flood-00s.png
+PASS physical comparison patch remains framed in Ice-stationary-flood-30s.png
+PASS actual54L pool visibly darkens the physical outlet region (RGB drop 41.21/255)
+PASS long stationary pool visibly differs from short stop (136037 changed pixels)
+PASS narrow visually wet seam contains real uncut cells, without lowered coverage rules
+PASS categorical map retains every actual 5cm state sample
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.325
+PASS overview pixel equals measured cut/water area fractions at x=0.325
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.375
+PASS overview pixel equals measured cut/water area fractions at x=0.375
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.425
+PASS overview pixel equals measured cut/water area fractions at x=0.425
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.475
+PASS overview pixel equals measured cut/water area fractions at x=0.475
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.525
+PASS overview pixel equals measured cut/water area fractions at x=0.525
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.575
+PASS overview pixel equals measured cut/water area fractions at x=0.575
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.625
+PASS overview pixel equals measured cut/water area fractions at x=0.625
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.675
+PASS overview pixel equals measured cut/water area fractions at x=0.675
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.725
+PASS overview pixel equals measured cut/water area fractions at x=0.725
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.775
+PASS overview pixel equals measured cut/water area fractions at x=0.775
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.825
+PASS overview pixel equals measured cut/water area fractions at x=0.825
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.875
+PASS overview pixel equals measured cut/water area fractions at x=0.875
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.925
+PASS overview pixel equals measured cut/water area fractions at x=0.925
+PASS actual wetted seam cell has nonzero GPU wet response at x=0.975
+PASS overview pixel equals measured cut/water area fractions at x=0.975
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.025
+PASS overview pixel equals measured cut/water area fractions at x=1.025
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.075
+PASS overview pixel equals measured cut/water area fractions at x=1.075
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.125
+PASS overview pixel equals measured cut/water area fractions at x=1.125
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.175
+PASS overview pixel equals measured cut/water area fractions at x=1.175
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.225
+PASS overview pixel equals measured cut/water area fractions at x=1.225
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.275
+PASS overview pixel equals measured cut/water area fractions at x=1.275
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.325
+PASS overview pixel equals measured cut/water area fractions at x=1.325
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.375
+PASS overview pixel equals measured cut/water area fractions at x=1.375
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.425
+PASS overview pixel equals measured cut/water area fractions at x=1.425
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.475
+PASS overview pixel equals measured cut/water area fractions at x=1.475
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.525
+PASS overview pixel equals measured cut/water area fractions at x=1.525
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.575
+PASS overview pixel equals measured cut/water area fractions at x=1.575
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.625
+PASS overview pixel equals measured cut/water area fractions at x=1.625
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.675
+PASS overview pixel equals measured cut/water area fractions at x=1.675
+PASS actual wetted seam cell has nonzero GPU wet response at x=1.725
+PASS overview pixel equals measured cut/water area fractions at x=1.725
+PASS same physical seam is continuous in GPU wetness but retains real cutting misses
+PASS scored water coverage uses exactly the wetted cells represented by the map
+Rendered seam correspondence: 29 physically wetted samples, 1 genuinely uncut; all have measured GPU wet response.20cm pixels equal exact area-weighted treatment fractions and water score equals raw wetted count.
+PASS operator overview aggregates sixteen physical5cm cells into independent20cm pixels
+Minimap seam fixture: 80 missing interior cells, all actually wet but uncut; 5 also carry excess loose snow. Default overview is area-weighted20cm; quarter-pixel contributions retain a5cm seam rather than randomly omitting it. Exact cell inspector and F2 retain original thresholds. No states or scoring thresholds are filled in.
+PASS identical-state reflection comparison changes no flood volume or physical wear
+PASS ceiling-fixture polish remains localized at identical camera/water state (mean RGB delta 0.00011)
+Reflection comparison uses the same camera, water and groove state. Added lights/probes/render targets: zero. Existing ceiling diffuser positions replace periodic invented glints; 7632 pixels differ by more than three combined RGB levels.
+PASS actual snow deposition invalidates and builds its sparse height mesh
+PASS water-only physical changes preserve the existing snow mesh without rescans or rebuilds
+PASS newly dirtied wet cells reuse their exact phase result during the same aging pass
+PASS 4096 unchanged dirty cells cause no texture uploads, overview resummaries or snow rebuilds
+PASS a real water classification crossing immediately updates its exact area-weighted overview pixel
+Presentation invalidation apparatus: water over existing deposited snow rebuilds zero chunks; 4096 unchanged dirty cells upload zero textures. Exact water classification crossings remain visible immediately; the following full-sheet phase test independently checks bounded aging and removal.
+PASS explicit whole-wet invalidation updates every cell exactly
+PASS dirty liquid removal is visible immediately outside the aging cursor
+PASS whole-wet aging refresh 1 respects the 65536-cell budget
+PASS whole-wet aging refresh 2 respects the 65536-cell budget
+PASS whole-wet aging refresh 3 respects the 65536-cell budget
+PASS whole-wet aging refresh 4 respects the 65536-cell budget
+PASS whole-wet aging refresh 5 respects the 65536-cell budget
+PASS whole-wet aging refresh 6 respects the 65536-cell budget
+PASS whole-wet aging refresh 7 respects the 65536-cell budget
+PASS whole-wet aging refresh 8 respects the 65536-cell budget
+PASS whole-wet aging refresh 9 respects the 65536-cell budget
+PASS whole-wet aging refresh 10 respects the 65536-cell budget
+PASS all whole-wet alphas stay within 2/255 of exact phase after ten 0.16s refreshes (max 1/255)
+PASS bounded swap removal clears every expired cell, including the final GPU upload
+PASS a retired cell can become visibly wet again through dirty tracking
+PASS explicit invalidation remains exact without a redundant second aging scan
+Late-wet aging: 599224 active ice cells; maximum ordinary aging work=65536 cells/refresh. Dirty material changes bypass the visual budget; physical freezing and pickup remain exact.

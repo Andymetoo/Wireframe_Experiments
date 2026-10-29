@@ -35,6 +35,7 @@ namespace IceResurfacer.Presentation
         public bool ChaseActive { get { return chaseCamera!=null&&chaseCamera.Active; } }
         public string HeldQuicklook { get { return quicklook; } }
         public IcePerformanceMeter Performance { get; private set; }
+        public IceRouteGuide RouteGuide { get; private set; }
         public float RawThrottle { get; private set; }
         public bool HasFocus { get; private set; } = true;
         bool keyboardLift, keyboardTank;
@@ -55,7 +56,7 @@ namespace IceResurfacer.Presentation
         Vector2 instrumentCursor;
         Mouse lookMouse;
         int lookWarmup;
-        Quaternion tankRest, bladeRest, valveRest, floodRest, liftRest, steeringRest, horizontalLeverRest, verticalLeverRest;
+        Quaternion tankRest, bladeRest, steeringRest;
         Quaternion acceleratorRest, brakeRest;
         Vector3 breakerRest;
         Quaternion[] frontRest, rearRest;
@@ -75,7 +76,10 @@ namespace IceResurfacer.Presentation
             oldFog=RenderSettings.fogColor; oldFogEnabled=RenderSettings.fog; oldFogDensity=RenderSettings.fogDensity;
             oldCursorVisible=Cursor.visible; oldCursorLock=Cursor.lockState;
             RenderSettings.ambientMode=AmbientMode.Flat;
-            RenderSettings.ambientLight=new Color(.43f,.51f,.6f); RenderSettings.ambientIntensity=1;
+            // RenderSettings stores the same sRGB color represented by Unity's
+            // Environment color picker. Unity converts it for linear rendering;
+            // calling .linear here would convert twice and darken the target.
+            RenderSettings.ambientLight=new Color(214f/255f,228f/255f,245f/255f); RenderSettings.ambientIntensity=1;
             RenderSettings.fog=true; RenderSettings.fogColor=new Color(.10f,.15f,.20f); RenderSettings.fogDensity=.0035f;
             World=IceWorldBuilder.Build(transform,litTemplate,calibration);
             var hitch=GameObject.CreatePrimitive(PrimitiveType.Cylinder);
@@ -95,10 +99,7 @@ namespace IceResurfacer.Presentation
             DriverCamera.backgroundColor=new Color(.09f,.13f,.18f);
             cameraObject.AddComponent<AudioListener>();
             tankRest=World.TankPivot.localRotation; bladeRest=World.BladeWheel.localRotation;
-            valveRest=World.WashValve.localRotation; floodRest=World.FloodLever.localRotation;
-            liftRest=World.ConditionerLever.localRotation; steeringRest=World.SteeringWheel.localRotation;
-            horizontalLeverRest=World.HorizontalAugerLever.localRotation;
-            verticalLeverRest=World.VerticalAugerLever.localRotation;
+            steeringRest=World.SteeringWheel.localRotation;
             breakerRest=World.SnowBreakerPlunger.localPosition;
             acceleratorRest=World.AcceleratorPedal.localRotation; brakeRest=World.BrakePedal.localRotation;
             frontRest=Capture(World.FrontWheels); rearRest=Capture(World.RearWheels);
@@ -111,6 +112,7 @@ namespace IceResurfacer.Presentation
             PhysicalControls=new IcePhysicalControls(this);
             WaterService=gameObject.AddComponent<IceWaterService>(); WaterService.Initialize(this);
             NewSession(false,false);
+            RouteGuide=gameObject.AddComponent<IceRouteGuide>();RouteGuide.Initialize(this);
         }
         static Quaternion[] Capture(Transform[] targets)
         {
@@ -203,20 +205,20 @@ namespace IceResurfacer.Presentation
             var c=Sim.Controls;
             RawThrottle=keys!=null?(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0):0;
             c.Throttle=driving?RawThrottle:0;
-            if(keys!=null&&(keys.leftShiftKey.isPressed||keys.rightShiftKey.isPressed))c.Throttle*=.42f;
+            if(keys!=null&&keys.rightShiftKey.isPressed)c.Throttle*=.42f;
             c.Steer=driving&&keys!=null?(keys.dKey.isPressed?1:0)-(keys.aKey.isPressed?1:0):0;
             c.Brake=driving&&keys!=null&&(keys.leftCtrlKey.isPressed||keys.rightCtrlKey.isPressed);
             dashboard.CheckPointerRelease(this);
             if(driving&&keys!=null)
             {
-                if(keys.digit1Key.isPressed) { keyboardLift=true; Sim.SetConditionerHydraulic(keys.leftShiftKey.isPressed||keys.rightShiftKey.isPressed?1:-1); }
+                if(keys.digit1Key.isPressed) { keyboardLift=true; Sim.SetConditionerHydraulic(keys.rightShiftKey.isPressed?1:-1); }
                 else if(keyboardLift) { Sim.SetConditionerHydraulic(0); keyboardLift=false; }
                 if(keys.digit2Key.wasPressedThisFrame)c.HorizontalAuger=!c.HorizontalAuger;
                 if(keys.digit3Key.wasPressedThisFrame)c.VerticalAuger=!c.VerticalAuger;
                 if(keys.digit4Key.wasPressedThisFrame)c.BoardBrush=!c.BoardBrush;
                 if(keys.digit5Key.wasPressedThisFrame)c.WashPump=!c.WashPump;
                 if(keys.digit6Key.wasPressedThisFrame)OperateSnowBreaker();
-                bool shift=keys.leftShiftKey.isPressed||keys.rightShiftKey.isPressed;
+                bool shift=keys.rightShiftKey.isPressed;
                 if(keys.digit7Key.isPressed) { keyboardTank=true; Sim.SetTankHydraulic(shift?-1:1); }
                 else if(keyboardTank) { Sim.SetTankHydraulic(0); keyboardTank=false; }
                 float waterChange=((keys.rightBracketKey.isPressed?1:0)-(keys.leftBracketKey.isPressed?1:0))*Time.deltaTime*.22f;
@@ -226,7 +228,7 @@ namespace IceResurfacer.Presentation
                 if(keys.periodKey.isPressed)c.BladeDepthMm=Mathf.Min(calibration.MaxBladeDepthMm,c.BladeDepthMm+Time.deltaTime*.08f);
             }
             if(!Sim.OnFoot)UpdateLook(running,Time.deltaTime);
-            PhysicalControls.UpdateInput(driving&&!Looking&&!ChaseActive, dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
+            PhysicalControls.UpdateInput(driving&&!Looking&&!ChaseActive&&CameraView!="Rear"&&CameraView!="Conditioner", dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
             if(running)
             {
                 accumulator+=Mathf.Min(Time.deltaTime,.12f);
@@ -245,14 +247,18 @@ namespace IceResurfacer.Presentation
         }
         public void SelectCameraView(string view)
         {
+            PhysicalControls?.Release();
             chaseCamera.Leave();
             CameraView=view;
             controlLean=view=="Controls"?-.18f:0;
             sideLean=view=="Conditioner"?-.28f:0;
             preservedOffset=false;
             if(view=="Forward") { targetYaw=0; targetPitch=5; }
-            else if(view=="Conditioner") { targetYaw=-95;targetPitch=75; }
-            else if(view=="Rear"||view=="Chase") { CameraView="Chase";chaseCamera.Enter();return; }
+            // Keep both the forward brush and trailing conditioner in the same
+            // downward inspection without moving the operator's seated origin.
+            else if(view=="Conditioner") { targetYaw=-65;targetPitch=75; }
+            else if(view=="Chase") { chaseCamera.Enter();return; }
+            else if(view=="Rear") { targetYaw=160;targetPitch=22; }
             else
             {
                 Vector3 target;
@@ -262,9 +268,10 @@ namespace IceResurfacer.Presentation
                     controls.Encapsulate(World.VerticalAugerLever.TransformPoint(0,.225f,0));
                     controls.Encapsulate(World.HorizontalAugerLever.TransformPoint(0,.225f,0));
                     controls.Encapsulate(World.DumpLever.TransformPoint(0,.225f,0));
-                    controls.Encapsulate(World.WashValve.TransformPoint(-.09f,.064f,0));
-                    controls.Encapsulate(World.FloodLever.TransformPoint(-.09f,.064f,0));
+                    controls.Encapsulate(World.WashValve.TransformPoint(-.09f,calibration.WaterValveStemHeight,0));
+                    controls.Encapsulate(World.FloodLever.TransformPoint(-.09f,calibration.WaterValveStemHeight,0));
                     controls.Encapsulate(World.BladeWheel.position);
+                    controls.Encapsulate(World.SnowBreakerPlunger.TransformPoint(0,.22f,0));
                     target=controls.center;
                 }
                 else if(view=="Conditioner")
@@ -293,6 +300,7 @@ namespace IceResurfacer.Presentation
         void ChangeQuicklook(string next)
         {
             if(next==quicklook)return;
+            PhysicalControls?.Release();
             if(!savedHead&&next!="")
             {
                 savedHead=true;savedYaw=yaw;savedPitch=pitch;savedControlLean=controlLean;savedSideLean=sideLean;savedStance=stance;
@@ -332,8 +340,8 @@ namespace IceResurfacer.Presentation
             IncludeControlBearing(World.HorizontalAugerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
             IncludeControlBearing(World.VerticalAugerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
             IncludeControlBearing(World.DumpLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.WashValve.TransformPoint(-.115f,.064f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.FloodLever.TransformPoint(-.115f,.064f,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.WashValve.TransformPoint(-.115f,calibration.WaterValveStemHeight,0),eye,ref minimum,ref maximum);
+            IncludeControlBearing(World.FloodLever.TransformPoint(-.115f,calibration.WaterValveStemHeight,0),eye,ref minimum,ref maximum);
             IncludeControlBearing(World.SnowBreakerPlunger.TransformPoint(-.105f,.22f,0),eye,ref minimum,ref maximum);
             IncludeControlBearing(World.SnowBreakerPlunger.TransformPoint(.105f,.22f,0),eye,ref minimum,ref maximum);
             // Include the rim, not only its hub, for every handwheel setting.
@@ -360,11 +368,11 @@ namespace IceResurfacer.Presentation
             if(running&&keys!=null)
             {
                 if(keys.rKey.wasPressedThisFrame){Standing=!Standing;preservedOffset=false;}
-                bool anyQuicklook=keys.qKey.isPressed||keys.eKey.isPressed||keys.cKey.isPressed;
+                bool anyQuicklook=keys.qKey.isPressed||keys.eKey.isPressed||keys.cKey.isPressed||keys.leftShiftKey.isPressed;
                 if(!anyQuicklook)suppressQuicklook=false;
                 // A single snapshot survives overlapping holds. The strongest held
                 // inspection wins, then the next held view, then the original pose.
-                string next=suppressQuicklook?"":keys.cKey.isPressed?"Chase":keys.eKey.isPressed?"Controls":keys.qKey.isPressed?"Conditioner":"";
+                string next=suppressQuicklook?"":keys.cKey.isPressed?"Chase":keys.eKey.isPressed?"Controls":keys.qKey.isPressed?"Conditioner":keys.leftShiftKey.isPressed?"Rear":"";
                 if(next!=quicklook){ChangeQuicklook(next);preset=true;}
                 if(keys.xKey.wasPressedThisFrame)
                 {
@@ -482,7 +490,7 @@ namespace IceResurfacer.Presentation
             World.Machine.SetPositionAndRotation(new Vector3(v.X,0,v.Z),Quaternion.Euler(0,v.Heading*Mathf.Rad2Deg,0));
             World.Conditioner.SetPositionAndRotation(new Vector3(Sim.Conditioner.X,Sim.Conditioner.Lift*.34f,Sim.Conditioner.Z),
                 Quaternion.Euler(0,Sim.Conditioner.Heading*Mathf.Rad2Deg,0));
-            Vector3 hitchA=World.Machine.TransformPoint(0,.52f,-.45f);
+            Vector3 hitchA=World.Machine.TransformPoint(0,.52f,-calibration.HitchBehindAxle);
             Vector3 hitchB=World.Conditioner.TransformPoint(0,.37f,.26f);
             drawbar.position=(hitchA+hitchB)*.5f; drawbar.rotation=Quaternion.FromToRotation(Vector3.up,hitchB-hitchA);
             drawbar.localScale=new Vector3(.075f,(hitchB-hitchA).magnitude*.5f,.075f);
@@ -496,11 +504,6 @@ namespace IceResurfacer.Presentation
             World.CuttingBlade.localPosition=new Vector3(0,.043f-Sim.ActualBladeDepthMm*.001f,.30f);
             World.GuideRoller.localRotation=Quaternion.Euler(0,Sim.GuideRollerTravel/calibration.GuideRollerRadius*Mathf.Rad2Deg,0);
             World.TankDoor.localRotation=Quaternion.Euler(-Mathf.Clamp01((Sim.TankLift-.45f)/.4f)*105,0,0);
-            World.WashValve.localRotation=valveRest*Quaternion.Euler(0,c.WashValve*270,0);
-            World.FloodLever.localRotation=floodRest*Quaternion.Euler(c.FloodFlow*65-25,0,0);
-            World.ConditionerLever.localRotation=liftRest*Quaternion.Euler(c.ConditionerTarget*50-25,0,0);
-            World.HorizontalAugerLever.localRotation=horizontalLeverRest*Quaternion.Euler(c.HorizontalAuger?-24:18,0,0);
-            World.VerticalAugerLever.localRotation=verticalLeverRest*Quaternion.Euler(c.VerticalAuger?-24:18,0,0);
             World.AcceleratorPedal.localRotation=acceleratorRest*Quaternion.Euler(Mathf.Abs(c.Throttle)*16,0,0);
             World.BrakePedal.localRotation=brakeRest*Quaternion.Euler(c.Brake?18:0,0,0);
             PhysicalControls?.Animate();

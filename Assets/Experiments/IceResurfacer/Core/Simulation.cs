@@ -265,6 +265,7 @@ namespace IceResurfacer.Core
             }
             else
             {
+                RecordContact(rejected,(x-Vehicle.X)/dt,(z-Vehicle.Z)/dt,turn/dt);
                 LastMovementContact=rejected;LastMovementContactTime=Time;
                 BoardContact=true;
                 if (Math.Abs(speed) > .15f) Fault(4, "Board or service wall contact. Brake and steer clear.");
@@ -348,11 +349,12 @@ namespace IceResurfacer.Core
             float sn = (float)Math.Sin(Vehicle.Heading), cs = (float)Math.Cos(Vehicle.Heading);
             float hitchX = Vehicle.X - sn * Config.HitchBehindAxle, hitchZ = Vehicle.Z - cs * Config.HitchBehindAxle;
             float desired = (float)Math.Atan2(hitchX - Conditioner.X, hitchZ - Conditioner.Z);
-            // A distance-constrained drawbar naturally tracks the inside of a turn.
+            // The close-mounted conditioner has limited compliance, not a
+            // trailer axle. Keep its genuine hitch/lift geometry while limiting
+            // yaw to the small clearance of the two lifting links.
             float delta = Wrap(desired - Conditioner.Heading);
             if (Math.Abs(Vehicle.Speed) > .001f) Conditioner.Heading = Wrap(Conditioner.Heading + Clamp(delta, -1.7f * dt, 1.7f * dt));
-            // Avoid a trailer flipping through the machine if backed into a tight turn.
-            Conditioner.Heading = Wrap(Vehicle.Heading + Clamp(Wrap(Conditioner.Heading - Vehicle.Heading), -.9f, .9f));
+            Conditioner.Heading = Wrap(Vehicle.Heading + Clamp(Wrap(Conditioner.Heading - Vehicle.Heading), -Config.ConditionerYawLimitRadians, Config.ConditionerYawLimitRadians));
             Conditioner.X = hitchX - (float)Math.Sin(Conditioner.Heading) * Config.DrawbarLength;
             Conditioner.Z = hitchZ - (float)Math.Cos(Conditioner.Heading) * Config.DrawbarLength;
         }
@@ -472,14 +474,14 @@ namespace IceResurfacer.Core
         {
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
             SpilledSnowM3+=volume;
-            // Fixed equipment-side downspout: same authored .28/1.78/.75 m
-            // origin as TankDischarge. Escaped material deflects off the body
+            // Compact fixed rear-tank inlet, shared with authored TankDischarge.
+            // Escaped material deflects off the body
             // toward its nearest side; this is a bounded transfer trajectory,
             // not a particle collision solver or a second material source.
-            UpperSnowOriginX=Vehicle.X+cs*.28f+sn*.75f;UpperSnowOriginY=1.78f;
-            UpperSnowOriginZ=Vehicle.Z-sn*.28f+cs*.75f;UpperSnowVelocityY=-.25f;
-            float x=Vehicle.X+cs*(Config.VehicleHalfWidth+.18f)+sn*.75f;
-            float z=Vehicle.Z-sn*(Config.VehicleHalfWidth+.18f)+cs*.75f;
+            UpperSnowOriginX=Vehicle.X+cs*Config.ConveyorOutletX+sn*Config.ConveyorOutletZ;UpperSnowOriginY=Config.ConveyorOutletY;
+            UpperSnowOriginZ=Vehicle.Z-sn*Config.ConveyorOutletX+cs*Config.ConveyorOutletZ;UpperSnowVelocityY=-.25f;
+            float x=Vehicle.X+cs*(Config.VehicleHalfWidth+.18f)+sn*Config.ConveyorOutletZ;
+            float z=Vehicle.Z-sn*(Config.VehicleHalfWidth+.18f)+cs*Config.ConveyorOutletZ;
             if(Ice.IsInside(Vehicle.X,Vehicle.Z)&&!Layout.IsPortal(x,z))
             {
                 float distance=Ice.BoardDistance(x,z,out float nx,out float nz);
@@ -570,7 +572,7 @@ namespace IceResurfacer.Core
             float localZ=2.46f+.16f*(float)Math.Sin(angle)+.12f*(float)Math.Cos(angle);
             y=.78f+.16f*(float)Math.Cos(angle)-.12f*(float)Math.Sin(angle);
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
-            x=Vehicle.X+cs*.20f+sn*localZ;z=Vehicle.Z-sn*.20f+cs*localZ;
+            x=Vehicle.X+cs*Config.TankLateralOffset+sn*localZ;z=Vehicle.Z-sn*Config.TankLateralOffset+cs*localZ;
             float forward=Vehicle.Speed+Config.DumpExitSpeed;
             vx=sn*forward+cs*LateralVelocity;vz=cs*forward-sn*LateralVelocity;vy=-.18f;
         }

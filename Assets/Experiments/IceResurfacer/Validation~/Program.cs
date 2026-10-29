@@ -39,9 +39,11 @@ internal static class Program
         Test("tire overlap, liquid recovery, perimeter mask and finite spread", IceCalibrationValidation.Run);
         Test("snow production, side escape and recoverable deposits", SnowCalibrationValidation.Run);
         Test("truthful minimap states and measured wet-but-uncut slivers", MinimapValidation.Run);
-        Test("visible pit contact, reverse recovery and finite floor drainage", () => ServiceCollisionValidation.Run());
+        Test("traversable grate, impact severity, limited conditioner and finite drainage", () => ServiceCollisionValidation.Run());
         Test("complete scored southeast route, return and angled unload", FreedomValidation.FullRun);
         Test("water service state, capacities, conservation and recovery", ServiceValidation.Run);
+        Test("aggregated overview, finite puddles and progressive freezing", SurfaceConsistencyValidation.Run);
+        Test("advisory generated path, actual driven departure, passes and return", RouteGuideValidation.Run);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
     }
 
@@ -302,6 +304,11 @@ internal static class Program
     {
         var s = new Simulation(); Place(s, 0, -10); Prepare(s);
         s.Controls.Throttle = .4f; s.Controls.Steer = 1;
+        // Isolate moving outlet stamping. A stationary start with high flood
+        // now correctly leaves a puddle whose later redistribution occurs
+        // outside the moving conditioner; separate pooling tests cover that.
+        s.Vehicle.Speed=s.Controls.Throttle*s.Config.ForwardSpeed;
+        s.Controls.FloodFlow=.25f;
         var previousCut = new float[s.Ice.Cells.Length];
         var previousFlood = new float[s.Ice.Cells.Length];
         int touched = 0;
@@ -310,7 +317,8 @@ internal static class Program
         {
             s.Step(.02f);
             float sin = (float)Math.Sin(s.Conditioner.Heading), cos = (float)Math.Cos(s.Conditioner.Heading);
-            articulated |= Math.Abs(s.Conditioner.Heading - s.Vehicle.Heading) > .08f;
+            articulated |= Math.Abs(s.Conditioner.Heading - s.Vehicle.Heading) > .02f;
+            Assert(Math.Abs(s.Conditioner.Heading-s.Vehicle.Heading)<=s.Config.ConditionerYawLimitRadians+.0001f,"conditioner exceeded close-mounted compliance");
             for (int i = 0; i < s.Ice.Cells.Length; i++)
             {
                 var cell = s.Ice.Cells[i];
@@ -334,6 +342,7 @@ internal static class Program
             }
         }
         Assert(touched > 500 && articulated, "test did not exercise a working articulated turn");
+        Assert(s.Ice.RedistributedWaterLiters==0,"moving footprint fixture must isolate direct outlet application from standing-water redistribution");
     }
 
     static void MaterialBalance()

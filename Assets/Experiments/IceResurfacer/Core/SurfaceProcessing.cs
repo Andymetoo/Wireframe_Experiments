@@ -179,6 +179,7 @@ namespace IceResurfacer.Core
             TotalShavedIceM3+=shaved;TotalExpandedShavingsM3+=shaved*Config.SnowExpansionRatio;TotalLooseSnowPickupM3+=loosePickup;
             HorizontalSnowM3+=newSnow;UpdateBoardBrush(dt,distance);
             if(anyChanged)Ice.CommitChanges();
+            Ice.RedistributeWater(Time,dt);
         }
 
         bool InPickup(int n)

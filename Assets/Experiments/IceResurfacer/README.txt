@@ -1,265 +1,197 @@
 AURORA R-54 / ICE RESURFACER SIMULATOR
-Unity 6000.4.1f1 / URP / 28 October 2026
+Unity 6000.4.1f1 / URP / 29 October 2026
 
 Launch
-Open Scenes/IceResurfacer.unity and press Play, or use
-Experiments > Ice Resurfacer > Open Launch Scene.
-The saved scene builds its owned arena and machine at runtime. No generation
-command, Build Settings change, or other experiment is required.
+Open Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity and press Play,
+or use Experiments > Ice Resurfacer > Open Launch Scene. No generation step,
+Build Settings edit, package change or other experiment is required.
 
-Choose FREE SIMULATION / SCORED or FREE SIMULATION / PRACTICE. Both permit the
-same machinery operation anywhere. Scored sessions measure physical results
-and misuse; practice shows the surface review without a score. GUIDED TRAINING
-is an assisted practice variant: its safety restrictions explicitly identify
-training assistance. It uses the operator guide, not a scripted lesson campaign.
+FREE SIMULATION / SCORED and PRACTICE permit the same machinery operation.
+GUIDED TRAINING adds explicitly labeled safety assistance. The optional F5
+reference route is independent, advisory, and never controls the machine.
+The machine starts nose-in toward the service-room snow receiver, with 738 L
+flood and 310 L wash water. S backs through the southeast gate onto ice.
+The unloading zone is now a flush, load-bearing grate. Drive or walk across it;
+real walls still collide. Snow passes through the grate into the receiver.
 
-The machine starts centered in the service room, nose toward the snow pit and
-rear toward the rink. Hold S to back straight through the southeast doorway;
-W approaches the pit. Normal sessions start with 738 L flood water and 310 L wash water. ESC > REFILL
-PRACTICE starts a NEW practice session with 35% flood and 30% wash water.
-
-Complete keyboard guide
-W / S                 Forward / reverse pedal. Opposite demand brakes through zero.
+Keyboard guide
+W / S                 Forward / reverse pedal; opposite demand brakes through zero.
 A / D                 Steering, independent of head orientation.
-CTRL                  Service brake. Release pedal for hydrostatic deceleration.
-SHIFT with W/S        Precision demand, 42% of normal pedal input.
-RMB held              Manual cockpit head look. Release preserves orientation.
-Q held                Temporary left/down conditioner and board-edge inspection.
-E held                Temporary view of the physical control station.
-C held                Temporary external chase camera behind the whole machine.
-X                     Return to forward view in about 0.2 seconds.
-R                     Toggle standing / sitting; head direction is preserved.
-SPACE held            Temporary standing while held; compatible with R toggle.
-1 held                Lower conditioner; release holds attained position.
-SHIFT+1 held          Raise conditioner; release holds attained position.
-2                     Toggle horizontal auger.
-3                     Toggle vertical auger.
+CTRL                  Service brake; pedal release gives hydrostatic deceleration.
+RIGHT SHIFT + W/S     Precision demand, 42% of normal pedal input.
+RMB held              Manual head-look; release keeps the selected orientation.
+Q held                Temporary left conditioner / board-edge inspection.
+E held                Temporary seated view of the physical machinery controls.
+C held                Temporary external chase camera.
+LEFT SHIFT held       Temporary rearward glance over the RIGHT shoulder.
+X                     Recenter forward in about 0.2 seconds.
+R                     Toggle standing / sitting, preserving head orientation.
+SPACE held            Temporary rise, compatible with R standing toggle.
+1 held                Lower conditioner; release holds actual attained height.
+RIGHT SHIFT + 1       Raise conditioner while held.
+2 / 3                 Horizontal / vertical auger, independently maintained.
 4                     Toggle left board brush.
 5                     Toggle wash pickup pump.
-6                     One manual snow-breaker plunger stroke.
+6                     One manual snow-breaker stroke.
 7 held                Raise dump tank; release holds attained position.
-SHIFT+7 held          Lower dump tank; release holds attained position.
+RIGHT SHIFT + 7       Lower dump tank while held.
 [ / ] held            Decrease / increase flood-water valve.
-SHIFT+[ / SHIFT+]     Decrease / increase wash-water valve.
+RIGHT SHIFT + [ / ]   Decrease / increase independent wash-water valve.
 , / . held            Fine shallower / deeper blade adjustment.
-J                     Inspect/reset a conveyor jam once physically cleared/stopped.
-F                     Dismount / board.
-TAB                   Toggle compact HUD.
+J                     Reset a conveyor jam after physical clearing / stopping.
+F                     Dismount / board near the left step or rear platform.
+TAB                   Expand / collapse the right-side operator console.
 F1                    Operator guide; pauses the simulation.
-F2                    Cycle normal ice, shaving mask, actual affected-cell channels.
-F3                    Drive/load diagnostics and footprint/pit contact overlay.
-F4                    Toggle smoothed FPS / frame-time meter; visible by default.
-ESC                   Pause / resume; eye-height adjustment is in the pause panel.
+F2                    Normal overview / shaving mask / actual material channels.
+F3                    Machinery diagnostics, actual contact and footprint overlays.
+F4                    Smoothed FPS / frame-time meter.
+F5                    Toggle advisory reference route.
+ESC                   Pause / resume; eye adjustment is in the pause panel.
 
-For collision inspection, combine TAB with F3: compact diagnostics stay at the
-left and leave the actual pit/footprint outlines visible in the scene. TAB again
-restores the full machinery/performance panel.
+Left Shift is exclusively a rear glance. Use RIGHT SHIFT for precision and
+machinery modifiers. Releasing Q/E/C/Left Shift restores the exact saved head
+rotation and eye offset, including custom RMB views. Overlaps use
+C > E > Q > Left Shift priority and retain one saved normal viewpoint.
 
-Q/E no longer adjust the blade; use comma/period. R no longer recenters; use X.
-Releasing Q/E/C restores the exact head pose saved before inspection, including
-custom RMB angles. Overlapping keys use C > E > Q priority and preserve that
-same saved pose. X explicitly recenters. Mouse movement without RMB controls
-the cockpit cursor. Seated eye adjustment is -8 to +12 cm around the authored mount.
+Controls and HUD
+Four physical hydraulic pivots now share a transverse mounting bank:
+VERTICAL AUGER / CONDITIONER / HORIZONTAL AUGER / DUMP TANK, left to right.
+Hold E and use the cursor. Lift/dump levers spring to neutral and retain actual
+height; augers latch. Flood and wash have adjacent independent L handles with
+90-degree travel. Drag or scroll the separate 3.5-turn blade handwheel.
+Hover an individual grip or wheel for a subtle amber tint and control guidance.
+Dragging retains that feedback until release; camera/input transitions clear it.
+The taller water stems flank the closer blade handwheel. The complete snow
+breaker assembly sits beside the rightmost hydraulic lever.
 
-Physical controls
-Hold E to view the inboard station, then use the cursor. Viewed from the seat,
-the four black-knob levers run LEFT TO RIGHT: vertical auger, conditioner lift,
-horizontal auger, dump tank. Their physical pivots and mouse targets follow this order.
-Drag hydraulic levers toward the seat to raise, forward to lower. They spring
-to neutral on release and hold their actual attained position. Auger levers
-latch independently. Wash and flood have separate L handles with 90-degree
-travel: drag from 9 o'clock CLOSED to 6 o'clock OPEN. Water follows partial
-openings. Drag/scroll the blade handwheel through its 3.5-turn range; click the
-snow-breaker plunger for a stroke. HUD, keyboard and physical controls all write
-the SAME machinery state. A mouse gesture never captures keyboard throttle.
+TAB opens functional miniature controls below the Surface Survey on the right.
+They, keyboard shortcuts and physical 3D controls write the same state.
+The console starts collapsed. Held inspection views clear the side UI.
+The main instruments permanently report CONDITIONER UP / DOWN / RAISING /
+LOWERING / PARTIALLY LOWERED from actual lift. Blade screw setting and
+pressure-adjusted contact depth are separate; standing still does not shave ice.
+Ordinary notifications fade after eight seconds. Serious equipment alerts stay
+compact. MESSAGES opens scrollable history and an ordinary-message visibility
+setting. F1 retains operating guidance. TAB also selects compact F3 diagnostics.
 
-On foot
-F can leave a moving, raised or operating machine in Free Simulation. The
-machine keeps its equipment settings; the released pedal allows it to coast.
-The exit uses clear ground beside the machine and avoids boards and the pit.
-Mouse movement looks freely WITHOUT RMB; WASD walks; E or click interacts with
-the object at the center of view. F boards near the left step or accessible rear
-operator platform. Pause/guide releases the cursor. Boarding restores the seated
-head view and ordinary cockpit cursor. A moving dismount can incur misuse.
+Machinery and visual editing
+The centered tank crown is 150 mm lower; walls, window, door and cylinder
+anchors share authored dimensions rather than a scaled parent. A compact blue
+upright and rear-wall inlet replace the large overhead pipe. Transport, raised
+bin misses, snow fill and collision agree with this geometry. The unchanged
+3.54 m3 loose-equivalent stock maps into a measured 1.931 m3 tapered envelope
+through an explicit 1.833:1 visual compaction ratio. No snow stock is discarded.
+This ratio is an Aurora visual calibration, not a manufacturer specification.
 
-Southeast service room and water
-The diagonal opening is in the southeast rounded corner of the unchanged
-60 x 26 m rink. A 5.4 m doorway joins an 11 m wide backstage room with a marked
-parking area, centered snow pit, workshop fittings and water station. The parking
-reference faces southeast into the room toward the pit. The wall supply is on
-the opposite room wall from the earlier layout, beside the machine's fixed
-right-side fillers. The left operator station and machine-side controls have
-not been mirrored. The centered rear aisle gives a straight reverse route onto
-the rink. There is no docking snap.
+Wheel track remains the manual's 1.37 m and tire width stays .215 m. Visible
+wheels, steering pivots and tire references agree. The brush pivot is now 1.16 m
+ahead of the rear axle, 46 cm forward of the cockpit-refinement baseline. Its
+complete arm/roller assembly and simulated contact share that position.
+Conditioner yaw is limited to 2 degrees; its actual footprints
+follow it. Chassis steering and roughly 4.485 m rear-axle radius are unchanged.
+The actual operator station moved 6 cm outboard without raising the eyes.
+The steering hub moves 28 cm forward and its wheel plane is 68 degrees above
+horizontal. The connected shafts, support, dashboard and lamp follow the hub.
+Q turns slightly forward along the left working edge to retain the relocated
+brush and trailing conditioner in one downward view; the seated origin stays fixed.
 
-For an orderly refill, stop and stow equipment, press F, and walk around the rear
-of the machine to the wall hose on its right. E takes the nozzle. E connects the
-blue ICE WATER or teal WASH WATER rear fill neck. E opens/closes the wall supply.
-Each tank fills separately; capacity is enforced and excess visibly overflows.
-Close supply, E to uncouple, then face the highlighted holder and E to return the
-hose. The holder tolerates a broad view and a 2.65 m approach. F boards again.
-The service HUD shows used hose length out of 11 m and TAUT near its limit.
-Aimed fixtures beyond arm reach report distance; blocked movement names the
-machine, wall, pit edge or hose. Looking upward can extend the held nozzle;
-walking back toward slack remains possible even while it is over the limit.
+Use Experiments > Ice Resurfacer > Machine Geometry Editor to edit shared
+parameters and rebuild a selectable unbatched preview. Tank height/offset,
+conveyor height, wheel track, brush mount/extension, cockpit placement, steering
+hub/tilt, blade spindle, water-stem height and snow-breaker position are exposed.
+Save the launch scene normally to persist these parameters. Preview
+transform dragging is temporary; rebuilding uses the shared parameters.
+The preview uses the runtime builder and is removed before play/window close.
+Runtime batching remains; no independently maintained prefab is introduced.
 
-Free Simulation allows pressurized uncoupling and departure with a connected
-hose. Water continues spilling until the wall supply actually closes. Pulling
-past the physical 11 m reach releases a breakaway coupling, leaves a loose nozzle
-and records a misuse warning. E retrieves the nozzle from the floor. Boarding
-while carrying it also leaves it on the floor, rather than locking boarding or
-remotely stowing it. The coupling is an explicit fictional recovery mechanism.
-See Documentation/WaterService.txt for geometry, accounting and source details.
+Surface survey, pooling and drying
+The ice remains 520 x 1200 physical 5 cm cells. The normal survey uses a separate
+130 x 300 area-weighted overview with 20 cm pixels. Initial dust and extra
+crease snow are conserved but no longer make the overview white static.
+Concentrated deposits remain visible. F2 and hover retain exact 5 cm data.
+The overview distinguishes cut/wet, wet/uncut, cut/dry, untreated, snow and
+excess water. Fractional narrow gaps contribute their actual area.
 
-A practical resurfacing run
-Back out through the southeast doorway with equipment stowed for clearance;
-choose the forward route once clear of the gate. Lower
-the conditioner while creeping, start both conveyors and use about 0.35 mm nominal
-blade setting as an initial calibration. Open wash, allow roughly ten seconds
-for prime, then start pickup. Flood flow should suit speed; close it before long
-stops. The manual valves are not an automatic speed-compensated water system.
+The 1.956 m blade is narrower than the 2.100 m towel plus finite water fringe.
+A continuous wet seam may legitimately remain uncut. Actual water earns water
+coverage; it never receives invented cutting credit. No scoring thresholds
+were weakened to remove real misses.
 
-Use the outside tire edge against the previous visible wet boundary as an
-alignment cue, then check Q/C and the survey for the actual strip. The blade
-remains 1.956 m, towel 2.100 m, body 2.130 m, wheel track 1.370 m and tire width
-0.215 m (526 LT215/85R16 nominal section). The finite water fringe uses the same
-water volume and cannot cross
-boards. F2 distinguishes unreachable shaving rim from water and surface finish.
+Stopped flooding now retains and redistributes actual liters. Full flow for
+5 / 15 / 30 seconds releases 9 / 27 / 54 L; tested wet areas grow to
+2.13 / 4.335 / 7.16 m2. Boards retain liquid; no visual water is added.
+Primed pickup can recover still-liquid excess into available wash capacity.
+Gross lateral-transfer liters count repeated cell crossings, not new water.
 
-Pickup can progressively remove still-liquid excess through its actual squeegee
-strip if the pump is primed, functioning and the wash reservoir has space. It
-cannot remove frozen water or instantly erase a bad patch. Repeat passes may
-help. Dry pump operation causes wear; a new session currently restores pump
-condition. Water filling does not repair machinery wear.
+The physical 420-second freeze constant remains. Fresh liquid, settling film
+and mostly frozen polished ice have different optical responses driven by
+actual phase quantities. No separate cosmetic timer exists. Untreated ice
+retains grooves of differing depths. Scene-specific ambient RGB 214/228/245
+brightens the arena; previous lighting is restored when the experiment unloads.
 
-Above the normal .35 nominal setting, actual blade bite increases progressively
-to .600 mm at the .80 maximum; .35 still removes .056 mm. This extreme is an
-operator-review calibration, not a manufacturer cut-depth specification. The
-3.54 m3 tank and 3.1 snow expansion are unchanged. Repeated deep cuts produce
-more snow, load and cumulative unevenness; there is no routine paint penalty.
+Snow and practical operation
+With augers off, the finite trough fills and snow escapes both sides. Bounded
+clump particles show discharge; sparse 3D height meshes use the same ground
+snow as shader, survey, pickup and accounting. Deep windrows may need repeated
+passes because loose pickup is limited to 6 mm and finite conveyor throughput.
+Full tank, stopped augers, jams and raised-bin misses retain distinct causes.
+Pit/floor snow uses irregular volume-based surfaces with upward winding.
 
-Watch actual snow stock, conveyor congestion and load. Slow down/reduce bite
-before overload; shut down and clear a real jam before J. The brush cleans only
-where its deployed left-side disc reaches, moving snow toward the conditioner.
-With the horizontal auger off, the finite trough fills and snow escapes from
-both sides into recoverable windrows. Vertical-off congestion, a full tank,
-jam and raised-bin upper misses have distinct states and emission locations.
-Return under manual control, approach the pit using the visible outlet, and
-hold 7 to dump. Snow follows the outlet trajectory: off-center or angled snow
-may hit the pit, ice, or floor. Briefly lower then raise to shake out residue;
-SHIFT+7 lowers the tank. No transform or heading snaps toward the pit.
+Back out with S, then choose the forward route. Lower while creeping, engage
+both augers, and start near .35 mm nominal blade setting. Open wash, prime for
+about ten seconds, then enable pickup. Set manual flood flow to speed/overlap
+and close it before long stops. Follow the previous wet edge with the outside
+tire and check Q/C/survey. F5 shows one reference rear-axle route: departure,
+perimeter, overlapping passes, turnarounds and return. Its 1.60 m pass spacing
+and 4.60 m arcs are advisory; deviation has no penalty or restriction.
 
-Free Simulation allows finishing anywhere; the result reflects the remaining
-surface and equipment state. A safe return and proper disposal earn handling
-credit. No particular driving route is required. Guided Training adds labeled
-safe-operation checks before dumping, service and finishing.
+Normal .35 mm setting retains .056 mm calibrated bite. Deeper settings
+progressively reach .600 mm at the .80 maximum. This is Aurora calibration,
+not manufacturer screw-travel conversion. Repeated deep cuts make more snow,
+load and unevenness; no routine paint-damage model was added.
+Return and dump manually toward the grate. Actual outlet trajectory determines
+where snow lands. Brief lower/raise movements release residue; Right Shift+7
+lowers fully. Board/wall audio follows normal contact velocity and distinguishes
+rolling/rubbing from body impacts, with cooldowns to avoid repeated audio spam.
 
-Scores and diagnostics
-The result separates combined treatment coverage (40 points), whole-sheet
-surface quality (30), water distribution (10), avoiding excessive water (10),
-water-use efficiency (5), and tank disposal / safe return (5). Recorded misuse
-deducts 1.2 per fault, capped at 30, with per-fault cooldowns. Missed patches are
-reported separately. Practice retains mechanics but displays no scored result.
-95% combined treatment of reachable ice marks a complete sheet.
+Water service
+F steps off; the machine keeps its equipment settings and can coast. On foot,
+mouse look is free, WASD walks and E/click operates the aimed fixture.
+Walk around the rear to the right-side wall hose. Take the nozzle, couple blue
+FLOOD WATER or teal WASH WATER, then operate supply. Close supply, uncouple,
+return the nozzle and F to board. Each tank is finite. ESC > REFILL PRACTICE
+starts a new session with partly empty tanks. Hose reach is 11 m with explicit
+reach/obstruction feedback. Free Simulation allows pressurized uncoupling and
+attached-hose departure; exceeding reach breaks the fictional recovery coupling
+and spills water. Floor water drains through the actual drain/grate with accounting.
 
-The configurable 15.24 cm perimeter exclusion applies to shaving/combined
-coverage only. Water distribution and finish still measure the whole sheet;
-the excluded rim is not automatically credited. F2 shows the mask and actual
-cut/wash/flood cells. The deterministic tire-alignment test measures zero dry or
-unscored gaps at 1.9425 m between pass centers. A wider 2.05 m spacing reproduces
-a wet-looking but uncut seam: water extends farther than the physical blade.
-The current 5 cm grid contains
-520 x 1200 real samples, with fractional water at footprint edges and smooth
-surface reconstruction. Its strong wet raster is 2.30 m; the GPU-visible wet
-response spans 2.367 m in the measured view, covering the actual 2.10 m towel.
-The thin fringe uses the same finite water supply. Turning alignment and
-boundary recognition still need operator playtesting. Normal survey colors now
-explain uncut, cut/dry, wet/uncut, loose snow, excess water and resurfaced cells.
-Hover the survey for an exact 16 x 16 cell enlargement and measured treatment
-deficits. The overview can omit or exaggerate subpixel slivers; the inspector
-shows actual cells. No gap filling or relaxed coverage requirements are applied.
+Scores and Machine Load
+Scores measure combined treatment, finish, water distribution, overwater,
+efficiency and handling. 95% reachable treatment marks a complete sheet; no
+route is mandatory. The 15.24 cm perimeter exclusion applies only to shaving /
+combined coverage; water and finish measure the whole rink.
+Machine Load estimates 13% idle plus cutting, augers, snow and congestion.
+At 100% load its acceleration multiplier is 65%; it also changes synthesized
+sound. It is not horsepower or fuel use and does not impose a travel lock or
+change configured top speed. Click its meter or use F3 for the breakdown.
 
-New ice starts dull and scored by skate grooves of differing physical depths.
-Shallow cutting can leave deeper grooves; deeper or repeated cuts remove more
-ice and produce more snow. Wet film gradually settles: with the configurable
-420-second freeze constant, about half remains liquid after five minutes and
-about 6% after twenty. Fresh, dry-shaved and settled ice keep distinct finishes.
-See Documentation/VisualIceRefinement.txt for calibration and measured examples.
+Validation and limits
+Documentation/CockpitRefinement.txt records the latest cockpit changes and checks.
+Validation~/Cockpit-comparisons.html pairs actual before/after Unity captures.
+Documentation/OperatorErgonomics.txt records the preceding integrated validation,
+captures and measured performance. MachineryErgonomics.txt, SurfaceConsistency.txt
+and MotionContacts.txt explain individual changes. OperatorAuthenticity.txt and
+older reports retain historical measurements and superseded layouts/bindings.
+Validation~/OperatorErgonomicsBefore preserves the starting evidence.
 
-Estimated Machine Load is combined cutting, conveyor stock, running augers and
-congestion demand. Click its meter or open F3 for the explanation and breakdown.
-The model starts at 13% idle demand; each running auger adds 8%/9%, and blade
-speed/depth, snow in the conveyors and congestion add the rest. At 100% load,
-the load multiplier allows 65% of normal acceleration (snow mass and tire grip
-apply separately). It changes drive/engine sound, and above 100% warns of
-overload. It does not change the configured top speed or impose a drive lock.
-Jams follow actual accumulated snow and conveyor capacity. This is an estimated
-mechanical-demand indicator, not measured engine horsepower or fuel consumption.
-F3 also draws accepted/rejected footprints, visible/collision pit boundaries,
-contact point and normal. It names the rejected pose and actual movement reason,
-raw input, accepted demand, traction, focus and
-cursor state. Free Simulation has no raised-tank or attached-hose travel lock.
-F4 updates text four times per second; F3 adds CPU work, GPU timing when available,
-GC allocation and draw-call diagnostics. Whole-frame before/after measurements
-and their environment are in Documentation/OperatorAuthenticity.txt; a core timing alone
-is not an FPS claim.
+Run core checks:
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release -p:UseSharedCompilation=false
+StageUnityValidation.ps1 prepares a separate disposable Unity project. The user
+Editor, other experiments, settings and packages are preserved. No Git branch,
+commit or push is part of this work.
 
-Evidence and limits
-Documentation/OperatorAuthenticity.txt records this pass and validation status.
-Documentation/SnowCalibration.txt records the 18 full-sheet machinery experiments.
-Documentation/OperatorCamera.txt and PitServiceCollision.txt cover detailed changes.
-Documentation/SurfaceServiceRefinement.txt preserves the preceding completed baseline.
-Documentation/VisualIceRefinement.txt explains resolution, wear and settling.
-OperatorFreedom.txt and IceCalibration.txt retain the preceding measurements.
-The updated aggregate core harness passes all 35 scenario groups, including
-pit/raised-tank contact and finite floor drainage. The final integrated Unity run
-passes every suite with zero managed errors, including exact held-camera return,
-actual wheel sightlines, 40 physical-control checks and visible finite puddles.
-Final native HUD runs pass at 1366x768 and 1920x1080 with no measured text
-clipping or managed errors. Both 14-workload rendered performance runs,
-29,999-interval sustained samples and prior-duration repeats are complete.
-Matched active mean/p95 is 3.609/5.982 ms at 1366 and 3.352/5.780 ms at 1920;
-sustained means are 4.402/5.062 ms. Some workloads regress; the slower 1920
-whole-wet trace is preserved. See OperatorAuthenticity.txt for all data and limits.
-Consult OperatorAuthenticity.txt and generated Results.txt for final status.
-Runtime and performance validation are separate measurements.
-Validation~/ contains deterministic reports, actual Unity captures, native HUD
-checks at 1366x768 / 1920x1080, and performance reports. Consult the final report
-files for executed outcomes; historical 25-27 October documents retain earlier
-measurements and intentionally superseded controls/layout restrictions.
-
-The earlier control-station and tall seated-view photographs guide the inboard
-station, tapered body and sightlines. The supplied annotated 526 station photo
-confirms the physical hydraulic order and relative water-valve/blade-wheel layout.
-The Aurora is an original fictional machine, not a traced or
-manufacturer-certified Model 546 replica. Camera-results.txt measures 4.175 m
-aligned assembly length including fittings, compared with the published 4.04 m
-manufacturer envelope. Accurate blade and track do not imply an exact CAD replica.
-
-Driving remains a deterministic kinematic model with restrained traction slip,
-not a tire/Rigidbody solver. The configurable forward maximum is 2.65 m/s
-(9.54 km/h); hydrostatic response, grip and load are calibration choices. Ice
-freezing is time-based, water spread is finite redistribution, snow is stored
-volume, and hose routing is geometric. There is no rollover, personal-injury,
-thermal-slab, granular-snow or full fluid simulation. Audio is synthesized.
-Human operator feel, wet-edge recognition in turns, hose comfort, inspection cameras,
-body proportions and audio balance remain important manual checks.
-
-The current control-driven route reverses out from nose-in parking, works the
-sheet, then returns forward and dumps without a pose reset: 96.67% reachable
-coverage, 95.14% whole-ice coverage, 97.04% water coverage, 77.3% finish and
-88.8 points. It uses 677 L over 1,787 simulated seconds, deposits 0.724 m3 into
-the pit and records zero misuse. See Validation~/Results.txt; the standalone
-Southeast-full-run.txt is refreshed with the final integrated evidence set.
-These results supersede the earlier 28 October route's 97.05% reachable /
-95.16% whole-ice coverage, 82.2% finish and 90.4 points; changed calibration and
-driven route mean this is not an isolated comparison of the service layout.
-
-Validation and ownership
-Run the dependency-free .NET checks:
-  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj -p:UseSharedCompilation=false
-For Unity validation while this project is open, StageUnityValidation.ps1 creates
-an isolated project under Validation~/UnityProject. See Validation~/README.txt.
-All source, materials, launch assets, docs and evidence remain in this experiment.
-Unrelated games, project settings, packages and build-scene lists are preserved.
-No branch, commit or push is part of this work.
+This is kinematic machinery with bounded water redistribution and bulk-snow
+reconstruction, not manufacturer CAD, tire physics, thermal slab modeling or
+full fluid/granular dynamics. Particle clumps have no individual collision.
+Human operator review remains valuable for reach, cutting calibration, snow
+intensity, drying contrast and sound balance.

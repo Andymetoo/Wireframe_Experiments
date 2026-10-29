@@ -1,0 +1,81 @@
+PASS configuration rejects nonfinite physics values
+PASS fixed-step deterministic across render cadence
+PASS hydrostatic coast and service braking
+PASS reversal brakes through zero
+  rejected dump recovery: throttle=1, brake=False, tank=0, target=0, speed=0.45816, message=Training assistance: raise over the pit while stopped, controls neutral, equipment stowed and hose clear. Free Simulation removes this assistance.
+PASS rejected dump command cannot latch forward drive off on ice
+  24 accumulated machinery interactions resumed through normal throttle at centre and 85 mm board-margin fixtures.
+PASS repeated machinery stop/interact/resume at centre and boards
+PASS spring-centred hydraulics hold position and preserve tank interlocks
+PASS visible contact inhibit recovers by reversing clear
+PASS board collision contains machine
+PASS conditioner follows inside turn
+PASS only actual trailing footprint is processed
+  physical blade=1.956m, water=2.100m; rasterized cut=2.00–2.00m at 0.05m cells
+PASS 77-inch working width matches cut and wet cell extents
+PASS turning cut and water remain inside the articulated footprint
+PASS footprint conserves water and collected snow material
+PASS conditioner lift removes blade contact
+PASS separate augers, overflow, load and finite tank
+PASS manual snow breaker conserves material and respects interlocks
+PASS wash valve gravity feed and pickup priming
+PASS stationary flood pooling and finite water
+PASS left brush cleans board contact
+PASS exit and tank interlocks prevent instant finish
+PASS continuous controls and practice report
+  20-yard lane setting=0.35mm: before=0.047101 after=0.013751m3 ratio=0.292 fill=0.388%
+  20-yard lane setting=0.8mm: before=0.098188 after=0.075481m3 ratio=0.769 fill=2.132%
+PASS measured 20-yard snow calibration and excessive bite
+PASS full tank spills persist, conserve snow, jam and can be recovered
+PASS dump transfers snow progressively with operating interlocks
+  glancing board pass: travel=8.88m retained speed=1.11m/s roller=0.47m
+PASS guide roller preserves shallow tangential travel without penetration
+  close-board physical margin=85mm; rasterized wet edge=0mm
+PASS close board water edge uses physical distribution width
+  dump site=0 heading=0.38 discharged=0.05480m3 pit=0.00000 ice=0.05480 ground=0.00000
+  dump site=1 heading=2.53 discharged=0.05480m3 pit=0.05480 ice=0.00000 ground=0.00000
+  dump site=2 heading=0.01 discharged=0.05480m3 pit=0.00000 ice=0.00000 ground=0.05480
+  traction peak=9.6% maximum lateral drift=0.22m/s; 2m/s coast=3.97m brake=1.38m
+  diagonal gate=10.510,-27.510; reverse departure and forward return under drive controls PASS
+  unconventional driven session: coverage=1.44%, score=6.5, misuse=9, floor water=0.79L, dumped ontoice=0.00822m3; completed without reset
+  Free Simulation, training isolation, moving dismount, arbitrary dumps, material balance, traction and southeast geometry PASS
+PASS Free Simulation consequences, geometry, traction and guided separation
+PASS service freedom: moving unsafe exits, persistent machinery, free hose departure, physical breakaway, forgiving return, dropped-nozzle recovery, volume balance, and explicit training-only gates
+PASS southeast hose freedom, breakaway and recovery
+  aging 1min: liquid/wet fraction=86.69%, freeze time constant=420s
+  aging 5min: liquid/wet fraction=48.95%, freeze time constant=420s
+  aging 15min: liquid/wet fraction=11.73%, freeze time constant=420s
+  aging 20min: liquid/wet fraction=5.74%, freeze time constant=420s
+  fractional stamp: 1 partial longitudinal boundary rows; deposited 0.007200L equals emitted supply
+  wear: seeded groove depth=0.037..0.145mm; shallow/deep remaining mean=0.0251/0.0002mm across 11440 cut cells
+  overlap: tire exterior=0.793m; blade edges=-1.000..1.000m; strong wet band=2.300m; all-liquid band=2.400m; second center=1.942m; measured-boundary nominal towel overlap=0.157m; ideal continuous towel-edge alignment overlap=0.257m; dry/scored cell gaps=0/0; coverage=3.61%
+  perimeter: physical wet gap=0.000m; shavable=589736/599224 cells; excluded=9488; no non-ice cells wetted
+  pickup: 3.900L recovered in 5s; ice loss and wash gain agree; overwater summed depth 8109.14 -> 6622.36mm
+  portal pickup: 0.0001001L within 0.0001001L tank room; runoff remains conserved
+  incremental report: independent full-scan counts/totals match; 0.0094ms per changed report, 0 managed bytes
+  core 5000 active ticks: 0.0458ms/tick, 0 managed bytes (CPU only; no Unity/render/UI)
+  Ice calibration PASS: tire-aligned contiguous passes, physical fringe, shaving mask, real liquid pickup, frozen balance, brush contact
+PASS tire overlap, liquid recovery, perimeter mask and finite spread
+  blade calibration: .15/.35/.80 settings -> .024/.056/.600 mm actual; normal 1 m/s load=.349; maximum load=1.4837; 3.5 turns and 3.54 m3 capacity preserved.
+  side escape/recovery: escaped=0.043669 m3; left/right persistent bands=0.023739/0.023738 m3; actual recovered surface=0.058315 m3; mass residual=0.00000016 m3.
+  failure states: horizontal OFF retains trough then both sides; vertical OFF fills throat then both sides; full tank rejects upper chute then jams; jam stops upper transport; raised bin misses upper chute without a jam.
+  Snow calibration PASS: normal/deep blade mapping, finite two-sided overflow, recovered stock, distinct failures, board retention and source accounting.
+PASS snow production, side escape and recoverable deposits
+  minimap seam: 80 truly wet/uncut cells versus 0 with tire-aligned overlap; original treatment thresholds retained
+PASS truthful minimap states and measured wet-but-uncut slivers
+Service collision and room validation
+approach=0deg, center side/out=-0.0000/8.2865, sampled body-to-visible-pit gap=0.0135m, contact=True, speed=0.0000, contact normal=-0.707/0.707
+approach=-15deg, center side/out=0.4808/8.0960, sampled body-to-visible-pit gap=0.0136m, contact=True, speed=0.0000, contact normal=-0.707/0.707
+approach=15deg, center side/out=-0.4817/8.0963, sampled body-to-visible-pit gap=0.0133m, contact=True, speed=0.0000, contact normal=-0.707/0.707
+approach=-30deg, center side/out=1.0329/8.0902, sampled body-to-visible-pit gap=0.0122m, contact=True, speed=0.0000, contact normal=-0.707/0.707
+approach=30deg, center side/out=-1.0338/8.0906, sampled body-to-visible-pit gap=0.0119m, contact=True, speed=0.0000, contact normal=-0.707/0.707
+approach=90deg, center side/out=4.5104/11.5000, sampled body-to-visible-pit gap=0.0104m, contact=True, speed=0.0000, contact normal=0.707/0.707
+75 degree glancing contact: physical slide, zero automatic heading change
+floor water: input=20.0000L, remaining=0.4716L, drained=19.5284L, wet cells=21
+tank contacts: lift stopped=0.4473, actual surface contact height=0.6031m; reverse/continued lift/pit overhang passed
+PASS visible pit contact, reverse recovery and finite floor drainage
+  southeast full run: coverage=96.67%, wholeice combinedcoverage=95.14%, watercoverage=97.04%, finish=77.3%, score=88.8, water=677.0L, pit=0.724m3, time=1787s, mistakes=0, properexit=True, return=16.20,-33.20
+PASS complete scored southeast route, return and angled unload
+PASS water service: separate capacities, hose lifecycle, safety, reach, partial flow, overflow and material balance
+PASS water service state, capacities, conservation and recovery
+PASS: 35 deterministic simulation scenarios.

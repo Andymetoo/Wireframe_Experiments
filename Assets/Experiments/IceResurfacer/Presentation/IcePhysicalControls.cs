@@ -19,13 +19,55 @@ namespace IceResurfacer.Presentation
         Vector2 startPointer, pullAxis;
         float lastAngle;
         bool angleValid;
+        readonly Renderer[][] highlightRenderers=new Renderer[9][];
+        readonly MaterialPropertyBlock[][] savedBlocks=new MaterialPropertyBlock[9][];
+        readonly MaterialPropertyBlock tintBlock=new MaterialPropertyBlock();
+        static readonly int BaseColor=Shader.PropertyToID("_BaseColor");
+        Control highlighted;
+        bool highlightedDrag;
         public string Hint { get; private set; } = "";
         public string ActiveControl { get { return Name(active); } }
+        public string HighlightedControl { get { return Name(highlighted); } }
         public bool IsDragging { get { return active!=Control.None; } }
         public string GetHitControl(Vector2 screenPosition)
         { return Name(Pick(game.DriverCamera.ScreenPointToRay(screenPosition))); }
 
-        public IcePhysicalControls(IceResurfacerGame owner) { game=owner;world=owner.World; }
+        public IcePhysicalControls(IceResurfacerGame owner)
+        {
+            game=owner;world=owner.World;
+            for(int i=1;i<=8;i++)
+            {
+                // Runtime batches are confined to each moving part. Fixed plates,
+                // neighbors and disabled source meshes never join its highlight.
+                highlightRenderers[i]=System.Array.FindAll(TransformFor((Control)i).GetComponentsInChildren<Renderer>(),r=>r.enabled);
+                savedBlocks[i]=new MaterialPropertyBlock[highlightRenderers[i].Length];
+                for(int j=0;j<savedBlocks[i].Length;j++)savedBlocks[i][j]=new MaterialPropertyBlock();
+            }
+        }
+
+        void Highlight(Control control,bool dragging)
+        {
+            if(highlighted==control&&highlightedDrag==dragging)return;
+            if(highlighted!=Control.None)
+            {
+                var renderers=highlightRenderers[(int)highlighted];var blocks=savedBlocks[(int)highlighted];
+                for(int i=0;i<renderers.Length;i++)renderers[i].SetPropertyBlock(blocks[i].isEmpty?null:blocks[i]);
+            }
+            highlighted=control;highlightedDrag=dragging;
+            if(control==Control.None)return;
+            var selected=highlightRenderers[(int)control];var saved=savedBlocks[(int)control];
+            for(int i=0;i<selected.Length;i++)
+            {
+                var renderer=selected[i];var material=renderer.sharedMaterial;
+                renderer.GetPropertyBlock(saved[i]);renderer.GetPropertyBlock(tintBlock);
+                if(material!=null&&material.HasProperty(BaseColor))
+                {
+                    Color original=saved[i].HasColor(BaseColor)?saved[i].GetColor(BaseColor):material.GetColor(BaseColor);
+                    Color tint=Color.Lerp(original,new Color(1f,.72f,.30f,original.a),dragging?.42f:.25f);
+                    tintBlock.SetColor(BaseColor,tint);renderer.SetPropertyBlock(tintBlock);
+                }
+            }
+        }
 
         public void Release()
         {
@@ -35,6 +77,7 @@ namespace IceResurfacer.Presentation
                 if(active==Control.Dump)game.Sim.Controls.TankHydraulic=0;
             }
             active=Control.None;hover=Control.None;ownerMouse=null;angleValid=false;Hint="";
+            Highlight(Control.None,false);
         }
 
         public void UpdateInput(bool enabled,bool pointerOverHud)
@@ -49,11 +92,13 @@ namespace IceResurfacer.Presentation
             {
                 hover=pointerOverHud?Control.None:Pick(ray);
                 Hint=Guidance(hover);
+                Highlight(hover,false);
                 if(hover==Control.None)return;
                 if(hover==Control.Blade&&Mathf.Abs(mouse.scroll.ReadValue().y)>.1f)
                     ChangeBlade(mouse.scroll.ReadValue().y/120f*.025f);
                 if(!mouse.leftButton.wasPressedThisFrame)return;
                 active=hover;ownerMouse=mouse;startPointer=pointer;
+                Highlight(active,true);
                 Transform control=TransformFor(active);
                 Vector3 pivot=control.position;
                 Vector3 a=game.DriverCamera.WorldToScreenPoint(pivot);
@@ -114,7 +159,8 @@ namespace IceResurfacer.Presentation
             // would feed its previous rotation back into the commanded setting.
             Transform frame=t.parent;
             Vector3 center=t.position;
-            var plane=new Plane(frame.up,center+frame.up*.064f);
+            float height=control==Control.Blade?.064f:game.Sim.Config.WaterValveStemHeight;
+            var plane=new Plane(frame.up,center+frame.up*height);
             angle=0;
             if(!plane.Raycast(ray,out float distance)||distance>2.5f)return false;
             Vector3 p=frame.InverseTransformDirection(ray.GetPoint(distance)-center);
@@ -129,15 +175,35 @@ namespace IceResurfacer.Presentation
             for(int i=1;i<=(int)Control.Breaker;i++)
             {
                 var kind=(Control)i;Transform t=TransformFor(kind);
+                Ray local=new Ray(t.InverseTransformPoint(ray.origin),t.InverseTransformDirection(ray.direction));
+                if(kind==Control.Conditioner||kind==Control.Horizontal||kind==Control.Vertical||kind==Control.Dump)
+                {
+                    // A broad rectangular hit region on a transverse bank can
+                    // steal the ray aimed at the next, slightly farther knob.
+                    // Pick the actual round grip with 5 mm of usable tolerance.
+                    Vector3 to=local.origin-new Vector3(0,.225f,0);
+                    float b=Vector3.Dot(to,local.direction),c=to.sqrMagnitude-.040f*.040f;
+                    float determinant=b*b-c;
+                    if(determinant>=0)
+                    {
+                        float gripDistance=-b-Mathf.Sqrt(determinant);
+                        if(gripDistance>=0&&gripDistance<nearest){nearest=gripDistance;best=kind;}
+                    }
+                    continue;
+                }
                 Vector3 center;Vector3 size;
                 if(kind==Control.Flood||kind==Control.Wash)
-                { center=new Vector3(-.055f,.064f,0);size=new Vector3(.16f,.085f,.085f); }
+                {
+                    // The grip spans -.115 to -.055 m. A box spanning the whole
+                    // elbow also catches empty space above a nearer tall valve.
+                    center=new Vector3(-.085f,game.Sim.Config.WaterValveStemHeight,0);
+                    size=new Vector3(.10f,.044f,.044f);
+                }
                 else if(kind==Control.Blade)
                 { center=new Vector3(0,.02f,0);size=new Vector3(.31f,.13f,.31f); }
                 else if(kind==Control.Breaker)
                 { center=new Vector3(0,.22f,0);size=new Vector3(.26f,.095f,.095f); }
                 else { center=new Vector3(0,.20f,0);size=new Vector3(.10f,.14f,.10f); }
-                Ray local=new Ray(t.InverseTransformPoint(ray.origin),t.InverseTransformDirection(ray.direction));
                 if(new Bounds(center,size).IntersectRay(local,out float distance)&&distance<nearest)
                 { nearest=distance;best=kind; }
             }
@@ -167,7 +233,7 @@ namespace IceResurfacer.Presentation
                 case Control.Horizontal:return "Horizontal auger lever";
                 case Control.Vertical:return "Vertical auger lever";
                 case Control.Dump:return "Snow tank hydraulic lever";
-                case Control.Flood:return "Ice-making water valve";
+                case Control.Flood:return "Flood water valve";
                 case Control.Wash:return "Wash water valve";
                 case Control.Blade:return "Blade handwheel";
                 case Control.Breaker:return "Snow-breaker plunger";
@@ -203,7 +269,7 @@ namespace IceResurfacer.Presentation
             {
                 float side=i==0?-1:1;
                 Cylinder(world.TankCylinderBarrels[i],world.TankCylinderRods[i],
-                    world.Machine.TransformPoint(side*.69f,.55f,.72f),world.TankPivot.TransformPoint(side*.69f,.40f,-.74f),.095f,.043f,.64f);
+                    world.Machine.TransformPoint(side*.69f,.55f,.72f),world.TankPivot.TransformPoint(game.Sim.Config.TankLateralOffset+side*.69f,game.Sim.Config.TankGeometryY(.40f),-.74f),.095f,.043f,.64f);
                 Cylinder(world.ConditionerCylinderBarrels[i],world.ConditionerCylinderRods[i],
                     world.Machine.TransformPoint(side*.55f,.76f,-.57f),world.Conditioner.TransformPoint(side*.55f,.43f,.30f),.074f,.035f,.42f);
             }

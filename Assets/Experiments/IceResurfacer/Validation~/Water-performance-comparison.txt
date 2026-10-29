@@ -1,0 +1,31 @@
+Water redistribution performance verification
+
+Core-only .NET 9.0.14 reproduction of the native long_session workload: 30,090
+steps at 0.02 s, 29,999 measured after warmup. This performance fixture resets
+the vehicle to the lane start; it is separate from the physically driven full
+route validation. No Unity/render/UI work is measured here.
+
+Before -> after:
+  Mean measured step:       1.948062 -> 1.086348 ms (44.2% lower)
+  Last 5,000-step window:   2.696677 -> 1.673518 ms (37.9% lower)
+  Peak active liquid cells: 62,936, unchanged
+  Mean sampled cells/step:  5,683.506, unchanged
+  Retained water:           504.609897434 L, unchanged
+  Redistribution ledger:   2845.553037695 L, unchanged (includes repeated flow)
+
+PASS: six intermediate and final SHA-256 hashes match bit-for-bit over all
+cells' scratch, snow, cut, wash, flood, quality, excess, wet timestamp, gouge,
+liquid, frozen water, frozen excess, liquid timestamp, and coverage state.
+Active counts and every reported water counter also match exactly.
+
+Only Core/IceWaterSpread.cs changed: resolve each cell's exact liquid depth once
+per spread step; reuse the identical exponential for cells resolved at the
+previous spread timestamp; apply by reference and avoid redundant integer
+row divisions. Exact exponential physics, thresholds, traversal/application
+order, 32,768-cell budget, 0.10 s cadence, scoring and conservation are preserved.
+Two lazily allocated arrays add approximately 5 MB at the default grid.
+There are no new per-step allocations. The probe's diagnostic allocation count includes
+its own state-hashing strings and is not a native runtime allocation measure.
+
+The paired raw outputs and probe source are in this directory. Native frame
+performance must be measured separately after all presentation changes.

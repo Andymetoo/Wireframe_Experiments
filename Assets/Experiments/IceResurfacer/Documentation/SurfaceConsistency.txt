@@ -1,0 +1,231 @@
+AURORA R-54 / SURFACE CONSISTENCY / 29 October 2026
+
+Scope
+This pass preserves the 5 cm ice grid, material sources, independent controls,
+simulated loose-snow capacities, blade calibration and strict treatment/scoring thresholds.
+The changes connect the operator overview, liquid optics, deposited snow and
+physical material transfers more directly to those quantities.
+
+Survey diagnosis and representation
+The old normal map point-sampled 520 x 1200 categorical cells into a small HUD.
+Initial snow is .12-.26 mm, with an additional .17 mm in sensitive goal areas.
+The strict .25 mm loose-snow threshold therefore marked 69,995 cells white in
+the deterministic seed 314 fixture. Random ordinary dust produced static and
+the sensitive-region mask produced two hard white circles. These are real
+initial quantities; they have not been deleted or reduced for appearance.
+
+The normal overview is now a separate 130 x 300 texture. Each 20 cm pixel sums
+the physical areas of sixteen 5 cm cells. Colors blend wet-and-cut, wet-but-uncut,
+cut-but-dry, untreated and excluded states. Mean snow depth above .55 mm fades
+toward white, reaching full opacity at 2 mm. The initial dust therefore produces
+zero heavy-snow blocks; concentrated deposits still show. Overwater receives a
+separate area-weighted amber overlay. This is an overview of visible treatment,
+not a claim that its colors grant full completion credit.
+
+An uninterrupted 5 cm-wide wet-but-uncut seam contributes 25% of a 20 cm pixel instead of
+being randomly selected or omitted. It stays wet/uncut; no automatic cutting
+credit is awarded. F2 and the exact-cell inspector retain the 520 x 1200 texture
+and original classifications. The existing measured 2.05 m-spaced working passes
+still identify true uncut seams under a continuous wider water band. Runtime
+validation reads the actual GPU wet-response image at the same physical cells,
+checks the area-weighted colors and verifies the water-score count. A physically
+wet seam receives water coverage, while cutting remains separately deficient.
+In the completed Unity surface suite, the GPU-visible wet response spans 2.289 m
+at the measured 60% display-intensity threshold. The physical towel is 2.100 m;
+the strong-water raster spans 2.300 m and all retained-water cells span 2.400 m.
+These measure different quantities and do not imply a wider 1.956 m shaving blade.
+Tire-aligned adjacent passes have zero dry or unscored interior cells. At 2.05 m
+pass spacing, 80 truly uncut interior cells remain wet; GPU samples and scored
+water coverage agree on their water treatment. The small HUD still cannot give
+every 5 cm gap a whole screen pixel; exact hover inspection remains available.
+
+Stationary flood and conservation
+Previously stationary liters accumulated at the outlet but could not migrate
+between ice cells, and the clipped wetness channel hid depth differences. A
+conservative 10 Hz height-field pass now moves excess liquid to four neighboring
+ice cells. It processes at most 32,768 active cells per update. Films at or below
+.85 mm do not spread, preserving ordinary towel application. Each source can
+transfer at most 80% of its above-threshold liquid in one update; buffered deltas
+avoid directional traversal bias. Boards retain water. Frozen water does not
+move. No new visual water source exists.
+
+Each transfer resolves physical freezing, subtracts source liquid and total
+retained water, adds the same quantities to recipients, updates overwater and
+quality, then dirties the actual textures and report caches. Frozen defects stay.
+The existing finite squeegee/pump can recover still-liquid excess into available
+wash-tank capacity. Gross lateral-transfer liters may exceed released liters:
+the same water can cross several cell edges. It is a transfer meter, not a sink.
+
+Executed focused core fixture, stationary full flood at an interior point:
+Duration  Released L  Retained L  Liquid L  Frozen L  Wet area m2  Peak mm
+5s        9.0000      9.0000      8.9469    .0532     2.130        9.811
+15s       26.9998     27.0002     26.5243   .4759     4.335       19.774
+30s       53.9993     54.0006     52.1183  1.8823     7.160       29.294
+Wet area is actual retained depth > .08 mm. Maximum mass difference is .0013 L.
+Gross lateral transfers are 12.456/90.235/297.622 L respectively. The 30 s fixture
+then recovers 7.7476 L through the primed physical squeegee in 8 s of reverse travel.
+A separate board-adjacent 20 L deposit retains all water within actual ice cells.
+These are deterministic apparatus measurements, not a fluid-dynamics claim.
+
+Actual depth is supplied to the shader through a separate texture. Above-film
+pooling progressively darkens the patch, strengthens highlights and introduces
+small surface variation. The spatial texture changes only where supplied liquid
+exists. Actual Unity captures at 0/5/15/30 s and their mass/area assertions passed.
+The final surface suite measures a 41.21/255 mean RGB darkening over the physical
+outlet patch after 30 s, versus the dry baseline. The 5 s and 30 s screenshots
+differ at 136,037 pixels by more than six combined RGB levels. Visual review
+confirms a conspicuous glossy pool, rather than only a changed numeric counter.
+The optical depth texture saturates at 16 mm; pooling optics already saturate
+at 8 mm. Physical liquid depth, stock, freezing and pickup remain unclipped.
+
+Drying and freezing
+The physical 420 s exponential freeze model was updating correctly. The previous
+optical function 1-exp2(-12*wetness) made half-depth liquid still appear almost
+fully wet. Wet optics now follow pow(actual normalized liquid,.70). At 0/5/10/
+20/30 min the same .30 mm initial film has optical wet factors 1/.6065/.3679/.1353/
+.0498. Actual liquid depths are .300/.14686/.07190/.01723/.00413 mm. The remainder
+is frozen, and total retained water is unchanged. Dry polished smoothness and
+frozen ceiling highlights are lower than fresh film, while freshly wet ice
+retains its strongest sheen. There is no independent visual drying timer.
+The existing 65,536-cell aging budget remains; dirty physical changes are immediate.
+The completed Unity comparison samples the same real strip at 0/5/10/20/30 min.
+Fresh versus 30 min mean RGB rises from 171.60 to 188.34, a 16.74/255 change, as
+dark liquid absorption recedes. Older ice remains smooth and somewhat darker
+than unprocessed ice. The retained-water balance passes through the phase change.
+The former black shape at the top of these measurement images was the camera's
+30 m far plane clipping the arena, not a new machine part. The measurement view
+now uses the driver's 180 m far plane and an explicit 16:9 projection, and frames
+the physical strip from above. Machinery is hidden only in surface measurements.
+
+Surface refresh work
+The first sustained native measurement exposed excessive presentation work as
+the real wet region grew. The subsequent presentation optimization preserves
+the same 5 cm state/process/depth textures, 20 cm area overview, material values
+and 65,536-cell aging budget. It changes invalidation and encoding work only.
+Each dirty cell calculates its current liquid phase once. If the aging cursor
+visits that same cell in the same refresh, it reuses the calculated phase/depth
+and unquantized active-or-expired decision. Expired entries still retire normally
+and visited entries still count against the aging budget. Temporary markers are
+cleared only for that refresh's dirty entries; ordinary aging adds no full-grid
+scan or clear.
+
+Each state, depth, process and exact-map texture now uploads only if one of its
+encoded pixels changed. An explicit full invalidation still refreshes every
+cell. The overview queues a pixel only when one of its constituent cells changes
+an actual cut/water/exclusion/overwater classification or its exact SnowMm.
+Queued pixels still sum the sixteen underlying physical cells. Merely moving
+water within an unchanged classification no longer repeats those summaries or
+uploads an unchanged overview. Byte encoding avoids redundant Color conversion;
+physical depths and the independent exact treatment rules are unchanged.
+
+The runtime suite now additionally checks that adding actual water over an
+existing snow deposit rebuilds zero snow chunks, that newly dirty wet entries
+reuse their calculated phase, and that 4,096 unchanged dirty cells trigger zero
+texture uploads, overview summaries or snow rebuilds. A real water-classification
+crossing must immediately update its exact area-weighted overview pixel. These
+new assertions PASS in isolated Unity run 8. Existing full-sheet aging, immediate
+removal, rendered wet extent, pooling, phase and recovery checks remain in place.
+The completed native 1366x768 sustained measurement reduces Surface.Refresh from
+4.425 to 1.574 ms/frame (64.4%); total CPU work falls from 10.719 to 5.532 ms.
+The final 1920x1080 run measures 1.577 ms/frame in Surface.Refresh. Large standing-water
+regions still cost more than the earlier feature baseline; see the performance
+summary for complete timings and the unchanged-state comparison.
+
+Snow escape and recovery
+Finite trough capacity and conveyor throughput are unchanged. Two side emitters
+now use actual small mesh clumps with randomized size/motion, gravity, and rates
+proportional to actual escape. Each has a fixed 720-particle pool; the other three
+snow pools remain 360. Multiple clumps visualize the same transferred stock and
+never increase mass. Emission stops with the real escape rate.
+
+Deposited ice snow is reconstructed into sparse 2 m chunks with 10 cm mesh sampling.
+Only actual accumulations above 1 mm create meshes; initial dust remains in the
+ice shader. Each chunk has 441 reused vertices and 800 possible triangles. Exact
+changes in a cell's cached SnowMm update its chunk and neighboring seam vertices;
+water-only changes do not rescan or rebuild snow geometry. There is no object
+per cell. Heights average actual 5 cm snow depth, without a visual height multiplier.
+At the standard 60 x 26 m rink size the chunk array is bounded to 390 entries;
+mesh objects are allocated only for actual accumulations.
+The existing pickup paths remove that exact SnowMm, so shader streaks, overview,
+chunk height and tank/conveyor stock update from the same transfer. Repeated
+pickup is still limited by 6 mm loose-snow collection per pass and available
+conveyor throughput; a deep drift need not vanish on a single pass.
+The completed runtime fixture produces 0.080254 m3 of actual side escape. Return
+passes with the blade retracted remove 0.099302 m3 from the surface, including
+incidental original loose snow. Tank stock rises, side emissions stop, and the
+same snow-height meshes decrease. This is not a claim that recovered stock can
+exceed its sources: the recovery includes both the escaped snow and pre-existing
+surface snow. Core conservation and empty-revisit tests independently guard
+against double collection.
+
+Pit snow now has a broad, irregular rounded surface with upward winding and an
+integrated volume-normalized profile. Floor deposits replace repeated pyramids
+with one continuous half-metre height mesh, bilinear neighboring bulk density,
+small spatial irregularity and triangle-integral normalization to stored volume.
+The floor snow mesh rebuilds only when snow stock changes, not on water-only floor updates.
+The now-traversable unloading grate also permits walking; the old foot-only pit
+edge rejection has been removed. Material still enters the receiver through it.
+The pit profile clamps its fractional-power input to zero at the edges, avoiding
+NaNs from floating-point sin(PI). Runtime checks verify finite vertices, upward
+normals and an integrated pit-mesh volume equal to actual receiver stock. A
+separate 0.350 m3 floor deposit renders a 0.350000 m3 triangle integral, 0.3307 m
+maximum height and positive normals. Floor bounds now follow growing piles.
+Old session snow roots are deactivated immediately before deferred destruction,
+so neither new sessions nor synchronous evidence captures retain stale meshes.
+
+The revised tank fill uses the authored shell's taper both along its length and
+through its shoulders. Its 1.960 m interior is centered at local Z -1.010 m; the
+lower width narrows from 1.488 m at the rear to 1.400 m at the front, reaching
+1.200 m at full surface height. A bounded 17-row volume inversion determines the
+height; every vertex's width follows its actual local height, including tilt.
+The physical envelope is 1.930747 m3. The unchanged 3.54 m3 loose-equivalent stock
+maps to it through a 1.833487 compaction ratio. This is an explicit fictional
+geometry calibration, not a manufacturer compaction rating. Surface roughness
+is a visual approximation; the deterministic stock remains the mass authority.
+
+All 12 runtime mesh-envelope combinations passed: 5%, 50%, 85% and 100% fill at
+0%, 65% and 100% tank lift. Actual transformed vertices remain inside the floor,
+closed front door, rear wall, side taper and roof. At full load the snow depth is
+0.6936 m and the inspection opening remains 0.1174 m above the surface. Progressive
+dumping, residual unloading and the empty-surface state also passed.
+
+Verified scope and evidence
+SurfaceConsistencyValidation.Run is a focused dependency-free core regression.
+Surface-consistency-results.txt contains its passing executed results. Isolated
+Unity validation run 8 passes every suite with zero runtime errors after the
+refresh-work optimization, including
+the map/GPU, pooling, phase, deposited-snow, recovery, tank-envelope, camera and
+physical-control checks. The service geometry suite also passed its floor-snow
+volume and normal checks. The late-wet fixture exercises all 599,224 ice cells;
+ordinary aging remains bounded to 65,536 cells per refresh, with maximum measured
+alpha error 1/255 after ten refreshes. Dirty removal and expired-cell retirement
+are verified independently of that aging budget.
+The new invalidation/reuse assertions and unchanged existing suites all pass
+in the same final run. Native frame timing is recorded separately.
+
+Actual Unity evidence includes:
+  Minimap-initial-overview.png / Minimap-area-overview.png
+  Minimap-wet-uncut-seam-normal.png / Minimap-seam-rendered-liquid.png
+  Ice-stationary-flood-00s.png / -05s.png / -15s.png / -30s.png
+  Ice-wet-age-00min.png / -05min.png / -10min.png / -20min.png / -30min.png
+  Snow-disabled-augers-both-sides.png
+  Snow-windrows-before-recovery.png / Snow-windrows-after-recovery.png
+  Snow-dumping.png / Snow-dumped-pit.png / Service-floor-snow.png
+The images are rendered from simulation state; none is a generated mockup.
+Recovery uses identical world framing below the roof. All 1,458 sampled
+side-band pixels lose visible snow after pickup (mean RGB reduction 24.94/255);
+image checks also reject uniform blank/roof captures. This visual evidence is
+independent of the conserved-material recovery measurement.
+
+Native HUD validation and both-resolution sustained benchmarks remain separate
+from the completed Unity suites. Their current outcomes are recorded in
+OperatorErgonomics.txt and the final aggregate reports. No native or performance
+result is claimed here, and no FPS improvement is inferred from core or
+surface-rendering tests.
+
+Limits
+The liquid solver represents excess-layer redistribution, not full hydrodynamics,
+temperature or slab slope. Conservative coarse snow meshes are a low-pass visual
+surface, not granular contact physics. Very thin dust remains flat; player and
+machine collision do not respond to each individual snow clump. Human operator
+review remains useful for snow intensity, drying contrast and stop-pool appearance.

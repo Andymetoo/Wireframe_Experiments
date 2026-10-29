@@ -17,5 +17,7 @@
     <Compile Include="SnowCalibrationValidation.cs" />
     <Compile Include="MinimapValidation.cs" />
     <Compile Include="ServiceCollisionValidation.cs" />
+    <Compile Include="RouteGuideValidation.cs" />
+    <Compile Include="SurfaceConsistencyValidation.cs" />
   </ItemGroup>
 </Project>

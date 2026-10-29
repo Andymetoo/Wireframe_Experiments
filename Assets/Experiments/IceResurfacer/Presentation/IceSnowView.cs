@@ -20,11 +20,9 @@ namespace IceResurfacer.Presentation
             public readonly MeshRenderer Renderer;
             readonly Vector3[] vertices;
             readonly float[] profile;
-            readonly float length;
             const int X=12,Z=16;
             public Surface(Transform target,IceWorld world,float width,float length,bool pile)
             {
-                this.length=length;
                 Mesh=new Mesh { name=target.name+" / reusable surface" }; Mesh.MarkDynamic();
                 world.Meshes.Add(Mesh);
                 Renderer=target.GetComponent<MeshRenderer>();
@@ -36,7 +34,9 @@ namespace IceResurfacer.Presentation
                 {
                     int i=z*(X+1)+x;float u=x/(float)X,v=z/(float)Z;
                     vertices[i]=new Vector3((u-.5f)*width,0,(v-.5f)*length);
-                    profile[i]=pile?.08f+Mathf.Sin(u*Mathf.PI)*Mathf.Sin(v*Mathf.PI):Mathf.Sin(x*1.14f+z*.37f)*.55f+Mathf.Cos(z*.83f-x*.52f)*.45f;
+                    profile[i]=pile?Mathf.Pow(Mathf.Max(0,Mathf.Sin(u*Mathf.PI)*Mathf.Sin(v*Mathf.PI)),.70f)*
+                        (1+.12f*Mathf.Sin(x*.74f+z*.51f)+.09f*Mathf.Cos(z*.92f-x*.38f)):
+                        Mathf.Sin(x*1.14f+z*.37f)*.55f+Mathf.Cos(z*.83f-x*.52f)*.45f;
                     mean+=profile[i];
                     if(x<X&&z<Z)
                     {
@@ -59,14 +59,35 @@ namespace IceResurfacer.Presentation
                 for(int i=0;i<vertices.Length;i++)vertices[i].y=pile?height*profile[i]:height+profile[i]*roughness;
                 Mesh.vertices=vertices;Mesh.RecalculateNormals();Mesh.RecalculateBounds();
             }
-            public void SetTank(float height,float roughness,float tilt)
+            public void SetTank(float physicalVolume,float fill,float tilt,SimulatorConfig config)
             {
-                Renderer.enabled=height>.00001f;
-                // Linear fore/aft weighting integrates to zero over the same triangles.
-                // Contents migrate toward the opening as the bin pitches; the mesh's
-                // integrated bulk volume remains the same Core-owned stored quantity.
+                Renderer.enabled=physicalVolume>.000001f;
+                // Integrate the filled tapered cross-section at each lengthwise
+                // row. This accounts for the narrower front and shoulders even
+                // when the tilted contents migrate towards the opening.
+                float low=0,high=config.TankSnowMaxDepth/Mathf.Max(.2f,1-.8f*tilt);
+                for(int iteration=0;iteration<20;iteration++)
+                {
+                    float level=(low+high)*.5f,volume=0;
+                    for(int z=0;z<=Z;z++)
+                    {
+                        float along=z/(float)Z;
+                        float depth=Mathf.Clamp(level*(1+(along-.5f)*1.6f*tilt),0,config.TankSnowMaxDepth);
+                        volume+=config.TankSnowSectionArea(depth,along)*(z==0||z==Z?.5f:1);
+                    }
+                    volume*=config.TankSnowInteriorLength/Z;
+                    if(volume<physicalVolume)low=level;else high=level;
+                }
+                float height=(low+high)*.5f;
+                float roughness=Mathf.Min(height*.15f,.025f)*(1-fill);
                 for(int i=0;i<vertices.Length;i++)
-                    vertices[i].y=height*(1+vertices[i].z/length*1.6f*tilt)+profile[i]*roughness;
+                {
+                    float along=(i/(X+1))/(float)Z;
+                    float depth=Mathf.Clamp(height*(1+(along-.5f)*1.6f*tilt)+profile[i]*roughness,0,config.TankSnowMaxDepth);
+                    vertices[i].x=((i%(X+1))/(float)X-.5f)*config.TankSnowWidthAt(depth,along);
+                    vertices[i].y=depth;
+                    vertices[i].z=(along-.5f)*config.TankSnowInteriorLength;
+                }
                 Mesh.vertices=vertices;Mesh.RecalculateNormals();Mesh.RecalculateBounds();
             }
         }
@@ -83,31 +104,39 @@ namespace IceResurfacer.Presentation
             trough=new Surface(troughObject.transform,world,1.80f,.50f,false);
             discharge=Pool("Snow conveyed into inspection bin",root,template,.035f,.55f);
             overflow=Pool("Congested vertical discharge spilling sideways",root,template,.06f,1.8f);
-            leftEscape=Pool("Conditioner LEFT side escape / actual snow",root,template,.045f,.6f);
-            rightEscape=Pool("Conditioner RIGHT side escape / actual snow",root,template,.045f,.6f);
+            leftEscape=Pool("Conditioner LEFT side escape / actual snow",root,template,.045f,.6f,720);
+            rightEscape=Pool("Conditioner RIGHT side escape / actual snow",root,template,.045f,.6f,720);
             dump=Pool("Snow unloading through forward door",root,template,.10f,1.5f);
             pools=new[]{discharge,overflow,leftEscape,rightEscape,dump};
         }
-        ParticleSystem Pool(string name,Transform root,Material template,float size,float lifetime)
+        ParticleSystem Pool(string name,Transform root,Material template,float size,float lifetime,int capacity=360)
         {
             var obj=new GameObject(name);obj.transform.SetParent(root,false);
             var ps=obj.AddComponent<ParticleSystem>();ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
-            var main=ps.main;main.playOnAwake=false;main.loop=true;main.maxParticles=360;
-            main.startLifetime=lifetime;main.startSize=size;main.startSpeed=0;
+            var main=ps.main;main.playOnAwake=false;main.loop=true;main.maxParticles=capacity;
+            main.startLifetime=lifetime;main.startSize=new ParticleSystem.MinMaxCurve(size*.55f,size*1.35f);main.startSpeed=0;
+            main.startRotation=new ParticleSystem.MinMaxCurve(0,Mathf.PI*2);
             main.startColor=new Color(.91f,.96f,1);main.gravityModifier=1;main.simulationSpace=ParticleSystemSimulationSpace.World;
             var shape=ps.shape;shape.enabled=false;
             var emission=ps.emission;emission.rateOverTime=0;
             var renderer=ps.GetComponent<ParticleSystemRenderer>();renderer.shadowCastingMode=ShadowCastingMode.Off;
+            var clump=GameObject.CreatePrimitive(PrimitiveType.Sphere);clump.SetActive(false);
+            renderer.renderMode=ParticleSystemRenderMode.Mesh;renderer.mesh=clump.GetComponent<MeshFilter>().sharedMesh;
+            renderer.enableGPUInstancing=true;
+            if(Application.isPlaying)Object.Destroy(clump);else Object.DestroyImmediate(clump);
             var material=new Material(template) { name=name+" / snow material" };
             material.SetColor("_BaseColor",new Color(.91f,.96f,1));world.Materials.Add(material);
             renderer.sharedMaterial=material;ps.Play();return ps;
         }
-        static void Rate(ParticleSystem ps,float rate,Vector3 position,Vector3 velocity)
+        static void Rate(ParticleSystem ps,float rate,Vector3 position,Vector3 velocity,bool side=false)
         {
             ps.transform.position=position;
-            var emission=ps.emission;emission.rateOverTime=Mathf.Clamp(rate*14000,0,330);
+            var emission=ps.emission;emission.rateOverTime=Mathf.Clamp(rate*(side?180000:22000),0,side?1100:330);
             var motion=ps.velocityOverLifetime;motion.enabled=true;motion.space=ParticleSystemSimulationSpace.World;
-            motion.x=velocity.x;motion.y=velocity.y;motion.z=velocity.z;
+            float variation=side?.30f:0;
+            motion.x=new ParticleSystem.MinMaxCurve(velocity.x-variation,velocity.x+variation);
+            motion.y=new ParticleSystem.MinMaxCurve(velocity.y,velocity.y+variation);
+            motion.z=new ParticleSystem.MinMaxCurve(velocity.z-variation,velocity.z+variation);
         }
         public void Reset()
         {
@@ -119,10 +148,10 @@ namespace IceResurfacer.Presentation
             float fill=Mathf.Clamp01(sim.SnowTankM3/sim.Config.SnowCapacityM3);
             if(Mathf.Abs(fill-tankValue)>.00001f||Mathf.Abs(sim.TankLift-tankTilt)>.0001f)
             {
-                // The tank stores loose-snow equivalents (3.54 m3) in the
-                // roughly 2.83 m3 physical shell via 1.25:1 compaction.
-                float height=fill*2.83f/(1.488f*2.026f);
-                tank.SetTank(height,Mathf.Min(height*.15f,.035f)*(1-fill),Mathf.Clamp01(sim.TankLift)*(1-fill));
+                // Same conserved loose-equivalent stock, fitted to the authored
+                // tapered shell through an explicit physical compaction ratio.
+                var c=sim.Config;float target=fill*c.TankSnowPhysicalCapacityM3;
+                tank.SetTank(target,fill,Mathf.Clamp01(sim.TankLift)*(1-fill),c);
                 tankValue=fill;tankTilt=sim.TankLift;
             }
             if(sim.PitSnowM3!=pitValue)
@@ -148,8 +177,8 @@ namespace IceResurfacer.Presentation
             float flight=(.30f+Mathf.Sqrt(.09f+2*9.81f*Mathf.Max(.01f,exitY)))/9.81f;
             var leftOrigin=new Vector3(sim.ConditionerLeftExitX,exitY,sim.ConditionerLeftExitZ);
             var rightOrigin=new Vector3(sim.ConditionerRightExitX,exitY,sim.ConditionerRightExitZ);
-            Rate(leftEscape,active?sim.ConditionerLeftEscapeRate:0,leftOrigin,new Vector3((sim.ConditionerLeftLandingX-leftOrigin.x)/flight,.30f,(sim.ConditionerLeftLandingZ-leftOrigin.z)/flight));
-            Rate(rightEscape,active?sim.ConditionerRightEscapeRate:0,rightOrigin,new Vector3((sim.ConditionerRightLandingX-rightOrigin.x)/flight,.30f,(sim.ConditionerRightLandingZ-rightOrigin.z)/flight));
+            Rate(leftEscape,active?sim.ConditionerLeftEscapeRate:0,leftOrigin,new Vector3((sim.ConditionerLeftLandingX-leftOrigin.x)/flight,.30f,(sim.ConditionerLeftLandingZ-leftOrigin.z)/flight),true);
+            Rate(rightEscape,active?sim.ConditionerRightEscapeRate:0,rightOrigin,new Vector3((sim.ConditionerRightLandingX-rightOrigin.x)/flight,.30f,(sim.ConditionerRightLandingZ-rightOrigin.z)/flight),true);
             var leftMain=leftEscape.main;leftMain.startLifetime=flight;
             var rightMain=rightEscape.main;rightMain.startLifetime=flight;
             // Render the same ballistic discharge as Core. Never steer particles

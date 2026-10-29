@@ -32,9 +32,9 @@ PASS standing/sitting: W reaches drive and releases brake
 PASS standing/sitting: actual forward travel resumes ()
 PASS 7 raises tank while W continues Free Simulation travel
 PASS 7 release centres dump command
-PASS Shift+7 lowers the same physical tank
+PASS Right Shift+7 lowers the same physical tank
 PASS right bracket adjusts only flood water
-PASS Shift+right bracket adjusts only wash water
+PASS Right Shift+right bracket adjusts only wash water
 PASS F4 toggles performance readout
 PASS F2 exposes actual shaving mask
 PASS F2 exposes affected cut/wash/flood cells

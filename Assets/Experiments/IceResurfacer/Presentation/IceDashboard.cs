@@ -12,7 +12,9 @@ namespace IceResurfacer.Presentation
     {
         public const float LayoutWidth = 1600f, LayoutHeight = 900f;
         public bool AuditLayout { get; set; }
-        public bool Compact { get; set; }
+        public bool Compact { get; set; } = true;
+        public bool HistoryVisible { get; private set; }
+        public bool MessagesVisible { get; private set; } = true;
         public int InspectedSurveyCell { get; private set; } = -1;
         public readonly List<string> LayoutIssues = new List<string>();
         static readonly Color Navy = new Color(.035f, .068f, .09f, .96f);
@@ -24,7 +26,6 @@ namespace IceResurfacer.Presentation
         static readonly Color Mint = new Color(.44f, .90f, .76f, 1);
         static readonly Color Amber = new Color(1f, .70f, .32f, 1);
         static readonly Color Red = new Color(1f, .39f, .31f, 1);
-        static readonly float[] Separators = { 286, 528, 752, 1023, 1207 };
         GUIStyle text, small, heading, title, number, button;
         Texture2D disc, ring;
         float dialLastAngle;
@@ -32,6 +33,13 @@ namespace IceResurfacer.Presentation
         int springControl;
         bool pointerCaptured;
         bool releaseCapture;
+        readonly List<string> messageHistory = new List<string>(32);
+        string lastNotice = "";
+        float noticeAt;
+        Simulation messageSession;
+        Vector2 messageScroll;
+        public static readonly Rect SurveyMapRect = new Rect(1228,72,142,272.79f);
+        static bool Inspecting(IceResurfacerGame game) => !string.IsNullOrEmpty(game.HeldQuicklook);
 
         public void ReleaseInteractions() { springControl=0; pointerCaptured=false; releaseCapture=true; }
         public void CheckPointerRelease(IceResurfacerGame game)
@@ -48,12 +56,13 @@ namespace IceResurfacer.Presentation
             float scale=Mathf.Min(Screen.width/LayoutWidth,Screen.height/LayoutHeight);
             Vector2 p=(new Vector2(screenPoint.x,Screen.height-screenPoint.y)-new Vector2((Screen.width-LayoutWidth*scale)*.5f,(Screen.height-LayoutHeight*scale)*.5f))/scale;
             if(!game.Started||game.Paused||game.HelpVisible||game.Sim.Finished)return true;
-            if(new Rect(28,24,1274,92).Contains(p))return true;
+            if(new Rect(28,24,1164,108).Contains(p))return true;
             if(game.DiagnosticsVisible&&(Compact?new Rect(28,132,492,242).Contains(p):
                 new Rect(545,228,755,390).Contains(p)||new Rect(28,520,492,100).Contains(p)))return true;
             if(game.Sim.OnFoot)return p.y>700;
-            if(Compact)return p.y>=805;
-            return new Rect(100,625,1400,275).Contains(p)||new Rect(1330,24,242,550).Contains(p)||new Rect(28,135,492,379).Contains(p)||new Rect(100,580,1400,40).Contains(p);
+            if(HistoryVisible&&new Rect(520,160,650,570).Contains(p))return true;
+            if(new Rect(398,849,1174,43).Contains(p))return true;
+            return !Inspecting(game)&&new Rect(1210,24,362,Compact?432:814).Contains(p);
         }
 
         void Initialize()
@@ -103,22 +112,24 @@ namespace IceResurfacer.Presentation
         {
             switch (name)
             {
-                case "MachineLoad": return new Rect(535,35,170,70);
-                case "Conditioner": return new Rect(120, 721, 46, 116);
-                case "HorizontalAuger": return new Rect(304, 721, 208, 38);
-                case "VerticalAuger": return new Rect(304, 766, 208, 38);
-                case "BoardBrush": return new Rect(304, 811, 208, 38);
-                case "Blade": return new Rect(592, 725, 98, 98);
-                case "WashValve": return new Rect(770, 726, 94, 94);
-                case "WashPump": return new Rect(877, 734, 128, 64);
-                case "Flood": return new Rect(1057, 726, 94, 94);
-                case "TankLift": return new Rect(1217, 721, 46, 116);
-                case "Service": return new Rect(1323, 721, 157, 38);
-                case "Finish": return new Rect(1323, 766, 157, 38);
-                case "NewSession": return new Rect(1323, 811, 157, 38);
-                case "SnowBreaker": return new Rect(880, 637, 250, 34);
-                case "Guide": return new Rect(1184, 637, 140, 34);
-                case "Pause": return new Rect(1338, 637, 142, 34);
+                case "MachineLoad": return new Rect(460,32,145,60);
+                case "VerticalAuger": return new Rect(1228,446,68,94);
+                case "Conditioner": return new Rect(1310,446,68,94);
+                case "HorizontalAuger": return new Rect(1392,446,68,94);
+                case "TankLift": return new Rect(1474,446,68,94);
+                case "Flood": return new Rect(1228,587,88,88);
+                case "WashValve": return new Rect(1342,587,88,88);
+                case "Blade": return new Rect(1461,590,80,80);
+                case "BoardBrush": return new Rect(1228,716,154,34);
+                case "WashPump": return new Rect(1396,716,158,34);
+                case "SnowBreaker": return new Rect(1228,758,154,34);
+                case "Service": return new Rect(1396,758,158,34);
+                case "Finish": return new Rect(1228,800,154,34);
+                case "NewSession": return new Rect(1396,800,158,34);
+                case "Guide": return new Rect(1364,851,93,37);
+                case "Pause": return new Rect(1465,851,107,37);
+                case "Console": return new Rect(1228,382,326,34);
+                case "History": return new Rect(1228,851,128,37);
                 default: throw new ArgumentException("Unknown Aurora instrument: " + name);
             }
         }
@@ -141,30 +152,25 @@ namespace IceResurfacer.Presentation
                 hoverHint = game.PhysicalControls!=null?game.PhysicalControls.Hint:"";
                 LayoutIssues.Clear();
                 Header(game);
-                if(!Compact&&!game.Sim.OnFoot)Survey(game);
+                if(!game.Sim.OnFoot&&!Inspecting(game))Survey(game);
                 if(game.Sim.OnFoot)ServicePanel(game);
                 else if(Compact)CompactRack(game);
                 else Rack(game);
                 if (game.Started && !game.Sim.Finished && !game.HelpVisible && !game.Paused)
                 {
-                    if(!Compact&&!game.Sim.OnFoot)Guidance(game);
-                    if(Compact&&!game.Sim.OnFoot&&!string.IsNullOrEmpty(game.Notice))
-                    {
-                        Box(new Rect(28,135,492,130),Navy);
-                        Label(new Rect(46,151,426,100),game.Notice,small,Amber);
-                        if(Button(new Rect(478,143,31,30),"x",Slate))game.Notice="";
-                    }
+                    if(!game.Sim.OnFoot)Guidance(game);
                     DriveWarning(game);
                     if(game.DiagnosticsVisible)Diagnostics(game);
                 }
+                if(!game.Sim.OnFoot)StatusStrip(game);
                 if (game.Sim.Finished && !game.HelpVisible) Results(game);
                 else if (!game.Started && !game.HelpVisible) Welcome(game);
                 else if (game.Paused && !game.HelpVisible) Pause(game);
                 if (game.HelpVisible) Help(game);
                 if (!string.IsNullOrEmpty(hoverHint) && !game.HelpVisible && game.Started && !game.Paused && !game.Sim.Finished)
                 {
-                    Box(new Rect(100, 580, 1400, 40), Navy);
-                    Label(new Rect(118, 588, 1364, 25), hoverHint, small, White);
+                    Box(new Rect(398,764,806,76), Navy);
+                    Label(new Rect(414,774,774,58), hoverHint, small, White);
                 }
                 if(game.PerformanceVisible)
                 {
@@ -178,37 +184,51 @@ namespace IceResurfacer.Presentation
             }
         }
 
+        public static string ConditionerStatus(Simulation s)
+        {
+            float lift=s.Conditioner.Lift;
+            if(lift<=.005f)return "CONDITIONER DOWN";
+            if(lift>=.995f)return "CONDITIONER UP";
+            float demand=s.Controls.HydraulicHoldControls?s.Controls.ConditionerHydraulic:s.Controls.ConditionerTarget-lift;
+            if(demand>.001f)return "CONDITIONER RAISING";
+            if(demand<-.001f)return "CONDITIONER LOWERING";
+            return "CONDITIONER PARTIALLY LOWERED";
+        }
         void Header(IceResurfacerGame game)
         {
-            var s = game.Sim;
-            Box(new Rect(28, 24, 1274, 92), Navy);
-            Box(new Rect(28, 24, 5, 92), Amber);
-            Label(new Rect(48, 36, 310, 36), "AURORA  /  R-54", title, White);
-            Label(new Rect(49, 79, 310, 24), "NORTHLINE  /  ICE CENTRE", small, Muted);
-            Label(new Rect(386, 37, 130, 46), (Mathf.Abs(s.Vehicle.Speed) * 3.6f).ToString("0.0"), number, Mint);
-            Label(new Rect(389, 82, 150, 24), s.Vehicle.Speed < -.02f ? "km/h   REVERSE" : "km/h   FORWARD", small, Muted);
-            Meter(new Rect(542, 43, 149, 49), "MACHINE LOAD", s.MachineLoad, Mathf.RoundToInt(s.MachineLoad * 100) + "%", s.MachineLoad > .85f ? Amber : Mint);
-            Rect loadRect=new Rect(535,35,170,70);
-            if(loadRect.Contains(Event.current.mousePosition))hoverHint="Estimated demand: 13% idle + cutting + augers/snow + congestion. Higher load slows acceleration. Click or F3 for explanation.";
+            var s=game.Sim;
+            Box(new Rect(28,24,1164,108),Navy);Box(new Rect(28,24,5,108),Amber);
+            Label(new Rect(48,36,290,39),"AURORA / R-54",title,White);
+            Label(new Rect(49,77,285,23),"NORTHLINE / "+Duration(s.Time),small,Muted);
+            Label(new Rect(338,35,116,44),(Mathf.Abs(s.Vehicle.Speed)*3.6f).ToString("0.0"),number,Mint);
+            Label(new Rect(338,78,125,22),s.Vehicle.Speed<-.02f?"km/h REVERSE":"km/h FORWARD",small,Muted);
+            Meter(new Rect(470,36,125,49),"MACHINE LOAD",s.MachineLoad,(s.MachineLoad*100).ToString("0")+"%",s.MachineLoad>.85f?Amber:Mint);
+            Rect loadRect=ControlRect("MachineLoad");
+            if(loadRect.Contains(Event.current.mousePosition))hoverHint="Estimated machinery demand; higher load reduces acceleration. Click or F3 for the breakdown.";
             if(game.Started&&!game.Paused&&!game.HelpVisible&&!s.Finished&&!game.Looking&&GUI.Button(loadRect,GUIContent.none,GUIStyle.none))game.ToggleDiagnostics();
-            Meter(new Rect(719, 43, 155, 49), "FLOOD WATER", s.FloodWaterLiters / s.Config.FloodCapacityLiters, s.FloodWaterLiters.ToString("0") + " L", Mint);
-            Meter(new Rect(901, 43, 155, 49), "WASH WATER", s.WashWaterLiters / s.Config.WashCapacityLiters, s.WashWaterLiters.ToString("0") + " L", Mint);
-            float snow = s.SnowTankM3 / s.Config.SnowCapacityM3;
-            Meter(new Rect(1083, 43, 193, 49), "SNOW TANK", snow, (snow * 100).ToString("0") + "%  /  " + s.SnowTankM3.ToString("0.00") + " m3", snow > .85f ? Amber : Mint);
+            Meter(new Rect(620,36,157,49),"FLOOD WATER",s.FloodWaterLiters/s.Config.FloodCapacityLiters,s.FloodWaterLiters.ToString("0")+" L",Mint);
+            Meter(new Rect(800,36,157,49),"WASH WATER",s.WashWaterLiters/s.Config.WashCapacityLiters,s.WashWaterLiters.ToString("0")+" L",Mint);
+            float snow=s.SnowTankM3/s.Config.SnowCapacityM3;
+            Meter(new Rect(980,36,188,49),"SNOW TANK",snow,(snow*100).ToString("0")+"% / "+s.SnowTankM3.ToString("0.00")+" m3",snow>.85f?Amber:Mint);
+            string status=ConditionerStatus(s);
+            Label(new Rect(48,106,432,23),status,heading,s.Conditioner.Lift<.005f?Mint:Amber);
+            Box(new Rect(490,112,102,8),Slate);Box(new Rect(490,112,102*(1-s.Conditioner.Lift),8),Mint);
+            float contactBite=s.ActualBladeDepthMm*Mathf.Clamp01(1-s.Conditioner.Lift/.25f);
+            Label(new Rect(620,105,550,24),"BLADE "+s.Controls.BladeDepthMm.ToString("0.00")+" mm SET  /  "+contactBite.ToString("0.000")+" mm CONTACT",small,White);
         }
 
         void Survey(IceResurfacerGame game)
         {
             var s = game.Sim; var r = game.Report;
-            Box(new Rect(1330, 24, 242, 550), Navy);
-            Label(new Rect(1350, 40, 200, 23), "SURFACE SURVEY", heading, White);
-            Rect map = new Rect(1351, 78, 200, 323.08f);
+            Box(new Rect(1210,24,362,342),Navy);
+            Label(new Rect(1228,40,326,23), "SURFACE SURVEY", heading, White);
+            Rect map = SurveyMapRect;
             Box(map, Inset);
             if (game.Surface != null && game.Surface.MapTexture != null)
             {
                 Vector2 top=MapPoint(map,-s.Config.RinkWidth*.5f,s.Config.RinkLength*.5f,s.Config);
                 Vector2 bottom=MapPoint(map,s.Config.RinkWidth*.5f,-s.Config.RinkLength*.5f,s.Config);
-                GUI.DrawTexture(new Rect(top,bottom-top), game.Surface.MapTexture, ScaleMode.StretchToFill, true);
+                GUI.DrawTexture(new Rect(top,bottom-top), game.Surface.DebugMode==0?game.Surface.OverviewTexture:game.Surface.MapTexture, ScaleMode.StretchToFill, true);
             }
             var layout=s.Layout;
             layout.ToWorld(-layout.RoomHalfWidth,layout.RoomStart,out float ax,out float az);
@@ -232,26 +252,26 @@ namespace IceResurfacer.Presentation
                 Vector2 right = new Vector2(Mathf.Cos(s.Conditioner.Heading), Mathf.Sin(s.Conditioner.Heading));
                 Line(tail - right * 5.3f, tail + right * 5.3f, 3, Amber);
             }
-            Label(new Rect(1350, 410, 204, 23), "COVERAGE     " + (r.Coverage * 100).ToString("0.0") + "%", heading, Mint);
-            Label(new Rect(1350, 435, 204, 22), "FINISH            " + (r.FinishQuality * 100).ToString("0") + "%", small, White);
+            if(game.RouteGuide!=null&&game.RouteGuide.Visible)DrawRouteMap(game,map);
+            Label(new Rect(1388,79,164,23),"TREATMENT",heading,Mint);
+            Label(new Rect(1388,108,164,40),(r.Coverage*100).ToString("0.0")+"%",number,Mint);
+            Label(new Rect(1388,149,164,24),"Finish "+(r.FinishQuality*100).ToString("0")+"%",small,White);
             if(game.Surface!=null&&game.Surface.DebugMode==0)
             {
-                MapKey(1350,462,IceTreatmentState.Uncut);MapKey(1458,462,IceTreatmentState.WetButUncut);
-                MapKey(1350,484,IceTreatmentState.CutButDry);MapKey(1458,484,IceTreatmentState.SnowCovered);
-                MapKey(1350,506,IceTreatmentState.Overwatered);MapKey(1458,506,IceTreatmentState.Resurfaced);
+                MapKey(1388,184,IceTreatmentState.Uncut);MapKey(1388,208,IceTreatmentState.CutButDry);
+                MapKey(1388,232,IceTreatmentState.WetButUncut);MapKey(1388,256,IceTreatmentState.SnowCovered);
+                MapKey(1388,280,IceTreatmentState.Overwatered);MapKey(1388,304,IceTreatmentState.Resurfaced);
             }
-            else
-                Label(new Rect(1350,464,204,61),game.Surface!=null&&game.Surface.DebugMode==1?
-                    "F2 / SHAVING MASK\nOrange: excluded rim\nGreen: combined treatment":
-                    "F2 / ACTUAL MATERIAL\nRed cut / Green wash\nBlue retained flood",small,Muted);
-            Label(new Rect(1350,536,204,34),"Hover map: inspect patch",small,Muted);
+            else Label(new Rect(1388,184,164,130),game.Surface!=null&&game.Surface.DebugMode==1?
+                "F2 / SHAVING MASK\nOrange: excluded rim\nGreen: treatment":"F2 / MATERIAL\nRed cut\nGreen wash\nBlue flood",small,Muted);
+            Label(new Rect(1388,337,164,23),"Hover: exact cells",small,Muted);
             SurveyDetail(game,map);
         }
 
         void MapKey(float x,float y,IceTreatmentState state)
         {
             Box(new Rect(x,y+5,8,8),IceSurfaceView.TreatmentColor(state));
-            Label(new Rect(x+12,y,94,20),IceCoverage.Label(state),small,Muted);
+            Label(new Rect(x+12,y,150,20),IceCoverage.Label(state),small,Muted);
         }
 
         void SurveyDetail(IceResurfacerGame game,Rect map)
@@ -269,9 +289,9 @@ namespace IceResurfacer.Presentation
             const int span=16;
             int col=index%field.Columns,row=index/field.Columns;
             int left=Mathf.Clamp(col-span/2,0,field.Columns-span),bottom=Mathf.Clamp(row-span/2,0,field.Rows-span);
-            Box(new Rect(1090,126,224,276),Modal);
-            Label(new Rect(1102,136,200,24),"PATCH DETAIL",heading,Mint);
-            Rect zoom=new Rect(1102,166,200,200);
+            Box(new Rect(970,154,224,276),Modal);
+            Label(new Rect(982,164,200,24),"PATCH DETAIL",heading,Mint);
+            Rect zoom=new Rect(982,194,200,200);
             GUI.DrawTextureWithTexCoords(zoom,game.Surface.MapTexture,new Rect((float)left/field.Columns,(float)bottom/field.Rows,(float)span/field.Columns,(float)span/field.Rows));
             float side=zoom.width/span;
             Rect selected=new Rect(zoom.x+(col-left)*side,zoom.y+(span-1-(row-bottom))*side,side,side);
@@ -279,7 +299,7 @@ namespace IceResurfacer.Presentation
             Line(new Vector2(selected.x,selected.yMax),new Vector2(selected.xMax,selected.yMax),1,White);
             Line(new Vector2(selected.x,selected.y),new Vector2(selected.x,selected.yMax),1,White);
             Line(new Vector2(selected.xMax,selected.y),new Vector2(selected.xMax,selected.yMax),1,White);
-            Label(new Rect(1102,376,200,21),(span*field.CellSize).ToString("0.0")+" m patch / "+(field.CellSize*100).ToString("0")+" cm samples",small,Muted);
+            Label(new Rect(982,404,200,21),(span*field.CellSize).ToString("0.0")+" m patch / "+(field.CellSize*100).ToString("0")+" cm samples",small,Muted);
         }
 
         static Vector2 MapPoint(Rect rect, float x, float z, SimulatorConfig config)
@@ -289,14 +309,37 @@ namespace IceResurfacer.Presentation
             return new Vector2(rect.x+(x-minX)/(maxX-minX)*rect.width,rect.y+(maxZ-z)/(maxZ-minZ)*rect.height);
         }
 
+        void DrawRouteMap(IceResurfacerGame game,Rect map)
+        {
+            var guide=game.RouteGuide;var route=guide.Route;if(route==null)return;
+            int first=guide.NextPoint,last=Mathf.Min(first+120,route.Points.Count-1);
+            Color tint=new Color(.6f,1,.3f,.85f);
+            for(int i=first;i<last;i+=4)
+            {
+                var a=route.Points[i];var b=route.Points[Mathf.Min(i+4,last)];
+                Line(MapPoint(map,a.X,a.Z,game.Sim.Config),MapPoint(map,b.X,b.Z,game.Sim.Config),2,tint);
+            }
+        }
+
         void CompactRack(IceResurfacerGame game)
         {
-            var s=game.Sim;var c=s.Controls;
-            Box(new Rect(100,805,1400,95),Navy);
-            Label(new Rect(120,820,1010,26),"CUT "+c.BladeDepthMm.ToString("0.00")+" mm    FLOOD "+(c.FloodFlow*100).ToString("0")+"%    WASH "+(c.WashValve*100).ToString("0")+"%    AUGERS "+(c.HorizontalAuger?"H ON":"H OFF")+" / "+(c.VerticalAuger?"V ON":"V OFF"),heading,White);
-            Label(new Rect(390,857,740,26),"Hold Q edge / E controls / C chase | X forward / R stand / F exit",small,Muted);
-            if(Button(new Rect(1170,820,310,52),"EXPAND CONTROLS  [TAB]",Slate)){Compact=false;game.ReleaseControls();}
+            if(Inspecting(game))return;
+            var c=game.Sim.Controls;
+            Box(new Rect(1210,378,362,78),Navy);
+            if(Button(ControlRect("Console"),"OPEN CONSOLE [TAB]",Slate)){Compact=false;game.ReleaseControls();}
+            Label(new Rect(1228,426,326,23),"AUGERS "+(c.VerticalAuger?"V ON":"V OFF")+" / "+(c.HorizontalAuger?"H ON":"H OFF")+"   FLOOD "+(c.FloodFlow*100).ToString("0")+"%",small,Muted);
         }
+        void StatusStrip(IceResurfacerGame game)
+        {
+            Box(new Rect(398,849,806,43),Navy);
+            string line=game.RouteGuide!=null&&game.RouteGuide.Visible?"F5 ROUTE / "+game.RouteGuide.Phase+"   |   Advisory rear-axle path; any route is allowed":
+                "Hold Q edge / E controls / C chase / Left Shift rear   |   F5 route   |   TAB console";
+            Label(new Rect(414,860,776,23),line,small,Muted);
+            if(Button(ControlRect("History"),"MESSAGES",Slate))HistoryVisible=!HistoryVisible;
+            if(Button(ControlRect("Guide"),"HELP F1",Slate))game.ToggleHelp();
+            if(Button(ControlRect("Pause"),game.Paused?"RESUME":"PAUSE",Slate))game.TogglePause();
+        }
+
         void ServicePanel(IceResurfacerGame game)
         {
             Box(new Rect(220,690,1160,191),Navy);
@@ -309,8 +352,8 @@ namespace IceResurfacer.Presentation
         {
             string reason=game.Sim.DriveInhibitReason;
             if(Mathf.Abs(game.RawThrottle)<.01f||game.Sim.OnFoot||string.IsNullOrEmpty(reason))return;
-            Box(new Rect(545,135,755,85),new Color(.26f,.10f,.065f,.98f));
-            Label(new Rect(565,147,715,63),reason,text,Amber);
+            Box(new Rect(398,714,806,58),new Color(.26f,.10f,.065f,.98f));
+            Label(new Rect(414,723,774,42),reason,small,Amber);
         }
         void Diagnostics(IceResurfacerGame game)
         {
@@ -328,8 +371,8 @@ namespace IceResurfacer.Presentation
                     "\nPoint x/y/z "+compactHit.PointX.ToString("0.00")+", "+compactHit.PointY.ToString("0.00")+", "+compactHit.PointZ.ToString("0.00")+
                     "\nNormal x/z "+compactHit.NormalX.ToString("0.00")+", "+compactHit.NormalZ.ToString("0.00")+
                     "\nGreen: body  /  red: rejected pose"+
-                    "\nCyan: visible rim  /  amber: collision rim"+
-                    "\nMagenta: contact and normal  /  TAB: full details";
+                    "\nCyan: traversable grate  /  amber: snow receiver"+
+                    "\nImpact normal "+s.ContactNormalSpeed.ToString("0.00")+" m/s / severity "+s.ContactSeverity.ToString("0.00");
                 Label(new Rect(44,180,460,180),detail,small,White);
                 return;
             }
@@ -340,7 +383,7 @@ namespace IceResurfacer.Presentation
             string body="Keyboard W/S: "+game.RawThrottle.ToString("0.00")+"   Pedal: "+c.Throttle.ToString("0.00")+"   Accepted: "+s.EffectiveDriveDemand.ToString("0.00")+
                 "\nDirection: "+(c.Throttle>0?"forward":c.Throttle<0?"reverse":"neutral")+"   Velocity: "+s.Vehicle.Speed.ToString("0.000")+" m/s   Brake: "+(c.Brake?"CTRL held":"released")+
                 "\nTank: "+(s.TankLift*100).ToString("0.0")+"%   Hose: "+s.HoseState+"   Load: "+s.MachineLoad.ToString("0.00")+
-                "\nBoard/wall contact: "+s.BoardContact+"   Roller: "+s.GuideRollerContact+
+                "\nBoard/wall contact: "+s.BoardContact+"   Roller: "+s.GuideRollerContact+"   Normal "+s.ContactNormalSpeed.ToString("0.00")+" m/s / severity "+s.ContactSeverity.ToString("0.00")+
                 "\nFocus: "+game.HasFocus+"   RMB: "+game.Looking+"   HUD capture: "+(springControl!=0)+
                 "\nGrip: "+s.TractionGrip.ToString("0.00")+"   Slip: "+s.TractionSlip.ToString("0.00")+"   Lateral: "+s.LateralVelocity.ToString("0.00")+" m/s"+
                 "\nDemand: idle 13% + cutting "+(s.LoadCutting*100).ToString("0")+"% + augers/snow "+(s.LoadConveyors*100).ToString("0")+"% + congestion "+(s.LoadCongestion*100).ToString("0")+"%"+
@@ -360,23 +403,39 @@ namespace IceResurfacer.Presentation
 
         void Guidance(IceResurfacerGame game)
         {
-            var s = game.Sim;
-            Box(new Rect(28, 135, 492, 155), Navy);
-            string mode = (s.GuidedTraining?"TRAINING ASSISTANCE": "FREE SIMULATION")+(s.Practice?" / PRACTICE":" / SCORED");
-            Label(new Rect(46, 148, 450, 25), mode + "     " + Duration(s.Time), heading, Mint);
-            Label(new Rect(46, 183, 452, 92), s.GuidedTraining?NextAction(s):!s.HasEnteredRink?"Nose toward the pit. S backs onto ice. Hold C for chase view, Q for the left edge, E for controls. Release restores your view.":"Operate freely; material and scoring follow actual conditions. Hold Q/E/C to inspect; release restores your view. F steps off.", text, White);
-            bool cuttingWithoutTransport=s.ActualBladeDepthMm>.001f&&Mathf.Abs(s.Vehicle.Speed)>.02f&&(!s.Controls.HorizontalAuger||!s.Controls.VerticalAuger);
-            if (s.MachineLoad > .85f || s.EscapingSnowRate > .001f || s.PumpDamage > .05f || cuttingWithoutTransport)
+            var s=game.Sim;
+            if(messageSession!=s){messageSession=s;lastNotice="";messageHistory.Clear();HistoryVisible=false;messageScroll=Vector2.zero;}
+            if(string.IsNullOrEmpty(game.Notice))lastNotice="";
+            if(!string.IsNullOrEmpty(game.Notice)&&game.Notice!=lastNotice)
             {
-                Box(new Rect(28, 302, 492, 96), new Color(.26f, .10f, .065f, .97f));
-                Label(new Rect(46, 315, 455, 72), s.EscapingSnowRate > .001f || cuttingWithoutTransport ? SnowStatus(s) : s.PumpDamage > .05f ? "PUMP WEAR  /  Prime wash before pickup. Start a new session to restore pump condition." : "HEAVY LOAD  /  Reduce cutting depth or ground speed.", small, Amber);
+                lastNotice=game.Notice;noticeAt=Time.unscaledTime;
+                if(messageHistory.Count==32)messageHistory.RemoveAt(0);
+                messageHistory.Add(Duration(s.Time)+"  "+lastNotice);
             }
-            if (!string.IsNullOrEmpty(game.Notice))
+            bool serious=s.ConveyorJammed||s.SnowTankM3>=s.Config.SnowCapacityM3*.995f||s.PumpDamage>.05f;
+            string alert=s.ConveyorJammed?"AUGER JAM — retract blade; stop conveyors, clear and reset [J]":
+                s.SnowTankM3>=s.Config.SnowCapacityM3*.995f?"SNOW TANK FULL — retract blade and unload":
+                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":"";
+            float age=Time.unscaledTime-noticeAt;
+            if(serious||MessagesVisible&&!string.IsNullOrEmpty(game.Notice)&&age<8)
             {
-                Box(new Rect(28, 410, 492, 104), Navy);
-                Label(new Rect(46, 421, 422, 82), game.Notice, small, Amber);
-                if (Button(new Rect(478, 416, 31, 30), "x", Slate)) game.Notice = "";
+                string message=serious?alert:game.Notice;
+                if(message.Length>142)message=message.Substring(0,139)+"...";
+                Color tint=GUI.color;GUI.color=new Color(1,1,1,serious?1:Mathf.Clamp01(8-age));
+                Box(new Rect(398,782,806,58),Navy);
+                Label(new Rect(414,791,774,42),message,small,serious?Amber:White);GUI.color=tint;
             }
+            if(!HistoryVisible)return;
+            Box(new Rect(520,160,650,570),Modal);
+            Label(new Rect(540,179,440,28),"OPERATOR MESSAGES",heading,Mint);
+            if(Button(new Rect(1050,174,100,34),"CLOSE",Slate))HistoryVisible=false;
+            if(Button(new Rect(540,220,610,35),MessagesVisible?"ORDINARY NOTIFICATIONS: ON":"ORDINARY NOTIFICATIONS: OFF",Slate))MessagesVisible=!MessagesVisible;
+            Label(new Rect(540,268,610,48),s.GuidedTraining?NextAction(s):"Free simulation. Equipment consequences and scoring follow the actual surface. F1 opens the operating guide.",small,Muted);
+            int count=messageHistory.Count;
+            if(count==0)Label(new Rect(540,328,610,40),"No messages this session.",small,Muted);
+            messageScroll=GUI.BeginScrollView(new Rect(540,328,610,380),messageScroll,new Rect(0,0,586,Mathf.Max(379,count*77)));
+            for(int i=0;i<count;i++)Label(new Rect(0,i*77,584,72),messageHistory[messageHistory.Count-1-i],small,White);
+            GUI.EndScrollView();
         }
 
         static string SnowStatus(Simulation s)
@@ -417,67 +476,56 @@ namespace IceResurfacer.Presentation
 
         void Rack(IceResurfacerGame game)
         {
-            var s = game.Sim; var c = s.Controls;
-            Box(new Rect(100, 625, 1400, 255), Navy);
-            Box(new Rect(100, 625, 1400, 3), Slate);
-            Label(new Rect(120, 643, 510, 25), "OPERATOR STATION  /  PHYSICAL CONTROL MIRROR", heading, White);
-            if(Button(new Rect(660,637,195,34),"COMPACT  [TAB]",Slate)) { Compact=true; game.ReleaseControls(); }
-            GUI.enabled = game.Started && !game.Paused && !s.Finished && !game.Looking && !game.HelpVisible;
-            if (Button(ControlRect("SnowBreaker"), "SNOW BREAKER  [6]", Slate)) game.OperateSnowBreaker();
-            GUI.enabled = true;
-            if (Button(ControlRect("Guide"), "GUIDE  F1", Slate)) game.ToggleHelp();
-            GUI.enabled = game.Started && !s.Finished;
-            if (Button(ControlRect("Pause"), game.Paused ? "RESUME" : "PAUSE  ESC", Slate)) game.TogglePause();
-            GUI.enabled = game.Started && !game.Paused && !s.Finished && !game.Looking && !game.HelpVisible;
-            for (int i = 0; i < 5; i++)
-            {
-                float x = Separators[i];
-                Box(new Rect(x, 690, 1, 174), Slate);
-            }
-            Label(new Rect(120, 690, 150, 25), "CONDITIONER", heading, Muted);
-            float conditioner=HydraulicLever(501,new Rect(120,721,150,116),c.ConditionerHydraulic,"Hold upper / lower end; release holds height. Keyboard: hold 1 lower, Shift+1 raise.");
+            if(Inspecting(game))return;
+            var s=game.Sim;var c=s.Controls;
+            Box(new Rect(1210,378,362,462),Navy);
+            if(Button(ControlRect("Console"),"CLOSE CONSOLE [TAB]",Slate)){Compact=true;game.ReleaseControls();}
+            GUI.enabled=game.Started&&!game.Paused&&!s.Finished&&!game.Looking&&!game.HelpVisible;
+            CenterLabel(new Rect(1222,421,80,23),"VERT [3]",small,Muted);
+            CenterLabel(new Rect(1304,421,80,23),"COND [1]",small,Muted);
+            CenterLabel(new Rect(1386,421,80,23),"HORIZ [2]",small,Muted);
+            CenterLabel(new Rect(1468,421,80,23),"DUMP [7]",small,Muted);
+            c.VerticalAuger=MaintainedLever(506,ControlRect("VerticalAuger"),c.VerticalAuger,"Vertical auger: click to latch ON or OFF. [3]");
+            float conditioner=HydraulicLever(501,ControlRect("Conditioner"),c.ConditionerHydraulic,"Hold top RAISE / bottom LOWER; release holds actual height. 1 lowers; Right Shift+1 raises.");
             if(conditioner!=c.ConditionerHydraulic)s.SetConditionerHydraulic(conditioner);
-            Label(new Rect(120, 852, 150, 24), "HEIGHT " + (s.Conditioner.Lift * 100).ToString("0") + "%", small, Mint);
-
-            Label(new Rect(304, 690, 208, 25), "SNOW CONVEYORS", heading, Muted);
-            c.HorizontalAuger = Toggle(ControlRect("HorizontalAuger"), "HORIZONTAL  [2]", c.HorizontalAuger, "Horizontal auger moves shaved snow toward the vertical auger.");
-            c.VerticalAuger = Toggle(ControlRect("VerticalAuger"), "VERTICAL  [3]", c.VerticalAuger, "Vertical auger lifts snow into the tank. Stop before raising conditioner or tank.");
-            c.BoardBrush = Toggle(ControlRect("BoardBrush"), "BOARD BRUSH  [4]", c.BoardBrush, "Brush extends LEFT. Use only in actual contact with the perimeter kickplate.");
-            Label(new Rect(304, 852, 208, 24), s.ConveyorJammed?"JAM / STOP AUGERS":"BUFFER " + ((s.HorizontalSnowM3 + s.VerticalSnowM3) * 1000).ToString("0.0") + " L", small, s.ConveyorJammed?Amber:Muted);
-
-            Label(new Rect(546, 690, 190, 25), "BLADE HANDWHEEL", heading, Muted);
-            c.BladeDepthMm = Dial(502, ControlRect("Blade"), c.BladeDepthMm, s.Config.MaxBladeDepthMm, "3.5 turns: clockwise deeper, counterclockwise retract. Screw setting and effective bite differ. Comma / period adjust finely.", s.Config.BladeWheelTurns*360);
-            CenterLabel(new Rect(546, 826, 190, 25), c.BladeDepthMm < .005f ? "BLADE OUT" : c.BladeDepthMm.ToString("0.00") + " mm SET", heading, c.BladeDepthMm > .45f ? Amber : Mint);
-            CenterLabel(new Rect(546, 852, 190, 24), "BITE " + s.ActualBladeDepthMm.ToString("0.000") + " mm", small, Muted);
-
-            Label(new Rect(770, 690, 235, 25), "WASH CIRCUIT", heading, Muted);
-            c.WashValve = WaterHandle(503, ControlRect("WashValve"), c.WashValve,"Drag the L handle from CLOSED at 9 o'clock to OPEN at 6. Prime 10 seconds before pickup.");
-            c.WashPump = Toggle(ControlRect("WashPump"), "PICKUP\nPUMP [5]", c.WashPump, "Pickup pump recirculates wash water. A dry pump suffers wear.");
-            Label(new Rect(770, 826, 235, 25), "VALVE " + (c.WashValve * 100).ToString("0") + "%", heading, Mint);
-            Label(new Rect(770, 852, 235, 24), s.WashPrimeSeconds >= 10 ? "PRIMED / READY" : "PRIME " + s.WashPrimeSeconds.ToString("0.0") + " / 10 s", small, s.WashPrimeSeconds >= 10 ? Mint : Muted);
-
-            Label(new Rect(1041, 690, 150, 25), "FLOOD WATER", heading, Muted);
-            c.FloodFlow = WaterHandle(504,ControlRect("Flood"),c.FloodFlow,"Drag the L handle from 9 to 6 for progressive flood flow. Close before stopping.");
-            Label(new Rect(1041,826,150,25),"OPEN "+(c.FloodFlow*100).ToString("0")+"%",heading,Mint);
-            Label(new Rect(1041, 852, 150, 24), (c.FloodFlow * s.Config.FloodMaxLitersPerSecond * 60).ToString("0") + " L/min", small, Mint);
-
-            Label(new Rect(1225, 690, 255, 25), "SNOW TANK / SERVICE", heading, Muted);
-            float tank=HydraulicLever(505,new Rect(1217,721,105,116),c.TankHydraulic,"Hold RAISE / LOWER at the pit; release centres the lever and holds tank position. Brief lower/raise frees residue.");
+            c.HorizontalAuger=MaintainedLever(507,ControlRect("HorizontalAuger"),c.HorizontalAuger,"Horizontal auger: click to latch ON or OFF. [2]");
+            float tank=HydraulicLever(505,ControlRect("TankLift"),c.TankHydraulic,"Hold top RAISE / bottom LOWER; release holds attained tank position. 7 raises; Right Shift+7 lowers.");
             if(tank!=c.TankHydraulic)s.SetTankHydraulic(tank);
-            if (GUI.enabled && ControlRect("Service").Contains(Event.current.mousePosition)) hoverHint = "Park safely, F to step off. E takes the wall hose, connects an inlet and operates supply.";
-            if (Button(ControlRect("Service"), "REFILL HELP", Slate)) game.Service();
-            if (Button(ControlRect("Finish"), "FINISH RUN", new Color(.14f, .37f, .31f))) game.Finish();
-            if (Button(ControlRect("NewSession"), "NEW SESSION", Slate)) game.NewSession(false, false);
-            Label(new Rect(1225, 852, 255, 24), s.InDumpZone ? "DISCHARGE OVER PIT" : s.InServiceBay ? "PIT AT FAR END OF BAY" : "SNOW LANDS WHERE IT FALLS", small, s.InDumpZone ? Mint : Muted);
-            GUI.enabled = true;
-            Box(new Rect(100, 880, 1400, 20), Navy);
-            Label(new Rect(390, 881, 1100, 19), game.Looking ? "HEAD LOOK  /  Release RMB to keep this view. X forward. R stand / sit. SPACE temporary rise." : "W/S drive  A/D steer  CTRL brake  RMB look  HOLD Q edge / E controls / C chase  X forward  R stand  F exit", small, Muted);
+            CenterLabel(new Rect(1222,543,80,22),c.VerticalAuger?"ON":"OFF",small,c.VerticalAuger?Mint:Muted);
+            CenterLabel(new Rect(1304,543,80,22),(s.Conditioner.Lift*100).ToString("0")+"% UP",small,Mint);
+            CenterLabel(new Rect(1386,543,80,22),c.HorizontalAuger?"ON":"OFF",small,c.HorizontalAuger?Mint:Muted);
+            CenterLabel(new Rect(1468,543,80,22),(s.TankLift*100).ToString("0")+"% UP",small,Mint);
+            Box(new Rect(1228,569,326,1),Slate);
+            CenterLabel(new Rect(1220,574,110,23),"FLOOD",heading,Muted);
+            CenterLabel(new Rect(1334,574,110,23),"WASH",heading,Muted);
+            CenterLabel(new Rect(1454,574,94,23),"BLADE",heading,Muted);
+            c.FloodFlow=WaterHandle(504,ControlRect("Flood"),c.FloodFlow,"Flood water: drag the L handle through its quarter turn. [ / ] adjust. Close before stopping.");
+            c.WashValve=WaterHandle(503,ControlRect("WashValve"),c.WashValve,"Wash valve: independent quarter turn. Right Shift + [ / ] adjust. Prime 10 seconds before pickup.");
+            c.BladeDepthMm=Dial(502,ControlRect("Blade"),c.BladeDepthMm,s.Config.MaxBladeDepthMm,"Blade screw: 3.5 turns, clockwise deeper. Comma / period fine adjustment.",s.Config.BladeWheelTurns*360);
+            CenterLabel(new Rect(1220,680,110,23),(c.FloodFlow*100).ToString("0")+"%",small,Mint);
+            CenterLabel(new Rect(1334,680,110,23),(c.WashValve*100).ToString("0")+"%",small,Mint);
+            CenterLabel(new Rect(1444,680,112,23),c.BladeDepthMm.ToString("0.00")+" mm",small,Mint);
+            c.BoardBrush=Toggle(ControlRect("BoardBrush"),"BRUSH [4]",c.BoardBrush,"Board brush follows its actual left-side contact patch.");
+            c.WashPump=Toggle(ControlRect("WashPump"),"PUMP [5]",c.WashPump,"Pickup recovers liquid excess. Prime wash for 10 seconds; running dry causes wear.");
+            if(Button(ControlRect("SnowBreaker"),"BREAKER [6]",Slate))game.OperateSnowBreaker();
+            if(Button(ControlRect("Service"),"REFILL HELP",Slate))game.Service();
+            if(Button(ControlRect("Finish"),"FINISH RUN",new Color(.14f,.37f,.31f)))game.Finish();
+            if(Button(ControlRect("NewSession"),"NEW SESSION",Slate))game.NewSession(false,false);
+            GUI.enabled=true;
+        }
+        bool MaintainedLever(int hint,Rect rect,bool value,string help)
+        {
+            if(GUI.enabled&&rect.Contains(Event.current.mousePosition))hoverHint=help;
+            Box(rect,Inset);Box(new Rect(rect.center.x-3,rect.y+12,6,rect.height-24),Slate);
+            float y=value?rect.y+22:rect.yMax-22;
+            Box(new Rect(rect.center.x-21,y-8,42,16),value?Mint:Muted);
+            return GUI.Button(rect,GUIContent.none,GUIStyle.none)?!value:value;
         }
 
         float HydraulicLever(int hint,Rect rect,float value,string help)
         {
             int id=GUIUtility.GetControlID(hint,FocusType.Passive);
-            Event e=Event.current;Rect hit=new Rect(rect.x,rect.y,46,rect.height);
+            Event e=Event.current;Rect hit=rect;
             if(GUI.enabled&&hit.Contains(e.mousePosition))hoverHint=help;
             if(GUI.enabled&&e.type==EventType.MouseDown&&e.button==0&&hit.Contains(e.mousePosition))
             { GUIUtility.hotControl=id;pointerCaptured=true;springControl=hint;value=HydraulicDemand(hit,e.mousePosition);e.Use(); }
@@ -487,13 +535,11 @@ namespace IceResurfacer.Presentation
                 if(e.type==EventType.MouseUp||!GUI.enabled)
                 {value=0;springControl=0;pointerCaptured=false;GUIUtility.hotControl=0;if(e.type==EventType.MouseUp)e.Use();}
             }
-            Box(new Rect(rect.x+20,rect.y+9,6,rect.height-18),Inset);
-            float y=rect.center.y-value*(rect.height*.36f);
-            Box(new Rect(rect.x+7,y-8,32,16),springControl==hint?Mint:Amber);
-            Box(new Rect(rect.x+13,y-2,20,4),Slate);
-            Label(new Rect(rect.x+46,rect.y,rect.width-46,22),"RAISE",small,Muted);
-            Label(new Rect(rect.x+46,rect.center.y-11,rect.width-46,22),"HOLD",small,value==0?Mint:Muted);
-            Label(new Rect(rect.x+46,rect.yMax-22,rect.width-46,22),"LOWER",small,Muted);
+            Box(rect,Inset);Box(new Rect(rect.center.x-3,rect.y+12,6,rect.height-24),Slate);
+            float y=rect.center.y-value*(rect.height*.30f);
+            Box(new Rect(rect.center.x-21,y-8,42,16),springControl==hint?Mint:Amber);
+            CenterLabel(new Rect(rect.x,rect.y-1,rect.width,20),"+",small,Muted);
+            CenterLabel(new Rect(rect.x,rect.yMax-20,rect.width,20),"-",small,Muted);
             return value;
         }
         static float HydraulicDemand(Rect r,Vector2 p) { return p.y<r.center.y-12?1:p.y>r.center.y+12?-1:0; }
@@ -524,8 +570,8 @@ namespace IceResurfacer.Presentation
             float turn=(180-value*90)*Mathf.Deg2Rad;
             Vector2 arm=new Vector2(Mathf.Cos(turn),Mathf.Sin(turn)),tip=centre+arm*31;
             Line(centre,tip,7,Muted);Line(tip,tip+new Vector2(-arm.y,arm.x)*16,10,GUIUtility.hotControl==id?Mint:Amber);
-            CenterLabel(new Rect(rect.x-3,rect.y-5,100,20),"CLOSED",small,Muted);
-            Label(new Rect(rect.x+48,rect.y+62,66,20),"OPEN",small,Muted);
+
+
             return value;
         }
 
@@ -624,10 +670,10 @@ namespace IceResurfacer.Presentation
             Box(new Rect(795, 220, 1, 314), Slate);
             Label(new Rect(826, 218, 550, 25), "02  RETURN & EMPTY", heading, Mint);
             Label(new Rect(826, 255, 550, 280), "Stow equipment for safe travel through the threshold. Dump toward the pit at the rear of the service room; snow lands where the outlet sends it. Brief lower / raise movements shake out residue.\n\nF steps off. Mouse looks freely on foot; WASD walks. E takes, connects and returns the hose and operates supply. The wall station is right of the parked machine.\n\nClose supply, uncouple, return the nozzle and F to board. Driving beyond hose reach breaks the coupling and spills water.", text, White);
-            Label(new Rect(216, 554, 1170, 24), "1 / Shift+1 lower / raise conditioner   2/3 augers   4 brush   5 pump   6 plunger   7 / Shift+7 raise / lower tank", small, Muted);
-            Label(new Rect(216, 581, 1170, 24), "[ / ] flood   Shift+[ / ] wash   , / . fine blade   J jam reset   F mount / dismount   TAB compact", small, Muted);
-            Label(new Rect(216, 608, 1170, 24), "HOLD Q left edge / E controls / C chase; release restores view.   X forward   R stand   SPACE temporary rise   RMB look", small, Muted);
-            Label(new Rect(216, 635, 1170, 24), "W/S drive   A/D steer   SHIFT precision   CTRL brake   F1 guide   F2 surface mask   F3 diagnostics   F4 FPS   ESC pause", small, Muted);
+            Label(new Rect(216, 554, 1170, 24), "1 / Right Shift+1 lower / raise conditioner   2/3 augers   4 brush   5 pump   6 plunger   7 / Right Shift+7 raise / lower tank", small, Muted);
+            Label(new Rect(216, 581, 1170, 24), "[ / ] flood   Right Shift+[ / ] wash   , / . fine blade   J jam reset   F mount / dismount   TAB compact", small, Muted);
+            Label(new Rect(216, 608, 1170, 24), "HOLD Q edge / E controls / C chase / LEFT SHIFT rear; release restores view.  X forward  R stand  SPACE rise  RMB look", small, Muted);
+            Label(new Rect(216, 635, 1170, 24), "W/S drive   A/D steer   RIGHT SHIFT precision   CTRL brake   F1 guide   F2 surface mask   F3 diagnostics   F4 FPS   F5 route   ESC pause", small, Muted);
         }
 
         void Results(IceResurfacerGame game)

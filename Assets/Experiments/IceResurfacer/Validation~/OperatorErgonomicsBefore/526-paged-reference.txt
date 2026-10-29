@@ -1,0 +1,3592 @@
+
+=== PDF PAGE 1 ===
+OPERATING 
+INSTRUCTIONS
+526
+MODEL
+This manual must be kept and stored with the machine.
+The manual and all related safety and service materials are available online at www.zamboni.com
+DM-20077 / REV 3/10/25
+M
+A
+D
+E
+ 
+I
+N
+ 
+U
+S
+A
+  Zamboni USA
+Zamboni Company USA, Inc.
+15714 Colorado Ave.
+Paramount, CA USA 90723-4211
+(562) 633-0751
+(562) 633-9365
+M
+A
+D
+E
+I
+N
+ 
+C
+A
+N
+A
+D
+A
+ 
+•
+ 
+F
+A
+B
+R
+I
+Q
+U
+É
+ 
+A
+U
+ 
+C
+A
+N
+A
+D
+A
+  Zamboni Canada
+Zamboni Company Ltd.
+38 Morton Ave. East, Box 1388
+Brantford, ON Canada N3T 5T6
+(519) 758-5000
+(519) 758-0500
+M
+A
+D
+E
+I
+N
+ 
+C
+A
+N
+A
+D
+A
+ 
+•
+ 
+F
+A
+B
+R
+I
+Q
+U
+É
+ 
+A
+U
+ 
+C
+A
+N
+A
+D
+A
+  Zamboni Quebec
+Robert Boileau Inc. 
+4255 Rue Hickmore
+Saint-Laurent, Québec H4T 1S5 Canada
+ (514) 333-8420
+(877) 333-8420
+M
+A
+D
+E
+ 
+I
+N
+S
+W
+E
+D
+E
+N
+  Zamboni Europe
+Zamboni Europe AB
+Murarmörkret 4
+SE-811 74 Österfärnebo Sweden
++46 291 206 80
++46 291 206 83
+
+=== PDF PAGE 2 ===
+Contents
+i
+Contents
+Table of Contents
+i
+Introduction
+v
+Safety Symbols
+vi
+Ice Resurfacer Guards
+vii
+Zamboni Ice Resurfacer Specifications
+ix
+Components
+ix
+Dimensions
+x
+Weight
+x
+Tank Capacity Specifications
+x
+Turning Radius
+xi
+Foreword
+xii
+1=General Safety Practices
+1-1
+Warning Signs and Labels
+1-3
+Crushing or Cutting Prevention
+1-4
+Fire or Explosion Prevention
+1-4
+Fuels (Gasoline, Propane (LPG), Compressed Natural Gas 
+(CNG)
+1-5
+Propane  (LPG) Tank Storage and Handling
+1-6
+CNG Fuel System
+1-7
+Oils
+1-8
+Batteries
+1-8
+Lubricants
+1-9
+Lines, Tubes and Hoses
+1-9
+Safe Operation
+1-10
+Mounting and Dismounting
+1-10
+Before Operating the Zamboni Machine
+1-10
+Operation
+1-10
+Parking
+1-11
+Maintenance
+1-12
+Walk-Around Inspection
+1-12
+Battery Operation and Maintenance
+1-15
+2=General Operating and Maintenance Information
+2-1
+Note Regarding the Mitsubishi Engine
+2-1
+Grade of Engine Oil
+2-1
+Grade of Fuels
+2-2
+
+=== PDF PAGE 3 ===
+Contents
+ii
+Starting the Engine
+2-2
+Stopping the Engine
+2-3
+Machine Not in Use
+2-3
+Travel on Highways
+2-4
+3=Safe Operation
+3-1
+4=Ice Rink Air Quality
+4-1
+Adequate Ventilation
+4-1
+Air Quality Monitoring
+4-1
+Engine Emission System Components
+4-2
+Engine Control Unit (ECU)
+4-3
+Open Loop versus Closed Loop Operation
+4-3
+Oxygen Sensor
+4-4
+Catalytic Converter
+4-4
+Engine Ignition Timing
+4-4
+Engine and State of Tune
+4-5
+Engine Emission Systems
+4-6
+Inspection and Maintenance Chart
+4-7
+Recommended Maintenance Schedule
+4-8
+5=Ice Resurfacer Components
+5-1
+Front View
+5-1
+Rear View
+5-2
+Operator¶s Platform
+5-3
+Power Package (Engine), left side
+5-4
+Power Package (Engine), right side
+5-4
+Snow Tank Safety Stand
+5-5
+6=Operator¶s Station
+6-1
+Operator¶s Compartment
+6-1
+Instrument Panel
+6-2
+Tachometer/Hourmeter
+6-2
+Warning Lights, Buzzers, ³Limp Home´ and
+Automatic Shut-down Modes
+6-3
+Machine Operation Switches
+6-5
+7=Operating the Ice Resurfacer
+7-1
+Driving the Machine
+7-1
+Machine Controls
+7-1
+Hydrostatic Transmission
+7-2
+Engine Speed
+7-2
+Machine Speed
+7-2
+
+=== PDF PAGE 4 ===
+Contents
+iii
+Accelerator Foot Pedal
+7-2
+Throttle Switch and  
+Hydrostatic Transmission Control Levers
+7-3
+Resurfacing Procedures
+7-4
+Learning to Resurface
+7-5
+Before Going to the Ice
+7-5
+On the Ice
+7-5
+Shaving or Cutting
+7-6
+Reversible Vertical Auger Operation
+7-7
+Typical Resurfacing Operation
+7-8
+Using the Snow Breaker
+7-9
+Washing the Ice
+7-9
+Ice Making Water
+7-10
+Using the Board Brush
+7-10
+Removing Excess Water from the Ice
+7-11
+Removing Slush from the Ice
+7-12
+Leaving the Ice Surface
+7-13
+Off of the Ice
+7-13
+Operating Pointers
+7-14
+Resurfacing Patterns
+7-14
+Sharp Turns
+7-14
+Excessive Loads
+7-15
+8=Water System
+8-1
+9=Maintaining the Cutting Blade
+9-1
+Changing the Blade
+9-1
+New Blade
+9-1
+Used Blade
+9-2
+Blade Controls on Conditioner
+9-2
+Side Controls
+9-2
+Hand Wheel
+9-3
+Holding and Securing the Blade
+9-4
+Procedure for Setting Blade Angle and Depth of Cut
+9-5
+Blade Angle Adjustment Plate
+9-6
+Conditioner Down Pressure
+9-7
+Using the Edger
+9-8
+Edger Attachment
+9-9
+10=Emergency Operation
+10-1
+Emergency Hand Pump
+10-1
+
+=== PDF PAGE 5 ===
+Contents
+iv
+Emergency Hydrostatic Bypass Valve
+10-2
+11=Storage Information
+11-1
+Storage Room Information
+11-1
+Summer Storage Tips
+11-1
+
+=== PDF PAGE 6 ===
+v
+Introduction
+This manual has been prepared to acquaint you with the operation of your ZAMBONI? ice 
+resurfacer and to provide important safety information.  Read, understand and comply with 
+the information in this manual.  All new operators must read this manual before operating 
+the machine for the first time.  Periodic review of the manual is essential for all operators.
+The care exercised in the operation and maintenance of the ice resurfacer will extend its 
+useful life, ensure highly satisfactory and dependable service at reduced cost and assure 
+safe operation and maintenance.
+We thank you for choosing a ZAMBONI? product and want to assure you of our continuing 
+interest in your satisfaction with your ice resurfacer.
+This manual should be considered a permanent part of this machine.  It should remain with 
+the machine when sold, to provide the next owner / operator with important safety and 
+maintenance information.
+All information, illustrations and specifications contained in this manual are based on the 
+latest product information available at the time of printing.  The right is reserved to make 
+changes at any time without notice.
+ZAMBONI COMPANY LTD.
+ZAMBONI and the configuration of the Zamboni? ice resurfacer are registered trademarks 
+of Frank J. Zamboni 	 Co., Inc.
+Date of Purchase ___________________________________________
+Ice Resurfacer Serial Number _________________________________
+THIS BOOK WAS LAST REVISED OCTOBER, 2015
+Part Number DM-20077
+
+=== PDF PAGE 7 ===
+vi
+Safety Symbols
+Safety Symbols
+Safety Symbols
+The safety symbols listed outline basic safety precautions.
+READ AND =UNDERSTAND ALL =SAFETY =PRECAUTIONS AND WARNINGS 
+BEFORE OPERATING, OR PERFORMING LUBRICATION AND MAINTENANCE.
+Personal Safety
+These symbols indicate when your safety or the safety of others may be at risk.
+DANGER!
+This safety symbol warns of possible personal injury 
+or death.
+WARNING!
+This safety symbol warns of possible personal injury.
+Equipment Damage
+CAUTION!
+This symbol warns of possible damage that may occur 
+to the machine.
+
+=== PDF PAGE 8 ===
+vii
+Ice Resurfacer Guards
+Ice Resurfacer Guards
+The safety guards used on the Zamboni ice resurfacer are illustrated in Figures 1.1 and 1.2.
+Figure 1.1  Ice Resurfacer Guards
+Vertical Auger Coupling Guard
+Conditioner Covers
+(not shown)
+Chain and Pulley Guard, 
+Horizontal Auger
+
+=== PDF PAGE 9 ===
+Ice Resurfacer Guards
+viii
+Figure 1.2      Ice Resurfacer Guards - Snow Tank Safety Stand
+Snow Tank Safety Stand
+Snow Tank Light 
+(Option)
+
+=== PDF PAGE 10 ===
+Zamboni? Ice Resurfacer Specifications
+ix
+Zamboni? Ice Resurfacer 
+Specifications
+Engine
+Mitsubishi 2.4L SOHC L4
+Fuel Types:  Gasoline, Propane (LPG), Natural Gas 
+(CNG).  Available as dual fuel (Gasoline / Propane, 
+Natural Gas / Propane) or dedicated fuel.
+Load sensing electronic governor enables true ³hands-
+free´ operation by the driver.
+Hydrostatic Transmission
+Sundstrand =variable =displacement =pump =and 
+fixed displacement motor create a full time 4WD 
+hydrostatic system.
+Chassis
+Tubular steel frame, Dana axles with rear leaf spring 
+suspension.
+Tires
+Steel belted radial LT215/85R16 load range E rated 
+with tungsten tipped studs.
+Hydraulics
+Full =proportional =controls =with =priority =to =power 
+steering.
+Electrical System
+12 VDC system with 70 Amp alternator.
+Instruments
+CAN driven 3 in one gauge featuring tachometer, oil 
+pressure and coolant temperature.  Multi Function 
+CAN =unit =capable =of =displaying =multiple =engine 
+signals =as =well =as =service =intervals. = =Overheat, 
+alternator =and =oil =pressure =warning =lights =and 
+audible alarm. Water pump switch, ignition switch, 
+horn button, fuses, gasoline fuel gauge.
+Ice Shaving Blade
+Driver Adjustable, 195.6 x 12.7 x 1.27 cm (77 x 5 
+x ? in.)
+Wash Water Pump
+12 VDC with integral electro-magnetic clutch.
+Conveyor System
+Two 25.4 cm (10 in.) diameter double flighted 
+augers (horizontal / vertical).
+
+=== PDF PAGE 11 ===
+Zamboni? Ice Resurfacer Specifications
+x
+Snow Tank
+Actual 2.83 m3 (100 ft3)         Compacted 3.54 m3 (125 ft3)
+Ice Making Water
+727 L
+192 USG
+160 IMP GAL
+Wash Water
+273 L
+72 USG
+60 IMP GAL
+Total
+1000 L
+264 USG
+220 IMP GAL
+Hydraulic Oil
+95 L
+25 USG
+21 IMP GAL
+Gasoline
+41.6 L
+11 USG
+9.2 IMP GAL
+Propane (LPG)
+30 lb recommended
+Natural Gas (CNG)
+120 L
+32 USG
+26 IMP GAL
+Tanks are not supplied from the factory.
+Snow Tank Raised
+Snow Tank Lowered
+Length
+5.03 m (198 in.)
+4.04 m (159 in.)
+Height
+3.71 m (146 in.)
+2.21 m (87 in.)
+Width
+2.13 m (84 in.)
+Wheel Base
+1.95 m (77 in.)
+Wheel Track
+1.37 m (54 in.)
+Turning Radius
+4.86 m (16 ft.)
+Weight
+Empty:  3143 kg (6930 lb)   With Water:  4240 kg (9350 lb)
+Tank Capacities
+Dimensions
+
+=== PDF PAGE 12 ===
+Zamboni? Ice Resurfacer Specifications
+xi
+Dimensions
+
+=== PDF PAGE 13 ===
+xii
+Forward
+Foreword
+ 
+This manual contains safety, lubrication and maintenance information.
+ 
+The manual is a reference for the new operator and a refresher for the 
+experienced one.
+ 
+It is mandatory that all operators review in detail this manual before 
+performing any operation.
+ 
+Read - understand - and keep this manual with the Zamboni ice resurfacer.
+ 
+Some illustrations show details or attachments that may be different from 
+your machine.  Guards and covers may have been removed for illustrative 
+purposes only.
+ 
+KEEP ALL GUARDS IN PLACE!
+ 
+Continuing improvement and advancement of product design may have 
+caused changes to your Zamboni machine which may not be included in 
+this publication.
+ 
+Whenever a question arises regarding your ice resurfacer or this publication, 
+please consult Zamboni Company Ltd. for the latest information.
+ 
+A continuing review of this manual is recommended.
+Safety
+The "General Safety Practices" section lists minimum safety precautions.  In  addition, this 
+section explains the warning labels used on the Zamboni machine.
+Read and understand the basic precautions listed in the safety section before operating or 
+performing lubrication, maintenance and repair on this product.
+Operation
+This manual includes sections which explain system gauges and switches, resurfacer and 
+attachment controls and basic operating techniques.
+Operating techniques outlined in this publication are basic.  Skill and techniques develop as 
+the operator gains knowledge of the Zamboni ice resurfacer and its capabilities.
+
+=== PDF PAGE 14 ===
+1 - 1
+General Safety Practices
+1.
+General Safety Practices
+Safety
+This symbol warns of possible personal injury.
+The safety rules and regulations in this section are representative of some, but not all, 
+rules and regulations.  The Canadian Centre for Occupational Health and Safety (CCOHS) 
+is paraphrased without representation that the CCOHS rules and regulations have been 
+reproduced verbatim.  Please refer to your provincial Health and Safety regulatory body 
+for a complete list of rules and regulations.  Regulations vary from province to province as 
+well as country to country; operate your Zamboni ice resurfacer in accordance with local 
+regulations.
+Important Safety Notice
+Periodic and proper operation, lubrication and maintenance is important for the safety and 
+reliability of your Zamboni machine.  The manual outlines recommended procedures, some 
+of which require the use of special tools or work methods.
+DANGER!
+Improper operation, lubrication and maintenance of 
+this machine is dangerous and could result in injury 
+or death.
+READ AND UNDERSTAND ALL SAFETY PRECAUTIONS AND WARNINGS BEFORE 
+OPERATING, LUBRICATING OR PERFORMING MAINTENANCE ON THIS MACHINE.
+Basic safety precautions are outlined in the SAFETY section of this manual and in the 
+description of operations where hazards exist.  Warning labels have also been put on the 
+machine to provide instructions and to identify specific hazards which could cause bodily 
+injury or death to you or other persons.  
+
+=== PDF PAGE 15 ===
+General Safety Practices
+1 - 2
+It is the responsibility of the owner to perform a job safety analysis of all hazards associated 
+with the total environment in which the Zamboni machine will operate and to train all 
+personnel annually. 
+The warnings in the manual and on the machine are identified by the symbols: 
+DANGER!
+This safety symbol warns of possible personal injury 
+or death.
+WARNING! 
+This safety symbol warns of possible personal injury.
+CAUTION!
+This symbol warns of possible damage that may occur 
+to the machine.
+DANGER!
+Operations =that =may =cause =product =damage =are 
+identifled on the product and this publication.  Zamboni 
+cannot anticipate every possible circumstance that 
+might involve potential hazard.
+The warnings in this manual and on the machine are therefore not all-inclusive.  If a procedure, 
+tool or work method not specifically recommended by Zamboni is used, a competent person 
+must be consulted to assure the safety of you and others and that the machine will not be 
+damaged or made unsafe by the procedures you choose. You should also ensure that the 
+product will not be damaged or made unsafe by the operation, lubrication, maintenance or 
+repair procedure you choose.  When in doubt, call our factory for free consultation and advice.
+DANGER! 
+Do =not =operate =or =perform =maintenance =on =this 
+machine unless you have read and understand the 
+instructions in THIS MANUAL.  Improper machine 
+operation and maintenance is dangerous and could 
+result =in =injury =or = =death. = =Contact =Zamboni =for =a 
+free =replacement = =manual. = =Proper =operation =and 
+maintenance is your responsibility.
+
+=== PDF PAGE 16 ===
+1 - 3
+General Safety Practices
+Accidents involving product operation, maintenance and repair are caused by failure to 
+observe safety rules or precautions.  A person must be alerted to potential hazards.  This 
+person should also have the necessary training, skills and tools to perform safely.
+The specifications are subject to change at any time.  These changes may affect the service 
+given to the product.  Please obtain the most current information from your local distributor 
+or the Zamboni factory before starting any job.
+For a list of the most current publications please contact:  Zamboni Company Ltd., 38 
+Morton Avenue East, P.O. Box 1388, Brantford, Ontario, Canada N3T 5T6  (519) 758-5000
+Warning Signs and Labels
+There are several specific safety signs on your Zamboni machine. 
+Make sure that you can read and understand all of the safety signs.  Clean or replace them if 
+you cannot read the words or see the pictures.  When cleaning the labels use a cloth, water 
+and soap.  Do not use solvent, gasoline, etc.
+You must replace a label if it is damaged, missing or cannot be read.  If a label is on a part 
+that is replaced, make sure a new label is installed on the replaced part. 
+Contact Zamboni Company Ltd. for new safety labels free of charge.
+DANGER! 
+Only trained and authorized personnel may operate 
+this machine.  For safe operation, read and follow the 
+manual furnished with this machine and observe the 
+following warnings:
+
+Keep all guards in place.  Do not operate the Zamboni machine if any guard
+is damaged or missing.
+
+Check all controls and warning devices for proper operation.
+
+Insure directional control is in neutral before ³ON-OFF´ switch is turned on.
+
+Start, turn and brake smoothly.  Slow down for turns, slippery or uneven
+surfaces.  Use extreme caution when turning or on inclines.
+
+Watch out for pedestrians and obstructions, check overhead clearances.  Use
+care when backing up.
+
+Do not permit riders on the Zamboni machine at any time.
+
+Do not permit skaters or people on the ice when the machine is operating
+on the ice.
+
+=== PDF PAGE 17 ===
+General Safety Practices
+1 - 4
+ 
+Do not allow anyone to stand or pass under the elevated portion of any 
+machine.
+ 
+Be sure operating surface can safely support machine.
+ 
+Observe safety rules when handling fuel on engine powered machines and 
+when changing or charging batteries for electric machines.
+ 
+Never cover, hide or remove any safety label.
+ 
+Never stand on the ice making water tank.  Damage to the tank and personal 
+injury may occur.
+Crushing or Cutting Prevention
+ 
+Support equipment and attachments properly when working beneath them.
+ 
+Do not depend on hydraulic cylinders to hold up. Any attachment can fail if 
+a control is moved or if a hydraulic line breaks. 
+ 
+Never attempt adjustments while the machine is moving or is running unless 
+otherwise specified.
+ 
+Where there are mechanical linkages, the clearance in the linkage area will 
+increase or decrease with movement of the assembly.
+ 
+Stay clear of all rotating and moving parts.
+ 
+Keep objects away from moving fan blades.  They will throw or cut any 
+object or tool that falls or is pushed into them.
+ 
+Retainer pins, when struck with force, can fly out and injure nearby persons. 
+Make sure the area is clear of people when striking retainer pins.
+ 
+Wear protective glasses when striking a retainer pin to avoid injury to your 
+eyes.
+ 
+Chips or other debris can fly off objects when struck.  Make sure no one can 
+be injured by flying debris before striking any object.
+ 
+Keep all guards in place and good repair.
+Fire or Explosion Prevention
+Fuels (Gasoline, Propane - LPG, Compressed Natural Gas - CNG)
+DANGER!
+Gasoline, LPG , CNG and their vapors  are extremely 
+flammable. = =LPG =and =CNG =vapors =reduce =oxygen 
+available for breathing and may cause suffocation.  
+Gasoline vapors are extremely Áammable and cause 
+Áash flres. 
+
+=== PDF PAGE 18 ===
+1 - 5
+General Safety Practices
+ 
+Physical damage such as dents, scrapes or gouges may materially weaken 
+the structure of the tank and render it unsafe for use.
+ 
+All LP gas containers should be regularly inspected before recharging and 
+examined again before reuse, for the following defects or damage.
+ 
+Keep container valve closed and plugged when not in use.
+ 
+Never use a match or open flame to check for leaks, use a soap solution.
+ 
+Always close the LPG tank service valve, remove the tank(s) and store them 
+in an outside, locked cage when the Zamboni machine is parked for the night 
+or for any extended length of time.
+ 
+Never smoke when filling, installing or changing the fuel tanks on the 
+machine.
+ 
+Inspect for deterioration, damage or loss of flexible seals in the fill or servicng 
+connection.
+ 
+Do not overfill LP gas containers.
+ 
+Keep all sources of open flame, spark or other ignition such as stoves, 
+furnaces, water heaters or any appliance using a pilot light away from fuel 
+storage, fuel use and refueling areas.  Under well ventilated conditions, a 
+minimum distance of 20 feet from all ignition sources is recommended.
+ 
+Do not operate the machine if an odor of gasoline or LPG or CNG is present 
+or if other explosive conditions exist.
+ 
+Refuel outdoors or in a well ventilated area.
+ 
+DO NOT refuel when the engine is running or hot.  Allow engine and engine 
+exhaust system and catalytic convertor to cool for a minimum of five minutes 
+before refueling.
+ 
+Never fill the gasoline tank completely full or to a point where the gasoline is 
+overflowing.  Always leave a small portion of the gas tank and the entire fill 
+tube empty.  This will allow for the expansion and movement of the gasoline 
+and will minimize sloshing and potentially spilling the gasoline when the 
+machine moves.
+ 
+If gasoline is spilled, avoid creating any source of ignition until the gasoline 
+has been completely removed.
+ 
+LPG is heavier that air and spreads rapidly.  Stop all leaks quickly.  Shut off 
+the source of gas.
+ 
+If a fire starts, evacuate the area and notify the fire department.
+
+=== PDF PAGE 19 ===
+General Safety Practices
+1 - 6
+
+For a fire in the engine compartment, shut off engine.  Shut off the gas flow
+at the tank valves for LPG and CNG powered machines before trying to
+extinguish.
+
+Always have a properly maintained fire extinguisher located in the Zamboni
+machine room.
+
+Fire extinguishing media must be dry chemical, foam, or CO2 for usage on
+large fires.
+Propane (LPG) Tank Storage and Handling
+
+Avoid skin contact with liquid because of possibility of freeze burn.  Use
+propane resistant gloves when working with the propane tank connections.
+Always use full face mask and wear a long sleeve shirt or jacket.
+
+The storage and handling of LP gas and tanks should be in accordance with
+the CAN/CSA -B149.2 Propane Storage and Handling Code, 2005 Edition.
+
+The machine should be refueled in accordance with the CAN/CSA -B149.2
+Propane Storage and Handling Code, 2005 Edition.
+
+Only properly trained and designated persons should charge or exchange
+the LP gas tanks.
+
+The engine should be stopped  and no persons should be on the Zamboni
+machine during refueling.
+
+Always install tanks and make tank connections outdoors or in a well
+ventilated area away from heat, ignition sources and open flames.
+
+NO SMOKING ALLOWED during these operations!
+
+Store tanks in an authorized location (outside, detached storage is required)
+with adequate ventilation.
+
+Store tanks in an upright position, away from heat and ignition sources.
+
+Reasonable care should be exercised in handling the LP gas containers to
+avoid damage. Do not drop, throw, roll or drag LP gas containers or any
+associated parts of the containers or fuel system.
+
+The careless handling of LP gas containers can result in a serious accident.
+Extreme care should be exercised when transporting containers so that they
+are not accidently dropped or physically damaged.  When it is necessary to
+move more than one container at one time, a proper carrying device should
+be provided and used.
+
+=== PDF PAGE 20 ===
+1 - 7
+General Safety Practices
+
+Physical damage such as dents, scrapes or gouges may materially weaken
+the structure of the tank and render it unsafe for use.
+
+All LP gas containers should be regularly inspected before recharging and
+examined again before reuse for the following defects or damage:
+1.=Leaks, dents, scrapes, gouges or corrosion of the pressure
+vessel, with emphasis on the bottom of the cylinders.
+2.=Damage to the various valves and liquid level guage.
+3.=Debris in the relief valve.
+4.=Indication of leakage at valves and/or threaded connection.
+
+Keep container valve closed and plugged when not in use.
+
+Never use a match or open flame to check for leaks, use a soap solution.
+
+Always close the LPG tank service valve, remove the tank(s) and store
+them in an outside, locked cage when the Zamboni machine is parked for
+the night or for any extended length of time.
+CNG Fuel System
+The installation of distribution, storage and dispensing (charging) systems must be done 
+in accordance with the ANSI/IAS NGV4.1-1999 / CSA 12.5-M99 (R04) and any other 
+applicable regulations. Your local gas utility company must be advised of your installation.
+The machines
+s CNG cylinders must be charged in accordance with the ANSI/IAS NGV4.1-
+1999 / CSA 12.5-M99 (R04).
+Only properly trained and designated persons should charge the CNG fuel cylinders on the 
+machine.
+
+Never smoke when charging the CNG fuel cylinders on the machine.
+
+Keep all sources of open flame, spark or other ignition such as stoves, furnaces,
+water heaters or any appliance using a pilot light away from fuel storage,
+fuel use and refueling areas.  Under well ventilated conditions, a minimum
+distance of 20 feet from all possible ignition sources is recommended.
+
+Never charge the cylinders in excess of their maximum allowable service
+pressure at normal temperature.  Department of Transportation and Transport
+Canada containers shall be charged in accordance with DOT and TC
+regulations.
+
+=== PDF PAGE 21 ===
+General Safety Practices
+1 - 8
+Oils
+
+Hydraulic oil and its vapors are flammable and will ignite if they contact a
+hot surface such as an exhaust pipe or manifold.  A flash fire can occur.
+
+Hot oil and components can cause personal injury.  Do not allow hot oil or
+components to contact the skin.
+
+At operating temperature, the hydraulic tank is hot and can be under pressure.
+
+Remove the hydraulic tank filler cap only after the machine has been stopped
+and the filler cap is cool enough to remove with your bare hand.
+
+Remove the hydraulic tank filler cap slowly to relieve pressure.
+Batteries
+
+Battery fumes may cause fire or explosion.  Battery acid can cause burns.
+
+Only trained and designated personnel should recharge or exchange batteries.
+
+Service, exchange and handle batteries only in authorized areas where proper
+safety and ventilation facilities are provided (i.e. eye wash stand, showers,
+etc.).
+
+Do not smoke, or expose battery to sparks or flame when checking, charging
+or servicing battery.  Keep chains and metallic tools away from the top of
+the battery.
+
+Highly explosive gases are present and are especially hazardous toward the
+end of the charging period as the battery approaches a full charge condition.
+
+Cover the top of the battery with plywood or other insulating material before
+removing it from the machine.
+
+Do not add acid to a ³wet´ battery, add distilled water only.
+
+When preparing a dry charged battery for service, follow the battery
+manufacturer¶s instructions.
+
+Do not smoke in areas where batteries are charged or where flammable
+materials are stored.
+
+Clean and tighten all electrical connections.  Check daily for loose or frayed
+electrical wires.  Have all loose or frayed electrical wires tightened, repaired
+or replaced before operating the Zamboni ice resurfacer.
+
+=== PDF PAGE 22 ===
+1 - 9
+General Safety Practices
+Lubricants
+Most lubricants are flammable.
+
+Keep all lubricants stored in properly marked containers and away from
+unauthorized persons.
+
+Store all oily rags or other flammable material in an approved container, in
+a safe place.
+
+Do not weld or flame cut on pipes or tubes that contain flammable fluids.
+Clean them thoroughly with non-flammable solvent before welding or flame
+cutting on them.
+
+Remove all flammable materials such as oil and other debris before they
+accumulate on the Zamboni machine.
+
+Do not expose the ice resurfacer to flames, burning, etc. if at all possible.
+
+Have a fire extinguisher available and know how to use it.  Inspect and have
+it serviced as recommended on its instruction plate.
+Lines, Tubes and Hoses
+
+Do not bend or strike high pressure lines.  Do not install bent or damaged
+lines, tubes or hoses.
+
+Repair any loose or damaged oil lines, tubes and hoses.  Leaks can cause
+fires.  Contact the Zamboni Company or your Zamboni machine dealer for
+repair or replacement.
+
+Check lines, tubes and hoses carefully.  Do not use your bare hand to check for
+leaks.  Use a board or cardboard to check for leaks.  Tighten all connections
+to the recommended torque.  Replace if any of the following conditions are
+found:
+
+End fittings damaged or leaking.
+
+Outer covering chafed or cut and wire reinforcing exposed.
+
+Outer covering ballooning locally.
+
+Evidence of kinking or crushing of the flexible part of hose.
+
+Make sure that all clamps, guards and heat shields are installed correctly
+to prevent vibration, rubbing against other parts and excessive heat during
+operation.
+
+=== PDF PAGE 23 ===
+General Safety Practices
+1 - 10
+Safe Operation
+Mounting and Dismounting
+ 
+Mount and dismount the ice resurfacer only where steps and/or handholds 
+are provided.
+ 
+Use =both =hands =and =face =the =Zamboni =machine =when =mounting =and 
+dismounting.  Use extra care when wet or slippery conditions exist.
+ 
+Never get on or off a moving Zamboni machine.  Never jump off the machine.
+ 
+Do not try to climb on or off the ice resurfacer when carrying tools or supplies.
+Before Operating the Zamboni Ice Resurfacer
+ 
+Operate the machine only from the operator
+s station.
+ 
+Adjust the seat so that full pedal travel can be obtained with the operator
+s 
+back against the seat back.
+ 
+The Zamboni machine is equipped with a lighting system, make sure all 
+lights are working properly.
+ 
+Make sure no one is working on, underneath or close to the ice resurfacer 
+before turning on the key or beginning to move the machine.  Make sure the 
+area is free of personnel.
+ 
+Do not move the machine or move any of the controls if there is a ³DO 
+NOT OPERATE´ or similar warning tag attached to the start switch or 
+controls.
+ 
+Clear all personnel from the machine and the area.
+ 
+Clear all obstacles from the path of the ice resurfacer.  Beware of hazards 
+such as curbs, blocks, posts, wire, cans, etc.
+ 
+Make sure the horn and all other warning devices are working properly.
+ 
+Check for proper operation of all controls.
+Operation
+ 
+Obey all traffic rules and warning signs.
+ 
+Always observe floor load limits and overhead clearances.
+ 
+When turning the ice resurfacer, slow down to safe speed.
+
+=== PDF PAGE 24 ===
+1 - 11
+General Safety Practices
+Parking
+
+Park the Zamboni machine in authorized areas only.
+
+Remove foot from the acceleration foot pedal to place the machine in
+NEUTRAL.
+
+Lower the conditioner onto blocks.
+
+Turn the ignition switch OFF and remove the key.
+
+If possible, park the machine on a flat and level surface.  If the machine is
+parked on any kind of grade, the wheels must be blocked with wheel chocks
+to prevent the machine from rolling away after it has been parked.
+
+Apply the parking brake if the parking brake option was purchased with the
+machine.
+
+Store in well ventilated area.
+
+=== PDF PAGE 25 ===
+General Safety Practices
+1 - 12
+Maintenance
+Walk-Around Inspection
+For maintenance and operator personnel safety and maximum service life of the Zamboni 
+machine, make a thorough walk-around inspection when doing lubrication and maintenance 
+work.  Look around and under for such items as loose or missing bolts, trash or dirt build-
+up, oil leaks and cut or gouged tires.
+DANGER!
+Improper performance of lubrication or maintenance 
+procedures is dangerous and could result in injury 
+or death.  Read and understand all OPERATION 	 
+MAINTENANCE instructions before performing any 
+lubrication or maintenance. 
+DANGER! 
+Do =not =operate =this =machine =unless =you =have =read 
+and understand the instructions in the OPERATOR·S 
+manual.  Improper machine operation is dangerous 
+and could result in injury or death. 
+The service person or mechanic may be unfamiliar with many of the systems on this machine. 
+This makes it important to use caution when performing service work.  A knowledge of the 
+system and/or components is important before the removal or disassembly of any component.
+The following is a list of basic precautions that should always be observed:
+
+Read and understand all warning plates and decals on the machine before
+operating, lubricating or repairing this product.
+
+The vertical and horizontal augers will continue to rotate for a short period
+of time after the auger control valves have been shut off.  Always allow for
+all auger rotation to stop before working near or on the augers.  Never work
+near or on the augers when the engine is operating.
+
+Always wear protective glasses and protective shoes when working around
+machines.  In particular, wear protective glasses when pounding on any part
+of the machine or its attachments with a hammer or sledge.  Use welder¶s
+gloves, hood/goggles, apron and other protective clothing appropriate to the
+welding job being performed.  Do not wear loose, fitting or torn clothing.
+Remove all rings from fingers when working on machinery.
+
+Do not work on any machine that is supported only by jacks or a hoist.
+Always use blocks or jack stands to support the machine before performing
+any disassembly.
+
+=== PDF PAGE 26 ===
+1 - 13
+General Safety Practices
+
+Lower the conditioner or other implements to the ground before performing
+any work on the machine.
+
+Use steps and grab handles (if applicable) when mounting or dismounting a
+machine.  Clean any mud or debris from steps, walkways or work platforms
+before using.  Always face machine when using steps, ladders and walkways.
+When it is not possible to use the designated access system, provide ladders,
+scaffolds or work platforms to perform safe repair operations.
+
+Use proper lifting procedures when removing components.  To avoid back
+injury, use a hoist when lifting components which weigh 50 lbs. (23 kg.) or
+more.  Make sure all chains, hooks, slings, etc. are in good condition and
+are of the correct capacity.  Be sure hooks are positioned correctly.  Lifting
+eyes are not to be side loaded during a lifting operation
+
+To avoid burns, be alert for hot parts on machines which have just been
+stopped and hot fluids in lines, tubes and compartments.
+
+Be careful when removing cover plates.  Gradually back off the last two
+bolts or nuts located at opposite ends of the cover or device and pry cover
+loose to relieve any spring or other pressure, before removing the last two
+bolts or nuts completely.
+
+Be careful when removing filler caps, breathers and plugs on the machine.
+Hold a rag over the cap or plug to prevent being sprayed or splashed by
+liquids under pressure.  The danger is even greater if the machine has just
+been stopped because fluids can be hot.
+
+Always use tools that are in good condition and be sure you understand how
+to use them before performing any service work.
+
+Reinstall all fasteners with same part number.  Do not use a lesser quality
+fastener if replacements are necessary.  Do not mix metric fasteners with
+standard nuts and bolts.
+
+If possible, make all repairs with the machine parked on a level, hard surface.
+Block machine so it does not roll while working on or under machine.
+
+Repairs which require welding should be performed only with the benefit
+of the appropriate information and by personnel adequately trained and
+knowledgeable in welding procedures.
+
+Determine type of metal being welded and select correct welding procedure
+and electrodes, rods or wire to provide a weld metal strength equivalent at
+least to that of parent metal.
+
+=== PDF PAGE 27 ===
+General Safety Practices
+1 - 14
+
+Do not damage wiring during removal operations.  Reinstall the wiring so it
+is not damaged nor will it become damaged in operation by contacting sharp
+corners, or by rubbing against some object or hot surface.  Do not connect
+wiring to a line containing fluid.
+
+Be sure all protective devices including guards and shields are properly
+installed and functioning correctly before starting a repair.  If a guard or shield
+must be removed to perform the repair work, use extra caution.
+
+Loose or damaged fuel, lubricant and hydraulic lines, tubes and hoses can
+cause fires.
+
+Do not bend or strike high pressure lines or install ones which have been bent
+or damaged.  Inspect lines, tubes and hoses carefully.  Do not check for leaks
+with your hands.  Pinhole (very small) leaks can result in a high velocity oil
+stream that will be invisible close to the hose.  This oil can penetrate the skin
+and cause personal injury.  Use cardboard or paper to locate pinhole leaks.
+
+Tighten connections to the correct torque.  Make sure all heat shields, clamps,
+and guards are installed correctly to avoid excessive heat, vibration or
+rubbing against other parts during operation.  Relieve all pressure in air, oil
+or water systems before any lines, fittings or related items are disconnected
+or removed.  Always make sure all raised components are blocked correctly
+and be alert for possible pressure when disconnecting any device from a
+system that utilizes pressure.
+
+Do not operate a machine if any rotating part is damaged or contacts any
+other part during operation.  Any high speed rotating component that has been
+damaged or altered should be checked for balance before reusing.
+
+Caution should be used to avoid breathing dust that may be generated when
+handling components containing asbestos fibers.  If this dust is inhaled, it can
+be hazardous to your health.  Components in Zamboni machine products that
+may contain asbestos fibers are brake pads, brake band and lining assemblies,
+and some gaskets.  The asbestos used in these components is usually bound
+in a resin or sealed in some way.  Normal handling is not hazardous as long
+as airborne dust which contains asbestos is not generated.
+
+If dust which may contain asbestos is present, there are several common
+sense guidelines that should be followed:
+
+Never use compressed air for cleaning.
+
+Avoid brushing or grinding of asbestos containing materials.
+
+For clean up, use wet methods or a vacuum equipped with a high
+efficiency particulate air (HEPA) filter.
+
+=== PDF PAGE 28 ===
+1 - 15
+General Safety Practices
+ 
+Use exhaust ventilation on permanent machining jobs.
+ 
+Wear an approved respirator if there is no other way to control the dust.
+ 
+Comply with applicable rules and regulations for the work place (for 
+example in the U.S.A., OSHA requirements as set forth in a 29 CFR 
+1910.1001)
+ 
+Follow environmental rules and regulations for disposal of asbestos.
+ 
+Avoid area where asbestos particles may be in the air.
+Battery Operation and Maintenance
+WARNING!
+Hydrogen and oxygen gases are given off as battery 
+plates get near a full charge condition.  These gases 
+are =highly =explosive =and =caution =must =be =taken =to 
+make sure no arc, spark, or Áame comes into contact 
+with the generated gases.  The possibility of explosion 
+is always present with exposure of the battery to sparks 
+or Áame, but is especially hazardous at the end of the 
+charging period. 
+WARNING! 
+When using air pressure for cleaning purposes, wear 
+a =protective =face =shield =and =protective =clothing. 
+Maximum air  pressure must be below 30 psi (207 kPa).
+Do not smoke near batteries that are being stored or 
+when checking the electrolyte level.
+Electrolyte is an acid solution and can cause personal 
+injury.  Avoid contact with skin and eyes.
+Maximum life and performance of batteries is dependent on the operator, battery charging, 
+maintenance and service.
+Most dirt and dust picked up by the battery can usually be blown off with low pressure 
+compressed air.
+However, if cells are overfilled and electrolyte collects on the covers, the top of the battery 
+will stay wet.
+If necessary, clean the top of the battery with a solution of baking soda and hot water.
+CAUTION!
+Vent caps must be tight to prevent soda solution from 
+entering battery cell.
+
+=== PDF PAGE 29 ===
+General Safety Practices
+1 - 16
+To make the solution, add 1 lb (0.5 kg) of baking soda to 1 gallon (4 liters) of water.  Use 
+a brush having flexible bristles.  Apply the soda solution to the top of the battery until the 
+cleaning action of the soda stops.
+After cleaning action has stopped, rinse batteries thoroughly with water.  Dry the batteries 
+with air pressure.
+Cold Storage Applications
+When a Zamboni machine is operated in very cold applications at temperatures as low as 
+-4 degrees Fahrenheit (-20 degrees Celsius), the battery capacity is decreased.  Operation
+at cold temperatures can also cause mechanical failures, short circuits and too much wear
+due to the formation of ice crystals.
+The direct cause of these problems is the extreme changes in temperature in combination 
+with humidity in the air which can result in condensation.
+There is a reduction in battery capacity in very cold applications.  For this reason, it is 
+important to:
+
+Be sure the battery is completely charged at the start of each work cycle.
+
+If possible, keep the Zamboni machine in a warm storage area when it is
+not in use.
+
+=== PDF PAGE 30 ===
+General Operating and Maintenance Information
+2 - 1
+2.
+General =Operating =and 
+Maintenance Information
+ Important : 
+The =engine, =drive =train =and =differentials =on =the =ice 
+resurfacer are all new components and special care 
+must be given to them during their ´break-inµ period.
+Service schedules for machine lubrication and preventative maintenance have been 
+established on the basis of  hourly, daily, weekly and monthly intervals (see 526 Service 
+Manual).  Along with performing regular machine lubrication and preventative maintenance 
+according to these schedules, it is advised that you have the ice resurfacer and its components 
+completely checked over periodically by a competent mechanic.
+Study should be given to the Mitsubishi Operating and Service manuals which are furnished 
+with your ice resurfacer.  It would be beneficial to have your service person inspect the engine 
+and drive system so that they may become familiar with the operation for service and repair. 
+It is also recommended that the new owner contact the local Zamboni Authorized Dealer to 
+acquaint themselves with the service policy.
+Note Regarding the Mitsubishi Engine:
+The engine is equipped with a low oil pressure warning light and an alternator warning 
+light mounted on the instrument panel.  The engine also has a ³malfunction indicator light 
+(MIL)´ which warns the operator about engine conditions which may require service.  For 
+more information on the ³malfunction indicator light´, see Chapter 4 and Chapter 6.
+Grade of Engine Oil
+Use only engine oils displaying the American Petroleum Institute (API) ³Starburst´ 
+Certification Mark µFOR GASOLINE ENGINES¶ and a rating of at least SJ on the container. 
+Oil capacity is 5.7L (5 quarts) with filter.
+
+=== PDF PAGE 31 ===
+General Operating and Maintenance Information
+2 - 2
+Fuel Recommendation 
+This engine is designed to operate on unleaded 87 or 89 octane gasoline.  The engine, with 
+the proper fuel equipment, can also be operated on dry fuel such as LPG and NG.
+NOTE:  It is highly recommended that a fuel stabilizer additive be used for any length of 
+storage.  It is imperative in any application where the fuel will not be consumed within 
+thirty days.
+LPG fuel specifications must meet or exceed EN 589 (European) HD-5 (Canada/USA).
+NG fuel specification must meet or exceed 38.7 MJ/m3 (European) 39.0 MJ/m3 (Canada/
+USA) (1050BTU/ft3).
+CAUTION!
+Use =of =fuels =rated =lower =than =the =grades =specifled 
+above may cause persistent, heavy spark knock, which 
+can lead to engine damage.  If your engine knocks 
+heavily when using unleaded gasoline with 87 octane 
+or higher, or if you hear continuous spark knock while 
+maintaining constant operating speeds, consult your 
+distributor or another qualifled technician.
+Your efforts spent in properly maintaining the ice resurfacer and its various components 
+will be well repaid by longer wear and good service. 
+Starting the Engine
+To start the engine:
+
+Make sure the acceleration foot pedal is in the Neutral position.
+
+Make sure the auger control levers are Off/Neutral.
+
+Turn ignition key to start.
+
+The engine will start and run at approximately 1150 RPM.  Wait 15 seconds
+before increasing the engine speed for resurfacing.  This warm up period
+will allow the engine and catalytic convertor to achieve the correct operating
+temperatures.  After the correct warm up period the engine will be operating
+in ³closed loop´ and the catalytic convertor will be more efficient in reducing
+engine exhaust emissions.  Be sure that the engine emissions are exhausted
+to the outside, or the room is properly ventilated.
+
+Be sure snow tank is completely down and the conditioner is raised.
+
+=== PDF PAGE 32 ===
+General Operating and Maintenance Information
+2 - 3
+Stopping the Engine
+To stop the engine: 
+ 
+Return the acceleration foot pedal to Neutral.  Set the parking brake, if so 
+equipped.
+ 
+Return the auger control levers to Off/Neutral.
+ 
+After the snow tank has been emptied, lower the conditioner onto blocks.
+ 
+Lower the engine RPM to idle by using the engine speed switch.  Let the 
+engine idle for 30 to 60 seconds before turning the ignition off to allow 
+the engine and exhaust system to cool down.
+ 
+If  the snow tank is up, install the safety stand to the correct position (see 
+Fig. 5.6).
+ 
+Turn off the ignition key switch and remove the ignition key to store in a 
+secure location. 
+Machine Not in Use
+When the machine is not in use:
+ 
+Park the machine in authorized areas only.
+ 
+Lower the conditioner onto blocks.  The conditioner weighs approximately 
+1000 pounds.  This weight should not hang on the lift bar nor be supported 
+by the hydraulic system during storage.  Lowering the conditioner onto the 
+blocks must be done cautiously as putting hydraulic down pressure on the 
+blocks (in excess of the weight of the conditioner) can stretch the down 
+pressure leaf springs.  Wood blocks should  be placed under both conditioner 
+runners.
+ 
+Return the auger control levers to Off/Neutral.  Set the parking brake, if so 
+equipped.
+ 
+Remove and securely store the ignition key.
+  =If possible, park the machine on a flat and level surface.  If the machine is 
+parked on any kind of grade, the wheels must be blocked with wheel chocks 
+to prevent the machine from rolling away after it has been parked.
+
+=== PDF PAGE 33 ===
+General Operating and Maintenance Information
+2 - 4
+Travel on Highways
+The machine is not designed for highway use.  Fast driving on the highway and bouncing 
+the machine over bumps can seriously damage the machine.  Travel over extended distances 
+should be avoided, if possible.  If such travel is required:
+
+Check local authorities to determine if travelling on highways is permitted.
+
+Vehicle escort in front of and behind ice resurfacer is recommended.
+
+Exercise Caution.  Obey all traffic signs, signals and laws.
+
+Make sure that the conditioner is completely raised before driving.
+
+Do not exceed engine speed of 2500 RPM.
+
+Do not tow the machine for long distances.  Transmission damage will occur.
+
+=== PDF PAGE 34 ===
+3  - 1
+Safe Operation
+3.
+Safe Operation
+Your Zamboni ice resurfacer is the result of many years of experience in the ice resurfacing 
+field.  The engineering and safety features that have gone into your Zamboni machine will 
+be enhanced by you, the safe operator... 
+...who knows his machine and all of the controls,
+...who maintains his machine properly,
+...who uses his driving skills wisely and operates the machine with safety 
+in mind.
+Because SAFE DRIVING is important to YOU, we urge you to thoroughly acquaint yourself 
+with the resurfacer and the instructions contained in the Operation Manual.  Even the safest 
+machine can be operated improperly so certain precautions are mentioned in this manual. 
+Among these precautions are:
+
+Be sure that all guards originally installed on the machine are properly in
+place and in good working order.
+
+Make sure the hydrostatic transmission is in neutral before starting the engine.
+Always look completely around the machine prior to moving forward or
+reverse to insure that no one is in the path of your direction of travel.
+
+The ice resurfacer is to be operated by one, and only one person.  No riders!
+
+Keep everyone off the ice while the resurfacer is operating.  Always drive
+defensively.  Expect the unexpected.
+
+Keep hands and feet away from conveyors, belts, chains and other moving
+parts while the engine is running.
+
+Allow the engine and catalytic convertor to achieve the correct operating
+temperatures before driving and resurfacing.
+
+The Zamboni machine is an industrial machine designed to be used by trained
+and skilled operators.  It is never to be used for recreational purposes, such
+as racing.
+
+=== PDF PAGE 35 ===
+Safe Operation
+3  - 2
+DANGER! 
+Turn off and remove the ignition key before adjusting, 
+repairing, cleaning, or servicing the conveyors.  The 
+vertical and horizontal augers will continue to rotate 
+for =a =short =period =of =time =after =the =auger =control 
+valves have been shut off.  Always allow for all auger 
+rotation to stop before working near or on the augers. 
+NEVER work near or on the augers when the engine 
+is operating.
+If any part of the conveyor system becomes plugged or 
+clogged, or appears plugged or clogged, the conveyor 
+must be Áushed out with water.  Do not wear gloves or 
+jewelry when performing these functions. 
+Flushing the augers out with water must be done only 
+after =the =machine =has =been =removed =from =the =ice, 
+the auger control valves have been returned to their 
+"neutral (off)" positions, and the ignition has been shut 
+off. 
+Under no circumstances should the operator attempt 
+to clean or clear the conveyor system or parts around 
+it while the machine is on the ice or the power is on. 
+To do so, exposes the operator and others to serious 
+potential injury or death!
+WARNING!
+Keep hands, feet and body out from under the snow 
+tank, conditioner and other raised parts unless they 
+are blocked securely.  Use the safety stand under the 
+snow tank.
+Be extremely careful when handling the shaving knife.  
+Unless handled with care, the blade can cause injury 
+whether it is sharp or dull.
+WARNING!
+If the machine is parked on any kind of grade, the 
+wheels must be blocked with wheel chocks to prevent 
+the =machine =from =rolling =away =after =it =has =been 
+parked.
+
+=== PDF PAGE 36 ===
+3  - 3
+Safe Operation
+DANGER!
+Internal =combustion =engines =produce =exhaust 
+emissions =that =contain =dangerous =gases, =including 
+carbon  monoxide (CO) and nitrogen dioxide (NO2 ). 
+These gases can cause serious injury or death.
+The rink MUST be adequately ventilated during every 
+operation of the ice resurfacer.  Also the resurfacer 
+must be kept properly maintained and serviced at all 
+times and the engine timing should always be properly 
+set. = =Each =person =who =operates =and =maintains =the 
+resurfacer should be so instructed.
+Please =keep =in =mind =that =adequate =ventilation, 
+monitoring the facility
+s  indoor air quality (for CO 
+and NO2 levels) and the condition of the machine is, 
+at all times, the complete responsibility of the rink.
+
+Use =extreme =caution =when =handling =fuel =and =store =only =in =approved
+containers.
+
+Annual training of the operator is required.
+
+All new operators must be trained before operating the machine for the first
+time.
+
+Warning labels should be followed.  Do not operate if the labels are missing
+or cannot be read.
+DANGER! 
+This machine has an electronic engine control unit 
+(ECU).  If the ECU detects that the engine is operating 
+outside of it
+s desired parameters, the "check engine" 
+or malfunction indicator light (MIL) will be turned on. 
+Do not operate the machine with the "check engine" 
+light illuminated for a continuous period.  Have the 
+machine serviced as soon as possible.
+
+=== PDF PAGE 37 ===
+
+=== PDF PAGE 38 ===
+4  -  1
+Ice Rink Air Quality
+4.
+Ice Rink Air Quality
+In order for a rink to have the best air quality possible, the Zamboni machine must be 
+operated properly in a rink that:
+
+Is adequately ventilated.
+
+Performs daily air quality monitoring/measuring.
+
+Knows which air quality standards or guidelines apply to them.
+
+Knows which items on the Zamboni machine affect air quality and how and
+when these items should be measured and serviced.
+
+Allows the engine and catalytic converter to properly warm up before
+operating the machine on the ice.
+Adequate Ventilation
+Adequate ventilation is the amount of ventilation required to ensure that the air is healthy 
+to breathe and meets all applicable health and safety standard or guidelines.
+Air Quality Monitoring
+Regular air quality monitoring is a program that each rink sets up to ensure that their air 
+quality is healthy and meets the standards. 
+Air quality standards or guidelines define the amount of Carbon Monoxide gas (CO) and 
+Nitrogen Dioxide gas (NO2) that can exist in the air inside the ice rink.  These gases are 
+exhaust emissions from the combustion of fossil-based fuels such as gasoline, LPG and CNG.
+Ice rink air quality can also be affected by many other factors.  These include:
+
+Ice edgers powered by internal combustion engines.
+
+Unvented propane heaters, furnaces, or boilers.
+
+CO2 tanks.
+
+Fuels with impurities.
+
+The ice refrigeration system and  it
+s gases (ammonia or "Freon").
+
+Cigarette smoke.
+
+Restaurant and/or vendor equipment.
+
+Improper storage of paints, chemical, solvents, etc.
+
+=== PDF PAGE 39 ===
+4  -  2
+Ice Rink Air Quality
+The arena
+s ventilation system can also dramatically affect the indoor air quality by:
+ 
+Not being properly operated.
+ 
+Not being properly maintained.
+ 
+Not being properly designed such as:
+ 
+Inadequate size or performance. 
+ 
+ 
+Intake air systems drawing in air from other polluted areas, such as 
+a vehicle parking lot or garage.
+Even cars, buses or trucks idling next the arena doors or ventilation system intakes can have 
+a dramatic affect upon the indoor air quality.
+Engine Emission System Components
+This machine is equipped with an engine system that is designed to reduce emissions to the 
+point of compliance with industry standards.  In order to comply with these standards, the 
+machine is equipped with the following items:
+ 
+Electronic Control Unit (ECU).
+ 
+Electronic Fuel Injection (EFI - Gasoline Only).
+ 
+Electronic governor.
+ 
+Three-way catalytic converter.
+ 
+Oxygen sensor.
+ 
+MAP sensor.
+ 
+Engine coolant temperature sensor.
+ 
+Ambient air temperature sensor.
+ 
+On-board diagnostic system.
+ 
+Malfunction indicator light (MIL).
+All of these items are used to insure that the engine operates properly and meets the emission 
+level standards.  However, exhaust emissions are still being produced by the engine and 
+while the level of the harmful pollutants are reduced, the air quality in the rink must still be 
+monitored to make sure that the air is healthy.
+
+=== PDF PAGE 40 ===
+4  -  3
+Ice Rink Air Quality
+Engine Control Unit (ECU)
+The ECU works to control the engine
+s air-fuel ratio (AFR) to the ideal levels based on the 
+engine
+s operating conditions.  The ECU monitors the engine for speed, load, air and coolant 
+temperature and then adjusts the AFR via the electronic fuel injection to produce the ideal 
+mixture.  If the AFR is near the ideal ratio (stoichiometric), then the catalytic converter 
+will operate at it
+s maximum efficiency thus reducing the emission levels of the harmful 
+exhaust gases.
+Typically, it takes a few minutes for the engine and catalytic converter to achieve proper 
+operating temperatures and conditions.  Resurface only when the engine emission system 
+is up to normal operating temperature.
+If the ECU detects conditions where it cannot control the AFR, it will then turn on the MIL, 
+thus alerting the operator.  If the ECU detects that a portion of the engine equipment, which 
+it monitors, is malfunctioning, it will turn on the MIL.  DO NOT OPERATE the machine 
+with the malfunction indicator light on continuously.
+DANGER!
+If the check engine light turns on during normal operation of the 
+machine, the machine must be serviced immediately!
+Open Loop versus Closed Loop Operation
+When the engine is first started, it is operating in "open loop" condition.  This means that the 
+ECU is controlling the AFR via pre programmed levels.  When the engine achieves a certain 
+operating temperature, the ECU then goes into the "closed loop" mode.  This means that the 
+ECU is controlling the AFR based on the engine operating conditions and is monitoring the 
+signal from the oxygen sensor to determine if changes to the AFR need to be made.
+With the precise closed loop control of the AFR, the catalytic converter will be the most 
+effective in reducing the exhaust emission levels.  The lowest levels of harmful emissions 
+are produced when the machine is operating in the closed loop mode.  For this reason, start 
+the engine and warm it up in accordance with the starting instructions described on page 
+2-2.  ONLY operate the machine on the ice when the engine emission system is up to normal
+operating temperature.
+
+=== PDF PAGE 41 ===
+4  -  4
+Ice Rink Air Quality
+Oxygen Sensor
+The oxygen sensor is a critical component used by the engine controller.  Correct oxygen 
+sensor operation should be verified at each engine service or tune-up (every 1000 hours). 
+The oxygen sensor must be replaced every 2000 hours of operation.
+Catalytic Converter
+Your Zamboni ice resurfacer is equipped with a ³three-way´ catalytic convertor.  The catalytic 
+convertor is designed to reduce the amount of certain exhaust gases.  A three way catalytic 
+reduces CO, hydrocarbons and NOX, (NO2 is a member of the NOX family).
+Catalytic convertors are items that need regular service.  A catalytic convertor may be 
+damaged by incorrect engine timing or by an engine air-fuel ratio that is incorrect.  Operating 
+the machine with the check engine light on may reduce the performance of the catalytic 
+convertor and may also shorten the life expectancy of the catalytic convertor.
+A catalytic convertor has a fixed lifespan.  It may lose efficiency and start to allow more 
+pollution to pass through it without being treated.
+DANGER!
+If the check engine light turns on during normal operation of the 
+machine, the machine must be serviced immediately!
+Engine Ignition Timing
+The engine ignition timing is one important factor that will affect the engine¶s production of 
+exhaust emissions.  The engine timing is factory set and is not designed to need adjustment.
+A machine with advanced timing can produce high levels of NOx and one with retarded 
+timing can produce high levels of CO.  Either of these conditions can adversely affect the 
+catalytic convertor performance and life. 
+DO NOT ADJUST THE ENGINE TIMING!
+
+=== PDF PAGE 42 ===
+4  -  5
+Ice Rink Air Quality
+Engine and State of Tune
+The engine¶s condition and state of tune refer to how the engine is operating and whether 
+the operating variables of the engine have been adjusted to provide optimal performance.
+An engine tune-up includes:
+ 
+Changing the spark plugs and noting their condition and appearance.
+ 
+Changing the distributor cap and rotor (if required).
+ 
+Changing the spark plug wires (if required).
+ 
+Inspecting all emission related components for correct function and for correct 
+attachment to the engine.
+ 
+Noting and recording the condition of the malfunction indicator light.
+ 
+Noting and recording any fault codes displayed by the engine
+s ECU.
+ 
+Correcting any engine condition that produces a fault code or the display of 
+the MIL.
+ 
+Recording work performed, dates of service and who performed the service.
+
+=== PDF PAGE 43 ===
+4  -  6
+Ice Rink Air Quality
+Engine Emission Systems - Inspection and Maintenance
+DANGER!
+Internal combustion engines produce exhaust emissions that 
+contain dangerous gases, including carbon monoxide (CO) and 
+nitrogen dioxide (NO2 ).  These gases can cause serious injury or 
+death.
+The rink MUST be adequately ventilated during every operation 
+of the ice resurfacer.  Also the resurfacer must be kept properly 
+maintained and serviced at all times and the engine timing should 
+always be properly set.  Each person who operates and maintains 
+the resurfacer should be so instructed.
+Please keep in mind that adequate ventilation, monitoring the 
+facility
+s indoor air quality (for CO and NO2 levels) and the 
+condition of the machine is, at all times, the complete responsibility 
+of the rink.
+The safe and correct operation and maintenance of the resurfacer, the engine and the engine 
+exhaust system includes:
+
+Measuring the facility
+s indoor air quality daily (for CO and NO2 levels).
+
+Measuring and recording the engine emission levels every 300 hours.  The
+emission levels must not have increased more than 20% from the previous
+readings.
+
+Adjusting engine components (when applicable) to ensure correct operation
+and optimum engine emission levels.
+
+Inspecting, adjusting (when applicable), maintaining and replacing engine
+and exhaust system components when required.
+
+Starting and warming up the engine properly so that the machine is in "closed
+loop" mode when on the ice.
+
+Never operating the machine with the check engine light on continuously.
+If you do not have the tools, education or expertise to inspect, maintain, repair or replace 
+these items, contact a reputable, licensed mechanic for assistance.
+
+=== PDF PAGE 44 ===
+4  -  7
+Ice Rink Air Quality
+Engine Emission System - Inspection and Maintenance Chart
+       
+    Serial No.: 
+ 
+ 
+Fuel Type: 
+ 
+ 
+Catalytic Converter Type:
+    ____________________ =             _____________________          ______________________
+Date  By   Hours        Engine       Cond. 
+                 After Catalytic Converter
+HC
+CO
+CO2
+O2
+NOX
+Levels OK compared to 
+previous testing?
+PPM
+%
+%
+%
+PPM
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Idle
+Load
+Note:  To load the engine, move the conditioner to fully lifted and hold for 15 seconds.
+
+=== PDF PAGE 45 ===
+4  -  8
+Ice Rink Air Quality
+Recommended Maintenance Schedule
+GASOLINE AND LPG CERTIFIED ENGINE MAINTENANCE REQUIREMENTS
+Install 
+Date
+Interval Hours
+Daily
+200
+400
+800
+1000
+1250
+1500
+1750
+2000
+5000
+General Maintenance Section
+Visual Check for Fluid Leaks
+X
+Check Engine Oil Level
+X
+Check Coolant Level
+X
+Change Engine Oil and Filter
+Every 150 Hours or 120 Days of Operation
+Check LPG/Gas System for Leaks
+Prior to any Service or Maintenance Activity
+Inspect Accessory Drive Belts
+X
+Inspect Electrical System
+X
+Inspect Vacuum Lines and Fittings
+X
+Engine Coolant Section
+Clean Debris from Radiator Core
+Every 100 Hours or 60 Days of Operation
+Change Coolant
+X
+Inspect Coolant Hoses for Cracks, 
+Swelling or Deterioration
+X
+Engine Ignition System
+Inspect Battery Case for Damage
+X
+Check all Electrical Connectors
+X
+Replace Spark Plugs
+X
+Base Engine System
+Replace Camshaft Belt
+X
+Replace Balance Shaft Belt
+X
+Inspect PCV System
+X
+Fuel System Maintenance
+Replace Fuel Filter (Gas 	 LPG)
+X
+Inspect Lock Off for Leaks 	 Closing
+X
+Check LPG/Gas Regulator Pressure
+X
+Leak Check LPG/Gas Fuel Lines
+X
+Check/Drain EPR-LPR for Oil Buildup
+Every 150 Hours or 120 Days of Operation
+Check Air Induction for Leaks
+X
+Check Manifold for Vacuum Leaks
+X
+Check Injector 	 Rail for Leaks
+X
+Inspect Air Cleaner
+Every 200 Hours, or Every 100 Hours in Dusty Environment
+Replace Filter Element
+Every 400 Hours, or Every 200 Hours in Dusty Environment
+Engine Exhaust System
+Inspect Exhaust Manifold for Leaks
+X
+Inspect Exhaust Piping for Leaks
+X
+Inspect Catalyst Inlet and Outlet
+X
+Check HEGO (O2) Sensor Connections
+X
+Change HEGO (O2) Sensors
+X
+
+=== PDF PAGE 46 ===
+Ice Resurfacer Components
+5  -  1
+5.
+Ice Resurfacer Components
+Figure 5.1     Ice Resurfacer Components (front view) 
+Front View
+Engine Compartment 
+Access Door
+Guide Wheel
+Snow Tank
+Snow Tank Lid
+Conditioner
+Horizontal Auger
+Board Brush 
+(Option)
+Snow Tank 
+Vent
+
+=== PDF PAGE 47 ===
+5  -  2
+Ice Resurfacer Components
+Figure  5.2      Ice Resurfacer Components (Rear View)
+Rear View
+Vertical Auger Drive
+Exhaust Pipe
+LPG Tank Trays
+Conditioner 
+Chain Guard
+Conditioner
+Ice Making Water 
+Distribution Pipe
+Squeegee
+Propane Tank 
+Strap 	 Buckle
+
+=== PDF PAGE 48 ===
+Ice Resurfacer Components
+5  -  3
+Figure 5.3      Ice Resurfacer Components - Operator
+s Platform
+Operator
+s Platform
+Instrument Panel
+Snow Breaker
+Ice Making 
+Water Control
+Wash Water 
+Control
+Blade Adjustment Wheel
+Conditioner Lift
+Snow Tank Control
+Vertical Auger 
+Control
+Horizontal 
+Auger Control
+Transmission Control
+
+=== PDF PAGE 49 ===
+5  -  4
+Ice Resurfacer Components
+Figure 5.5      Ice Resurfacer Components - Power Package 
+Power Package (Engine)
+Auxiliary Pump
+Hydrostatic 
+(Drive) Pump
+Starter Motor
+Oil Filter
+Flywheel 
+Housing
+Radiator
+Alternator
+Air Cleaner
+Oil Dipstick
+Electronic Pressure 
+Regulator (EPR) / 
+Vaporizer
+
+=== PDF PAGE 50 ===
+Ice Resurfacer Components
+5  -  5
+Figure 5.6      Ice Resurfacer Components - Snow Tank Safety Stand
+Snow Tank Safety Stand
+Ice Making Water Tank
+Safety Stand Storage Hooks
+Wash Water Tank
+Snow Tank Light (Option)
+
+=== PDF PAGE 51 ===
+
+=== PDF PAGE 52 ===
+6  -  1
+Operator
+s Station
+6.
+Operator
+s Station
+INSTRUMENT PANEL
+CONTROL SWITCHES
+WARNING LIGHTS
+Figure 6.1    Operator Area
+GAUGES
+
+=== PDF PAGE 53 ===
+6   -  2
+Operator
+s Station
+Tachometer, Oil Pressure, Engine Temperature Gauge
+The tachometer, oil pressure, engine temperature gauge is used to view engine operating 
+information in an easy to read analog format.  
+Multi Function CAN Display Gauge
+This gauge gives the operator a variety of engine operating conditions which can be viewed by 
+scrolling through using the tactile buttons on the gauge.  The default display is engine hours. 
+Three lights (Warning, Fault and MIL) and an audible alarm are also built in.  For further 
+information on the CAN display gauge see page 6 - 6.
+Figure 6.2    Instrument Panel
+Board Brush
+(Option)
+Wash Water Pump (Option)
+Lights
+Horn
+Gasoline Level Gauge (Option)
+Tachometer, 
+Oil Pressure, 
+Engine 
+Temperature
+Ice Making Water Level Gauge (Option)
+Engine Temperature Light
+Oil Pressure Light
+Alternator Light
+LPG Low Fuel Light
+Hydraulic Snow Breaker / 
+Manual Override (Option)
+Engine Speed Switch
+Ignition
+Tire Wash
+(option)
+Fuel Selector Switch
+CNG /      LPG
+Multi-Function 
+CAN Display 
+Gauge
+Revised Jan/15
+
+=== PDF PAGE 54 ===
+6  -  3
+Operator
+s Station
+Operator¶s Station
+Warning Lights, Buzzers, ³Limp Home´ and Automatic Shut-down Modes
+The machine is equipped with a variety of warning lamps and buzzers that alert the operator 
+of improper operating conditions.  All warnings are indicated via a light, while some have 
+an optional buzzer in addition.  Extreme conditions that may cause severe damage to the 
+machine also trigger power derate (50% throttle) or automatic shut-down modes.  If ³limp 
+home´ mode is activated, the engine¶s RPM will automatically be reduced and there is 
+approximately 60 seconds of operation remaining before the engine shuts down.  Use this 
+time to turn off the augers, lift the conditioner and drive off the ice surface.  If the ECU 
+detects a low oil pressure condition, it will shut off the engine immediately.
+Function
+Light
+Buzzer
+Lamp Test
+On Start
+Limp Home
+/Shut Down
+Remedy/Notes
+Engine Oil 
+Pressure
+YES
+YES
+5 SEC.
+Shut Down
+Check oil level, 
+call for service
+Engine Overheat
+YES
+YES
+5 SEC.
+Limp Home 
+	 Shut Down
+Turn off engine, 
+check coolant
+Alternator
+YES
+YES
+YES
+NO
+Check battery 
+voltage, 
+alternator output
+Malfunction 
+Indicator Light 
+(MIL)
+YES
+YES
+YES
+NO
+See fault codes
+In all cases, if you are unsure of the cause and remedy for a warning lamp or buzzer, please 
+contact the Zamboni Company for more information.
+
+=== PDF PAGE 55 ===
+6   -  4
+Operator
+s Station
+Engine Oil Pressure
+The low engine oil pressure functions in 2 stages.  Stage 1 will be activated if the oil pressure 
+drops below 6 psig when the engine is running at or below 1200 RPM or 8 psig at or above 
+1450 RPM.  Stage 2 is activated if the oil pressure drops below 3 psig at any engine speed.
+During stage 1 the ECM will take the following action:
+ 
+Turn on the malfunction indicator light.
+ 
+Turn on the low oil pressure light.
+ 
+Provide an audible alarm.
+During stage 2 the ECM will take the following action:
+ 
+Turn on the malfunction indicator light.
+ 
+Turn on the low oil pressure light.
+ 
+Provide an audible alarm.
+ 
+Shut the engine down after 3 seconds.
+The operator can cycle the key off and then restart the engine.  If the pressure is still low 
+it will again shut the engine off after 3 seconds.
+If you have an engine warning or shutdown due to low engine oil pressure, you must take 
+the following actions:
+ 
+Verify the correct oil level and oil grade in the engine.
+ 
+If the condition persists, contact a mechanic for engine service.
+Engine Overheat
+The engine ECM turns on the high coolant water temp light when the engine reaches a 
+temperature of 220F for 15 seconds or more.  The light has been set artificially low to 
+warn the operator of a possible overheat condition and give as much time as possible to 
+get off the ice prior to a coolant overflow condition or an engine shutdown condition.
+The light may also come on during engine startup following a recent resurfacing or ice 
+maintenance, if the engine was shut down at full engine RPMs and not idled down for the 
+required 30 to 60 seconds to allow the coolant to circulate thus cooling the engine.  If this 
+(heat soak) happens run the engine at idle and the light will go out immediately after the 
+coolant temperature goes below 210F.  To prevent this from occurring in the future, ALL 
+operators should be instructed to idle the engine for 30 to 60 seconds immediately prior 
+to parking the machine as recommended on the operating instruction decal.
+The engine has built within it a high coolant water temperature shutdown feature.  It 
+operates in 2 stages.
+
+=== PDF PAGE 56 ===
+6  -  5
+Operator
+s Station
+
+At Stage 1 (220F) it will set a code, turn on the malfunction indicator
+light, provide an audible alarm and limit throttle opening to 50%.
+
+At this point the high coolant temperature light will be on.
+
+At Stage 2 (239F), it will set a code; turn on the malfunction indicator
+light and shut down the engine after 3 seconds.
+The operator can cycle the key off and then restart the engine.  If the temperature is still 
+above 239F it will again shut the engine off after 3 seconds.  It is very important that the 
+operator get the machine off of the ice after stage 1 activates.
+Check the coolant level in the radiator when it is safe to do so.  Check the radiator for 
+signs of leaking or damage.  Check coolant flow for proper operation.
+Alternator
+The machine is equipped with a low alternator output indicator light.  The light will be 
+activated whenever the battery charge voltage is low.  Check that the alternator is working 
+correctly and that the battery is fully charged.  Replace either of these items as necessary.
+Machine Operation Switches
+The switches located on the dash operate the following machine functions:
+
+Horn
+
+Lights
+
+Board brush (if equipped)
+
+Wash water pump (if equipped) (illuminated)
+
+Tire wash system (illuminated) (if equipped)
+
+Advanced water system (illuminated) (if equipped)
+
+Snow tank light
+
+Automatic snow breaker (illuminated) (if equipped)
+
+Low fuel warning light (if equipped)
+
+Engine RPM
+
+Fuel selector switch (if equipped)
+Each switch has a label indicating its function.
+The machine
+s ignition key switch has the following switch positions:  off, on/run, start, 
+accessory.
+Ice making water gauge
+This optional gauge shows the water level in the ice making water tank.
+
+=== PDF PAGE 57 ===
+6   -  6
+Operator
+s Station
+Multi Function CAN Display Gauge
+The Multi Function CAN Display is connected to the engine control module (ECM) via a 
+CANbus wiring harness.  It displays real time values of the following engine parameters: 
+Engine Hours (default display), Oil Pressure, Engine RPM, Coolant Temperature, Battery 
+Voltage and Manifold Temperature.  These parameters can be viewed by using the scroll 
+up / down buttons on the gauge.
+Further to the parameter display, the CAN display also contains the Malfunction Indicator 
+Light (MIL), the Warning Light and the Fault Light.  The MIL, the Fault Light and the 
+Audible Alarm will be activated whenever the engine control module (ECM) determines 
+that the engine is operating outside of its desired parameters.  The operator must note 
+this condition in the machine log and have the machine serviced immediately.  Continued 
+operation of the machine with the MIL illuminated may cause severe engine damage and 
+may lead to dangerous operating conditions.
+Along =with =the =MIL, =a =Diagnostic Trouble =Code =(DTC) =will =be =shown =in =the =display 
+window of the gauge.  DTC codes are used to help diagnose the cause of a fault.  A list of 
+DTC codes and their meaning is in the engine service manual.
+Service intervals have also been programmed into the Multi Function Display.  The hours 
+will count down to zero from the preset interval.  Upon reaching zero either "Need Oil 
+Change" =or ="Need Tune-Up" =will =be =shown =in =the =display =window. = At =serial =number 
+526-10806 and above the Warning Light will blink to provide further notification to the
+operator.  Press any button to acknowledge the service notice and turn the light / notice off.
+Service interval reminders will be displayed at start-up until they are manually reset after
+completing the recommended service.  The oil change interval is set for 150 hours.  The
+tune up is set for 1000 hours.
+Scroll Up Button
+Enter Button
+Scroll Down Button
+Fault Light
+Warning Light
+Malfunction Indicator Light
+Display Window
+The flowchart on the following pages gives step by step direction on how to navigate the 
+various functions of the gauge.
+Revised Dec/14
+
+=== PDF PAGE 58 ===
+6  -  7
+Operator
+s Station
+1049.3
+Engine Hours
+35 PSI
+Eng Oil Pressure
+2500 RPM
+Engine Speed
++160oF
+Coolant Temp
+12.5 V
+Battery Volts
++120oF
+Manifold Temp
+51%
+Fuel Level 1
+Press 	 Hold
+Enter Button
+   Service Hours
+Faults Active
+Faults Active
+Warning Active
+Navigating the CAN Display Unit
+Warning Active
+Faults Stored
+   Faults Stored
+Alarms
+Alarms
+Mute Audio Alarm
+Alarms-Disabled
+View Alarms
+Alarms-Enabled
+View Alarms
+       Oil     10
+     Tune    860
+       Oil     10
+     Tune    860
+Oil    150
+Tune    1000
+Press and Hold
+Enter button to
+reset Oil Change
+and/or Tune
+counter.
+       Tune   1000
+Return
+Return
+Exit
+Exit
+Press and Hold the Enter button 
+to access more functions and to 
+view possible fault codes. 
+DM1 Fault 1 of 2
+DTC 524
+Example of an 
+Active Fault.
+View Alarms
+Edit Alarms
+ A1   Fuel Level 1
+51              10%
+Edit Alarms
+Return
+ A1   Fuel Level 1
+Change?     10%
+Return
+Exit
+Exit
+Add Alarms
+Return
+Return
+ A2  Eng Oil Pressure
+0 PSI
+Continued on
+Next Page
+Optional 
+Parameter for 
+Gasoline Models 
+Only
+Example of an alarm.
+A1 = Alarm #1
+Fuel Level 1
+51 = Actual Value
+10% = Alarm comes on below 10%
+Allows changing of alarm value, 
+parameter, and above/below 
+indicator
+Displays Active
+Warnings
+Displays Stored 
+Faults
+Legend
+= Press "Enter" Button
+= Scroll Up or Down
+= Scroll Down
+= Scroll Up
+
+=== PDF PAGE 59 ===
+6   -  8
+Operator
+s Station
+Backlight
+Units
+Units-English
+Popup
+Navigating the CAN Display Unit
+Display
+Alarm Output
+Lamp On        50%
+Return
+Exit
+Exit
+Temporary or Permanent muting 
+of internal Audible device.
+Units-Metric
+Popup
+Mute-Temporary
+Setup
+Mute-Permanent
+Setup
+ Setup
+ Information
+Lamp Off      100%
+Popup-Enabled
+Display
+Popup-Disabled
+Display
+1-Parameter
+Contrast
+2-Parameter
+Contrast
+Contrast       31%
+Contrast
+Return
+Alarm Light
+Fault Codes
+Alarm-Output
+Fault Codes
+Faults-DTC CNG
+Return
+Faults-DTC LPG
+Return
+Faults-DTC Gas
+Return
+Faults-SPN/FMI
+Return
+Return
+Exit
+Exit
+Information
+Exit
+Information
+862216B 7.15.14
+Main Screen
+
+=== PDF PAGE 60 ===
+7 - 1
+Operating the Ice Resurfacer
+7.
+Operating the Ice Resurfacer
+Driving the Machine
+Before Driving the Machine
+Do =not =operate =this =machine =before =reading =and 
+understanding these instructions and also viewing 
+the instructional video.
+Always operate the machine with the seat adjusted to allow for proper foot pedal action.
+Always operate the machine from a seated position. 
+Do not stand up to operate! 
+NO RIDERS OR PASSENGERS ARE PERMITTED!
+Do not operate the machine if the guards are not in 
+place or broken.
+Machine Controls
+The Zamboni ice resurfacer has familiar automobile-style driving controls. 
+The ice resurfacer is steered with the steering wheel.  It has two foot pedals, one that 
+controls the direction and acceleration and the other one is a brake pedal.  It has a hydrostatic 
+transmission that allows for smooth operation.
+The machine
+s ground speed is controlled through the use of the accelerator foot pedal and the 
+engine RPM.  The further the hydrostatic foot pedal is depressed, the faster the machine can 
+travel.  The engine speed (RPM) is controlled by the engine speed switch (See Figure 7.1).
+
+=== PDF PAGE 61 ===
+Operating the Ice Resurfacer
+7 - 2
+Hydrostatic Transmission
+The hydrostatic transmission is an infinitely variable hydraulic pump and motor combination. 
+The machine
+s speed is selected with the acceleration foot pedal (Figure 7.1).  The direction 
+of travel is selected using the transmission control lever.  The transmission must be in neutral 
+for starting the engine.
+The machine is equipped with a neutral start safety switch which prevents the engine from 
+starting if the hydrostatic pump is not in neutral.  The transmission lever must be in neutral 
+and the foot pedal should be in the off position.
+Engine Speed 
+This machine is equipped with an electronic governor.  The engine speed is controlled via an 
+engine speed switch (See Figure 6.2).  The engine speed is increased by pushing the right side 
+of the rocker switch.  The engine speed is decreased by pushing the left side of the switch.
+The electronic governor maintains the engine RPM independent of the load of the engine. 
+See your 526 Service Manual for more details on the electronic governor.  When resurfacing, 
+the engine speed should be set between 2200 and 2500 RPM.  The operator must not "lug" 
+the engine by operating with the engine RPM set too low.  This will impair the operating 
+and resurfacing performance and may damage the engine.
+Machine Speed
+The direction of travel for the ice resurfacer is determined by moving the transmission 
+control lever as indicated in Figure 7.2.  The engine speed should be maintained near 1500 
+RPM for travel and between 2200 and 2500 RPM for resurfacing.
+The speed of the machine is controlled by the combination of engine RPM, the position of 
+the transmission control lever and the accelerator foot pedal.
+Accelerator Foot Pedal 
+The accelerator foot pedal activates the hydrostatic transmission.  Depress the foot pedal 
+and the machine will travel in the direction selected by the transmission lever.  The foot 
+pedal controls the amount of power applied from the transmission.  Full pedal travel will 
+produce full speed, maximum acceleration, etc.  Lifting your foot from the foot pedal will 
+slow the amount of power delivered from the transmission and will slow the machine.  The 
+hydrostatic transmission will act as a braking system when you lift your foot from the pedal. 
+You can also apply the foot brake.
+
+=== PDF PAGE 62 ===
+7 - 3
+Operating the Ice Resurfacer
+Throttle Switch and Hydrostatic Transmission Control
+Throttle Rocker Switch
+Brake Pedal
+Accelerator Foot Pedal
+Figure 7.1     Throttle Controls
+Figure 7.2     Transmission Control
+Full Forward
+Neutral
+Full Reverse
+
+=== PDF PAGE 63 ===
+Operating the Ice Resurfacer
+7 - 4
+Figure 7.3     Resurfacing Procedures
+Resurfacing Procedures
+The Zamboni ice resurfacing machine produces the finest quality ice surface known.  It 
+eliminates the labor-intensive and time consuming methods of the past which were required 
+to maintain an ice surface.  You will produce higher quality ice if you read, understand and 
+practice the following information.
+Historically, the best sheet of ice produced prior to the development of the Zamboni ice 
+resurfacer was usually produced by the following procedures:
+ 
+A tractor-pulled planer shaved the ice to remove as many skate grooves as 
+possible.
+ 
+The accumulated shavings were plowed or scraped to a snow pit located 
+next to the ice surface.
+ 
+Dirt and contaminants were flushed out of the remaining skate grooves by 
+washing the entire ice surface using a heavy hose and nozzle.
+ 
+Large hand squeegees were used to push the dirty water to the snow pits.
+ 
+Using a hose, the final coat of water was sprayed or flooded onto the ice 
+surface to complete the resurfacing operation.
+The Zamboni ice resurfacer performs all of these tasks easier and more efficiently.  The ice 
+is shaved, shavings collected into the snow tank, the ice is washed using the wash water 
+system and the final coat of water is applied to the ice surface.
+Shaving and 
+snow pick up
+Wash water 
+area
+Ice making 
+water area
+Wash Water 
+Pickup
+Wash Water 
+Outlet
+Water Spray
+Towel
+Squeegee
+Blade
+Blade Bar
+Horizontal auger
+
+=== PDF PAGE 64 ===
+7 - 5
+Operating the Ice Resurfacer
+Learning to Resurface
+Before Going to the Ice
+ 
+Check the water level in the water tanks.
+ 
+The blade must be level (see Figure 9.5) and at the correct angle (see Figure 
+9.6).
+ 
+The conditioner must be raised completely.
+ 
+The towel bar should be attached if water is to be applied to the surface.
+ 
+NO RIDERS!
+On the Ice
+WARNING!
+Do not operate the machine if anyone is on the ice.
+The following operations may be performed while on the ice:
+ 
+Shaving or cutting.
+ 
+Washing the ice.
+ 
+Distributing ice-making water.
+ 
+Use of the board brush, edger, or other optional equipment.
+ 
+Removing excess water from the ice.
+ 
+Removing slush (mixed ice and water) from the ice.
+
+=== PDF PAGE 65 ===
+Operating the Ice Resurfacer
+7 - 6
+Shaving or Cutting
+
+Proceed from the storage area onto the ice (see Figure 7.4).
+
+When starting the resurfacing pattern, it is recommended to start down the
+center of the ice surface so the functions can be started and blade adjustments
+can be made at some distance from the walls or boards.
+
+Before lowering the conditioner, make sure that the blade is ³out-of the ice´
+or elevated so that it will not cut immediately upon lowering the conditioner
+to the ice surface. See the ³Blade Control´ information in Chapter 9.
+Note:  To avoid catching the towel underneath the conditioner, lower the
+conditioner only while driving slowly forward.
+
+While on the ice surface and driving slowly forward, lower the conditioner
+and start the conveyors immediately.
+To lower the conditioner:
+Push down on the conditioner valve handle completely.  Allow time for the cylinder to travel 
+to the end of its allowable movement.  You will normally hear a hissing sound produced 
+by the hydraulic fluid passing over the relief valve when the conditioner has traveled fully 
+down or up.  When you hear this return the valve to neutral.  This will insure proper down 
+pressure has been applied.  You should also feel the machine lift transferring weight to the 
+conditioner.
+To start the conveyors (augers):
+Pull up on the conveyor handle.  The operator should be able to hear the conveyors rotating. 
+The operator should be able to observe the stream of snow through the viewing window as 
+the snow tank fills with snow.  The conveyors should be stopped before the snow tank is 
+completely full to avoid plugging the vertical conveyor.
+DANGER!
+Turn off and remove the ignition key before adjusting, 
+repairing, cleaning, or servicing the conveyors. 
+If any part of the conveyor system becomes plugged or 
+clogged, or appears plugged or clogged, the conveyor 
+must be Áushed out with water.  Do not wear gloves or 
+jewelry when performing these functions.
+Flushing the augers out with water must be done only 
+after the machine has been removed from the ice, the 
+auger control valve has been returned to its neutral 
+(off) position, and the ignition has been shut off. 
+Under no circumstances should the operator attempt 
+to clean or clear the conveyor system or parts around 
+it while the machine is on the ice or the power is on. 
+To do so, exposes the operator and others to serious 
+potential injury or death! 
+
+=== PDF PAGE 66 ===
+7 - 7
+Operating the Ice Resurfacer
+(Optional) Reversible Vertical Auger Operating Instructions
+The vertical auger is equipped to rotate in both directions.  The normal rotation for resurfacing 
+is FORWARD, as shown by the information decal located near the valve operating handle.
+Note:  Since the vertical and horizontal augers are hydraulically connected in series, both 
+augers will rotate in the reverse direction if the optional reverse auger funtion is enabled.
+Reversing the auger rotation may clear a puck, water bottle, piece of hockey stick or other 
+large objects that gets lodged in the auger flighting.
+Reversing the auger rotation will not clear a snow jam in the auger, as the bottom of the 
+auger is designated to pull in snow and not throw it out.  The snow will just be compacted 
+further.
+To run the auger in the reverse direction, the valve stop needs to be relocated on the valve 
+lever which will allow the valve to be actuated in the opposite direction. 
+The following steps should be observed when you decide to run the auger in the reverse 
+direction:
+ 
+Loosen and rotate the valve lever stop out of the way.
+ 
+Being sure that the auger is not moving, actuate the lever to reverse the auger 
+(auger lever moves down).
+ 
+To change auger rotation to forward, move the valve lever to NEUTRAL 
+position, IF THE AUGER IS NOT RUNNING, pause a moment (2-3 seconds) 
+then move the lever backwards for normal auger rotation.  If the auger is 
+running, you MUST move the lever into NEUTRAL and wait until the auger 
+has come to a full stop.
+Never slam the lever back and forth rapidly to try to unclog 
+something. You will deflnitely over pressurize the auger 
+motor and cause breakage.  Besides the unnecessary down 
+time associated with this action, the damaged motor will 
+not be covered under warranty.  Damage created in this 
+manner is very obvious upon inspection of the motor.
+ 
+Augers should be washed out between floods to prevent ice build up and 
+snow jamming of the augers.
+ 
+After using the reversing feature, locate the valve lever stop in its original 
+position (blocking the downward position of the lever).
+ 
+Depending on how long the reversing feature was used, you should check 
+the auger bearings and the motor coupling screws to ensure that they are still 
+tight.  Reversing the auger may have loosened them off.
+ 
+The vertical and horizontal augers should be washed out at the end of the 
+shift and the auger bearings immediately greased to displace any water 
+accumulated during the day.  Greasing the auger bearings once a day with 
+high quality marine or boat trailer grease will ensure a long service life.
+CAUTION!
+
+=== PDF PAGE 67 ===
+Operating the Ice Resurfacer
+7 - 8
+Typical Resurfacing Operation
+Figure 7.4     Going onto the Ice
+Figure  7.5     Leaving the Ice
+
+=== PDF PAGE 68 ===
+7 - 9
+Operating the Ice Resurfacer
+Using the Snow Breaker
+The operator should use the snow breaker several times a minute (or more as required).  The 
+snow breaker helps remove snow or ice that will build up in the corners of vertical auger 
+opening.  To use the snow breaker, push down on the snow breaker rod and release.  Repeat 
+this action several times.
+The =machine =may =also =be =equipped =with =an =optional =automatic =snow =breaker. = =It =will 
+perform the above action six times per minute once turned on via the rocker switch.  It also 
+has a manual override button should additional action be required.
+Washing the Ice 
+The wash water system removes dirt and debris from the ice surface.  Regular use of the 
+wash water system will produce a clean, high quality ice surface.
+Before using the wash water system, fill the wash water tank with cold water.
+To use the wash water system:
+ 
+With the conditioner down, the horizontal conveyor rotating, and the machine 
+moving forward, fully open the wash water valve.  The wash water valve is 
+located on the right side of the conditioner.
+ 
+Allow the valve to remain open for at least 10 seconds.
+ 
+Turn on the wash water pump switch.  The red light in the rocker switch 
+indicates that the wash water pump is operating.  You should hear a click 
+sound when the clutch on the pump engages.
+ 
+You will be able to see the wash water flow into the wash water tank screen 
+basket located to the right of the operator
+s area.  If there is no flow, turn off 
+the pump immediately.  Check the system for obstructions after the machine 
+has been removed from the ice.
+ 
+When resurfacing has been completed, first turn off the wash water pump 
+and then close the wash water valve.  The conditioner can then be raised.
+To avoid damaging the wash water pump impeller (caused by running it dry), always have 
+water in the wash water tank and always wait at least 10 seconds after opening the valve 
+before turning on the wash water pump.  A burning rubber smell is an indicator of an impeller 
+that has been or is running dry.
+After each resurfacing, inspect and discard any debris collected by the wash water tank screen.
+Periodically inspect the rubber squeegee located at the lower rear of the conditioner for tears 
+and damage.  Replace as required to maintain good wash water system performance.  When 
+replacing the squeegee be sure to trim the edge around the conditioner runner as tightly as 
+possible.  A sloppy cut will allow wash water to escape possibly creating a poor washing 
+action and leaving streaks on the ice.
+
+=== PDF PAGE 69 ===
+Operating the Ice Resurfacer
+7 - 10
+Ice Making Water
+Using hot water for the ice making water will generally produce the best ice surface.  Do not =
+use water hotter than 1Q00 F (S00  C) as this could damage the plastic ice making water tank
+To use the ice making water during a resurfacing:
+
+With the conditioner down and the machine moving forward, open the ice
+making water valve, located on the left side of the conditioner.
+
+You can regulate this water flow by opening and closing the valve.  Some
+operators reduce the water flow in areas of the ice surface where they
+re
+driving pattern overlaps many times, such as in the corners, at the ends of
+the ice or the hockey goal areas to avoid leaving too much water.
+
+When the resurfacing is completed, close the valve before raising the
+conditioner.
+Using the Board Brush
+The optional board brush will help you produce a high quality ice surface by sweeping 
+away the snow and ice that gathers at the base of the dasher boards, next to the kick plate, 
+around the perimeter of the ice.  It is important to sweep this snow and ice away before 
+water is applied.  This will prevent ice buildup on the boards.  Ice buildup increases the 
+need for ice edging.
+The board brush is usually used during the first pass around the perimeter of the ice surface.
+To operate the board brush:
+
+Activate the solenoid operated control valve by turning on  the board brush
+switch on the instrument panel. (See Figure  6.2).
+
+At  the activation of the control valve, the board brush arm will extend from
+the left side of the machine while lowering to the ice and the board brush
+motor will start.
+
+Carefully and slowly drive the machine parallel to the dasher boards so that
+the brush reaches the boards and sweeps the snow away from them.  The
+roller on the board brush arm should contact the dasher boards.
+
+The machine should be positioned so the conditioner is as close to the boards
+as possible for two reasons.  1)  Sweepings are directed into the auger area
+and collected by the conditioner.  2)  The snow brush can then extend out on
+its own to the boards in the corners.
+
+When the roller is in contact with the dasher boards, the machine is in the
+correct location for best brush performance.  The board brush arm has a spring
+action so that the machine
+s distance from the dasher boards can vary a little.
+
+=== PDF PAGE 70 ===
+7 - 11
+Operating the Ice Resurfacer
+ 
+After a complete lap of the ice surface next to the boards, retract the board 
+brush by turning off the board brush switch.  This will also stop the brush 
+motor.
+ 
+Proceed with the other resurfacing operations over the remainder of the ice 
+surface.
+Removing Excess Water from the Ice
+If there is an excess amount of water on your ice either from rainfall or excessive melting, 
+it can be removed quickly by using the following procedure.  The wash water tank should 
+be emptied before this operation is begun.
+The ice resurfacer must be MOVING during these operations:
+ 
+While on the ice surface, with the engine RPM at 2200 to 2500, lower the 
+conditioner.
+ 
+Raise the blade off (or out) of the ice by turning the blade adjustment hand 
+wheel counter-clockwise.  This will allow the water to pass under the blade 
+and accumulate in the wash water chamber.  (Figure 7.3)
+ 
+Start the horizontal conveyor.  This will provide power to the wash water 
+pump. 
+ 
+Start to drive, wait 5 seconds and then turn on the wash water pump. 
+Remember that damage to the impeller will result if the pump is run dry for 
+more than 30 seconds.
+ 
+Excess water from the ice should begin to flow into the screen of the wash 
+water tank.  After water from the wash system flows into the screen, begin 
+to drive forward over the areas of excessive water.
+ 
+Fill the wash water tank.
+ 
+Turn off the wash water pump and conveyors.
+ 
+Drive off the ice and empty the wash water tank by opening the wash water 
+valve on the conditioner.  Lowering the conditioner may assist in getting 
+additional water out.
+ 
+When through removing excess water from the ice, empty wash water tank 
+and refill with fresh, cold water.
+Diverting Excess Water from the Ice into the Snow Tank
+Refer to page 8-4 for a full description of this additional feature.
+
+=== PDF PAGE 71 ===
+Operating the Ice Resurfacer
+7 - 12
+Removing Slush (ice and water mixed) from the Ice
+The ice resurfacer must be MOVING during these operations:
+
+While on the ice surface, with the engine at 2200 to 2500 RPM, lower the
+conditioner.
+
+Start the vertical and horizontal conveyors.
+
+Adjust the blade until it just touches the ice by rotating the blade adjustment
+hand wheel counter-clockwise.
+
+Drive forward over the areas of slush to be removed.
+
+Before leaving the ice surface and before raising the conditioner, continue
+running the conveyor augers for a few moments.  This will help avoid freezing
+the slush in the tube between resurfacing.  Stop the conveyors.  Raise the
+conditioner and proceed to the dump area.
+
+After removing the slush from the ice surface and dumping it, flush the
+conveyors with water.
+DANGER ! 
+Turn off and remove the ignition key before adjusting, 
+repairing, cleaning, or servicing the conveyors. 
+If any part of the conveyor system becomes plugged or 
+clogged, or appears plugged or clogged, the conveyor 
+must be Áushed out with water.  Do not wear gloves or 
+jewelry when performing these functions. 
+Flushing the augers out with water must be done only 
+after the machine has been removed  from  the  ice, 
+the auger control valves have been returned to their 
+neutral positions, and the ignition has been shut off.
+Under no circumstances should the operator attempt 
+to clean or clear the conveyor system or parts around 
+it while the machine is on the ice or the power is on. 
+To do so, exposes the operator and others to serious 
+potential injury or death!
+Note:  Whenever excess water or slush is being removed from the ice surface and conveyed 
+into the snow tank, the Zamboni ice resurfacer ice making water tank must be empty.  Water 
+in both the ice making water tank and the snow tank may load the machine excessively.
+
+=== PDF PAGE 72 ===
+7 - 13
+Operating the Ice Resurfacer
+Leaving the Ice Surface
+When leaving the ice surface after finishing a resurfacing (or any other time): 
+(See Figure 7.5)
+
+Close the wash water system valve.  Turn off water pump (if used).
+
+Turn off the auto snow breaker (if equipped).
+
+Raise the cutting blade out of the ice.
+
+Turn off augers.  This is especially important for machines equipped with
+the auto snow breaker option.  Failing to stop both augers could result in
+damage to the snow chute and the actuating cylinder by contacting the
+horizontal auger.
+
+Close the ice making water valve.
+
+With the augers stopped, raise the conditioner fully by operating the
+conditioner lift valve lever.
+
+If dumping outside, reposition the towel bar assembly to the raised position
+on the conditioner to avoid getting it dirty.
+Off of the Ice
+The following operations are performed off of the ice surface:
+
+Dumping the snow tank on a level surface if possible.
+WARNING!
+Raise the snow tank by operating the snow tank valve 
+lever.  After the snow has been dumped, lower the tank. 
+If the tank is to be left up, the snow tank support stand 
+must be properly placed to support the tank.
+DANGER!
+The =snow =tank =should =NEVER =be =raised =while =the 
+conveyors are ON.  When the snow tank is raised, the 
+vertical conveyor blades are exposed and can cause 
+personal injury if operating.
+CAUTION!
+The ice resurfacer should not be moved while the snow 
+tank is being lifted or when the tank is in a raised 
+position.
+The machine should be level when raising or lowering 
+the snow tank.
+Revised Jan/15
+
+=== PDF PAGE 73 ===
+Operating the Ice Resurfacer
+7 - 14
+Operating Pointers
+Resurfacing Patterns
+The following diagram shows a good resurfacing pattern:
+Figure 7.6    Standard Resurfacing Pattern
+Sharp Turns
+The ice resurfacer has a power steering system which contains a hydraulic relief valve.  This 
+valve only operates when the wheels are jammed up against an object or when the operator 
+turns the steering wheel completely to the left or the right and holds it there against the stop.
+If the steering is placed and held against the stop, the operator will notice a light, hissing noise 
+coming from the instrument panel.  This noise is made by steering relief valve opening and 
+allowing hydraulic fluid to pass through it.  The operator may also notice a drop in engine 
+and conveyor speed.  This is because extra engine power is being used to open the relief 
+valve and push fluid through it.
+Your turns will be much smoother and there will not be a drop in engine or conveyor speed, 
+if you learn to drive the machine without placing the steering "on relief."
+To do this you simply back off the steering stop a slight amount after you have turned the 
+wheel completely and you hold the wheel steady in the turn.  You can easily hear the relief 
+valve open so you will know how tight you can hold a turn without always being on relief.
+
+=== PDF PAGE 74 ===
+7 - 15
+Operating the Ice Resurfacer
+Excessive Loads
+Taking too deep a cut with the shaving blade while driving the machine at it
+s full ground 
+speed may place an excessive load on the engine.  The engine RPM is maintained with only 
+a small RPM drop while resurfacing normally.  With an  excessive machine load, the engine 
+RPM may drop excessively which will cause the operation of the machine to suffer.  If the 
+engine RPM is dropping excessively, reduce the load of the machine by:
+
+Slowing the ground speed of the machine by lifting the foot pedal.
+
+Reducing the depth of cut.
+
+=== PDF PAGE 75 ===
+
+=== PDF PAGE 76 ===
+8 - 1
+Water System
+8.
+Water System
+A. =Pipe A (Figure 8.3) supplies water from the wash water tank to the conditioner.
+B. =Pipe B (Figure 8.3) carries water picked up in the conditioner to the suction side 
+of the water pump.  The pump then pumps the water to the top of the wash water 
+tank, at which point the water can be recirculated through the  filtering screen or 
+pumped into the snow tank for quick disposal (Figure 8.5).
+C. =Hose C (not shown) attached to pipe C (Figure 8.3) supplies water through the 
+ice making water valve from the ice making water tank to conditioner.
+Wash Water Transfer (Option)
+D. =Valve D (Figure 8.4) may be opened to connect the wash water tank to the ice 
+making water tank for additional ice making water capacity.  Flush wash water 
+tank clean before opening the valve when using this system.  Important:  Do 
+not open this valve until the ice making water tank is half empty.  Tank distortion 
+can occur if the valve is opened while the tank is full.
+Figure 8.1     Water System
+Wash Water Tank
+Wash Water 
+Return Hose (B)
+Wash Water Return
+Exhaust Pipe
+Wash Water
+Pump
+Ice Making
+Water Tank
+Wash Water 
+Return Filter
+Overflow Discharge
+
+=== PDF PAGE 77 ===
+8  -  2
+Water System
+Wash Water Pipe (A)
+Ice Making Water 
+Pipe (C)
+Figure 8.3a     Conditioner Piping
+Wash Water Fill
+Ice Making Water Tank
+Ice Making Water 
+Tank Cover
+Ice Making 
+Water Fill
+Figure 8.2     Water Tank Inlets
+
+=== PDF PAGE 78 ===
+8 - 3
+Water System
+Wash Water Distribution Pipe
+Wash Water Outlet (Both 
+Ends Of Conditioner)
+Wash Water Pickup (Suction)
+Blade Adjustment Screw 	 
+Greasable Clevis
+Suction Pipe (B)
+Figure 8.3b     Conditioner Piping
+Figure 8.4     Optional Connection Valve
+Connection Valve Handle (Option)
+(Option) Valve D
+
+=== PDF PAGE 79 ===
+8  -  4
+Water System
+Diverting Excess Water from the Ice into the Snow Tank
+If you do not wish to pump the excess water in to the Wash Water Tank, you may divert 
+the water directly into the snow tank for easy disposal.
+ 
+Before starting to collect the excess water, rotate the Wash Water Return 
+Pipe so it is directed into the Snow Tank instead of through the Filter 
+Screen.
+ 
+Proceed to remove excess water as described in Chapter 7.
+ 
+When water starts to drain from the front of the Snow Tank, stop the Wash 
+Water Pump and Horizontal Conveyor.  Raise the Conditioner and move 
+SLOWLY off of the ice to the appropriate dumping area.
+ 
+Raise the Snow Tank.
+ 
+Return the Wash Water Return Pipe to its original position once the excess 
+water has been removed.
+Figure 8.5     Wash Water Filter and Bypass
+Wash Water Return Filter
+Wash Water Return Pipe
+(Removing Excess Water from the Ice)
+
+=== PDF PAGE 80 ===
+Maintaining the Cutting Blade
+9  -  1
+9.
+Maintaining the Cutting Blade
+It is essential that the blade be sharp if the resurfacer is to operate properly.  Conditions vary 
+from one rink to another, but experience has shown that normally the cutting blade is dull 
+and needs re sharpening after 5 to 7 days of operations.
+WARNING! 
+The =cutting =blade =is =extremely =sharp =and =must =be 
+handled with care.  The blade can INJURE whether 
+sharp or dull.  Use extreme caution!  Use gloves and 
+handle in scabbard as much as possible.  Place blocks 
+under conditioner while changing blade or reaching 
+under conditioner.
+Changing the Blade
+When changing your blade, see that the surface of the blade holding bar, to which the blade 
+is bolted (Figure 9.4), is clean.  Apply a small amount of lubricant, such as antiseize, to 
+the bolts before assembly.  This will help prevent galling, especially with stainless steel 
+hardware.  As the blade bolts are replaced, tighten the center nuts first and work toward the 
+ends of the blade.  The outside bolts are to be tightened last.
+After removal, the dull blade should be sent immediately to be sharpened so that a sharp 
+blade will be on hand at all times.  For sharpening blades, contact a company that sharpens 
+paper cutting knives for newspaper publishing firms.
+Blades should be sharpened at an angle of 240-260.
+New Blade
+Use FRONT row of holes when blade is new.
+Revised Oct / 15
+
+=== PDF PAGE 81 ===
+9  -  2
+Maintaining the Cutting Blade
+Used Blade
+Use REAR mounting holes when blade is 4" wide or less.=
+Note: Hardened material is exhausted when blade is approximately 3KR" wide.  Discard blade.
+Blade Controls on Conditioner
+Blade Height Adjusting Screws level each side of the blade in relation to the runners.
+Side Controls
+Figure 9.1     Blade Controls on Conditioner
+Conditioner Runner
+Down
+Up
+Rear View
+Conditioner Runner
+Blade
+Blade Height
+Adjusting Screws
+
+=== PDF PAGE 82 ===
+Maintaining the Cutting Blade
+9  -  3
+Hand Wheel
+The center hand wheel control varies the angle of the blade.  If the blade is level with each 
+runner, the hand wheel will make uniform changes in depth of cut.
+Figure 9.2      Center Hand Wheel Control
+ARROWS SHOWN BELOW INDICATE ROTATION TO LOWER BLADE
+Figure 9.3     Blade Adjusting System
+Center hand wheel
+Right side adjustment screw
+For leveling blade only
+For adjusting blade angle and depth
+For leveling blade only
+Left side adjustment screw
+Blade
+Conditioner Runner
+Side View
+Centre Hand Wheel
+Up
+Down
+
+=== PDF PAGE 83 ===
+9  -  4
+Maintaining the Cutting Blade
+Holding and Securing the Blade
+Blade Holding Bar (5K-78890)  Blade (5K-33630)
+Bolt Tightening Sequence
+Figure 9.4     Blade Holding Bar
+The ends of blade holding bar are machined upward approximately 0.08" so that one cut of 
+the ice is feathered into the adjoining cut.
+When attaching blade, tighten two middle bolts first, then work to outside.
+WARNING! 
+Blade is extremely sharp.  Avoid being cut by handling 
+as much as possible in scabbard.  Place blocks under 
+conditioner while changing  the blade.
+-+-5
+Blade Holding Bar
+Blade
+Machined Surface on Blade Holding Bar
+Blade
+
+=== PDF PAGE 84 ===
+Maintaining the Cutting Blade
+9  -  5
+Figure 9.5     Aligning the Blade with Conditioner Runners
+Procedure for Setting Blade Angle and Depth of Cut
+Step 1:   Set blade at approximately 100  angle as shown on the blade angle adjusting plate 
+(Figure 9.6)  by rotating center hand wheel control.
+Step 2:  Align leading edge of blade EVEN with BOTH conditioner runners. It is quite 
+helpful to use a flat washer, a large coin or the blade adjusting tool (Part No. 84-01100) to 
+check this alignment as shown below.
+WARNING!
+Use caution as blade is sharp.  
+Note:  If blade is even with both runners, the majority of the blade will be about 0.08" below 
+the runner as shown in  Figure  9.4.  Since a 0.08" cut would normally  be quite a heavy 
+cut, turn the hand wheel counter-clockwise to raise the blade slightly. (With a new 5" wide 
+blade, 4 turns of the hand wheel is equal to approximately 0.08").
+Blade
+Conditioner 
+Runner
+Blade Adjusting Tool
+Blade Height 
+Adjuster
+Slide blade adjusting tool under 
+conditioner runner until aligned.
+Revised Mar/12
+
+=== PDF PAGE 85 ===
+9  -  6
+Maintaining the Cutting Blade
+Blade Angle Adjustment Decal
+A blade angle decal is located on the inside of the conditioner left side plate (see Figure 
+9.6).  When the blade holding bar is lined up, parallel to the series of lines, the blade angle 
+is approximately 10.
+Figure 9.6     Blade Angle Adjustment Decal
+Figure 9.7     Blade Angle Adjustment Tool
+The blade angle gauge (84-01100) may also be used.  Place the angled face of the tool on 
+the underside of the blade.  When the flat edge of the tool is parallel to the runners, the blade 
+is angled correctly (see Figure 9.7).
+Blade Holding Bar
+Blade Angle Decal
+<eZ]^ ;g`e^ >^\Ze
+
+=== PDF PAGE 86 ===
+Maintaining the Cutting Blade
+9  -  7
+Conditioner Down Pressure
+The purpose of the conditioner down pressure system is to create downward pressure on 
+the shaving blade thus increasing the shaving capability of the machine.
+Down Pressure Spring Adjustment Procedure
+ 
+Lift Conditioner slightly off of the ground, just so it clears the floor.
+ 
+Loosen lock nut A.
+ 
+Loosen set screw B and tighten against spring "hand tight".  Tighten with a 
+wrench 3 to 4 complete revolutions.
+ 
+Tighten lock nut A.
+ 
+Repeat above procedure on opposite side.
+Spring tension is now set for proper down pressure in operating mode.  NOTE:  Periodically 
+check the condition of the down pressure springs (Part No. 1L-67540) to insure that they 
+have not flattened out and taken a permanent set.
+To extend spring life, the conditioner should be lowered between resurfacings onto floor 
+blocks without applying down pressure (machine should not lift).
+B (1/2" / 13mm Wrench)
+A (3/4" / 19mm Wrench)
+Part No. 1L-67540
+
+=== PDF PAGE 87 ===
+9  -  8
+Maintaining the Cutting Blade
+Figure 9.8     Zamboni Edger
+Using the Edger
+During the normal operation of an ice rink, the edges of the ice surface have a tendency to 
+build up.
+If not removed, this buildup makes proper shaving of the rink perimeter difficult and may 
+become a safety hazard to skaters. 
+A
+B
+C
+D
+With ice buildup at edges,
+blade cannot shave properly
+Zamboni? Bolt-on Edger
+Attach to conditioner and
+make one pass around
+rink next to boards
+Zamboni? Power Edger
+Walk around boards as
+required to reduce edge.
+After edging, use Zamboni?
+machine next to boards and
+complete resurfacing pattern
+
+=== PDF PAGE 88 ===
+Maintaining the Cutting Blade
+9  -  9
+Figure 9.9     Edger Attachment
+Edger Attachment
+Mount the edger on the driver
+s side of the conditioner and bolt tightly at the three locations 
+shown below.  The depth of cut on the edger blade may be adjusted by turning the two blade 
+adjustment set screws.
+Use the edger as a separate operation in the following manner:
+
+Start driving slowly next to boards.  Fully lower conditioner, but raise the
+conditioner blade off of the ice, slightly, by turning the blade adjustment
+hand wheel counter-clockwise.
+
+Start conveyors.
+
+Take one or two laps along the side of your boards, keeping the edger against
+the railing or dasher.
+
+Remove the edger assembly.
+
+Resurface the ice rink completely in the normal manner.
+CAUTION: 
+Drive slowly when using the edger.  While using the 
+edger, the front of the resurfacer will tend to pull into 
+the wall.
+Note:  Keep edger blade sharp.
+Edger Mounting Bolts
+Blade Adjusting Screws
+Blade
+Forward
+Forward
+
+=== PDF PAGE 89 ===
+10 - 1
+Emergency  Operation
+10.
+Emergency Operation
+Emergency Hand Pump
+The emergency hand pump is located in the driver area of the machine.  The pump handle 
+must be stored where the operator can find it in an emergency.
+Purpose:  The emergency hand pump is used to raise the conditioner or the snow tank in 
+the event the engine will not operate.
+To =raise =the =conditioner =only; =close =the 
+emergency =bypass =valve =located =on =the 
+underside =of =the =check =valve =manifold =by 
+turning it clockwise.  Closing the valve will 
+prevent the snow tank from lifting.  Push the 
+conditioner =lift =valve =lever =forward =while 
+pumping the hand pump lever.
+To =raise =the =snow =tank, =fully =open =the 
+emergency bypass valve on the check valve 
+manifold.  Push the snow tank lift valve lever 
+forward while pumping the hand pump lever.
+The conditioner may lift as well as the snow 
+tank, this is normal and should not concern the 
+operator.
+Fully =open =the =Emergency =Bypass Valve 
+before resuming normal operation.
+If the pump does not work, check the oil level 
+in the hydraulic tank.
+Figure 10.1     Hand Pump Actuation and Emergency Bypass Valve
+Operating the Emergency Hand Pump
+Hand Pump Lever
+Emergency 
+Bypass Valve
+
+=== PDF PAGE 90 ===
+10 - 2
+Emergency  Operation
+Emergency Hydrostatic Bypass Valve
+Should it be necessary to move the machine when the engine is not operable, the emergency 
+bypass valve, located on the hydrostatic pump, must be opened (see Figure 10.3).
+This valve is located on the hydrostatic pump and painted red for ease of identification, in 
+the engine compartment. (See Figures 5.5 and 10.3 for location).  To open the bypass valve, 
+rotate it two turns counter clockwise using the adjustment tool  (Part No. C4-00157 or 84-
+05870) supplied strapped to the suction hose.
+Figure 10.3     Hydrostatic Pump Bypass Valve
+Notes:
+
+This system is to be used ONLY when pushing or pulling the machine
+SLOWLY.
+
+The bypass valve must be FULLY closed for normal operation.
+
+Disconnect the drive shafts for extended towing distances.
+
+Fast towing must not be done.
+
+Always close the valve once the machine is moved to the desired location.
+Re-attach the bypass tool to the hydraulic hose.
+Bypass Wrench                                Bypass Valve
+
+=== PDF PAGE 91 ===
+Storage Information
+11  - 1
+11.
+Storage Information
+Storage Room Information
+Storage Area
+Due to the great amount of water associated with this machine, it should be stored between 
+resurfacing in a room heated above freezing.  The room should be as close to the edge of 
+the rink as possible and the surfaces between the storage area and the rink should be paved 
+so dirt will not be tracked onto the ice.  It is highly recommended that the storage room be 
+on the same elevation as the surface of the ice to eliminate the need for a ramp.
+Keep all sources of open flame, spark or other ignition such as stoves, furnaces, water heaters 
+or any appliance using a pilot light away from fuel storage, fuel use and refueling areas. 
+Under well ventilated conditions, a minimum distance of 20 feet from all ignition sources 
+is recommended; however check your local bylaws as they will take precedence.
+Floor Drain
+The floor of the storage room should be pitched toward a floor drain of sufficient size to 
+carry excess water and melting snow away from the machine.
+Daily Storage (Indoor)
+It is suggested that the snow tank be left in the lifted position for storage with the safety 
+stand in place.  This will allow for better air circulation for drying and will cut down on 
+corrosion and rusting. 
+Summer Storage Tips
+
+Empty the water tanks.  The ice making tank is made of polyethylene and will not
+present a corrosion problem.  The wash water tank is made of steel with a zinc
+rich primer topped with a coat of epoxy.  Remove the cover annually and insure
+the integrity of the paint has not been compromised.  Touch up as required.
+
+As recommended in maintenance literature, completely lubricate the chassis and
+ice resurfacer parts to discharge any possible moisture from the bearing surfaces.
+
+If possible, store the machine in a dry enclosed area.
+
+If possible, park the machine on a flat and level surface.  If the machine is parked
+on any kind of grade the wheels must be blocked with wheel chocks to prevent
+the machine from rolling away after it has been parked.
+
+If possible, raise the machine onto blocks thereby taking the weight off the tires.
+
+=== PDF PAGE 92 ===
+Page 1 of 5
+Zamboni Circle Check List
+The overall objective of the “circle check” is to evaluate the ice resurfacer and its 
+systems, as well as the environment in which it will be operated.
+Table of Contents:
+• General Circle Check
+• Circle Check Detail
+• Front / Rear View Detail Diagram
+• Side View Detail Diagram
+• Top View Detail Diagram
+General Circle Check:
+• Auger Systems should be in good condition and free of snow, ice or obstructions
+• Fuel Supply should be assessed prior to resurfacing
+• Towel should be clean and free of tears 
+• Squeegee should not have tears or cracks and should have a snug ﬁt from end to end
+• Ice Making Water supply should be sufﬁcient for resurfacing and have steady and even distribution 
+from the pipe
+• Wash Water should have steady ﬂow and a clean basket/bag
+• Board Brush should be ﬁrmly attached to the unit and show no signs of damage
+• Basic Fluid Levels should be sufﬁcient and not in need of change
+• Belts and Hoses should be tight ﬁtting without wear and with no signs of aging / leaking or any other 
+need for replacement
+• Oil and Filters should be monitored for replacement as recommended by the machine’s service manual
+• Grease Horizontal Auger Bearings on a daily basis
+• Drain Water Tanks at the end of each day
+• Fuel Supply should be turned off at the end of each day for fuel powered machines
+• Ventilation System should be on and active and air quality tests should be performed per the facility’s 
+schedule
+• Check Under / Around / Behind resurfacer and observe the condition of the path into and out of the 
+ice resurfacer storage area
+• Snow Pit / Dumping Area condition and path to/from the area
+• Evaluate Consumables such as ﬂuids and parts which may be show-stoppers if not on hand
+CIRCLE CHECK LIST
+ZAMBONI and the conﬁguration of the Zamboni® ice resurfacing machine are registered trademarks of Frank J. Zamboni & Co., Inc. © Zamboni 2017
+
+=== PDF PAGE 93 ===
+Page 2 of 5
+Zamboni Circle Check List
+Circle Check Detail:
+This list is not intended to be a comprehensive checklist and was created as a general guideline to encourage the circle check 
+routine, based on a variety of machine models and features. Your machine model, features and options may vary and those 
+speciﬁc items requiring attention should be added to your facility’s checklist and circle check routine.
+1. Tank up and snow tank safety stand in place
+2. Key out of ignition and secure in your 
+possession
+3. Exhaust system condition 
+4. Fuel line condition
+5. Fuel levels and connections/hoses/tanks secure 
+6. Belts
+7. Snow tank seal 
+8. Hydraulic hoses and couplers
+9. Battery and cables
+10. Spark plugs
+11. Radiator and radiator hoses
+12. Air ﬁlter
+13. Leaf springs
+14. Brake lines
+15. Fluid levels 
+16. Hydraulic bypass open or closed
+17. U joints
+18. Tires (condition and pressure) / hubs / studs /
+nuts
+19. Board brush condition/arm bushing
+20. Guide wheel condition
+21. Head lights / tail light
+22. Safety guards including conditioner guards
+23. Lift conditioner to observe blade and runner 
+condition
+24. Conditioner / lift arm / bushings
+25. Snow breaker condition
+26. Blade adjustment wheel
+27. Towel and squeegee condition
+28. Flood pipe condition
+29. Vertical and horizontal auger movement and 
+grease bearings
+30. Steering wheel / horn
+31. Blade Bar
+32. Conditioner leaf springs
+33. Auger ﬂighting
+34. Hour meter reading
+35. Voltmeter
+36. Temperature
+37. Tachometer
+38. Water ﬁll
+39. Seat / armrest
+40. Poly water tank inspection
+41. Snow tank inspection
+42. Brake and brake pedal
+43. Ice making water and wash water valves
+44. Step areas clean and clear
+45. Control levers
+46. Wash water pump
+47. Conveyor drive belt and chain
+48. Inspect body condition and safety labels
+• Exhaust shield (Canadian models)
+• Fire extinguisher (option)
+• Beacon light (option)
+• Backup alarm (option)
+• Tire wash water (option)
+• Seatbelt (option)
+CIRCLE CHECK LIST
+ZAMBONI and the conﬁguration of the Zamboni® ice resurfacing machine are registered trademarks of Frank J. Zamboni & Co., Inc. © Zamboni 2017
+
+=== PDF PAGE 94 ===
+Page 3 of 5
+Zamboni Circle Check List
+21 Head Lights
+21 Tail Light
+28 Flood Pipe
+Condition
+27 Towel + Squeegee
+Condition
+25 Snow Breaker 
+Condition
+26 Blade 
+Adjustment
+Wheel
+38 Wash Water Fill
+38 Ice Making Water Fill
+5
+Fuel Levels and 
+Connections
+/ Hoses / Tanks Secure
+4
+Fuel Line Condition
+34
+37
+to
+23 Lift Conditioner
+• Check Blade Condition 
+  and Angle
+• Check Runner Condition
+Exhaust System Condition
+3
+Front / Rear View Detail Diagram
+ZAMBONI and the conﬁ guration of the Zamboni® ice resurfacing machine are registered trademarks of Frank J. Zamboni & Co., Inc. © Zamboni 2017
+
+=== PDF PAGE 95 ===
+Page 4 of 5
+Zamboni Circle Check List
+1
+Snow Tank and Stand
+2
+Key
+45 Control Levers
+43 Ice Making Water,
+Wash Water Valves
+39 Arm Rest
+Seat Belt (option)
+40 Poly Water Tank 
+Condition
+Fire Extinguisher
+(option)
+24 Conditioner
+• Lift arm • Bushings
+22 Safety Guards
+including 
+Conditioner Guards
+29 Vertical and Horizontal Auger
+Movement and Grease
+44 Step Areas
+Clean and Clear
+42 Foot and Brake 
+Pedal
+22 Vertical Auger 
+Guard
+Beacon 
+(optional)
+30 Gauges /
+Steering 
+Wheel /
+Horn
+41 Snow Tank
+Inspection
+20 Guide Wheel
+Condition
+48 Inspect Body Condition 
++ Safety Labels
+19 Board Brush Condition
+• arm bushing
+18 Tires
+• condition • pressure
+• hubs / studs / nuts
+Side View Detail Diagram
+ZAMBONI and the conﬁguration of the Zamboni® ice resurfacing machine are registered trademarks of Frank J. Zamboni & Co., Inc. © Zamboni 2017
+
+=== PDF PAGE 96 ===
+Page 5 of 5
+Zamboni Circle Check List
+10
+Spark Plugs
+6
+Belts
+17
+U-Joints
+17
+U-Joints
+17
+U-Joints
+7
+Snow Tank Seal
+11
+Radiator + Hoses 
+– Overflow Bottle
+15
+Fluid Levels – 4 levels to check
+• Brake • Coolant • Hydraulic • Oil
+9
+Hydraulic Bypass (open / closed)
+8
+Hydraulic Hoses
++ Couplers
+12
+Air Filter
+17
+Tire Wash Nozzle
+(option)
+Tire Wash Nozzle
+(option)
+Tire Wash Nozzle
+(option)
+9
+Battery + Cables
+13
+Leaf Springs
+13
+Leaf Springs
+46
+Wash Water Pump
+47
+Conveyor Drive
+Belt + Chain
+14
+Brake Lines
+14
+Brake Lines
+Exhaust Shields
+(if applicable)
+31
+Blade Bar
+33
+Auger Flightings
+32
+Leaf Springs
+Top View Detail Diagram
+ZAMBONI and the conﬁ guration of the Zamboni® ice resurfacing machine are registered trademarks of Frank J. Zamboni & Co., Inc. © Zamboni 2017
+
+=== PDF PAGE 97 ===
+
+=== PDF PAGE 98 ===
+Zamboni USA
+Frank J. Zamboni 	 Co., Inc.
+15714 Colorado Ave., Paramount, CA USA 90723-4211
+Phone (562) 633-0751     Fax (562) 633-9365
+Zamboni Canada / Europe
+Zamboni Company Ltd.
+38 Morton Ave. East, Box 1388, Brantford, ON Canada N3T 5T6
+Phone (519) 758-5000     Fax  (519) 758-0500
+www.zamboni.com
+ZAMBONI? and the configuration of the Zamboni ice resurfacer
+are registered trademarks of Frank J. Zamboni 	 Co., Inc.
+Part Number DM-20077

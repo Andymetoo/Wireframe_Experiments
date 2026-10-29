@@ -1,0 +1,42 @@
+PASS actual mounted assemblies follow operator-left to right VERTICAL / CONDITIONER / HORIZONTAL / DUMP
+PASS water handles occupy adjacent transverse bearings with clearance through quarter turns
+PASS screen ray selects Conditioner hydraulic lever (actual: Conditioner hydraulic lever)
+PASS screen ray selects Horizontal auger lever (actual: Horizontal auger lever)
+PASS screen ray selects Vertical auger lever (actual: Vertical auger lever)
+PASS screen ray selects Snow tank hydraulic lever (actual: Snow tank hydraulic lever)
+PASS screen ray selects Wash water valve (actual: Wash water valve)
+PASS screen ray selects Flood water valve (actual: Flood water valve)
+PASS screen ray selects Blade handwheel (actual: Blade handwheel)
+PASS screen ray selects Snow-breaker plunger (actual: Snow-breaker plunger)
+PASS auger remains latched after mouse release
+PASS auger RUN detent is physically distinct from neutral
+PASS relocated auger pick does not actuate another hydraulic system
+PASS auger remains latched after mouse release
+PASS auger RUN detent is physically distinct from neutral
+PASS relocated auger pick does not actuate another hydraulic system
+PASS vertical auger remains independent when horizontal is stopped
+PASS pushing the physical lever requests conditioner lowering
+PASS conditioner lowering takes time
+PASS released spring control returns neutral and holds attained height
+PASS rendered hydraulic lever springs to neutral
+PASS relocated conditioner gesture leaves tank and augers untouched
+PASS rightmost dump lever raises only the snow tank while held
+PASS dump lever springs to neutral and holds attained tank angle on release
+PASS both hydraulic mechanisms have extended physical piston rods
+PASS flood handle arc gives 25 % actual flow
+PASS physical handle angle matches authoritative flow
+PASS wash handle arc gives 65 % actual flow
+PASS physical handle angle matches authoritative flow
+PASS wash handle does not change flood setting
+PASS flood handle arc gives 100 % actual flow
+PASS physical handle angle matches authoritative flow
+PASS wash handle arc gives 100 % actual flow
+PASS physical handle angle matches authoritative flow
+PASS flood handle arc gives 0 % actual flow
+PASS physical handle angle matches authoritative flow
+PASS wash handle arc gives 0 % actual flow
+PASS physical handle angle matches authoritative flow
+PASS valve travel stops at closed and open limits
+PASS blade wheel reaches and respects the 3.5-turn mechanical end stop
+PASS blade handwheel and screw setting share one state
+Screenshots are runtime camera renders of real geometry. Subjective lever feel, audio balance and actual operator reach still require human calibration.

@@ -1,0 +1,33 @@
+Aurora explicit rendered-workload benchmark / 2026-10-29 01:22:37Z
+Unity 6000.4.1f1 / NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11 / 1366x768
+OS Windows 11  (10.0.26200) / CPU 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz / development Mono player, VSync off, hidden offscreen window.
+One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session 30000 measured frames. Setup seeds poses/tanks solely to profile reproducible loads.
+GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.
+service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.
+late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.
+conditioner_side_escape starts with an explicitly seeded near-full trough, then real maximum-depth shaving with both augers off. chase_resurfacing runs the actual external camera while resurfacing and steering. These are added workloads; the preceding twelve retain their setup/order.
+Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.
+scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame,moving_frames,cutting_frames,shaved_ice_m3,flood_used_liters
+driving_full_hud,299,3.275,4.381,305.4,0.420,1.319,20244,24342,0,3,-4231168,-1,0,0.000,299,0,0.000000,0.000
+resurfacing_full_hud,299,3.689,6.077,271.1,1.037,1.320,20843,34620,0,3,-55640064,-1,7672,0.291,299,299,0.000732,3.461
+resurfacing_compact,299,2.995,5.438,333.9,1.044,1.278,11536,12020,0,2,-58515456,-1,7672,0.297,299,299,0.000732,3.461
+snow_overflow,299,4.003,6.749,249.8,1.095,1.333,21180,37664,0,3,-55578624,-1,6368,0.311,299,299,0.006509,3.461
+camera_changes,299,3.908,7.666,255.9,1.094,1.433,20306,20790,0,3,-58396672,-1,7672,0.313,299,299,0.000732,3.461
+service_walking,299,2.461,3.748,406.3,0.373,1.145,11546,12026,0,1,-57659392,-1,0,0.000,0,0,0.000000,0.000
+hose_filling,299,2.893,4.639,345.6,0.533,1.257,12359,38806,0,2,-58257408,-1,0,0.000,0,0,0.000000,-71.997
+hose_overflow,299,2.123,3.733,471.1,0.470,1.233,12498,12920,0,2,-58212352,-1,0,0.000,0,0,0.000000,0.000
+dump_shakeout,299,3.116,4.089,321.0,0.609,1.189,21007,56925,0,3,-58130432,-1,0,0.000,0,0,0.000000,0.000
+endurance_window,5000,mean_last_1000_ms=3.599,managed_bytes=68268032,gc0=140,moving_frames=4876,cutting_frames=4909
+endurance_window,10000,mean_last_1000_ms=3.961,managed_bytes=69320704,gc0=170,moving_frames=9832,cutting_frames=9909
+endurance_window,15000,mean_last_1000_ms=4.209,managed_bytes=68431872,gc0=201,moving_frames=14799,cutting_frames=14909
+endurance_window,20000,mean_last_1000_ms=3.967,managed_bytes=67063808,gc0=232,moving_frames=19755,cutting_frames=19909
+endurance_window,25000,mean_last_1000_ms=4.450,managed_bytes=68890624,gc0=262,moving_frames=24722,cutting_frames=24909
+endurance_window,30000,mean_last_1000_ms=4.978,managed_bytes=67813376,gc0=293,moving_frames=29678,cutting_frames=29909
+long_session,29999,4.402,9.633,227.2,1.493,1.307,20255,93245,0,185,-59494400,-1,52756,0.676,29768,29999,0.069790,345.749
+on_foot_movement,299,2.086,3.162,479.3,0.355,1.265,11546,12026,0,2,-58630144,-1,0,0.000,0,0,0.000000,0.000
+late_wet_sheet,299,3.860,9.147,259.1,1.433,1.357,20887,24702,0,3,-58163200,-1,599224,0.690,299,299,0.000732,3.461
+conditioner_side_escape,299,3.115,5.184,321.1,0.816,1.345,21555,26414,0,3,-57843712,-1,0,0.228,299,299,0.006888,0.000
+chase_resurfacing,299,3.880,6.148,257.8,1.123,1.472,20306,20790,0,3,-58490880,-1,7606,0.292,299,299,0.000715,3.461
+Managed runtime errors: 0
+Long-session growth is a live-heap delta, not a leak diagnosis; inspect GC collections and final repeat before inferring leaks.
+Native hidden-window D3D presentation warnings: 73 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

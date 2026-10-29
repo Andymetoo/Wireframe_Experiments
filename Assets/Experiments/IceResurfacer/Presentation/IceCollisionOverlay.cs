@@ -13,7 +13,7 @@ namespace IceResurfacer.Presentation
         public void Initialize(IceResurfacerGame owner)
         {
             game=owner;
-            string[] names={"F3 accepted body / green","F3 rejected body / red","F3 rendered pit / cyan","F3 collision pit / amber","F3 actual contact normal / magenta","F3 contact point / magenta"};
+            string[] names={"F3 accepted body / green","F3 rejected body / red","F3 traversable snow grate / cyan","F3 snow receiver / amber","F3 actual contact normal / magenta","F3 contact point / magenta"};
             Color[] colors={new Color(.2f,1,.4f,.9f),new Color(1,.15f,.12f,.9f),new Color(.1f,.8f,1,.9f),new Color(1,.7f,.05f,.9f),new Color(1,.2f,1,.9f),new Color(1,.2f,1,.9f)};
             Shader shader=Resources.Load<Shader>("CollisionOverlay");
             for(int i=0;i<lines.Length;i++)
@@ -34,7 +34,7 @@ namespace IceResurfacer.Presentation
             if(!visible)return;
             Body(lines[0],s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading,.20f);
             Body(lines[1],hit.VehicleX,hit.VehicleZ,hit.Heading,.25f);
-            Pit(lines[2],0,.135f);Pit(lines[3],ServiceLayout.PitCollisionClearance,.18f);
+            Pit(lines[2],0,.035f);Pit(lines[3],-.10f,.04f);
             Vector3 contact=new Vector3(hit.PointX,Mathf.Max(.32f,hit.PointY),hit.PointZ),normal=new Vector3(hit.NormalX,0,hit.NormalZ);
             Vector3 end=contact+normal*.85f,tangent=new Vector3(-normal.z,0,normal.x)*.12f;
             lines[4].SetPosition(0,contact);lines[4].SetPosition(1,end);lines[4].SetPosition(2,end-normal*.20f+tangent);lines[4].SetPosition(3,end);

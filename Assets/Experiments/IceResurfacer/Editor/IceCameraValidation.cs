@@ -94,6 +94,11 @@ namespace IceResurfacer.Editor
                 float blade=game.Sim.Controls.BladeDepthMm;
                 InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));InputSystem.Update();update.Invoke(game,null);
                 Check(game.Sim.Controls.BladeDepthMm>blade,"period deepens blade without a camera-key conflict");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftShift,Key.W));InputSystem.Update();update.Invoke(game,null);
+                Check(game.Sim.Controls.Throttle==1&&game.HeldQuicklook=="Rear"&&!game.ChaseActive,"Left Shift rear glance works with full W demand and is not precision throttle");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.RightShift,Key.W,Key.Digit1));InputSystem.Update();update.Invoke(game,null);
+                Check(Mathf.Abs(game.Sim.Controls.Throttle-.42f)<.00001f&&game.Sim.Controls.ConditionerHydraulic==1&&game.HeldQuicklook=="","Right Shift retains precision and machinery modifier without rotating the camera");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();update.Invoke(game,null);
                 Quicklooks();
                 Aim(-100,45,false);Step(true);Step(true);Step(true,new Vector2(10000,-10000));
                 Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)-170)<.001f&&Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.x)-80)<.001f,"positive yaw and downward pitch limits preserved");
@@ -111,11 +116,11 @@ namespace IceResurfacer.Editor
         { for(int i=0;i<frames;i++)Step(false,default,true,key); }
         static void Quicklooks()
         {
-            foreach(var key in new[]{Key.Q,Key.E,Key.C})
+            foreach(var key in new[]{Key.Q,Key.E,Key.C,Key.LeftShift})
             {
                 Aim(-137,42,false);Quaternion before=Head.localRotation;Vector3 position=Head.localPosition;
                 Hold(key);
-                Check(game.HeldQuicklook==(key==Key.Q?"Conditioner":key==Key.E?"Controls":"Chase"),key+" remains active while held");
+                Check(game.HeldQuicklook==(key==Key.Q?"Conditioner":key==Key.E?"Controls":key==Key.C?"Chase":"Rear"),key+" remains active while held");
                 if(key==Key.C)
                 {
                     Check(game.ChaseActive&&Head.parent!=game.World.CameraMount,"C is an external camera rather than a head rotation");
@@ -123,7 +128,8 @@ namespace IceResurfacer.Editor
                     Check(local.z<-3&&local.y>2.5f,"C frames the whole machine from above and behind ("+local+")");
                 }
                 else Check(Head.parent==game.World.CameraMount,"operator quicklook stays attached to physical seated eyes");
-                if(key==Key.Q)Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)+95)<.01f&&Head.localPosition.x<-.25f,"Q looks down at nine o'clock with a small left lean");
+                if(key==Key.LeftShift)Check(!game.ChaseActive&&game.HeldQuicklook=="Rear"&&Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)-160)<.01f&&Head.localPosition.x>0&&game.World.Machine.InverseTransformDirection(Head.forward).z<0,"Left Shift looks rearward over the operator's RIGHT shoulder");
+                if(key==Key.Q)Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)+65)<.01f&&Head.localPosition.x<-.25f,"Q looks down along the left working edge with a small left lean");
                 passes.Add(key+" held pose: machine eyes="+game.World.Machine.InverseTransformPoint(Head.position)+" local angles="+Head.localEulerAngles);
                 IceResurfacerEditor.Capture(game.DriverCamera,"Camera-preset-"+key+".png",1920,1080);
                 Step();Check(Quaternion.Angle(before,Head.localRotation)>.5f,key+" release animates instead of snapping");
@@ -146,7 +152,7 @@ namespace IceResurfacer.Editor
             Same(Quaternion.Euler(5,0,0),"X cancels a held inspection and recenters until all inspection keys are released");
             Step();IceResurfacerEditor.Capture(game.DriverCamera,"Camera-preset-X.png",1920,1080);
             foreach(Vector2 orientation in new[]{new Vector2(0,5),new Vector2(160,12),new Vector2(-30,74)})
-            foreach(Key key in new[]{Key.Q,Key.E,Key.C})
+            foreach(Key key in new[]{Key.Q,Key.E,Key.C,Key.LeftShift})
             {
                 Aim(orientation.x,orientation.y,false);Quaternion prior=Head.localRotation;Vector3 eyes=Head.localPosition;
                 Hold(key,30);for(int i=0;i<15;i++)Step();
@@ -216,7 +222,7 @@ namespace IceResurfacer.Editor
                 int visibleSnow=0;RaycastHit hit=default;string firstHit="none";
                 for(int x=0;x<5;x++)for(int z=0;z<5;z++)
                 {
-                    Vector3 opening=game.World.TankPivot.TransformPoint(-.49f+x*.10f,1.06f,-1.94f+z*.12f);
+                    Vector3 opening=game.World.TankPivot.TransformPoint(game.Sim.Config.TankGeometryX(-.34f+x*.09f),game.Sim.Config.TankGeometryY(1.06f),-1.94f+z*.12f);
                     if(Physics.Raycast(Head.position,(opening-Head.position).normalized,out hit,6))
                     {firstHit=hit.transform.name;if(hit.transform==game.World.TankSnow)visibleSnow++;}
                 }

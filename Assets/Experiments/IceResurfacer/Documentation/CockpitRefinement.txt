@@ -1,0 +1,190 @@
+AURORA R-54 / COCKPIT REFINEMENT
+29 October 2026
+
+Launch
+Open Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity and press Play.
+Experiments > Ice Resurfacer > Open Launch Scene opens the same saved scene.
+
+Scope and reference
+This pass refines the existing operator station, brush position, physical-control
+feedback and rear glance. The supplied Zam_New_1/2/3 images guide the corrections.
+The local 526 manual was reviewed: PDF page 46 shows the brush between the axles,
+behind the front wheel; page 12 provides the vehicle dimension diagrams. Those
+references do not specify an exact brush pivot or cockpit reach dimension.
+The dimensions below are Aurora calibration, not manufacturer CAD measurements.
+
+All coordinates below are meters. Cockpit coordinates use the existing operator
+station frame; +Z is forward. Brush Z is measured forward from the rear axle.
+
+                                  Handoff              Corrected
+Brush pivot Z                     .70                  1.16
+Steering hub Z / height           .25 / 1.39           .53 / 1.46
+Steering plane above horizontal   25 degrees           68 degrees
+Blade spindle X / Y / Z           1.05 / 1.61 / -.05   .65 / 1.56 / -.20
+Water-handle stem height          .064                 .24
+Snow-breaker X / Z                1.37 / .45           1.01 / .34
+Left Shift rear-glance yaw        -160 degrees         +160 degrees
+
+Mechanical changes
+The brush pivot parameter moves the hinge, arm, compliant extension, motor,
+brush and roller together. The simulated contact still uses that same pivot,
+arm length and deployment angle, including existing board compliance. There is
+no independent visual offset. Core snow-clearing behavior is preserved.
+
+The steering column now owns the wheel hub. A connected lower shaft, universal
+joint, upper shaft, foot and support replace the previous disconnected/flat
+arrangement. The dashboard and complete lamp assembly follow the forward hub.
+The column foot is seated on the existing operator platform, with its fixed
+support connected to the lower shaft; a runtime contact check prevents a gap.
+The narrower fixed support also clears both pedals throughout their travel.
+Wheel animation retains the existing five-to-one relationship to actual vehicle
+steering. Wheelbase, track, steering limits and driving dynamics are unchanged.
+
+The blade screw assembly owns its fixed bearings, spindle, index and rotating
+handwheel. Its new position is behind and between the adjacent water bearings.
+The same 3.5-turn adjustment, screw setting and Core state remain authoritative.
+Both water stems are taller; independent quarter-turn travel and mechanical
+stops remain. Labels read FLOOD WATER and WASH WATER. The picker targets the
+actual grip with a small tolerance, avoiding empty space above the nearer valve.
+The complete breaker guide/guard/rod/handle moves beside the hydraulic bank.
+Its click operation and 18 cm down-and-return animation remain intact.
+
+The Machine Geometry Editor exposes these parameters through the existing scene
+calibration. Its selectable preview and runtime use the same builder. Save the
+launch scene to persist edits. No second geometry or simulation system was added.
+
+Interaction and camera
+The existing moving-part ray picker also supplies hover selection. Cached URP
+MaterialPropertyBlocks apply a subtle amber tint to the selected moving assembly,
+with a stronger tint during dragging. Fixed plates and adjacent controls retain
+their own appearance. The existing HUD hint identifies the selected control.
+Release restores the original property blocks. No fullscreen render feature,
+material clone per hover, extra selection ray system or new runtime component
+is needed.
+
+Held Left Shift now looks over the RIGHT shoulder at +160 degrees yaw and
+22 degrees downward pitch. Release smoothly restores the exact saved orientation
+and eye offset. WASD remains independent. Right Shift retains machinery and
+precision modifiers. Q/E/C, RMB look, R standing and X recenter remain operational.
+Q points 30 degrees farther forward along the left working edge, at -65 degrees
+yaw / 75 degrees down, to frame both the forward brush and trailing conditioner.
+The existing seated origin, eye-height setting and left inspection lean remain.
+E framing uses the updated real grip, blade-rim and breaker extents.
+
+Validation evidence
+Validation~/Cockpit-refinement-core.txt:
+  PASS: all 37 deterministic simulation scenario groups, including brush work,
+  manual breaker conservation/interlocks, machinery, driving, water, scoring,
+  snow recovery and complete driven resurfacing runs. Core source did not change
+  after that successful run.
+
+Validation~/Cockpit-refinement-unity-complete.log and
+Validation~/CockpitRefinementAfter/Unity-results.txt:
+  PASS: actual Unity 6000.4.1f1 Play Mode with Direct3D11 on the RTX 3050 Laptop GPU.
+  Final runtime error/exception count: zero; owned process exit: zero.
+  Camera/sightlines, snow operation rendering, input/drive recovery, physical
+  controls, cockpit refinement, service/freedom and ice/pickup rendering all pass.
+  Layout and service-geometry checks also pass through the existing harness.
+
+The added cockpit report verifies 82 deployment/retraction samples at differing
+headings; column-foot contact with the actual floor; support clearance with both
+pedals released and fully pressed; steering-rim clearance
+against actual machine meshes at left/center/
+right steering; animation agreement; physical mesh visibility and analytical
+picking for each relocated control; individual hover tint; retained drag feedback;
+and cleanup on release, HUD obstruction, pause, help, camera changes, focus loss,
+actual RMB input and actual dismount input. Physical breaker clicks invoke one
+simulation stroke, reach the full downstroke, keep the moving target selectable
+and return exactly to the guide. The camera suite additionally verifies the
+right-shoulder glance, exact custom-view restoration, overlap priority, Q/E
+sightlines and front-tire swept clearance. Seven of eight blade-rim sightline
+samples are unobstructed in E. All four hydraulic grips remain visible in order.
+Temporary mesh colliders are used only for validation; runtime interaction keeps
+the existing bounds in each moving part's local space.
+
+Validation~/Cockpit-refinement-layout-build-complete.log:
+  PASS: isolated development player build from the same production source.
+Native HUD verification: PASS at 1366x768 and 1920x1080, both player exits zero.
+  Actual IMGUI hydraulic hold/release, independent valve arcs, full blade-wheel
+  travel, current machinery state, quicklooks and exact view return pass.
+  Both resolutions report no measured text clipping. Reports and actual
+  framebuffers are in Validation~/CockpitRefinementAfter/NativeHUD/.
+  Hidden-window D3D presentation warnings: 7 at 1366x768, 11 at 1920x1080.
+  These native diagnostics bypass the managed error callback and are retained
+  in the player logs. Screenshot FPS includes automation/capture waits; these
+  offscreen checks do not measure focused-window latency or sustained performance.
+  Native drag inputs were automated; optional OS scroll shortcuts were not.
+
+Screenshots and comparisons
+Open Validation~/Cockpit-comparisons.html for paired actual Unity renders.
+Validation~/CockpitRefinementBefore preserves the original captures and source
+backups. Validation~/CockpitRefinementAfter contains passing runtime reports,
+fixed-pose steering/controls, actual E and right-shoulder views, brush deployed/
+retracted, individual hover feedback and supplementary control/camera captures.
+The steering and fixed-control pairs use identical seated camera poses. The
+brush pair uses the same external camera. E/rear pairs use each revision's real
+inspection target. Camera renders do not include IMGUI; native HUD captures do.
+
+Reproduction
+Run the core harness from the repository root:
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release -p:UseSharedCompilation=false
+
+Stage the disposable Unity project:
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/StageUnityValidation.ps1 -UpdateOnly
+Run the existing isolated harness, using a unique log filename:
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/RunIsolatedUnity.ps1 -Action RunBatch -LogName Cockpit-refinement-repeat.log
+The installed Unity licensing client must be reachable. Heavy validation runs
+must be serial; wait for the owned process to exit before staging or launching
+the next run. The harness enters actual Play Mode and exits itself.
+
+Files changed by this pass (relative to Assets/Experiments/IceResurfacer)
+  Core/IceCalibrationConfig.cs
+  Core/MachineGeometryConfig.cs
+  Presentation/IceWorldBuilder.cs
+  Presentation/IcePhysicalControls.cs
+  Presentation/IceResurfacerGame.cs
+  Editor/IceMachineGeometryEditor.cs
+  Editor/IceCameraValidation.cs
+  Editor/IcePhysicalValidation.cs
+  Editor/IceResurfacerEditor.cs
+  Scenes/IceResurfacer.unity
+  README.txt
+New source/documentation:
+  Editor/IceCockpitRefinementValidation.cs and .meta
+  Documentation/CockpitRefinement.txt and .meta
+New validation tools/artifacts:
+  Validation~/AuditCockpitPreservation.py
+  Validation~/Cockpit-comparisons.html
+  Validation~/Cockpit-refinement-*.txt / *.log
+  Validation~/CockpitRefinementBefore/ and CockpitRefinementAfter/
+Native runs regenerate the existing HUD-* capture/report files and Layout-player
+logs. The complete written-file inventory is Validation~/Cockpit-refinement-files.txt.
+
+Preservation and limits
+Only this experiment was edited. No branch, commit, push, original project-wide
+setting, shared package or unrelated experiment was changed. The user's original
+Editor was not switched or stopped. Existing dirty workspace work was retained.
+AuditCockpitPreservation.py checks source/staged hashes, metadata, GUIDs,
+outside-experiment status and selected byte-identical handoff files.
+Audit outputs:
+  Validation~/Cockpit-refinement-preservation.txt
+  Validation~/Cockpit-refinement-source-sha256.txt
+
+The first integrated capture run exhausted native texture resources. The
+editor-only capture helper now restores render targets in finally and destroys
+temporary textures immediately, instead of deferring many captures to the end
+of one Editor update. The final runtime run completes without that failure.
+Earlier diagnostic logs remain available and are not presented as passing runs.
+
+Default geometry is validated. Bounds in the Geometry Editor do not certify
+every combination of custom dimensions; recheck clearances after adjustments.
+These automated camera renders and kinematic checks do not establish physical
+operator reach or manufacturer authenticity. No fresh performance benchmark or
+audio calibration was part of this focused pass.
+
+Remaining operator-calibration questions (review, not implementation blockers)
+  Is the forward steering reach and 68-degree tilt comfortable from the seat?
+  Are the 24 cm water stems and nearer blade rim at the preferred working height?
+  Is the breaker beside the rightmost hydraulic lever in a comfortable location?
+  Does the forward brush mount match the operator's preferred real-world reference?
+  Is the individual amber hover tint noticeable enough without being distracting?

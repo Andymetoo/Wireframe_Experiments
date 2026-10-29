@@ -13,7 +13,7 @@ namespace IceResurfacer.Presentation
     // Explicit development-player benchmark. It is never attached to the launch scene.
     public sealed class IcePerformanceProbe : MonoBehaviour
     {
-        readonly string[] scenarios={"driving_full_hud","resurfacing_full_hud","resurfacing_compact","snow_overflow","camera_changes","service_walking","hose_filling","hose_overflow","dump_shakeout","long_session","on_foot_movement","late_wet_sheet","conditioner_side_escape","chase_resurfacing"};
+        readonly string[] scenarios={"driving_full_hud","resurfacing_full_hud","resurfacing_compact","snow_overflow","camera_changes","service_walking","hose_filling","hose_overflow","dump_shakeout","long_session","on_foot_movement","late_wet_sheet","conditioner_side_escape","chase_resurfacing","stationary_pool","advisory_route"};
         readonly List<double> frameMs=new List<double>(1500), cpuMs=new List<double>(1500), gpuMs=new List<double>(1500);
         readonly StringBuilder report=new StringBuilder();
         readonly FrameTiming[] timings=new FrameTiming[1];
@@ -23,7 +23,7 @@ namespace IceResurfacer.Presentation
         Action applyFoot;
         ProfilerRecorder gc, draws;
         string output;
-        int scenario=-1, frame, errors, gcStart, enduranceFrames=1500;
+        int scenario=-1, frame, errors, gcStart, enduranceFrames=1500, invalidGpuSamples;
         long allocated, maxAllocated, simulationAllocated;
         double lastFrame, cpuTotal, memoryStart, surfaceRefreshTotal;
         int movingFrames,cuttingFrames;
@@ -55,10 +55,11 @@ namespace IceResurfacer.Presentation
             report.AppendLine("OS "+SystemInfo.operatingSystem+" / CPU "+SystemInfo.processorType+" / development Mono player, VSync off, hidden offscreen window.");
             report.AppendLine("One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session "+enduranceFrames+" measured frames. Setup seeds poses/tanks solely to profile reproducible loads.");
             frameMs.Capacity=cpuMs.Capacity=gpuMs.Capacity=enduranceFrames+1;
-            report.AppendLine("GPU timing is reported only when the platform returns a positive FrameTiming sample. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.");
+            report.AppendLine("GPU timing requires finite positive FrameTiming samples below 1000 ms; a scenario with any invalid positive sample reports unavailable. Hidden presentation can return corrupt timestamps. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.");
             report.AppendLine("service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.");
             report.AppendLine("late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.");
             report.AppendLine("conditioner_side_escape starts with an explicitly seeded near-full trough, then real maximum-depth shaving with both augers off. chase_resurfacing runs the actual external camera while resurfacing and steering. These are added workloads; the preceding twelve retain their setup/order.");
+            report.AppendLine("stationary_pool prepares thirty seconds of actual full-flow flooding, then measures continued finite pooling. advisory_route draws the optional path during reverse departure. Neither has an equivalent previous-pass workload.");
             report.AppendLine("Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.");
             report.AppendLine("scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame,moving_frames,cutting_frames,shaved_ice_m3,flood_used_liters");
             active=true;Next();lastFrame=Time.realtimeSinceStartupAsDouble;
@@ -96,10 +97,21 @@ namespace IceResurfacer.Presentation
                 typeof(Simulation).GetProperty("SnowTankM3").SetValue(s,1.8f);c.TankLiftTarget=1;
             }
             if(lateWetSheet)SeedLateWetSheet(s);
+            if(scenario==14)
+            {
+                Pose(s,0,0,0);s.Conditioner.Lift=0;c.ConditionerTarget=0;c.FloodFlow=1;c.Throttle=0;
+                for(int i=0;i<1500;i++)s.Step(.02f);
+            }
+            if(scenario==15)
+            {
+                c.Throttle=-.65f;
+                if(!game.RouteGuide.Visible)game.RouteGuide.Toggle();
+            }
+            else if(game.RouteGuide.Visible)game.RouteGuide.Toggle();
             game.Dashboard.Compact=scenario==2;
             render(0);game.Surface.Invalidate();game.Surface.Refresh(s);
             if(chase)game.SelectCameraView("Chase");
-            frame=0;frameMs.Clear();cpuMs.Clear();gpuMs.Clear();allocated=maxAllocated=simulationAllocated=0;cpuTotal=surfaceRefreshTotal=0;
+            frame=0;frameMs.Clear();cpuMs.Clear();gpuMs.Clear();invalidGpuSamples=0;allocated=maxAllocated=simulationAllocated=0;cpuTotal=surfaceRefreshTotal=0;
             memoryStart=GC.GetTotalMemory(false);gcStart=GC.CollectionCount(0);
             movingFrames=cuttingFrames=0;shavedAtMeasurement=s.TotalShavedIceM3;floodAtMeasurement=s.FloodWaterLiters;
         }
@@ -135,7 +147,12 @@ namespace IceResurfacer.Presentation
             {
                 frameMs.Add(elapsed);long bytes=gc.Valid?gc.LastValue:0;allocated+=bytes;maxAllocated=Math.Max(maxAllocated,bytes);
                 uint n=FrameTimingManager.GetLatestTimings(1,timings);
-                if(n>0&&timings[0].gpuFrameTime>0)gpuMs.Add(timings[0].gpuFrameTime);
+                if(n>0&&timings[0].gpuFrameTime>0)
+                {
+                    double measuredGpu=timings[0].gpuFrameTime;
+                    if(double.IsNaN(measuredGpu)||double.IsInfinity(measuredGpu)||measuredGpu>=1000)invalidGpuSamples++;
+                    else gpuMs.Add(measuredGpu);
+                }
             }
             FrameTimingManager.CaptureFrameTimings();
             var s=game.Sim;var c=s.Controls;
@@ -177,7 +194,9 @@ namespace IceResurfacer.Presentation
                 frameMs.Sort();double sum=0;foreach(double value in frameMs)sum+=value;
                 double gpu=0;foreach(double value in gpuMs)gpu+=value;
                 int n=frameMs.Count;double mean=sum/Math.Max(1,n);
-                report.AppendLine(scenarios[scenario]+","+n+","+mean.ToString("F3")+","+frameMs[Math.Min(n-1,(int)(n*.95))].ToString("F3")+","+(1000/mean).ToString("F1")+","+(cpuTotal/Math.Max(1,cpuMs.Count)).ToString("F3")+","+(gpuMs.Count>0?(gpu/gpuMs.Count).ToString("F3"):"unavailable")+","+(allocated/Math.Max(1,n))+","+maxAllocated+","+(simulationAllocated/Math.Max(1,cpuMs.Count))+","+(GC.CollectionCount(0)-gcStart)+","+(GC.GetTotalMemory(false)-memoryStart)+","+(draws.Valid?draws.LastValue:-1)+","+game.Surface.ActiveWetCells+","+(surfaceRefreshTotal/Math.Max(1,cpuMs.Count)).ToString("F3")+","+movingFrames+","+cuttingFrames+","+(s.TotalShavedIceM3-shavedAtMeasurement).ToString("F6")+","+(floodAtMeasurement-s.FloodWaterLiters).ToString("F3"));
+                report.AppendLine(scenarios[scenario]+","+n+","+mean.ToString("F3")+","+frameMs[Math.Min(n-1,(int)(n*.95))].ToString("F3")+","+(1000/mean).ToString("F1")+","+(cpuTotal/Math.Max(1,cpuMs.Count)).ToString("F3")+","+(gpuMs.Count>0&&invalidGpuSamples==0?(gpu/gpuMs.Count).ToString("F3"):"unavailable")+","+(allocated/Math.Max(1,n))+","+maxAllocated+","+(simulationAllocated/Math.Max(1,cpuMs.Count))+","+(GC.CollectionCount(0)-gcStart)+","+(GC.GetTotalMemory(false)-memoryStart)+","+(draws.Valid?draws.LastValue:-1)+","+game.Surface.ActiveWetCells+","+(surfaceRefreshTotal/Math.Max(1,cpuMs.Count)).ToString("F3")+","+movingFrames+","+cuttingFrames+","+(s.TotalShavedIceM3-shavedAtMeasurement).ToString("F6")+","+(floodAtMeasurement-s.FloodWaterLiters).ToString("F3"));
+                if(invalidGpuSamples>0)report.AppendLine("Invalid GPU timing samples in "+scenarios[scenario]+": "+invalidGpuSamples+"; GPU timing unavailable, CPU/frame measurements retained.");
+                File.WriteAllText(Path.Combine(output,"Performance-"+Screen.width+"x"+Screen.height+".csv"),report.ToString());
                 Next();
             }
         }

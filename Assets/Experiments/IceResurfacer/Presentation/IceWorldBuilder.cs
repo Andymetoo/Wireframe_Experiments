@@ -37,33 +37,42 @@ namespace IceResurfacer.Presentation
             var builder = new Builder(root, litTemplate, config ?? new SimulatorConfig());
             return builder.Build();
         }
+        // Explicit Editor preview uses the exact same authoring functions but
+        // preserves each selectable part. Runtime keeps material mesh batching.
+        public static IceWorld BuildMachinePreview(Transform root,Material litTemplate,SimulatorConfig config)
+        {
+            config.Validate();
+            return new Builder(root,litTemplate,config,false).Build(false);
+        }
 
         sealed class Builder
         {
             readonly Transform root;
             readonly Material template;
             readonly SimulatorConfig config;
+            readonly bool batchGeometry;
             readonly ServiceLayout serviceLayout;
             readonly IceWorld world = new IceWorld();
             Material white, navy, cyan, steel, rubber, black, orange, red, yellow, concrete;
             Material roof, glass, lightMat, pale, snow, cloth, blue, lettering;
             Font font;
 
-            public Builder(Transform root, Material template, SimulatorConfig config)
+            public Builder(Transform root, Material template, SimulatorConfig config,bool batchGeometry=true)
             {
                 this.root = root;
                 this.template = template;
                 this.config = config;
+                this.batchGeometry=batchGeometry;
                 serviceLayout = new ServiceLayout(config);
                 world.WorkingWidth = config.ConditionerWidth;
             }
 
-            public IceWorld Build()
+            public IceWorld Build(bool includeArena=true)
             {
                 Palette();
-                Arena();
+                if(includeArena)Arena();
                 Machine();
-                BatchMachine();
+                if(batchGeometry)BatchMachine();
                 return world;
             }
 
@@ -278,6 +287,7 @@ namespace IceResurfacer.Presentation
             // dynamic ice, and TextMesh glyphs. This is mesh batching, not thousands of ice objects.
             void BatchMeshes(Transform parent, HashSet<Transform> excluded = null)
             {
+                if(!batchGeometry)return;
                 var batches = new Dictionary<Material,List<CombineInstance>>();
                 var sources = new List<MeshRenderer>();
                 Matrix4x4 toLocal = parent.worldToLocalMatrix;
@@ -464,18 +474,21 @@ namespace IceResurfacer.Presentation
                     }
                 }
                 Box("Machine room rear wall",bay,new Vector3(0,2.4f,-b.RoomLength-.12f),new Vector3(b.RoomHalfWidth*2+.3f,4.8f,.24f),pale);
-                Box("Snow pit recess",bay,new Vector3(b.PitSide,.007f,-b.PitOutward),new Vector3(b.PitHalfWidth*2,.012f,b.PitHalfLength*2),black);
+                Box("Dark slots under traversable dump grate",bay,new Vector3(b.PitSide,.0005f,-b.PitOutward),new Vector3(b.PitHalfWidth*2,.001f,b.PitHalfLength*2),black);
                 world.PitSnow=SnowSurface("Accumulating dumped snow / physical pit",bay,new Vector3(b.PitSide,.04f,-b.PitOutward));
-                // Every rim stays INSIDE the same pit rectangle used by core
-                // collision. The tiny additional 1cm clearance is numerical.
+                // Load-bearing grate is flush with the navigable service floor.
+                // Its painted edge is a visible seam, not a vehicle barrier.
                 float rim=ServiceLayout.PitRimWidth,rimHeight=ServiceLayout.PitRimHeight;
                 for(int side=-1;side<=1;side+=2)
                 {
                     Box("Visible pit side rim",bay,new Vector3(b.PitSide+side*(b.PitHalfWidth-rim*.5f),rimHeight*.5f,-b.PitOutward),new Vector3(rim,rimHeight,b.PitHalfLength*2),yellow);
                     Box(side<0?"Visible pit approach rim":"Visible pit far rim",bay,new Vector3(b.PitSide,rimHeight*.5f,-b.PitOutward-side*(b.PitHalfLength-rim*.5f)),new Vector3(b.PitHalfWidth*2-rim*2,rimHeight,rim),yellow);
                 }
-                for(int i=0;i<16;i++)Box("Pit grate bar",bay,new Vector3(b.PitSide-1.87f+i*.25f,.028f,-b.PitOutward),new Vector3(.035f,.025f,b.PitHalfLength*2-.1f),steel);
-                Label("SNOW PIT",bay,new Vector3(b.PitSide,2.45f,-b.RoomLength+.02f),.22f,Color.white,Quaternion.identity);
+                for(int i=0;i<48;i++)
+                    Box("Load-bearing dump grate bar",bay,new Vector3(b.PitSide-b.PitHalfWidth+.09f+i*(b.PitHalfWidth*2-.18f)/47,.0025f,-b.PitOutward),new Vector3(.045f,.005f,b.PitHalfLength*2-.10f),steel);
+                for(int i=0;i<7;i++)
+                    Box("Dump grate cross support",bay,new Vector3(b.PitSide,.0025f,-b.PitOutward-b.PitHalfLength+.08f+i*(b.PitHalfLength*2-.16f)/6),new Vector3(b.PitHalfWidth*2-.10f,.005f,.045f),steel);
+                Label("TRAVERSABLE DUMP GRATE",bay,new Vector3(b.PitSide,2.45f,-b.RoomLength+.02f),.22f,Color.white,Quaternion.identity);
                 Label("MANUAL APPROACH / WATCH THE OUTLET",bay,new Vector3(b.PitSide,1.96f,-b.RoomLength+.02f),.080f,new Color(.94f,.7f,.28f),Quaternion.identity);
                 Label("SOUTHEAST  /  MACHINE ROOM",bay,new Vector3(0,4.22f,-1.57f),.14f,Color.white,Quaternion.Euler(0,180,0));
                 Label("PARK / FILL",bay,new Vector3(b.ParkSide,.023f,-b.ParkOutward+2.5f),.19f,new Color(.93f,.72f,.28f),Quaternion.Euler(270,0,0));
@@ -562,7 +575,7 @@ namespace IceResurfacer.Presentation
                 // swept tire volumes open. The previous full-width blocks ran
                 // straight through both axles and concealed front-wheel steering.
                 Box("Central steel chassis",machine,new Vector3(0,.47f,.77f),new Vector3(.72f,.23f,3),black);
-                BevelBox("Chamfered between-axle body sill",machine,new Vector3(0,.67f,.97f),new Vector3(1.85f,.35f,.96f),.10f,cyan);
+                FrontWheelWellSill(machine);
                 Box("Rear crossmember",machine,new Vector3(0,.79f,-.71f),new Vector3(1.95f,.15f,.24f),steel);
                 Box("Right equipment deck",machine,new Vector3(.48f,.83f,-.37f),new Vector3(.99f,.13f,1),steel);
                 BevelBox("Shaped engine cover / right of operator",machine,new Vector3(.46f,1.13f,-.02f),new Vector3(.85f,.63f,.8f),.10f,navy);
@@ -594,61 +607,131 @@ namespace IceResurfacer.Presentation
                 Beam("Exhaust outlet / equipment side",machine,new Vector3(.81f,.7f,-.2f),new Vector3(.81f,1.4f,-.32f),.065f,steel);
             }
 
+            Vector3 TankPoint(float x,float y,float z)
+                => new Vector3(config.TankGeometryX(x),config.TankGeometryY(y),z);
+
+            void FrontWheelWellSill(Transform machine)
+            {
+                // The lower casing tapers between the front wheel wells. The
+                // former broad box carried its full .925 m half-width right to
+                // the front arch and hid the real tire when it steered inward.
+                // Keep the rear equipment volume, with physical sloping panels
+                // ahead of the brush mount; wheel track and eye height stay put.
+                Vector2[] outline={new Vector2(-.825f,.49f),new Vector2(.825f,.49f),
+                    new Vector2(.925f,.59f),new Vector2(.925f,.90f),new Vector2(.720f,1.45f),
+                    new Vector2(-.720f,1.45f),new Vector2(-.925f,.90f),new Vector2(-.925f,.59f)};
+                var vertices=new List<Vector3>();var triangles=new List<int>();
+                for(int i=0;i<outline.Length;i++)
+                {
+                    int j=(i+1)%outline.Length;
+                    Vector3 a=new Vector3(outline[i].x,.845f,outline[i].y),b=new Vector3(outline[j].x,.845f,outline[j].y);
+                    Vector3 c=a-Vector3.up*.35f,d=b-Vector3.up*.35f;
+                    Quad(vertices,triangles,a,b,d,c);
+                    int n=vertices.Count;vertices.Add(new Vector3(0,.845f,.97f));vertices.Add(b);vertices.Add(a);
+                    triangles.Add(n);triangles.Add(n+1);triangles.Add(n+2);
+                    n=vertices.Count;vertices.Add(new Vector3(0,.495f,.97f));vertices.Add(c);vertices.Add(d);
+                    triangles.Add(n);triangles.Add(n+1);triangles.Add(n+2);
+                }
+                MeshObject("Tapered between-axle casing / front wheel wells",machine,vertices,triangles,cyan);
+            }
+
+            void BuildTankFloor(Transform tank)
+            {
+                // Follow the tapered skins rather than using a 1.56 m rectangle
+                // that protruded over the left tire sightline at the front.
+                Vector3 a=TankPoint(.20f-.763f,.085f,-2.03f),b=TankPoint(.20f+.763f,.085f,-2.03f);
+                Vector3 c=TankPoint(.20f+.720f,.085f,.02f),d=TankPoint(.20f-.720f,.085f,.02f);
+                Vector3 thickness=Vector3.up*(.060f*config.TankHeightRatio);
+                var vertices=new List<Vector3>();var triangles=new List<int>();
+                Quad(vertices,triangles,a,d,c,b);
+                Quad(vertices,triangles,a-thickness,b-thickness,c-thickness,d-thickness);
+                Quad(vertices,triangles,a,b,b-thickness,a-thickness);
+                Quad(vertices,triangles,b,c,c-thickness,b-thickness);
+                Quad(vertices,triangles,c,d,d-thickness,c-thickness);
+                Quad(vertices,triangles,d,a,a-thickness,d-thickness);
+                MeshObject("Tapered steel tank floor / inside shell footprint",tank,vertices,triangles,steel);
+            }
+
+            void BuildRearTankWall(Transform tank)
+            {
+                // Tapered rear-wall panels surround an actual inlet opening.
+                // The upper shoulders follow the shell, avoiding a square wall
+                // sticking out beyond its narrower crown.
+                float low=config.TankGeometryY(0),high=config.TankGeometryY(1.02f);
+                float x=config.ConveyorOutletX,y=config.ConveyorOutletY-.78f;
+                float fold=config.TankGeometryY(.80f);
+                float[] rows={low,y-.14f,fold,y+.14f,high};
+                Array.Sort(rows);
+                for(int i=0;i<rows.Length-1;i++)
+                {
+                    float a=rows[i],b=rows[i+1];
+                    float wa=Mathf.Lerp(.763f,.64f,Mathf.InverseLerp(fold,high,a));
+                    float wb=Mathf.Lerp(.763f,.64f,Mathf.InverseLerp(fold,high,b));
+                    float center=config.TankLateralOffset;
+                    if(a>=y-.14001f&&b<=y+.14001f)
+                    {
+                        Panel("Tapered rear wall left of inlet",tank,new Vector3(center-wa,a,-2.012f),new Vector3(center-wb,b,-2.012f),new Vector3(x-.14f,b,-2.012f),new Vector3(x-.14f,a,-2.012f),white);
+                        Panel("Tapered rear wall right of inlet",tank,new Vector3(x+.14f,a,-2.012f),new Vector3(x+.14f,b,-2.012f),new Vector3(center+wb,b,-2.012f),new Vector3(center+wa,a,-2.012f),white);
+                    }
+                    else Panel("Tapered rear wall above or below inlet",tank,new Vector3(center-wa,a,-2.012f),new Vector3(center-wb,b,-2.012f),new Vector3(center+wb,b,-2.012f),new Vector3(center+wa,a,-2.012f),white);
+                }
+            }
+
             void Tank(Transform machine)
             {
                 world.TankPivot=Group("Snow tank forward dump hinge",machine,new Vector3(0,.78f,2.46f));
                 var tank=world.TankPivot;
                 // Hollow walls and floor, with separate roof panels around actual
                 // inspection/inlet holes. There is no opaque cube beneath the window.
-                world.BodyTank=Group("Hollow snow tank shell / equipment side",tank,new Vector3(.20f,.51f,-.98f));
+                world.BodyTank=Group("Hollow centered snow tank shell",tank,new Vector3(config.TankLateralOffset,config.TankGeometryY(.51f),-.98f));
                 var shell=world.BodyTank;
-                Box("Tank internal floor",shell,new Vector3(0,-.455f,-.025f),new Vector3(1.56f,.06f,2.05f),steel);
+                BuildTankFloor(tank);
                 for(int side=-1;side<=1;side+=2)
                 {
                     // Keep the machinery envelope and hollow storage, but break the
                     // block silhouette with a broad shoulder and a taper at the nose.
                     float x=side*.763f, top=side*.64f;
-                    Panel("Tank lower side skin",shell,new Vector3(x,-.485f,-1.05f),new Vector3(x,.29f,-1.05f),new Vector3(side*.72f,.24f,1.00f),new Vector3(side*.72f,-.485f,1.00f),white);
-                    Panel("Tank sloped upper shoulder",shell,new Vector3(x,.29f,-1.05f),new Vector3(top,.515f,-1.05f),new Vector3(side*.60f,.43f,1.00f),new Vector3(side*.72f,.24f,1.00f),white);
-                    Beam("Tank shoulder fold seam",shell,new Vector3(x,.29f,-1.05f),new Vector3(side*.72f,.24f,1.00f),.012f,steel);
+                    Panel("Tank lower side skin",shell,new Vector3(x,-.485f*config.TankHeightRatio,-1.05f),new Vector3(x,.29f*config.TankHeightRatio,-1.05f),new Vector3(side*.72f,.24f*config.TankHeightRatio,1.00f),new Vector3(side*.72f,-.485f*config.TankHeightRatio,1.00f),white);
+                    Panel("Tank sloped upper shoulder",shell,new Vector3(x,.29f*config.TankHeightRatio,-1.05f),new Vector3(top,.515f*config.TankHeightRatio,-1.05f),new Vector3(side*.60f,.43f*config.TankHeightRatio,1.00f),new Vector3(side*.72f,.24f*config.TankHeightRatio,1.00f),white);
+                    // The meeting skin normals are the real folded seam. An
+                    // added 12 mm round steel rail here overhung the skin and
+                    // obscured the tire crown from the driver's shallow angle.
                 }
-                Box("Tank rear wall",shell,new Vector3(0,0,-1.032f),new Vector3(1.56f,1.02f,.036f),white);
-                world.TankDoor=Group("Forward dump door hinge",tank,new Vector3(.20f,1.02f,.002f));
-                BevelBox("Tapered opening snow dump door",world.TankDoor,new Vector3(0,-.55f,0),new Vector3(1.44f,.94f,.055f),.06f,white);
-                Panel("Sloping forward tank crown",tank,new Vector3(-.44f,1.025f,-1.25f),new Vector3(.84f,1.025f,-1.25f),new Vector3(.80f,.94f,.02f),new Vector3(-.40f,.94f,.02f),white);
-                Box("Roof rear rim",tank,new Vector3(.20f,1.025f,-2.005f),new Vector3(1.56f,.045f,.05f),white);
-                Box("Roof rear left rim",tank,new Vector3(-.56f,1.025f,-1.625f),new Vector3(.04f,.045f,.71f),white);
-                Box("Roof between window and inlet",tank,new Vector3(.085f,1.025f,-1.625f),new Vector3(.09f,.045f,.71f),white);
-                Box("Roof rear right panel",tank,new Vector3(.705f,1.025f,-1.625f),new Vector3(.55f,.045f,.71f),white);
-                Box("Inlet rear closure",tank,new Vector3(.28f,1.025f,-1.90f),new Vector3(.30f,.045f,.16f),white);
-                Box("Inlet forward closure",tank,new Vector3(.28f,1.025f,-1.36f),new Vector3(.30f,.045f,.18f),white);
-                world.TankInspection=Group("Physical snow inspection opening / clear sightline",tank,new Vector3(-.25f,1.05f,-1.625f));
+                BuildRearTankWall(tank);
+                world.TankDoor=Group("Forward dump door hinge",tank,TankPoint(.20f,1.02f,.002f));
+                BevelBox("Tapered opening snow dump door",world.TankDoor,new Vector3(0,-.55f*config.TankHeightRatio,0),new Vector3(1.44f,.94f*config.TankHeightRatio,.055f),.06f,white);
+                Panel("Sloping forward tank crown",tank,TankPoint(-.44f,1.025f,-1.25f),TankPoint(.84f,1.025f,-1.25f),TankPoint(.80f,.94f,.02f),TankPoint(-.40f,.94f,.02f),white);
+                Box("Roof rear rim",tank,TankPoint(.20f,1.025f,-2.005f),new Vector3(1.28f,.045f,.05f),white);
+                Box("Roof rear left rim",tank,TankPoint(-.425f,1.025f,-1.625f),new Vector3(.03f,.045f,.71f),white);
+                Box("Roof right of inspection window",tank,TankPoint(.475f,1.025f,-1.625f),new Vector3(.71f,.045f,.71f),white);
+                world.TankInspection=Group("Physical snow inspection opening / clear sightline",tank,TankPoint(-.14f,1.05f,-1.625f));
                 for(int side=-1;side<=1;side+=2)
                 {
-                    Box("Black inspection window side frame",world.TankInspection,new Vector3(side*.29f,0,0),new Vector3(.035f,.035f,.71f),black);
-                    Box("Black inspection window end frame",world.TankInspection,new Vector3(0,0,side*.34f),new Vector3(.60f,.035f,.035f),black);
+                    Box("Black inspection window side frame",world.TankInspection,new Vector3(side*.25f,0,0),new Vector3(.035f,.035f,.71f),black);
+                    Box("Black inspection window end frame",world.TankInspection,new Vector3(0,0,side*.34f),new Vector3(.53f,.035f,.035f),black);
                 }
-                Beam("Inspection opening protective crossbar",world.TankInspection,new Vector3(-.28f,.01f,0),new Vector3(.28f,.01f,0),.014f,steel);
+                Beam("Inspection opening protective crossbar",world.TankInspection,new Vector3(-.24f,.01f,0),new Vector3(.24f,.01f,0),.014f,steel);
                 // Snow starts at the actual upper face of the raised steel floor.
                 // Keeping the old .06 origin buried a nearly empty load below it.
-                world.TankSnow=SnowSurface("Uneven snow surface / actual tank contents",tank,new Vector3(.20f,.085f,-.98f));
-                world.DumpOutlet=Group("Snow exiting tilted tank at forward door",tank,new Vector3(.20f,.16f,.12f));
+                world.TankSnow=SnowSurface("Uneven snow surface / actual tank contents",tank,new Vector3(config.TankLateralOffset,.085f,config.TankSnowCenterZ));
+                world.DumpOutlet=Group("Snow exiting tilted tank at forward door",tank,new Vector3(config.TankLateralOffset,.16f,.12f));
                 world.TankCylinderBarrels=new Transform[2];world.TankCylinderRods=new Transform[2];
                 for(int side=-1;side<=1;side+=2)
                 {
-                    var stripe=Box("Tank glacier stripe",tank,new Vector3(.20f+side*.751f,.39f,-.93f),new Vector3(.016f,.23f,1.56f),cyan);
+                    var stripe=Box("Flush tank glacier stripe",tank,TankPoint(.20f+side*.741f,.39f,-.93f),new Vector3(.002f,.23f,1.56f),cyan);
                     stripe.localRotation=Quaternion.Euler(0,-side*1.17f,0);
-                    Label("AURORA",tank,new Vector3(.20f+side*.77f,.69f,-1.10f),.10f,new Color(.035f,.12f,.16f),Quaternion.Euler(0,side*90,0));
-                    Label("R - 54",tank,new Vector3(.20f+side*.8f,.39f,-.9f),.073f,Color.white,Quaternion.Euler(0,side*90,0));
+                    Label("AURORA",tank,TankPoint(.20f+side*.77f,.69f,-1.10f),.10f,new Color(.035f,.12f,.16f),Quaternion.Euler(0,side*90,0));
+                    Label("R - 54",tank,TankPoint(.20f+side*.8f,.39f,-.9f),.073f,Color.white,Quaternion.Euler(0,side*90,0));
                     int i=(side+1)/2;
                     world.TankCylinderBarrels[i]=Cylinder("Tank lift cylinder barrel / articulated",machine,Vector3.zero,.095f,1,navy,Vector3.up);
                     world.TankCylinderRods[i]=Cylinder("Tank lift chrome piston / telescoping",machine,Vector3.zero,.043f,1,steel,Vector3.up);
                     Cylinder("Tank cylinder lower clevis pin",machine,new Vector3(side*.69f,.55f,.72f),.12f,.10f,steel,Vector3.right);
-                    Cylinder("Tank cylinder moving clevis pin",tank,new Vector3(side*.69f,.40f,-.74f),.10f,.11f,steel,Vector3.right);
+                    Cylinder("Tank cylinder moving clevis pin",tank,new Vector3(config.TankLateralOffset+side*.69f,config.TankGeometryY(.40f),-.74f),.10f,.11f,steel,Vector3.right);
                 }
-                Label("AURORA",tank,new Vector3(.20f,.68f,.033f),.13f,new Color(.035f,.12f,.16f),Quaternion.identity);
-                Box("Front accent panel",tank,new Vector3(.12f,.34f,.030f),new Vector3(1.35f,.19f,.018f),navy);
+                Label("AURORA",tank,TankPoint(.20f,.68f,.033f),.13f,new Color(.035f,.12f,.16f),Quaternion.identity);
+                Box("Front accent panel",tank,TankPoint(.20f,.34f,.030f),new Vector3(1.35f,.19f,.018f),navy);
             }
+
 
             Transform SnowSurface(string name,Transform parent,Vector3 position)
             {
@@ -698,7 +781,7 @@ namespace IceResurfacer.Presentation
             {
                 // Rebuild the actual station on the vehicle's left, without a reflection
                 // transform. Forward remains +Z; mechanical rotation axes remain right-handed.
-                var deck=world.OperatorStation=Group("Left-hand operator station",machine,new Vector3(-.55f,0,-.49f));
+                var deck=world.OperatorStation=Group("Left-hand operator station",machine,new Vector3(-.55f+config.CockpitOffsetX,0,-.49f+config.CockpitOffsetZ));
                 Box("Left operator floor",deck,new Vector3(-.01f,.86f,.02f),new Vector3(.86f,.09f,1.16f),steel);
                 Box("Non-slip operator floor mat",deck,new Vector3(-.01f,.911f,.11f),new Vector3(.68f,.014f,.77f),rubber);
                 Box("Left platform support",deck,new Vector3(-.33f,.69f,-.14f),new Vector3(.10f,.30f,.71f),navy);
@@ -717,12 +800,17 @@ namespace IceResurfacer.Presentation
                 Beam("Seat left rear arm pad",seat,new Vector3(-.32f,.17f,-.22f),new Vector3(-.32f,.17f,-.03f),.060f,rubber);
                 Beam("Seat right rear arm pad",seat,new Vector3(.32f,.17f,-.22f),new Vector3(.32f,.17f,-.03f),.060f,rubber);
                 world.CameraMount=Group("Seated eyes / attached to driver seat",seat,new Vector3(-.21f,.67f,.09f));
-                world.SteeringColumn=Group("Complete steering column",deck,new Vector3(0,1.13f,.34f));
-                Beam("Steering column shaft",world.SteeringColumn,new Vector3(0,-.22f,.09f),new Vector3(0,.24f,-.08f),.065f,black);
-                Cylinder("Steering column foot",world.SteeringColumn,new Vector3(0,-.22f,.09f),.14f,.075f,steel,Vector3.up);
-                Box("Steering column support",world.SteeringColumn,new Vector3(0,-.13f,.09f),new Vector3(.16f,.15f,.10f),navy);
-                world.SteeringWheel=Group("Steering wheel rotation",deck,new Vector3(0,1.39f,.25f));
-                world.SteeringWheel.localRotation=Quaternion.Euler(-25,0,0);
+                world.SteeringColumn=Group("Complete steering column",deck,new Vector3(0,config.SteeringWheelHeight,config.SteeringWheelZ));
+                var steeringTilt=Quaternion.Euler(-config.SteeringWheelTilt,0,0);
+                Vector3 upperShaft=-(steeringTilt*Vector3.up)*.24f;
+                Vector3 columnFoot=new Vector3(0,.94f-config.SteeringWheelHeight,.03f);
+                Beam("Steering column lower shaft",world.SteeringColumn,columnFoot,upperShaft,.065f,black);
+                Sphere("Steering column universal joint",world.SteeringColumn,upperShaft,.080f,steel);
+                Beam("Steering column upper shaft",world.SteeringColumn,upperShaft,Vector3.zero,.045f,steel);
+                Cylinder("Steering column foot",world.SteeringColumn,columnFoot,.14f,.075f,steel,Vector3.up);
+                Box("Steering column support",world.SteeringColumn,columnFoot+Vector3.up*.08f,new Vector3(.10f,.15f,.10f),navy);
+                world.SteeringWheel=Group("Steering wheel rotation",world.SteeringColumn,Vector3.zero);
+                world.SteeringWheel.localRotation=steeringTilt;
                 Torus("Steering wheel rim",world.SteeringWheel,Vector3.zero,.19f,.022f,rubber,Quaternion.identity);
                 for(int i=0;i<3;i++)
                 {
@@ -731,7 +819,7 @@ namespace IceResurfacer.Presentation
                 }
                 Cylinder("Steering centre",world.SteeringWheel,Vector3.zero,.085f,.04f,black,Vector3.up);
                 Cylinder("Steering retaining nut",world.SteeringWheel,new Vector3(0,.027f,0),.029f,.018f,steel,Vector3.up);
-                var dash=world.Dashboard=Group("Driver-facing dashboard / left",deck,new Vector3(0,1.31f,.52f));
+                var dash=world.Dashboard=Group("Driver-facing dashboard / left",deck,new Vector3(0,1.31f,config.SteeringWheelZ+.27f));
                 dash.localRotation=Quaternion.Euler(-15,0,0);
                 BevelBox("Angled console fascia",dash,Vector3.zero,new Vector3(.59f,.13f,.25f),.025f,navy);
                 Box("LCD bezel",dash,new Vector3(-.09f,.071f,.015f),new Vector3(.28f,.013f,.15f),black);
@@ -743,10 +831,11 @@ namespace IceResurfacer.Presentation
                 // Mount the instrument lamp above the dashboard, inboard of the
                 // driver's front-tire sightline. Its old x=-.20 position lay
                 // exactly between the seated eye and the upper tire tread.
-                Beam("Operator work lamp stalk",deck,new Vector3(-.02f,1.35f,.64f),new Vector3(-.02f,1.65f,.64f),.018f,steel);
-                Box("Shielded operator work lamp",deck,new Vector3(-.02f,1.67f,.62f),new Vector3(.12f,.055f,.06f),black);
-                Box("Operator lamp downward diffuser",deck,new Vector3(-.02f,1.64f,.62f),new Vector3(.095f,.008f,.044f),lightMat);
-                var taskLamp=Group("Operator instrument illumination",deck,new Vector3(-.02f,1.615f,.62f)).gameObject.AddComponent<Light>();
+                var lamp=Group("Complete operator instrument lamp",deck,new Vector3(-.02f,0,config.SteeringWheelZ+.37f));
+                Beam("Operator work lamp stalk",lamp,new Vector3(0,1.35f,.02f),new Vector3(0,1.65f,.02f),.018f,steel);
+                Box("Shielded operator work lamp",lamp,new Vector3(0,1.67f,0),new Vector3(.12f,.055f,.06f),black);
+                Box("Operator lamp downward diffuser",lamp,new Vector3(0,1.64f,0),new Vector3(.095f,.008f,.044f),lightMat);
+                var taskLamp=Group("Operator instrument illumination",lamp,new Vector3(0,1.615f,0)).gameObject.AddComponent<Light>();
                 taskLamp.type=LightType.Point;taskLamp.range=1.6f;taskLamp.intensity=.18f;
                 taskLamp.color=new Color(.83f,.92f,1f);taskLamp.shadows=LightShadows.None;
                 var pedals=world.Pedals=Group("Left operator pedal floor",deck,new Vector3(0,.923f,.36f));
@@ -764,37 +853,36 @@ namespace IceResurfacer.Presentation
                 }
                 Cylinder("Accelerator hinge pin",pedals,new Vector3(.11f,.035f,-.025f),.028f,.11f,steel,Vector3.right);
                 Cylinder("Brake hinge pin",pedals,new Vector3(-.10f,.035f,-.025f),.028f,.14f,steel,Vector3.right);
-                // Group the machinery controls inboard, as in the supplied
-                // traditional station, and leave the left shoulder sightline open.
-                var panel=Group("Inboard four spool hydraulic valve bank",deck,new Vector3(.24f,1.14f,.50f));
-                BevelBox("Valve bank steel chassis",panel,Vector3.zero,new Vector3(.23f,.16f,.73f),.025f,navy);
-                Box("Brushed hydraulic label fascia",panel,new Vector3(.045f,.085f,0),new Vector3(.12f,.012f,.70f),steel);
-                // Facing the right-hand bank from the operator's seat, forward is
-                // screen-left: VERTICAL, CONDITIONER, HORIZONTAL, DUMP (526 fig5.3).
-                world.VerticalAugerLever=Lever("Vertical auger lever",panel,new Vector3(-.035f,.10f,.255f),"V AUG",cyan);
-                world.ConditionerLever=Lever("Conditioner lift lever",panel,new Vector3(-.035f,.10f,.085f),"LIFT",orange);
-                world.HorizontalAugerLever=Lever("Horizontal auger lever",panel,new Vector3(-.035f,.10f,-.085f),"H AUG",cyan);
-                world.DumpLever=Lever("Snow dump hydraulic lever",panel,new Vector3(-.035f,.10f,-.255f),"DUMP",orange);
+                // Four actual adjacent spools in one transverse bank. Their X
+                // positions, travel axes, labels and moving pick targets agree.
+                var panel=Group("Transverse four spool hydraulic bank",deck,new Vector3(.47f,1.42f,.31f));
+                BevelBox("Valve bank steel chassis",panel,Vector3.zero,new Vector3(.70f,.12f,.25f),.025f,navy);
+                Box("Brushed hydraulic label fascia",panel,new Vector3(0,.065f,-.07f),new Vector3(.68f,.012f,.10f),steel);
+                world.VerticalAugerLever=Lever("Vertical auger lever",panel,new Vector3(-.255f,.08f,0),"V AUG",cyan);
+                world.ConditionerLever=Lever("Conditioner lift lever",panel,new Vector3(-.085f,.08f,0),"LIFT",orange);
+                world.HorizontalAugerLever=Lever("Horizontal auger lever",panel,new Vector3(.085f,.08f,0),"H AUG",cyan);
+                world.DumpLever=Lever("Snow dump hydraulic lever",panel,new Vector3(.255f,.08f,0),"DUMP",orange);
                 for(int i=0;i<4;i++)
                 {
-                    float z=.255f-i*.17f;
-                    Beam("Hydraulic spool pipe",panel,new Vector3(-.08f,-.05f,z),new Vector3(-.08f,-.27f,z),.026f,rubber);
-                    Cylinder("Valve manifold fitting",panel,new Vector3(-.08f,-.09f,z),.044f,.04f,steel,Vector3.up);
+                    float x=-.255f+i*.17f;
+                    Beam("Hydraulic spool pipe",panel,new Vector3(x,-.05f,.06f),new Vector3(x,-.27f,.06f),.026f,rubber);
+                    Cylinder("Valve manifold fitting",panel,new Vector3(x,-.09f,.06f),.044f,.04f,steel,Vector3.up);
                 }
-                // Above the fixed inboard armrest: controls must remain visible and
-                // reachable, rather than picking a handle hidden underneath the seat.
-                var waterPanel=Group("Independent wash and ice-making valve manifold",deck,new Vector3(.32f,1.45f,-.015f));
-                Beam("Water manifold front bracket",deck,new Vector3(.39f,1.13f,.16f),new Vector3(.39f,1.44f,.16f),.035f,navy);
-                Beam("Water manifold rear bracket",deck,new Vector3(.39f,1.13f,-.18f),new Vector3(.39f,1.44f,-.18f),.035f,navy);
-                BevelBox("Water valve mounting plate",waterPanel,Vector3.zero,new Vector3(.24f,.035f,.47f),.02f,steel);
-                world.FloodValveMount=Group("Ice-making valve fixed bearing",waterPanel,new Vector3(0,.02f,.115f));
-                world.WashValveMount=Group("Wash valve fixed bearing",waterPanel,new Vector3(0,.02f,-.115f));
-                world.FloodLever=WaterValve("ICE WATER",world.FloodValveMount,blue);
-                world.WashValve=WaterValve("WASH",world.WashValveMount,cyan);
-                // Beside the operator and forward of the seatback. Keep the rim
-                // clear of the elevator shroud and above the water valve grips.
-                const float bladeControlX=.48f,bladeControlZ=.04f;
-                world.BladeWheel=Group("Blade depth handwheel",deck,new Vector3(bladeControlX,1.61f,bladeControlZ));
+                // Independent quarter-turn handles have separate bearings in a
+                // second transverse row. At either stop each clears its neighbor.
+                var waterPanel=Group("Adjacent flood and wash water manifold",deck,new Vector3(.65f,1.44f,.04f));
+                Beam("Water manifold left bracket",deck,new Vector3(.40f,1.13f,.04f),new Vector3(.40f,1.43f,.04f),.035f,navy);
+                Beam("Water manifold right bracket",deck,new Vector3(.88f,1.13f,.04f),new Vector3(.88f,1.43f,.04f),.035f,navy);
+                BevelBox("Water valve mounting plate",waterPanel,Vector3.zero,new Vector3(.56f,.035f,.28f),.02f,steel);
+                world.FloodValveMount=Group("Flood valve fixed bearing",waterPanel,new Vector3(-.13f,.02f,0));
+                world.WashValveMount=Group("Wash valve fixed bearing",waterPanel,new Vector3(.13f,.02f,0));
+                world.FloodLever=WaterValve("FLOOD WATER",world.FloodValveMount,blue);
+                world.WashValve=WaterValve("WASH WATER",world.WashValveMount,cyan);
+                // Behind and between the taller water stems, within seated reach.
+                // One stationary assembly owns spindle, bearings, index and rim.
+                float bladeControlX=config.BladeWheelX,bladeControlZ=config.BladeWheelZ;
+                var bladeAssembly=Group("Complete blade screw and handwheel assembly",deck,new Vector3(bladeControlX,config.BladeWheelHeight,bladeControlZ));
+                world.BladeWheel=Group("Blade depth handwheel",bladeAssembly,Vector3.zero);
                 Torus("Blade handwheel rim",world.BladeWheel,Vector3.zero,.13f,.018f,orange,Quaternion.identity);
                 for(int i=0;i<3;i++)
                 {
@@ -803,20 +891,21 @@ namespace IceResurfacer.Presentation
                 }
                 Cylinder("Handwheel crank",world.BladeWheel,new Vector3(.11f,.045f,0),.032f,.09f,black,Vector3.up);
                 Cylinder("Blade handwheel machined hub",world.BladeWheel,Vector3.zero,.055f,.07f,steel,Vector3.up);
-                Cylinder("Blade spindle fixed bearing",deck,new Vector3(bladeControlX,1.53f,bladeControlZ),.075f,.09f,navy,Vector3.up);
-                Cylinder("Blade spindle lower collar",deck,new Vector3(bladeControlX,.69f,bladeControlZ),.058f,.09f,steel,Vector3.up);
-                Beam("Blade index support",deck,new Vector3(bladeControlX,1.495f,bladeControlZ),new Vector3(bladeControlX+.10f,1.495f,bladeControlZ-.17f),.018f,steel);
-                Box("Blade travel index plate",deck,new Vector3(bladeControlX+.10f,1.49f,bladeControlZ-.17f),new Vector3(.25f,.018f,.09f),navy);
-                Label("BLADE  /  3.5 TURNS",deck,new Vector3(bladeControlX+.10f,1.503f,bladeControlZ-.17f),.015f,Color.white,Quaternion.Euler(270,180,0));
-                Beam("Blade adjustment spindle",deck,new Vector3(bladeControlX,.48f,bladeControlZ),new Vector3(bladeControlX,1.58f,bladeControlZ),.022f,steel);
+                Cylinder("Blade spindle fixed bearing",bladeAssembly,new Vector3(0,-.08f,0),.075f,.09f,navy,Vector3.up);
+                Cylinder("Blade spindle lower collar",bladeAssembly,new Vector3(0,.69f-config.BladeWheelHeight,0),.058f,.09f,steel,Vector3.up);
+                Beam("Blade index support",bladeAssembly,new Vector3(0,-.115f,0),new Vector3(.10f,-.115f,-.17f),.018f,steel);
+                Box("Blade travel index plate",bladeAssembly,new Vector3(.10f,-.12f,-.17f),new Vector3(.25f,.018f,.09f),navy);
+                Label("BLADE  /  3.5 TURNS",bladeAssembly,new Vector3(.10f,-.107f,-.17f),.015f,Color.white,Quaternion.Euler(270,180,0));
+                Beam("Blade adjustment spindle",bladeAssembly,new Vector3(0,.48f-config.BladeWheelHeight,0),new Vector3(0,-.03f,0),.022f,steel);
                 // Accessible manual plunger sits inboard/right of the operator. Only the
                 // rod and T-handle move; the guide and guard remain fixed to the deck.
-                Cylinder("Snow breaker fixed guide",deck,new Vector3(.43f,1.22f,.36f),.075f,.36f,navy,Vector3.up);
-                Cylinder("Snow breaker guide collar",deck,new Vector3(.43f,1.405f,.36f),.091f,.027f,steel,Vector3.up);
-                world.SnowBreakerPlunger=Group("Snow breaker plunger / manual stroke",deck,new Vector3(.43f,1.45f,.36f));
+                var breakerAssembly=Group("Complete snow breaker assembly",deck,new Vector3(config.SnowBreakerX,1.45f,config.SnowBreakerZ));
+                Cylinder("Snow breaker fixed guide",breakerAssembly,new Vector3(0,-.23f,0),.075f,.36f,navy,Vector3.up);
+                Cylinder("Snow breaker guide collar",breakerAssembly,new Vector3(0,-.045f,0),.091f,.027f,steel,Vector3.up);
+                world.SnowBreakerPlunger=Group("Snow breaker plunger / manual stroke",breakerAssembly);
                 Cylinder("Snow breaker sliding rod",world.SnowBreakerPlunger,new Vector3(0,-.03f,0),.025f,.47f,steel,Vector3.up);
                 Beam("Snow breaker T handle",world.SnowBreakerPlunger,new Vector3(-.105f,.22f,0),new Vector3(.105f,.22f,0),.038f,orange);
-                Beam("Snow breaker hand guard",deck,new Vector3(.35f,1.24f,.31f),new Vector3(.51f,1.24f,.31f),.025f,black);
+                Beam("Snow breaker hand guard",breakerAssembly,new Vector3(-.08f,-.21f,-.05f),new Vector3(.08f,-.21f,-.05f),.025f,black);
                 Beam("Equipment-side rear safety rail",machine,new Vector3(.89f,1.16f,-.82f),new Vector3(.89f,1.81f,-.82f),.045f,steel);
                 Beam("Equipment-side top safety rail",machine,new Vector3(.89f,1.81f,-.82f),new Vector3(.89f,1.81f,-.12f),.045f,steel);
                 Beam("Operator forward boarding grab rail",deck,new Vector3(-.40f,.91f,.63f),new Vector3(-.40f,1.66f,.63f),.045f,steel);
@@ -838,10 +927,10 @@ namespace IceResurfacer.Presentation
                 Beam("Polished hydraulic lever stem",lever,Vector3.zero,new Vector3(0,.205f,0),.018f,steel);
                 Sphere("Black phenolic hydraulic grip",lever,new Vector3(0,.225f,0),.070f,black);
                 Cylinder("Lever identification collar",lever,new Vector3(0,.176f,0),.026f,.022f,accent,Vector3.up);
-                Box("Engraved lever identification plate",parent,position+new Vector3(.083f,-.003f,0),new Vector3(.070f,.008f,.135f),black);
-                Label(label,parent,position+new Vector3(.083f,.004f,0),.0135f,Color.white,Quaternion.Euler(270,180,0));
-                Label(label=="LIFT"||label=="DUMP"?"DOWN":"RUN",parent,position+new Vector3(.083f,.004f,.044f),.0105f,new Color(.4f,.9f,.9f),Quaternion.Euler(270,180,0));
-                Label(label=="LIFT"||label=="DUMP"?"UP":"OFF",parent,position+new Vector3(.083f,.004f,-.044f),.0105f,new Color(.95f,.66f,.2f),Quaternion.Euler(270,180,0));
+                Box("Engraved lever identification plate",parent,position+new Vector3(0,-.003f,-.085f),new Vector3(.145f,.008f,.070f),black);
+                Label(label,parent,position+new Vector3(0,.004f,-.085f),.0135f,Color.white,Quaternion.Euler(270,180,0));
+                Label(label=="LIFT"||label=="DUMP"?"DOWN":"RUN",parent,position+new Vector3(0,.004f,.078f),.0105f,new Color(.4f,.9f,.9f),Quaternion.Euler(270,180,0));
+                Label(label=="LIFT"||label=="DUMP"?"UP":"OFF",parent,position+new Vector3(0,.004f,-.112f),.0105f,new Color(.95f,.66f,.2f),Quaternion.Euler(270,180,0));
                 return lever;
             }
 
@@ -853,10 +942,11 @@ namespace IceResurfacer.Presentation
                 Beam("Independent valve outlet pipe",mount,new Vector3(0,-.11f,0),new Vector3(.08f,-.11f,0),.029f,steel);
                 Beam("Independent valve rubber line",mount,new Vector3(.08f,-.11f,0),new Vector3(.08f,-.43f,-.07f),.029f,rubber);
                 var handle=Group(label+" / quarter turn L handle",mount,new Vector3(0,.025f,0));
-                Cylinder("Visible rotating valve stem",handle,new Vector3(0,.032f,0),.018f,.064f,steel,Vector3.up);
+                float stem=config.WaterValveStemHeight;
+                Cylinder("Visible rotating valve stem",handle,new Vector3(0,stem*.5f,0),.018f,stem,steel,Vector3.up);
                 Box("Quarter turn valve stop dog",handle,new Vector3(-.046f,.012f,0),new Vector3(.055f,.020f,.020f),steel);
-                Beam("Right angle valve handle",handle,new Vector3(0,.064f,0),new Vector3(-.115f,.064f,0),.022f,steel);
-                Beam("Valve grip",handle,new Vector3(-.055f,.064f,0),new Vector3(-.115f,.064f,0),.034f,accent);
+                Beam("Right angle valve handle",handle,new Vector3(0,stem,0),new Vector3(-.115f,stem,0),.022f,steel);
+                Beam("Valve grip",handle,new Vector3(-.055f,stem,0),new Vector3(-.115f,stem,0),.034f,accent);
                 for(int i=0;i<=6;i++)
                 {
                     float a=i*Mathf.PI/12;
@@ -865,7 +955,7 @@ namespace IceResurfacer.Presentation
                 }
                 Cylinder("Valve closed mechanical stop",mount,new Vector3(-.052f,.018f,.025f),.015f,.035f,steel,Vector3.up);
                 Cylinder("Valve open mechanical stop",mount,new Vector3(.025f,.018f,-.052f),.015f,.035f,steel,Vector3.up);
-                Label(label,mount,new Vector3(.003f,.004f,.078f),.015f,Color.black,Quaternion.Euler(270,180,0));
+                Label(label,mount,new Vector3(.003f,.004f,.078f),.012f,Color.black,Quaternion.Euler(270,180,0));
                 Label("CLOSED",mount,new Vector3(-.065f,.006f,.029f),.010f,Color.black,Quaternion.Euler(270,180,0));
                 Label("OPEN",mount,new Vector3(.027f,.006f,-.080f),.010f,Color.black,Quaternion.Euler(270,180,0));
                 return handle;
@@ -926,24 +1016,26 @@ namespace IceResurfacer.Presentation
 
             void VerticalConveyor(Transform machine)
             {
-                // Translate the same upright conveyor to the equipment side to clear the
-                // left seat. Flights, handedness and drive axis are not reflected.
-                var tube=Group("Vertical snow elevator / equipment side",machine,new Vector3(.28f,.4f,-.54f));
-                Beam("Covered snow transfer throat",machine,new Vector3(0,.52f,-.78f),new Vector3(.28f,.63f,-.54f),.27f,navy);
-                Cylinder("Lower elevator shroud",tube,new Vector3(0,.29f,0),.34f,.58f,navy,Vector3.up);
-                Cylinder("Upper elevator shroud",tube,new Vector3(0,1.29f,0),.34f,.49f,navy,Vector3.up);
+                float x=config.ConveyorOutletX,y=config.ConveyorOutletY;
+                var tube=Group("Compact vertical snow conveyor / rear tank inlet",machine,new Vector3(x,.40f,.235f));
+                Beam("Covered snow transfer throat",machine,new Vector3(0,.52f,-.78f),new Vector3(x,.63f,.235f),.23f,navy);
+                Cylinder("Lower elevator shroud",tube,new Vector3(0,.29f,0),.29f,.58f,navy,Vector3.up);
                 world.VerticalAuger=Group("Vertical auger moving flights",tube,new Vector3(0,.58f,0));
-                Cylinder("Elevator drive shaft",world.VerticalAuger,new Vector3(0,.24f,0),.065f,.55f,steel,Vector3.up);
-                Helix("Vertical elevator flight",world.VerticalAuger,0,.54f,.127f,.18f,steel,Vector3.up);
+                Cylinder("Elevator drive shaft",world.VerticalAuger,new Vector3(0,.21f,0),.055f,.48f,steel,Vector3.up);
+                Helix("Vertical elevator flight",world.VerticalAuger,0,.46f,.105f,.16f,steel,Vector3.up);
                 for(int i=0;i<8;i++)
                 {
                     float a=i*Mathf.PI*.25f;
-                    Beam("Elevator inspection guard",tube,new Vector3(Mathf.Cos(a)*.17f,.57f,Mathf.Sin(a)*.17f),new Vector3(Mathf.Cos(a)*.17f,1.08f,Mathf.Sin(a)*.17f),.015f,navy);
+                    Beam("Elevator inspection guard",tube,new Vector3(Mathf.Cos(a)*.145f,.57f,Mathf.Sin(a)*.145f),new Vector3(Mathf.Cos(a)*.145f,.99f,Mathf.Sin(a)*.145f),.012f,navy);
                 }
-                Beam("Snow delivery elbow",tube,new Vector3(0,1.52f,0),new Vector3(0,1.6f,.36f),.31f,navy);
-                Beam("Snow delivery chute",tube,new Vector3(0,1.6f,.36f),new Vector3(0,1.58f,1.29f),.31f,navy);
-                Beam("Snow delivery downspout",tube,new Vector3(0,1.58f,1.29f),new Vector3(0,1.39f,1.29f),.31f,navy);
-                world.TankDischarge=Group("Vertical auger snow discharge into bin",tube,new Vector3(0,1.38f,1.29f));
+                Cylinder("Compact discharge casing",tube,new Vector3(0,y-.40f,0),.32f,.23f,navy,Vector3.up);
+                Cylinder("Vertical conveyor hydraulic motor",tube,new Vector3(0,y-.40f+.23f,0),.17f,.23f,cyan,Vector3.up);
+                Cylinder("Conveyor motor end cap",tube,new Vector3(0,y-.40f+.36f,0),.185f,.035f,steel,Vector3.up);
+                Beam("Short rear-wall delivery throat",machine,new Vector3(x,y,.235f),new Vector3(x,y,config.ConveyorOutletZ),.245f,navy);
+                // Detachable inlet: lifting the tank separates its rear wall from
+                // this fixed chute. Core handles the resulting missed-bin spill.
+                world.TankDischarge=Group("Rear-wall auger discharge into tank",machine,new Vector3(x,y,config.ConveyorOutletZ));
+                Beam("Hydraulic motor return hose",tube,new Vector3(.11f,y-.40f+.22f,0),new Vector3(.18f,.35f,0),.035f,rubber);
             }
 
             void Brush(Transform machine)

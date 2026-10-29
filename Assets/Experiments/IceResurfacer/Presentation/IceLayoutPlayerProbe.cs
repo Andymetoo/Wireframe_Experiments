@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 #endif
 using IceResurfacer.Core;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace IceResurfacer.Presentation
 {
@@ -104,13 +106,26 @@ namespace IceResurfacer.Presentation
             game.NewSession(false);
             game.Dashboard.AuditLayout = true;
             yield return Capture("HUD-" + currentResolution + ".png", "normal HUD");
+            Check(game.Dashboard.Compact,"Default HUD uses collapsed side console");
+            Check(IceDashboard.ConditionerStatus(game.Sim)=="CONDITIONER UP","Persistent status reports actual raised conditioner");
+            yield return Click("Console");
+            Check(!game.Dashboard.Compact,"Right console expands through actual UI target");
+            yield return Capture("HUD-"+currentResolution+"-console.png","expanded side console / transverse V C H D controls");
+            game.Notice="Refill help remains available in message history after the compact notification fades.";
+            yield return null;
+            yield return Click("History");
+            Check(game.Dashboard.HistoryVisible,"Message history opens without altering machine state");
+            yield return Capture("HUD-"+currentResolution+"-messages.png","accessible notification history");
+            yield return Click("History");
+            Check(!game.Dashboard.HistoryVisible,"Message history closes through persistent control");
+            game.Notice="";
             yield return Click("MachineLoad");
             Check(game.DiagnosticsVisible,"Machine Load meter opens its demand explanation");
             yield return Capture("HUD-"+currentResolution+"-diagnostics.png","load explanation and diagnostics");
             yield return Click("MachineLoad");
             Check(!game.DiagnosticsVisible,"Machine Load explanation closes without changing machinery");
             float surveyWater=game.Sim.FloodWaterLiters;
-            yield return ClickAt(new Vector2(1419.5f,211));
+            yield return ClickAt(IceDashboard.SurveyMapRect.position+new Vector2(49,112));
             Check(game.Dashboard.InspectedSurveyCell>=0,"Native map pointer selects actual ice for magnified treatment inspection");
             Check(game.Sim.FloodWaterLiters==surveyWater,"Survey inspection does not apply water or alter machinery");
             yield return Capture("HUD-"+currentResolution+"-survey.png","magnified exact-cell survey and treatment legend");
@@ -118,6 +133,8 @@ namespace IceResurfacer.Presentation
 
             var controls = game.Sim.Controls;
             yield return HoldHydraulic("Conditioner",false);
+            Check(IceDashboard.ConditionerStatus(game.Sim)=="CONDITIONER PARTIALLY LOWERED","Neutral lever preserves actual partly lowered status");
+            yield return Capture("HUD-"+currentResolution+"-conditioner-partial.png","actual held conditioner position");
             yield return Click("HorizontalAuger");
             Check(controls.HorizontalAuger, "Horizontal auger switch");
             yield return Click("VerticalAuger");
@@ -145,6 +162,8 @@ namespace IceResurfacer.Presentation
             controls.ConditionerTarget = 0;
             controls.TankLiftTarget = 0;
             controls.VerticalAuger = true;
+            Check(IceDashboard.ConditionerStatus(game.Sim)=="CONDITIONER DOWN","Actual lowered conditioner has explicit persistent DOWN status");
+            yield return Capture("HUD-"+currentResolution+"-conditioner-down.png","conditioner down, blade set reported separately");
             int strokesBefore = game.Sim.SnowBreakerStrokes;
             yield return Click("SnowBreaker");
             Check(game.Sim.SnowBreakerStrokes == strokesBefore + 1, "Manual snow-breaker button and interlock");
@@ -199,30 +218,75 @@ namespace IceResurfacer.Presentation
             game.Finish();
             Check(game.Sim.Finished && game.Sim.ProperExit, "Legal partial run reaches results through normal finish path");
             yield return Capture("HUD-" + currentResolution + "-results.png", "results panel");
-            // Drive into the real pit boundary from the normal nose-in spawn.
-            // This also audits the F3 contact panel with a populated rejection.
+            // Cross the flush snow grate and contact the actual rear room wall.
             game.NewSession(false);
             game.Sim.Controls.Throttle=.08f;
             for(int i=0;i<3000&&!game.Sim.BoardContact;i++)game.Sim.Step(.02f);
-            Check(game.Sim.LastMovementContact.Obstacle==MovementObstacle.PitRim,"F3 fixture reaches the actual pit rim through normal controls");
+            Check(game.Sim.LastMovementContact.Obstacle==MovementObstacle.ServiceWall,"F3 fixture crosses traversable grate and reaches actual rear wall");
             typeof(IceResurfacerGame).GetMethod("UpdateMachine",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game,new object[]{0f});
             game.ToggleDiagnostics();
             game.SelectCameraView("Chase");game.TickInspectionCamera(2f);
-            yield return Capture("HUD-"+currentResolution+"-pit-contact.png","F3 rejected pose, speed, reason and pit outlines");
+            yield return Capture("HUD-"+currentResolution+"-pit-contact.png","F3 wall contact after crossing snow grate");
             game.Dashboard.Compact=true;
             yield return Capture("HUD-"+currentResolution+"-pit-overlay.png","compact F3 keeps the actual pit and footprint outlines visible");
             game.Dashboard.Compact=false;
             game.ToggleDiagnostics();
             game.NewSession(false);
+            var beforeGuide=game.Sim.Vehicle;
+            float guideX=beforeGuide.X,guideZ=beforeGuide.Z,guideWater=game.Sim.FloodWaterLiters;
+            game.RouteGuide.Toggle();
+            Check(game.RouteGuide.Visible&&game.Sim.Vehicle.X==guideX&&game.Sim.Vehicle.Z==guideZ&&game.Sim.FloodWaterLiters==guideWater,"Route guide toggle only changes drawing");
+            yield return Capture("HUD-"+currentResolution+"-route.png","optional advisory route and next segment map");
+            game.RouteGuide.Toggle();
+            // Explicit on-ice camera fixture, separate from the control-driven full-run
+            // harness. Only its initial pose is seeded; the shown cut uses real machinery.
+            var surfaceSim=game.Sim;var surfaceControls=surfaceSim.Controls;
+            surfaceSim.Vehicle.X=-5;surfaceSim.Vehicle.Z=-15;surfaceSim.Vehicle.Heading=0;
+            surfaceSim.Conditioner.X=-5;surfaceSim.Conditioner.Z=-15-surfaceSim.Config.HitchBehindAxle-surfaceSim.Config.DrawbarLength;
+            surfaceSim.Conditioner.Heading=0;surfaceSim.Conditioner.Lift=0;
+            surfaceControls.ConditionerTarget=0;surfaceControls.Throttle=.42f;
+            surfaceControls.BladeDepthMm=.35f;surfaceControls.HorizontalAuger=surfaceControls.VerticalAuger=true;
+            surfaceControls.FloodFlow=.32f;
+            for(int i=0;i<250;i++)surfaceSim.Step(.02f);
+            game.Surface.Refresh(surfaceSim);
+            typeof(IceResurfacerGame).GetProperty("Report").SetValue(game,surfaceSim.GetReport());
+            typeof(IceResurfacerGame).GetMethod("UpdateMachine",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game,new object[]{.02f});
+            game.SelectCameraView("Forward");game.TickInspectionCamera(2f);
+            yield return Capture("HUD-"+currentResolution+"-operator.png","on-ice seated operator and expanded controls / seeded camera fixture");
             game.Dashboard.Compact=true;
             yield return Capture("HUD-"+currentResolution+"-compact.png","compact operator view");
             game.Dashboard.Compact=false;
+            yield return CaptureQuicklooks();
             game.StartServicePractice();
             game.Sim.TryDismount();
             typeof(IceWaterService).GetMethod("BeginWalk",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game.WaterService,null);
             game.WaterService.HandleInput(true,0);
             game.WaterService.UpdateViewAndEffects(true,.25f);
             yield return Capture("HUD-"+currentResolution+"-service.png","service panel");
+        }
+
+        IEnumerator CaptureQuicklooks()
+        {
+            // This player belongs solely to the explicit validation process.
+            // Virtual device events never send OS keyboard input to the user's Editor.
+            var previous=Keyboard.current;var keyboard=InputSystem.AddDevice<Keyboard>();
+            var look=typeof(IceResurfacerGame).GetMethod("UpdateLook",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            try
+            {
+                foreach(var key in new[]{Key.Q,Key.E,Key.C,Key.LeftShift})
+                {
+                    InputSystem.QueueStateEvent(keyboard,new KeyboardState(key));InputSystem.Update();
+                    for(int i=0;i<60;i++)look.Invoke(game,new object[]{true,.02f});
+                    Check(game.HeldQuicklook!="","Held "+key+" enters temporary inspection");
+                    Vector2 side=IceDashboard.CanvasToViewport(new Vector2(1400,650),Screen.width,Screen.height);
+                    Check(!game.Dashboard.PointerOverInterface(game,new Vector2(side.x,Screen.height-side.y)),"Inspection "+key+" clears side-console pointer obstruction");
+                    yield return Capture("HUD-"+currentResolution+"-look-"+key+".png","quicklook with persistent conditioner state and clear machinery view");
+                    InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+                    for(int i=0;i<30;i++)look.Invoke(game,new object[]{true,.02f});
+                    Check(game.HeldQuicklook=="","Release "+key+" restores the operating view");
+                }
+            }
+            finally {InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();}
         }
 
         IEnumerator Click(string key) { yield return ClickAt(IceDashboard.ControlRect(key).center); }

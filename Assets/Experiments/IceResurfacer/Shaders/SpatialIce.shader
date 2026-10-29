@@ -4,6 +4,7 @@ Shader "IceResurfacer/SpatialIce"
     {
         _StateTex ("Scratch / snow / finish / wet", 2D) = "white" {}
         _ProcessTex ("Actual cut / wash / flood history", 2D) = "black" {}
+        _DepthTex ("Square root liquid depth / frozen film", 2D) = "black" {}
         _BaseColor ("Ice tint", Color) = (0.36,0.56,0.62,1)
         _DebugMode ("0 normal / 1 shaving mask / 2 actual cut wash flood", Float) = 0
         _GridSize ("Simulation grid / reciprocal", Vector) = (520,1200,0.001923077,0.000833333)
@@ -28,6 +29,7 @@ Shader "IceResurfacer/SpatialIce"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             TEXTURE2D(_StateTex); SAMPLER(sampler_StateTex);
             TEXTURE2D(_ProcessTex); SAMPLER(sampler_ProcessTex);
+            TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseColor;
             float _DebugMode;
@@ -106,12 +108,15 @@ Shader "IceResurfacer/SpatialIce"
                 float2 stateUv=(p-_GridWorld.xy)*_GridWorld.zw;
                 float4 s = surfaceState(stateUv);
                 float4 processState = SAMPLE_TEXTURE2D(_ProcessTex,sampler_ProcessTex,stateUv);
+                float2 phaseState=SAMPLE_TEXTURE2D(_DepthTex,sampler_DepthTex,stateUv).rg;
+                float liquidDepthMm=phaseState.r*phaseState.r*16;
+                float pooled=smoothstep(.65,8,liquidDepthMm);
                 float3 process=processState.rgb;
                 float aa = max(.018, length(fwidth(p))*.65);
                 // Editor-only response measurement, not an operator display mode.
                 if(_DebugMode>2.5)
                 {
-                    float response=1-exp2(-max(0,s.a)*12);
+                    float response=pow(saturate(s.a),.70);
                     return half4(response,response,response,1);
                 }
                 if(_DebugMode>.5)
@@ -133,7 +138,10 @@ Shader "IceResurfacer/SpatialIce"
                 // Even a thin physically supplied film changes the air/ice
                 // interface. The response is continuous and zero at zero water;
                 // it does not substitute a wide painted trail for actual liquid.
-                float wetFilm=1-exp2(-max(0,s.a)*12);
+                // The old exp2(-12*wetness) stayed almost fully glossy at half
+                // the original liquid depth. This monotonic response shows the
+                // actual 420-second freeze progression without a cosmetic timer.
+                float wetFilm=pow(saturate(s.a),.70);
                 // Persistent loose snow is actual deposited material. Thick
                 // windrows obscure underlying wet sheen and skate grooves;
                 // normal thin initial wear keeps its established appearance.
@@ -143,8 +151,14 @@ Shader "IceResurfacer/SpatialIce"
                 float finished=saturate(s.b*.72+process.b*.28);
                 half3 color=lerp(half3(.66,.71,.72),half3(.56,.69,.73),finished);
                 color=lerp(color,half3(.73,.79,.80),dryCut*.48);
-                color=lerp(color,color*half3(.78,.87,.91),wetFilm*.58);
+                // Liquid absorption must remain legible under the brighter arena
+                // ambient light. Frozen smoothness retains its blue-grey polish,
+                // while actual liquid carries the stronger dark wet-film tone.
+                color=lerp(color,color*half3(.61,.76,.83),wetFilm*.80);
                 color=lerp(color,half3(.87,.89,.89),s.g*lerp(.65,.92,snowCover));
+                // A deep pool submerges the thin initial dust. Apply this depth
+                // response after the snow mix so white dust cannot wash it out.
+                color=lerp(color,color*half3(.38,.50,.61),pooled*.88);
                 color+=(frost-.5)*.055*remainingWear+(noise-.5)*.015*remainingWear*grainVisibility;
                 float blueLine = band(abs(p.y)-7.6,.15,aa);
                 float redLine = max(band(p.y,.075,aa),band(abs(p.y)-26,.05,aa));
@@ -175,8 +189,9 @@ Shader "IceResurfacer/SpatialIce"
                 input.positionWS=i.positionWS;
                 float2 grooveNormal=groovesA.zw+groovesB.zw+groovesC.zw;
                 float micro=(noise-.5)*.018*visibleWear*grainVisibility;
-                input.normalWS=normalize(half3(grooveNormal.x*.10*visibleWear+micro,1,
-                    grooveNormal.y*.10*visibleWear+micro*.43));
+                float2 ripple=float2(sin(p.x*18+p.y*6),cos(p.y*17-p.x*5))*.002*pooled;
+                input.normalWS=normalize(half3(grooveNormal.x*.10*visibleWear+micro+ripple.x,1,
+                    grooveNormal.y*.10*visibleWear+micro*.43+ripple.y));
                 input.viewDirectionWS=GetWorldSpaceNormalizeViewDir(i.positionWS);
                 input.shadowCoord=TransformWorldToShadowCoord(i.positionWS);
                 input.bakedGI=SampleSH(input.normalWS);
@@ -184,7 +199,7 @@ Shader "IceResurfacer/SpatialIce"
                 input.shadowMask=half4(1,1,1,1);
                 SurfaceData surface=(SurfaceData)0;
                 surface.albedo=color; surface.alpha=1; surface.metallic=.015;
-                float drySmoothness=clamp(.24+finished*.44+process.r*.10-remainingWear*.10-s.g*.12,.16,.78);
+                float drySmoothness=clamp(.24+finished*.32+process.r*.08-remainingWear*.10-s.g*.12,.16,.66);
                 surface.smoothness=lerp(drySmoothness,.96,wetFilm);
                 surface.occlusion=1; surface.normalTS=half3(0,0,1);
                 half4 lit=UniversalFragmentPBR(input,surface);
@@ -208,7 +223,7 @@ Shader "IceResurfacer/SpatialIce"
                     float highlight=edge.x*edge.y*smoothstep(.02,.18,reflected.y);
                     // Keep a broad subdued reflection as liquid freezes. Fresh
                     // water has a clearer highlight, never a mirror of the arena.
-                    reflection=highlight*(.006+wetFilm*.19+finished*.012)*(.58+fresnel*.62);
+                    reflection=highlight*(.003+wetFilm*.19+finished*.005+pooled*.20)*(.58+fresnel*.62);
                 }
                 lit.rgb+=half3(.64,.77,.83)*reflection;
                 lit.rgb=MixFog(lit.rgb,i.fog); return lit;

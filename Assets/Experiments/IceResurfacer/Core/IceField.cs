@@ -22,7 +22,7 @@ namespace IceResurfacer.Core
     }
 
     /// <summary>Compact spatial state. One cell is an area sample, never a Unity object.</summary>
-    public sealed class IceField
+    public sealed partial class IceField
     {
         public readonly int Columns, Rows;
         public readonly float CellSize, MinX, MinZ;
@@ -127,6 +127,9 @@ namespace IceResurfacer.Core
         }
 
         public float Wetness(int index, float time)
+        { return Math.Min(1f,LiquidDepthFast(index,time)/config.GoodFloodDepthMm); }
+
+        public float LiquidDepthFast(int index,float time)
         {
             ref readonly IceCell cell = ref Cells[index];
             if (!cell.IsIce || cell.LiquidMm <= 0) return 0;
@@ -136,7 +139,7 @@ namespace IceResurfacer.Core
                 freezeFactors[low]+(freezeFactors[low+1]-freezeFactors[low])*(bucket-low);
             // Wet fringe has a visible but proportional specular response. Its
             // weight follows actual liquid volume, including recovery.
-            return Math.Min(1f,cell.LiquidMm*factor/config.GoodFloodDepthMm);
+            return cell.LiquidMm*factor;
         }
 
         public float LiquidDepth(IceCell cell, float time)
@@ -194,6 +197,7 @@ namespace IceResurfacer.Core
         internal void CommitChanges() { Revision++; }
         public void MarkCellChanged(int index)
         {
+            TrackStandingWater(index);
             if(totalsValid)UpdateSurfaceTotals(index);
             if(dirtyFlags[index])return;
             dirtyFlags[index]=true;dirtyCells[DirtyCellCount++]=index;

@@ -1,0 +1,12 @@
+﻿C:\Program Files\dotnet\sdk\9.0.312\Microsoft.Common.CurrentVersion.targets(887,5): warning MSB3539: The value of the property "BaseIntermediateOutputPath" was modified after it was used by MSBuild which can lead to unexpected build results. Tools such as NuGet will write outputs to the path specified by the "MSBuildProjectExtensionsPath" instead. To set this property, you must do so before Microsoft.Common.props is imported, for example by using Directory.Build.props.  For more information, please visit https://go.microsoft.com/fwlink/?linkid=869650" [G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\ServiceCollisionProbe.csproj]
+Traversable snow grate, bounded conditioner and physical contact validation
+grate approach=0deg crossed with speed=0.424m/s; no contact event=True
+grate approach=-15deg crossed with speed=0.424m/s; no contact event=True
+grate approach=15deg crossed with speed=0.424m/s; no contact event=True
+grate approach=-30deg crossed with speed=0.424m/s; no contact event=True
+grate approach=30deg crossed with speed=0.424m/s; no contact event=True
+grate approach=90deg crossed with speed=0.424m/s; no contact event=True
+contact normal m/s slow/direct/glancing/wall=0.300/2.000/0.160/0.600; events over held10s=1
+conditioner maximum yaw=2.000deg, chassis path unchanged; kinematic full-lock rear axle radius=4.4850m
+floor water: input=20.0000L, remaining=0.4716L, drained=19.5284L, wet cells=21
+tank contacts: lift stopped=0.5055, actual surface contact height=0.6350m; reverse/continued lift/pit overhang passed

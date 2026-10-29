@@ -29,22 +29,23 @@ namespace IceResurfacer.Editor
         static void Hit(Transform t,Vector3 point,string name)
         {
             Aim(t,point);
-            Check(game.PhysicalControls.GetHitControl(Screen(t.TransformPoint(point)))==name,"screen ray selects "+name);
+            string actual=game.PhysicalControls.GetHitControl(Screen(t.TransformPoint(point)));
+            Check(actual==name,"screen ray selects "+name+" (actual: "+actual+")");
         }
         static Vector3 ValvePoint(Transform handle,float value)
         {
             float a=value*Mathf.PI*.5f;
-            return handle.parent.TransformPoint(handle.localPosition+new Vector3(-Mathf.Cos(a)*.09f,.064f,-Mathf.Sin(a)*.09f));
+            return handle.parent.TransformPoint(handle.localPosition+new Vector3(-Mathf.Cos(a)*.09f,game.Sim.Config.WaterValveStemHeight,-Mathf.Sin(a)*.09f));
         }
         static void Valve(Transform handle,bool wash,float goal)
         {
             float start=wash?game.Sim.Controls.WashValve:game.Sim.Controls.FloodFlow;
-            Aim(handle,Vector3.up*.064f);Pointer(Screen(ValvePoint(handle,start)),false);
+            Aim(handle,Vector3.up*game.Sim.Config.WaterValveStemHeight);Pointer(Screen(ValvePoint(handle,start)),false);
             Pointer(Screen(ValvePoint(handle,start)),true);
             Pointer(Screen(ValvePoint(handle,goal)),true);render(0);
             Pointer(Screen(ValvePoint(handle,goal)),false);
             float actual=wash?game.Sim.Controls.WashValve:game.Sim.Controls.FloodFlow;
-            Check(Mathf.Abs(actual-goal)<.002f,(wash?"wash":"ice-making")+" handle arc gives "+goal.ToString("P0")+" actual flow");
+            Check(Mathf.Abs(actual-goal)<.002f,(wash?"wash":"flood")+" handle arc gives "+goal.ToString("P0")+" actual flow");
             Check(Quaternion.Angle(handle.localRotation,Quaternion.Euler(0,-90*goal,0))<.2f,"physical handle angle matches authoritative flow");
         }
         public static void Run(IceResurfacerGame owner,Keyboard keys,Mouse pointer)
@@ -55,16 +56,19 @@ namespace IceResurfacer.Editor
             {
                 game.NewSession(true);InputSystem.QueueStateEvent(keys,new KeyboardState());InputSystem.Update();render(0);
                 var w=game.World;var s=game.Sim;var c=s.Controls;
-                Check(w.VerticalAugerLever.localPosition.z>w.ConditionerLever.localPosition.z&&
-                    w.ConditionerLever.localPosition.z>w.HorizontalAugerLever.localPosition.z&&
-                    w.HorizontalAugerLever.localPosition.z>w.DumpLever.localPosition.z,
+                Check(w.VerticalAugerLever.localPosition.x<w.ConditionerLever.localPosition.x&&
+                    w.ConditionerLever.localPosition.x<w.HorizontalAugerLever.localPosition.x&&
+                    w.HorizontalAugerLever.localPosition.x<w.DumpLever.localPosition.x&&
+                    Mathf.Abs(w.VerticalAugerLever.localPosition.z-w.DumpLever.localPosition.z)<.00001f,
                     "actual mounted assemblies follow operator-left to right VERTICAL / CONDITIONER / HORIZONTAL / DUMP");
+                Check(Mathf.Abs(w.FloodValveMount.localPosition.z-w.WashValveMount.localPosition.z)<.00001f&&
+                    w.WashValveMount.localPosition.x-w.FloodValveMount.localPosition.x>.24f,"water handles occupy adjacent transverse bearings with clearance through quarter turns");
                 Hit(w.ConditionerLever,new Vector3(0,.225f,0),"Conditioner hydraulic lever");
                 Hit(w.HorizontalAugerLever,new Vector3(0,.225f,0),"Horizontal auger lever");
                 Hit(w.VerticalAugerLever,new Vector3(0,.225f,0),"Vertical auger lever");
                 Hit(w.DumpLever,new Vector3(0,.225f,0),"Snow tank hydraulic lever");
-                Hit(w.WashValve,new Vector3(-.09f,.064f,0),"Wash water valve");
-                Hit(w.FloodLever,new Vector3(-.09f,.064f,0),"Ice-making water valve");
+                Hit(w.WashValve,new Vector3(-.09f,s.Config.WaterValveStemHeight,0),"Wash water valve");
+                Hit(w.FloodLever,new Vector3(-.09f,s.Config.WaterValveStemHeight,0),"Flood water valve");
                 Hit(w.BladeWheel,new Vector3(.11f,.045f,0),"Blade handwheel");
                 Hit(w.SnowBreakerPlunger,new Vector3(0,.22f,0),"Snow-breaker plunger");
 
@@ -98,18 +102,19 @@ namespace IceResurfacer.Editor
                 s.Step(.2f);render(0);float tank=s.TankLift;Pointer(knob+pull*80,false);s.Step(.3f);render(0);
                 Check(c.TankHydraulic==0&&Mathf.Abs(s.TankLift-tank)<.000001f&&Quaternion.Angle(w.DumpLever.localRotation,Quaternion.identity)<.01f,"dump lever springs to neutral and holds attained tank angle on release");
                 Check(w.ConditionerCylinderRods[0].localScale.y>0&&w.TankCylinderRods[0].localScale.y>0,"both hydraulic mechanisms have extended physical piston rods");
-                Aim(w.OperatorStation,new Vector3(-.35f,1.40f,.27f));
+                game.SelectCameraView("Controls");
+                for(int i=0;i<80;i++)typeof(IceResurfacerGame).GetMethod("UpdateLook",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,new object[]{true,.02f});
                 IceResurfacerEditor.Capture(game.DriverCamera,"Cockpit-hydraulic-controls.png",1920,1080);
 
                 c.FloodFlow=c.WashValve=0;render(0);
-                Aim(w.OperatorStation,new Vector3(.30f,1.50f,-.01f));
+                Aim(w.OperatorStation,new Vector3(.65f,1.53f,.04f));
                 IceResurfacerEditor.Capture(game.DriverCamera,"Water-valves-closed.png",1920,1080);
                 Valve(w.FloodLever,false,.25f);Valve(w.WashValve,true,.65f);
                 Check(Mathf.Abs(c.FloodFlow-.25f)<.002f,"wash handle does not change flood setting");
-                Aim(w.OperatorStation,new Vector3(.30f,1.50f,-.01f));
+                Aim(w.OperatorStation,new Vector3(.65f,1.53f,.04f));
                 IceResurfacerEditor.Capture(game.DriverCamera,"Water-valves-partial.png",1920,1080);
                 Valve(w.FloodLever,false,1);Valve(w.WashValve,true,1);
-                Aim(w.OperatorStation,new Vector3(.30f,1.50f,-.01f));
+                Aim(w.OperatorStation,new Vector3(.65f,1.53f,.04f));
                 IceResurfacerEditor.Capture(game.DriverCamera,"Water-valves-open.png",1920,1080);
                 Valve(w.FloodLever,false,0);Valve(w.WashValve,true,0);
                 Check(IcePhysicalControls.ValveFlowFromAngle(-30)==0&&IcePhysicalControls.ValveFlowFromAngle(120)==1,"valve travel stops at closed and open limits");
@@ -131,6 +136,7 @@ namespace IceResurfacer.Editor
             }
             finally
             {
+                File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Physical-controls-results.txt",results);
                 Pointer(new Vector2(10,10),false);game.PhysicalControls.Release();game.NewSession(true);game.enabled=wasEnabled;
             }
         }

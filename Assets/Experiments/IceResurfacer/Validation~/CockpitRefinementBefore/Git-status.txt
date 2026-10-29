@@ -1,0 +1,223 @@
+ M Assets/Experiments/IceResurfacer/Core/EnvironmentField.cs
+ M Assets/Experiments/IceResurfacer/Core/IceCalibrationConfig.cs
+ M Assets/Experiments/IceResurfacer/Core/IceField.cs
+ M Assets/Experiments/IceResurfacer/Core/MovementContact.cs
+ M Assets/Experiments/IceResurfacer/Core/ServiceLayout.cs
+ M Assets/Experiments/IceResurfacer/Core/Simulation.cs
+ M Assets/Experiments/IceResurfacer/Core/SimulatorConfig.cs
+ M Assets/Experiments/IceResurfacer/Core/SurfaceProcessing.cs
+ M Assets/Experiments/IceResurfacer/Core/TankCollision.cs
+ M Assets/Experiments/IceResurfacer/Core/WaterService.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceAuthenticityValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceCalibrationRuntimeValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceCameraValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceLayoutValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceOperationValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IcePhysicalValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceResurfacerEditor.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceServiceGeometryValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceServiceValidation.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceCollisionOverlay.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceDashboard.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceLayoutPlayerProbe.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceMachineAudio.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IcePerformanceProbe.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IcePhysicalControls.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceResurfacerGame.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceSnowView.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceSurfaceView.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceWaterService.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceWorldBuilder.cs
+ M Assets/Experiments/IceResurfacer/README.txt
+ M Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity
+ M Assets/Experiments/IceResurfacer/Shaders/SpatialIce.shader
+ M Assets/Experiments/IceResurfacer/Validation~/Arena-overview.png
+ M Assets/Experiments/IceResurfacer/Validation~/Authenticity-dump-shakeout.png
+ M Assets/Experiments/IceResurfacer/Validation~/Authenticity-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Camera-preset-C.png
+ M Assets/Experiments/IceResurfacer/Validation~/Camera-preset-E.png
+ M Assets/Experiments/IceResurfacer/Validation~/Camera-preset-Q.png
+ M Assets/Experiments/IceResurfacer/Validation~/Camera-preset-X.png
+ M Assets/Experiments/IceResurfacer/Validation~/Camera-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Cockpit-hydraulic-controls.png
+ M Assets/Experiments/IceResurfacer/Validation~/Conditioner-trail.png
+ M Assets/Experiments/IceResurfacer/Validation~/Driver-running.png
+ M Assets/Experiments/IceResurfacer/Validation~/Driver-start.png
+ M Assets/Experiments/IceResurfacer/Validation~/Final-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Free-simulation-on-foot.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-compact.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-diagnostics.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-guide.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-pause.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-pit-contact.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-pit-overlay.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-results.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-service.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-survey.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-welcome.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-compact.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-diagnostics.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-guide.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-pause.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-pit-contact.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-pit-overlay.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-results.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-service.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-survey.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-welcome.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080.png
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-player-results-1366x768.txt
+ M Assets/Experiments/IceResurfacer/Validation~/HUD-player-results-1920x1080.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-calibration-runtime-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-reflection-after.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-reflection-before.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-shaving-mask-debug.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-single-pass-operator-Q.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-water-response-top.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-wear-after-oblique.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-wear-after-top.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-wear-before-oblique.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-wear-before-top.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-wet-age-00min.png
+ M Assets/Experiments/IceResurfacer/Validation~/Ice-wet-age-05min.png
+ M Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj
+ M Assets/Experiments/IceResurfacer/Validation~/Layout-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Minimap-treatment-map.png
+ M Assets/Experiments/IceResurfacer/Validation~/Minimap-wet-uncut-seam-normal.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operations-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-auger-discharge.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-board-side-edge.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-external-left-rear.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-external-top.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-full-tank-window.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-left-seat-forward.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-right-down.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-seated.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-standing-window.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-steering-center-inspection.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-steering-center.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-steering-left-inspection.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-steering-left.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-steering-right-inspection.png
+ M Assets/Experiments/IceResurfacer/Validation~/Operator-steering-right.png
+ M Assets/Experiments/IceResurfacer/Validation~/Overwater-after-pickup-normal.png
+ M Assets/Experiments/IceResurfacer/Validation~/Overwater-after-pickup.png
+ M Assets/Experiments/IceResurfacer/Validation~/Overwater-before-pickup-normal.png
+ M Assets/Experiments/IceResurfacer/Validation~/Overwater-before-pickup.png
+ M Assets/Experiments/IceResurfacer/Validation~/Physical-controls-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Preservation-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Program.cs
+ M Assets/Experiments/IceResurfacer/Validation~/README.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Raised-tank-glass-contact.png
+ M Assets/Experiments/IceResurfacer/Validation~/Results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/RunPerformancePlayer.ps1
+ M Assets/Experiments/IceResurfacer/Validation~/Service-bay.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-filling.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-floor-drained.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-floor-source.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-geometry-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Service-hose-breakaway.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-hose-connected.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-overflow.png
+ M Assets/Experiments/IceResurfacer/Validation~/Service-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/ServiceCollisionValidation.cs
+ M Assets/Experiments/IceResurfacer/Validation~/Snow-disabled-augers-both-sides.png
+ M Assets/Experiments/IceResurfacer/Validation~/Snow-dumped-pit.png
+ M Assets/Experiments/IceResurfacer/Validation~/Snow-dumping.png
+ M Assets/Experiments/IceResurfacer/Validation~/Snow-overflow.png
+ M Assets/Experiments/IceResurfacer/Validation~/Snow-windrows-after-recovery.png
+ M Assets/Experiments/IceResurfacer/Validation~/Snow-windrows-before-recovery.png
+ M Assets/Experiments/IceResurfacer/Validation~/SnowCalibrationValidation.cs
+ M Assets/Experiments/IceResurfacer/Validation~/Southeast-entrance.png
+ M Assets/Experiments/IceResurfacer/Validation~/Southeast-service-room.png
+ M Assets/Experiments/IceResurfacer/Validation~/Tire-overlap-operator-Q.png
+ M Assets/Experiments/IceResurfacer/Validation~/Tire-overlap-top.png
+ M Assets/Experiments/IceResurfacer/Validation~/Unity-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/Water-valves-closed.png
+ M Assets/Experiments/IceResurfacer/Validation~/Water-valves-open.png
+ M Assets/Experiments/IceResurfacer/Validation~/Water-valves-partial.png
+?? Assets/Experiments/IceResurfacer/Core/IceOverview.cs
+?? Assets/Experiments/IceResurfacer/Core/IceOverview.cs.meta
+?? Assets/Experiments/IceResurfacer/Core/IceWaterSpread.cs
+?? Assets/Experiments/IceResurfacer/Core/IceWaterSpread.cs.meta
+?? Assets/Experiments/IceResurfacer/Core/MachineGeometryConfig.cs
+?? Assets/Experiments/IceResurfacer/Core/MachineGeometryConfig.cs.meta
+?? Assets/Experiments/IceResurfacer/Core/ResurfacingRoute.cs
+?? Assets/Experiments/IceResurfacer/Core/ResurfacingRoute.cs.meta
+?? Assets/Experiments/IceResurfacer/Documentation/MachineryErgonomics.txt
+?? Assets/Experiments/IceResurfacer/Documentation/MachineryErgonomics.txt.meta
+?? Assets/Experiments/IceResurfacer/Documentation/MotionContacts.txt
+?? Assets/Experiments/IceResurfacer/Documentation/MotionContacts.txt.meta
+?? Assets/Experiments/IceResurfacer/Documentation/OperatorErgonomics.txt
+?? Assets/Experiments/IceResurfacer/Documentation/OperatorErgonomics.txt.meta
+?? Assets/Experiments/IceResurfacer/Documentation/SurfaceConsistency.txt
+?? Assets/Experiments/IceResurfacer/Documentation/SurfaceConsistency.txt.meta
+?? Assets/Experiments/IceResurfacer/Editor/IceMachineGeometryEditor.cs
+?? Assets/Experiments/IceResurfacer/Editor/IceMachineGeometryEditor.cs.meta
+?? Assets/Experiments/IceResurfacer/Presentation/IceDepositedSnowView.cs
+?? Assets/Experiments/IceResurfacer/Presentation/IceDepositedSnowView.cs.meta
+?? Assets/Experiments/IceResurfacer/Presentation/IceRouteGuide.cs
+?? Assets/Experiments/IceResurfacer/Presentation/IceRouteGuide.cs.meta
+?? Assets/Experiments/IceResurfacer/Validation~/AuditErgonomicPreservation.py
+?? Assets/Experiments/IceResurfacer/Validation~/Camera-preset-LeftShift.png
+?? Assets/Experiments/IceResurfacer/Validation~/CockpitRefinementBefore/
+?? Assets/Experiments/IceResurfacer/Validation~/Conditioner-curved.png
+?? Assets/Experiments/IceResurfacer/Validation~/Conditioner-straight.png
+?? Assets/Experiments/IceResurfacer/Validation~/Contact-fast-glance.png
+?? Assets/Experiments/IceResurfacer/Validation~/Contact-hard-direct.png
+?? Assets/Experiments/IceResurfacer/Validation~/Contact-service-wall.png
+?? Assets/Experiments/IceResurfacer/Validation~/Contact-slow-direct.png
+?? Assets/Experiments/IceResurfacer/Validation~/Grate-traversal-0deg.png
+?? Assets/Experiments/IceResurfacer/Validation~/Grate-traversal-30deg.png
+?? Assets/Experiments/IceResurfacer/Validation~/Grate-traversal-90deg.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-conditioner-down.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-conditioner-partial.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-console.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-look-C.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-look-E.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-look-LeftShift.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-look-Q.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-messages.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-operator.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1366x768-route.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-conditioner-down.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-conditioner-partial.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-console.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-look-C.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-look-E.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-look-LeftShift.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-look-Q.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-messages.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-operator.png
+?? Assets/Experiments/IceResurfacer/Validation~/HUD-1920x1080-route.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-stationary-flood-00s.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-stationary-flood-05s.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-stationary-flood-15s.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-stationary-flood-30s.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-wet-age-10min.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-wet-age-20min.png
+?? Assets/Experiments/IceResurfacer/Validation~/Ice-wet-age-30min.png
+?? Assets/Experiments/IceResurfacer/Validation~/Minimap-area-overview.png
+?? Assets/Experiments/IceResurfacer/Validation~/Minimap-initial-overview.png
+?? Assets/Experiments/IceResurfacer/Validation~/Minimap-seam-rendered-liquid.png
+?? Assets/Experiments/IceResurfacer/Validation~/Motion-contact-focused.txt
+?? Assets/Experiments/IceResurfacer/Validation~/Operator-ergonomics-core.txt
+?? Assets/Experiments/IceResurfacer/Validation~/OperatorErgonomicsBefore/
+?? Assets/Experiments/IceResurfacer/Validation~/PerformanceOperatorErgonomics/
+?? Assets/Experiments/IceResurfacer/Validation~/Route-guide-fullrun.txt
+?? Assets/Experiments/IceResurfacer/Validation~/RouteGuideProbe.cs
+?? Assets/Experiments/IceResurfacer/Validation~/RouteGuideProbe.csproj
+?? Assets/Experiments/IceResurfacer/Validation~/RouteGuideValidation.cs
+?? Assets/Experiments/IceResurfacer/Validation~/RunIsolatedUnity.ps1
+?? Assets/Experiments/IceResurfacer/Validation~/Service-floor-snow.png
+?? Assets/Experiments/IceResurfacer/Validation~/SummarizeErgonomicPerformance.py
+?? Assets/Experiments/IceResurfacer/Validation~/Surface-consistency-results.txt
+?? Assets/Experiments/IceResurfacer/Validation~/SurfaceConsistencyProbe.cs
+?? Assets/Experiments/IceResurfacer/Validation~/SurfaceConsistencyProbe.csproj
+?? Assets/Experiments/IceResurfacer/Validation~/SurfaceConsistencyValidation.cs
+?? Assets/Experiments/IceResurfacer/Validation~/Water-performance-after.txt
+?? Assets/Experiments/IceResurfacer/Validation~/Water-performance-before.txt
+?? Assets/Experiments/IceResurfacer/Validation~/Water-performance-comparison.txt
+?? Assets/Experiments/IceResurfacer/Validation~/WaterPerformanceProbe.cs
+?? Assets/Experiments/IceResurfacer/Validation~/WaterPerformanceProbe.csproj

@@ -26,9 +26,9 @@ namespace IceResurfacer.Core
                 float u=col/12f,v=row/16f,lx,ly,lz;
                 if(surface==0||surface==6) // the two faces of the hinged door
                 {
-                    lx=.20f-.72f+1.44f*u;float dy=-1.02f+.94f*v;
+                    lx=.20f-.72f+1.44f*u;float pivotY=Config.TankGeometryY(1.02f),dy=Config.TankGeometryY(.94f*v)-pivotY;
                     float skin=surface==0?-.0275f:.0275f;
-                    ly=1.02f+dc*dy-ds*skin;lz=.002f+ds*dy+dc*skin;
+                    ly=pivotY+dc*dy-ds*skin;lz=.002f+ds*dy+dc*skin;
                 }
                 else if(surface==1) // sloping forward crown
                 {
@@ -49,6 +49,7 @@ namespace IceResurfacer.Core
                     float lowerY=.80f-.05f*v,upperY=1.025f-.085f*v;
                     ly=lowerY+(upperY-lowerY)*u;lz=-2.03f+2.05f*v;
                 }
+                lx=Config.TankGeometryX(lx);if(surface!=0&&surface!=6)ly=Config.TankGeometryY(ly);
                 float height=.78f+tc*ly-ts*lz,forward=2.46f+ts*ly+tc*lz;
                 // Everything behind this plane remains inside the existing
                 // chassis footprint; do not enlarge ordinary driving bounds.

@@ -96,7 +96,7 @@ $playerPath = Join-Path $PSScriptRoot 'PerformanceBuild/AuroraPerformance.exe'
 $presentationMode = if ($WindowMode -eq 'Transparent') { '-force-d3d11-bitblt-model' } else { '' }
 $arguments = "-force-d3d11 $presentationMode -popupwindow -screen-fullscreen 0 -screen-width $Width -screen-height $Height -logFile `"$validationDirectory/Performance-player-${Width}x${Height}.log`" --aurora-endurance-frames $EnduranceFrames --aurora-performance-output `"$validationDirectory/$OutputFolder`""
 $child = Start-Process -FilePath $playerPath -ArgumentList $arguments -WindowStyle Hidden -PassThru
-$deadline = [DateTime]::UtcNow.AddSeconds(600)
+$deadline = [DateTime]::UtcNow.AddSeconds(1200)
 try {
     while (!$child.HasExited -and [DateTime]::UtcNow -lt $deadline) {
         [AuroraValidationWindow]::KeepInvisible($child.Id, $WindowMode -eq 'Transparent')

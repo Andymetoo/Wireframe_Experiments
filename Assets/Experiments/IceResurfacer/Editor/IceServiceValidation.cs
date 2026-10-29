@@ -122,7 +122,7 @@ namespace IceResurfacer.Editor
                 Check(game.Sim.HoseState==WaterHoseState.Carried,"actual E takes physical wall nozzle after walking around machine");
                 Check(service.HoseVisibleLength>1&&service.HoseVisibleLength<=Simulation.ServiceHoseLengthMeters,"carried hose has bounded route around solid machine");
                 Aim(service.FloodInlet.position);
-                Check(service.Prompt.Contains("reach")&&service.Prompt.Contains("ICE WATER"),"aimed distant coupling reports actual reach rather than a silent interaction failure");
+                Check(service.Prompt.Contains("reach")&&service.Prompt.Contains("FLOOD WATER"),"aimed distant coupling reports actual reach rather than a silent interaction failure");
                 WalkToPort();Pulse(Key.E);
                 Check(game.Sim.HoseState==WaterHoseState.Flood,"right rear flood inlet couples independently");
                 Check(Vector3.Distance(service.HoseNozzle.position,service.FloodInlet.position)<.001f,"visible nozzle terminates at connected fill neck");

@@ -99,7 +99,7 @@ namespace IceResurfacer.Editor
             try
             {
                 game.NewSession(true); game.Dashboard.Compact = true;
-                Input(new[] { Key.S, Key.LeftShift }); Advance(25); Stop();
+                Input(new[] { Key.S, Key.RightShift }); Advance(25); Stop();
                 Check(game.Sim.HasEnteredRink, "fixture genuinely drives from service bay onto ice before interaction");
                 // Input-recovery matrix uses a clear straight lane after the real reverse departure.
                 Place(0,-15);
@@ -125,14 +125,14 @@ namespace IceResurfacer.Editor
                 Check(game.Sim.Controls.TankHydraulic==1&&game.Sim.TankRaised&&game.Sim.Vehicle.Speed>0,"7 raises tank while W continues Free Simulation travel");
                 Input();Check(game.Sim.Controls.TankHydraulic==0,"7 release centres dump command");
                 float loweringSeconds=game.Sim.TankLift*game.Sim.Config.TankLiftSeconds+.2f;
-                Input(new[]{Key.Digit7,Key.LeftShift});Advance(loweringSeconds);Input();
-                Check(!game.Sim.TankRaised,"Shift+7 lowers the same physical tank");
+                Input(new[]{Key.Digit7,Key.RightShift});Advance(loweringSeconds);Input();
+                Check(!game.Sim.TankRaised,"Right Shift+7 lowers the same physical tank");
                 float flood=game.Sim.Controls.FloodFlow,wash=game.Sim.Controls.WashValve;
                 Input(new[]{Key.RightBracket});
                 Check(game.Sim.Controls.FloodFlow>flood&&game.Sim.Controls.WashValve==wash,"right bracket adjusts only flood water");
                 Input();flood=game.Sim.Controls.FloodFlow;
-                Input(new[]{Key.LeftShift,Key.RightBracket});
-                Check(game.Sim.Controls.WashValve>wash&&game.Sim.Controls.FloodFlow==flood,"Shift+right bracket adjusts only wash water");
+                Input(new[]{Key.RightShift,Key.RightBracket});
+                Check(game.Sim.Controls.WashValve>wash&&game.Sim.Controls.FloodFlow==flood,"Right Shift+right bracket adjusts only wash water");
                 Input();bool fps=game.PerformanceVisible;
                 Input(new[]{Key.F4});Check(game.PerformanceVisible!=fps,"F4 toggles performance readout");Input();
                 Input(new[]{Key.F2});Check(game.Surface.DebugMode==1,"F2 exposes actual shaving mask");Input();

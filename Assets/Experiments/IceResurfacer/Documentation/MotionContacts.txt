@@ -1,0 +1,99 @@
+AURORA R-54 / CONDITIONER, UNLOADING GRATE AND PHYSICAL CONTACT
+29 October 2026
+
+Cause and correction
+The previous snow pit was explicitly removed from ContainsVehicleFloor, and
+ProbeVehiclePose separately rejected every body edge intersecting its rectangle.
+Reducing the extra clearance to 1 cm made the barrier agree with its rim but
+could not make the dumping area drivable. Direct rejection set vehicle velocity
+to zero. This was the reported abrupt stop, not a docking/parking state.
+
+The receiver is now a visible load-bearing grate, flush with the service floor.
+ContainsPit still identifies where falling snow enters the receiver; it is no
+longer a vehicle or walking exclusion. Room walls remain physical boundaries.
+The machine can drive across the grate at any clear approach angle. Its far
+wall still limits travel where the real body reaches that wall. There is no
+pose/heading snap, automatic parking or new control restriction.
+
+Water reaching the grate enters the accounted drain sink. GrateDrainedWaterLiters
+is a subset of Environment.DrainedWaterLiters, not a second amount to add to the
+water balance. Deposited snow retains its existing PitSnowM3 receiver stock.
+No open fall/drop or tire suspension simulation is claimed for the new grate.
+
+Conditioner mounting
+The previous free-trailing heading had a +/-0.9 radian (51.6 degree) limit, far
+more than the close-mounted lifting linkage shown in the operator references.
+The same hitch and drawbar positions now constrain relative yaw to +/-2 degrees.
+This is an Aurora compliance calibration, not a published manufacturer limit.
+The actual rendered heading, blade, water outlet, pickup and snow exits all use
+the same Conditioner state. Hydraulic lift remains independent of this yaw.
+No chassis wheelbase, steering rate, maximum steering angle or traction equation
+was changed by this correction. Comparing zero-yaw and 2-degree-yaw fixtures
+gives identical chassis positions/headings for every tested step. Full-lock
+kinematic rear-axle radius remains 4.4850 m at the established steering angle.
+
+Physical contact audio
+The movement solver records actual rejected physical contact points, inward
+surface normals and the velocity of that point, including chassis rotation.
+Severity is clamp(inward normal approach speed / 1.8 m/s, 0, 1). Total speed is
+not used as a substitute for normal impact speed. No vehicle mass or collision
+impulse is invented for this kinematic model.
+
+Three reused spatial voices play original synthesized dull board/wall impacts
+or the softer guide-roller rattle. They are positioned at the contact point.
+Body impacts have a 0.40 s cooldown, roller impacts 0.28 s, and approach speeds
+below 0.035 m/s do not create new impacts. The existing roller loop is now spatial
+at its actual roller and remains quiet during tangential rolling. Braking,
+training restrictions and other nonphysical command refusals do not emit hits.
+The clips are intentionally dull and short, with a restrained secondary body
+vibration. Final perceived volume and timbre remain an operator listening check.
+
+Executed core evidence
+The final core aggregate passes all 37 groups, including these contact tests.
+Validation~/Operator-ergonomics-core.txt is the current aggregate report;
+Validation~/Motion-contact-focused.txt records the focused .NET fixture:
+- 0, -15, +15, -30, +30 and 90 degree approaches cross the grate at 0.424 m/s
+  without any contact event. Ordinary reverse clears the actual end wall.
+- Slow direct / hard direct / fast glancing / service-wall normal approach
+  velocities are 0.300 / 2.000 / 0.160 / 0.600 m/s. Holding the hard-contact
+  demand for another 10 s produces only one further finite contact event.
+- Conditioner relative yaw reaches 2.000 degrees; chassis trajectory remains
+  identical to the rigid comparison at every step.
+- A 12 L grate discharge is fully accounted for in the grate drain.
+- The existing 20 L floor fixture retains 0.4716 L and drains 19.5284 L after
+  80 simulated seconds, across 21 nonzero floor cells.
+- The lower, centered tank stops at actual glass at lift 0.5055. Ordinary
+  reverse clears it; lifting then completes. Actual pit discharge still works.
+
+Unity/native/performance status
+Integrated Unity suites PASS with zero managed runtime errors. Native HUD checks
+PASS at 1366 x 768 and 1920 x 1080 with zero measured text clipping. Hidden-window
+D3D presentation warnings are counted separately: 11 and 6 respectively.
+Both final 16-workload rendered performance runs are complete with zero managed
+errors. Documentation/OperatorErgonomics.txt
+records the full integration and camera-evidence status.
+
+Editor/IceServiceGeometryValidation.cs captures Grate-traversal-0/30/90deg.png,
+Contact-slow-direct/hard-direct/fast-glance/service-wall.png,
+Conditioner-straight/curved.png, Raised-tank-glass-contact.png, and finite
+floor-water before/after views and Service-floor-snow.png. The suite checks
+upward floor-snow winding, positive accumulation, shared rendered/core tank
+pivots, shared conditioner heading and three bounded spatial impact voices.
+Service-geometry-results.txt records the executed Unity checks. A 0.350 m3
+floor-snow fixture produces a 0.350000 m3 rendered triangle integral, 0.3307 m
+maximum height and 0.9456 minimum upward normal. Its actual floor-water before/
+after renders differ at 62,263 pixels while retaining the measured water balance.
+The dump-pile suite separately passes finite profile, integrated receiver volume,
+visible accumulation and upward normals.
+The aggregate normal route also completes a real southeast return and manual
+unload: 96.97% reachable coverage, 95.43% whole-ice coverage, 89.0 points,
+0.729 m3 into the receiver and zero misuse. The separate generated-route
+operation deliberately spills/recollects snow and pools/freezes water, still
+completing 95.69% reachable coverage before its manual return/unload. Neither
+route uses pose corrections or a docking snap. Full-run material and precision
+details are in OperatorErgonomics.txt and Route-guide-fullrun.txt.
+
+Material accounting, treatment scoring and the 5 cm grid are unchanged by this
+contact subsystem. Tank collision/discharge positions consume the same authored
+geometry configuration as the corrected model; door dimensions are transformed
+before their mechanical rotation, avoiding a scaled collision angle.

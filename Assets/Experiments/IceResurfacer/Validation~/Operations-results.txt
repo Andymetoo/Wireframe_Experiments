@@ -1,17 +1,38 @@
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.05 / lift 0.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.05 / lift 0.65
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.05 / lift 1.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.50 / lift 0.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.50 / lift 0.65
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.50 / lift 1.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.85 / lift 0.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.85 / lift 0.65
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 0.85 / lift 1.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 1.00 / lift 0.00
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 1.00 / lift 0.65
+PASS actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill 1.00 / lift 1.00
+Tank envelope apparatus: 12 partial/full and lowered/raised poses; finite mesh uses authored length 1.960m and centerZ -1.010m. Conserved3.54m3 loose stock maps to 1.930747m3 physical envelope.
 Side-escape fixture explicitly sets an initial center-ice pose; subsequent motion, cutting, accumulation and recovery use simulation ticks. No tank or snow is injected.
 PASS stopped augers visibly retain initial finite trough stock before any snow escape
 PASS shaving with horizontal auger OFF has simultaneous left/right material escape
 PASS off-auger fixture cannot hide escaped snow in the tank or exceed trough capacity
-PASS bounded source-driven side snow particles: Conditioner LEFT side escape / actual snow
-PASS bounded source-driven side snow particles: Conditioner RIGHT side escape / actual snow
+PASS bounded source-driven side snow clumps: Conditioner LEFT side escape / actual snow
+PASS bounded source-driven side snow clumps: Conditioner RIGHT side escape / actual snow
 PASS exactly two pooled conditioner-side emitters exist
+PASS actual escaped bulk material creates sparse three-dimensional snow-height meshes
 PASS finite accumulated trough snow is rendered behind the auger grille
 PASS enabled augers recover persistent side windrows with the blade retracted
 PASS side emission stops when actual escaping transfer stops
+PASS recovery reduces the same dirty chunk mesh heights as conserved surface snow
+PASS both recovery images contain visible rink content instead of a uniform roof or clear color
+PASS all recovery comparison samples remain inside the fixed world view
+PASS actual side-band pixels visibly lose deposited white snow after collection
+Recovery image audit: identical orthographic world bounds, camera height 8 m below roof; 1458 / 1458 side-band samples lose visible snow, mean RGB reduction 24.94 / 255. Material recovery remains independently measured.
 Live side fixture escaped 0.080254 m3; subsequent surface pickup removed 0.099302 m3 including incidental original loose snow. Detailed conservation and empty-revisit assertions are in the core snow probe.
 Rendering fixture begins with 99.999% tank stock; default 3.54m3 capacity, geometry and transfer rates. Core conservation/recovery tests use no tank writes.
 PASS full tank ejects actual rejected vertical throughput
-PASS full tank surface reaches inspection opening
+PASS full tank surface fits the authored lowered shell and tapered upper width
+PASS full tank snow sits directly beneath the clear inspection opening
+Authored full snow depth=0.6936m; opening clearance=0.1174m; physical envelope=1.9307m3; retained loose-equivalent capacity=3.54m3; compaction=1.833.
 PASS overflow emits visible pooled particles from rejected source snow
 PASS continued full-tank operation latches a mechanical jam
 PASS jammed auger flights stop rotating
@@ -27,8 +48,11 @@ PASS bounded particle pool: Tank overflow water outlet
 PASS dump emits visible pooled particles while tank volume decreases
 PASS tilted tank visibly empties progressively with a live discharge rate
 PASS forward dump door opens independently of shell
+PASS pit pile profile remains finite including fractional-power edge vertices
+PASS rounded pit mesh integrates to actual discharged receiver volume
 PASS actual removed tank contents form a visible pit pile
+PASS dump pile normals face upward
 PASS empty tank hides internal snow surface
 PASS dump tank returns fully to lowered position
-Working simulation + presentation CPU sample (240 ticks): 1.127 ms/tick; managed allocation=0 bytes; 663 reusable snow vertices, five 360-particle snow pools. Excludes IMGUI/GPU.
+Working simulation + presentation CPU sample (240 ticks): 1.353 ms/tick; managed allocation=0 bytes; 663 reusable tank/pit/trough vertices, sparse441-vertex deposit chunks, three360 and two720-particle snow pools. Excludes IMGUI/GPU.
 PASS working auger emits actual snow into the bin

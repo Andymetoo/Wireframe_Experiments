@@ -121,10 +121,19 @@ MonoBehaviour:
     DeepGougeDepthMm: 0.145
     GougeRoughnessDepthMm: 0.08
     BrushPivotX: -0.9
-    BrushPivotZ: 0.5
+    BrushPivotZ: 1.16
     BrushArmLength: 0.38
     BrushRadius: 0.25
     BrushRetractedDegrees: 85
+    SteeringWheelZ: 0.53
+    SteeringWheelHeight: 1.46
+    SteeringWheelTilt: 68
+    BladeWheelX: 0.65
+    BladeWheelZ: -0.2
+    BladeWheelHeight: 1.56
+    WaterValveStemHeight: 0.24
+    SnowBreakerX: 1.01
+    SnowBreakerZ: 0.34
   operatorEyeHeight: 0.06
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

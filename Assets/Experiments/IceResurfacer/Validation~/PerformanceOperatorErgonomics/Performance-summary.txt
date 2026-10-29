@@ -1,0 +1,69 @@
+AURORA / FINAL RENDERED PERFORMANCE / 29 October 2026
+Unity 6000.4.1f1, D3D11, RTX 3050 Laptop GPU, i5-11400H, development Mono player.
+Serial hidden offscreen runs, VSync off; original user Editor left open.
+One 20 ms simulation step per rendered frame. Actual recorded intervals:
+299 for each short workload; 29,999 for sustained operation, after warmup.
+Frame measurements include the whole player. CPU_work excludes IMGUI/render.
+This measures workload throughput; focused-window latency and Editor FPS
+are not established. Screenshot FPS includes capture/automation waits.
+
+Scenario                      1366 mean / p95 ms    1920 mean / p95 ms
+driving_full_hud                2.117 /   2.697         2.615 /   3.375
+resurfacing_full_hud            3.261 /   6.126         3.802 /   7.165
+resurfacing_compact             4.702 /   6.000         3.437 /   6.697
+snow_overflow                   3.360 /   6.260         4.156 /   8.013
+camera_changes                  3.303 /   5.963         3.780 /   7.132
+service_walking                 1.697 /   2.473         2.332 /   2.951
+hose_filling                    2.032 /   3.191         2.561 /   3.688
+hose_overflow                   3.843 /   3.366         2.571 /   3.594
+dump_shakeout                   3.177 /   3.903         3.792 /   5.686
+long_session                    9.210 /  23.783         7.818 /  23.297
+on_foot_movement                1.391 /   1.854         2.489 /   3.241
+late_wet_sheet                  5.722 /  10.778         4.272 /  11.050
+conditioner_side_escape         2.931 /   5.095         3.262 /   5.574
+chase_resurfacing               3.702 /   6.669         3.725 /   7.047
+stationary_pool                 3.453 /   6.019         3.497 /   6.688
+advisory_route                  2.422 /   3.609         2.752 /   4.078
+
+Sustained workload and retained cost
+1366x768: CPU work 5.532 ms; surface refresh 1.574 ms/frame;
+  29768 moving / 29999 cutting intervals; 66344 active wet cells.
+  Work allocation 0 B/frame; whole-frame GC 12479 B/frame;
+  97 collections. Native presentation warnings 34; managed errors zero.
+  Earlier feature baseline: 4.402 ms mean / 9.633 ms p95.
+1920x1080: CPU work 5.518 ms; surface refresh 1.577 ms/frame;
+  29768 moving / 29999 cutting intervals; 66344 active wet cells.
+  Work allocation 0 B/frame; whole-frame GC 12475 B/frame;
+  97 collections. Native presentation warnings 43; managed errors zero.
+  Earlier feature baseline: 5.062 ms mean / 10.807 ms p95.
+The endurance fixture repeatedly resets its pose to the same working lane
+while cutting, washing and flooding. Its accumulated standing water invokes
+the new finite redistribution solver. This added physical work remains more
+expensive than the earlier feature baseline; baseline parity is not claimed.
+The 1920 run has lower whole-frame mean despite similar CPU work and higher
+GPU cost. Sequential host/presentation variation prevents interpreting that
+difference as a resolution benefit. Both p95 values remain near 23 ms.
+Six endurance heap samples remain approximately 84.9-85.6 MB at both sizes.
+Live-heap deltas include collection of setup garbage and do not prove leaks.
+
+Measured optimization, identical physical state
+1366 mean frame: 13.506 -> 9.210 ms (31.8% reduction).
+1366 p95 frame: 47.425 -> 23.783 ms (49.9% reduction).
+CPU work: 10.719 -> 5.532 ms (48.4% reduction).
+Surface refresh per frame: 4.425 -> 1.574 ms (64.4% reduction).
+Core-only comparison separately improves 1.948 -> 1.086 ms per step.
+Six intermediate hashes and the final cell hash match exactly, preserving
+water totals, flow order, thresholds, work budget and 10 Hz cadence.
+Presentation skips unchanged uploads and water-only snow mesh work while
+retaining exact 5 cm state and bounded 65,536-cell visual aging.
+All 37 core groups and final Unity suites pass on the optimized source.
+
+Raw evidence
+PerformanceOperatorErgonomics/Performance-1366x768.csv
+PerformanceOperatorErgonomics/Performance-1920x1080.csv
+PerformanceOperatorErgonomics/BeforeOptimization/ preserves the first 1366 run.
+Its corrupt long-session GPU timer is excluded from interpretation; the
+final probe rejects impossible/nonfinite positive samples as unavailable.
+Water-performance-before/after/comparison.txt provide exact-state CPU evidence.
+Native hidden-window warnings bypass the managed callback and are counted
+separately in launcher footers. Neither run reports managed runtime errors.

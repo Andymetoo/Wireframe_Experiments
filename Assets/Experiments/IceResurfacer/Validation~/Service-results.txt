@@ -25,7 +25,7 @@ PASS 12 L/s fill affects only connected flood reservoir
 PASS capacity is capped and excess water overflows
 PASS overflow uses fixed bounded 160-droplet pool
 PASS overflow retains rounded mesh droplets
-Service presentation CPU sample, connected hose and overflow, 240 calls: 0.012 ms/call; 0 managed bytes. Excludes simulation, rendering/GPU and IMGUI; persistent floor meshes update at 5 Hz only when material state changes.
+Service presentation CPU sample, connected hose and overflow, 240 calls: 0.008 ms/call; 0 managed bytes. Excludes simulation, rendering/GPU and IMGUI; persistent floor meshes update at 5 Hz only when material state changes.
 PASS walking reaches flood inlet from outside the solid body
 PASS inlet approach has hose slack without requiring body penetration
 PASS normal E disconnects flood hose

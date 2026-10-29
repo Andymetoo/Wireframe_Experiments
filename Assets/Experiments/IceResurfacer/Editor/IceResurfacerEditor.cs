@@ -121,7 +121,7 @@ namespace IceResurfacer.Editor
         static void Tick()
         {
             if(!EditorApplication.isPlaying)return;
-            if(EditorApplication.timeSinceStartup-began>180) { Fail("Play mode validation timed out"); return; }
+            if(EditorApplication.timeSinceStartup-began>600) { Fail("Play mode validation timed out"); return; }
             try
             {
                 frame++;
@@ -130,7 +130,7 @@ namespace IceResurfacer.Editor
                 if(frame==30)
                 {
                     Require(game.DriverCamera!=null&&game.World.IceMesh!=null,"Camera and surface spawned");
-                    Require(game.GetComponentsInChildren<AudioSource>().Length==14,"Ten machine loops, mechanical transients and three water-service sources initialize");
+                    Require(game.GetComponentsInChildren<AudioSource>().Length==27,"Nineteen machine/ambience loops, two mechanisms, three contact voices and three service sources initialize");
                     Require(game.World.Conditioner!=game.World.Machine,"Independent conditioner transform");
                     Require(game.DriverCamera.transform.IsChildOf(game.World.CameraMount),"Seated camera attached");
                     Capture(game.DriverCamera,"Driver-start.png");
@@ -176,7 +176,7 @@ namespace IceResurfacer.Editor
                     Require(Quaternion.Angle(Quaternion.Euler(5,0,0),game.DriverCamera.transform.localRotation)>20,"Mouse motion rotates the head");
                     releasedHead=game.DriverCamera.transform.localRotation;
                     InputSystem.QueueStateEvent(testMouse,new MouseState());
-                    InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(Key.W,Key.LeftShift));
+                    InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(Key.W,Key.RightShift));
                 }
                 if(frame==68&&passPrepared)
                     InputSystem.QueueStateEvent(testMouse,new MouseState { buttons=2,delta=new Vector2(-900,250) });
@@ -184,7 +184,7 @@ namespace IceResurfacer.Editor
                 {
                     Require(!game.Looking,"RMB release restores instrument mode");
                     Require(Vector3.Distance(game.DriverCamera.transform.localRotation*Vector3.forward,releasedHead*Vector3.forward)<.000001f,"Released head keeps exactly the same vehicle-relative orientation");
-                    Require(Mathf.Abs(game.Sim.Controls.Throttle-.42f)<.001f,"W + Shift reaches precision pedal demand");
+                    Require(Mathf.Abs(game.Sim.Controls.Throttle-.42f)<.001f,"W + Right Shift reaches precision pedal demand");
                     InputSystem.QueueStateEvent(testKeyboard,new KeyboardState(Key.LeftCtrl));
                 }
                 if(frame==102&&passPrepared)
@@ -212,9 +212,9 @@ namespace IceResurfacer.Editor
                     Require(!ShaderUtil.ShaderHasError(game.World.IceMesh.sharedMaterial.shader),"Live ice shader has no compilation errors");
                     int renderers=game.GetComponentsInChildren<Renderer>().Length;
                     resultReport="Unity "+Application.unityVersion+" Play Mode validation\n"+
-                        "Saved launch scene, camera, world, conditioner, state textures, fourteen audio sources: PASS\n"+
+                        "Saved launch scene, camera, world, conditioner, state textures, twenty-seven audio sources: PASS\n"+
                         "Genuine simulated cut/wash/flood lane and snow conveyance: PASS\n"+
-                        "Input System: persistent RMB motion/release, W+Shift precision pedal, Ctrl brake: PASS\n"+
+                        "Input System: persistent RMB motion/release, W+RightShift precision pedal, Ctrl brake: PASS\n"+
                         "Runtime renderers: "+renderers+"\n"+
                         "Graphics device: "+SystemInfo.graphicsDeviceName+" / "+SystemInfo.graphicsDeviceType+"\n"+
                         "Runtime error/exception count: "+failures+"\n"+
@@ -230,6 +230,7 @@ namespace IceResurfacer.Editor
                     Suite("Snow operation rendering",()=>IceOperationValidation.Run(game));
                     Suite("Input and drive recovery",()=>IceAuthenticityValidation.Run(game,testKeyboard,testMouse));
                     Suite("Physical controls",()=>IcePhysicalValidation.Run(game,testKeyboard,testMouse));
+                    Suite("Cockpit refinement",()=>IceCockpitRefinementValidation.Run(game,testKeyboard,testMouse));
                     Suite("Southeast service and freedom",()=>IceServiceValidation.Run(game,testKeyboard,testMouse));
                     Suite("Ice overlap / pickup rendering",()=>IceCalibrationRuntimeValidation.Run(game));
                     resultReport+="Final runtime error/exception count: "+failures+"\n";
@@ -246,15 +247,24 @@ namespace IceResurfacer.Editor
         {
             // URP single-camera request works without changing scene or pipeline settings.
             var target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32);
-            target.Create();
-            var old=camera.targetTexture; camera.targetTexture=target;
-            camera.Render();
-            var previous=RenderTexture.active; RenderTexture.active=target;
-            var texture=new Texture2D(target.width,target.height,TextureFormat.RGB24,false);
-            texture.ReadPixels(new Rect(0,0,target.width,target.height),0,0); texture.Apply();
-            File.WriteAllBytes(Root+"Validation~/"+name,texture.EncodeToPNG());
-            camera.targetTexture=old; RenderTexture.active=previous;
-            UnityEngine.Object.Destroy(texture); target.Release(); UnityEngine.Object.Destroy(target);
+            var old=camera.targetTexture;var previous=RenderTexture.active;
+            Texture2D texture=null;
+            try
+            {
+                target.Create();camera.targetTexture=target;camera.Render();
+                RenderTexture.active=target;
+                texture=new Texture2D(target.width,target.height,TextureFormat.RGB24,false);
+                texture.ReadPixels(new Rect(0,0,target.width,target.height),0,0);texture.Apply();
+                File.WriteAllBytes(Root+"Validation~/"+name,texture.EncodeToPNG());
+            }
+            finally
+            {
+                camera.targetTexture=old;RenderTexture.active=previous;
+                // Suites capture many frames during one Editor update; deferred
+                // Destroy retains all of those native textures until it ends.
+                if(texture!=null)UnityEngine.Object.DestroyImmediate(texture);
+                target.Release();UnityEngine.Object.DestroyImmediate(target);
+            }
         }
         static void Suite(string name,Action run)
         {

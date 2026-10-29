@@ -44,6 +44,7 @@ namespace IceResurfacer.Presentation
         int groundRevision=-1;
         Mesh groundWaterMesh, groundSnowMesh;
         Vector3[] groundWaterVertices,groundSnowVertices;
+        float[] groundSnowSamples;
         Color32[] groundWaterColors;
 
         public string Prompt { get { return prompt; } }
@@ -69,7 +70,7 @@ namespace IceResurfacer.Presentation
                 if (game == null || game.Sim == null) return "";
                 var s = game.Sim;
                 string state = s.HoseState == WaterHoseState.Stowed ? "HOSE STOWED" : s.HoseState == WaterHoseState.Carried ? "NOZZLE IN HAND" : s.HoseState == WaterHoseState.Dropped ? "LOOSE NOZZLE ON FLOOR" :
-                    s.HoseState == WaterHoseState.Flood ? "ICE WATER CONNECTED" : "WASH WATER CONNECTED";
+                    s.HoseState == WaterHoseState.Flood ? "FLOOD WATER CONNECTED" : "WASH WATER CONNECTED";
                 string reach=s.HoseState==WaterHoseState.Stowed?"":"  "+hoseLength.ToString("0.0")+" / 11 m"+(hoseLength>10.5f?" TAUT":"");
                 return state + reach + "   |   SUPPLY " + Mathf.RoundToInt(s.SupplyValve*100) + "%   |   " + s.ServiceFlowLitersPerSecond.ToString("0.0") + " L/s" +
                     (s.ServiceOverflowLitersPerSecond > .01f ? "   |   OVERFLOW — CLOSE WALL VALVE" : "");
@@ -82,7 +83,7 @@ namespace IceResurfacer.Presentation
             root = Group("Interactive water service / 11 m hose", transform, Vector3.zero);
             steel = Mat("Water station / brushed steel",new Color(.42f,.50f,.53f),.82f,.68f);
             rubber = Mat("Water station / reinforced hose",new Color(.055f,.075f,.072f),0,.22f);
-            blue = Mat("Ice water inlet / blue",new Color(.075f,.36f,.62f),.3f,.52f);
+            blue = Mat("Flood water inlet / blue",new Color(.075f,.36f,.62f),.3f,.52f);
             teal = Mat("Wash inlet / teal",new Color(.08f,.57f,.49f),.3f,.52f);
             paint = Mat("Water station / cream enamel",new Color(.73f,.76f,.70f),.2f,.35f);
             waterMaterial = Mat("Water station / wet water",new Color(.20f,.48f,.57f),.15f,.94f);
@@ -226,7 +227,6 @@ namespace IceResurfacer.Presentation
         {
             var s=game.Sim;
             if(!s.Ice.IsInside(position.x,position.z,.22f)&&!s.Layout.ContainsFloor(position.x,position.z,.22f))return Blocked("Wall or boards ahead. Follow the clear aisle.",showBlock);
-            if(s.Layout.ContainsPit(position.x,position.z,.22f))return Blocked("Snow-pit edge. Walk around the marked rim.",showBlock);
             Vector3 local=game.World.Machine.InverseTransformPoint(position);
             if(Mathf.Abs(local.x)<1.38f&&local.z> -1.88f&&local.z<2.84f)return Blocked("Machine ahead. Use the clear aisle beside the fill couplings.",showBlock);
             if(checkHose&&game.Sim.HoseState==WaterHoseState.Carried)
@@ -288,7 +288,7 @@ namespace IceResurfacer.Presentation
             var s=game.Sim;
             if(target==Target.None&&outOfReachTarget!=Target.None)
             {
-                string fixture=outOfReachTarget==Target.Holder?"hose holder":outOfReachTarget==Target.Supply?"wall valve":outOfReachTarget==Target.Flood?"ICE WATER inlet":outOfReachTarget==Target.Wash?"WASH WATER inlet":outOfReachTarget==Target.Step?"left boarding step":"loose nozzle";
+                string fixture=outOfReachTarget==Target.Holder?"hose holder":outOfReachTarget==Target.Supply?"wall valve":outOfReachTarget==Target.Flood?"FLOOD WATER inlet":outOfReachTarget==Target.Wash?"WASH WATER inlet":outOfReachTarget==Target.Step?"left boarding step":"loose nozzle";
                 float reach=outOfReachTarget==Target.Holder?Simulation.ServiceHolderReachMeters:Simulation.ServiceReachMeters;
                 return "Approach "+fixture+" - "+targetDistance.ToString("0.0")+" m away; reach "+reach.ToString("0.0")+" m";
             }
@@ -296,7 +296,7 @@ namespace IceResurfacer.Presentation
             {
                 case Target.Holder:return s.HoseState==WaterHoseState.Stowed?"E — Take hose":s.HoseState==WaterHoseState.Carried?"E — Return hose":s.HoseState==WaterHoseState.Dropped?"Retrieve the loose nozzle from the floor":"Hose is connected at the machine inlet";
                 case Target.Supply:return s.SupplyValve>.01f?"E / CLICK  Close wall supply valve":"E / CLICK  Open wall supply valve";
-                case Target.Flood:return s.HoseState==WaterHoseState.Flood?"E / CLICK  Disconnect ICE WATER hose":"E / CLICK  Connect ICE WATER — "+s.FloodWaterLiters.ToString("0")+" / 738 L";
+                case Target.Flood:return s.HoseState==WaterHoseState.Flood?"E / CLICK  Disconnect FLOOD WATER hose":"E / CLICK  Connect FLOOD WATER — "+s.FloodWaterLiters.ToString("0")+" / 738 L";
                 case Target.Wash:return s.HoseState==WaterHoseState.Wash?"E / CLICK  Disconnect WASH WATER hose":"E / CLICK  Connect WASH WATER — "+s.WashWaterLiters.ToString("0")+" / 310 L";
                 case Target.Step:return "F  Board the left operator station";
                 case Target.LooseNozzle:return "E — Pick up loose hose nozzle";
@@ -318,7 +318,13 @@ namespace IceResurfacer.Presentation
                 case Target.Step:if(s.TryBoard(BoardingDistance())){EndWalk();success=true;}break;
                 case Target.LooseNozzle:success=s.PickUpDroppedHose(distance);break;
             }
-            if(success){coupling.pitch=target==Target.Supply?.8f:1.15f;coupling.PlayOneShot(couplingClip,.26f);}
+            if(success)
+            {
+                Transform fixture=target==Target.Flood?floodInlet:target==Target.Wash?washInlet:target==Target.Supply?supplyHandle:root;
+                coupling.transform.SetParent(fixture,false);
+                coupling.transform.position=TargetPosition(target);
+                coupling.pitch=target==Target.Supply?.8f:1.15f;coupling.Stop();coupling.PlayOneShot(couplingClip,.26f);
+            }
             game.Notice=s.LastMessage;
         }
 
@@ -364,6 +370,9 @@ namespace IceResurfacer.Presentation
             float spill=running?(s.HoseConnected?s.ServiceOverflowLitersPerSecond:s.ServiceFlowLitersPerSecond):0;
             Vector3 spillOrigin=s.HoseConnected?inlet.position-game.World.Machine.right*.03f-Vector3.up*.25f+game.World.Machine.forward*.13f:endpoint;
             overflowOutlet.position=spillOrigin;
+            overflowing.transform.position=spillOrigin;
+            if(s.HoseConnected&&filling.transform.parent!=inlet)
+            {filling.transform.SetParent(inlet,false);filling.transform.localPosition=Vector3.zero;}
             var emission=spray.emission;emission.rateOverTime=spill*10;
             runoff.enabled=spill>.01f;
             if(runoff.enabled)
@@ -377,7 +386,7 @@ namespace IceResurfacer.Presentation
             UpdateGauge(floodGauge,s.FloodWaterLiters/s.Config.FloodCapacityLiters);
             UpdateGauge(washGauge,s.WashWaterLiters/s.Config.WashCapacityLiters);
             levelUpdate-=dt;
-            if(levelUpdate<=0){levelUpdate=.2f;levels.text="ICE WATER  "+s.FloodWaterLiters.ToString("0")+" / 738 L\nWASH WATER  "+s.WashWaterLiters.ToString("0")+" / 310 L\n"+(s.ServiceOverflowLitersPerSecond>.01f?"OVERFLOW — CLOSE SUPPLY":"SUPPLY  "+s.ServiceFlowLitersPerSecond.ToString("0.0")+" L/s");}
+            if(levelUpdate<=0){levelUpdate=.2f;levels.text="FLOOD WATER  "+s.FloodWaterLiters.ToString("0")+" / 738 L\nWASH WATER  "+s.WashWaterLiters.ToString("0")+" / 310 L\n"+(s.ServiceOverflowLitersPerSecond>.01f?"OVERFLOW — CLOSE SUPPLY":"SUPPLY  "+s.ServiceFlowLitersPerSecond.ToString("0.0")+" L/s");}
             UpdateGroundMaterials(dt);
         }
 
@@ -474,14 +483,14 @@ namespace IceResurfacer.Presentation
             Label("WATER SERVICE",station,new Vector3(5.79f,2.16f,-6),.105f,Color.white,Quaternion.Euler(0,-90,0));
             Label("SUPPLY\nE  OPEN / CLOSE",station,new Vector3(5.78f,1.72f,-5.28f),.065f,Color.white,Quaternion.Euler(0,-90,0));
             Label("NOZZLE\nE  RETURN HOSE",station,new Vector3(5.78f,.82f,-6.48f),.060f,Color.white,Quaternion.Euler(0,-90,0));
-            levels=Label("ICE WATER  738 / 738 L\nWASH WATER  310 / 310 L",station,new Vector3(5.78f,2.05f,-7.50f),.070f,Color.white,Quaternion.Euler(0,-90,0));
+            levels=Label("FLOOD WATER  738 / 738 L\nWASH WATER  310 / 310 L",station,new Vector3(5.78f,2.05f,-7.50f),.070f,Color.white,Quaternion.Euler(0,-90,0));
             Box("Tank level repeater panel",station,new Vector3(5.81f,2.05f,-7.50f),new Vector3(.035f,.63f,1.65f),rubber);
             Box("Service floor drain recess",station,drain,new Vector3(.85f,.025f,.65f),rubber);
             for(int i=0;i<9;i++)Box("Drain grate bar",station,drain+new Vector3(-.36f+i*.09f,.016f,0),new Vector3(.027f,.014f,.60f),steel);
         }
         void BuildPorts()
         {
-            floodInlet=Port("ICE WATER",new Vector3(Simulation.FillPortLocalX,Simulation.FloodFillHeight,Simulation.FloodFillLocalZ),blue);
+            floodInlet=Port("FLOOD WATER",new Vector3(Simulation.FillPortLocalX,Simulation.FloodFillHeight,Simulation.FloodFillLocalZ),blue);
             washInlet=Port("WASH WATER",new Vector3(Simulation.FillPortLocalX,Simulation.WashFillHeight,Simulation.WashFillLocalZ),teal);
             floodGauge=Gauge(new Vector3(Simulation.FillPortLocalX+.01f,.80f,Simulation.FloodFillLocalZ),blue);
             washGauge=Gauge(new Vector3(Simulation.FillPortLocalX+.01f,1.06f,Simulation.WashFillLocalZ),teal);
@@ -514,16 +523,21 @@ namespace IceResurfacer.Presentation
         {
             var field=game.Sim.Environment;
             int count=field.Cells.Length;
-            groundWaterVertices=new Vector3[count*4];groundSnowVertices=new Vector3[count*5];groundWaterColors=new Color32[count*4];
+            groundWaterVertices=new Vector3[count*4];groundSnowVertices=new Vector3[count*9];groundWaterColors=new Color32[count*4];
+            groundSnowSamples=new float[count];
             Vector2[] waterUV=new Vector2[count*4];
-            int[] waterIndices=new int[count*6],snowIndices=new int[count*18];
+            int[] waterIndices=new int[count*6],snowIndices=new int[count*24];
             for(int i=0;i<count;i++)
             {
                 int w=i*4,t=i*6;
                 waterIndices[t]=w;waterIndices[t+1]=w+2;waterIndices[t+2]=w+1;waterIndices[t+3]=w;waterIndices[t+4]=w+3;waterIndices[t+5]=w+2;
                 waterUV[w]=Vector2.zero;waterUV[w+1]=Vector2.right;waterUV[w+2]=Vector2.one;waterUV[w+3]=Vector2.up;
-                int[] pyramid={0,4,1,1,4,2,2,4,3,3,4,0,0,2,3,0,1,2};
-                for(int j=0;j<18;j++)snowIndices[i*18+j]=i*5+pyramid[j];
+                for(int z=0;z<2;z++)for(int x=0;x<2;x++)
+                {
+                    int a=i*9+z*3+x,b=a+3,k=i*24+(z*2+x)*6;
+                    snowIndices[k]=a;snowIndices[k+1]=b;snowIndices[k+2]=a+1;
+                    snowIndices[k+3]=a+1;snowIndices[k+4]=b;snowIndices[k+5]=b+1;
+                }
             }
             groundWaterMesh=GroundMesh("Spatial floor runoff / conserved liters",groundWaterVertices,waterIndices,floorWaterMaterial);groundWaterMesh.uv=waterUV;
             groundSnowMesh=GroundMesh("Spatial dumped floor snow / conserved volume",groundSnowVertices,snowIndices,Mat("Floor snow deposits",new Color(.82f,.88f,.90f),0,.14f));
@@ -542,6 +556,7 @@ namespace IceResurfacer.Presentation
         {
             groundUpdate-=dt;if(groundUpdate>0)return;groundUpdate=.2f;
             var field=game.Sim.Environment;if(groundRevision==field.Revision)return;groundRevision=field.Revision;
+            bool snowChanged=false;
             for(int i=0;i<field.Cells.Length;i++)
             {
                 float x=field.CellX(i%field.Columns),z=field.CellZ(i/field.Columns);
@@ -557,14 +572,56 @@ namespace IceResurfacer.Presentation
                     if(radius>0)point=ClipFloorWater(centre,point);
                     groundWaterVertices[w+j]=point;groundWaterColors[w+j]=new Color32(255,255,255,opacity);
                 }
-                float snowRadius=floor?Mathf.Min(.49f,Mathf.Pow(cell.SnowM3,.333333f)*1.1f):0;
-                float height=snowRadius>.005f?cell.SnowM3*3/Mathf.Max(.001f,4*snowRadius*snowRadius):0;
-                float sy=snowRadius>.005f?.032f:-.25f;int s=i*5;
-                groundSnowVertices[s]=new Vector3(x-snowRadius,sy,z-snowRadius);groundSnowVertices[s+1]=new Vector3(x-snowRadius,sy,z+snowRadius);
-                groundSnowVertices[s+2]=new Vector3(x+snowRadius,sy,z+snowRadius);groundSnowVertices[s+3]=new Vector3(x+snowRadius,sy,z-snowRadius);
-                groundSnowVertices[s+4]=new Vector3(x,sy+Mathf.Min(height,2.8f),z);
+                float snow=floor?cell.SnowM3:0;
+                if(groundSnowSamples[i]!=snow){groundSnowSamples[i]=snow;snowChanged=true;}
             }
-            groundWaterMesh.SetVertices(groundWaterVertices);groundWaterMesh.SetColors(groundWaterColors);groundSnowMesh.SetVertices(groundSnowVertices);
+            groundWaterMesh.SetVertices(groundWaterVertices);groundWaterMesh.SetColors(groundWaterColors);
+            if(snowChanged)UpdateFloorSnow(field);
+        }
+        void UpdateFloorSnow(EnvironmentField field)
+        {
+            // One continuous half-metre height mesh replaces per-cell pyramids.
+            // Bilinear bulk-density reconstruction blends neighbouring deposits;
+            // normalization preserves the visible integrated ground volume.
+            double target=0,integral=0;
+            for(int i=0;i<field.Cells.Length;i++)
+            {
+                target+=groundSnowSamples[i];
+                float cx=field.CellX(i%field.Columns),cz=field.CellZ(i/field.Columns);
+                for(int z=0;z<3;z++)for(int x=0;x<3;x++)
+                {
+                    float px=cx+(x-1)*.5f,pz=cz+(z-1)*.5f;
+                    float h=FloorSnowDepth(field,px,pz);
+                    if(!game.Sim.Layout.ContainsFloor(px,pz)||game.Sim.Ice.IsInside(px,pz))h=0;
+                    h*=1+.055f*Mathf.Sin(px*7.7f+pz*4.3f)+.035f*Mathf.Cos(pz*9.1f-px*3.9f);
+                    groundSnowVertices[i*9+z*3+x]=new Vector3(px,h,pz);
+                }
+                for(int z=0;z<2;z++)for(int x=0;x<2;x++)
+                {
+                    int a=i*9+z*3+x,b=a+3;
+                    integral+=(groundSnowVertices[a].y+groundSnowVertices[b].y+groundSnowVertices[a+1].y)/24.0;
+                    integral+=(groundSnowVertices[a+1].y+groundSnowVertices[b].y+groundSnowVertices[b+1].y)/24.0;
+                }
+            }
+            float normalization=integral>0?(float)(target/integral):0;
+            for(int i=0;i<field.Cells.Length;i++)
+            {
+                bool visible=false;for(int v=0;v<9;v++)if(groundSnowVertices[i*9+v].y>.000001f){visible=true;break;}
+                for(int v=0;v<9;v++)
+                {var p=groundSnowVertices[i*9+v];p.y=visible?.0005f+p.y*normalization:-.25f;groundSnowVertices[i*9+v]=p;}
+            }
+            groundSnowMesh.SetVertices(groundSnowVertices);groundSnowMesh.RecalculateNormals();groundSnowMesh.RecalculateBounds();
+        }
+        float FloorSnowDepth(EnvironmentField field,float x,float z)
+        {
+            float gx=(x-field.MinX)/field.CellSize-.5f,gz=(z-field.MinZ)/field.CellSize-.5f;
+            int col=Mathf.FloorToInt(gx),row=Mathf.FloorToInt(gz);float fx=gx-col,fz=gz-row,total=0;
+            for(int dz=0;dz<2;dz++)for(int dx=0;dx<2;dx++)
+            {
+                int c=col+dx,r=row+dz;if(c<0||c>=field.Columns||r<0||r>=field.Rows)continue;
+                total+=groundSnowSamples[r*field.Columns+c]*(dx==0?1-fx:fx)*(dz==0?1-fz:fz);
+            }
+            return total/(field.CellSize*field.CellSize);
         }
         Vector3 ClipFloorWater(Vector3 centre,Vector3 point)
         {
@@ -600,11 +657,10 @@ namespace IceResurfacer.Presentation
         void BuildAudio()
         {
             fillClip=Noise("Water entering metal tank",0);overflowClip=Noise("Water overflow and drain splash",1);couplingClip=Noise("Mechanical hose coupling",2);
-            filling=Source(fillClip,true);overflowing=Source(overflowClip,true);coupling=Source(null,false);
-        }
-        AudioSource Source(AudioClip clip,bool loop)
-        {
-            var source=gameObject.AddComponent<AudioSource>();source.playOnAwake=false;source.loop=loop;source.volume=loop?0:.5f;source.spatialBlend=0;source.clip=clip;if(loop)source.Play();return source;
+            filling=IceAudioSpatialization.Create("Service audio / Tank filling",floodInlet,Vector3.zero,fillClip,true);
+            overflowing=IceAudioSpatialization.Create("Service audio / Actual spill",root,Vector3.zero,overflowClip,true);
+            coupling=IceAudioSpatialization.Create("Service audio / Coupling interaction",root,Vector3.zero,null,false);
+            coupling.volume=.5f;
         }
         static AudioClip Noise(string name,int kind)
         {

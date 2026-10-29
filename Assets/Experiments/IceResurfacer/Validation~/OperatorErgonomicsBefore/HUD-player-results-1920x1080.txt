@@ -1,0 +1,42 @@
+Aurora native development-player HUD validation / Unity 6000.4.1f1
+Actual player framebuffer captures include the world and live IMGUI instruments.
+The opt-in probe disables the Development Console overlay; native presentation diagnostics remain in the player log and are counted by the launcher.
+Native mouse messages target only this player's own window; hydraulic checks advance fixed simulation ticks while held and after release.
+Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
+The results capture follows an actual raised, dry entry and safe return through the normal finish path.
+PASS 1920x1080 / Requested client resolution (actual 1920x1080)
+PASS 1920x1080 / Machine Load meter opens its demand explanation
+PASS 1920x1080 / Machine Load explanation closes without changing machinery
+PASS 1920x1080 / Native map pointer selects actual ice for magnified treatment inspection
+PASS 1920x1080 / Survey inspection does not apply water or alter machinery
+PASS 1920x1080 / Conditioner held direction
+PASS 1920x1080 / Conditioner springs to neutral on native mouse release
+PASS 1920x1080 / Conditioner holds attained position after release
+PASS 1920x1080 / Horizontal auger switch
+PASS 1920x1080 / Vertical auger switch
+PASS 1920x1080 / Board brush switch
+PASS 1920x1080 / Precise quarter-turn blade handwheel drag
+PASS 1920x1080 / three full turns retain remaining blade adjustment
+PASS 1920x1080 / 3.5 full turns reach deepest blade stop
+PASS 1920x1080 / blade mechanical end stop rejects extra rotation
+PASS 1920x1080 / blade reverses continuously from end stop
+PASS 1920x1080 / Analog quarter-turn wash handle
+PASS 1920x1080 / Pickup pump switch
+PASS 1920x1080 / Independent analog quarter-turn flood handle
+PASS 1920x1080 / TankLift held direction
+PASS 1920x1080 / TankLift springs to neutral on native mouse release
+PASS 1920x1080 / TankLift holds attained position after release
+PASS 1920x1080 / Manual snow-breaker button and interlock
+PASS 1920x1080 / Guide button opens
+PASS 1920x1080 / Guide button closes
+PASS 1920x1080 / Pause button
+PASS 1920x1080 / Resume button
+PASS 1920x1080 / Service help explains physical hose without silently topping up tanks
+PASS 1920x1080 / Free Simulation may finish a partial session without a progression guard
+PASS 1920x1080 / New-session button
+PASS 1920x1080 / Unscored-practice launch button
+PASS 1920x1080 / Scored-run launch button
+PASS 1920x1080 / Legal partial run reaches results through normal finish path
+PASS 1920x1080 / F3 fixture reaches the actual pit rim through normal controls
+PASS: all player HUD checks.
+Native hidden-window D3D presentation warnings: 11 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

@@ -45,7 +45,8 @@ namespace IceResurfacer.Editor
             game=owner;lines.Clear();bool enabled=game.enabled;game.enabled=false;
             render=(Action<float>)Delegate.CreateDelegate(typeof(Action<float>),game,typeof(IceResurfacerGame).GetMethod("UpdateMachine",BindingFlags.Instance|BindingFlags.NonPublic));
             var cameraObject=new GameObject("Ice calibration measurement camera");var camera=cameraObject.AddComponent<Camera>();
-            camera.enabled=false;camera.orthographic=true;camera.orthographicSize=3;camera.nearClipPlane=.03f;camera.farClipPlane=30;
+            camera.enabled=false;camera.orthographic=true;camera.orthographicSize=3;camera.nearClipPlane=.03f;camera.farClipPlane=180;
+            camera.aspect=1920f/1080f;
             camera.backgroundColor=new Color(.09f,.13f,.18f);camera.clearFlags=CameraClearFlags.SolidColor;
             try
             {
@@ -116,8 +117,10 @@ namespace IceResurfacer.Editor
                 lines.Add("Recovery measurement captures temporarily hide machine/conditioner geometry to expose the cells under the squeegee and towel; simulated water, motion and materials are unchanged.");
                 lines.Add("Fixtures place two straight starts for repeatable geometry. All passes and water changes then run the real fixed-step simulation. Full route validation separately uses continuous driving.");
                 CaptureWearAndAging(camera);
+                CaptureStationaryPooling(camera);
                 ValidateMapSurfaceAgreement(camera);
                 CaptureReflectionPolish(camera);
+                ValidatePresentationInvalidation();
                 ValidateAgingBudget();
                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Ice-calibration-runtime-results.txt",lines);
             }
@@ -159,11 +162,49 @@ namespace IceResurfacer.Editor
             camera.orthographic=true;camera.orthographicSize=2.1f;
             camera.transform.SetPositionAndRotation(new Vector3(1.025f,6,-7),Quaternion.Euler(90,0,0));
             CaptureExposedIce(camera,"Minimap-wet-uncut-seam-normal.png");
+            ValidateRenderedSeam(camera,field,s);
             game.Surface.SetDebugMode(2);game.Surface.Refresh(s);
             CaptureExposedIce(camera,"Minimap-wet-uncut-seam-actual.png");
             game.Surface.SetDebugMode(0);game.Surface.Refresh(s);
             File.WriteAllBytes("Assets/Experiments/IceResurfacer/Validation~/Minimap-treatment-map.png",game.Surface.MapTexture.EncodeToPNG());
-            lines.Add("Minimap seam fixture: "+gaps+" missing interior cells, all actually wet but uncut; "+snowy+" also carry excess loose snow. Normal appearance can be continuously wet because water and cubic shading cross the narrow blade gap. Point-sampled overview is subpixel at this scale; hover detail retains exact cells. No states or scoring thresholds are filled in.");
+            File.WriteAllBytes("Assets/Experiments/IceResurfacer/Validation~/Minimap-area-overview.png",game.Surface.OverviewTexture.EncodeToPNG());
+            Check(game.Surface.OverviewTexture.width==130&&game.Surface.OverviewTexture.height==300,
+                "operator overview aggregates sixteen physical5cm cells into independent20cm pixels");
+            lines.Add("Minimap seam fixture: "+gaps+" missing interior cells, all actually wet but uncut; "+snowy+" also carry excess loose snow. Default overview is area-weighted20cm; quarter-pixel contributions retain a5cm seam rather than randomly omitting it. Exact cell inspector and F2 retain original thresholds. No states or scoring thresholds are filled in.");
+            game.NewSession(true);Refresh();
+            File.WriteAllBytes("Assets/Experiments/IceResurfacer/Validation~/Minimap-initial-overview.png",game.Surface.OverviewTexture.EncodeToPNG());
+        }
+        static void ValidateRenderedSeam(Camera camera,IceField field,Simulation s)
+        {
+            var material=game.World.IceMesh.sharedMaterial;var image=new Texture2D(2,2,TextureFormat.RGBA32,false);
+            try
+            {
+                material.SetFloat("_DebugMode",3);CaptureExposedIce(camera,"Minimap-seam-rendered-liquid.png");
+                image.LoadImage(File.ReadAllBytes("Assets/Experiments/IceResurfacer/Validation~/Minimap-seam-rendered-liquid.png"));
+                var pixels=image.GetPixels32();int row=field.IndexAt(0,-7)/field.Columns,wetSamples=0,uncutSamples=0;
+                int span=IceOverview.CellsPerPixel(field),overviewRow=row/span;
+                for(int col=0;col<field.Columns;col++)
+                {
+                    float x=field.CellX(col);if(x<.3f||x>1.75f)continue;
+                    var cell=field.Cells[field.Index(col,row)];if(cell.FloodMm<=IceCoverage.RequiredFloodMm)continue;
+                    Vector3 viewport=camera.WorldToViewportPoint(new Vector3(x,0,field.CellZ(row)));
+                    int px=Mathf.Clamp((int)(viewport.x*image.width),0,image.width-1),py=Mathf.Clamp((int)(viewport.y*image.height),0,image.height-1);
+                    Check(pixels[py*image.width+px].r>85,"actual wetted seam cell has nonzero GPU wet response at x="+x.ToString("F3"));
+                    wetSamples++;
+                    if(cell.CutDepthMm<=IceCoverage.RequiredCutMm(s.Config))uncutSamples++;
+                    var summary=IceOverview.Summarize(field,s.Config,col/span*span,overviewRow*span,span);
+                    Color32 expected=IceSurfaceView.OverviewColor(summary);
+                    Color32 actual=game.Surface.OverviewTexture.GetPixel(col/span,overviewRow);
+                    Check(actual.r==expected.r&&actual.g==expected.g&&actual.b==expected.b,
+                        "overview pixel equals measured cut/water area fractions at x="+x.ToString("F3"));
+                }
+                Check(wetSamples>20&&uncutSamples>0,"same physical seam is continuous in GPU wetness but retains real cutting misses");
+                int wetCells=0;foreach(var cell in field.Cells)if(cell.IsIce&&cell.FloodMm>IceCoverage.RequiredFloodMm)wetCells++;
+                Check(Mathf.Abs(s.GetReport().WaterCoverage-(float)wetCells/field.IceCellCount)<.000001f,
+                    "scored water coverage uses exactly the wetted cells represented by the map");
+                lines.Add("Rendered seam correspondence: "+wetSamples+" physically wetted samples, "+uncutSamples+" genuinely uncut; all have measured GPU wet response.20cm pixels equal exact area-weighted treatment fractions and water score equals raw wetted count.");
+            }
+            finally{material.SetFloat("_DebugMode",0);UnityEngine.Object.Destroy(image);}
         }
 
         static void CaptureReflectionPolish(Camera camera)
@@ -250,12 +291,12 @@ namespace IceResurfacer.Editor
             camera.orthographic=true;camera.orthographicSize=3;
             camera.transform.SetPositionAndRotation(new Vector3(0,7,-5),Quaternion.Euler(90,0,0));
             CaptureExposedIce(camera,"Ice-wear-after-top.png");
-            camera.orthographic=false;camera.fieldOfView=58;
-            camera.transform.position=new Vector3(.3f,2.5f,-10.5f);
-            camera.transform.LookAt(new Vector3(3.6f,.005f,-5));
+            camera.orthographic=false;camera.fieldOfView=50;
+            camera.transform.position=new Vector3(7f,5f,-11f);
+            camera.transform.LookAt(new Vector3(2.7f,.005f,-5.8f));
             int sample=field.IndexAt(3.6f,-5);
             float start=s.Time,previous=float.MaxValue;double mass=WaterMass(s);
-            int[] ages={0,300,900,1500};
+            int[] ages={0,300,600,1200,1800};
             foreach(int age in ages)
             {
                 if(age>0)Tick(Mathf.Max(0,age-(s.Time-start)));
@@ -266,7 +307,13 @@ namespace IceResurfacer.Editor
                 CaptureExposedIce(camera,"Ice-wet-age-"+(age/60).ToString("D2")+"min.png");
             }
             Check(Math.Abs(WaterMass(s)-mass)<.003,"visible wet aging changes phase without deleting retained water");
-            lines.Add("Aging captures use real fixed-step elapsed time at fresh/5/15/25 minutes; freeze constant="+s.Config.FreezeSeconds.ToString("F0")+
+            float freshLight=PatchBrightness(camera,"Ice-wet-age-00min.png",3.0f,4.2f,-7f,-3.4f);
+            float settledLight=PatchBrightness(camera,"Ice-wet-age-30min.png",3.0f,4.2f,-7f,-3.4f);
+            Check(settledLight-freshLight>.035f,"actual rendered wet strip visibly loses dark liquid absorption after30min (RGB rise "+
+                ((settledLight-freshLight)*255).ToString("F2")+"/255)");
+            lines.Add("Same physical wet-strip pixel samples: fresh meanRGB="+(freshLight*255).ToString("F2")+
+                ",30min="+(settledLight*255).ToString("F2")+"; camera frames the strip with180m far plane, correcting the old30m arena clipping artifact.");
+            lines.Add("Aging captures use real fixed-step elapsed time at fresh/5/10/20/30 minutes; freeze constant="+s.Config.FreezeSeconds.ToString("F0")+
                 "s. Machine, conditioner and the separate articulating drawbar are hidden only in measurement captures to expose the surface. Cubic reconstruction has finite support of two 5cm samples; no full-sheet blur or cosmetic water ribbon.");
         }
         static float AverageScratch(float center)
@@ -279,6 +326,105 @@ namespace IceResurfacer.Editor
                 {if(Mathf.Abs(f.CellX(col)-center)>.7f)continue;total+=f.Cells[f.Index(col,row)].Scratch;count++;}
             }
             return total/Mathf.Max(1,count);
+        }
+        static void CaptureStationaryPooling(Camera camera)
+        {
+            game.NewSession(true);Place(0,0);var s=game.Sim;
+            s.Controls.HydraulicHoldControls=false;s.Conditioner.Lift=0;s.Controls.ConditionerTarget=0;
+            s.Controls.Brake=true;s.Controls.BladeDepthMm=0;s.Controls.WashValve=0;
+            camera.orthographic=false;camera.fieldOfView=50;
+            camera.transform.position=new Vector3(-3.7f,4.6f,-5.2f);
+            camera.transform.LookAt(new Vector3(0,0,-1.54f));Refresh();
+            CaptureExposedIce(camera,"Ice-stationary-flood-00s.png");
+            s.Controls.FloodFlow=1;
+            float previous=0;double previousArea=0;
+            foreach(int seconds in new[]{5,15,30})
+            {
+                Tick(seconds-previous);previous=seconds;Refresh();
+                double mass=WaterMass(s),area=0,liquid=0;float peak=0;
+                foreach(var cell in s.Ice.Cells)
+                {
+                    if(!cell.IsIce)continue;
+                    float depth=s.Ice.LiquidDepth(cell,s.Time);liquid+=depth*s.Ice.CellSize*s.Ice.CellSize;
+                    if(cell.FloodMm>.08f)area+=s.Ice.CellSize*s.Ice.CellSize;
+                    peak=Mathf.Max(peak,depth);
+                }
+                Check(Math.Abs(mass-s.TotalFloodUsedLiters)<.04,"stationary "+seconds+"s water mass remains finite and fully accounted");
+                Check(area>previousArea,"stationary wet footprint expands through actual neighbour redistribution at "+seconds+"s");
+                previousArea=area;
+                string name="Ice-stationary-flood-"+seconds.ToString("D2")+"s.png";
+                CaptureExposedIce(camera,name);
+                lines.Add("Stationary flood "+seconds+"s: released "+s.TotalFloodUsedLiters.ToString("F3")+"L, liquid "+liquid.ToString("F3")+
+                    "L, frozen "+(mass-liquid).ToString("F3")+"L, wetarea "+area.ToString("F3")+"m2, peak "+peak.ToString("F3")+"mm; no ice runoff at this interior location.");
+            }
+            s.Controls.FloodFlow=0;
+            float dryLight=PatchBrightness(camera,"Ice-stationary-flood-00s.png",-.8f,.8f,-1.75f,-1.3f);
+            float pooledLight=PatchBrightness(camera,"Ice-stationary-flood-30s.png",-.8f,.8f,-1.75f,-1.3f);
+            Check(dryLight-pooledLight>.06f,"actual54L pool visibly darkens the physical outlet region (RGB drop "+
+                ((dryLight-pooledLight)*255).ToString("F2")+"/255)");
+            var before=new Texture2D(2,2);var after=new Texture2D(2,2);
+            try
+            {
+                before.LoadImage(File.ReadAllBytes("Assets/Experiments/IceResurfacer/Validation~/Ice-stationary-flood-05s.png"));
+                after.LoadImage(File.ReadAllBytes("Assets/Experiments/IceResurfacer/Validation~/Ice-stationary-flood-30s.png"));
+                var a=before.GetPixels32();var b=after.GetPixels32();int changed=0;
+                for(int i=0;i<a.Length;i++)if(Math.Abs(a[i].r-b[i].r)+Math.Abs(a[i].g-b[i].g)+Math.Abs(a[i].b-b[i].b)>6)changed++;
+                Check(changed>1000,"long stationary pool visibly differs from short stop ("+changed+" changed pixels)");
+            }
+            finally{UnityEngine.Object.Destroy(before);UnityEngine.Object.Destroy(after);camera.orthographic=true;}
+        }
+        static float PatchBrightness(Camera camera,string filename,float minX,float maxX,float minZ,float maxZ)
+        {
+            var texture=new Texture2D(2,2);
+            try
+            {
+                texture.LoadImage(File.ReadAllBytes("Assets/Experiments/IceResurfacer/Validation~/"+filename));
+                var pixels=texture.GetPixels32();double sum=0;int count=0;
+                for(int z=0;z<=24;z++)for(int x=0;x<=16;x++)
+                {
+                    Vector3 p=camera.WorldToViewportPoint(new Vector3(Mathf.Lerp(minX,maxX,x/16f),0,Mathf.Lerp(minZ,maxZ,z/24f)));
+                    if(p.z<=0||p.x<0||p.x>=1||p.y<0||p.y>=1)continue;
+                    var color=pixels[(int)(p.y*texture.height)*texture.width+(int)(p.x*texture.width)];
+                    sum+=(color.r+color.g+color.b)/(3.0*255);count++;
+                }
+                Check(count>300,"physical comparison patch remains framed in "+filename);
+                return (float)(sum/Math.Max(1,count));
+            }
+            finally{UnityEngine.Object.Destroy(texture);}
+        }
+        static void ValidatePresentationInvalidation()
+        {
+            game.NewSession(true);var s=game.Sim;var field=s.Ice;var surface=game.Surface;
+            // Explicit presentation apparatus: the production deposit APIs own
+            // both stocks. Adding water must leave the existing snow mesh alone.
+            field.DepositSnow(0,0,.005f,.35f);surface.Refresh(s);
+            Check(surface.LastSnowChunksRebuilt>0&&surface.DepositedSnowChunks>0,
+                "actual snow deposition invalidates and builds its sparse height mesh");
+            float height=surface.DepositedSnowMaximumHeight;
+            field.DepositWater(0,0,.5f,s.Time,.35f);surface.Refresh(s);
+            Check(surface.LastSnowChunksRebuilt==0&&surface.DepositedSnowMaximumHeight==height,
+                "water-only physical changes preserve the existing snow mesh without rescans or rebuilds");
+            Check(surface.LastAgingCellsReused>0&&surface.LastAgingCellsReused==surface.LastAgingCellsUpdated,
+                "newly dirtied wet cells reuse their exact phase result during the same aging pass");
+            int marked=0;
+            for(int i=0;i<field.Cells.Length&&marked<4096;i++)
+                if(field.Cells[i].IsIce){field.MarkCellChanged(i);marked++;}
+            surface.Refresh(s);
+            Check(surface.LastCellsUpdated==marked&&surface.LastTextureUploads==0&&
+                surface.LastOverviewPixelsUpdated==0&&surface.LastSnowChunksRebuilt==0,
+                "4096 unchanged dirty cells cause no texture uploads, overview resummaries or snow rebuilds");
+            int changed=field.IndexAt(3,0);var cell=field.Cells[changed];
+            field.AddWater(ref cell,.09f,s.Time);field.UpdateQuality(ref cell);
+            field.Cells[changed]=cell;field.MarkCellChanged(changed);surface.Refresh(s);
+            int span=IceOverview.CellsPerPixel(field),col=changed%field.Columns,row=changed/field.Columns;
+            Color32 expected=IceSurfaceView.OverviewColor(IceOverview.Summarize(field,s.Config,col/span*span,row/span*span,span));
+            Color32 actual=surface.OverviewTexture.GetPixel(col/span,row/span);
+            Check(surface.LastOverviewPixelsUpdated==1&&surface.LastTextureUploads>0&&
+                actual.r==expected.r&&actual.g==expected.g&&actual.b==expected.b,
+                "a real water classification crossing immediately updates its exact area-weighted overview pixel");
+            lines.Add("Presentation invalidation apparatus: water over existing deposited snow rebuilds zero chunks; "+
+                marked+" unchanged dirty cells upload zero textures. Exact water classification crossings remain visible immediately; "+
+                "the following full-sheet phase test independently checks bounded aging and removal.");
         }
         static void ValidateAgingBudget()
         {

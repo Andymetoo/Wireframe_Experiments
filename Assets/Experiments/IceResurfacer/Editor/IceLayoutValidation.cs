@@ -17,7 +17,7 @@ namespace IceResurfacer.Editor
         public static void Begin(IceResurfacerGame target)
         {
             game=target; observations.Clear();
-            CheckPhysicalLayout(); CheckPhysicalControls(); CaptureExternal();
+            CheckPhysicalLayout(); CheckPhysicalControls(); CheckGeometryAuthoring(); CaptureExternal();
             File.WriteAllLines(Output+"Layout-results.txt",observations);
         }
         static void Require(bool condition,string message)
@@ -30,7 +30,16 @@ namespace IceResurfacer.Editor
                 Require(t!=null&&LocalX(t)<-.25f,"Physical assembly belongs on vehicle LEFT: "+(t==null?"missing reference":t.name));
             Require(w.CameraMount.IsChildOf(w.Seat),"Camera is attached to the physical seat");
             Require(LocalX(w.CameraMount)<-.5f&&game.World.Machine.InverseTransformPoint(w.CameraMount.position).y>1.65f,"Realistic left seated eye position");
-            Require(LocalX(w.BodyTank)>0,"Tank body is physically offset toward the operator's right");
+            Require(Mathf.Abs(LocalX(w.BodyTank)-game.Sim.Config.TankLateralOffset)<.00001f,"Tank body follows the authored centered shell offset");
+            Require(w.TankPivot.localScale==Vector3.one&&w.BodyTank.localScale==Vector3.one,"Tank roof is authored lower without scaling moving assembly parents");
+            Require(Mathf.Abs(w.TankInspection.localPosition.y-game.Sim.Config.TankGeometryY(1.05f))<.00001f,"Inspection opening follows the lowered real shell");
+            Vector3 inlet=w.Machine.InverseTransformPoint(w.TankDischarge.position);
+            Require(Vector3.Distance(inlet,new Vector3(game.Sim.Config.ConveyorOutletX,game.Sim.Config.ConveyorOutletY,game.Sim.Config.ConveyorOutletZ))<.00001f,"Actual compact rear-wall outlet matches snow transport coordinates");
+            bool overheadPipe=false;
+            foreach(var part in w.Machine.GetComponentsInChildren<Transform>())
+                overheadPipe|=part.name=="Snow delivery chute"||part.name=="Snow delivery downspout";
+            Require(!overheadPipe,"Oversized overhead conveyor assembly is absent");
+            Require(RenderSettings.ambientLight==new Color(214f/255f,228f/255f,245f/255f),"Scene-specific ambient matches the requested Environment color-picker RGB");
             Require(LocalX(w.SnowBreakerPlunger)>LocalX(w.Seat),"Manual plunger is within reach to operator's right");
             Require(LocalX(w.Brush)<-.8f,"Board brush remains on the left while retracted");
             foreach(var t in w.Machine.GetComponentsInChildren<Transform>())
@@ -43,9 +52,42 @@ namespace IceResurfacer.Editor
             Require(housing>blade&&housing<game.Sim.Config.VehicleHalfWidth*2,"Housing fits the 84-inch vehicle envelope");
             float projection=Mathf.Tan(64*Mathf.Deg2Rad*.5f)/Mathf.Tan(game.DriverCamera.fieldOfView*Mathf.Deg2Rad*.5f)*towel/blade;
             Require(projection>1.10f&&projection<1.15f,"Real water spread plus lens projects wet half-width 10-15% wider per side");
-            observations.Add("PASS physical LEFT seat/platform/steering/dashboard/pedals/access, seat-attached eye, right-side body/plunger, unchanged left brush, positive scales.");
+            observations.Add("PASS physical LEFT seat/platform/steering/dashboard/pedals/access, seat-attached eye, centered tank/right-side plunger, unchanged left brush, positive scales.");
             observations.Add("Measured geometry: blade="+blade.ToString("F3")+"m; towel="+towel.ToString("F3")+"m; housing="+housing.ToString("F3")+"m; vehicle="+(game.Sim.Config.VehicleHalfWidth*2).ToString("F3")+"m.");
             observations.Add("61-degree seated lens and real water spread: apparent wet half-width ratio="+projection.ToString("F3")+" versus prior 64-degree lens / 1.956m water; scored coverage still requires actual blade contact.");
+            observations.Add("Tank roof="+game.Sim.Config.TankRoofHeight.ToString("F3")+"m above hinge; conservative tapered interior="+game.Sim.Config.TankSnowPhysicalCapacityM3.ToString("F3")+"m3; full loose-equivalent stock="+game.Sim.Config.SnowCapacityM3.ToString("F2")+"m3; effective compaction="+(game.Sim.Config.SnowCapacityM3/game.Sim.Config.TankSnowPhysicalCapacityM3).ToString("F3")+":1. No material is added or discarded by visual compaction.");
+        }
+        static void CheckGeometryAuthoring()
+        {
+            var container=new GameObject("Validation only / unbatched authoring preview");
+            container.transform.position=new Vector3(150,0,0);
+            IceWorld preview=null;
+            try
+            {
+                var config=JsonUtility.FromJson<Core.SimulatorConfig>(JsonUtility.ToJson(game.calibration));
+                config.TankRoofHeight+=.025f;config.WheelTrack+=.04f;config.BrushPivotZ+=.03f;
+                preview=IceWorldBuilder.BuildMachinePreview(container.transform,game.litTemplate,config);
+                Require(preview.Machine.GetComponentsInChildren<MeshRenderer>().Length>100,"Authoring preview retains separately selectable actual machinery meshes");
+                bool selectableFloor=false;
+                foreach(Transform child in preview.TankPivot)
+                    if(child.name=="Tapered steel tank floor / inside shell footprint")
+                        selectableFloor=child.GetComponent<MeshFilter>()!=null&&child.GetComponent<MeshFilter>().sharedMesh!=null;
+                Require(preview.BodyTank.GetComponentsInChildren<MeshRenderer>().Length==4&&selectableFloor,
+                    "Preview preserves four independent wall/shoulder skins and the separate tapered steel floor");
+                Require(Mathf.Abs(preview.TankInspection.localPosition.y-config.TankGeometryY(1.05f))<.00001f,"Authored tank roof parameter regenerates the same real inspection geometry");
+                Require(Mathf.Abs(preview.FrontWheels[0].localPosition.x+config.WheelTrack*.5f)<.00001f,"Authoring wheel-track parameter moves actual steering pivot");
+                Require(Mathf.Abs(preview.BrushArm.localPosition.z-config.BrushPivotZ)<.00001f,"Authoring brush parameter moves actual contact assembly");
+                observations.Add("PASS shared-source unbatched machine preview: >100 selectable meshes, independent tank shell, parameter-driven roof/wheel/brush geometry. Runtime still batches materials; preview does not create an independent prefab implementation.");
+            }
+            finally
+            {
+                UnityEngine.Object.DestroyImmediate(container);
+                if(preview!=null)
+                {
+                    foreach(var mesh in preview.Meshes)UnityEngine.Object.DestroyImmediate(mesh);
+                    foreach(var material in preview.Materials)UnityEngine.Object.DestroyImmediate(material);
+                }
+            }
         }
         static void CaptureExternal()
         {

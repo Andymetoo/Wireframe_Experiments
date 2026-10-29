@@ -11,6 +11,7 @@ namespace IceResurfacer.Core
         public readonly GroundCell[] Cells;
         public int Revision { get; private set; }
         public double DrainedWaterLiters { get; private set; }
+        public double GrateDrainedWaterLiters { get; private set; }
         public double DepositedWaterLiters { get; private set; }
         readonly float[] waterDelta,waterMomentX,waterMomentZ;
         readonly bool[] floorCell;
@@ -50,7 +51,7 @@ namespace IceResurfacer.Core
             if(!floorReady)
             {
                 for(int i=0;i<Cells.Length;i++)
-                {float x=CellX(i%Columns),z=CellZ(i/Columns);floorCell[i]=layout.ContainsFloor(x,z,.025f)&&!layout.ContainsPit(x,z)&&!ice.IsInside(x,z);}
+                {float x=CellX(i%Columns),z=CellZ(i/Columns);floorCell[i]=layout.ContainsFloor(x,z,.025f)&&!ice.IsInside(x,z);}
                 floorReady=true;
             }
             layout.FloorDrain(out float drainX,out float drainZ);
@@ -58,7 +59,15 @@ namespace IceResurfacer.Core
             bool changed=false;
             for(int i=0;i<Cells.Length;i++)
             {
-                var cell=Cells[i];if(cell.WaterLiters<=.02f||!layout.ContainsFloor(cell.WaterX,cell.WaterZ)||layout.ContainsPit(cell.WaterX,cell.WaterZ)||ice.IsInside(cell.WaterX,cell.WaterZ))continue;
+                var cell=Cells[i];
+                if(cell.WaterLiters>0&&layout.ContainsPit(cell.WaterX,cell.WaterZ))
+                {
+                    // The load-bearing unloading grate admits fluid into the
+                    // receiver. Record this sink rather than hiding a puddle.
+                    DrainedWaterLiters+=cell.WaterLiters;GrateDrainedWaterLiters+=cell.WaterLiters;
+                    cell.WaterLiters=0;Cells[i]=cell;changed=true;continue;
+                }
+                if(cell.WaterLiters<=.02f||!layout.ContainsFloor(cell.WaterX,cell.WaterZ)||ice.IsInside(cell.WaterX,cell.WaterZ))continue;
                 int col=i%Columns,row=i/Columns;
                 float sourceHead=cell.WaterLiters+.6f*Distance(cell.WaterX,cell.WaterZ,drainX,drainZ);
                 for(int n=0;n<4;n++)
@@ -70,12 +79,12 @@ namespace IceResurfacer.Core
                     float flow=Math.Min((cell.WaterLiters-.02f)*.24f,Math.Max(0,sourceHead-head-.04f)*.35f*step);
                     if(flow<.000001f)continue;
                     float px=Math.Max(cx-.48f,Math.Min(cx+.48f,cell.WaterX)),pz=Math.Max(cz-.48f,Math.Min(cz+.48f,cell.WaterZ));
-                    if(!layout.ContainsFloor(px,pz,.025f)||layout.ContainsPit(px,pz)||ice.IsInside(px,pz)){px=cx;pz=cz;}
+                    if(!layout.ContainsFloor(px,pz,.025f)||ice.IsInside(px,pz)){px=cx;pz=cz;}
                     bool clear=true;
                     for(int sample=1;sample<4;sample++)
                     {
                         float t=sample*.25f,tx=cell.WaterX+(px-cell.WaterX)*t,tz=cell.WaterZ+(pz-cell.WaterZ)*t;
-                        if(!layout.ContainsFloor(tx,tz,.025f)||layout.ContainsPit(tx,tz)||ice.IsInside(tx,tz)){clear=false;break;}
+                        if(!layout.ContainsFloor(tx,tz,.025f)||ice.IsInside(tx,tz)){clear=false;break;}
                     }
                     if(!clear)continue;
                     waterDelta[i]-=flow;waterMomentX[i]-=flow*cell.WaterX;waterMomentZ[i]-=flow*cell.WaterZ;

@@ -1,4 +1,6 @@
-PASS physical LEFT seat/platform/steering/dashboard/pedals/access, seat-attached eye, right-side body/plunger, unchanged left brush, positive scales.
+PASS physical LEFT seat/platform/steering/dashboard/pedals/access, seat-attached eye, centered tank/right-side plunger, unchanged left brush, positive scales.
 Measured geometry: blade=1.956m; towel=2.100m; housing=2.120m; vehicle=2.130m.
 61-degree seated lens and real water spread: apparent wet half-width ratio=1.139 versus prior 64-degree lens / 1.956m water; scored coverage still requires actual blade contact.
+Tank roof=0.875m above hinge; conservative tapered interior=1.931m3; full loose-equivalent stock=3.54m3; effective compaction=1.833:1. No material is added or discarded by visual compaction.
 PASS relocated physical steering/auger levers/blade/wash/flood/lift/pedal animation pivots and rendered children; world steering sign and independent head orientation retained.
+PASS shared-source unbatched machine preview: >100 selectable meshes, independent tank shell, parameter-driven roof/wheel/brush geometry. Runtime still batches materials; preview does not create an independent prefab implementation.

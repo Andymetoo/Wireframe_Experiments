@@ -1,0 +1,55 @@
+PASS interactive southeast service station initialized in launch scene
+PASS normal session starts full
+PASS gate is in actual southeast rounded corner
+PASS parked machine nose faces snow pit and rear faces portal
+PASS hose station is on parked machine's RIGHT
+PASS rear-quarter fill necks remain on right fixed water-tank structure
+PASS explicit practice partial-tank fixture
+PASS actual F dismounts to grounded service camera
+PASS on-foot viewpoint remains grounded
+PASS on-foot mouse look works without RMB
+PASS pause releases on-foot cursor capture
+PASS actual E takes physical wall nozzle after walking around machine
+PASS carried hose has bounded route around solid machine
+PASS aimed distant coupling reports actual reach rather than a silent interaction failure
+PASS walking reaches flood inlet from outside the solid body
+PASS inlet approach has hose slack without requiring body penetration
+PASS right rear flood inlet couples independently
+PASS visible nozzle terminates at connected fill neck
+PASS service HUD persistently identifies hose reach
+PASS approaching visible body stops outside it and names the obstruction
+PASS walking reaches flood inlet from outside the solid body
+PASS inlet approach has hose slack without requiring body penetration
+PASS actual E opens wall supply
+PASS 12 L/s fill affects only connected flood reservoir
+PASS capacity is capped and excess water overflows
+PASS overflow uses fixed bounded 160-droplet pool
+PASS overflow retains rounded mesh droplets
+Service presentation CPU sample, connected hose and overflow, 240 calls: 0.012 ms/call; 0 managed bytes. Excludes simulation, rendering/GPU and IMGUI; persistent floor meshes update at 5 Hz only when material state changes.
+PASS walking reaches flood inlet from outside the solid body
+PASS inlet approach has hose slack without requiring body penetration
+PASS normal E disconnects flood hose
+PASS walking reaches wash inlet from outside the solid body
+PASS inlet approach has hose slack without requiring body penetration
+PASS same nozzle connects separate wash reservoir
+PASS wash reservoir fills and overflows independently
+PASS walking reaches wash inlet from outside the solid body
+PASS inlet approach has hose slack without requiring body penetration
+PASS wash nozzle disconnects normally
+PASS holder highlights with forgiving half-meter aim tolerance
+PASS E snaps nozzle home from practical two-meter approach
+PASS walk back and F restores seated camera
+PASS boarding releases free-look cursor for physical cockpit controls
+PASS machine reverses toward rink after full service procedure
+PASS runtime supply is conserved into tank storage plus discharge
+PASS actual walking identifies the hose limit instead of an unexplained invisible wall
+PASS looking upward can extend held nozzle beyond the walking limit
+PASS an overextended hand can always walk back toward slack without a reset
+PASS taut-hose walking recovery returns the same nozzle to its holder
+PASS walking reaches flood inlet from outside the solid body
+PASS inlet approach has hose slack without requiring body penetration
+PASS actual driven departure releases hose when its routed reach is exceeded
+PASS breakaway spills and permits continued driving without stale locks
+PASS actual F permits moving on-ice exit with raised tank and operating equipment
+PASS free dismount preserves attained hydraulics, conveyors, pump and both water valves
+Service route uses keyboard F/E/W and ordinary walk collision; Aim supplies deterministic head orientation. No operator/vehicle pose writes during the service procedure or driven departure; session-start presentation poses are synchronized before testing.

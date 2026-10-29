@@ -157,9 +157,9 @@ internal static class SnowCalibrationValidation
         Line(a,0,-8,8);
         Assert(s.VerticalSpillRate>0&&s.SnowTankM3==0&&!s.ConveyorJammed&&s.ConditionerLeftEscapeRate==0,"raised open chute was treated as a full/blocked bin");
         Assert((s.SnowCondition&SnowTransportCondition.RaisedBin)!=0,"raised-bin status absent");
-        Near(s.UpperSnowOriginX-s.Vehicle.X,.28,.000001,"upper snow does not originate at the fixed downspout X");
-        Near(s.UpperSnowOriginZ-s.Vehicle.Z,.75,.000001,"upper snow does not originate at the fixed downspout Z");
-        Near(s.UpperSnowOriginY,1.78,.000001,"upper snow origin height differs from the authored downspout");
+        Near(s.UpperSnowOriginX-s.Vehicle.X,s.Config.ConveyorOutletX,.000001,"upper snow does not originate at the fixed downspout X");
+        Near(s.UpperSnowOriginZ-s.Vehicle.Z,s.Config.ConveyorOutletZ,.000001,"upper snow does not originate at the fixed downspout Z");
+        Near(s.UpperSnowOriginY,s.Config.ConveyorOutletY,.000001,"upper snow origin height differs from the authored downspout");
         Console.WriteLine("  failure states: horizontal OFF retains trough then both sides; vertical OFF fills throat then both sides; full tank rejects upper chute then jams; jam stops upper transport; raised bin misses upper chute without a jam.");
     }
     static void BoardRetention()

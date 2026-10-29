@@ -19,6 +19,7 @@ namespace IceResurfacer.Editor
             observations.Clear();game.enabled=false;
             var update=typeof(IceResurfacerGame).GetMethod("UpdateMachine",BindingFlags.Instance|BindingFlags.NonPublic);
             var render=(Action<float>)Delegate.CreateDelegate(typeof(Action<float>),game,update);
+            ValidateTankEnvelope(game,render);
             ValidateSideEscape(game,render);
             game.NewSession(true);
             var s=game.Sim;var c=s.Controls;
@@ -39,7 +40,17 @@ namespace IceResurfacer.Editor
             Check(spilling&&s.SnowTankM3<=s.Config.SnowCapacityM3,"full tank ejects actual rejected vertical throughput");
             var snowRenderer=game.World.TankSnow.GetComponent<MeshRenderer>();
             var snowMesh=game.World.TankSnow.GetComponent<MeshFilter>().sharedMesh;
-            Check(snowRenderer.enabled&&snowMesh.bounds.max.y>.88f,"full tank surface reaches inspection opening");
+            float fullDepth=snowMesh.bounds.max.y;
+            float windowClearance=game.World.TankInspection.position.y-
+                game.World.TankSnow.TransformPoint(0,fullDepth,0).y;
+            Check(snowRenderer.enabled&&Mathf.Abs(fullDepth-s.Config.TankSnowMaxDepth)<.001f&&
+                Mathf.Abs(snowMesh.bounds.size.x-s.Config.TankSnowTopWidth)<.002f,
+                "full tank surface fits the authored lowered shell and tapered upper width");
+            Check(windowClearance>.03f&&windowClearance<.20f,
+                "full tank snow sits directly beneath the clear inspection opening");
+            observations.Add("Authored full snow depth="+fullDepth.ToString("F4")+"m; opening clearance="+windowClearance.ToString("F4")+
+                "m; physical envelope="+s.Config.TankSnowPhysicalCapacityM3.ToString("F4")+"m3; retained loose-equivalent capacity="+
+                s.Config.SnowCapacityM3.ToString("F2")+"m3; compaction="+(s.Config.SnowCapacityM3/s.Config.TankSnowPhysicalCapacityM3).ToString("F3")+".");
             IceCameraValidation.Aim(21,29,true);
             foreach(var ps in game.GetComponentsInChildren<ParticleSystem>())
             {
@@ -64,7 +75,7 @@ namespace IceResurfacer.Editor
             {
                 if(ps.name.Contains("conveyed")||ps.name.Contains("Congested"))
                     Check(ps.emission.rateOverTime.constant==0,"stopped augers cease emission: "+ps.name);
-                Check(ps.main.maxParticles<=360,"bounded particle pool: "+ps.name);
+                Check(ps.main.maxParticles<=(ps.name.Contains("side escape")?720:360),"bounded particle pool: "+ps.name);
             }
             s.Layout.ToWorld(s.Layout.PitSide,s.Layout.PitOutward-3.85f,out s.Vehicle.X,out s.Vehicle.Z);s.Vehicle.Heading=s.Layout.OutwardHeading;s.Vehicle.Speed=0;
             s.Conditioner.Heading=s.Vehicle.Heading;s.Conditioner.X=s.Vehicle.X-Mathf.Sin(s.Vehicle.Heading)*1.1f;s.Conditioner.Z=s.Vehicle.Z-Mathf.Cos(s.Vehicle.Heading)*1.1f;
@@ -80,7 +91,20 @@ namespace IceResurfacer.Editor
             Check(partial>0&&partial<full&&s.DumpSnowRate>0,"tilted tank visibly empties progressively with a live discharge rate");
             Check(game.World.TankDoor.localEulerAngles.x>180,"forward dump door opens independently of shell");
             var pitMesh=game.World.PitSnow.GetComponent<MeshFilter>().sharedMesh;
+            var pitVertices=pitMesh.vertices;var pitTriangles=pitMesh.triangles;double pitVolume=0;
+            bool finitePile=true;
+            foreach(var vertex in pitVertices)finitePile&=!float.IsNaN(vertex.y)&&!float.IsInfinity(vertex.y);
+            Check(finitePile,"pit pile profile remains finite including fractional-power edge vertices");
+            for(int i=0;i<pitTriangles.Length;i+=3)
+            {
+                var a=pitVertices[pitTriangles[i]];var b=pitVertices[pitTriangles[i+1]];var d=pitVertices[pitTriangles[i+2]];
+                float area=Vector3.Cross(b-a,d-a).y*.5f;
+                pitVolume+=area*(a.y+b.y+d.y)/3;
+            }
+            Check(Math.Abs(pitVolume-s.PitSnowM3)<.0001,"rounded pit mesh integrates to actual discharged receiver volume");
             Check(pitMesh.bounds.max.y>.1f,"actual removed tank contents form a visible pit pile");
+            bool upwardPile=true;foreach(var normal in pitMesh.normals)upwardPile&=normal.y>=-.00001f;
+            Check(upwardPile,"dump pile normals face upward");
             camera.transform.position=game.World.Machine.TransformPoint(3.8f,3.2f,3.5f);camera.transform.LookAt(game.World.Machine.TransformPoint(0,1.1f,2.8f));
             IceResurfacerEditor.Capture(camera,"Snow-dumping.png",1920,1080);
             for(int i=0;i<700;i++)s.Step(.02f);
@@ -103,7 +127,7 @@ namespace IceResurfacer.Editor
             var watch=new Stopwatch();long allocated=GC.GetAllocatedBytesForCurrentThread();watch.Start();
             for(int i=0;i<240;i++){s.Step(.02f);render(.02f);if(i%8==0)game.Surface.Refresh(s);}
             watch.Stop();allocated=GC.GetAllocatedBytesForCurrentThread()-allocated;
-            observations.Add("Working simulation + presentation CPU sample (240 ticks): "+(watch.Elapsed.TotalMilliseconds/240).ToString("F3")+" ms/tick; managed allocation="+allocated+" bytes; 663 reusable snow vertices, five 360-particle snow pools. Excludes IMGUI/GPU.");
+            observations.Add("Working simulation + presentation CPU sample (240 ticks): "+(watch.Elapsed.TotalMilliseconds/240).ToString("F3")+" ms/tick; managed allocation="+allocated+" bytes; 663 reusable tank/pit/trough vertices, sparse441-vertex deposit chunks, three360 and two720-particle snow pools. Excludes IMGUI/GPU.");
             IceCameraValidation.Aim(21,29,true);
             foreach(var ps in game.GetComponentsInChildren<ParticleSystem>())
             {
@@ -124,6 +148,37 @@ namespace IceResurfacer.Editor
         }
         static double SurfaceSnow(Core.Simulation s)
         {double value=0;foreach(var cell in s.Ice.Cells)value+=cell.SnowMm*s.Ice.CellSize*s.Ice.CellSize*.001;return value;}
+        static void ValidateTankEnvelope(IceResurfacerGame game,Action<float> render)
+        {
+            game.NewSession(true);var s=game.Sim;var config=s.Config;int poses=0;
+            foreach(float fill in new[]{.05f,.50f,.85f,1f})foreach(float lift in new[]{0f,.65f,1f})
+            {
+                // Explicit mesh-envelope apparatus, separate from the following
+                // source-conserving transfer and dumping tests.
+                typeof(Core.Simulation).GetProperty("SnowTankM3").SetValue(s,fill*config.SnowCapacityM3);
+                typeof(Core.Simulation).GetProperty("TankLift").SetValue(s,lift);render(.02f);
+                var mesh=game.World.TankSnow.GetComponent<MeshFilter>().sharedMesh;
+                bool contained=true;
+                foreach(var vertex in mesh.vertices)
+                {
+                    Vector3 p=game.World.TankPivot.InverseTransformPoint(game.World.TankSnow.TransformPoint(vertex));
+                    float along=Mathf.Clamp01((p.z+2.03f)/2.05f);
+                    // Physical shell side corners and closed door inner face,
+                    // independent of the snow-profile width helpers under test.
+                    float shoulder=config.TankGeometryY(Mathf.Lerp(.80f,.75f,along));
+                    float roof=config.TankGeometryY(Mathf.Lerp(1.025f,.94f,along));
+                    float halfWidth=Mathf.Lerp(Mathf.Lerp(.763f,.720f,along),Mathf.Lerp(.64f,.60f,along),
+                        Mathf.InverseLerp(shoulder,roof,p.y));
+                    contained&=!float.IsNaN(p.y)&&p.z>=-2.012f&&p.z<=-.0254f&&p.y>=.0849f&&p.y<roof&&
+                        Mathf.Abs(p.x-config.TankLateralOffset)<halfWidth;
+                }
+                Check(contained,"actual tank snow vertices fit floor, front/rear door and tapered sidewalls at fill "+fill.ToString("F2")+" / lift "+lift.ToString("F2"));
+                poses++;
+            }
+            observations.Add("Tank envelope apparatus: "+poses+" partial/full and lowered/raised poses; finite mesh uses authored length "+
+                config.TankSnowInteriorLength.ToString("F3")+"m and centerZ "+config.TankSnowCenterZ.ToString("F3")+
+                "m. Conserved3.54m3 loose stock maps to "+config.TankSnowPhysicalCapacityM3.ToString("F6")+"m3 physical envelope.");
+        }
         static void ValidateSideEscape(IceResurfacerGame game,Action<float> render)
         {
             game.NewSession(true);var s=game.Sim;PlaceSnowPass(s,0,-20,.8f,false);
@@ -142,19 +197,25 @@ namespace IceResurfacer.Editor
             foreach(var ps in game.GetComponentsInChildren<ParticleSystem>())if(ps.name.Contains("side escape"))
             {
                 ps.Simulate(.3f,true,false);sidePools++;
-                Check(ps.particleCount>0&&ps.main.maxParticles<=360,"bounded source-driven side snow particles: "+ps.name);
+                Check(ps.particleCount>0&&ps.main.maxParticles<=720,"bounded source-driven side snow clumps: "+ps.name);
             }
             Check(sidePools==2,"exactly two pooled conditioner-side emitters exist");
+            Check(game.Surface.DepositedSnowChunks>0&&game.Surface.DepositedSnowMaximumHeight>.002f,
+                "actual escaped bulk material creates sparse three-dimensional snow-height meshes");
+            float beforeHeight=game.Surface.DepositedSnowMaximumHeight;
             var trough=game.World.Conditioner.Find("Snow bunching in the finite conditioner trough");
             Check(trough!=null&&trough.GetComponent<MeshRenderer>().enabled,"finite accumulated trough snow is rendered behind the auger grille");
             double before=SurfaceSnow(s),escaped=s.SpilledSnowM3;float end=s.Vehicle.Z;
             var cameraObject=new GameObject("Snow side-escape evidence camera");var camera=cameraObject.AddComponent<Camera>();
             camera.enabled=false;camera.fieldOfView=55;camera.nearClipPlane=.04f;camera.farClipPlane=100;
+            camera.aspect=1920f/1080f;
             camera.transform.position=game.World.Conditioner.TransformPoint(-3.7f,2.3f,-4.2f);
             camera.transform.LookAt(game.World.Conditioner.position+Vector3.up*.12f);
             IceResurfacerEditor.Capture(camera,"Snow-disabled-augers-both-sides.png",1920,1080);
             camera.orthographic=true;camera.orthographicSize=6;
-            camera.transform.position=new Vector3(0,22,end-6);camera.transform.rotation=Quaternion.Euler(90,0,0);
+            // Keep the same orthographic world bounds, but place the camera
+            // below the 12.7 m opaque roof and its 10.4 m truss lower chords.
+            camera.transform.position=new Vector3(0,8,end-6);camera.transform.rotation=Quaternion.Euler(90,0,0);
             IceResurfacerEditor.Capture(camera,"Snow-windrows-before-recovery.png",1920,1080);
             for(int pass=0;pass<2;pass++)for(int side=-1;side<=1;side+=2)
             {
@@ -167,9 +228,51 @@ namespace IceResurfacer.Editor
             double recovered=before-SurfaceSnow(s);
             Check(recovered>escaped*.8&&s.SnowTankM3>escaped,"enabled augers recover persistent side windrows with the blade retracted");
             Check(s.ConditionerLeftEscapeRate==0&&s.ConditionerRightEscapeRate==0,"side emission stops when actual escaping transfer stops");
+            Check(game.Surface.DepositedSnowMaximumHeight<beforeHeight,
+                "recovery reduces the same dirty chunk mesh heights as conserved surface snow");
             IceResurfacerEditor.Capture(camera,"Snow-windrows-after-recovery.png",1920,1080);
+            ValidateRecoveryImages(camera,end);
             observations.Add("Live side fixture escaped "+escaped.ToString("F6")+" m3; subsequent surface pickup removed "+recovered.ToString("F6")+" m3 including incidental original loose snow. Detailed conservation and empty-revisit assertions are in the core snow probe.");
             UnityEngine.Object.DestroyImmediate(cameraObject);
+        }
+        static void ValidateRecoveryImages(Camera camera,float end)
+        {
+            var before=new Texture2D(2,2);var after=new Texture2D(2,2);
+            try
+            {
+                before.LoadImage(File.ReadAllBytes(Output+"Snow-windrows-before-recovery.png"));
+                after.LoadImage(File.ReadAllBytes(Output+"Snow-windrows-after-recovery.png"));
+                var a=before.GetPixels32();var b=after.GetPixels32();
+                int lowA=765,highA=0,lowB=765,highB=0;
+                for(int i=0;i<a.Length;i+=16)
+                {
+                    int ca=a[i].r+a[i].g+a[i].b,cb=b[i].r+b[i].g+b[i].b;
+                    lowA=Math.Min(lowA,ca);highA=Math.Max(highA,ca);
+                    lowB=Math.Min(lowB,cb);highB=Math.Max(highB,cb);
+                }
+                Check(highA-lowA>90&&highB-lowB>90,
+                    "both recovery images contain visible rink content instead of a uniform roof or clear color");
+                double whiteReduction=0;int samples=0,changed=0;bool framed=true;
+                // Sample the actual two deposited side bands, away from the
+                // machine at the northern image edge. Pose changes cannot satisfy
+                // this check by merely moving the vehicle silhouette.
+                for(int side=-1;side<=1;side+=2)for(int z=0;z<=80;z++)for(int x=0;x<=8;x++)
+                {
+                    Vector3 p=camera.WorldToViewportPoint(new Vector3(side*1.265f+Mathf.Lerp(-.10f,.10f,x/8f),0,
+                        Mathf.Lerp(end-10,end-2,z/80f)));
+                    if(p.z<=0||p.x<0||p.x>=1||p.y<0||p.y>=1){framed=false;continue;}
+                    int pixel=(int)(p.y*before.height)*before.width+(int)(p.x*before.width);
+                    int delta=a[pixel].r+a[pixel].g+a[pixel].b-b[pixel].r-b[pixel].g-b[pixel].b;
+                    whiteReduction+=delta/3.0;samples++;if(delta>6)changed++;
+                }
+                Check(framed&&samples>0,"all recovery comparison samples remain inside the fixed world view");
+                Check(whiteReduction/samples>3&&changed>samples*.50,
+                    "actual side-band pixels visibly lose deposited white snow after collection");
+                observations.Add("Recovery image audit: identical orthographic world bounds, camera height 8 m below roof; "+
+                    changed+" / "+samples+" side-band samples lose visible snow, mean RGB reduction "+
+                    (whiteReduction/samples).ToString("F2")+" / 255. Material recovery remains independently measured.");
+            }
+            finally{UnityEngine.Object.Destroy(before);UnityEngine.Object.Destroy(after);}
         }
     }
 }

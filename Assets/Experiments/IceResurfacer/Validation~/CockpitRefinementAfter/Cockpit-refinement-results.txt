@@ -1,0 +1,186 @@
+PASS complete brush mount moves 0.46 m forward from the handoff geometry
+PASS brush footprint / pivot / visible disc agree through deployment 0
+PASS brush footprint / pivot / visible disc agree through deployment 1
+PASS brush footprint / pivot / visible disc agree through deployment 2
+PASS brush footprint / pivot / visible disc agree through deployment 3
+PASS brush footprint / pivot / visible disc agree through deployment 4
+PASS brush footprint / pivot / visible disc agree through deployment 5
+PASS brush footprint / pivot / visible disc agree through deployment 6
+PASS brush footprint / pivot / visible disc agree through deployment 7
+PASS brush footprint / pivot / visible disc agree through deployment 8
+PASS brush footprint / pivot / visible disc agree through deployment 9
+PASS brush footprint / pivot / visible disc agree through deployment 10
+PASS brush footprint / pivot / visible disc agree through deployment 11
+PASS brush footprint / pivot / visible disc agree through deployment 12
+PASS brush footprint / pivot / visible disc agree through deployment 13
+PASS brush footprint / pivot / visible disc agree through deployment 14
+PASS brush footprint / pivot / visible disc agree through deployment 15
+PASS brush footprint / pivot / visible disc agree through deployment 16
+PASS brush footprint / pivot / visible disc agree through deployment 17
+PASS brush footprint / pivot / visible disc agree through deployment 18
+PASS brush footprint / pivot / visible disc agree through deployment 19
+PASS brush footprint / pivot / visible disc agree through deployment 20
+PASS brush footprint / pivot / visible disc agree through deployment 21
+PASS brush footprint / pivot / visible disc agree through deployment 22
+PASS brush footprint / pivot / visible disc agree through deployment 23
+PASS brush footprint / pivot / visible disc agree through deployment 24
+PASS brush footprint / pivot / visible disc agree through deployment 25
+PASS brush footprint / pivot / visible disc agree through deployment 26
+PASS brush footprint / pivot / visible disc agree through deployment 27
+PASS brush footprint / pivot / visible disc agree through deployment 28
+PASS brush footprint / pivot / visible disc agree through deployment 29
+PASS brush footprint / pivot / visible disc agree through deployment 30
+PASS brush footprint / pivot / visible disc agree through deployment 31
+PASS brush footprint / pivot / visible disc agree through deployment 32
+PASS brush footprint / pivot / visible disc agree through deployment 33
+PASS brush footprint / pivot / visible disc agree through deployment 34
+PASS brush footprint / pivot / visible disc agree through deployment 35
+PASS brush footprint / pivot / visible disc agree through deployment 36
+PASS brush footprint / pivot / visible disc agree through deployment 37
+PASS brush footprint / pivot / visible disc agree through deployment 38
+PASS brush footprint / pivot / visible disc agree through deployment 39
+PASS brush footprint / pivot / visible disc agree through deployment 40
+PASS brush footprint / pivot / visible disc agree through retraction 0
+PASS brush footprint / pivot / visible disc agree through retraction 1
+PASS brush footprint / pivot / visible disc agree through retraction 2
+PASS brush footprint / pivot / visible disc agree through retraction 3
+PASS brush footprint / pivot / visible disc agree through retraction 4
+PASS brush footprint / pivot / visible disc agree through retraction 5
+PASS brush footprint / pivot / visible disc agree through retraction 6
+PASS brush footprint / pivot / visible disc agree through retraction 7
+PASS brush footprint / pivot / visible disc agree through retraction 8
+PASS brush footprint / pivot / visible disc agree through retraction 9
+PASS brush footprint / pivot / visible disc agree through retraction 10
+PASS brush footprint / pivot / visible disc agree through retraction 11
+PASS brush footprint / pivot / visible disc agree through retraction 12
+PASS brush footprint / pivot / visible disc agree through retraction 13
+PASS brush footprint / pivot / visible disc agree through retraction 14
+PASS brush footprint / pivot / visible disc agree through retraction 15
+PASS brush footprint / pivot / visible disc agree through retraction 16
+PASS brush footprint / pivot / visible disc agree through retraction 17
+PASS brush footprint / pivot / visible disc agree through retraction 18
+PASS brush footprint / pivot / visible disc agree through retraction 19
+PASS brush footprint / pivot / visible disc agree through retraction 20
+PASS brush footprint / pivot / visible disc agree through retraction 21
+PASS brush footprint / pivot / visible disc agree through retraction 22
+PASS brush footprint / pivot / visible disc agree through retraction 23
+PASS brush footprint / pivot / visible disc agree through retraction 24
+PASS brush footprint / pivot / visible disc agree through retraction 25
+PASS brush footprint / pivot / visible disc agree through retraction 26
+PASS brush footprint / pivot / visible disc agree through retraction 27
+PASS brush footprint / pivot / visible disc agree through retraction 28
+PASS brush footprint / pivot / visible disc agree through retraction 29
+PASS brush footprint / pivot / visible disc agree through retraction 30
+PASS brush footprint / pivot / visible disc agree through retraction 31
+PASS brush footprint / pivot / visible disc agree through retraction 32
+PASS brush footprint / pivot / visible disc agree through retraction 33
+PASS brush footprint / pivot / visible disc agree through retraction 34
+PASS brush footprint / pivot / visible disc agree through retraction 35
+PASS brush footprint / pivot / visible disc agree through retraction 36
+PASS brush footprint / pivot / visible disc agree through retraction 37
+PASS brush footprint / pivot / visible disc agree through retraction 38
+PASS brush footprint / pivot / visible disc agree through retraction 39
+PASS brush footprint / pivot / visible disc agree through retraction 40
+PASS steering hub is forward of the seat and wheel plane is substantially upright
+PASS wheel and connected upper/lower column share a coherent assembly
+PASS steering column foot seats on the actual operator platform without a floating mount
+PASS column support clears Accelerator pedal with pedals released
+PASS column support clears Brake pedal with pedals released
+PASS column support clears Accelerator pedal with pedals fully pressed
+PASS column support clears Brake pedal with pedals fully pressed
+PASS upright steering wheel follows actual vehicle steering at -1
+PASS upright steering wheel follows actual vehicle steering at 0
+PASS upright steering wheel follows actual vehicle steering at 1
+PASS full steering rim clears actual seat, control bank, dashboard and machine meshes at left / center / right steering
+PASS complete blade screw is between and behind the water bearings, closer to the operator
+PASS independent adjacent water handles have tall quarter-turn stems
+PASS snow breaker and fixed guide are beside the rightmost hydraulic lever
+PASS seated E camera frames Conditioner hydraulic lever
+PASS existing picker hovers individual Conditioner hydraulic lever
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Conditioner hydraulic lever
+PASS actual mesh/collider ray reaches relocated Conditioner hydraulic lever without obstruction
+PASS seated E camera frames Horizontal auger lever
+PASS existing picker hovers individual Horizontal auger lever
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Horizontal auger lever
+PASS actual mesh/collider ray reaches relocated Horizontal auger lever without obstruction
+PASS seated E camera frames Vertical auger lever
+PASS existing picker hovers individual Vertical auger lever
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Vertical auger lever
+PASS actual mesh/collider ray reaches relocated Vertical auger lever without obstruction
+PASS seated E camera frames Snow tank hydraulic lever
+PASS existing picker hovers individual Snow tank hydraulic lever
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Snow tank hydraulic lever
+PASS actual mesh/collider ray reaches relocated Snow tank hydraulic lever without obstruction
+PASS seated E camera frames Flood water valve
+PASS existing picker hovers individual Flood water valve
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Flood water valve
+PASS actual mesh/collider ray reaches relocated Flood water valve without obstruction
+PASS seated E camera frames Wash water valve
+PASS existing picker hovers individual Wash water valve
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Wash water valve
+PASS actual mesh/collider ray reaches relocated Wash water valve without obstruction
+PASS seated E camera frames Blade handwheel
+PASS existing picker hovers individual Blade handwheel
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Blade handwheel
+PASS actual mesh/collider ray reaches relocated Blade handwheel without obstruction
+PASS seated E camera frames Snow-breaker plunger
+PASS existing picker hovers individual Snow-breaker plunger
+PASS hover tint stays on the selected moving assembly
+PASS hover tint stays on the selected moving assembly
+PASS URP property block visibly tints Snow-breaker plunger
+PASS actual mesh/collider ray reaches relocated Snow-breaker plunger without obstruction
+PASS physical breaker click invokes exactly one simulation stroke
+PASS relocated breaker rod and T handle complete the 18 cm downstroke
+PASS breaker pick target follows the animated downstroke
+PASS relocated breaker returns exactly to its fixed guide after the stroke
+PASS dragging retains feedback outside the grip
+PASS release outside control clears tint and spring demand
+PASS HUD occlusion clears hover
+PASS pause clears highlight
+PASS help clears highlight
+PASS external camera transition clears highlight
+PASS disabled / manual-look / on-foot input clears highlight
+PASS actual focus-loss callback clears highlight
+PASS actual RMB input clears physical-control feedback
+PASS right-shoulder camera input clears highlight
+PASS actual dismount input clears physical-control feedback
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks
+PASS release restores original control material property blocks

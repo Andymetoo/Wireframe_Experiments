@@ -5,6 +5,11 @@ Native mouse messages target only this player's own window; hydraulic checks adv
 Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
 The results capture follows an actual raised, dry entry and safe return through the normal finish path.
 PASS 1366x768 / Requested client resolution (actual 1366x768)
+PASS 1366x768 / Default HUD uses collapsed side console
+PASS 1366x768 / Persistent status reports actual raised conditioner
+PASS 1366x768 / Right console expands through actual UI target
+PASS 1366x768 / Message history opens without altering machine state
+PASS 1366x768 / Message history closes through persistent control
 PASS 1366x768 / Machine Load meter opens its demand explanation
 PASS 1366x768 / Machine Load explanation closes without changing machinery
 PASS 1366x768 / Native map pointer selects actual ice for magnified treatment inspection
@@ -12,6 +17,7 @@ PASS 1366x768 / Survey inspection does not apply water or alter machinery
 PASS 1366x768 / Conditioner held direction
 PASS 1366x768 / Conditioner springs to neutral on native mouse release
 PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / Neutral lever preserves actual partly lowered status
 PASS 1366x768 / Horizontal auger switch
 PASS 1366x768 / Vertical auger switch
 PASS 1366x768 / Board brush switch
@@ -26,6 +32,7 @@ PASS 1366x768 / Independent analog quarter-turn flood handle
 PASS 1366x768 / TankLift held direction
 PASS 1366x768 / TankLift springs to neutral on native mouse release
 PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / Actual lowered conditioner has explicit persistent DOWN status
 PASS 1366x768 / Manual snow-breaker button and interlock
 PASS 1366x768 / Guide button opens
 PASS 1366x768 / Guide button closes
@@ -37,6 +44,19 @@ PASS 1366x768 / New-session button
 PASS 1366x768 / Unscored-practice launch button
 PASS 1366x768 / Scored-run launch button
 PASS 1366x768 / Legal partial run reaches results through normal finish path
-PASS 1366x768 / F3 fixture reaches the actual pit rim through normal controls
+PASS 1366x768 / F3 fixture crosses traversable grate and reaches actual rear wall
+PASS 1366x768 / Route guide toggle only changes drawing
+PASS 1366x768 / Held Q enters temporary inspection
+PASS 1366x768 / Inspection Q clears side-console pointer obstruction
+PASS 1366x768 / Release Q restores the operating view
+PASS 1366x768 / Held E enters temporary inspection
+PASS 1366x768 / Inspection E clears side-console pointer obstruction
+PASS 1366x768 / Release E restores the operating view
+PASS 1366x768 / Held C enters temporary inspection
+PASS 1366x768 / Inspection C clears side-console pointer obstruction
+PASS 1366x768 / Release C restores the operating view
+PASS 1366x768 / Held LeftShift enters temporary inspection
+PASS 1366x768 / Inspection LeftShift clears side-console pointer obstruction
+PASS 1366x768 / Release LeftShift restores the operating view
 PASS: all player HUD checks.
-Native hidden-window D3D presentation warnings: 11 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 7 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

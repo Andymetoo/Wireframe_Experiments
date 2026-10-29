@@ -1,0 +1,11 @@
+﻿AURORA R-54 / OPERATOR AUTHENTICITY PRESERVATION AUDIT
+28 October 2026
+Root vs isolated runtime/editor/assets compared: 86
+Source/stage mismatches: 0
+Missing imported asset metas: 0
+Duplicate imported asset GUIDs: 0
+Changed/untracked paths outside IceResurfacer: 0
+No branch, commit or push performed.
+Original Unity Editor left open; all batch runs/builds used Validation~/UnityProject.
+ProjectSettings and Packages were only changed in the ignored validation copy.
+Whitespace diff check passed. Native builds and result files belong to this experiment.

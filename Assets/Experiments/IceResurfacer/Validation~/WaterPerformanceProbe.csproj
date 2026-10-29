@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup><BaseIntermediateOutputPath>obj/waterperf/</BaseIntermediateOutputPath><BaseOutputPath>bin/waterperf/</BaseOutputPath></PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net9.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup><Compile Include="../Core/**/*.cs"/><Compile Include="WaterPerformanceProbe.cs"/></ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+</Project>

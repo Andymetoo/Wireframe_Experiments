@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001}
+  - component: {fileID: 1002}
+  m_Layer: 0
+  m_Name: AURORA R-54 / nose-in service and 5 cm ice
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb9f8799fb94cc5b156c89da0052532, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  litTemplate: {fileID: 2100000, guid: 9687812929e5450f9025d47534f820cb, type: 2}
+  iceTemplate: {fileID: 2100000, guid: a282cbfbb1844c0a8ccbc98b8b3ad322, type: 2}
+  calibration:
+    RinkWidth: 26
+    RinkLength: 60
+    CornerRadius: 8.5
+    CellSize: 0.05
+    GateHalfWidth: 2.7
+    BayLength: 14
+    Wheelbase: 1.96
+    VehicleHalfWidth: 1.065
+    BodyFront: 2.5
+    BodyRear: 0.45
+    ConditionerWidth: 1.956
+    WaterDistributionWidth: 2.1
+    GuideRollerX: -1.015
+    GuideRollerZ: 2.38
+    GuideRollerRadius: 0.09
+    ConditionerLength: 0.8
+    HitchBehindAxle: 0.45
+    DrawbarLength: 0.65
+    MaxSteeringRadians: 0.412
+    SteeringRate: 0.55
+    ForwardSpeed: 2.65
+    ReverseSpeed: 1
+    Acceleration: 0.48
+    HydrostaticDeceleration: 0.35
+    ServiceBrakeDeceleration: 1.45
+    ConditionerLiftSeconds: 2.1
+    TankLiftSeconds: 5.5
+    FloodCapacityLiters: 738
+    WashCapacityLiters: 310
+    SnowCapacityM3: 3.54
+    FloodMaxLitersPerSecond: 1.8
+    WashMaxLitersPerSecond: 1.05
+    WashRecoveryFraction: 0.82
+    HorizontalCapacityM3PerSecond: 0.012
+    VerticalCapacityM3PerSecond: 0.01
+    ConditionerSnowCapacityM3: 0.08
+    VerticalSnowCapacityM3: 0.055
+    SnowBreakerStrokeM3: 0.004
+    SnowExpansionRatio: 3.1
+    LooseSnowPickupDepthMm: 6
+    DumpM3PerSecond: 0.35
+    MaxBladeDepthMm: 0.8
+    BladeBiteFraction: 0.16
+    MaximumEffectiveBladeDepthMm: 0.6
+    BladeWheelTurns: 3.5
+    ConveyorJamSeconds: 6
+    RecommendedBladeDepthMm: 0.35
+    CumulativeSafeCutMm: 0.8
+    SensitiveCumulativeSafeCutMm: 0.65
+    GoodFloodDepthMm: 0.3
+    ExcessFloodDepthMm: 0.85
+    FreezeSeconds: 420
+    MinimumScoredCoverage: 0.95
+    IceLateralGrip: 1.35
+    TireSlipRecovery: 1.5
+    MaximumLateralSlip: 0.22
+    RaisedTankGripPenalty: 0.22
+    DumpExitSpeed: 0.65
+    WheelTrack: 1.37
+    TireWidth: 0.215
+    ShavingPerimeterExclusion: 0.1524
+    WaterFilmSpreadMeters: 0.12
+    WaterFilmFringeFraction: 0.05
+    WashPickupLitersPerSecond: 1.45
+    WashPickupContactLength: 0.32
+    WashPickupContactFore: -0.12
+    WashPickupResidualMm: 0.035
+    FloodContactLength: 0.27
+    FloodContactFore: -0.44
+    MinimumGougeDepthMm: 0.024
+    TypicalGougeDepthMm: 0.06
+    DeepGougeDepthMm: 0.145
+    GougeRoughnessDepthMm: 0.08
+    BrushPivotX: -0.9
+    BrushPivotZ: 0.7
+    BrushArmLength: 0.38
+    BrushRadius: 0.25
+    BrushRetractedDegrees: 85
+  operatorEyeHeight: 0.06
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 1001}

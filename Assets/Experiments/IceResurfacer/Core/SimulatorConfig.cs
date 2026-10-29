@@ -24,6 +24,9 @@ namespace IceResurfacer.Core
         public float ConditionerLength = 0.8f;
         public float HitchBehindAxle = 0.45f;
         public float DrawbarLength = 0.65f;
+        // Close-mounted lifting linkage compliance: 2 degrees, an Aurora visual
+        // calibration informed by operator feedback, not a manufacturer limit.
+        public float ConditionerYawLimitRadians = .034906585f;
         public float MaxSteeringRadians = 0.412f;
         public float SteeringRate = 0.55f;
         public float ForwardSpeed = 2.65f;
@@ -73,10 +76,11 @@ namespace IceResurfacer.Core
         {
             ValidateIceCalibration();
             ValidateFreedomCalibration();
+            ValidateMachineGeometry();
             float[] values = { RinkWidth, RinkLength, CornerRadius, CellSize, GateHalfWidth, BayLength,
                 Wheelbase, VehicleHalfWidth, BodyFront, BodyRear, ConditionerWidth, WaterDistributionWidth,
                 GuideRollerX, GuideRollerZ, GuideRollerRadius, BladeBiteFraction, MaximumEffectiveBladeDepthMm, BladeWheelTurns, ConveyorJamSeconds, ConditionerLength,
-                HitchBehindAxle, DrawbarLength, MaxSteeringRadians, SteeringRate, ForwardSpeed, ReverseSpeed,
+                HitchBehindAxle, DrawbarLength, ConditionerYawLimitRadians, MaxSteeringRadians, SteeringRate, ForwardSpeed, ReverseSpeed,
                 Acceleration, HydrostaticDeceleration, ServiceBrakeDeceleration, ConditionerLiftSeconds,
                 TankLiftSeconds, FloodCapacityLiters, WashCapacityLiters, SnowCapacityM3, FloodMaxLitersPerSecond,
                 WashMaxLitersPerSecond, WashRecoveryFraction, HorizontalCapacityM3PerSecond,
@@ -89,7 +93,7 @@ namespace IceResurfacer.Core
                     throw new ArgumentException("Ice resurfacer configuration must contain finite numbers.");
             if (RinkWidth < 10 || RinkWidth > 120 || RinkLength < 20 || RinkLength > 120 || CellSize < 0.05f || CellSize > 0.5f ||
                 CornerRadius < 0 || CornerRadius > Math.Min(RinkWidth, RinkLength) * .5f ||
-                Wheelbase <= 0 || DrawbarLength <= 0 || ConditionerWidth <= 0 || WaterDistributionWidth <= 0 ||
+                Wheelbase <= 0 || DrawbarLength <= 0 || ConditionerYawLimitRadians < 0 || ConditionerYawLimitRadians > .0872665f || ConditionerWidth <= 0 || WaterDistributionWidth <= 0 ||
                 WaterDistributionWidth > VehicleHalfWidth*2 || ConditionerLength <= 0 || GuideRollerRadius <= 0 ||
                 BladeBiteFraction <= 0 || BladeBiteFraction > 1 || BladeWheelTurns < 3 || BladeWheelTurns > 4 || ConveyorJamSeconds <= 0 ||
                 MaximumEffectiveBladeDepthMm < MaxBladeDepthMm*BladeBiteFraction || MaximumEffectiveBladeDepthMm > 2 ||

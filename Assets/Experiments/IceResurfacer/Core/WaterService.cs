@@ -87,14 +87,14 @@ namespace IceResurfacer.Core
             HoseState = WaterHoseState.Carried;
             Layout.HoseHolder(out float x,out float z);
             HoseLooseX=x;HoseLooseZ=z;
-            LastMessage = "Hose in hand. Walk to the blue ICE WATER or teal WASH WATER inlet and press E.";
+            LastMessage = "Hose in hand. Walk to the blue FLOOD WATER or teal WASH WATER inlet and press E.";
             return true;
         }
 
         public bool ConnectHose(WaterFillPort port, float routeLength, float operatorDistance = 0)
         {
             if (!OnFoot || HoseState != WaterHoseState.Carried) return ServiceReject("Take the hose from its wall holder first.");
-            if (port != WaterFillPort.Flood && port != WaterFillPort.Wash) return ServiceReject("This is not a water fill inlet. Use the labeled ICE WATER or WASH WATER coupling.");
+            if (port != WaterFillPort.Flood && port != WaterFillPort.Wash) return ServiceReject("This is not a water fill inlet. Use the labeled FLOOD WATER or WASH WATER coupling.");
             if (!WithinReach(operatorDistance)) return ServiceReject("Walk closer to the selected fill inlet.");
             if (!Finite(routeLength) || routeLength < 0)
                 return ServiceReject("No clear hose route to this inlet. Park with the right-side fillers beside the wall reel.");

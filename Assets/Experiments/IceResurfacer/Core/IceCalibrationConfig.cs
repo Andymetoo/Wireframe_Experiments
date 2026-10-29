@@ -23,7 +23,7 @@ namespace IceResurfacer.Core
         public float DeepGougeDepthMm = .145f;
         public float GougeRoughnessDepthMm = .080f;
         public float BrushPivotX = -.90f;
-        public float BrushPivotZ = .50f;
+        public float BrushPivotZ = 1.16f;
         public float BrushArmLength = .38f;
         public float BrushRadius = .25f;
         public float BrushRetractedDegrees = 85f;

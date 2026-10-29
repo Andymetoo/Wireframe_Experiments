@@ -8,7 +8,9 @@ namespace IceResurfacer.Core
     {
         public const float Axis = .7071067811865475f;
         public readonly float GateX, GateZ, GateHalfWidth, RoomHalfWidth = 5.5f, RoomLength;
-        public const float PitCollisionClearance = .01f, PitRimWidth = .10f, PitRimHeight = .12f;
+        // The unloading zone is a load-bearing grate, flush with the floor.
+        // ContainsPit identifies the snow receiver, never a movement exclusion.
+        public const float PitCollisionClearance = 0f, PitRimWidth = .10f, PitRimHeight = .005f;
         public readonly float RoomStart = 1.6f, NeckStart = -1.1f;
         public readonly float PitSide = 0f, PitOutward, PitHalfWidth = 2f, PitHalfLength = 1.2f;
         public readonly float ParkSide = 0f, ParkOutward = 5.8f;
@@ -49,7 +51,7 @@ namespace IceResurfacer.Core
             return Math.Abs(side-PitSide) <= PitHalfWidth + margin && Math.Abs(outward-PitOutward) <= PitHalfLength + margin;
         }
         public bool ContainsVehicleFloor(float x,float z,float margin=.02f)
-        { return ContainsFloor(x,z,margin) && !ContainsPit(x,z,PitCollisionClearance); }
+        { return ContainsFloor(x,z,margin); }
         public bool InsideRoom(float x,float z)
         { ToLocal(x,z,out float side,out float outward); return Math.Abs(side)<RoomHalfWidth && outward>RoomStart+.1f && outward<RoomLength; }
         public void ParkingPose(out float x,out float z,out float heading)
@@ -84,7 +86,6 @@ namespace IceResurfacer.Core
         {
             ToLocal(x,z,out float side,out float outward);
             // This receives the rejected footprint point, not the vehicle centre.
-            if(ContainsPit(x,z,PitCollisionClearance+.025f)){PitNormal(x,z,out nx,out nz);return;}
             float sideClear=(outward<RoomStart?GateHalfWidth:RoomHalfWidth)-Math.Abs(side);
             float endClear=RoomLength-outward;
             float ns=0,no=0;
