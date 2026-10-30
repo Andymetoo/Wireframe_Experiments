@@ -19,5 +19,7 @@
     <Compile Include="ServiceCollisionValidation.cs" />
     <Compile Include="RouteGuideValidation.cs" />
     <Compile Include="SurfaceConsistencyValidation.cs" />
+    <Compile Include="RouteRecordingCoreValidation.cs" />
+    <Compile Include="../Editor/RecordedRouteFixture.cs" />
   </ItemGroup>
 </Project>

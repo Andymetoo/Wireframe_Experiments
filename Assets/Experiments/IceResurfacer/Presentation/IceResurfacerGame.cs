@@ -198,10 +198,11 @@ namespace IceResurfacer.Presentation
             }
             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;
             bool wasOnFoot=Sim.OnFoot;
-            if(running&&!wasOnFoot&&keys!=null&&keys.fKey.wasPressedThisFrame)RestoreSeatedCameraBeforeDismount();
-            WaterService.HandleInput(running,Time.deltaTime);
+            bool routePanel=RouteGuide!=null&&RouteGuide.PanelOpen;
+            if(running&&!wasOnFoot&&!routePanel&&keys!=null&&keys.fKey.wasPressedThisFrame)RestoreSeatedCameraBeforeDismount();
+            WaterService.HandleInput(running&&!routePanel,Time.deltaTime);
             if(wasOnFoot!=Sim.OnFoot) { ReleaseControls(); if(!Sim.OnFoot)ReleaseLook(); else { Looking=false; lookMouse=null; } }
-            bool driving=running&&!Sim.OnFoot;
+            bool driving=running&&!Sim.OnFoot&&!routePanel;
             var c=Sim.Controls;
             RawThrottle=keys!=null?(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0):0;
             c.Throttle=driving?RawThrottle:0;
@@ -227,12 +228,12 @@ namespace IceResurfacer.Presentation
                 if(keys.commaKey.isPressed)c.BladeDepthMm=Mathf.Max(0,c.BladeDepthMm-Time.deltaTime*.08f);
                 if(keys.periodKey.isPressed)c.BladeDepthMm=Mathf.Min(calibration.MaxBladeDepthMm,c.BladeDepthMm+Time.deltaTime*.08f);
             }
-            if(!Sim.OnFoot)UpdateLook(running,Time.deltaTime);
+            if(!Sim.OnFoot)UpdateLook(running&&!routePanel,Time.deltaTime);
             PhysicalControls.UpdateInput(driving&&!Looking&&!ChaseActive&&CameraView!="Rear"&&CameraView!="Conditioner", dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
             if(running)
             {
                 accumulator+=Mathf.Min(Time.deltaTime,.12f);
-                while(accumulator>=.02f) { Sim.Step(.02f); accumulator-=.02f; }
+                while(accumulator>=.02f) { Sim.Step(.02f); RouteGuide?.ObserveSimulationStep(Sim); accumulator-=.02f; }
                 if(Sim.LastMessage!=observedMessage||Sim.Mistakes>observedMistakes)
                 { Notice=Sim.LastMessage; observedMessage=Sim.LastMessage; observedMistakes=Sim.Mistakes; }
                 surveyTimer-=Time.deltaTime;
@@ -476,7 +477,7 @@ namespace IceResurfacer.Presentation
             }
             return offset;
         }
-        void ReleaseLook()
+        internal void ReleaseLook()
         {
             bool restore=Looking;
             Looking=false; Cursor.lockState=CursorLockMode.None; Cursor.visible=true;

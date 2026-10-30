@@ -1,0 +1,12 @@
+  recorded route: start recording
+  recorded route: repeated start preserves current take
+  recorded route: stationary periods and duplicate observer calls do not create points
+  recorded route: stop is idempotent
+  recorded route: raw recording projects into the existing ResurfacingRoute representation
+  recorded route: new simulation cannot silently concatenate a different session
+  recorded route: actual reverse departure and forward travel retained
+  recorded route: rounded turns and actual conditioner/engagement states retained
+  recorded route: 20 cm / 2 degree policy retains turn precision; maximum sampled distance 0.2163 m
+  recorded route: nearby parallel passes retain distinct later sequence positions
+  recorded route: fixture is explicitly distinguished from real operator driving
+  deterministic fixture: 2092 points / 434.257 m / 514.74 s; paired physics and every ice cell identical

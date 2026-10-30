@@ -55,7 +55,7 @@ namespace IceResurfacer.Presentation
         {
             float scale=Mathf.Min(Screen.width/LayoutWidth,Screen.height/LayoutHeight);
             Vector2 p=(new Vector2(screenPoint.x,Screen.height-screenPoint.y)-new Vector2((Screen.width-LayoutWidth*scale)*.5f,(Screen.height-LayoutHeight*scale)*.5f))/scale;
-            if(!game.Started||game.Paused||game.HelpVisible||game.Sim.Finished)return true;
+            if(!game.Started||game.Paused||game.HelpVisible||game.Sim.Finished||game.RouteGuide!=null&&game.RouteGuide.PanelOpen)return true;
             if(new Rect(28,24,1164,108).Contains(p))return true;
             if(game.DiagnosticsVisible&&(Compact?new Rect(28,132,492,242).Contains(p):
                 new Rect(545,228,755,390).Contains(p)||new Rect(28,520,492,100).Contains(p)))return true;
@@ -130,6 +130,7 @@ namespace IceResurfacer.Presentation
                 case "Pause": return new Rect(1465,851,107,37);
                 case "Console": return new Rect(1228,382,326,34);
                 case "History": return new Rect(1228,851,128,37);
+                case "RouteRecorder": return new Rect(1018,851,188,37);
                 default: throw new ArgumentException("Unknown Aurora instrument: " + name);
             }
         }
@@ -147,7 +148,7 @@ namespace IceResurfacer.Presentation
             {
                 float scale = Mathf.Min(width / LayoutWidth, height / LayoutHeight);
                 GUI.matrix = Matrix4x4.TRS(new Vector3((width - LayoutWidth * scale) * .5f, (height - LayoutHeight * scale) * .5f), Quaternion.identity, new Vector3(scale, scale, 1));
-                GUI.color = Color.white; GUI.depth = -10; GUI.enabled = true;
+                GUI.color = Color.white; GUI.depth = -10; GUI.enabled = game.RouteGuide==null||!game.RouteGuide.PanelOpen;
                 if(releaseCapture) { GUIUtility.hotControl=0;releaseCapture=false; }
                 hoverHint = game.PhysicalControls!=null?game.PhysicalControls.Hint:"";
                 LayoutIssues.Clear();
@@ -177,6 +178,7 @@ namespace IceResurfacer.Presentation
                     Box(new Rect(28,865,340,27),Navy);
                     Label(new Rect(38,868,320,23),game.Performance.Summary,small,Muted);
                 }
+                GUI.enabled=true;game.RouteGuide?.DrawRecordingPanel();
             }
             finally
             {
@@ -332,9 +334,11 @@ namespace IceResurfacer.Presentation
         void StatusStrip(IceResurfacerGame game)
         {
             Box(new Rect(398,849,806,43),Navy);
-            string line=game.RouteGuide!=null&&game.RouteGuide.Visible?"F5 ROUTE / "+game.RouteGuide.Phase+"   |   Advisory rear-axle path; any route is allowed":
-                "Hold Q edge / E controls / C chase / Left Shift rear   |   F5 route   |   TAB console";
-            Label(new Rect(414,860,776,23),line,small,Muted);
+            string line=game.RouteGuide!=null&&game.RouteGuide.Recorder.Recording?"RECORDING / "+game.RouteGuide.Recorder.Data.distanceMeters.ToString("F1")+" m  /  F7 STOP":
+                game.RouteGuide!=null&&game.RouteGuide.Visible?"F5 ROUTE / "+game.RouteGuide.Phase:
+                "Q edge / E controls / C chase / L Shift rear | F5 route";
+            Label(new Rect(414,860,594,23),line,small,Muted);
+            if(Button(ControlRect("RouteRecorder"),"RECORDER F6",Slate))game.RouteGuide?.ToggleRecordingPanel();
             if(Button(ControlRect("History"),"MESSAGES",Slate))HistoryVisible=!HistoryVisible;
             if(Button(ControlRect("Guide"),"HELP F1",Slate))game.ToggleHelp();
             if(Button(ControlRect("Pause"),game.Paused?"RESUME":"PAUSE",Slate))game.TogglePause();
@@ -673,7 +677,7 @@ namespace IceResurfacer.Presentation
             Label(new Rect(216, 554, 1170, 24), "1 / Right Shift+1 lower / raise conditioner   2/3 augers   4 brush   5 pump   6 plunger   7 / Right Shift+7 raise / lower tank", small, Muted);
             Label(new Rect(216, 581, 1170, 24), "[ / ] flood   Right Shift+[ / ] wash   , / . fine blade   J jam reset   F mount / dismount   TAB compact", small, Muted);
             Label(new Rect(216, 608, 1170, 24), "HOLD Q edge / E controls / C chase / LEFT SHIFT rear; release restores view.  X forward  R stand  SPACE rise  RMB look", small, Muted);
-            Label(new Rect(216, 635, 1170, 24), "W/S drive   A/D steer   RIGHT SHIFT precision   CTRL brake   F1 guide   F2 surface mask   F3 diagnostics   F4 FPS   F5 route   ESC pause", small, Muted);
+            Label(new Rect(216, 635, 1170, 24), "W/S drive   A/D steer   R stand   RMB look   CTRL brake   F5 route   F6 recorder   F7 start/stop recording   ESC pause", small, Muted);
         }
 
         void Results(IceResurfacerGame game)

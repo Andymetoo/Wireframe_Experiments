@@ -1,0 +1,13 @@
+AURORA R-54 / SPATIAL AUDIO PRESERVATION AUDIT
+Cockpit-baseline assets checked: 102; byte-identical: 99
+Intentional existing-source changes: Presentation/IceMachineAudio.cs, Presentation/IceWaterService.cs, Editor/IceResurfacerEditor.cs
+Unexpected baseline changes: 0
+Original synthesis methods changed: 0 (CreateLoop / CreateMechanism / CreateImpact / Noise)
+Source assets compared with isolated validation project: 76
+Source/staged mismatches: 0
+Missing metadata: 0; duplicate GUIDs: 0
+Outside-experiment modified/untracked paths: 0
+Core simulation, geometry, game/listener/camera code, scene, materials and shaders preserve their baseline hashes.
+Original project settings/packages and the user Editor were not modified by this pass.
+No branch, commit or push was performed.
+PASS

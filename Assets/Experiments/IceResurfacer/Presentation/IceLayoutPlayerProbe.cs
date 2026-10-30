@@ -32,6 +32,7 @@ namespace IceResurfacer.Presentation
         EventType expectedInput;
         IntPtr playerWindow;
         bool active, complete;
+        InputSettings originalInputSettings,validationInputSettings;
 
         IEnumerator Start()
         {
@@ -54,6 +55,12 @@ namespace IceResurfacer.Presentation
             // HUD fixture; all managed errors still fail below, and the launcher
             // records native presentation diagnostics separately in the report.
             Debug.developerConsoleEnabled=false;
+            // This deliberately non-focused player must accept its own virtual
+            // keyboard events. Never change the user's asset or normal launch path.
+            originalInputSettings=InputSystem.settings;validationInputSettings=UnityEngine.Object.Instantiate(originalInputSettings);
+            validationInputSettings.hideFlags=HideFlags.HideAndDontSave;
+            validationInputSettings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+            InputSystem.settings=validationInputSettings;
             Application.logMessageReceived += OnLog;
             startedAt = Time.realtimeSinceStartup;
             active = true;
@@ -263,6 +270,59 @@ namespace IceResurfacer.Presentation
             game.WaterService.HandleInput(true,0);
             game.WaterService.UpdateViewAndEffects(true,.25f);
             yield return Capture("HUD-"+currentResolution+"-service.png","service panel");
+            yield return ValidateRouteRecorder();
+        }
+
+        IEnumerator ValidateRouteRecorder()
+        {
+            game.NewSession(true);var guide=game.RouteGuide;
+            guide.ConfigureValidationStorage(Path.Combine(outputDirectory,"RouteRecording","Player-Library-"+currentResolution));
+            guide.RecordingName="Native UI validation — not an operator route";
+            yield return Click("RouteRecorder");
+            Check(guide.PanelOpen,"Persistent Route Recorder button opens the authoring panel");
+            yield return Capture("Route-recorder-"+currentResolution+"-ready.png","route recorder accessible controls and persistence instructions");
+            yield return ClickAt(RouteRecordingPanel.ControlRect("Start").center);
+            Check(guide.Recorder.Recording,"Native Start New button starts a take");
+            yield return Capture("Route-recorder-"+currentResolution+"-recording.png","active recording and first observed pose");
+            var previous=Keyboard.current;var keyboard=InputSystem.AddDevice<Keyboard>();
+            var update=typeof(IceResurfacerGame).GetMethod("Update",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            int capture=Time.captureFramerate;Time.captureFramerate=60;yield return null;
+            try
+            {
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W,Key.Digit2,Key.F));InputSystem.Update();update.Invoke(game,null);
+                Check(game.Sim.Controls.Throttle==0&&!game.Sim.Controls.HorizontalAuger&&!game.Sim.OnFoot,"Typing/keys in the route panel do not drive, toggle machinery or dismount");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+                yield return ClickAt(RouteRecordingPanel.ControlRect("Drive").center);
+                Check(!guide.PanelOpen&&guide.Recorder.Recording,"Close and Drive retains the active recording");
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.S));InputSystem.Update();
+                for(int i=0;i<180;i++)update.Invoke(game,null);
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.LeftCtrl));InputSystem.Update();
+                for(int i=0;i<90;i++)update.Invoke(game,null);
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+                Check(guide.Recorder.Data.distanceMeters>1&&guide.Recorder.Data.samples.Count>10,"Normal S/Ctrl game input and fixed simulation observer capture a real driven reverse segment");
+            }
+            finally
+            {Time.captureFramerate=capture;InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();}
+            yield return Click("RouteRecorder");yield return ClickAt(RouteRecordingPanel.ControlRect("Stop").center);
+            Check(!guide.Recorder.Recording&&guide.Recorder.Data.complete,"Native Stop button finalizes raw observations");
+            yield return ClickAt(RouteRecordingPanel.ControlRect("Save").center);
+            Check(File.Exists(guide.LastSavedPath),"Native Save Named Copy persists JSON in the configured standalone library");
+            yield return Capture("Route-recorder-"+currentResolution+"-driven-segment.png","actual input-driven segment saved from standalone UI");
+            string fixture=Path.Combine(outputDirectory,"RouteRecording","Deterministic-fixture.route.json");
+            var data=RouteRecordingStorage.Read(fixture);
+            string copy=Path.Combine(guide.Library.DirectoryPath,"Deterministic-fixture.route.json");
+            RouteRecordingStorage.Export(copy,data,File.Exists(copy));
+            yield return ClickAt(RouteRecordingPanel.ControlRect("Refresh").center);
+            yield return ClickAt(new Vector2(1110,461));
+            Check(guide.Recorder.Data.provenance.Contains("NOT the operator")&&guide.Recorder.Data.samples.Count==data.samples.Count,"Native saved-route list loads the clearly labeled deterministic fixture");
+            string bytes=File.ReadAllText(copy);
+            yield return Capture("Route-recorder-"+currentResolution+"-full-preview.png","full raw fixture preview with start/end and chronological pass colors");
+            Check(guide.RenderedRecordingSamples==data.samples.Count,"First loaded-route repaint renders every raw sample instead of the preceding take");
+            yield return ClickAt(new Vector2(705,810));
+            yield return Capture("Route-recorder-"+currentResolution+"-point-inspection.png","raw sequence slider and vehicle/conditioner pose inspection");
+            Check(File.ReadAllText(copy)==bytes,"Preview and point inspection preserve the original raw file");
+            yield return ClickAt(RouteRecordingPanel.ControlRect("Close").center);
+            Check(!guide.PanelOpen,"Recorder closes through native UI after loading a saved route");
         }
 
         IEnumerator CaptureQuicklooks()
@@ -276,6 +336,7 @@ namespace IceResurfacer.Presentation
                 foreach(var key in new[]{Key.Q,Key.E,Key.C,Key.LeftShift})
                 {
                     InputSystem.QueueStateEvent(keyboard,new KeyboardState(key));InputSystem.Update();
+                    Check(keyboard[key].isPressed&&Keyboard.current==keyboard,"Validation virtual keyboard receives "+key+" while player is non-focused");
                     for(int i=0;i<60;i++)look.Invoke(game,new object[]{true,.02f});
                     Check(game.HeldQuicklook!="","Held "+key+" enters temporary inspection");
                     Vector2 side=IceDashboard.CanvasToViewport(new Vector2(1400,650),Screen.width,Screen.height);
@@ -499,6 +560,8 @@ namespace IceResurfacer.Presentation
         {
             if (complete) return;
             complete = true;
+            if(originalInputSettings!=null)InputSystem.settings=originalInputSettings;
+            if(validationInputSettings!=null){UnityEngine.Object.Destroy(validationInputSettings);validationInputSettings=null;}
             Application.logMessageReceived -= OnLog;
             if (layoutIssues.Count > 0) failures.Add("Measured HUD clipping: " + layoutIssues.Count + " entries; see HUD-layout-issues-" + currentResolution + ".txt.");
             var report = new StringBuilder();

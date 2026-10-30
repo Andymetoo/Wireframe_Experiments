@@ -61,6 +61,11 @@ namespace IceResurfacer.Editor
             throw new InvalidOperationException("Missing source "+name);
         }
         static AudioSource Layer(string name) {return Source("Machine audio / "+name);}
+        static Transform Anchor(string name)
+        {
+            foreach(var part in game.GetComponentsInChildren<Transform>())if(part.name==name)return part;
+            throw new InvalidOperationException("Missing physical anchor "+name);
+        }
         static void Render() {animation.Invoke(game,new object[]{0f});}
         static void Position(float x=0,float z=0,float yaw=0)
         {
@@ -69,6 +74,8 @@ namespace IceResurfacer.Editor
             audio.SetState(s,true,false);
         }
         static void Near(Vector3 a,Vector3 b,string name) {Check(Vector3.Distance(a,b)<.0001f,name);}
+        static void TankLift(Simulation sim,float value)
+        {typeof(Simulation).GetProperty("TankLift").SetValue(sim,value);sim.Controls.TankLiftTarget=value;}
 
         internal static void CheckStructure(IceResurfacerGame owner)
         {
@@ -93,18 +100,25 @@ namespace IceResurfacer.Editor
                 for(int i=0;i<70;i++)
                 {
                     s.Vehicle.Heading=i*.019f;s.Vehicle.X=i*.012f;s.Vehicle.Z=i*.018f;
-                    s.Conditioner.Heading=-i*.005f;s.Conditioner.Lift=(i%20)/25f;s.TankLift=(i%24)/30f;
+                    s.Conditioner.Heading=-i*.005f;s.Conditioner.Lift=(i%20)/25f;TankLift(s,(i%24)/30f);
                     Render();audio.SetState(s,true,i>0);
-                    Near(Layer("Engine").transform.position,w.Machine.Find("Shaped engine cover / right of operator").position,"engine follows physical engine compartment "+i);
-                    Near(Layer("Drive").transform.position,w.Machine.Find("Central steel chassis").position,"drivetrain follows central chassis "+i);
+                    Near(Layer("Engine").transform.position,Anchor("Shaped engine cover / right of operator").position,"engine follows physical engine compartment "+i);
+                    Near(Layer("Drive").transform.position,Anchor("Central steel chassis").position,"drivetrain follows central chassis "+i);
                     Near(Layer("Blade").transform.position,w.CuttingBlade.TransformPoint(0,-.5f,0),"scrape follows actual blade edge "+i);
                     Near(Layer("Horizontal").transform.position,w.HorizontalAuger.position,"horizontal auger follows independent conditioner "+i);
                     Near(Layer("Vertical").transform.position,w.VerticalAuger.TransformPoint(0,.21f,0),"vertical auger stays inside conveyor housing "+i);
                     Near(Layer("Flood").transform.position,w.WaterOutlet.position,"flood originates at actual distribution outlet "+i);
+                    Near(Layer("Wash").transform.position,Anchor("Wash water manifold").position,"wash follows actual manifold "+i);
+                    Near(Layer("Pickup").transform.position,Anchor("Wash pickup squeegee contact").position,"pickup follows actual suction contact "+i);
                     Near(Layer("ConditionerLeft").transform.position,w.ConditionerCylinderBarrels[0].position,"conditioner hydraulic follows actual moving barrel "+i);
+                    Near(Layer("ConditionerRight").transform.position,w.ConditionerCylinderBarrels[1].position,"right conditioner hydraulic follows actual moving barrel "+i);
+                    Near(Layer("TankLeft").transform.position,w.TankCylinderBarrels[0].position,"left tank hydraulic follows actual moving barrel "+i);
                     Near(Layer("TankRight").transform.position,w.TankCylinderBarrels[1].position,"tank hydraulic follows actual moving barrel "+i);
                     Near(Layer("Dump").transform.position,w.DumpOutlet.position,"idle dump emitter follows raised-tank outlet "+i);
                     Near(Layer("Discharge").transform.position,w.TankDischarge.position,"snow discharge follows fixed conveyor outlet "+i);
+                    Near(Layer("Upper").transform.position,w.TankDischarge.position,"upper spill tail follows conveyor even after flow stops "+i);
+                    Near(Source("Machine audio / Hydraulic spool detent").transform.position,w.ConditionerLever.parent.TransformPoint(0,.08f,0),"mechanism click follows physical lever bank "+i);
+                    Near(Source("Machine audio / Manual snow breaker").transform.position,w.SnowBreakerPlunger.TransformPoint(0,.22f,0),"manual stroke follows moving breaker "+i);
                 }
                 foreach(var source in game.GetComponentsInChildren<AudioSource>())Check(ids.Remove(source.GetInstanceID()),"source is reused through movement and tank/lift animation");
                 Check(ids.Count==0,"no source created or destroyed per frame");
@@ -157,12 +171,12 @@ namespace IceResurfacer.Editor
             Check(s.ConditionerLeftEscapeRate>0&&s.ConditionerRightEscapeRate>0,"finite trough overflow produces both actual side exits");
             Near(Layer("EscapeLeft").transform.position,new Vector3(s.ConditionerLeftExitX,game.World.Conditioner.TransformPoint(0,.16f,0).y,s.ConditionerLeftExitZ),"left snow audio matches actual side-exit particle origin");
             Near(Layer("EscapeRight").transform.position,new Vector3(s.ConditionerRightExitX,game.World.Conditioner.TransformPoint(0,.16f,0).y,s.ConditionerRightExitZ),"right snow audio matches actual side-exit particle origin");
-            s.Controls.VerticalAuger=true;s.TankLift=.7f;
+            s.Controls.VerticalAuger=true;TankLift(s,.7f);
             typeof(Simulation).GetProperty("VerticalSnowM3").SetValue(s,.02f);
             s.Step(.02f);Render();audio.SetState(s,true,false);
             Check(s.VerticalSpillRate>0,"raised-bin rejection produces actual upper snow spill");
             Near(Layer("Upper").transform.position,new Vector3(s.UpperSnowOriginX,s.UpperSnowOriginY,s.UpperSnowOriginZ),"upper snow audio matches actual rejection outlet");
-            typeof(Simulation).GetProperty("SnowTankM3").SetValue(s,.15f);s.TankLift=1;
+            typeof(Simulation).GetProperty("SnowTankM3").SetValue(s,.15f);TankLift(s,1);
             s.Step(.02f);Render();audio.SetState(s,true,false);
             Check(s.DumpSnowRate>0,"actual snow unload flow exists in dump fixture");
             Near(Layer("Dump").transform.position,new Vector3(s.DumpOriginX,s.DumpOriginY,s.DumpOriginZ),"dump audio follows the same moving outlet as actual snow discharge");
@@ -231,6 +245,7 @@ namespace IceResurfacer.Editor
                     game.enabled=false;oldCapture=Time.captureFramerate;Time.captureFramerate=60;
                     originalInput=InputSystem.settings;validationInput=UnityEngine.Object.Instantiate(originalInput);
                     validationInput.updateMode=InputSettings.UpdateMode.ProcessEventsManually;
+                    validationInput.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
                     validationInput.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;InputSystem.settings=validationInput;
                     keyboard=InputSystem.AddDevice<Keyboard>();mouse=InputSystem.AddDevice<Mouse>();
                     oldPause=AudioListener.pause;oldListenerVolume=AudioListener.volume;AudioListener.pause=false;AudioListener.volume=1;
@@ -247,6 +262,10 @@ namespace IceResurfacer.Editor
         {if(type==LogType.Error||type==LogType.Exception||type==LogType.Assert)errors++;}
         static IEnumerator Run()
         {
+            // captureFramerate takes effect on the next player frame. Input fixtures
+            // need that deterministic dt rather than the preceding Editor frame.
+            yield return null;
+            Check(Mathf.Abs(Time.deltaTime-1f/60)<.00001f,"deterministic 60 Hz player timestep for input and DSP fixtures");
             CheckStructure(game);game.enabled=false;ListenerModes();
             game.NewSession(true);game.Sim.Conditioner.Lift=0;Position(-9,-20);
             for(int i=0;i<80;i++)Input();
@@ -292,23 +311,45 @@ namespace IceResurfacer.Editor
                 if(distance==25)Check(Mathf.Abs(rms/legacyNear-1)<.05f,"legacy 2D reference reproduces distance-independent output");
             }
             engine.spatialBlend=1;
-            float rightBefore=0,leftBefore=0;
+            float rightBefore=0;
             foreach(bool turned in new[]{false,true})
             {
                 game.DriverCamera.transform.position=engine.transform.position+Vector3.left*5;
                 game.DriverCamera.transform.rotation=Quaternion.Euler(0,turned?180:0,0);
                 var measure=Measure(turned?"pan-left-after-head-turn":"pan-right",engine);while(measure.MoveNext())yield return null;
-                if(!turned){Check(rightRms>leftRms*1.25f,"source on listener right is louder in right channel");rightBefore=rightRms;leftBefore=leftRms;}
+                if(!turned){Check(rightRms>leftRms*1.25f,"source on listener right is louder in right channel");rightBefore=rightRms;}
                 else Check(leftRms>rightRms*1.25f&&Mathf.Abs(leftRms-rightBefore)<rightBefore*.1f,
                     "180 degree head turn swaps stereo orientation without an artificial level jump");
-                Row(turned?"pan-left-after-head-turn":"pan-right",engine,1);
+                Row(turned?"pan-left-after-head-turn":"pan-right",engine,rms/legacyNear);
+            }
+            // Also measure the received live-state mix with ventilation included.
+            // Its constant 2D floor means this is not the isolated-source curve.
+            foreach(var source in game.GetComponentsInChildren<AudioSource>())source.mute=false;
+            game.NewSession(true);game.Sim.Conditioner.Lift=0;Position(-9,-20);
+            var controls=game.Sim.Controls;controls.HorizontalAuger=controls.VerticalAuger=controls.WashPump=true;
+            controls.FloodFlow=.6f;controls.WashValve=.4f;
+            for(int i=0;i<100;i++)Input();
+            float mixNear=0;
+            foreach(string pose in new[]{"seat","10m","opposite_end"})
+            {
+                Vector3 point=engine.transform.position;
+                Vector3 position=pose=="seat"?seat:pose=="opposite_end"?new Vector3(-9,1.65f,25):
+                    point+new Vector3(Mathf.Sqrt(100-Mathf.Pow(1.65f-point.y,2)),1.65f-point.y,0);
+                game.DriverCamera.transform.SetPositionAndRotation(position,pose=="seat"?seatRotation:Quaternion.LookRotation(point-position));
+                var measure=Measure("runtime-mix-"+pose,engine,false);while(measure.MoveNext())yield return null;
+                if(pose=="seat")mixNear=rms;
+                float gain=rms/mixNear;
+                rows.Add(string.Format(CultureInfo.InvariantCulture,"runtime-mix-{0},Actual machinery plus 2D ventilation,{1:F4},,{2:F6},{3:F3},{4:F8},{5:F8},{6:F8},{7}",
+                    pose,Vector3.Distance(point,position),gain,20*Math.Log10(gain),rms,leftRms,rightRms,samples));
+                checks.Add("Runtime state mix "+pose+": relative gain="+gain.ToString("F4")+", RMS="+rms.ToString("F6")+"; includes unchanged arena ventilation");
+                if(pose=="opposite_end")Check(gain<.2f,"actual machinery plus arena mix is substantially quieter across the rink than seated");
             }
             Check(errors==0,"no Unity audio/runtime errors during offline capture");
             checks.Add("PASS measured audio is native Unity DSP output, not only the configured distance curve. WAV files retain absolute levels; no per-file normalization.");
         }
-        static IEnumerator Measure(string name,AudioSource source)
+        static IEnumerator Measure(string name,AudioSource source,bool resetSource=true)
         {
-            source.Stop();source.volume=.5f;source.pitch=1;source.timeSamples=0;source.Play();
+            if(resetSource){source.Stop();source.volume=.5f;source.pitch=1;source.timeSamples=0;source.Play();}
             for(int i=0;i<20;i++)yield return null;
             energy=leftEnergy=rightEnergy=0;samples=0;pcm.Clear();collect=true;
             for(int i=0;i<180;i++)yield return null;

@@ -46,6 +46,8 @@ F2                    Normal overview / shaving mask / actual material channels.
 F3                    Machinery diagnostics, actual contact and footprint overlays.
 F4                    Smoothed FPS / frame-time meter.
 F5                    Toggle advisory reference route.
+F6                    Open / close Route Recorder (also a persistent HUD button).
+F7                    Start / stop route recording in Free Simulation.
 ESC                   Pause / resume; eye adjustment is in the pause panel.
 
 Left Shift is exclusively a rear glance. Use RIGHT SHIFT for precision and
@@ -175,8 +177,41 @@ At 100% load its acceleration multiplier is 65%; it also changes synthesized
 sound. It is not horsepower or fuel use and does not impose a travel lock or
 change configured top speed. Click its meter or use F3 for the breakdown.
 
+Recording an operator route
+Choose FREE SIMULATION / PRACTICE. Park, open RECORDER F6, name the take
+and click START NEW (or press F7). CLOSE AND DRIVE, then drive the entire entry,
+overlapping passes, turns and return with the normal controls. F7 stops. F6 opens
+the full overhead preview; inspect sequence with the slider and SAVE NAMED COPY.
+Colors advance every 40 m, reverse travel is orange, START/END are marked, and
+the gray trace shows the actual conditioner. This view never smooths the data.
+The machine keeps running while the panel is open; park before using it.
+
+Editor files: Assets/Experiments/IceResurfacer/RouteRecordings~/*.route.json.
+After leaving Play Mode, use Experiments > Ice Resurfacer > Route Recordings,
+or enter Play again, F6 and select the saved file. Standalone builds use
+Application.persistentDataPath/IceResurfacer/Routes; the panel shows the full path.
+The same portable JSON format works in both. Per-take recovery drafts are
+checkpointed every ten real seconds and finalized on normal shutdown/Play exit.
+An abnormal process crash can lose the interval since the latest checkpoint.
+F5 still displays the original optional reference; recording adds no driving
+assistance. Documentation/RouteRecording.txt explains schema, checks and limits.
+
+Machine audio
+Physical machinery uses full 3D audio at its actual components: engine/chassis,
+blade edge, separate augers, moving hydraulic cylinders, water outlets/pickup,
+connected fill inlet, actual spill/contact points and individual snow outlets.
+The original procedural clips and machinery-state volume/pitch responses remain.
+Arena ventilation stays non-positional. The existing single camera listener
+follows sitting, standing, chase and walking; camera movement adds no Doppler.
+Physical sound has full gain within 2.5 m, about 25% at 10 m, 12.5% at 20 m
+and 6.25% at 40 m, with a long tail fading out at 120 m. These are source-distance
+amplitude gains, not a master volume control. Twenty-seven sources are created
+once, with original clips shared by the split water, hydraulic and snow emitters.
+Documentation/SpatialAudio.txt records Unity DSP measurements and remaining
+listening calibration. Validation~/SpatialAudio contains results and WAV probes.
+
 Validation and limits
-Documentation/CockpitRefinement.txt records the latest cockpit changes and checks.
+Documentation/CockpitRefinement.txt records the preserved cockpit changes and checks.
 Validation~/Cockpit-comparisons.html pairs actual before/after Unity captures.
 Documentation/OperatorErgonomics.txt records the preceding integrated validation,
 captures and measured performance. MachineryErgonomics.txt, SurfaceConsistency.txt

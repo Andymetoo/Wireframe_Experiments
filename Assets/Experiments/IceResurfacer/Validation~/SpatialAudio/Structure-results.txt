@@ -1,0 +1,1320 @@
+PASS 27 stable sources: 19 loops, 2 mechanism voices, 3 impact voices, 3 water-service voices
+PASS Machine audio / Drive uses full 3D spatialization
+PASS Machine audio / Drive shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Hydrostatic pump / traction and deceleration
+PASS Machine audio / Engine uses full 3D spatialization
+PASS Machine audio / Engine shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Engine / combustion
+PASS Machine audio / TankLeft uses full 3D spatialization
+PASS Machine audio / TankLeft shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Hydraulic cylinders / pressure
+PASS Machine audio / TankRight uses full 3D spatialization
+PASS Machine audio / TankRight shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Hydraulic cylinders / pressure
+PASS Machine audio / Hydraulic spool detent uses full 3D spatialization
+PASS Machine audio / Hydraulic spool detent shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS Machine audio / Manual snow breaker uses full 3D spatialization
+PASS Machine audio / Manual snow breaker shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS Machine audio / ConditionerLeft uses full 3D spatialization
+PASS Machine audio / ConditionerLeft shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Hydraulic cylinders / pressure
+PASS Machine audio / ConditionerRight uses full 3D spatialization
+PASS Machine audio / ConditionerRight shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Hydraulic cylinders / pressure
+PASS Machine audio / Vertical uses full 3D spatialization
+PASS Machine audio / Vertical shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Vertical elevator / gearbox
+PASS Machine audio / Discharge uses full 3D spatialization
+PASS Machine audio / Discharge shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Snow / bin discharge and shakeout
+PASS Service audio / Tank filling uses full 3D spatialization
+PASS Service audio / Tank filling shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Water entering metal tank
+PASS Machine audio / Blade uses full 3D spatialization
+PASS Machine audio / Blade shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Blade / shaved ice
+PASS Machine audio / Horizontal uses full 3D spatialization
+PASS Machine audio / Horizontal shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Horizontal auger / gearbox
+PASS Machine audio / Wash uses full 3D spatialization
+PASS Machine audio / Wash shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Wash and flood water
+PASS Machine audio / Pickup uses full 3D spatialization
+PASS Machine audio / Pickup shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Wash and flood water
+PASS Machine audio / Flood uses full 3D spatialization
+PASS Machine audio / Flood shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Wash and flood water
+PASS Machine audio / Arena uses 2D arena ambience
+PASS original mono synthesized clip: Enclosed arena / ventilation
+PASS Machine audio / Roller uses full 3D spatialization
+PASS Machine audio / Roller shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Board guide roller / contact
+PASS Machine audio / Dump uses full 3D spatialization
+PASS Machine audio / Dump shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Snow / bin discharge and shakeout
+PASS Machine audio / Upper uses full 3D spatialization
+PASS Machine audio / Upper shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Snow / bin discharge and shakeout
+PASS Machine audio / EscapeLeft uses full 3D spatialization
+PASS Machine audio / EscapeLeft shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Snow / bin discharge and shakeout
+PASS Machine audio / EscapeRight uses full 3D spatialization
+PASS Machine audio / EscapeRight shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Snow / bin discharge and shakeout
+PASS Physical contact voice 0 uses full 3D spatialization
+PASS Physical contact voice 0 shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS Physical contact voice 1 uses full 3D spatialization
+PASS Physical contact voice 1 shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS Physical contact voice 2 uses full 3D spatialization
+PASS Physical contact voice 2 shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS Service audio / Actual spill uses full 3D spatialization
+PASS Service audio / Actual spill shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS original mono synthesized clip: Water overflow and drain splash
+PASS Service audio / Coupling interaction uses full 3D spatialization
+PASS Service audio / Coupling interaction shares world-meter falloff without camera-velocity pitch or wet 2D leakage
+PASS only arena ventilation is a non-positional loop
+PASS engine follows physical engine compartment 0
+PASS drivetrain follows central chassis 0
+PASS scrape follows actual blade edge 0
+PASS horizontal auger follows independent conditioner 0
+PASS vertical auger stays inside conveyor housing 0
+PASS flood originates at actual distribution outlet 0
+PASS wash follows actual manifold 0
+PASS pickup follows actual suction contact 0
+PASS conditioner hydraulic follows actual moving barrel 0
+PASS right conditioner hydraulic follows actual moving barrel 0
+PASS left tank hydraulic follows actual moving barrel 0
+PASS tank hydraulic follows actual moving barrel 0
+PASS idle dump emitter follows raised-tank outlet 0
+PASS snow discharge follows fixed conveyor outlet 0
+PASS upper spill tail follows conveyor even after flow stops 0
+PASS mechanism click follows physical lever bank 0
+PASS manual stroke follows moving breaker 0
+PASS engine follows physical engine compartment 1
+PASS drivetrain follows central chassis 1
+PASS scrape follows actual blade edge 1
+PASS horizontal auger follows independent conditioner 1
+PASS vertical auger stays inside conveyor housing 1
+PASS flood originates at actual distribution outlet 1
+PASS wash follows actual manifold 1
+PASS pickup follows actual suction contact 1
+PASS conditioner hydraulic follows actual moving barrel 1
+PASS right conditioner hydraulic follows actual moving barrel 1
+PASS left tank hydraulic follows actual moving barrel 1
+PASS tank hydraulic follows actual moving barrel 1
+PASS idle dump emitter follows raised-tank outlet 1
+PASS snow discharge follows fixed conveyor outlet 1
+PASS upper spill tail follows conveyor even after flow stops 1
+PASS mechanism click follows physical lever bank 1
+PASS manual stroke follows moving breaker 1
+PASS engine follows physical engine compartment 2
+PASS drivetrain follows central chassis 2
+PASS scrape follows actual blade edge 2
+PASS horizontal auger follows independent conditioner 2
+PASS vertical auger stays inside conveyor housing 2
+PASS flood originates at actual distribution outlet 2
+PASS wash follows actual manifold 2
+PASS pickup follows actual suction contact 2
+PASS conditioner hydraulic follows actual moving barrel 2
+PASS right conditioner hydraulic follows actual moving barrel 2
+PASS left tank hydraulic follows actual moving barrel 2
+PASS tank hydraulic follows actual moving barrel 2
+PASS idle dump emitter follows raised-tank outlet 2
+PASS snow discharge follows fixed conveyor outlet 2
+PASS upper spill tail follows conveyor even after flow stops 2
+PASS mechanism click follows physical lever bank 2
+PASS manual stroke follows moving breaker 2
+PASS engine follows physical engine compartment 3
+PASS drivetrain follows central chassis 3
+PASS scrape follows actual blade edge 3
+PASS horizontal auger follows independent conditioner 3
+PASS vertical auger stays inside conveyor housing 3
+PASS flood originates at actual distribution outlet 3
+PASS wash follows actual manifold 3
+PASS pickup follows actual suction contact 3
+PASS conditioner hydraulic follows actual moving barrel 3
+PASS right conditioner hydraulic follows actual moving barrel 3
+PASS left tank hydraulic follows actual moving barrel 3
+PASS tank hydraulic follows actual moving barrel 3
+PASS idle dump emitter follows raised-tank outlet 3
+PASS snow discharge follows fixed conveyor outlet 3
+PASS upper spill tail follows conveyor even after flow stops 3
+PASS mechanism click follows physical lever bank 3
+PASS manual stroke follows moving breaker 3
+PASS engine follows physical engine compartment 4
+PASS drivetrain follows central chassis 4
+PASS scrape follows actual blade edge 4
+PASS horizontal auger follows independent conditioner 4
+PASS vertical auger stays inside conveyor housing 4
+PASS flood originates at actual distribution outlet 4
+PASS wash follows actual manifold 4
+PASS pickup follows actual suction contact 4
+PASS conditioner hydraulic follows actual moving barrel 4
+PASS right conditioner hydraulic follows actual moving barrel 4
+PASS left tank hydraulic follows actual moving barrel 4
+PASS tank hydraulic follows actual moving barrel 4
+PASS idle dump emitter follows raised-tank outlet 4
+PASS snow discharge follows fixed conveyor outlet 4
+PASS upper spill tail follows conveyor even after flow stops 4
+PASS mechanism click follows physical lever bank 4
+PASS manual stroke follows moving breaker 4
+PASS engine follows physical engine compartment 5
+PASS drivetrain follows central chassis 5
+PASS scrape follows actual blade edge 5
+PASS horizontal auger follows independent conditioner 5
+PASS vertical auger stays inside conveyor housing 5
+PASS flood originates at actual distribution outlet 5
+PASS wash follows actual manifold 5
+PASS pickup follows actual suction contact 5
+PASS conditioner hydraulic follows actual moving barrel 5
+PASS right conditioner hydraulic follows actual moving barrel 5
+PASS left tank hydraulic follows actual moving barrel 5
+PASS tank hydraulic follows actual moving barrel 5
+PASS idle dump emitter follows raised-tank outlet 5
+PASS snow discharge follows fixed conveyor outlet 5
+PASS upper spill tail follows conveyor even after flow stops 5
+PASS mechanism click follows physical lever bank 5
+PASS manual stroke follows moving breaker 5
+PASS engine follows physical engine compartment 6
+PASS drivetrain follows central chassis 6
+PASS scrape follows actual blade edge 6
+PASS horizontal auger follows independent conditioner 6
+PASS vertical auger stays inside conveyor housing 6
+PASS flood originates at actual distribution outlet 6
+PASS wash follows actual manifold 6
+PASS pickup follows actual suction contact 6
+PASS conditioner hydraulic follows actual moving barrel 6
+PASS right conditioner hydraulic follows actual moving barrel 6
+PASS left tank hydraulic follows actual moving barrel 6
+PASS tank hydraulic follows actual moving barrel 6
+PASS idle dump emitter follows raised-tank outlet 6
+PASS snow discharge follows fixed conveyor outlet 6
+PASS upper spill tail follows conveyor even after flow stops 6
+PASS mechanism click follows physical lever bank 6
+PASS manual stroke follows moving breaker 6
+PASS engine follows physical engine compartment 7
+PASS drivetrain follows central chassis 7
+PASS scrape follows actual blade edge 7
+PASS horizontal auger follows independent conditioner 7
+PASS vertical auger stays inside conveyor housing 7
+PASS flood originates at actual distribution outlet 7
+PASS wash follows actual manifold 7
+PASS pickup follows actual suction contact 7
+PASS conditioner hydraulic follows actual moving barrel 7
+PASS right conditioner hydraulic follows actual moving barrel 7
+PASS left tank hydraulic follows actual moving barrel 7
+PASS tank hydraulic follows actual moving barrel 7
+PASS idle dump emitter follows raised-tank outlet 7
+PASS snow discharge follows fixed conveyor outlet 7
+PASS upper spill tail follows conveyor even after flow stops 7
+PASS mechanism click follows physical lever bank 7
+PASS manual stroke follows moving breaker 7
+PASS engine follows physical engine compartment 8
+PASS drivetrain follows central chassis 8
+PASS scrape follows actual blade edge 8
+PASS horizontal auger follows independent conditioner 8
+PASS vertical auger stays inside conveyor housing 8
+PASS flood originates at actual distribution outlet 8
+PASS wash follows actual manifold 8
+PASS pickup follows actual suction contact 8
+PASS conditioner hydraulic follows actual moving barrel 8
+PASS right conditioner hydraulic follows actual moving barrel 8
+PASS left tank hydraulic follows actual moving barrel 8
+PASS tank hydraulic follows actual moving barrel 8
+PASS idle dump emitter follows raised-tank outlet 8
+PASS snow discharge follows fixed conveyor outlet 8
+PASS upper spill tail follows conveyor even after flow stops 8
+PASS mechanism click follows physical lever bank 8
+PASS manual stroke follows moving breaker 8
+PASS engine follows physical engine compartment 9
+PASS drivetrain follows central chassis 9
+PASS scrape follows actual blade edge 9
+PASS horizontal auger follows independent conditioner 9
+PASS vertical auger stays inside conveyor housing 9
+PASS flood originates at actual distribution outlet 9
+PASS wash follows actual manifold 9
+PASS pickup follows actual suction contact 9
+PASS conditioner hydraulic follows actual moving barrel 9
+PASS right conditioner hydraulic follows actual moving barrel 9
+PASS left tank hydraulic follows actual moving barrel 9
+PASS tank hydraulic follows actual moving barrel 9
+PASS idle dump emitter follows raised-tank outlet 9
+PASS snow discharge follows fixed conveyor outlet 9
+PASS upper spill tail follows conveyor even after flow stops 9
+PASS mechanism click follows physical lever bank 9
+PASS manual stroke follows moving breaker 9
+PASS engine follows physical engine compartment 10
+PASS drivetrain follows central chassis 10
+PASS scrape follows actual blade edge 10
+PASS horizontal auger follows independent conditioner 10
+PASS vertical auger stays inside conveyor housing 10
+PASS flood originates at actual distribution outlet 10
+PASS wash follows actual manifold 10
+PASS pickup follows actual suction contact 10
+PASS conditioner hydraulic follows actual moving barrel 10
+PASS right conditioner hydraulic follows actual moving barrel 10
+PASS left tank hydraulic follows actual moving barrel 10
+PASS tank hydraulic follows actual moving barrel 10
+PASS idle dump emitter follows raised-tank outlet 10
+PASS snow discharge follows fixed conveyor outlet 10
+PASS upper spill tail follows conveyor even after flow stops 10
+PASS mechanism click follows physical lever bank 10
+PASS manual stroke follows moving breaker 10
+PASS engine follows physical engine compartment 11
+PASS drivetrain follows central chassis 11
+PASS scrape follows actual blade edge 11
+PASS horizontal auger follows independent conditioner 11
+PASS vertical auger stays inside conveyor housing 11
+PASS flood originates at actual distribution outlet 11
+PASS wash follows actual manifold 11
+PASS pickup follows actual suction contact 11
+PASS conditioner hydraulic follows actual moving barrel 11
+PASS right conditioner hydraulic follows actual moving barrel 11
+PASS left tank hydraulic follows actual moving barrel 11
+PASS tank hydraulic follows actual moving barrel 11
+PASS idle dump emitter follows raised-tank outlet 11
+PASS snow discharge follows fixed conveyor outlet 11
+PASS upper spill tail follows conveyor even after flow stops 11
+PASS mechanism click follows physical lever bank 11
+PASS manual stroke follows moving breaker 11
+PASS engine follows physical engine compartment 12
+PASS drivetrain follows central chassis 12
+PASS scrape follows actual blade edge 12
+PASS horizontal auger follows independent conditioner 12
+PASS vertical auger stays inside conveyor housing 12
+PASS flood originates at actual distribution outlet 12
+PASS wash follows actual manifold 12
+PASS pickup follows actual suction contact 12
+PASS conditioner hydraulic follows actual moving barrel 12
+PASS right conditioner hydraulic follows actual moving barrel 12
+PASS left tank hydraulic follows actual moving barrel 12
+PASS tank hydraulic follows actual moving barrel 12
+PASS idle dump emitter follows raised-tank outlet 12
+PASS snow discharge follows fixed conveyor outlet 12
+PASS upper spill tail follows conveyor even after flow stops 12
+PASS mechanism click follows physical lever bank 12
+PASS manual stroke follows moving breaker 12
+PASS engine follows physical engine compartment 13
+PASS drivetrain follows central chassis 13
+PASS scrape follows actual blade edge 13
+PASS horizontal auger follows independent conditioner 13
+PASS vertical auger stays inside conveyor housing 13
+PASS flood originates at actual distribution outlet 13
+PASS wash follows actual manifold 13
+PASS pickup follows actual suction contact 13
+PASS conditioner hydraulic follows actual moving barrel 13
+PASS right conditioner hydraulic follows actual moving barrel 13
+PASS left tank hydraulic follows actual moving barrel 13
+PASS tank hydraulic follows actual moving barrel 13
+PASS idle dump emitter follows raised-tank outlet 13
+PASS snow discharge follows fixed conveyor outlet 13
+PASS upper spill tail follows conveyor even after flow stops 13
+PASS mechanism click follows physical lever bank 13
+PASS manual stroke follows moving breaker 13
+PASS engine follows physical engine compartment 14
+PASS drivetrain follows central chassis 14
+PASS scrape follows actual blade edge 14
+PASS horizontal auger follows independent conditioner 14
+PASS vertical auger stays inside conveyor housing 14
+PASS flood originates at actual distribution outlet 14
+PASS wash follows actual manifold 14
+PASS pickup follows actual suction contact 14
+PASS conditioner hydraulic follows actual moving barrel 14
+PASS right conditioner hydraulic follows actual moving barrel 14
+PASS left tank hydraulic follows actual moving barrel 14
+PASS tank hydraulic follows actual moving barrel 14
+PASS idle dump emitter follows raised-tank outlet 14
+PASS snow discharge follows fixed conveyor outlet 14
+PASS upper spill tail follows conveyor even after flow stops 14
+PASS mechanism click follows physical lever bank 14
+PASS manual stroke follows moving breaker 14
+PASS engine follows physical engine compartment 15
+PASS drivetrain follows central chassis 15
+PASS scrape follows actual blade edge 15
+PASS horizontal auger follows independent conditioner 15
+PASS vertical auger stays inside conveyor housing 15
+PASS flood originates at actual distribution outlet 15
+PASS wash follows actual manifold 15
+PASS pickup follows actual suction contact 15
+PASS conditioner hydraulic follows actual moving barrel 15
+PASS right conditioner hydraulic follows actual moving barrel 15
+PASS left tank hydraulic follows actual moving barrel 15
+PASS tank hydraulic follows actual moving barrel 15
+PASS idle dump emitter follows raised-tank outlet 15
+PASS snow discharge follows fixed conveyor outlet 15
+PASS upper spill tail follows conveyor even after flow stops 15
+PASS mechanism click follows physical lever bank 15
+PASS manual stroke follows moving breaker 15
+PASS engine follows physical engine compartment 16
+PASS drivetrain follows central chassis 16
+PASS scrape follows actual blade edge 16
+PASS horizontal auger follows independent conditioner 16
+PASS vertical auger stays inside conveyor housing 16
+PASS flood originates at actual distribution outlet 16
+PASS wash follows actual manifold 16
+PASS pickup follows actual suction contact 16
+PASS conditioner hydraulic follows actual moving barrel 16
+PASS right conditioner hydraulic follows actual moving barrel 16
+PASS left tank hydraulic follows actual moving barrel 16
+PASS tank hydraulic follows actual moving barrel 16
+PASS idle dump emitter follows raised-tank outlet 16
+PASS snow discharge follows fixed conveyor outlet 16
+PASS upper spill tail follows conveyor even after flow stops 16
+PASS mechanism click follows physical lever bank 16
+PASS manual stroke follows moving breaker 16
+PASS engine follows physical engine compartment 17
+PASS drivetrain follows central chassis 17
+PASS scrape follows actual blade edge 17
+PASS horizontal auger follows independent conditioner 17
+PASS vertical auger stays inside conveyor housing 17
+PASS flood originates at actual distribution outlet 17
+PASS wash follows actual manifold 17
+PASS pickup follows actual suction contact 17
+PASS conditioner hydraulic follows actual moving barrel 17
+PASS right conditioner hydraulic follows actual moving barrel 17
+PASS left tank hydraulic follows actual moving barrel 17
+PASS tank hydraulic follows actual moving barrel 17
+PASS idle dump emitter follows raised-tank outlet 17
+PASS snow discharge follows fixed conveyor outlet 17
+PASS upper spill tail follows conveyor even after flow stops 17
+PASS mechanism click follows physical lever bank 17
+PASS manual stroke follows moving breaker 17
+PASS engine follows physical engine compartment 18
+PASS drivetrain follows central chassis 18
+PASS scrape follows actual blade edge 18
+PASS horizontal auger follows independent conditioner 18
+PASS vertical auger stays inside conveyor housing 18
+PASS flood originates at actual distribution outlet 18
+PASS wash follows actual manifold 18
+PASS pickup follows actual suction contact 18
+PASS conditioner hydraulic follows actual moving barrel 18
+PASS right conditioner hydraulic follows actual moving barrel 18
+PASS left tank hydraulic follows actual moving barrel 18
+PASS tank hydraulic follows actual moving barrel 18
+PASS idle dump emitter follows raised-tank outlet 18
+PASS snow discharge follows fixed conveyor outlet 18
+PASS upper spill tail follows conveyor even after flow stops 18
+PASS mechanism click follows physical lever bank 18
+PASS manual stroke follows moving breaker 18
+PASS engine follows physical engine compartment 19
+PASS drivetrain follows central chassis 19
+PASS scrape follows actual blade edge 19
+PASS horizontal auger follows independent conditioner 19
+PASS vertical auger stays inside conveyor housing 19
+PASS flood originates at actual distribution outlet 19
+PASS wash follows actual manifold 19
+PASS pickup follows actual suction contact 19
+PASS conditioner hydraulic follows actual moving barrel 19
+PASS right conditioner hydraulic follows actual moving barrel 19
+PASS left tank hydraulic follows actual moving barrel 19
+PASS tank hydraulic follows actual moving barrel 19
+PASS idle dump emitter follows raised-tank outlet 19
+PASS snow discharge follows fixed conveyor outlet 19
+PASS upper spill tail follows conveyor even after flow stops 19
+PASS mechanism click follows physical lever bank 19
+PASS manual stroke follows moving breaker 19
+PASS engine follows physical engine compartment 20
+PASS drivetrain follows central chassis 20
+PASS scrape follows actual blade edge 20
+PASS horizontal auger follows independent conditioner 20
+PASS vertical auger stays inside conveyor housing 20
+PASS flood originates at actual distribution outlet 20
+PASS wash follows actual manifold 20
+PASS pickup follows actual suction contact 20
+PASS conditioner hydraulic follows actual moving barrel 20
+PASS right conditioner hydraulic follows actual moving barrel 20
+PASS left tank hydraulic follows actual moving barrel 20
+PASS tank hydraulic follows actual moving barrel 20
+PASS idle dump emitter follows raised-tank outlet 20
+PASS snow discharge follows fixed conveyor outlet 20
+PASS upper spill tail follows conveyor even after flow stops 20
+PASS mechanism click follows physical lever bank 20
+PASS manual stroke follows moving breaker 20
+PASS engine follows physical engine compartment 21
+PASS drivetrain follows central chassis 21
+PASS scrape follows actual blade edge 21
+PASS horizontal auger follows independent conditioner 21
+PASS vertical auger stays inside conveyor housing 21
+PASS flood originates at actual distribution outlet 21
+PASS wash follows actual manifold 21
+PASS pickup follows actual suction contact 21
+PASS conditioner hydraulic follows actual moving barrel 21
+PASS right conditioner hydraulic follows actual moving barrel 21
+PASS left tank hydraulic follows actual moving barrel 21
+PASS tank hydraulic follows actual moving barrel 21
+PASS idle dump emitter follows raised-tank outlet 21
+PASS snow discharge follows fixed conveyor outlet 21
+PASS upper spill tail follows conveyor even after flow stops 21
+PASS mechanism click follows physical lever bank 21
+PASS manual stroke follows moving breaker 21
+PASS engine follows physical engine compartment 22
+PASS drivetrain follows central chassis 22
+PASS scrape follows actual blade edge 22
+PASS horizontal auger follows independent conditioner 22
+PASS vertical auger stays inside conveyor housing 22
+PASS flood originates at actual distribution outlet 22
+PASS wash follows actual manifold 22
+PASS pickup follows actual suction contact 22
+PASS conditioner hydraulic follows actual moving barrel 22
+PASS right conditioner hydraulic follows actual moving barrel 22
+PASS left tank hydraulic follows actual moving barrel 22
+PASS tank hydraulic follows actual moving barrel 22
+PASS idle dump emitter follows raised-tank outlet 22
+PASS snow discharge follows fixed conveyor outlet 22
+PASS upper spill tail follows conveyor even after flow stops 22
+PASS mechanism click follows physical lever bank 22
+PASS manual stroke follows moving breaker 22
+PASS engine follows physical engine compartment 23
+PASS drivetrain follows central chassis 23
+PASS scrape follows actual blade edge 23
+PASS horizontal auger follows independent conditioner 23
+PASS vertical auger stays inside conveyor housing 23
+PASS flood originates at actual distribution outlet 23
+PASS wash follows actual manifold 23
+PASS pickup follows actual suction contact 23
+PASS conditioner hydraulic follows actual moving barrel 23
+PASS right conditioner hydraulic follows actual moving barrel 23
+PASS left tank hydraulic follows actual moving barrel 23
+PASS tank hydraulic follows actual moving barrel 23
+PASS idle dump emitter follows raised-tank outlet 23
+PASS snow discharge follows fixed conveyor outlet 23
+PASS upper spill tail follows conveyor even after flow stops 23
+PASS mechanism click follows physical lever bank 23
+PASS manual stroke follows moving breaker 23
+PASS engine follows physical engine compartment 24
+PASS drivetrain follows central chassis 24
+PASS scrape follows actual blade edge 24
+PASS horizontal auger follows independent conditioner 24
+PASS vertical auger stays inside conveyor housing 24
+PASS flood originates at actual distribution outlet 24
+PASS wash follows actual manifold 24
+PASS pickup follows actual suction contact 24
+PASS conditioner hydraulic follows actual moving barrel 24
+PASS right conditioner hydraulic follows actual moving barrel 24
+PASS left tank hydraulic follows actual moving barrel 24
+PASS tank hydraulic follows actual moving barrel 24
+PASS idle dump emitter follows raised-tank outlet 24
+PASS snow discharge follows fixed conveyor outlet 24
+PASS upper spill tail follows conveyor even after flow stops 24
+PASS mechanism click follows physical lever bank 24
+PASS manual stroke follows moving breaker 24
+PASS engine follows physical engine compartment 25
+PASS drivetrain follows central chassis 25
+PASS scrape follows actual blade edge 25
+PASS horizontal auger follows independent conditioner 25
+PASS vertical auger stays inside conveyor housing 25
+PASS flood originates at actual distribution outlet 25
+PASS wash follows actual manifold 25
+PASS pickup follows actual suction contact 25
+PASS conditioner hydraulic follows actual moving barrel 25
+PASS right conditioner hydraulic follows actual moving barrel 25
+PASS left tank hydraulic follows actual moving barrel 25
+PASS tank hydraulic follows actual moving barrel 25
+PASS idle dump emitter follows raised-tank outlet 25
+PASS snow discharge follows fixed conveyor outlet 25
+PASS upper spill tail follows conveyor even after flow stops 25
+PASS mechanism click follows physical lever bank 25
+PASS manual stroke follows moving breaker 25
+PASS engine follows physical engine compartment 26
+PASS drivetrain follows central chassis 26
+PASS scrape follows actual blade edge 26
+PASS horizontal auger follows independent conditioner 26
+PASS vertical auger stays inside conveyor housing 26
+PASS flood originates at actual distribution outlet 26
+PASS wash follows actual manifold 26
+PASS pickup follows actual suction contact 26
+PASS conditioner hydraulic follows actual moving barrel 26
+PASS right conditioner hydraulic follows actual moving barrel 26
+PASS left tank hydraulic follows actual moving barrel 26
+PASS tank hydraulic follows actual moving barrel 26
+PASS idle dump emitter follows raised-tank outlet 26
+PASS snow discharge follows fixed conveyor outlet 26
+PASS upper spill tail follows conveyor even after flow stops 26
+PASS mechanism click follows physical lever bank 26
+PASS manual stroke follows moving breaker 26
+PASS engine follows physical engine compartment 27
+PASS drivetrain follows central chassis 27
+PASS scrape follows actual blade edge 27
+PASS horizontal auger follows independent conditioner 27
+PASS vertical auger stays inside conveyor housing 27
+PASS flood originates at actual distribution outlet 27
+PASS wash follows actual manifold 27
+PASS pickup follows actual suction contact 27
+PASS conditioner hydraulic follows actual moving barrel 27
+PASS right conditioner hydraulic follows actual moving barrel 27
+PASS left tank hydraulic follows actual moving barrel 27
+PASS tank hydraulic follows actual moving barrel 27
+PASS idle dump emitter follows raised-tank outlet 27
+PASS snow discharge follows fixed conveyor outlet 27
+PASS upper spill tail follows conveyor even after flow stops 27
+PASS mechanism click follows physical lever bank 27
+PASS manual stroke follows moving breaker 27
+PASS engine follows physical engine compartment 28
+PASS drivetrain follows central chassis 28
+PASS scrape follows actual blade edge 28
+PASS horizontal auger follows independent conditioner 28
+PASS vertical auger stays inside conveyor housing 28
+PASS flood originates at actual distribution outlet 28
+PASS wash follows actual manifold 28
+PASS pickup follows actual suction contact 28
+PASS conditioner hydraulic follows actual moving barrel 28
+PASS right conditioner hydraulic follows actual moving barrel 28
+PASS left tank hydraulic follows actual moving barrel 28
+PASS tank hydraulic follows actual moving barrel 28
+PASS idle dump emitter follows raised-tank outlet 28
+PASS snow discharge follows fixed conveyor outlet 28
+PASS upper spill tail follows conveyor even after flow stops 28
+PASS mechanism click follows physical lever bank 28
+PASS manual stroke follows moving breaker 28
+PASS engine follows physical engine compartment 29
+PASS drivetrain follows central chassis 29
+PASS scrape follows actual blade edge 29
+PASS horizontal auger follows independent conditioner 29
+PASS vertical auger stays inside conveyor housing 29
+PASS flood originates at actual distribution outlet 29
+PASS wash follows actual manifold 29
+PASS pickup follows actual suction contact 29
+PASS conditioner hydraulic follows actual moving barrel 29
+PASS right conditioner hydraulic follows actual moving barrel 29
+PASS left tank hydraulic follows actual moving barrel 29
+PASS tank hydraulic follows actual moving barrel 29
+PASS idle dump emitter follows raised-tank outlet 29
+PASS snow discharge follows fixed conveyor outlet 29
+PASS upper spill tail follows conveyor even after flow stops 29
+PASS mechanism click follows physical lever bank 29
+PASS manual stroke follows moving breaker 29
+PASS engine follows physical engine compartment 30
+PASS drivetrain follows central chassis 30
+PASS scrape follows actual blade edge 30
+PASS horizontal auger follows independent conditioner 30
+PASS vertical auger stays inside conveyor housing 30
+PASS flood originates at actual distribution outlet 30
+PASS wash follows actual manifold 30
+PASS pickup follows actual suction contact 30
+PASS conditioner hydraulic follows actual moving barrel 30
+PASS right conditioner hydraulic follows actual moving barrel 30
+PASS left tank hydraulic follows actual moving barrel 30
+PASS tank hydraulic follows actual moving barrel 30
+PASS idle dump emitter follows raised-tank outlet 30
+PASS snow discharge follows fixed conveyor outlet 30
+PASS upper spill tail follows conveyor even after flow stops 30
+PASS mechanism click follows physical lever bank 30
+PASS manual stroke follows moving breaker 30
+PASS engine follows physical engine compartment 31
+PASS drivetrain follows central chassis 31
+PASS scrape follows actual blade edge 31
+PASS horizontal auger follows independent conditioner 31
+PASS vertical auger stays inside conveyor housing 31
+PASS flood originates at actual distribution outlet 31
+PASS wash follows actual manifold 31
+PASS pickup follows actual suction contact 31
+PASS conditioner hydraulic follows actual moving barrel 31
+PASS right conditioner hydraulic follows actual moving barrel 31
+PASS left tank hydraulic follows actual moving barrel 31
+PASS tank hydraulic follows actual moving barrel 31
+PASS idle dump emitter follows raised-tank outlet 31
+PASS snow discharge follows fixed conveyor outlet 31
+PASS upper spill tail follows conveyor even after flow stops 31
+PASS mechanism click follows physical lever bank 31
+PASS manual stroke follows moving breaker 31
+PASS engine follows physical engine compartment 32
+PASS drivetrain follows central chassis 32
+PASS scrape follows actual blade edge 32
+PASS horizontal auger follows independent conditioner 32
+PASS vertical auger stays inside conveyor housing 32
+PASS flood originates at actual distribution outlet 32
+PASS wash follows actual manifold 32
+PASS pickup follows actual suction contact 32
+PASS conditioner hydraulic follows actual moving barrel 32
+PASS right conditioner hydraulic follows actual moving barrel 32
+PASS left tank hydraulic follows actual moving barrel 32
+PASS tank hydraulic follows actual moving barrel 32
+PASS idle dump emitter follows raised-tank outlet 32
+PASS snow discharge follows fixed conveyor outlet 32
+PASS upper spill tail follows conveyor even after flow stops 32
+PASS mechanism click follows physical lever bank 32
+PASS manual stroke follows moving breaker 32
+PASS engine follows physical engine compartment 33
+PASS drivetrain follows central chassis 33
+PASS scrape follows actual blade edge 33
+PASS horizontal auger follows independent conditioner 33
+PASS vertical auger stays inside conveyor housing 33
+PASS flood originates at actual distribution outlet 33
+PASS wash follows actual manifold 33
+PASS pickup follows actual suction contact 33
+PASS conditioner hydraulic follows actual moving barrel 33
+PASS right conditioner hydraulic follows actual moving barrel 33
+PASS left tank hydraulic follows actual moving barrel 33
+PASS tank hydraulic follows actual moving barrel 33
+PASS idle dump emitter follows raised-tank outlet 33
+PASS snow discharge follows fixed conveyor outlet 33
+PASS upper spill tail follows conveyor even after flow stops 33
+PASS mechanism click follows physical lever bank 33
+PASS manual stroke follows moving breaker 33
+PASS engine follows physical engine compartment 34
+PASS drivetrain follows central chassis 34
+PASS scrape follows actual blade edge 34
+PASS horizontal auger follows independent conditioner 34
+PASS vertical auger stays inside conveyor housing 34
+PASS flood originates at actual distribution outlet 34
+PASS wash follows actual manifold 34
+PASS pickup follows actual suction contact 34
+PASS conditioner hydraulic follows actual moving barrel 34
+PASS right conditioner hydraulic follows actual moving barrel 34
+PASS left tank hydraulic follows actual moving barrel 34
+PASS tank hydraulic follows actual moving barrel 34
+PASS idle dump emitter follows raised-tank outlet 34
+PASS snow discharge follows fixed conveyor outlet 34
+PASS upper spill tail follows conveyor even after flow stops 34
+PASS mechanism click follows physical lever bank 34
+PASS manual stroke follows moving breaker 34
+PASS engine follows physical engine compartment 35
+PASS drivetrain follows central chassis 35
+PASS scrape follows actual blade edge 35
+PASS horizontal auger follows independent conditioner 35
+PASS vertical auger stays inside conveyor housing 35
+PASS flood originates at actual distribution outlet 35
+PASS wash follows actual manifold 35
+PASS pickup follows actual suction contact 35
+PASS conditioner hydraulic follows actual moving barrel 35
+PASS right conditioner hydraulic follows actual moving barrel 35
+PASS left tank hydraulic follows actual moving barrel 35
+PASS tank hydraulic follows actual moving barrel 35
+PASS idle dump emitter follows raised-tank outlet 35
+PASS snow discharge follows fixed conveyor outlet 35
+PASS upper spill tail follows conveyor even after flow stops 35
+PASS mechanism click follows physical lever bank 35
+PASS manual stroke follows moving breaker 35
+PASS engine follows physical engine compartment 36
+PASS drivetrain follows central chassis 36
+PASS scrape follows actual blade edge 36
+PASS horizontal auger follows independent conditioner 36
+PASS vertical auger stays inside conveyor housing 36
+PASS flood originates at actual distribution outlet 36
+PASS wash follows actual manifold 36
+PASS pickup follows actual suction contact 36
+PASS conditioner hydraulic follows actual moving barrel 36
+PASS right conditioner hydraulic follows actual moving barrel 36
+PASS left tank hydraulic follows actual moving barrel 36
+PASS tank hydraulic follows actual moving barrel 36
+PASS idle dump emitter follows raised-tank outlet 36
+PASS snow discharge follows fixed conveyor outlet 36
+PASS upper spill tail follows conveyor even after flow stops 36
+PASS mechanism click follows physical lever bank 36
+PASS manual stroke follows moving breaker 36
+PASS engine follows physical engine compartment 37
+PASS drivetrain follows central chassis 37
+PASS scrape follows actual blade edge 37
+PASS horizontal auger follows independent conditioner 37
+PASS vertical auger stays inside conveyor housing 37
+PASS flood originates at actual distribution outlet 37
+PASS wash follows actual manifold 37
+PASS pickup follows actual suction contact 37
+PASS conditioner hydraulic follows actual moving barrel 37
+PASS right conditioner hydraulic follows actual moving barrel 37
+PASS left tank hydraulic follows actual moving barrel 37
+PASS tank hydraulic follows actual moving barrel 37
+PASS idle dump emitter follows raised-tank outlet 37
+PASS snow discharge follows fixed conveyor outlet 37
+PASS upper spill tail follows conveyor even after flow stops 37
+PASS mechanism click follows physical lever bank 37
+PASS manual stroke follows moving breaker 37
+PASS engine follows physical engine compartment 38
+PASS drivetrain follows central chassis 38
+PASS scrape follows actual blade edge 38
+PASS horizontal auger follows independent conditioner 38
+PASS vertical auger stays inside conveyor housing 38
+PASS flood originates at actual distribution outlet 38
+PASS wash follows actual manifold 38
+PASS pickup follows actual suction contact 38
+PASS conditioner hydraulic follows actual moving barrel 38
+PASS right conditioner hydraulic follows actual moving barrel 38
+PASS left tank hydraulic follows actual moving barrel 38
+PASS tank hydraulic follows actual moving barrel 38
+PASS idle dump emitter follows raised-tank outlet 38
+PASS snow discharge follows fixed conveyor outlet 38
+PASS upper spill tail follows conveyor even after flow stops 38
+PASS mechanism click follows physical lever bank 38
+PASS manual stroke follows moving breaker 38
+PASS engine follows physical engine compartment 39
+PASS drivetrain follows central chassis 39
+PASS scrape follows actual blade edge 39
+PASS horizontal auger follows independent conditioner 39
+PASS vertical auger stays inside conveyor housing 39
+PASS flood originates at actual distribution outlet 39
+PASS wash follows actual manifold 39
+PASS pickup follows actual suction contact 39
+PASS conditioner hydraulic follows actual moving barrel 39
+PASS right conditioner hydraulic follows actual moving barrel 39
+PASS left tank hydraulic follows actual moving barrel 39
+PASS tank hydraulic follows actual moving barrel 39
+PASS idle dump emitter follows raised-tank outlet 39
+PASS snow discharge follows fixed conveyor outlet 39
+PASS upper spill tail follows conveyor even after flow stops 39
+PASS mechanism click follows physical lever bank 39
+PASS manual stroke follows moving breaker 39
+PASS engine follows physical engine compartment 40
+PASS drivetrain follows central chassis 40
+PASS scrape follows actual blade edge 40
+PASS horizontal auger follows independent conditioner 40
+PASS vertical auger stays inside conveyor housing 40
+PASS flood originates at actual distribution outlet 40
+PASS wash follows actual manifold 40
+PASS pickup follows actual suction contact 40
+PASS conditioner hydraulic follows actual moving barrel 40
+PASS right conditioner hydraulic follows actual moving barrel 40
+PASS left tank hydraulic follows actual moving barrel 40
+PASS tank hydraulic follows actual moving barrel 40
+PASS idle dump emitter follows raised-tank outlet 40
+PASS snow discharge follows fixed conveyor outlet 40
+PASS upper spill tail follows conveyor even after flow stops 40
+PASS mechanism click follows physical lever bank 40
+PASS manual stroke follows moving breaker 40
+PASS engine follows physical engine compartment 41
+PASS drivetrain follows central chassis 41
+PASS scrape follows actual blade edge 41
+PASS horizontal auger follows independent conditioner 41
+PASS vertical auger stays inside conveyor housing 41
+PASS flood originates at actual distribution outlet 41
+PASS wash follows actual manifold 41
+PASS pickup follows actual suction contact 41
+PASS conditioner hydraulic follows actual moving barrel 41
+PASS right conditioner hydraulic follows actual moving barrel 41
+PASS left tank hydraulic follows actual moving barrel 41
+PASS tank hydraulic follows actual moving barrel 41
+PASS idle dump emitter follows raised-tank outlet 41
+PASS snow discharge follows fixed conveyor outlet 41
+PASS upper spill tail follows conveyor even after flow stops 41
+PASS mechanism click follows physical lever bank 41
+PASS manual stroke follows moving breaker 41
+PASS engine follows physical engine compartment 42
+PASS drivetrain follows central chassis 42
+PASS scrape follows actual blade edge 42
+PASS horizontal auger follows independent conditioner 42
+PASS vertical auger stays inside conveyor housing 42
+PASS flood originates at actual distribution outlet 42
+PASS wash follows actual manifold 42
+PASS pickup follows actual suction contact 42
+PASS conditioner hydraulic follows actual moving barrel 42
+PASS right conditioner hydraulic follows actual moving barrel 42
+PASS left tank hydraulic follows actual moving barrel 42
+PASS tank hydraulic follows actual moving barrel 42
+PASS idle dump emitter follows raised-tank outlet 42
+PASS snow discharge follows fixed conveyor outlet 42
+PASS upper spill tail follows conveyor even after flow stops 42
+PASS mechanism click follows physical lever bank 42
+PASS manual stroke follows moving breaker 42
+PASS engine follows physical engine compartment 43
+PASS drivetrain follows central chassis 43
+PASS scrape follows actual blade edge 43
+PASS horizontal auger follows independent conditioner 43
+PASS vertical auger stays inside conveyor housing 43
+PASS flood originates at actual distribution outlet 43
+PASS wash follows actual manifold 43
+PASS pickup follows actual suction contact 43
+PASS conditioner hydraulic follows actual moving barrel 43
+PASS right conditioner hydraulic follows actual moving barrel 43
+PASS left tank hydraulic follows actual moving barrel 43
+PASS tank hydraulic follows actual moving barrel 43
+PASS idle dump emitter follows raised-tank outlet 43
+PASS snow discharge follows fixed conveyor outlet 43
+PASS upper spill tail follows conveyor even after flow stops 43
+PASS mechanism click follows physical lever bank 43
+PASS manual stroke follows moving breaker 43
+PASS engine follows physical engine compartment 44
+PASS drivetrain follows central chassis 44
+PASS scrape follows actual blade edge 44
+PASS horizontal auger follows independent conditioner 44
+PASS vertical auger stays inside conveyor housing 44
+PASS flood originates at actual distribution outlet 44
+PASS wash follows actual manifold 44
+PASS pickup follows actual suction contact 44
+PASS conditioner hydraulic follows actual moving barrel 44
+PASS right conditioner hydraulic follows actual moving barrel 44
+PASS left tank hydraulic follows actual moving barrel 44
+PASS tank hydraulic follows actual moving barrel 44
+PASS idle dump emitter follows raised-tank outlet 44
+PASS snow discharge follows fixed conveyor outlet 44
+PASS upper spill tail follows conveyor even after flow stops 44
+PASS mechanism click follows physical lever bank 44
+PASS manual stroke follows moving breaker 44
+PASS engine follows physical engine compartment 45
+PASS drivetrain follows central chassis 45
+PASS scrape follows actual blade edge 45
+PASS horizontal auger follows independent conditioner 45
+PASS vertical auger stays inside conveyor housing 45
+PASS flood originates at actual distribution outlet 45
+PASS wash follows actual manifold 45
+PASS pickup follows actual suction contact 45
+PASS conditioner hydraulic follows actual moving barrel 45
+PASS right conditioner hydraulic follows actual moving barrel 45
+PASS left tank hydraulic follows actual moving barrel 45
+PASS tank hydraulic follows actual moving barrel 45
+PASS idle dump emitter follows raised-tank outlet 45
+PASS snow discharge follows fixed conveyor outlet 45
+PASS upper spill tail follows conveyor even after flow stops 45
+PASS mechanism click follows physical lever bank 45
+PASS manual stroke follows moving breaker 45
+PASS engine follows physical engine compartment 46
+PASS drivetrain follows central chassis 46
+PASS scrape follows actual blade edge 46
+PASS horizontal auger follows independent conditioner 46
+PASS vertical auger stays inside conveyor housing 46
+PASS flood originates at actual distribution outlet 46
+PASS wash follows actual manifold 46
+PASS pickup follows actual suction contact 46
+PASS conditioner hydraulic follows actual moving barrel 46
+PASS right conditioner hydraulic follows actual moving barrel 46
+PASS left tank hydraulic follows actual moving barrel 46
+PASS tank hydraulic follows actual moving barrel 46
+PASS idle dump emitter follows raised-tank outlet 46
+PASS snow discharge follows fixed conveyor outlet 46
+PASS upper spill tail follows conveyor even after flow stops 46
+PASS mechanism click follows physical lever bank 46
+PASS manual stroke follows moving breaker 46
+PASS engine follows physical engine compartment 47
+PASS drivetrain follows central chassis 47
+PASS scrape follows actual blade edge 47
+PASS horizontal auger follows independent conditioner 47
+PASS vertical auger stays inside conveyor housing 47
+PASS flood originates at actual distribution outlet 47
+PASS wash follows actual manifold 47
+PASS pickup follows actual suction contact 47
+PASS conditioner hydraulic follows actual moving barrel 47
+PASS right conditioner hydraulic follows actual moving barrel 47
+PASS left tank hydraulic follows actual moving barrel 47
+PASS tank hydraulic follows actual moving barrel 47
+PASS idle dump emitter follows raised-tank outlet 47
+PASS snow discharge follows fixed conveyor outlet 47
+PASS upper spill tail follows conveyor even after flow stops 47
+PASS mechanism click follows physical lever bank 47
+PASS manual stroke follows moving breaker 47
+PASS engine follows physical engine compartment 48
+PASS drivetrain follows central chassis 48
+PASS scrape follows actual blade edge 48
+PASS horizontal auger follows independent conditioner 48
+PASS vertical auger stays inside conveyor housing 48
+PASS flood originates at actual distribution outlet 48
+PASS wash follows actual manifold 48
+PASS pickup follows actual suction contact 48
+PASS conditioner hydraulic follows actual moving barrel 48
+PASS right conditioner hydraulic follows actual moving barrel 48
+PASS left tank hydraulic follows actual moving barrel 48
+PASS tank hydraulic follows actual moving barrel 48
+PASS idle dump emitter follows raised-tank outlet 48
+PASS snow discharge follows fixed conveyor outlet 48
+PASS upper spill tail follows conveyor even after flow stops 48
+PASS mechanism click follows physical lever bank 48
+PASS manual stroke follows moving breaker 48
+PASS engine follows physical engine compartment 49
+PASS drivetrain follows central chassis 49
+PASS scrape follows actual blade edge 49
+PASS horizontal auger follows independent conditioner 49
+PASS vertical auger stays inside conveyor housing 49
+PASS flood originates at actual distribution outlet 49
+PASS wash follows actual manifold 49
+PASS pickup follows actual suction contact 49
+PASS conditioner hydraulic follows actual moving barrel 49
+PASS right conditioner hydraulic follows actual moving barrel 49
+PASS left tank hydraulic follows actual moving barrel 49
+PASS tank hydraulic follows actual moving barrel 49
+PASS idle dump emitter follows raised-tank outlet 49
+PASS snow discharge follows fixed conveyor outlet 49
+PASS upper spill tail follows conveyor even after flow stops 49
+PASS mechanism click follows physical lever bank 49
+PASS manual stroke follows moving breaker 49
+PASS engine follows physical engine compartment 50
+PASS drivetrain follows central chassis 50
+PASS scrape follows actual blade edge 50
+PASS horizontal auger follows independent conditioner 50
+PASS vertical auger stays inside conveyor housing 50
+PASS flood originates at actual distribution outlet 50
+PASS wash follows actual manifold 50
+PASS pickup follows actual suction contact 50
+PASS conditioner hydraulic follows actual moving barrel 50
+PASS right conditioner hydraulic follows actual moving barrel 50
+PASS left tank hydraulic follows actual moving barrel 50
+PASS tank hydraulic follows actual moving barrel 50
+PASS idle dump emitter follows raised-tank outlet 50
+PASS snow discharge follows fixed conveyor outlet 50
+PASS upper spill tail follows conveyor even after flow stops 50
+PASS mechanism click follows physical lever bank 50
+PASS manual stroke follows moving breaker 50
+PASS engine follows physical engine compartment 51
+PASS drivetrain follows central chassis 51
+PASS scrape follows actual blade edge 51
+PASS horizontal auger follows independent conditioner 51
+PASS vertical auger stays inside conveyor housing 51
+PASS flood originates at actual distribution outlet 51
+PASS wash follows actual manifold 51
+PASS pickup follows actual suction contact 51
+PASS conditioner hydraulic follows actual moving barrel 51
+PASS right conditioner hydraulic follows actual moving barrel 51
+PASS left tank hydraulic follows actual moving barrel 51
+PASS tank hydraulic follows actual moving barrel 51
+PASS idle dump emitter follows raised-tank outlet 51
+PASS snow discharge follows fixed conveyor outlet 51
+PASS upper spill tail follows conveyor even after flow stops 51
+PASS mechanism click follows physical lever bank 51
+PASS manual stroke follows moving breaker 51
+PASS engine follows physical engine compartment 52
+PASS drivetrain follows central chassis 52
+PASS scrape follows actual blade edge 52
+PASS horizontal auger follows independent conditioner 52
+PASS vertical auger stays inside conveyor housing 52
+PASS flood originates at actual distribution outlet 52
+PASS wash follows actual manifold 52
+PASS pickup follows actual suction contact 52
+PASS conditioner hydraulic follows actual moving barrel 52
+PASS right conditioner hydraulic follows actual moving barrel 52
+PASS left tank hydraulic follows actual moving barrel 52
+PASS tank hydraulic follows actual moving barrel 52
+PASS idle dump emitter follows raised-tank outlet 52
+PASS snow discharge follows fixed conveyor outlet 52
+PASS upper spill tail follows conveyor even after flow stops 52
+PASS mechanism click follows physical lever bank 52
+PASS manual stroke follows moving breaker 52
+PASS engine follows physical engine compartment 53
+PASS drivetrain follows central chassis 53
+PASS scrape follows actual blade edge 53
+PASS horizontal auger follows independent conditioner 53
+PASS vertical auger stays inside conveyor housing 53
+PASS flood originates at actual distribution outlet 53
+PASS wash follows actual manifold 53
+PASS pickup follows actual suction contact 53
+PASS conditioner hydraulic follows actual moving barrel 53
+PASS right conditioner hydraulic follows actual moving barrel 53
+PASS left tank hydraulic follows actual moving barrel 53
+PASS tank hydraulic follows actual moving barrel 53
+PASS idle dump emitter follows raised-tank outlet 53
+PASS snow discharge follows fixed conveyor outlet 53
+PASS upper spill tail follows conveyor even after flow stops 53
+PASS mechanism click follows physical lever bank 53
+PASS manual stroke follows moving breaker 53
+PASS engine follows physical engine compartment 54
+PASS drivetrain follows central chassis 54
+PASS scrape follows actual blade edge 54
+PASS horizontal auger follows independent conditioner 54
+PASS vertical auger stays inside conveyor housing 54
+PASS flood originates at actual distribution outlet 54
+PASS wash follows actual manifold 54
+PASS pickup follows actual suction contact 54
+PASS conditioner hydraulic follows actual moving barrel 54
+PASS right conditioner hydraulic follows actual moving barrel 54
+PASS left tank hydraulic follows actual moving barrel 54
+PASS tank hydraulic follows actual moving barrel 54
+PASS idle dump emitter follows raised-tank outlet 54
+PASS snow discharge follows fixed conveyor outlet 54
+PASS upper spill tail follows conveyor even after flow stops 54
+PASS mechanism click follows physical lever bank 54
+PASS manual stroke follows moving breaker 54
+PASS engine follows physical engine compartment 55
+PASS drivetrain follows central chassis 55
+PASS scrape follows actual blade edge 55
+PASS horizontal auger follows independent conditioner 55
+PASS vertical auger stays inside conveyor housing 55
+PASS flood originates at actual distribution outlet 55
+PASS wash follows actual manifold 55
+PASS pickup follows actual suction contact 55
+PASS conditioner hydraulic follows actual moving barrel 55
+PASS right conditioner hydraulic follows actual moving barrel 55
+PASS left tank hydraulic follows actual moving barrel 55
+PASS tank hydraulic follows actual moving barrel 55
+PASS idle dump emitter follows raised-tank outlet 55
+PASS snow discharge follows fixed conveyor outlet 55
+PASS upper spill tail follows conveyor even after flow stops 55
+PASS mechanism click follows physical lever bank 55
+PASS manual stroke follows moving breaker 55
+PASS engine follows physical engine compartment 56
+PASS drivetrain follows central chassis 56
+PASS scrape follows actual blade edge 56
+PASS horizontal auger follows independent conditioner 56
+PASS vertical auger stays inside conveyor housing 56
+PASS flood originates at actual distribution outlet 56
+PASS wash follows actual manifold 56
+PASS pickup follows actual suction contact 56
+PASS conditioner hydraulic follows actual moving barrel 56
+PASS right conditioner hydraulic follows actual moving barrel 56
+PASS left tank hydraulic follows actual moving barrel 56
+PASS tank hydraulic follows actual moving barrel 56
+PASS idle dump emitter follows raised-tank outlet 56
+PASS snow discharge follows fixed conveyor outlet 56
+PASS upper spill tail follows conveyor even after flow stops 56
+PASS mechanism click follows physical lever bank 56
+PASS manual stroke follows moving breaker 56
+PASS engine follows physical engine compartment 57
+PASS drivetrain follows central chassis 57
+PASS scrape follows actual blade edge 57
+PASS horizontal auger follows independent conditioner 57
+PASS vertical auger stays inside conveyor housing 57
+PASS flood originates at actual distribution outlet 57
+PASS wash follows actual manifold 57
+PASS pickup follows actual suction contact 57
+PASS conditioner hydraulic follows actual moving barrel 57
+PASS right conditioner hydraulic follows actual moving barrel 57
+PASS left tank hydraulic follows actual moving barrel 57
+PASS tank hydraulic follows actual moving barrel 57
+PASS idle dump emitter follows raised-tank outlet 57
+PASS snow discharge follows fixed conveyor outlet 57
+PASS upper spill tail follows conveyor even after flow stops 57
+PASS mechanism click follows physical lever bank 57
+PASS manual stroke follows moving breaker 57
+PASS engine follows physical engine compartment 58
+PASS drivetrain follows central chassis 58
+PASS scrape follows actual blade edge 58
+PASS horizontal auger follows independent conditioner 58
+PASS vertical auger stays inside conveyor housing 58
+PASS flood originates at actual distribution outlet 58
+PASS wash follows actual manifold 58
+PASS pickup follows actual suction contact 58
+PASS conditioner hydraulic follows actual moving barrel 58
+PASS right conditioner hydraulic follows actual moving barrel 58
+PASS left tank hydraulic follows actual moving barrel 58
+PASS tank hydraulic follows actual moving barrel 58
+PASS idle dump emitter follows raised-tank outlet 58
+PASS snow discharge follows fixed conveyor outlet 58
+PASS upper spill tail follows conveyor even after flow stops 58
+PASS mechanism click follows physical lever bank 58
+PASS manual stroke follows moving breaker 58
+PASS engine follows physical engine compartment 59
+PASS drivetrain follows central chassis 59
+PASS scrape follows actual blade edge 59
+PASS horizontal auger follows independent conditioner 59
+PASS vertical auger stays inside conveyor housing 59
+PASS flood originates at actual distribution outlet 59
+PASS wash follows actual manifold 59
+PASS pickup follows actual suction contact 59
+PASS conditioner hydraulic follows actual moving barrel 59
+PASS right conditioner hydraulic follows actual moving barrel 59
+PASS left tank hydraulic follows actual moving barrel 59
+PASS tank hydraulic follows actual moving barrel 59
+PASS idle dump emitter follows raised-tank outlet 59
+PASS snow discharge follows fixed conveyor outlet 59
+PASS upper spill tail follows conveyor even after flow stops 59
+PASS mechanism click follows physical lever bank 59
+PASS manual stroke follows moving breaker 59
+PASS engine follows physical engine compartment 60
+PASS drivetrain follows central chassis 60
+PASS scrape follows actual blade edge 60
+PASS horizontal auger follows independent conditioner 60
+PASS vertical auger stays inside conveyor housing 60
+PASS flood originates at actual distribution outlet 60
+PASS wash follows actual manifold 60
+PASS pickup follows actual suction contact 60
+PASS conditioner hydraulic follows actual moving barrel 60
+PASS right conditioner hydraulic follows actual moving barrel 60
+PASS left tank hydraulic follows actual moving barrel 60
+PASS tank hydraulic follows actual moving barrel 60
+PASS idle dump emitter follows raised-tank outlet 60
+PASS snow discharge follows fixed conveyor outlet 60
+PASS upper spill tail follows conveyor even after flow stops 60
+PASS mechanism click follows physical lever bank 60
+PASS manual stroke follows moving breaker 60
+PASS engine follows physical engine compartment 61
+PASS drivetrain follows central chassis 61
+PASS scrape follows actual blade edge 61
+PASS horizontal auger follows independent conditioner 61
+PASS vertical auger stays inside conveyor housing 61
+PASS flood originates at actual distribution outlet 61
+PASS wash follows actual manifold 61
+PASS pickup follows actual suction contact 61
+PASS conditioner hydraulic follows actual moving barrel 61
+PASS right conditioner hydraulic follows actual moving barrel 61
+PASS left tank hydraulic follows actual moving barrel 61
+PASS tank hydraulic follows actual moving barrel 61
+PASS idle dump emitter follows raised-tank outlet 61
+PASS snow discharge follows fixed conveyor outlet 61
+PASS upper spill tail follows conveyor even after flow stops 61
+PASS mechanism click follows physical lever bank 61
+PASS manual stroke follows moving breaker 61
+PASS engine follows physical engine compartment 62
+PASS drivetrain follows central chassis 62
+PASS scrape follows actual blade edge 62
+PASS horizontal auger follows independent conditioner 62
+PASS vertical auger stays inside conveyor housing 62
+PASS flood originates at actual distribution outlet 62
+PASS wash follows actual manifold 62
+PASS pickup follows actual suction contact 62
+PASS conditioner hydraulic follows actual moving barrel 62
+PASS right conditioner hydraulic follows actual moving barrel 62
+PASS left tank hydraulic follows actual moving barrel 62
+PASS tank hydraulic follows actual moving barrel 62
+PASS idle dump emitter follows raised-tank outlet 62
+PASS snow discharge follows fixed conveyor outlet 62
+PASS upper spill tail follows conveyor even after flow stops 62
+PASS mechanism click follows physical lever bank 62
+PASS manual stroke follows moving breaker 62
+PASS engine follows physical engine compartment 63
+PASS drivetrain follows central chassis 63
+PASS scrape follows actual blade edge 63
+PASS horizontal auger follows independent conditioner 63
+PASS vertical auger stays inside conveyor housing 63
+PASS flood originates at actual distribution outlet 63
+PASS wash follows actual manifold 63
+PASS pickup follows actual suction contact 63
+PASS conditioner hydraulic follows actual moving barrel 63
+PASS right conditioner hydraulic follows actual moving barrel 63
+PASS left tank hydraulic follows actual moving barrel 63
+PASS tank hydraulic follows actual moving barrel 63
+PASS idle dump emitter follows raised-tank outlet 63
+PASS snow discharge follows fixed conveyor outlet 63
+PASS upper spill tail follows conveyor even after flow stops 63
+PASS mechanism click follows physical lever bank 63
+PASS manual stroke follows moving breaker 63
+PASS engine follows physical engine compartment 64
+PASS drivetrain follows central chassis 64
+PASS scrape follows actual blade edge 64
+PASS horizontal auger follows independent conditioner 64
+PASS vertical auger stays inside conveyor housing 64
+PASS flood originates at actual distribution outlet 64
+PASS wash follows actual manifold 64
+PASS pickup follows actual suction contact 64
+PASS conditioner hydraulic follows actual moving barrel 64
+PASS right conditioner hydraulic follows actual moving barrel 64
+PASS left tank hydraulic follows actual moving barrel 64
+PASS tank hydraulic follows actual moving barrel 64
+PASS idle dump emitter follows raised-tank outlet 64
+PASS snow discharge follows fixed conveyor outlet 64
+PASS upper spill tail follows conveyor even after flow stops 64
+PASS mechanism click follows physical lever bank 64
+PASS manual stroke follows moving breaker 64
+PASS engine follows physical engine compartment 65
+PASS drivetrain follows central chassis 65
+PASS scrape follows actual blade edge 65
+PASS horizontal auger follows independent conditioner 65
+PASS vertical auger stays inside conveyor housing 65
+PASS flood originates at actual distribution outlet 65
+PASS wash follows actual manifold 65
+PASS pickup follows actual suction contact 65
+PASS conditioner hydraulic follows actual moving barrel 65
+PASS right conditioner hydraulic follows actual moving barrel 65
+PASS left tank hydraulic follows actual moving barrel 65
+PASS tank hydraulic follows actual moving barrel 65
+PASS idle dump emitter follows raised-tank outlet 65
+PASS snow discharge follows fixed conveyor outlet 65
+PASS upper spill tail follows conveyor even after flow stops 65
+PASS mechanism click follows physical lever bank 65
+PASS manual stroke follows moving breaker 65
+PASS engine follows physical engine compartment 66
+PASS drivetrain follows central chassis 66
+PASS scrape follows actual blade edge 66
+PASS horizontal auger follows independent conditioner 66
+PASS vertical auger stays inside conveyor housing 66
+PASS flood originates at actual distribution outlet 66
+PASS wash follows actual manifold 66
+PASS pickup follows actual suction contact 66
+PASS conditioner hydraulic follows actual moving barrel 66
+PASS right conditioner hydraulic follows actual moving barrel 66
+PASS left tank hydraulic follows actual moving barrel 66
+PASS tank hydraulic follows actual moving barrel 66
+PASS idle dump emitter follows raised-tank outlet 66
+PASS snow discharge follows fixed conveyor outlet 66
+PASS upper spill tail follows conveyor even after flow stops 66
+PASS mechanism click follows physical lever bank 66
+PASS manual stroke follows moving breaker 66
+PASS engine follows physical engine compartment 67
+PASS drivetrain follows central chassis 67
+PASS scrape follows actual blade edge 67
+PASS horizontal auger follows independent conditioner 67
+PASS vertical auger stays inside conveyor housing 67
+PASS flood originates at actual distribution outlet 67
+PASS wash follows actual manifold 67
+PASS pickup follows actual suction contact 67
+PASS conditioner hydraulic follows actual moving barrel 67
+PASS right conditioner hydraulic follows actual moving barrel 67
+PASS left tank hydraulic follows actual moving barrel 67
+PASS tank hydraulic follows actual moving barrel 67
+PASS idle dump emitter follows raised-tank outlet 67
+PASS snow discharge follows fixed conveyor outlet 67
+PASS upper spill tail follows conveyor even after flow stops 67
+PASS mechanism click follows physical lever bank 67
+PASS manual stroke follows moving breaker 67
+PASS engine follows physical engine compartment 68
+PASS drivetrain follows central chassis 68
+PASS scrape follows actual blade edge 68
+PASS horizontal auger follows independent conditioner 68
+PASS vertical auger stays inside conveyor housing 68
+PASS flood originates at actual distribution outlet 68
+PASS wash follows actual manifold 68
+PASS pickup follows actual suction contact 68
+PASS conditioner hydraulic follows actual moving barrel 68
+PASS right conditioner hydraulic follows actual moving barrel 68
+PASS left tank hydraulic follows actual moving barrel 68
+PASS tank hydraulic follows actual moving barrel 68
+PASS idle dump emitter follows raised-tank outlet 68
+PASS snow discharge follows fixed conveyor outlet 68
+PASS upper spill tail follows conveyor even after flow stops 68
+PASS mechanism click follows physical lever bank 68
+PASS manual stroke follows moving breaker 68
+PASS engine follows physical engine compartment 69
+PASS drivetrain follows central chassis 69
+PASS scrape follows actual blade edge 69
+PASS horizontal auger follows independent conditioner 69
+PASS vertical auger stays inside conveyor housing 69
+PASS flood originates at actual distribution outlet 69
+PASS wash follows actual manifold 69
+PASS pickup follows actual suction contact 69
+PASS conditioner hydraulic follows actual moving barrel 69
+PASS right conditioner hydraulic follows actual moving barrel 69
+PASS left tank hydraulic follows actual moving barrel 69
+PASS tank hydraulic follows actual moving barrel 69
+PASS idle dump emitter follows raised-tank outlet 69
+PASS snow discharge follows fixed conveyor outlet 69
+PASS upper spill tail follows conveyor even after flow stops 69
+PASS mechanism click follows physical lever bank 69
+PASS manual stroke follows moving breaker 69
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS source is reused through movement and tank/lift animation
+PASS no source created or destroyed per frame
+PASS split actuators retain the original aggregate hydraulic level
+PASS split flood / wash / pickup retain independent state responses and original summed level
+PASS engine pitch retains throttle/speed/load response
+PASS finite trough overflow produces both actual side exits
+PASS left snow audio matches actual side-exit particle origin
+PASS right snow audio matches actual side-exit particle origin
+PASS raised-bin rejection produces actual upper snow spill
+PASS upper snow audio matches actual rejection outlet
+PASS actual snow unload flow exists in dump fixture
+PASS dump audio follows the same moving outlet as actual snow discharge
+PASS split snow outlets preserve the original aggregate snow volume response
+PASS real practice fill setup
+PASS connect actual Flood inlet and open supply
+PASS fill audio follows connected Flood inlet
+PASS disconnect fill fixture
+PASS connect actual Wash inlet and open supply
+PASS fill audio follows connected Wash inlet
+PASS disconnect fill fixture
+PASS loose pressurized nozzle fixture
+PASS spill audio and visible water have identical actual origins
+PASS connected full-tank overflow fixture
+PASS actual full tank produces overflow flow
+PASS connected overflow audio follows the real standpipe spill, distinct from the fill inlet
+PASS actual board collision produces a contact event
+PASS collision voice originates at the exact detected world contact, including height
+PASS falloff has a 2.5 m near field, meaningful 10/40 m sound and a distant 120 m fade

@@ -233,6 +233,8 @@ namespace IceResurfacer.Editor
                     Suite("Cockpit refinement",()=>IceCockpitRefinementValidation.Run(game,testKeyboard,testMouse));
                     Suite("Southeast service and freedom",()=>IceServiceValidation.Run(game,testKeyboard,testMouse));
                     Suite("Ice overlap / pickup rendering",()=>IceCalibrationRuntimeValidation.Run(game));
+                    Suite("Spatial machine audio",()=>IceSpatialAudioValidation.CheckStructure(game));
+                    Suite("Route recording and persistence",()=>IceRouteRecordingValidation.Run(game,testKeyboard,testMouse));
                     resultReport+="Final runtime error/exception count: "+failures+"\n";
                     File.WriteAllText(Root+"Validation~/Unity-results.txt",resultReport);
                     Debug.Log("ICE UNITY SMOKE COMPLETE\n"+resultReport);

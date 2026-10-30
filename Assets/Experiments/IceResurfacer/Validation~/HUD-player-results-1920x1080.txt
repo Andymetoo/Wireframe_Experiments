@@ -46,17 +46,32 @@ PASS 1920x1080 / Scored-run launch button
 PASS 1920x1080 / Legal partial run reaches results through normal finish path
 PASS 1920x1080 / F3 fixture crosses traversable grate and reaches actual rear wall
 PASS 1920x1080 / Route guide toggle only changes drawing
+PASS 1920x1080 / Validation virtual keyboard receives Q while player is non-focused
 PASS 1920x1080 / Held Q enters temporary inspection
 PASS 1920x1080 / Inspection Q clears side-console pointer obstruction
 PASS 1920x1080 / Release Q restores the operating view
+PASS 1920x1080 / Validation virtual keyboard receives E while player is non-focused
 PASS 1920x1080 / Held E enters temporary inspection
 PASS 1920x1080 / Inspection E clears side-console pointer obstruction
 PASS 1920x1080 / Release E restores the operating view
+PASS 1920x1080 / Validation virtual keyboard receives C while player is non-focused
 PASS 1920x1080 / Held C enters temporary inspection
 PASS 1920x1080 / Inspection C clears side-console pointer obstruction
 PASS 1920x1080 / Release C restores the operating view
+PASS 1920x1080 / Validation virtual keyboard receives LeftShift while player is non-focused
 PASS 1920x1080 / Held LeftShift enters temporary inspection
 PASS 1920x1080 / Inspection LeftShift clears side-console pointer obstruction
 PASS 1920x1080 / Release LeftShift restores the operating view
+PASS 1920x1080 / Persistent Route Recorder button opens the authoring panel
+PASS 1920x1080 / Native Start New button starts a take
+PASS 1920x1080 / Typing/keys in the route panel do not drive, toggle machinery or dismount
+PASS 1920x1080 / Close and Drive retains the active recording
+PASS 1920x1080 / Normal S/Ctrl game input and fixed simulation observer capture a real driven reverse segment
+PASS 1920x1080 / Native Stop button finalizes raw observations
+PASS 1920x1080 / Native Save Named Copy persists JSON in the configured standalone library
+PASS 1920x1080 / Native saved-route list loads the clearly labeled deterministic fixture
+PASS 1920x1080 / First loaded-route repaint renders every raw sample instead of the preceding take
+PASS 1920x1080 / Preview and point inspection preserve the original raw file
+PASS 1920x1080 / Recorder closes through native UI after loading a saved route
 PASS: all player HUD checks.
-Native hidden-window D3D presentation warnings: 11 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 5 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

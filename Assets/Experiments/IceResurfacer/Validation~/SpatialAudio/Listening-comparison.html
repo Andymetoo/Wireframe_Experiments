@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aurora R-54 — Spatial audio measurements</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;max-width:1100px;margin:40px auto;padding:0 20px;background:#111c24;color:#e1edf3}
+h1{font-size:28px}p{max-width:850px}table{border-collapse:collapse;width:100%;margin:24px 0}th,td{text-align:left;padding:12px;border-bottom:1px solid #344650}th{color:#8dd6df}audio{width:260px;display:block;margin-top:8px}a{color:#8dd6df}small{color:#bccbd3}code{color:#a4e9d3}
+</style>
+<h1>Aurora R-54: spatial audio</h1>
+<p>Actual Unity 6000.4.1f1 stereo DSP captures. Each physical source uses full 3D spatialization. Gain is measured against the same source at 2 m; both channels contribute to RMS.</p>
+<p>Keep your playback volume fixed and play one recording at a time. The WAVs preserve absolute levels without per-file normalization. These probes isolate each loop at source volume 0.5 and pitch 1 to expose falloff; the live machine applies its existing state responses. Stereo output preserves the real seated and standing head orientation.</p>
+<table><thead><tr><th>Listener pose</th><th>Engine</th><th>Flood outlet</th></tr></thead><tbody>
+<tr><td>Seated</td><td>1.593 m · 99.93% · −0.006 dB<audio controls preload="none" src="Engine-seat.wav"></audio></td><td>2.296 m · 99.94% · −0.005 dB<audio controls preload="none" src="Flood-seat.wav"></audio></td></tr>
+<tr><td>Standing on machine</td><td>1.867 m · 100.07% · +0.006 dB<audio controls preload="none" src="Engine-standing.wav"></audio></td><td>2.742 m · 91.89% · −0.735 dB<audio controls preload="none" src="Flood-standing.wav"></audio></td></tr>
+<tr><td>2 m from source</td><td>100% · 0 dB<audio controls preload="none" src="Engine-2m.wav"></audio></td><td>100% · 0 dB<audio controls preload="none" src="Flood-2m.wav"></audio></td></tr>
+<tr><td>10 m from source</td><td>25.00% · −12.041 dB<audio controls preload="none" src="Engine-10m.wav"></audio></td><td>24.98% · −12.050 dB<audio controls preload="none" src="Flood-10m.wav"></audio></td></tr>
+<tr><td>Across rink width</td><td>19.547 m · 12.88% · −17.803 dB<audio controls preload="none" src="Engine-across_width.wav"></audio></td><td>20.119 m · 12.45% · −18.096 dB<audio controls preload="none" src="Flood-across_width.wav"></audio></td></tr>
+<tr><td>Opposite rink end</td><td>45.025 m · 5.72% · −24.848 dB<audio controls preload="none" src="Engine-opposite_end.wav"></audio></td><td>46.556 m · 5.56% · −25.093 dB<audio controls preload="none" src="Flood-opposite_end.wav"></audio></td></tr>
+</tbody></table>
+<p><small>Values slightly above/below 100% reflect DSP buffer boundaries of the same loop. They are not a gain boost.</small></p>
+<h2>Actual machinery state with ventilation</h2>
+<p>All sources unmuted at their real state levels and pitches: idle engine, both augers, flood valve 0.6, wash valve 0.4, pickup pump on. Arena ventilation remains 2D. These clips use the live-state mix, with seated output as reference.</p>
+<table><tr><td>Seated · RMS 0.131830 · 100%<audio controls preload="none" src="runtime-mix-seat.wav"></audio></td><td>10 m · RMS 0.032983 · 25.02%<audio controls preload="none" src="runtime-mix-10m.wav"></audio></td><td>Opposite end · RMS 0.009977 · 7.57%<audio controls preload="none" src="runtime-mix-opposite_end.wav"></audio></td></tr></table>
+<h2>Legacy 2D control</h2>
+<p>The previous 2D configuration reproduces the reported fault: at 25 m it retains 99.93% of its 2 m output.</p>
+<table><tr><td>2 m<audio controls preload="none" src="legacy-2D-2m.wav"></audio></td><td>25 m<audio controls preload="none" src="legacy-2D-25m.wav"></audio></td></tr></table>
+<h2>Head orientation</h2>
+<p>At 5 m the source is on the listener's right. Rotating the listener 180° swaps the sound to the left, preserving combined level to within 0.066%.</p>
+<table><tr><td>Right of listener<audio controls preload="none" src="pan-right.wav"></audio></td><td>After head turn<audio controls preload="none" src="pan-left-after-head-turn.wav"></audio></td></tr></table>
+<p><a href="Measured-falloff.csv">Raw measurements</a> · <a href="Results.txt">DSP and listener checks</a> · <a href="Structure-results.txt">Emitter origin checks</a> · <a href="Unity-results.txt">Unity regressions</a> · <a href="Core-results.txt">37 core scenarios</a> · <a href="Preservation-results.txt">Preservation audit</a></p>
+<p>Human listening calibration remains: comfort, machinery detail and balance against ventilation with all systems operating. No HRTF plugin, wall/cabin occlusion or arena reverb was added. These measurements are not acoustic SPL calibration.</p>
+</html>

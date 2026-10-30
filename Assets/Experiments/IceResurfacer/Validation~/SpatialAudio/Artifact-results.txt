@@ -1,0 +1,2 @@
+PASS 19 stereo 48 kHz WAV files; quantized RMS matches native DSP CSV.
+PASS all local comparison-page links resolve.

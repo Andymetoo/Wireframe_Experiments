@@ -1,0 +1,7 @@
+PASS 38 deterministic simulation scenarios.
+PASS integrated Unity regressions; zero runtime errors.
+PASS 69 native UI checks at each of 1366x768 and 1920x1080.
+PASS raw route persists through a fresh Unity process and normal shutdown draft flush.
+PASS 2,092 ordered finite samples with valid stored-payload SHA-256.
+PASS all preview gallery links resolve.
+PASS fixture is validation data, not the operator route.

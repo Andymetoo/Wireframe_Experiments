@@ -44,6 +44,7 @@ internal static class Program
         Test("water service state, capacities, conservation and recovery", ServiceValidation.Run);
         Test("aggregated overview, finite puddles and progressive freezing", SurfaceConsistencyValidation.Run);
         Test("advisory generated path, actual driven departure, passes and return", RouteGuideValidation.Run);
+        Test("raw driven route recording, sequence and unchanged physics", RouteRecordingCoreValidation.Run);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
     }
 

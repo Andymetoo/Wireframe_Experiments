@@ -1,0 +1,5 @@
+PASS portable fixture SHA-256 matches exact stored JSON payload.
+PASS 2,092 ordered finite recorded samples and both travel directions.
+PASS fixture explicitly labeled as validation data, not an operator route.
+PASS all preview-gallery links resolve.
+PASS both native reports include complete preview repaint and zero measured HUD clipping.

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aurora R-54 — Route recorder validation previews</title>
+<style>body{background:#101d27;color:#e1eff5;font:16px/1.5 system-ui,sans-serif;max-width:1440px;margin:32px auto;padding:0 20px}h1{font-size:28px}a{color:#78e4c6}img{display:block;width:100%;height:auto;border:1px solid #365161;margin:12px 0 24px}p{max-width:1050px}.badge{color:#ffcb78;font-weight:700}table{border-collapse:collapse}th,td{text-align:left;padding:8px 18px;border-bottom:1px solid #365161}</style>
+<h1>Aurora R-54 — Route recording and persistence</h1>
+<p class="badge">DETERMINISTIC VALIDATION FIXTURE — NOT THE OPERATOR'S ACTUAL ROUTE</p>
+<p>The preview below is an actual standalone-player framebuffer. Its path was recorded through deterministic control inputs following part of the existing reference route. It is test data: 2,092 raw observations, 434.257 m, 514.74 simulated seconds. No real operator route is claimed.</p>
+<p>For a real take: choose Free Simulation / Practice, open <strong>RECORDER F6</strong>, name it and Start New. Close and drive the complete route normally; F7 stops. Inspect the sequence slider and Save Named Copy. After Play Mode, use <strong>Experiments → Ice Resurfacer → Route Recordings</strong> or load it again in F6.</p>
+<p>Colors advance every 40 m in sequence. Orange indicates reverse travel, gray is the actual conditioner path, green marks START and red marks END. No smoothing or reordering is applied.</p>
+<h2>Full route preview — 1920 × 1080</h2>
+<a href="Preview-1920x1080.png"><img src="Preview-1920x1080.png" alt="Raw recorded fixture preview with start/end and ordered pass colors"></a>
+<h2>Point inspection — 1366 × 768</h2>
+<a href="Inspection-1366x768.png"><img src="Inspection-1366x768.png" alt="Selected raw sequence point and actual vehicle and conditioner pose"></a>
+<h2>Recording controls — 1366 × 768</h2>
+<a href="Recording-1366x768.png"><img src="Recording-1366x768.png" alt="Active route recorder with start stop save and close-and-drive controls"></a>
+<p><a href="Preview-1366x768.png">Full preview at 1366 × 768</a> · <a href="Inspection-1920x1080.png">Point inspection at 1920 × 1080</a> · <a href="Raw-route-overhead.png">Raw overhead image</a></p>
+<p><a href="Deterministic-fixture.route.json">Inspectable fixture JSON</a> · <a href="Unity-recorder-results.txt">Unity recorder checks</a> · <a href="Persistence-reload-results.txt">Fresh-process persistence</a> · <a href="Unity-results.txt">Integrated Unity regressions</a> · <a href="Core-results.txt">Core simulation checks</a> · <a href="Native-1366x768.txt">Native controls at 1366 × 768</a> · <a href="Native-1920x1080.txt">Native controls at 1920 × 1080</a> · <a href="Preservation-results.txt">Preservation audit</a></p>
+<p>Next steps require a real operator recording. Route editing, resumed takes, pass naming, map matching and sophisticated live guidance are intentionally outside this pass.</p>
+</html>

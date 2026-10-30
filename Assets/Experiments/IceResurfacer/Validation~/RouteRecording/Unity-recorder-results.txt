@@ -1,0 +1,31 @@
+PASS actual F6 opens the recorder within the existing route component
+PASS actual F7 starts a raw route at the current rear axle
+PASS configuration snapshot is detached from live calibration
+PASS ten stationary seconds and duplicate callbacks add no redundant samples
+PASS actual F7 stops after real controlled reverse departure
+PASS stop retains the exact final vehicle and conditioner observation below the sampling threshold
+PASS save named JSON copy through route component: Saved Unity_input_validation_20261030_034643_ced856c1.route.json
+PASS repeated save creates another copy without overwriting the raw original
+PASS save/load preserves sample count
+PASS float poses and states round-trip exactly; parsed double time/distance max error=1.776E-015
+PASS copying an unchanged loaded recording preserves its entire original raw JSON payload verbatim
+PASS loaded route reuses existing ResurfacingRoute path representation
+PASS load displays recorded path without replacing the F5 reference
+PASS F5 and recording preview remain read-only
+PASS truncated file is rejected while the current route stays intact
+PASS missing schema and checksum are rejected
+PASS quoted names, braces, slashes and Unicode survive payload integrity parsing
+PASS unsupported future envelope version is rejected explicitly
+PASS unknown file format is rejected
+PASS accidental payload edits fail the integrity check
+PASS duplicate/out-of-order sample sequence is rejected
+PASS non-finite pose is rejected before writing
+PASS invalid timestamp is rejected before writing
+PASS atomic recovery replacement retains a valid previous backup
+PASS failed/locked draft replacement preserves the previously published file
+PASS failed save cleans its own temporary file
+PASS new session stops and persists the preceding take instead of joining trajectories
+PASS deterministic driven fixture loads in the same operator preview
+PASS preview does not smooth, deduplicate, reorder or mutate raw observations
+Fixture: 2092 observations / 434.257 m / 514.74 s. Test driver only, NOT the operator's route.
+Paired fixture verifies identical vehicle and conditioner pose every fixed step, material totals and every final ice cell.

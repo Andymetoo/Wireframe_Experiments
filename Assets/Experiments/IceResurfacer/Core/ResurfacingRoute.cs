@@ -20,6 +20,15 @@ namespace IceResurfacer.Core
         public float Length {get;private set;}
         double x,z,heading;
         bool working;
+        // Recorded observations project into the same advisory path representation.
+        // This copies positions in sequence; the raw samples remain untouched.
+        public ResurfacingRoute(RecordedRouteData recorded)
+        {
+            recorded.Validate();PassSpacing=0;MinimumRadius=0;WorkStart=0;WorkEnd=recorded.samples.Count;
+            foreach(var p in recorded.samples)
+                Points.Add(new RoutePoint(p.vehicleX,p.vehicleZ,p.direction<0,p.conditionerLift<.05f&&p.bladeDepthMm>0));
+            Length=(float)recorded.distanceMeters;
+        }
         public ResurfacingRoute(SimulatorConfig c)
         {
             var layout=new ServiceLayout(c);

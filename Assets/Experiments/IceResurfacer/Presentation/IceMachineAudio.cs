@@ -64,7 +64,7 @@ namespace IceResurfacer.Presentation
         {layers[(int)layer]=IceAudioSpatialization.Create("Machine audio / "+layer,parent,position,clips[clip],true,physical);}
         Transform Find(string name)
         {
-            foreach(var part in world.Machine.GetComponentsInChildren<Transform>())if(part.name==name)return part;
+            foreach(var part in transform.GetComponentsInChildren<Transform>())if(part.name==name)return part;
             throw new System.InvalidOperationException("Missing physical audio anchor: "+name);
         }
         static AudioClip CreateLoop(string name,int layer)
@@ -158,7 +158,7 @@ namespace IceResurfacer.Presentation
             Target(Layer.Dump,perRate*sim.DumpSnowRate);Target(Layer.Upper,perRate*sim.VerticalSpillRate);
             Target(Layer.EscapeLeft,perRate*sim.ConditionerLeftEscapeRate);Target(Layer.EscapeRight,perRate*sim.ConditionerRightEscapeRate);
             Sound(Layer.Dump).transform.position=sim.DumpSnowRate>0?new Vector3(sim.DumpOriginX,sim.DumpOriginY,sim.DumpOriginZ):world.DumpOutlet.position;
-            Sound(Layer.Upper).transform.position=new Vector3(sim.UpperSnowOriginX,sim.UpperSnowOriginY,sim.UpperSnowOriginZ);
+            Sound(Layer.Upper).transform.position=sim.VerticalSpillRate>0?new Vector3(sim.UpperSnowOriginX,sim.UpperSnowOriginY,sim.UpperSnowOriginZ):world.TankDischarge.position;
             float exitY=world.Conditioner.TransformPoint(0,.16f,0).y;
             Sound(Layer.EscapeLeft).transform.position=new Vector3(sim.ConditionerLeftExitX,exitY,sim.ConditionerLeftExitZ);
             Sound(Layer.EscapeRight).transform.position=new Vector3(sim.ConditionerRightExitX,exitY,sim.ConditionerRightExitZ);

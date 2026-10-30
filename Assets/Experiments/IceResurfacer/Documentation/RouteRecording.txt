@@ -1,0 +1,203 @@
+AURORA R-54 / OPERATOR ROUTE RECORDING AND PERSISTENCE
+29 October 2026 / Unity 6000.4.1f1
+
+Purpose and launch
+Open Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity and press Play.
+Choose FREE SIMULATION / PRACTICE for unscored route authoring. Recording also
+works in Free Simulation / Scored; it is excluded from Guided Training.
+
+This is an observer in the existing IceRouteGuide component. F5 retains the
+original generated reference route and its optional sequential guidance. Loaded
+recordings project into the same ResurfacingRoute / RoutePoint representation
+for preview/future reuse. No competing route framework, autopilot, GPS renderer,
+spline editor or diagram tracing has been introduced. The conceptual diagrams
+do not prescribe or generate the recorded path. Only actual driving determines it.
+
+Record a full operator route
+1. Start Free Simulation / Practice. Park before opening the panel; engine,
+   machinery and simulation continue running while it is open.
+2. Click RECORDER F6 on the bottom HUD, or press F6. Enter a descriptive name,
+   for example "Operator / standard game sheet / take 1".
+3. Click START NEW, or press F7. The initial rear-axle and actual conditioner
+   poses are retained immediately. Check the RECORDING status.
+4. CLOSE AND DRIVE (or F6). Back onto the rink with S, then drive the complete
+   desired pattern manually using normal W/S, A/D, brake and machinery controls.
+   Record entry, perimeter, overlapping passes, rounded turns and return as desired.
+   The recorder does not steer or enforce a route and does not grant treatment credit.
+5. Press F7 to stop. The final observation is retained even when it falls below
+   the normal distance/heading threshold. F7 starts a new take if already stopped;
+   every preceding take retains a separate recovery file.
+6. Open F6 to preview. Color changes every 40 m in sequence, orange denotes
+   reverse segments, and gray traces the actual conditioner. START is green,
+   END is red. Move the sequence slider to inspect order, timestamp, distance,
+   direction, vehicle pose and conditioner pose; the selected point is marked.
+7. Click SAVE NAMED COPY. Verify the Saved message. Each click creates another
+   uniquely named copy, leaving earlier saved originals intact.
+8. Exit Play Mode. Use Experiments > Ice Resurfacer > Route Recordings to load
+   and inspect the file in the Editor, or enter Play, F6 and click its saved-file
+   entry. The Editor window can also inspect a live take and export a portable copy.
+   In a standalone build, F6 provides the same recorder, list and preview.
+
+The panel consumes drive, machinery and on-foot movement keys while open so
+typing a route name does not operate the vehicle. It releases existing pointer
+interactions; it does not engage an artificial parking brake. Close it to drive.
+Normal driving behavior with the panel closed is preserved. F5 stays independent.
+
+Storage and recovery
+Editor default:
+  Assets/Experiments/IceResurfacer/RouteRecordings~/
+Standalone default:
+  Application.persistentDataPath/IceResurfacer/Routes/
+The full active path is shown at the bottom of F6. The Editor window also shows
+its library path and can Open JSON from another location. No ScriptableObject,
+Play Mode scene-object mutation, scene save or asset import is required.
+The tilde folder keeps user route JSON out of Unity's asset import/build pipeline.
+Copy a .route.json between the two libraries to reuse it across Editor/builds.
+
+Named copies:
+  <safe-name>_<UTC timestamp>_<unique suffix>.route.json
+Recovery:
+  Drafts/<recording GUID>.route.json
+  Drafts/<recording GUID>.route.json.bak
+Each take has its own draft, so starting another take does not erase an earlier
+unsaved one. Active takes checkpoint every ten real seconds. Stop, new session,
+normal Play exit, assembly reload, scene unload, application shutdown and app
+suspension flush data as appropriate. A new simulation stops the old recording
+instead of concatenating a teleported/restarted trajectory. Normal Play exit
+marks the draft complete. Crash-recovered in-progress drafts remain explicitly
+partial and previewable; they are not silently represented as finished routes.
+
+Writes use a flushed short sibling temporary file and atomic publication.
+Replacing a draft keeps its previous valid backup. Failed writes keep the old
+file and the in-memory take, with a visible error. The application cleans only
+its own temporary file. No old take or named copy is automatically deleted.
+A hard process crash can lose up to the interval since its last successful
+checkpoint; filesystem/power-loss durability ultimately depends on the device.
+
+Format and raw observations
+UTF-8, human-readable .route.json. Envelope:
+  format: "AuroraR54.RecordedRoute"
+  version: 1
+  sha256: lowercase SHA-256 of the exact UTF-8 route-object JSON substring
+  route: raw recording metadata, configuration snapshot and ordered samples
+
+Route metadata includes schema version, GUID, name, UTC creation time,
+provenance, coordinate convention, full calibration snapshot, start simulation
+time, recording duration, integrated distance, sampling policy, completion and
+stop reason. Positions are SI meters on the existing flat X/Z simulation plane;
+vehicle position is the rear axle. Heading is the original simulation radians
+from +Z toward +X, including its unwrapped values. Conditioner X/Z and heading
+are its actual independent simulated pose, with its actual lift fraction.
+
+Each sample stores:
+  sequence; seconds; distanceMeters;
+  vehicleX; vehicleZ; vehicleHeadingRadians; speedMetersPerSecond; direction;
+  conditionerX; conditionerZ; conditionerHeadingRadians; conditionerLift;
+  bladeDepthMm (actual effective depth); floodValve; washValve; tankLift;
+  horizontalAuger; verticalAuger; washPump; boardBrush.
+direction is -1 reverse, 0 stopped, +1 forward, using a .02 m/s speed deadband.
+Distance always increases by actual traveled distance, including reverse travel.
+Timestamps are double-precision elapsed simulation seconds, incremented by the
+existing .02 s fixed step. Stationary intervals remain in elapsed time, while
+pause/menu time without simulation steps does not advance the recorded clock.
+
+Observation occurs AFTER EACH existing simulation step, including multiple
+steps in a slow render frame. Distance integrates every observed vehicle move.
+Points are retained for .20 m vehicle distance, .20 m conditioner displacement,
+2 degrees of vehicle/conditioner heading change, or meaningful direction/state
+changes. Stopping flushes the exact last pose. Repeated stationary observations
+do not grow the point list. A state/direction change at the same X/Z is a
+meaningful observation, not a duplicate. No nearest-pass lookup, sorting,
+merging, resampling or smoothing is applied to raw source observations.
+
+Files are versioned and bounded (50,000 samples / 64 MB). The recorder safely
+stops before exceeding its sample budget. Load rejects unsupported schema,
+missing/broken checksums, non-finite poses, invalid direction/state ranges,
+out-of-order/duplicate sequence, reversed timestamps/distances, inconsistent
+chord distance and redundant stationary entries. A failed load retains the
+current in-memory route. Do not hand-edit the payload without recomputing its
+checksum through the storage API. Future schema changes need explicit migration.
+
+Unchanged imported recordings retain the exact original raw JSON payload on
+copy/export, including numeric spellings. Native Unity parsing preserves all
+float poses/states exactly in validation. Double timestamps/distances are
+validated within 1e-10; the measured native-parser difference on the short
+round-trip fixture was 1.776e-15. The stored raw payload itself is unchanged.
+
+Preview and validation evidence
+Validation~/RouteRecording contains the deterministic fixture, raw overhead
+preview, Unity checks, fresh-process reload checks and standalone screenshots.
+The fixture is 2,092 observations / 434.257 m / 514.74 simulated seconds, created
+by deterministic control inputs following part of the existing generated guide.
+It includes stationary periods, reverse departure, straight work passes,
+rounded turns and nearby parallel passes. Maximum sampled distance was .2163 m
+(the .20 m threshold plus at most one actual fixed-step move).
+It is explicitly labeled NOT THE OPERATOR'S ACTUAL ROUTE in its name/provenance.
+No real operator recording is fabricated or provided by this pass.
+
+The paired fixture compares recorded/unrecorded vehicle and conditioner state
+every fixed step, material counters and every final ice cell. They are identical.
+Persistence checks cover start/stop and actual F6/F7 input, stationary sampling,
+final endpoint, raw ordering/precision, duplicate saves, immutable originals,
+round-trip and corrupted files, atomic backup and locked-destination failure,
+session boundaries, read-only preview and fresh-process persistence.
+
+All 38 deterministic simulation scenarios passed, including the existing full
+reference run and the new paired recorded-route fixture.
+Integrated Unity Play Mode regressions passed with zero runtime errors,
+including cockpit refinement, physical controls, cameras, machinery, snow,
+water service, ice rendering and spatial audio. Fresh-process reload verified
+the saved file's SHA-256, every sequence/position and the complete shutdown draft.
+Each standalone resolution (1366x768 and 1920x1080) passed 69 native checks,
+including actual recorder buttons, S/Ctrl driving, save/load, virtual-keyboard
+camera checks, read-only inspection, zero measured HUD clipping and immediate
+rendering of every loaded sample. The native test uses an owned hidden window;
+it does not establish focused-window input latency or a performance benchmark.
+Standalone writes were isolated to Validation~/RouteRecording/Player-Library-*
+instead of populating the user's real Application.persistentDataPath library.
+Preview-gallery.html links the actual standalone screenshots and raw JSON.
+The preservation audit checks 106 baseline assets: 100 are byte-identical;
+the six existing-file edits are explicit route/UI integration or validation.
+All audio implementation and all physics implementation files preserve their
+baseline hashes, and the original F5 reference generation is unchanged.
+
+Remaining scope
+This supplies persistent raw authoring data and an inspection interface.
+It does not yet edit, smooth, splice or resume a take, infer named passes,
+perform map matching, replace F5 with a recorded live guide, or implement polished
+GPS/training guidance. Partial crash-recovery files can be previewed; an ongoing
+take cannot be resumed from disk. No actual operator full-route recording has
+been captured yet. The former operator should record and review that dataset
+before route editing/guidance is built. The preview's 40 m color bands are an
+inspection aid, not inferred pass identities or treatment/coverage guarantees.
+
+Implementation
+Core/RouteRecording.cs: raw schema, validation and fixed-step observational sampler.
+Core/ResurfacingRoute.cs: raw-data constructor alongside unchanged reference builder.
+Presentation/IceRouteGuide.cs: owns recording, storage, preview and F6/F7 controls.
+Presentation/IceResurfacerGame.cs: fixed-step observation and panel input isolation.
+Presentation/IceDashboard.cs: accessible button, status and modal rendering.
+Presentation/RouteRecordingStorage.cs: portable JSON, integrity and atomic writes.
+Presentation/RouteRecordingPreview.cs: shared raw overhead view.
+Presentation/RouteRecordingPanel.cs: runtime controls, file list and point inspection.
+Editor/IceRouteRecordingsWindow.cs: post-Play/live inspection and portable export.
+Editor/RecordedRouteFixture.cs: deterministic paired test driver (Editor/test only).
+Editor/IceRouteRecordingValidation.cs: persistence, failures and shutdown/reload tests.
+Presentation/IceLayoutPlayerProbe.cs: native standalone recorder input/screenshots.
+Editor/IceResurfacerEditor.cs: adds the recorder suite to existing checks.
+Validation~/Program.cs, projects/probes and RunIsolatedUnity.ps1: repeatable checks.
+Validation~/AuditRouteRecordingPreservation.py: baseline, source and metadata audit.
+README.txt: operator controls and recording instructions.
+New Unity assets include their own metadata. The original cockpit, audio,
+machinery/vehicle/conditioner/ice implementation, scenes, materials and project
+settings are preserved except for the explicit integration points above.
+No dependency, branch, commit or push is part of this work.
+
+Repeat checks
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj --configuration Release -p:UseSharedCompilation=false
+  StageUnityValidation.ps1 -UpdateOnly
+  RunIsolatedUnity.ps1 -Action RunBatch -LogName Route-recording-unity.log
+  RunIsolatedUnity.ps1 -Action RoutePersistence -LogName Route-recording-reload.log
+Use the scripts in Validation~. Unity results initially land inside its isolated
+UnityProject copy. RoutePersistence deliberately uses a second process after
+RunBatch exits to prove disk persistence without live/static scene objects.
