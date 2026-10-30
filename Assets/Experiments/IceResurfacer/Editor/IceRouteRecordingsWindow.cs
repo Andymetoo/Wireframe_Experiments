@@ -70,6 +70,8 @@ namespace IceResurfacer.Editor
                 GUILayout.Label("\nBlade "+p.bladeDepthMm.ToString("F3")+" mm\nFlood "+p.floodValve.ToString("F3")+" / Wash "+p.washValve.ToString("F3")+"\nAugers H/V "+p.horizontalAuger+" / "+p.verticalAuger+"\nPump "+p.washPump+" / Brush "+p.boardBrush);
                 preview.ShowConditioner=EditorGUILayout.ToggleLeft("Show actual conditioner",preview.ShowConditioner);
                 GUILayout.Label("Colors advance every 40 m in sequence. Orange = reverse. Start green; end red. No smoothing or path editing.",EditorStyles.wordWrappedLabel);
+                if(GUILayout.Button("EDIT FITTED GUIDE / preserve raw"))
+                {try{TrainingRouteEditorWindow.OpenRecording(data);}catch(Exception e){status=e.Message;}}
                 if(GUILayout.Button("Save portable copy…"))
                 {
                     string path=EditorUtility.SaveFilePanel("Save raw route JSON",RouteRecordingStorage.DefaultDirectory,data.name,"route.json");

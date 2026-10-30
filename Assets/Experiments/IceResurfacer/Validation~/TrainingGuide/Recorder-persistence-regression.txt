@@ -1,0 +1,4 @@
+PASS fresh Editor process reloads the same inspectable file after Play Mode ended
+PASS saved original bytes survive Play Mode shutdown unchanged
+PASS all raw point ordering and positions survive fresh-process load
+PASS normal Play Mode/application shutdown flushes and completes the unsaved recovery draft

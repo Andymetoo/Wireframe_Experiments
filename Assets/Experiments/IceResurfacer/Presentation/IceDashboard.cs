@@ -56,6 +56,7 @@ namespace IceResurfacer.Presentation
             float scale=Mathf.Min(Screen.width/LayoutWidth,Screen.height/LayoutHeight);
             Vector2 p=(new Vector2(screenPoint.x,Screen.height-screenPoint.y)-new Vector2((Screen.width-LayoutWidth*scale)*.5f,(Screen.height-LayoutHeight*scale)*.5f))/scale;
             if(!game.Started||game.Paused||game.HelpVisible||game.Sim.Finished||game.RouteGuide!=null&&game.RouteGuide.PanelOpen)return true;
+            if(game.RouteGuide!=null&&game.RouteGuide.Visible&&(!Inspecting(game)||game.ChaseActive)&&!game.Sim.OnFoot&&new Rect(398,145,492,104).Contains(p))return true;
             if(new Rect(28,24,1164,108).Contains(p))return true;
             if(game.DiagnosticsVisible&&(Compact?new Rect(28,132,492,242).Contains(p):
                 new Rect(545,228,755,390).Contains(p)||new Rect(28,520,492,100).Contains(p)))return true;
@@ -162,6 +163,7 @@ namespace IceResurfacer.Presentation
                     if(!game.Sim.OnFoot)Guidance(game);
                     DriveWarning(game);
                     if(game.DiagnosticsVisible)Diagnostics(game);
+                    if(!game.Sim.OnFoot&&(!Inspecting(game)||game.ChaseActive)&&game.RouteGuide!=null&&game.RouteGuide.Visible)TrainingCue(game);
                 }
                 if(!game.Sim.OnFoot)StatusStrip(game);
                 if (game.Sim.Finished && !game.HelpVisible) Results(game);
@@ -241,6 +243,7 @@ namespace IceResurfacer.Presentation
             Line(a,b,2,Muted);Line(b,cc,2,Muted);Line(cc,d,2,Muted);Line(d,a,2,Muted);
             Vector2 gate=MapPoint(map,layout.GateX,layout.GateZ,s.Config);
             Box(new Rect(gate.x-3,gate.y-3,6,6),Mint);
+            if(game.RouteGuide!=null&&game.RouteGuide.Visible)DrawRouteMap(game,map);
             Vector2 p = MapPoint(map, s.Vehicle.X, s.Vehicle.Z, s.Config);
             p.x = Mathf.Clamp(p.x, map.x + 3, map.xMax - 3);
             p.y = Mathf.Clamp(p.y, map.y + 8, map.yMax - 8);
@@ -254,7 +257,6 @@ namespace IceResurfacer.Presentation
                 Vector2 right = new Vector2(Mathf.Cos(s.Conditioner.Heading), Mathf.Sin(s.Conditioner.Heading));
                 Line(tail - right * 5.3f, tail + right * 5.3f, 3, Amber);
             }
-            if(game.RouteGuide!=null&&game.RouteGuide.Visible)DrawRouteMap(game,map);
             Label(new Rect(1388,79,164,23),"TREATMENT",heading,Mint);
             Label(new Rect(1388,108,164,40),(r.Coverage*100).ToString("0.0")+"%",number,Mint);
             Label(new Rect(1388,149,164,24),"Finish "+(r.FinishQuality*100).ToString("0")+"%",small,White);
@@ -313,14 +315,40 @@ namespace IceResurfacer.Presentation
 
         void DrawRouteMap(IceResurfacerGame game,Rect map)
         {
-            var guide=game.RouteGuide;var route=guide.Route;if(route==null)return;
-            int first=guide.NextPoint,last=Mathf.Min(first+120,route.Points.Count-1);
-            Color tint=new Color(.6f,1,.3f,.85f);
-            for(int i=first;i<last;i+=4)
+            var guide=game.RouteGuide;if(guide.ActiveFit==null||guide.Progress==null)return;
+            for(int i=1;i<guide.MapPointCount;i+=2)
             {
-                var a=route.Points[i];var b=route.Points[Mathf.Min(i+4,last)];
-                Line(MapPoint(map,a.X,a.Z,game.Sim.Config),MapPoint(map,b.X,b.Z,game.Sim.Config),2,tint);
+                var a=guide.MapPointAt(i-1);var b=guide.MapPointAt(Mathf.Min(i+1,guide.MapPointCount-1));
+                Line(MapPoint(map,a.x,a.z,game.Sim.Config),MapPoint(map,b.x,b.z,game.Sim.Config),1.4f,Mathf.Abs(b.curvature)>.04f?Amber:Mint);
             }
+            int turn=guide.Progress.UpcomingTurn();
+            if(turn>=0&&guide.ActiveFit.samples[turn].distance<=guide.LookEnd)
+            {var p=guide.ActiveFit.samples[turn];var at=MapPoint(map,p.x,p.z,game.Sim.Config);Box(new Rect(at.x-2.5f,at.y-2.5f,5,5),Amber);}
+            DrawFootprintMap(map,game.Sim.Conditioner.X,game.Sim.Conditioner.Z,game.Sim.Conditioner.Heading,game.Sim.Config.ConditionerWidth,game.Sim.Config.ConditionerLength,0,game.Sim.Config,Mint);
+            DrawFootprintMap(map,game.Sim.Conditioner.X,game.Sim.Conditioner.Z,game.Sim.Conditioner.Heading,game.Sim.Config.WaterDistributionWidth+2*game.Sim.Config.WaterFilmSpreadMeters,game.Sim.Config.FloodContactLength,game.Sim.Config.FloodContactFore,game.Sim.Config,new Color(.35f,.75f,1,.9f));
+        }
+        void DrawFootprintMap(Rect map,float x,float z,float heading,float width,float length,float fore,SimulatorConfig c,Color tint)
+        {
+            float sn=Mathf.Sin(heading),cs=Mathf.Cos(heading);Vector2 last=default;
+            for(int i=0;i<5;i++)
+            {int j=i%4;float side=(j==0||j==3?-.5f:.5f)*width,along=(j<2?-.5f:.5f)*length+fore;
+                var p=MapPoint(map,x+cs*side+sn*along,z-sn*side+cs*along,c);if(i>0)Line(last,p,1,tint);last=p;}
+        }
+        void TrainingCue(IceResurfacerGame game)
+        {
+            var guide=game.RouteGuide;var fit=guide.ActiveFit;var progress=guide.Progress;if(fit==null||progress==null)return;
+            Rect rect=new Rect(398,145,492,104);Box(rect,Navy);
+            int turn=progress.UpcomingTurn();string instruction=turn<0?"FOLLOW CURRENT PASS":
+                (fit.samples[turn].curvature>0?"CURVE RIGHT":"CURVE LEFT")+"  /  "+Mathf.Max(0,(float)(fit.samples[turn].distance-progress.Distance)).ToString("F0")+" m";
+            if(progress.OffRoute)instruction="REJOIN SELECTED LEG  /  F6";
+            float pace=1.5f;int a=fit.IndexAt(progress.Distance),b=fit.IndexAt(Math.Min(fit.Length,progress.Distance+6));
+            for(int i=a;i<=b;i++)pace=Mathf.Min(pace,fit.samples[i].safeSpeed);
+            if(!progress.OffRoute)instruction+="  /  "+(pace<.12f?"CREEP":(pace*3.6f).ToString("F1")+" km/h");
+            string source=guide.IsTestGuide?"TEST FIXTURE":guide.SelectedGuide==null?"ORIGINAL REFERENCE":"OPERATOR GUIDE";
+            Label(new Rect(414,154,460,25),source+" / LEG "+(progress.Leg+1)+"  "+(fit.legs[progress.Leg].direction<0?"REVERSE":"FORWARD"),small,Muted);
+            Label(new Rect(414,181,460,29),instruction,heading,turn>=0?Amber:Mint);
+            var intended=fit.At(progress.Distance);float dx=game.Sim.Conditioner.X-intended.conditionerX,dz=game.Sim.Conditioner.Z-intended.conditionerZ;
+            Label(new Rect(414,216,460,25),"Offset "+progress.LateralError.ToString("F2")+" m  /  conditioner "+Mathf.Sqrt(dx*dx+dz*dz).ToString("F2")+" m  /  advisory",small,Muted);
         }
 
         void CompactRack(IceResurfacerGame game)

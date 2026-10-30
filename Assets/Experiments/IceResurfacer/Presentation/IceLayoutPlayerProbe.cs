@@ -33,6 +33,7 @@ namespace IceResurfacer.Presentation
         IntPtr playerWindow;
         bool active, complete;
         InputSettings originalInputSettings,validationInputSettings;
+        string ArtifactDirectory => Path.Combine(outputDirectory,"TrainingGuide","Player-"+currentResolution);
 
         IEnumerator Start()
         {
@@ -271,12 +272,99 @@ namespace IceResurfacer.Presentation
             game.WaterService.UpdateViewAndEffects(true,.25f);
             yield return Capture("HUD-"+currentResolution+"-service.png","service panel");
             yield return ValidateRouteRecorder();
+            yield return ValidateTrainingGuide();
+        }
+
+        IEnumerator ValidateTrainingGuide()
+        {
+            game.NewSession(true);var guide=game.RouteGuide;guide.Refresh();guide.UseOriginalReference();
+            Check(guide.SelectedGuide==null&&!guide.Visible,"Training fixture has not replaced or enabled the original F5 default");
+            yield return Click("RouteRecorder");yield return ClickAt(new Vector2(1230,100));
+            Check(guide.TrainingPanelOpen,"Native F6 Training Guides tab opens full-route authoring preview");
+            yield return ClickAt(TrainingGuidePanel.ControlRect("Fixture").center);
+            Check(guide.IsTestGuide&&guide.ActiveFit.Ready&&!guide.Visible,"Explicit fixture selection loads a labeled physically validated guide without enabling F5");
+            yield return Capture("Training-"+currentResolution+"-overview.png","full-route preview reserved for training authoring interface");
+            yield return ClickAt(new Vector2(690,757));
+            Check(!guide.Footprints.ComparingFullPlan&&guide.Footprints.MissedBladeCells==0,"runtime missed-area view excludes all future unconfirmed passes");
+            yield return ClickAt(new Vector2(175,757));
+            string saved=TrainingGuideStorage.SaveCopy(guide.GuideDirectory,guide.SelectedGuide),bytes=File.ReadAllText(saved);
+            yield return ClickAt(TrainingGuidePanel.ControlRect("Reference").center);
+            Check(guide.SelectedGuide==null,"Native Original F5 Reference button restores the default source");
+            yield return ClickAt(TrainingGuidePanel.ControlRect("Refresh").center);yield return ClickAt(new Vector2(1100,335));
+            Check(guide.IsTestGuide,"Native guide-file list loads a persisted .guide.json without code changes");
+            yield return ClickAt(TrainingGuidePanel.ControlRect("Toggle").center);
+            Check(guide.Visible,"Native Show Guide / F5 button enables advisory guide");
+            yield return ClickAt(RouteRecordingPanel.ControlRect("Close").center);
+            var fit=guide.ActiveFit;int straight=-1,turn=-1;
+            for(int i=0;i<fit.legs.Count;i++)
+            {var leg=fit.legs[i];if(leg.direction>0&&leg.end-leg.start>12&&!leg.turn&&straight<0)straight=i;if(straight>=0&&i>straight&&leg.turn){turn=i;break;}}
+            Check(straight>=0&&turn>=0,"fixture includes straight work passes followed by curved perimeter context");
+            SetGuidePose(straight,Math.Max(fit.legs[straight].start,fit.legs[straight].end-12));
+            game.SelectCameraView("Forward");game.TickInspectionCamera(2);
+            Check(guide.DisplayPointCount>0&&guide.DisplayPointCount<=120&&guide.LookEnd-guide.Progress.Distance<=28.001,"live world preview stays bounded to current/upcoming 28 m");
+            Check(guide.MapPointCount>0&&guide.MapPointCount<=120&&guide.MapPointAt(guide.MapPointCount-1).distance<=guide.LookEnd+.001,"Surface Survey uses limited cached route section rather than full overlapping pattern");
+            yield return Capture("Training-"+currentResolution+"-seated.png","seated route line, upcoming turn card and readable Surface Survey");
+            var previous=Keyboard.current;var keyboard=InputSystem.AddDevice<Keyboard>();
+            var look=typeof(IceResurfacerGame).GetMethod("UpdateLook",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            try
+            {
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.R));InputSystem.Update();look.Invoke(game,new object[]{true,.02f});
+                InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();for(int i=0;i<20;i++)look.Invoke(game,new object[]{true,.02f});
+                Check(game.Standing,"actual R input enters standing cockpit with guide enabled");
+                yield return Capture("Training-"+currentResolution+"-standing.png","standing live route and map");
+            }
+            finally{InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();}
+            SetGuidePose(turn,fit.legs[turn].start+3);game.SelectCameraView("Chase");game.TickInspectionCamera(2);
+            yield return Capture("Training-"+currentResolution+"-turn-chase.png","curved upcoming route is depth occluded by solid vehicle geometry");
+            float x=game.Sim.Vehicle.X,z=game.Sim.Vehicle.Z,water=game.Sim.FloodWaterLiters;var throttle=game.Sim.Controls.Throttle;
+            guide.RejoinLeg(Math.Min(turn+2,fit.legs.Count-1));guide.Refresh();guide.Toggle();guide.Toggle();
+            Check(game.Sim.Vehicle.X==x&&game.Sim.Vehicle.Z==z&&game.Sim.FloodWaterLiters==water&&game.Sim.Controls.Throttle==throttle,"rejoin and repeated F5 toggles preserve free control, exact pose and machinery state");
+            Check(File.ReadAllText(saved)==bytes,"runtime preview and guidance do not mutate saved guide data");
+            ValidateGuideOcclusion();
+            guide.Toggle();guide.UseOriginalReference();Check(guide.SelectedGuide==null&&!guide.Visible,"native validation restores original F5 source and leaves guide off");
+            game.NewSession(true);
+        }
+        void SetGuidePose(int leg,double distance)
+        {
+            var guide=game.RouteGuide;var p=guide.ActiveFit.At(distance);var s=game.Sim;
+            // Explicit camera/render fixture only; guidance itself never seeds a pose.
+            s.Vehicle.X=p.x;s.Vehicle.Z=p.z;s.Vehicle.Heading=p.heading;s.Vehicle.Speed=p.direction*.9f;
+            s.Conditioner.X=p.conditionerX;s.Conditioner.Z=p.conditionerZ;s.Conditioner.Heading=p.conditionerHeading;s.Conditioner.Lift=0;
+            guide.RejoinLeg(leg);guide.ObserveSimulationStep(s);guide.Refresh();
+            typeof(IceResurfacerGame).GetMethod("UpdateMachine",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game,new object[]{0f});
+            game.Surface.Invalidate();game.Surface.Refresh(s);
+        }
+        void ValidateGuideOcclusion()
+        {
+            var root=new GameObject("Validation-only training shader depth test");
+            var cameraNode=new GameObject("Validation-only overhead depth camera");cameraNode.transform.SetParent(root.transform);
+            var camera=cameraNode.AddComponent<Camera>();camera.enabled=false;camera.orthographic=true;camera.orthographicSize=2;
+            camera.transform.position=new Vector3(1000,10,1000);camera.transform.rotation=Quaternion.Euler(90,0,0);
+            camera.cullingMask=1<<31;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;
+            var cube=GameObject.CreatePrimitive(PrimitiveType.Cube);cube.transform.SetParent(root.transform);cube.layer=31;
+            cube.transform.position=new Vector3(1000,1,1000);cube.transform.localScale=new Vector3(.8f,.5f,.8f);
+            var opaque=new Material(Resources.Load<Material>("AuroraLit"));opaque.SetColor("_BaseColor",Color.red);opaque.SetColor("_EmissionColor",Color.red);opaque.EnableKeyword("_EMISSION");cube.GetComponent<Renderer>().sharedMaterial=opaque;
+            var node=new GameObject("Actual training shader test line");node.transform.SetParent(root.transform);node.layer=31;
+            var material=new Material(Resources.Load<Shader>("TrainingRoute"));material.SetColor("_BaseColor",Color.green);
+            var line=node.AddComponent<LineRenderer>();line.sharedMaterial=material;line.startWidth=line.endWidth=.16f;line.positionCount=2;
+            line.SetPosition(0,new Vector3(998.4f,0,1000));line.SetPosition(1,new Vector3(1001.6f,0,1000));
+            var target=new RenderTexture(128,128,24,RenderTextureFormat.ARGB32);var old=RenderTexture.active;Texture2D image=null;
+            try
+            {
+                target.Create();camera.targetTexture=target;camera.Render();RenderTexture.active=target;
+                image=new Texture2D(128,128,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,128,128),0,0);image.Apply();
+                Color hidden=image.GetPixel(64,64),visible=image.GetPixel(105,64);
+                Check(hidden.r>hidden.g+.2f&&visible.g>visible.r+.2f,"native framebuffer: training line is visible on exposed ground and hidden behind an opaque solid");
+                File.WriteAllBytes(Path.Combine(ArtifactDirectory,"Training-"+currentResolution+"-depth-occlusion.png"),image.EncodeToPNG());
+            }
+            finally
+            {RenderTexture.active=old;camera.targetTexture=null;target.Release();Destroy(target);if(image!=null)Destroy(image);Destroy(root);Destroy(opaque);Destroy(material);}
         }
 
         IEnumerator ValidateRouteRecorder()
         {
             game.NewSession(true);var guide=game.RouteGuide;
-            guide.ConfigureValidationStorage(Path.Combine(outputDirectory,"RouteRecording","Player-Library-"+currentResolution));
+            guide.ConfigureValidationStorage(Path.Combine(outputDirectory,"TrainingGuide","Player-Library-"+currentResolution));
             guide.RecordingName="Native UI validation — not an operator route";
             yield return Click("RouteRecorder");
             Check(guide.PanelOpen,"Persistent Route Recorder button opens the authoring panel");
@@ -508,14 +596,14 @@ namespace IceResurfacer.Presentation
             yield return new WaitForEndOfFrame();
             var texture = ScreenCapture.CaptureScreenshotAsTexture();
             if (texture == null) throw new InvalidOperationException("No rendered framebuffer for " + name);
-            File.WriteAllBytes(Path.Combine(outputDirectory, name), texture.EncodeToPNG());
+            Directory.CreateDirectory(ArtifactDirectory);File.WriteAllBytes(Path.Combine(ArtifactDirectory, name), texture.EncodeToPNG());
             UnityEngine.Object.Destroy(texture);
             foreach (string issue in game.Dashboard.LayoutIssues)
             {
                 string entry = currentResolution + " / " + context + ": " + issue;
                 if (!layoutIssues.Contains(entry)) layoutIssues.Add(entry);
             }
-            File.WriteAllText(Path.Combine(outputDirectory, "HUD-layout-issues-" + currentResolution + ".txt"),
+            File.WriteAllText(Path.Combine(ArtifactDirectory, "HUD-layout-issues-" + currentResolution + ".txt"),
                 layoutIssues.Count == 0 ? "PASS: no measured text clipping in captured HUD states.\n" : string.Join("\n", layoutIssues) + "\n");
         }
 

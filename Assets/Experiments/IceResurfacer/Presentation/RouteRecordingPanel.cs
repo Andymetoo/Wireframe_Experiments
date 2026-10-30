@@ -9,6 +9,8 @@ namespace IceResurfacer.Presentation
     {
         readonly IceRouteGuide guide;
         readonly RouteRecordingPreview preview=new RouteRecordingPreview();
+        readonly TrainingGuidePanel training;
+        public bool TrainingTab {get;set;}
         GUIStyle label,small,heading,button;
         string[] files=Array.Empty<string>();
         Vector2 scroll;
@@ -16,7 +18,7 @@ namespace IceResurfacer.Presentation
         float nextPreview;
         RecordedRouteData previewData;
         public int PreviewSampleCount => preview.SampleCount;
-        public RouteRecordingPanel(IceRouteGuide owner){guide=owner;}
+        public RouteRecordingPanel(IceRouteGuide owner){guide=owner;training=new TrainingGuidePanel(owner);}
         public static Rect ControlRect(string name)
         {
             switch(name)
@@ -32,7 +34,7 @@ namespace IceResurfacer.Presentation
             }
         }
         public void RefreshFiles()
-        {try{files=guide.Library.ListFiles();}catch(IOException){files=Array.Empty<string>();}catch(UnauthorizedAccessException){files=Array.Empty<string>();}}
+        {try{files=guide.Library.ListFiles();training.RefreshFiles();}catch(IOException){files=Array.Empty<string>();}catch(UnauthorizedAccessException){files=Array.Empty<string>();}}
         void Styles()
         {
             if(label!=null)return;
@@ -45,8 +47,11 @@ namespace IceResurfacer.Presentation
         {
             Styles();Color old=GUI.color;GUI.color=new Color(.018f,.035f,.047f,1);
             GUI.DrawTexture(new Rect(90,60,1420,830),Texture2D.whiteTexture);GUI.color=old;
-            GUI.Label(new Rect(112,80,1100,36),"ROUTE RECORDING / RAW OPERATOR TRAJECTORY",heading);
+            GUI.Label(new Rect(112,80,780,36),TrainingTab?"TRAINING GUIDE / AUTHORING PREVIEW":"ROUTE RECORDING / RAW TRAJECTORY",heading);
+            if(GUI.Button(new Rect(910,82,200,36),"RAW RECORDINGS",button))TrainingTab=false;
+            if(GUI.Button(new Rect(1118,82,224,36),"TRAINING GUIDES",button)){TrainingTab=true;training.RefreshFiles();}
             if(Button("Close","CLOSE  F6"))guide.ToggleRecordingPanel();
+            if(TrainingTab){training.Draw();return;}
             var data=guide.Recorder.Data;
             // Repaint the route at two Hz while driving; inspection never rebuilds raw data.
             bool finalChanged=!guide.Recorder.Recording&&data!=null&&preview.SampleCount!=data.samples.Count;
@@ -102,6 +107,6 @@ namespace IceResurfacer.Presentation
             GUI.Label(new Rect(910,809,570,26),"Park first; machine runs. F5 reference unchanged.",small);
             GUI.Label(new Rect(112,840,1368,43),"FILES  /  "+guide.Library.DirectoryPath,small);
         }
-        public void Dispose(){preview.Dispose();}
+        public void Dispose(){preview.Dispose();training.Dispose();}
     }
 }

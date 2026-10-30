@@ -1,0 +1,142 @@
+AURORA R-54 / ROUTE EDITOR AND LIVE TRAINING GUIDE
+Validated with Unity 6000.4.1f1, Windows, NVIDIA RTX 3050 Laptop / D3D11.
+
+Implemented
+The existing ResurfacingRoute and F5 component now accept separately saved,
+editable cubic guides derived from version-1 recorder files. Raw recordings
+remain unchanged. The Editor provides overhead selection/dragging, tangent and
+heading adjustment, exact curve insertion, point removal, undo/redo, transition
+markers, vehicle/conditioner paths and separate blade/water footprint layers.
+Invalid curves remain editable drafts and are refused for live selection.
+
+F5 displays the current/upcoming route within 28 m. Ground geometry starts 4 m
+ahead, fades at its ends and respects solid depth. A cockpit/standing/chase card
+shows context, direction, upcoming turn, pace and separate vehicle/conditioner
+offsets. The Surface Survey retains its ice data and current-position icon with
+a thin limited guide, upcoming-turn marker and actual contact envelopes.
+Sequential progress uses route distance, heading, signed travel, traveled-distance
+budget and adjacent context; it never globally chooses a later nearby pass.
+Deviations can rejoin the same context. F6 permits explicit distant leg rejoin.
+All of these operations are advisory and leave controls, physics, ice and scoring
+under the original simulator's authority.
+
+Workflow and persistence
+Record in Free Simulation / Practice: F6 > Raw Recordings > Start New (F7),
+Close and Drive, execute the entire route normally, F7 Stop, Save Named Copy.
+After Play Mode: Experiments > Ice Resurfacer > Training Route Editor > Open Raw
+.route.json. Any compatible recorder file can be selected without code changes.
+Edit, inspect red constraints/overlap, Save Corrected COPY. F6 > Training Guides >
+Refresh loads saved copies during play; F5 toggles the selected guide. Use in
+Play selects a snapshot directly from the Editor. Original F5 Reference restores
+the initial source; the initial source is also restored on a new Play instance.
+
+Editor raw files: Assets/Experiments/IceResurfacer/RouteRecordings~/*.route.json
+Corrected files: its Guides/*.guide.json; recovery files: Guides/Drafts/.
+Player raw files: Application.persistentDataPath/IceResurfacer/Routes
+Player corrected files: its Guides/ subdirectory. The panel shows the exact path.
+Copy a corrected guide into that directory and Refresh. Runtime editing remains
+an Editor workflow. No Play Mode scene-object persistence is assumed.
+The inspectable JSON guide embeds the exact original raw JSON, source ID/SHA-256,
+physical calibration and ordered controls/handles/directions/intent/markers.
+An independent envelope checksum protects the corrected guide. Copies have unique
+names; draft publication is atomic and retains the prior backup.
+
+Verified tests
+- 39 deterministic core simulation scenarios pass, including all prior relevant
+  vehicle, ice, snow, service, generated-route and recorder checks.
+- Focused guide tests cover unconstrained failure, constrained fit, raw integrity,
+  exact cubic insertion (<0.01 mm error), deletion, marker contexts, out-of-rink
+  rejection, reverse entry, long straights, rounded perimeter and inward loops.
+- Sequential tests traverse three exactly coincident synthetic loops without
+  skips; stationary, wrong-direction/heading and discontinuous poses hold
+  progress; deviation/return and explicit distant rejoin work without restart.
+- Independent contact samples verify blade width, wider flood fringe and its
+  rearward outlet. Future passes are excluded from live missed-area comparisons;
+  earlier rejoin resets the expected prefix while preserving actual observations.
+- Paired 900-step work passes retain exact vehicle/conditioner states, material
+  totals, every native ice-cell byte and every scoring-report field.
+- Native Unity acceptance passes all prior cockpit, camera, snow, controls,
+  service, ice rendering, spatial audio and recorder suites with zero runtime
+  errors. Editor CRUD/undo/save/reload, all control-center hit tests, immutable
+  source data, checksums, draft rejection and detached Play snapshots pass.
+- A fresh Unity process reloads the corrected guide and its unchanged embedded
+  raw data after Play Mode ended; the prior recorder shutdown-persistence check
+  also passes. See Fresh-process-persistence.txt and recorder evidence.
+- Native development players at 1366x768 and 1920x1080 pass real mouse/file-list
+  controls, F5/standing behavior, bounded world/map previews and layout checks.
+  Actual framebuffer pixels verify the training shader draws on exposed ground
+  and is occluded by an opaque solid. See Player-*/HUD-player-results-*.txt.
+
+Fixture and measured geometry
+No operator-authored real route was supplied. The labeled deterministic fixture
+uses the existing controlled-driving recorder test: 2,092 raw observations,
+434.257 m. Derived guide: 171 controls, 14,547 fitted samples, 29 contexts,
+433.928038 m. Minimum sampled rear-axle radius 4.497955 m exceeds the current
+4.485012 m limit; curvature and body/conditioner boundary errors are zero.
+Maximum distance to the corresponding raw sample interval is 0.145836 m.
+The coincident-loop progress fixture is a separate synthetic unit test.
+Resources/TrainingTestGuide.json is available only through explicit selection;
+it never becomes the permanent/default F5 source.
+
+Performance
+See Performance/*.csv and Results-summary.json / Screenshots.html for measured
+off/on rows. Both scenarios use the same fixture, pose, normal driving controls,
+real cutting, flooding and full HUD. Fitting/setup are outside measurement.
+Each row contains 299 measured frames after warmup. Frame time includes rendering,
+IMGUI and minimap; CPU_work includes physics, machine effects and guide observation.
+Measured work allocation is zero in both modes. Whole-frame IMGUI allocation is
+11.4–12.5 KB/frame off and 18.9–20.0 KB/frame on (about 7.5 KB/frame added).
+Both modes produce identical material
+totals and 7,558 active wet cells. Short samples have warmup/order/thermal noise;
+faster rows do not establish a guide speedup. Native hidden-window presentation
+warnings and unavailable draw-call counters limit focused-window/GPU/latency
+conclusions. These are reproducible development-player workloads, not an Editor
+or focused manual-play FPS promise. No user Unity process was stopped.
+
+Preservation
+Preservation-audit.json compares the initial hashes: all 30 existing raw files
+are unchanged; 111 of 120 original source/meta files are byte-identical. The nine
+changed originals are the existing route/data/UI integration and validation
+hooks listed below. Original physics, audio, machinery geometry, ice, configuration,
+shaders and scene files retain their hashes. New test outputs are kept here;
+historical validation artifacts regenerated by tests were archived/restored.
+No tracked changes outside IceResurfacer; no duplicate metadata GUIDs. No branch,
+commit or push was performed.
+
+Modified / added implementation files (paths relative to IceResurfacer)
+Core/ResurfacingRoute.cs: existing route integration.
+Core/TrainingRoute.cs: serialized controls, constrained cubic reconstruction and
+  private scratch projection through the actual conditioner linkage solver.
+Core/TrainingRouteEditing.cs: exact insertion/removal and bounded fit correction.
+Core/RouteProgress.cs: sequential direction/heading/travel-budget tracking.
+Core/RouteFootprints.cs: independent intended/observed contact geometry.
+Presentation/IceRouteGuide.cs: existing F5/recorder integration and source selection.
+Presentation/RouteRecordingStorage.cs: shared atomic publication/integrity helpers.
+Presentation/TrainingGuideStorage.cs: portable versioned guide persistence.
+Presentation/TrainingGuideView.cs: cached overhead authoring/diagnostic preview.
+Presentation/TrainingGuidePanel.cs and RouteRecordingPanel.cs: F6 guide interface.
+Presentation/IceDashboard.cs: limited Survey overlay and advisory cockpit card.
+Editor/TrainingRouteEditorWindow.cs and IceRouteRecordingsWindow.cs: editing workflow.
+Resources/TrainingRoute.shader: depth-tested translucent guidance.
+Resources/TrainingTestGuide.json: explicitly labeled portable test data.
+Editor/IceTrainingGuideValidation.cs and IceResurfacerEditor.cs: Unity acceptance.
+Presentation/IceLayoutPlayerProbe.cs and IcePerformanceProbe.cs: native checks.
+Validation~/TrainingGuideValidation.cs, Program.cs and validation csproj: core checks.
+Validation~/RunIsolatedUnity.ps1 and RunPerformancePlayer.ps1: explicit test runners.
+Documentation/TrainingGuide.txt and README.txt: operator/developer instructions.
+New Unity source/resource/documentation files include their metadata files.
+
+Remaining limits / calibration
+The actual operator pattern still needs to be recorded and manually reviewed.
+The spline has continuous heading with bounded sampled curvature; G1 joins can
+change curvature and may require creep/stopping to set steering. This pass does
+not certify C2 steering continuity or full tire/dynamic tracking at arbitrary
+speed. Pace is advisory. Synchronous fit/load can pause briefly for large routes.
+Major sequence skips require explicit leg selection; no global nearest-loop
+reacquisition occurs. Editor undo history is local to the window session.
+20 cm contact diagnostics estimate geometry, using the simulator's blade contact
+rectangle and water outlet/fringe. They do not measure fluid flux, exact overlap
+percentages or the native 5 cm scored treatment. Older recordings store valve
+state rather than tank volume, so recorded-water delivery cannot be proved.
+Manual contrast, turning pace, overlap and operator-route calibration remain.
+No subjective claim is made that the test fixture represents actual operator work.

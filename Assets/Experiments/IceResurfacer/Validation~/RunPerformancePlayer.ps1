@@ -2,6 +2,7 @@ param(
     [ValidateSet('Transparent','Offscreen')][string]$WindowMode = 'Transparent',
     [string]$OutputFolder = 'PerformanceAfter',
     [int]$EnduranceFrames = 1500,
+    [switch]$GuidesOnly,
     [ValidateRange(800,3840)][int]$Width = 1366,
     [ValidateRange(600,2160)][int]$Height = 768
 )
@@ -95,6 +96,7 @@ $playerPath = Join-Path $PSScriptRoot 'PerformanceBuild/AuroraPerformance.exe'
 # This per-process switch leaves the project's normal rendering settings intact.
 $presentationMode = if ($WindowMode -eq 'Transparent') { '-force-d3d11-bitblt-model' } else { '' }
 $arguments = "-force-d3d11 $presentationMode -popupwindow -screen-fullscreen 0 -screen-width $Width -screen-height $Height -logFile `"$validationDirectory/Performance-player-${Width}x${Height}.log`" --aurora-endurance-frames $EnduranceFrames --aurora-performance-output `"$validationDirectory/$OutputFolder`""
+if($GuidesOnly){$arguments+=' --aurora-guides-only 1'}
 $child = Start-Process -FilePath $playerPath -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $deadline = [DateTime]::UtcNow.AddSeconds(1200)
 try {

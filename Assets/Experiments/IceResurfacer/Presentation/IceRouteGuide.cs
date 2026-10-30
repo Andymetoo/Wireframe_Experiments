@@ -13,6 +13,23 @@ namespace IceResurfacer.Presentation
         LineRenderer line;
         Material material;
         readonly Vector3[] upcoming=new Vector3[120];
+        readonly GuideSample[] mapUpcoming=new GuideSample[120];
+        RouteFit referenceFit,selectedFit;
+        TrainingRouteDefinition selectedGuide;
+        float nextComparison;
+        public RouteProgress Progress {get;private set;}
+        public RouteFootprints Footprints {get;private set;}
+        public TrainingRouteDefinition SelectedGuide => selectedGuide;
+        public RouteFit ActiveFit => Route==null?null:Route.Guide;
+        public int DisplayPointCount {get;private set;}
+        public int MapPointCount {get;private set;}
+        public double LookEnd {get;private set;}
+        public const float LookAheadMeters=28,HiddenNearMeters=4;
+        public string TrainingStatus {get;private set;}="Original generated F5 reference selected";
+        public string GuideDirectory => System.IO.Path.Combine(Library.DirectoryPath,"Guides");
+        public GuideSample MapPointAt(int i) => mapUpcoming[i];
+        public bool IsTestGuide => selectedGuide!=null&&ActiveFit!=null&&(ActiveFit.provenance.IndexOf("NOT the operator",System.StringComparison.OrdinalIgnoreCase)>=0||ActiveFit.provenance.IndexOf("validation",System.StringComparison.OrdinalIgnoreCase)>=0);
+        public bool TrainingPanelOpen => PanelOpen&&panel.TrainingTab;
         readonly RouteRecorder recorder=new RouteRecorder();
         RouteRecordingPanel panel;
         float nextCheckpoint;
@@ -30,23 +47,26 @@ namespace IceResurfacer.Presentation
         public bool Visible {get;private set;}
         public bool Available {get;private set;}=true;
         public int NextPoint {get;private set;}
-        public string Phase => Route==null?"":NextPoint<Route.WorkStart?"ENTRY / REVERSE THEN TURN":NextPoint<Route.WorkEnd?"OVERLAPPING PASSES":"RETURN TO SERVICE";
+        public string Phase => Progress!=null&&ActiveFit!=null?"LEG "+(Progress.Leg+1)+" / "+ActiveFit.legs[Progress.Leg].label:Route==null?"":NextPoint<Route.WorkStart?"ENTRY / REVERSE THEN TURN":NextPoint<Route.WorkEnd?"OVERLAPPING PASSES":"RETURN TO SERVICE";
         public void Initialize(IceResurfacerGame owner)
         {
             game=owner;
             Library=new RouteRecordingStorage(RouteRecordingStorage.DefaultDirectory);panel=new RouteRecordingPanel(this);
-            material=new Material(Resources.Load<Shader>("CollisionOverlay")){name="Aurora optional route guide"};
-            material.SetColor("_BaseColor",new Color(.30f,.90f,.75f,.40f));
+            material=new Material(Resources.Load<Shader>("TrainingRoute")){name="Aurora depth-tested optional route guide"};
+            material.SetColor("_BaseColor",new Color(.30f,.90f,.75f,.62f));
             var node=new GameObject("F5 advisory upcoming route");node.transform.SetParent(transform,false);
             line=node.AddComponent<LineRenderer>();line.sharedMaterial=material;line.useWorldSpace=true;
             line.startWidth=.075f;line.endWidth=.025f;line.shadowCastingMode=ShadowCastingMode.Off;line.receiveShadows=false;line.enabled=false;
+            var gradient=new Gradient();gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},new[]{new GradientAlphaKey(.1f,0),new GradientAlphaKey(.9f,.25f),new GradientAlphaKey(.65f,.8f),new GradientAlphaKey(0,1)});line.colorGradient=gradient;
             Refresh();
         }
         public void Toggle()
         {
             Refresh();
             if(!Available){game.Notice="The reference route is calibrated for Northline's standard rink and machinery geometry. Free driving remains available.";return;}
-            Visible=!Visible;Refresh();
+            Visible=!Visible;
+            if(Visible){PrepareNavigation();Progress?.Synchronize(game.Sim.Vehicle.X,game.Sim.Vehicle.Z);}
+            Refresh();
         }
         void Update()
         {
@@ -64,6 +84,7 @@ namespace IceResurfacer.Presentation
             PanelOpen=!PanelOpen;game.ReleaseControls();game.ReleaseLook();
             if(PanelOpen){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;panel.RefreshFiles();}
         }
+        public void ShowTrainingPanel(){if(!PanelOpen)ToggleRecordingPanel();panel.TrainingTab=true;}
         public bool CanRecord => game!=null&&game.Sim!=null&&game.Started&&!game.Sim.GuidedTraining&&!game.Sim.Finished&&!game.Paused&&!game.HelpVisible;
         public bool StartRecording()
         {
@@ -89,6 +110,11 @@ namespace IceResurfacer.Presentation
         }
         public void ObserveSimulationStep(Simulation sim)
         {
+            if(Visible&&Progress!=null&&session==sim)
+            {
+                Progress.Observe(sim.Vehicle.X,sim.Vehicle.Z,sim.Vehicle.Heading,sim.Vehicle.Speed);
+                Footprints.ObserveSimulation(sim);Footprints.AdvanceExpected(Progress.Distance);
+            }
             if(!recorder.Recording)return;
             if(sim!=recordingSession){StopRecording("Session changed; original trajectory retained");return;}
             recorder.Observe(sim,.02);
@@ -125,6 +151,49 @@ namespace IceResurfacer.Presentation
             catch(System.Exception e){RecordingStatus="Load failed: "+e.Message;return false;}
         }
         public void DrawRecordingPanel() {if(PanelOpen)panel.Draw();}
+        public bool LoadTrainingGuide(string path)
+        {
+            try{return SelectTrainingGuide(TrainingGuideStorage.Read(path));}
+            catch(System.Exception e){TrainingStatus="Guide load failed: "+e.Message;return false;}
+        }
+        public bool SelectTrainingGuide(TrainingRouteDefinition definition)
+        {
+            try
+            {
+                definition=TrainingGuideStorage.Decode(TrainingGuideStorage.Encode(definition)); // Detach live guidance from subsequent Editor edits.
+                var raw=TrainingGuideStorage.Raw(definition);var fit=RouteFitter.Fit(definition,raw);
+                if(!fit.Ready){TrainingStatus="Draft guide: repair turning/boundary issues in the Editor before live use.";return false;}
+                if(!fit.Compatible(game.Sim.Config)){TrainingStatus="Guide machine/rink calibration differs; revalidate in the Editor.";return false;}
+                selectedGuide=definition;selectedFit=fit;Route=new ResurfacingRoute(fit);Progress=null;Footprints=null;Available=true;
+                PrepareNavigation();TrainingStatus="Selected "+definition.name+". F5 toggles guidance; driving remains free.";return true;
+            }
+            catch(System.Exception e){TrainingStatus="Guide rejected: "+e.Message;return false;}
+        }
+        public void UseOriginalReference()
+        {
+            selectedGuide=null;selectedFit=null;Route=new ResurfacingRoute(game.Sim.Config);Progress=null;Footprints=null;
+            Available=true;if(Visible)PrepareNavigation();TrainingStatus="Original generated F5 reference selected";Refresh();
+        }
+        public void RejoinLeg(int leg)
+        {PrepareNavigation();Progress.RejoinLeg(leg);Footprints.RebaseExpected(Progress.Distance);TrainingStatus="Explicit rejoin: leg "+(Progress.Leg+1)+". Only the guide cursor changed.";}
+        public void PrepareTrainingPreview(){Refresh();if(Available)PrepareNavigation();}
+        public bool SelectTestFixture()
+        {
+            var text=Resources.Load<TextAsset>("TrainingTestGuide");
+            if(text==null){TrainingStatus="Labeled test guide is unavailable; save/load your own guide in the Editor.";return false;}
+            try{return SelectTrainingGuide(TrainingGuideStorage.Decode(text.text));}catch(System.Exception e){TrainingStatus=e.Message;return false;}
+        }
+        void PrepareNavigation()
+        {
+            if(Route==null||Progress!=null)return;
+            if(selectedFit!=null)Route=new ResurfacingRoute(selectedFit);
+            else
+            {
+                if(referenceFit==null||!referenceFit.Compatible(game.Sim.Config))referenceFit=RouteFitter.Reference(Route,TrainingRouteDefinition.CopyConfiguration(game.Sim.Config));
+                Route=new ResurfacingRoute(referenceFit);
+            }
+            Progress=new RouteProgress(Route.Guide);Footprints=new RouteFootprints(Route.Guide);
+        }
         public void ConfigureValidationStorage(string directory)
         {
             if(!directory.Replace('\\','/').Contains("/Validation~/"))throw new System.InvalidOperationException("Validation routes must stay in Validation~/.");
@@ -139,8 +208,10 @@ namespace IceResurfacer.Presentation
                 if(recorder.Recording)StopRecording("New session; original trajectory retained");
                 session=game.Sim;var c=session.Config;
                 Available=Mathf.Abs(c.RinkWidth-26)<.001f&&Mathf.Abs(c.RinkLength-60)<.001f&&Mathf.Abs(c.CornerRadius-8.5f)<.001f;
-                Route=null;NextPoint=1;
-                if(Available)
+                Route=null;Progress=null;Footprints=null;NextPoint=1;
+                if(selectedFit!=null&&selectedFit.Compatible(c)){Route=new ResurfacingRoute(selectedFit);Available=true;}
+                else if(selectedFit!=null){selectedFit=null;selectedGuide=null;TrainingStatus="Selected guide calibration changed; original reference restored where available.";}
+                if(Available&&Route==null)
                 {
                     try {Route=new ResurfacingRoute(c);}
                     catch(System.InvalidOperationException){Available=false;}
@@ -149,17 +220,19 @@ namespace IceResurfacer.Presentation
             }
             if(!Available){line.enabled=false;return;}
             line.enabled=Visible&&game.Started&&!session.OnFoot&&!session.Finished;
-            // Advance sequentially: crossing a later pass cannot skip the route.
-            for(int i=0;game.Started&&i<20&&NextPoint<Route.Points.Count-1;i++)
-            {
-                var p=Route.Points[NextPoint];float dx=p.X-session.Vehicle.X,dz=p.Z-session.Vehicle.Z;
-                if(dx*dx+dz*dz>2.25f)break;NextPoint++;
-            }
-            if(!line.enabled)return;
-            int count=Mathf.Min(upcoming.Length,Route.Points.Count-NextPoint);
-            line.positionCount=count;
-            for(int i=0;i<count;i++)
-            {var p=Route.Points[NextPoint+i];upcoming[i]=new Vector3(p.X,.025f,p.Z);line.SetPosition(i,upcoming[i]);}
+            if(!Visible){DisplayPointCount=MapPointCount=0;return;}
+            PrepareNavigation();var fit=ActiveFit;NextPoint=fit.IndexAt(Progress.Distance);
+            int lastLeg=Mathf.Min(fit.legs.Count-1,Progress.Leg+1);
+            if(fit.legs[lastLeg].direction!=fit.legs[Progress.Leg].direction)lastLeg=Progress.Leg;
+            LookEnd=System.Math.Min(fit.Length,System.Math.Min(Progress.Distance+LookAheadMeters,fit.legs[lastLeg].end));
+            MapPointCount=Mathf.Min(mapUpcoming.Length,Mathf.Max(2,Mathf.CeilToInt((float)(LookEnd-Progress.Distance)/.4f)+1));
+            for(int i=0;i<MapPointCount;i++)mapUpcoming[i]=fit.At(Progress.Distance+(LookEnd-Progress.Distance)*i/(MapPointCount-1));
+            double start=System.Math.Min(LookEnd,Progress.Distance+HiddenNearMeters);
+            DisplayPointCount=LookEnd-start<.1?0:Mathf.Min(upcoming.Length,Mathf.CeilToInt((float)(LookEnd-start)/.35f)+1);
+            line.positionCount=DisplayPointCount;
+            for(int i=0;i<DisplayPointCount;i++)
+            {var p=fit.At(start+(LookEnd-start)*i/(DisplayPointCount-1));upcoming[i]=new Vector3(p.x,.045f,p.z);line.SetPosition(i,upcoming[i]);}
+            if(Time.unscaledTime>=nextComparison){Footprints.Compare();nextComparison=Time.unscaledTime+.5f;}
         }
         public void FlushRecordingForShutdown(string reason)
         {if(recorder.Recording)recorder.Stop(reason);Checkpoint();}

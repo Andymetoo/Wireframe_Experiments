@@ -1,0 +1,3 @@
+PASS fresh Unity process reloads corrected guide and exact raw source after Play Mode ended
+PASS fresh process reconstructs valid guide independently of scene objects
+Length=433.928038 m; minimum radius=4.497955 m; samples=14547; contexts=29

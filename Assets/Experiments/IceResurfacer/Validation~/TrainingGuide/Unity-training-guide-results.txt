@@ -1,0 +1,28 @@
+PASS Editor creates a constrained guide from an existing version-1 .route.json
+PASS every visible control center selects the point rather than a nearby short tangent handle
+PASS fixture is explicitly labeled; no historical operator pattern is invented
+PASS minimum radius 4.497955 m >= 4.485012 m; body/tank/conditioner clearance pass
+PASS control position can be edited
+PASS Editor undo restores a moved point
+PASS tangent/heading edits rebuild the curve
+PASS Editor inserts a cubic control point
+PASS Editor removes an intermediate control point
+PASS turn/pass marker creates a named rejoin context
+PASS editing, fit, insertion, deletion and undo preserve original raw bytes
+PASS corrected guides save as independent copies
+PASS guide round-trip keeps every original source observation
+PASS damaged guide checksum is rejected
+PASS Editor reload reconstructs a physically validated curve
+PASS standalone fixture is packaged for explicit test selection
+PASS saving the fixture does not replace or enable the original F5 reference
+PASS explicit valid guide load does not auto-enable F5
+PASS actual F5 enables bounded cached ground/minimap previews
+PASS live preview is limited to current/upcoming context within 28 m
+PASS selection, F5 and explicit rejoin never operate machinery or move the vehicle
+PASS invalid draft is refused while prior guidance/driving remain available
+PASS dedicated training shader compiles
+PASS world route uses solid-geometry depth occlusion
+PASS live guide is detached from subsequent Editor edits
+PASS original F5 reference is restored after explicit test selection
+Fixture: 14547 fitted samples; 29 contexts; 433.928038 m; max source-sample deviation 0.145836 m.
+Full-route PNGs are shared authoring-preview texture exports. Native captures separately verify UI and live partial-route rendering.

@@ -18,8 +18,15 @@ namespace IceResurfacer.Core
         public int WorkStart {get;private set;}
         public int WorkEnd {get;private set;}
         public float Length {get;private set;}
+        public RouteFit Guide {get;private set;}
         double x,z,heading;
         bool working;
+        public ResurfacingRoute(RouteFit guide)
+        {
+            Guide=guide;Length=(float)guide.Length;WorkStart=0;WorkEnd=guide.samples.Count;PassSpacing=0;MinimumRadius=guide.minimumRadius;
+            foreach(var p in guide.samples)Points.Add(new RoutePoint(p.x,p.z,p.direction<0,p.cutting));
+        }
+        public void PrepareGuide(SimulatorConfig config) {if(Guide==null)Guide=RouteFitter.Reference(this,config);}
         // Recorded observations project into the same advisory path representation.
         // This copies positions in sequence; the raw samples remain untouched.
         public ResurfacingRoute(RecordedRouteData recorded)

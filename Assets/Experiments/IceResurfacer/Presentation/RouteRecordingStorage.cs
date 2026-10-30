@@ -38,6 +38,8 @@ namespace IceResurfacer.Presentation
             using(var sha=SHA256.Create())
             {var bytes=sha.ComputeHash(Encoding.UTF8.GetBytes(text));var value=new StringBuilder(64);foreach(byte b in bytes)value.Append(b.ToString("x2"));return value.ToString();}
         }
+        internal static string Integrity(string text) => Hash(text);
+        internal static void Publish(string path,string text,bool replace=false) {AtomicWrite(path,text,replace);}
         public static string Encode(RecordedRouteData route)
         {
             route.Validate();
@@ -60,7 +62,8 @@ namespace IceResurfacer.Presentation
             envelope.route.sourceJson=ExtractPayload(json);envelope.route.parsedJsonFingerprint=JsonUtility.ToJson(envelope.route);
             return envelope.route;
         }
-        static string ExtractPayload(string json)
+        static string ExtractPayload(string json) => ExactObject(json,"route");
+        internal static string ExactObject(string json,string key)
         {
             int depth=0,keyStart=0,count=0;bool quoted=false,escaped=false;string payload=null;
             for(int i=0;i<json.Length;i++)
@@ -70,7 +73,7 @@ namespace IceResurfacer.Presentation
                 {
                     if(escaped){escaped=false;continue;}if(c=='\\'){escaped=true;continue;}
                     if(c!='\"')continue;quoted=false;
-                    if(depth!=1||json.Substring(keyStart,i-keyStart+1)!="\"route\"")continue;
+                    if(depth!=1||json.Substring(keyStart,i-keyStart+1)!="\""+key+"\"")continue;
                     int start=i+1;while(start<json.Length&&char.IsWhiteSpace(json[start]))start++;
                     if(start>=json.Length||json[start++]!=':')continue;
                     while(start<json.Length&&char.IsWhiteSpace(json[start]))start++;

@@ -1,0 +1,17 @@
+Aurora explicit rendered-workload benchmark / 2026-10-30 16:34:43Z
+Unity 6000.4.1f1 / NVIDIA GeForce RTX 3050 Laptop GPU / Direct3D11 / 1366x768
+OS Windows 11  (10.0.26200) / CPU 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz / development Mono player, VSync off, hidden offscreen window.
+One deterministic 20 ms simulation tick per rendered frame, live machine/ice/hose effects and IMGUI. Fixed workload throughput, not focused-window input latency or an Editor FPS claim. 90 warmup + 300 measured frames each; long session 1500 measured frames. Setup seeds poses/tanks solely to profile reproducible loads.
+GPU timing requires finite positive FrameTiming samples below 1000 ms; a scenario with any invalid positive sample reports unavailable. Hidden presentation can return corrupt timestamps. CPU_work includes simulation, machine effects, service and periodic survey/report, excludes IMGUI/render. Frame includes whole player loop. GC uses whole-frame recorder and separately measured work allocation.
+service_walking is the matched baseline camera-sweep fixture; on_foot_movement additionally executes the real collision-aware walking and camera routines, added for final validation.
+late_wet_sheet is an explicitly seeded benchmark, NOT a control-driven completed run: every ice cell receives 0.30 mm real film in 16 spatial stripes aged 0..15 minutes through AddWater/ResolveLiquid. Driving, machinery, HUD, rendering and active wet fading then execute normally after warmup.
+conditioner_side_escape starts with an explicitly seeded near-full trough, then real maximum-depth shaving with both augers off. chase_resurfacing runs the actual external camera while resurfacing and steering. These are added workloads; the preceding twelve retain their setup/order.
+stationary_pool prepares thirty seconds of actual full-flow flooding, then measures continued finite pooling. advisory_route draws the optional path during reverse departure. Neither has an equivalent previous-pass workload.
+Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.
+training_guide_off/on are matched deterministic normal-control straight work passes with the same explicitly selected fixture. Only F5 visibility/observation differs. CPU_work includes sequential guide/footprint observation; frame includes guide rendering, HUD and minimap. No guidance drives the benchmark.
+scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame,moving_frames,cutting_frames,shaved_ice_m3,flood_used_liters
+training_guide_off,299,4.986,8.703,200.6,1.427,2.398,12489,14894,0,4,-61673472,-1,7558,0.492,299,299,0.000716,3.461
+training_guide_on,299,4.840,8.295,206.6,1.296,2.649,20002,45708,0,2,-72421376,-1,7558,0.439,299,299,0.000716,3.461
+Managed runtime errors: 0
+Long-session growth is a live-heap delta, not a leak diagnosis; inspect GC collections and final repeat before inferring leaks.
+Native hidden-window D3D presentation warnings: 3 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

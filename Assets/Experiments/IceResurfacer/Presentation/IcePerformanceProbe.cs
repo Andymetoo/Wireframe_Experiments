@@ -13,7 +13,7 @@ namespace IceResurfacer.Presentation
     // Explicit development-player benchmark. It is never attached to the launch scene.
     public sealed class IcePerformanceProbe : MonoBehaviour
     {
-        readonly string[] scenarios={"driving_full_hud","resurfacing_full_hud","resurfacing_compact","snow_overflow","camera_changes","service_walking","hose_filling","hose_overflow","dump_shakeout","long_session","on_foot_movement","late_wet_sheet","conditioner_side_escape","chase_resurfacing","stationary_pool","advisory_route"};
+        readonly string[] scenarios={"driving_full_hud","resurfacing_full_hud","resurfacing_compact","snow_overflow","camera_changes","service_walking","hose_filling","hose_overflow","dump_shakeout","long_session","on_foot_movement","late_wet_sheet","conditioner_side_escape","chase_resurfacing","stationary_pool","advisory_route","training_guide_off","training_guide_on"};
         readonly List<double> frameMs=new List<double>(1500), cpuMs=new List<double>(1500), gpuMs=new List<double>(1500);
         readonly StringBuilder report=new StringBuilder();
         readonly FrameTiming[] timings=new FrameTiming[1];
@@ -38,6 +38,7 @@ namespace IceResurfacer.Presentation
             {
                 if(args[i]=="--aurora-performance-output")output=args[i+1];
                 if(args[i]=="--aurora-endurance-frames")enduranceFrames=Mathf.Clamp(int.Parse(args[i+1]),1500,100000);
+                if(args[i]=="--aurora-guides-only"&&args[i+1]=="1")scenario=15;
             }
             if(string.IsNullOrEmpty(output)){enabled=false;return;}
             Application.runInBackground=true; QualitySettings.vSyncCount=0; Application.targetFrameRate=-1;
@@ -61,6 +62,7 @@ namespace IceResurfacer.Presentation
             report.AppendLine("conditioner_side_escape starts with an explicitly seeded near-full trough, then real maximum-depth shaving with both augers off. chase_resurfacing runs the actual external camera while resurfacing and steering. These are added workloads; the preceding twelve retain their setup/order.");
             report.AppendLine("stationary_pool prepares thirty seconds of actual full-flow flooding, then measures continued finite pooling. advisory_route draws the optional path during reverse departure. Neither has an equivalent previous-pass workload.");
             report.AppendLine("Appended columns: active_wet_cells is the end-of-scenario active wet list count; surface_refresh_ms_per_frame is measured Surface.Refresh CPU time divided by measured workload frames, including zero-cost frames between refreshes. Seed/setup and warmup costs are excluded.");
+            report.AppendLine("training_guide_off/on are matched deterministic normal-control straight work passes with the same explicitly selected fixture. Only F5 visibility/observation differs. CPU_work includes sequential guide/footprint observation; frame includes guide rendering, HUD and minimap. No guidance drives the benchmark.");
             report.AppendLine("scenario,frames,mean_frame_ms,p95_frame_ms,fps,cpu_work_ms,gpu_ms,gc_bytes_per_frame,max_gc_bytes,work_bytes_per_frame,gc_collections,managed_growth_bytes,draw_calls,active_wet_cells,surface_refresh_ms_per_frame,moving_frames,cutting_frames,shaved_ice_m3,flood_used_liters");
             active=true;Next();lastFrame=Time.realtimeSinceStartupAsDouble;
         }
@@ -108,6 +110,15 @@ namespace IceResurfacer.Presentation
                 if(!game.RouteGuide.Visible)game.RouteGuide.Toggle();
             }
             else if(game.RouteGuide.Visible)game.RouteGuide.Toggle();
+            if(scenario>=16)
+            {
+                if(!game.RouteGuide.SelectTestFixture())throw new InvalidOperationException(game.RouteGuide.TrainingStatus);
+                var fit=game.RouteGuide.ActiveFit;int leg=0;
+                for(int i=0;i<fit.legs.Count;i++)if(fit.legs[i].direction>0&&!fit.legs[i].turn&&fit.legs[i].end-fit.legs[i].start>20){leg=i;break;}
+                var p=fit.At(fit.legs[leg].start+3);Pose(s,p.x,p.z,p.heading);game.RouteGuide.RejoinLeg(leg);
+                c.Throttle=.42f;s.Conditioner.Lift=0;c.ConditionerTarget=0;c.BladeDepthMm=.35f;c.HorizontalAuger=c.VerticalAuger=true;c.FloodFlow=.32f;c.WashValve=.25f;
+                if(scenario==17)game.RouteGuide.Toggle();
+            }
             game.Dashboard.Compact=scenario==2;
             render(0);game.Surface.Invalidate();game.Surface.Refresh(s);
             if(chase)game.SelectCameraView("Chase");
@@ -171,7 +182,7 @@ namespace IceResurfacer.Presentation
                 moveFoot(walk*.036f);applyFoot();
             }
             double shavedBefore=s.TotalShavedIceM3;
-            s.Step(.02f);render(.02f);game.WaterService.UpdateViewAndEffects(true,.02f);
+            s.Step(.02f);game.RouteGuide.ObserveSimulationStep(s);render(.02f);game.WaterService.UpdateViewAndEffects(true,.02f);
             if(frame>90){if(Mathf.Abs(s.Vehicle.Speed)>.1f)movingFrames++;if(s.TotalShavedIceM3>shavedBefore)cuttingFrames++;}
             if(chase)game.TickInspectionCamera(.02f);
             if(frame%8==0)

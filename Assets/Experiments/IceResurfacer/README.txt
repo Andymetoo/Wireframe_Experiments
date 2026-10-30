@@ -196,6 +196,20 @@ An abnormal process crash can lose the interval since the latest checkpoint.
 F5 still displays the original optional reference; recording adds no driving
 assistance. Documentation/RouteRecording.txt explains schema, checks and limits.
 
+Editable routes and live training guidance
+Experiments > Ice Resurfacer > Training Route Editor opens any saved .route.json.
+Edit the derived curve/markers and inspect separate vehicle, conditioner and
+blade/water footprints. Save Corrected COPY preserves the exact original raw
+source in a portable .guide.json. Red invalid sections must be repaired before
+live use. Editor guides live under RouteRecordings~/Guides; standalone guides
+under persistentDataPath/IceResurfacer/Routes/Guides. Copy files there and Refresh.
+In Play, F6 > Training Guides selects a corrected guide; F5 toggles it. Only the
+current/upcoming 28 m is shown in the world and Surface Survey. For a major
+detour, select a leg and explicitly Rejoin; this changes only the guide cursor.
+The original F5 reference remains the default. The labeled perimeter/loop test
+fixture is selected explicitly and is not an actual operator recording.
+Documentation/TrainingGuide.txt explains editing, persistence, controls and limits.
+
 Machine audio
 Physical machinery uses full 3D audio at its actual components: engine/chassis,
 blade edge, separate augers, moving hydraulic cylinders, water outlets/pickup,

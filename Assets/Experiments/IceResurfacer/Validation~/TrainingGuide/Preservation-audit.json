@@ -1,0 +1,21 @@
+{
+  "baseline_source_files": 120,
+  "unchanged_source_files": 111,
+  "authorized_changed_source_files": [
+    "Core/ResurfacingRoute.cs",
+    "Presentation/IceDashboard.cs",
+    "Presentation/IceLayoutPlayerProbe.cs",
+    "Presentation/IcePerformanceProbe.cs",
+    "Presentation/IceRouteGuide.cs",
+    "Presentation/RouteRecordingPanel.cs",
+    "Presentation/RouteRecordingStorage.cs",
+    "Editor/IceResurfacerEditor.cs",
+    "Editor/IceRouteRecordingsWindow.cs"
+  ],
+  "unexpected_source_changes": [],
+  "preserved_raw_recordings": 30,
+  "raw_recording_changes": [],
+  "tracked_changes_outside_experiment": [],
+  "duplicate_meta_guids": [],
+  "physics_audio_config_scene_and_ice_sources_unchanged": true
+}

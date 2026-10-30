@@ -1,0 +1,128 @@
+AURORA R-54 / EDITABLE ROUTES AND OPTIONAL TRAINING GUIDANCE
+
+Start with a real recording
+Choose Free Simulation / Practice, park, F6 > Raw Recording, name the take,
+Start New (F7), Close and Drive. Drive the whole entry, passes, turns and return
+with normal controls. F7 stops; F6 > Save Named Copy preserves the raw take.
+The machine continues simulating while this authoring panel is open. Park first.
+No real operator route was supplied for this pass.
+
+Edit after recording
+1. Leave Play Mode. Experiments > Ice Resurfacer > Training Route Editor.
+   Open raw .route.json accepts any existing recorder version-1 file, at any
+   local path. The older Route Recordings inspector also has Edit Fitted Guide.
+2. Gray traces show immutable vehicle/actual conditioner observations; cyan is
+   the fitted rear-axle driving path; gold is the conditioner predicted by the
+   simulator's existing linkage solver. Green/orange dots identify start/end.
+3. Click a control square; drag it or its tangent handles, or edit X/Z, heading,
+   handle lengths and outgoing direction numerically. Shift-click near a curve
+   or Insert After adds an exact de Casteljau split. Remove deletes an interior
+   point. Undo/Redo buttons and Ctrl+Z / Ctrl+Shift+Z retain up to 64 edits.
+4. Mark Turn / Pass / Stop / Entry / Exit and give significant transitions a
+   label. Markers split sequential contexts for guidance and deliberate rejoin.
+   Set intended blade/flood state and nominal pace where appropriate. These
+   fields describe the plan; guidance never changes the machine controls.
+5. Preview layers distinguish intended blade/water width, recorded blade,
+   recorded water, missed geometry and excessive revisits. Intended overlap
+   becomes brighter green. Missed blade is red, water-only misses blue; excess
+   blade is amber, water-only excess blue. Actual ice conditions remain in the
+   existing Surface Survey. Inspect overlap before accepting a correction.
+6. Red curve sections identify radius or clearance failures. Constrain Fit can
+   adjust derived controls within 12 cm of their current positions and headings
+   within four degrees, while optimizing tangents. Inspect the result: pressing
+   this repeatedly uses the current edit as its new corridor. It never edits raw
+   observations. Bad sections may require moving/removing/adding controls.
+7. Save Corrected COPY creates a new .guide.json, including invalid drafts;
+   drafts cannot be selected for live guidance until their checks pass. Existing
+   copies and the original .route.json are never overwritten. Editor autosaves
+   dirty documents to Guides/Drafts every ten seconds and on window close.
+   Open Corrected Guide can recover one. Editor undo history is session-local.
+8. In Play Mode, Use in Play selects a detached snapshot of the current valid
+   edit. Alternatively F6 > Training Guides > Refresh > select its saved file.
+   F5 enables/hides the selected advisory guide. Save before leaving the Editor.
+
+Files and portability
+Editor raw library: Assets/Experiments/IceResurfacer/RouteRecordings~/*.route.json
+Editor corrected library: the same directory's Guides/*.guide.json
+Standalone raw library: Application.persistentDataPath/IceResurfacer/Routes
+Standalone corrected library: its Guides subdirectory. F6 shows the exact path.
+With this project's current Windows company/product settings, that resolves to
+C:/Users/agaug/AppData/LocalLow/Impossible Structures/The Vector Cabinet/
+IceResurfacer/Routes/Guides. Validation players use separate company/product settings.
+Copy a corrected .guide.json into that build's Guides directory and Refresh;
+no source-code changes are needed. Raw files are imported/edited in the Editor.
+The same version-1 guide format works in Editor and player. No scene-object
+changes are relied upon for persistence. The guide embeds the exact original
+raw JSON and its SHA-256, with source ID, copied physical calibration, ordered
+cubic control points, handles, directions, source sequence anchors, markers,
+intent and pace. A second SHA-256 covers the entire guide object. Serialization
+rejects missing/unsupported schema, corrupt checksums and invalid finite values.
+Atomic copy/draft publication reuses the existing recorder storage implementation.
+
+Live controls and display
+F5 toggles the existing route component. F6 > Training Guides selects a corrected
+guide, a labeled test guide, or Original F5 Reference. The original generated
+reference is the startup default. Selecting the test fixture is always explicit;
+it is not the operator's pattern and is not installed as a permanent default.
+Source selection survives a new session within the same Play instance when
+physical calibration matches. A new Play instance starts with the original.
+
+The ground line starts four route-meters ahead and shows at most 28 m, bounded
+by current plus immediately upcoming context. Completed segments disappear;
+line ends fade. The dedicated transparent shader uses ZTest LEqual and ordinary
+depth occlusion. A cockpit card gives the current leg/direction, upcoming turn,
+offset and recommended pace when the body hides the near ground. It also works
+standing and in chase view. It does not draw route geometry through the vehicle.
+The normal Surface Survey keeps its ice texture and current-position marker,
+adding a thin limited route, upcoming-turn marker and distinct actual blade and
+flood contact envelopes. Full overlapping routes appear only in authoring views.
+
+Progress and freedom
+Automatic progress searches only the selected sequential leg and, at its end,
+the immediately next leg with compatible travel direction. It uses body heading,
+signed travel, monotonic route distance, actual distance traveled and context;
+it never globally selects the closest later loop. Stopping does not advance it.
+Direction reversals require reaching their endpoint. A position discontinuity
+holds progress. Nearby deviations can rejoin the same leg, with travel-budgeted
+forward progress. For a skipped sequence or major detour, F6 > Training Guides >
+Sequential Leg slider > Rejoin Selected Leg deliberately changes the guide cursor.
+This can acquire any point within the chosen context; the vehicle remains free.
+There is no automatic restart or teleport. Guide toggling, fitting, tracking and
+footprint analysis never write vehicle controls, machinery, ice state or scores.
+
+Geometry, pace and limits
+The derived path is piecewise cubic Bezier with shared body-heading tangents,
+explicit forward/reverse cusps and dense approximately 3 cm validation samples.
+Minimum rear-axle radius is wheelbase/tan(max steering): currently 4.485012 m.
+Full existing body/guide-roller/tank collision probes plus conditioner corners
+check rink and service boundaries. A separate private scratch Simulation reuses
+the actual conditioner hitch/yaw solver; the live Simulation is never fitted.
+Raw actual conditioner poses remain available for comparison. Turning rate,
+nominal pace and sampled steering-angle change produce an advisory pace cap.
+G1 joins can change curvature; creep or stop to set steering at sharp joins.
+This is not a C2 trajectory or a dynamic speed/steering feasibility certificate.
+Checks use the simulator's current geometry, not manufacturer CAD or tire dynamics.
+Fitting is synchronous when opening/selecting a guide; no per-frame refitting,
+file I/O, global search or source allocation is performed by the live guide.
+
+Footprint diagnostics rasterize at 20 cm, separate from the native 5 cm ice map.
+Blade uses the production conditioner processing rectangle (1.956 m x 0.8 m);
+flood uses the configured outlet offset/length and 2.10 m distribution width
+plus 0.12 m fringe on each side. Modeled plan and observed live/recorded paths
+remain separate. Live missed areas compare only the confirmed prefix; explicit
+rejoin rebases that prefix while preserving observations. Counts group planned
+legs and actual visits separated by >2 m travel; ordinary overlap is tolerated.
+Recorded flood valve state cannot prove actual delivered water: old raw files
+do not store tank volume or per-cell flux. Diagnostics estimate contact geometry,
+not material quantity, scoring, hydraulic delay or exact overlap percentages.
+The main survey/material simulation is authoritative. Validate overlap and pace
+with the actual operator recording before using this as a training standard.
+
+Validation and artifacts
+Validation~/TrainingGuide contains native Editor checks, fresh-process persistence,
+shared authoring-preview PNG exports, labeled raw/guide fixtures, player captures,
+performance data and the validation report/gallery. Existing core/Unity simulation,
+audio, cockpit and recorder regressions are run alongside focused guide checks.
+The bundled test includes controlled reverse entry, straight work passes, curved
+perimeters and nearby inward loops; a separate synthetic progress test traverses
+three exactly coincident loops. Neither represents the operator's actual route.
