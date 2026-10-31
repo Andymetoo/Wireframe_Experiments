@@ -1,7 +1,8 @@
 param(
     [ValidateSet('Transparent','Offscreen')][string]$WindowMode = 'Transparent',
     [ValidateRange(800,3840)][int]$Width = 1366,
-    [ValidateRange(600,2160)][int]$Height = 768
+    [ValidateRange(600,2160)][int]$Height = 768,
+    [ValidatePattern('^[A-Za-z0-9_-]{1,40}$')][string]$Suite='HUDVideoSpeed'
 )
 $ErrorActionPreference = 'Stop'
 # This validation player starts hidden. Transparent mode verifies alpha zero
@@ -92,7 +93,7 @@ $playerPath = Join-Path $PSScriptRoot 'Build/AuroraLayout.exe'
 # BitBlt presentation supports the validation-only layered transparent window.
 # This per-process switch leaves the project's normal rendering settings intact.
 $presentationMode = if ($WindowMode -eq 'Transparent') { '-force-d3d11-bitblt-model' } else { '' }
-$arguments = "-force-d3d11 $presentationMode -popupwindow -screen-fullscreen 0 -screen-width $Width -screen-height $Height -logFile `"$validationDirectory/Layout-player-${Width}x${Height}.log`" --aurora-validation-output `"$validationDirectory`" --aurora-validation-width $Width --aurora-validation-height $Height"
+$arguments = "-force-d3d11 $presentationMode -popupwindow -screen-fullscreen 0 -screen-width $Width -screen-height $Height -logFile `"$validationDirectory/Layout-player-${Width}x${Height}.log`" --aurora-validation-output `"$validationDirectory`" --aurora-validation-width $Width --aurora-validation-height $Height --aurora-validation-suite $Suite"
 $child = Start-Process -FilePath $playerPath -ArgumentList $arguments -WindowStyle Hidden -PassThru
 $deadline = [DateTime]::UtcNow.AddSeconds(150)
 try {

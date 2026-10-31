@@ -104,7 +104,7 @@ namespace IceResurfacer.Presentation
             if(catalog.entries.Count==0)GUI.Label(new Rect(130,635,620,72),"No saved routes yet. Record, then Stop & Save.",small);
             DrawPreview();
             GUI.enabled=selected!=null&&selected.Valid&&!owner.Recorder.Recording&&confirmation.Length==0;
-            if(Button("UseGps","USE AS GPS")){status=owner.UseSavedRouteAsGps(selected.path)?"Loaded: "+owner.ActiveRouteName+" — GPS Ready":owner.TrainingStatus;}
+            if(Button("UseGps","USE AS GPS")){owner.UseSavedRouteAsGps(selected.path);status=owner.TrainingStatus;}
             GUI.enabled=confirmation.Length==0;
             if(Button("ToggleGps",(owner.Visible?"HIDE":"SHOW")+" GPS  [NUM 7]")){owner.Toggle();status=owner.TrainingStatus;}
             GUI.enabled=selected!=null&&selected.Valid&&confirmation.Length==0;

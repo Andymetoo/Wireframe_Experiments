@@ -1,0 +1,3 @@
+PASS a fresh Unity process reloads the actual corrected version-2 guide after Play ended
+PASS fresh-process corrected guide retains exact original raw source
+PASS fresh-process reconstruction preserves the complete validated 1003.234 m route

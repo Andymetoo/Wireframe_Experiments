@@ -26,6 +26,7 @@ namespace IceResurfacer.Presentation
         readonly List<string> inputTrace = new List<string>();
         IceResurfacerGame game;
         string outputDirectory, currentResolution = "initialization";
+        string artifactSuite="HUDVideoSpeed";
         float startedAt;
         int sentEvents, consumedEvents;
         int requestedWidth = 1366, requestedHeight = 768;
@@ -33,7 +34,7 @@ namespace IceResurfacer.Presentation
         IntPtr playerWindow;
         bool active, complete;
         InputSettings originalInputSettings,validationInputSettings;
-        string ArtifactDirectory => Path.Combine(outputDirectory,"HUDVideoSpeed","Player-"+currentResolution);
+        string ArtifactDirectory => Path.Combine(outputDirectory,artifactSuite,"Player-"+currentResolution);
 
         IEnumerator Start()
         {
@@ -43,6 +44,8 @@ namespace IceResurfacer.Presentation
                 if (args[i] == "--aurora-validation-output") outputDirectory = Path.GetFullPath(args[i + 1]);
                 if (args[i] == "--aurora-validation-width") requestedWidth = int.Parse(args[i + 1]);
                 if (args[i] == "--aurora-validation-height") requestedHeight = int.Parse(args[i + 1]);
+                if(args[i]=="--aurora-validation-suite")
+                {string value=args[i+1];if(value.Length<1||value.Length>40)throw new ArgumentException("Invalid validation suite.");foreach(char c in value)if(!char.IsLetterOrDigit(c)&&c!='-'&&c!='_')throw new ArgumentException("Invalid validation suite.");artifactSuite=value;}
             }
             // Attaching the component without the explicit command does not run a test or write files.
             if (string.IsNullOrEmpty(outputDirectory)) { enabled = false; yield break; }

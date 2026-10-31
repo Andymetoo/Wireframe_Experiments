@@ -1,0 +1,67 @@
+ANDY_TRY_1 / RAW VERSUS DERIVED DIAGNOSTICS
+Raw: 5130 samples; 1003.234406572 m; 519.900 seconds.
+Production raw vehicle pose failures: 0. Raw conditioner corner failures: 0.
+
+BEFORE / AFTER
+Case | samples | length m | curvature failures | boundary failures | minimum radius m | max deviation m
+Saved derived draft (exact reported case) | 33701 | 1003.275814 | 16 | 63 | 2.662324 | 0.366617
+Fresh old automatic fit | 33701 | 1003.253774 | 0 | 63 | 4.487215 | 0.155453
+Repaired recorded track | 46616 | 1003.234407 | 0 | 0 | 4.484842 | 0.000000
+Before deviations use the original nearest-source-sample metric, reproduced before edits.
+After displacement is zero from the corresponding source polyline; raw endpoints are exact.
+
+ROOT CAUSE
+Both reported faults are introduced by the derived geometry. Every raw pose is clear.
+The legacy tangent optimizer penalizes curvature and heading changes, but never evaluates
+the production body envelope or boundary clearance in its objective. Its 12 cm position
+budget is relative to each invocation, rather than the immutable recording. Repeated
+calls drift beyond that budget; this is measured in Legacy-repeated-correction.txt.
+In the saved draft, control 62 is displaced 0.366617 m from its original source anchor.
+Its position and shared heading/handles affect both adjacent cubics. Moving or deleting
+one anchor therefore shifts curvature/clearance trouble into its neighbors.
+A fresh old auto fit has 0 curvature failures but 63 body failures; the saved derived
+draft reproduces the requested 16 + 63 exactly. The raw route does not have a 2.662 m turn.
+
+GROUPED FAILURE REGIONS (zero-based control/sample indices)
+
+Region 1: Derived curvature; 16 failing derived samples.
+Derived route distance 154.792065–155.233890 m.
+Source sequence range 804–806; source anchor brackets 804–817; controls 61–61.
+Representative/worst fitted sample 5196, source sample 804, raw route distance 154.870707 m.
+Raw vehicle: X=6.7660960, Z=-28.0113980, heading=-1.96219200 rad (-112.42532 deg).
+Derived vehicle: X=6.7349133, Z=-27.9769540, heading=-1.94841440 rad (-111.63592 deg).
+Raw conditioner: X=7.7738914, Z=-27.5709530, heading=-1.99709870 rad.
+Derived conditioner: X=7.7486810, Z=-27.5504340, heading=-1.98332110 rad.
+Nearest recorded sample deviation here=0.046463 m. Region maximum=0.105633 m.
+Minimum derived radius=2.662324 m; unchanged required radius=4.485012 m.
+Original recorded production body pose passes: True. Raw conditioner corners clear: True.
+Responsible geometry: no body collision in this region; the derived cubic violates the steering-radius constraint.
+
+Region 2: Vehicle boundary; 63 failing derived samples.
+Derived route distance 158.151079–159.864178 m.
+Source sequence range 821–829; source anchor brackets 817–830; controls 62–62.
+Representative/worst fitted sample 5335, source sample 825, raw route distance 159.092222 m.
+Raw vehicle: X=2.6165410, Z=-28.6845600, heading=-1.62836610 rad (-93.29851 deg).
+Derived vehicle: X=2.6007370, Z=-28.6458110, heading=-1.78001510 rad (-101.98735 deg).
+Raw conditioner: X=3.7141507, Z=-28.6124570, heading=-1.64195190 rad.
+Derived conditioner: X=3.6766253, Z=-28.4167600, heading=-1.78093520 rad.
+Nearest recorded sample deviation here=0.041849 m. Region maximum=0.184019 m.
+Minimum derived radius=4.510097 m; unchanged required radius=4.485012 m.
+Original recorded production body pose passes: True. Raw conditioner corners clear: True.
+Responsible geometry: Rink boards; front-left body-envelope sample at local X=-1.065001, Z=2.500000 m.
+Collision point X=0.3764494, Z=-30.2068270; inward normal=(0.000,1.000); guide roller=False.
+South board is Z=-30.000; production navigation includes its unchanged 0.02 m inward margin.
+This is a real collision of the derived vehicle orientation/envelope, not a raw collision and not a conditioner failure.
+
+SOUTHEAST SERVICE ENTRANCE
+Selected endpoint is control 397 / source 5129 at 1003.234407 m: X=14.5068808, Z=-31.1324883.
+Service coordinates: Side=0.264735, Outward=5.387131 m. Conditioner lift=1.000.
+This is on the service-room floor, beyond the rink rectangle but inside the production floor union. The complete recorded body and conditioner envelope pass.
+It is not one of the 79 saved-draft failures. The new authoring background shows the gate opening and service-floor outline.
+
+TURNING / REPRESENTATION
+Minimum observed heading-change radius=4.484842 m versus required 4.485012 m.
+The sub-millimeter numerical difference is inside the existing 0.1% validation tolerance; that tolerance and the vehicle limit were not changed.
+The repaired guide interpolates positions and recorded body headings separately. It is a faithful observed track, not a claim of a C2 geometric spline.
+Actual recorded conditioner poses replace the old re-simulated conditioner on recorded spans. Edited Bezier spans still model it and must pass constraints.
+The original recordings are authoritative and unchanged; no vehicle steering, pose, scoring, speed calibration or machinery code was modified.

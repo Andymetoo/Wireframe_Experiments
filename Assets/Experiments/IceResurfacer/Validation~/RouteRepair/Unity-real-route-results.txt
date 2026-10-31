@@ -1,0 +1,121 @@
+PASS actual saved draft reproduces all reported 16 curvature and 63 boundary errors
+PASS 79 failing samples are grouped into two distinct problem regions
+PASS Next Error selects the first actual curvature region and its neighboring control
+PASS raw observation passes production clearance at problem region 154.792 m
+PASS raw observation passes production clearance at problem region 158.151 m
+PASS recorded reconstruction uses explicit derived-guide version 2; raw schema stays version 1
+PASS undo restores the original legacy guide and exact diagnostic counts
+PASS restored actual recording passes unchanged collision and radius checks
+PASS recorded-track guidance is clearly distinguished from ideal smooth-spline certification
+PASS all 46,616 guide vehicle and conditioner positions agree with their source intervals within 0.001 mm
+PASS full 1003.234 m source distance and zero raw-polyline displacement are preserved
+PASS cursor-centered zoom preserves the world point under the pointer
+PASS pan moves every layer by the same exact screen-space delta
+PASS viewport roundtrip 0
+PASS viewport roundtrip 1
+PASS viewport roundtrip 2
+PASS viewport roundtrip 3
+PASS viewport roundtrip 4
+PASS viewport roundtrip 5
+PASS viewport roundtrip 6
+PASS viewport roundtrip 7
+PASS viewport roundtrip 8
+PASS viewport roundtrip 9
+PASS viewport roundtrip 10
+PASS viewport roundtrip 11
+PASS viewport roundtrip 12
+PASS viewport roundtrip 13
+PASS viewport roundtrip 14
+PASS viewport roundtrip 15
+PASS viewport roundtrip 16
+PASS viewport roundtrip 17
+PASS viewport roundtrip 18
+PASS viewport roundtrip 19
+PASS viewport roundtrip 20
+PASS viewport roundtrip 21
+PASS viewport roundtrip 22
+PASS viewport roundtrip 23
+PASS viewport roundtrip 24
+PASS viewport roundtrip 25
+PASS viewport roundtrip 26
+PASS viewport roundtrip 27
+PASS viewport roundtrip 28
+PASS viewport roundtrip 29
+PASS viewport roundtrip 30
+PASS viewport roundtrip 31
+PASS viewport roundtrip 32
+PASS viewport roundtrip 33
+PASS viewport roundtrip 34
+PASS viewport roundtrip 35
+PASS viewport roundtrip 36
+PASS viewport roundtrip 37
+PASS viewport roundtrip 38
+PASS viewport roundtrip 39
+PASS viewport roundtrip 40
+PASS viewport roundtrip 41
+PASS viewport roundtrip 42
+PASS viewport roundtrip 43
+PASS viewport roundtrip 44
+PASS viewport roundtrip 45
+PASS viewport roundtrip 46
+PASS viewport roundtrip 47
+PASS viewport roundtrip 48
+PASS viewport roundtrip 49
+PASS viewport roundtrip 50
+PASS viewport roundtrip 51
+PASS viewport roundtrip 52
+PASS viewport roundtrip 53
+PASS viewport roundtrip 54
+PASS viewport roundtrip 55
+PASS viewport roundtrip 56
+PASS viewport roundtrip 57
+PASS viewport roundtrip 58
+PASS viewport roundtrip 59
+PASS viewport roundtrip 60
+PASS viewport roundtrip 61
+PASS viewport roundtrip 62
+PASS viewport roundtrip 63
+PASS viewport roundtrip 64
+PASS viewport roundtrip 65
+PASS viewport roundtrip 66
+PASS viewport roundtrip 67
+PASS viewport roundtrip 68
+PASS viewport roundtrip 69
+PASS viewport roundtrip 70
+PASS viewport roundtrip 71
+PASS viewport roundtrip 72
+PASS viewport roundtrip 73
+PASS viewport roundtrip 74
+PASS viewport roundtrip 75
+PASS viewport roundtrip 76
+PASS viewport roundtrip 77
+PASS viewport roundtrip 78
+PASS viewport roundtrip 79
+PASS viewport roundtrip 80
+PASS viewport roundtrip 81
+PASS viewport roundtrip 82
+PASS viewport roundtrip 83
+PASS viewport roundtrip 84
+PASS viewport roundtrip 85
+PASS viewport roundtrip 86
+PASS viewport roundtrip 87
+PASS viewport roundtrip 88
+PASS viewport roundtrip 89
+PASS viewport roundtrip 90
+PASS viewport roundtrip 91
+PASS viewport roundtrip 92
+PASS viewport roundtrip 93
+PASS viewport roundtrip 94
+PASS viewport roundtrip 95
+PASS viewport roundtrip 96
+PASS viewport roundtrip 97
+PASS viewport roundtrip 98
+PASS viewport roundtrip 99
+PASS corrected guide persists separately with the unchanged original recording embedded
+PASS Route Manager GPS path accepts the separately saved corrected guide
+PASS all raw observations traverse the full sequential GPS including closely overlapping loops and entrance/exit
+PASS live preview remains bounded to 40 feet
+PASS unsafe edited recorded-track anchor cannot bypass physical validation
+PASS synthetic raw trajectory outside the physical floor remains blocked; raw fallback cannot certify unsafe geometry
+PASS all tests leave Andy_Try_1 byte-for-byte unchanged
+Traversal: 1003.234406572 m; 46616 guide samples; 132 contexts; maximum source-distance lead=0.201903 m; max local search=336; replay=214.087 ms.

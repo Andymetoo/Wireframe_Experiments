@@ -13,7 +13,8 @@ internal static class RouteUXCoreValidation
         foreach(string path in Directory.GetFiles(folder,"*.route.json"))
         {
             byte[] original=File.ReadAllBytes(path);string json=File.ReadAllText(path);var raw=JsonSerializer.Deserialize<Envelope>(json,new JsonSerializerOptions{IncludeFields=true}).route;
-            var d=TrainingRouteDefinition.FromRecording(raw,json,"read-only core verification");TrainingRouteEditing.ConstrainTangents(d,80,true);fit=RouteFitter.Fit(d,raw);
+            var d=TrainingRouteDefinition.FromRecording(raw,json,"read-only core verification");RecordedTrackReconstruction.Restore(d,raw);fit=RouteFitter.Fit(d,raw);
+            if(fit.recordedSamples!=fit.samples.Count||fit.maximumRawDeviation!=0)throw new Exception("Recording import did not preserve its observed trajectory");
             if(!fit.Ready)throw new Exception("Actual operator take cannot be automatically fitted: "+Path.GetFileName(path));
             tracker=new RouteProgress(fit);int boundaries=0,previous=0;
             foreach(var p in raw.samples)
@@ -23,7 +24,7 @@ internal static class RouteUXCoreValidation
             }
             if(fit.Length-tracker.Distance>1.5||boundaries<2)throw new Exception("Actual driven trajectory did not progress automatically: "+Path.GetFileName(path)+" "+tracker.Distance+" / "+fit.Length);
             if(!original.AsSpan().SequenceEqual(File.ReadAllBytes(path)))throw new Exception("Operator file changed");
-            Console.WriteLine("  route UX: actual operator take "+raw.distanceMeters.ToString("F1")+" m: auto fit ready; "+boundaries+" boundaries crossed from original recorded poses; raw bytes unchanged");
+            Console.WriteLine("  route UX: actual operator take "+raw.distanceMeters.ToString("F1")+" m: recorded-track guide ready; "+boundaries+" boundaries crossed from original recorded poses; raw bytes unchanged");
         }
     }
 }

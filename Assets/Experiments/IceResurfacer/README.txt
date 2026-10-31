@@ -216,6 +216,11 @@ gives the three-action workflow. RouteRecording.txt documents the preserved sche
 
 Editable routes and live training guidance
 Experiments > Ice Resurfacer > Training Route Editor opens any saved .route.json.
+Raw imports now preserve the observed vehicle/conditioner trajectory, with
+clearance validation separate from ideal spline certification. Wheel zooms,
+middle drag pans; Next/Previous Error and Zoom to Error inspect actual problems.
+Restore faithful recorded track repairs derived artifacts without changing raw
+observations. See Documentation/RouteRepair.txt for the full workflow.
 Edit the derived curve/markers and inspect separate vehicle, conditioner and
 blade/water footprints. Save Corrected COPY preserves the exact original raw
 source in a portable .guide.json. Red invalid sections must be repaired before

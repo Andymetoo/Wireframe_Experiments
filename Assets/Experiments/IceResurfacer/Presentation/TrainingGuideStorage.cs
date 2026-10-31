@@ -13,20 +13,21 @@ namespace IceResurfacer.Presentation
         public static TrainingRouteDefinition Create(RecordedRouteData raw)
         {
             string json=RouteRecordingStorage.Encode(raw);
-            return TrainingRouteDefinition.FromRecording(raw,json,RouteRecordingStorage.Integrity(json));
+            var definition=TrainingRouteDefinition.FromRecording(raw,json,RouteRecordingStorage.Integrity(json));
+            RecordedTrackReconstruction.Restore(definition,raw);definition.name=raw.name+" / recorded track";return definition;
         }
         public static string Encode(TrainingRouteDefinition definition)
         {
             definition.Validate();var raw=Raw(definition);
             if(raw.id!=definition.sourceRecordingId)throw new FormatException("Mismatched raw recording.");
             string payload=JsonUtility.ToJson(definition,true);
-            return "{\n  \"format\": \"AuroraR54.TrainingGuide\",\n  \"version\": 1,\n  \"sha256\": \""+RouteRecordingStorage.Integrity(payload)+"\",\n  \"guide\": "+payload+"\n}\n";
+            return "{\n  \"format\": \"AuroraR54.TrainingGuide\",\n  \"version\": "+definition.version+",\n  \"sha256\": \""+RouteRecordingStorage.Integrity(payload)+"\",\n  \"guide\": "+payload+"\n}\n";
         }
         public static TrainingRouteDefinition Decode(string json)
         {
             if(string.IsNullOrEmpty(json)||Encoding.UTF8.GetByteCount(json)>RouteRecordingStorage.MaximumFileBytes)throw new FormatException("Missing or oversized training guide.");
             var e=JsonUtility.FromJson<Envelope>(json);
-            if(e==null||e.format!="AuroraR54.TrainingGuide"||e.version!=1||e.guide==null||e.sha256!=RouteRecordingStorage.Integrity(RouteRecordingStorage.ExactObject(json,"guide")))throw new FormatException("Training guide version or checksum is invalid.");
+            if(e==null||e.format!="AuroraR54.TrainingGuide"||(e.version!=1&&e.version!=2)||e.guide==null||e.guide.version!=e.version||e.sha256!=RouteRecordingStorage.Integrity(RouteRecordingStorage.ExactObject(json,"guide")))throw new FormatException("Training guide version or checksum is invalid.");
             var d=e.guide;d.Validate();Raw(d);return d;
         }
         public static RecordedRouteData Raw(TrainingRouteDefinition d)

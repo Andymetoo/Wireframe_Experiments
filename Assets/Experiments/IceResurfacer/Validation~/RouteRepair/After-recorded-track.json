@@ -1,0 +1,15 @@
+{
+  "path": "Assets/Experiments/IceResurfacer/RouteRecordings~\\Andy_Try_1_20261031_041839_75958600.route.json",
+  "controls": 398,
+  "samples": 46616,
+  "Length": 1003.234406571574,
+  "minimumRadius": 4.484842,
+  "maximumRawDeviation": 0,
+  "curvatureErrors": 0,
+  "boundaryErrors": 0,
+  "rawBodyFails": 0,
+  "rawConditionerFails": 0,
+  "rawMinRadius": 4.484842,
+  "rawFails": [],
+  "faults": []
+}

@@ -33,7 +33,7 @@ namespace IceResurfacer.Editor
                 Check(window.ControlCentersAreSelectable(),"every visible control center selects the point rather than a nearby short tangent handle");
                 Check(raw.provenance.Contains("NOT the operator"),"fixture is explicitly labeled; no historical operator pattern is invented");
                 float required=d.configuration.Wheelbase/Mathf.Tan(d.configuration.MaxSteeringRadians);
-                Check(window.Fit.minimumRadius>=required&&window.Fit.boundaryErrors==0,"minimum radius "+window.Fit.minimumRadius.ToString("F6")+" m >= "+required.ToString("F6")+" m; body/tank/conditioner clearance pass");
+                Check(window.Fit.minimumRadius>=required/1.001f&&window.Fit.recordedRadiusWarnings==0&&window.Fit.boundaryErrors==0,"observed minimum radius "+window.Fit.minimumRadius.ToString("F6")+" m matches "+required.ToString("F6")+" m within the fitter's existing 0.1% numerical tolerance; body/tank/conditioner clearance pass");
                 int controls=d.controls.Count;var p=d.controls[10].Copy();string embedded=d.rawRecordingJson;
                 window.MovePoint(10,p.x+.05f,p.z);Check(d.controls[10].x!=p.x,"control position can be edited");window.UndoEdit();d=window.Document;
                 Check(d.controls[10].x==p.x,"Editor undo restores a moved point");window.UndoEdit(true);window.UndoEdit();

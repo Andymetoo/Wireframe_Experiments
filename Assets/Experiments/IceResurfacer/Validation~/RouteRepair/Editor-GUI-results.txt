@@ -1,0 +1,21 @@
+PASS real EditorWindow OnGUI/Layout/Repaint runs in a hidden HostView without opening a desktop window
+PASS overview thins the 398 control markers without covering the route
+INFO wheel zoom=2.699553; anchor error=0; plot=(x:43.57, y:125.00, width:924.87, height:781.00)
+PASS actual mouse wheel zooms around the cursor with matching world coordinates
+PASS actual middle-button dragging pans every preview layer by the requested delta
+PASS DrawControls clamps stale selection -1 before indexing
+PASS DrawControls clamps stale selection 2147483647 before indexing
+PASS DrawControls clamps stale selection 398 before indexing
+PASS DrawControls clamps stale selection 397 before indexing
+PASS DrawControls clamps stale selection 0 before indexing
+PASS insertion, deletion, undo and redo repaint without selection exceptions
+PASS selecting a node without dragging never converts or distorts the recorded track
+PASS zoomed node dragging changes only adjacent derived sections using the shared viewport transform
+PASS dragging outside the active viewport does not edit the route
+PASS Bezier handle hitboxes and fine dragging remain accurate while zoomed
+PASS loading a shorter route cannot retain an out-of-range selection from the 398-point route
+PASS empty control collection displays an empty state without indexing
+PASS Previous Error starts at the final actual invalid region
+PASS clicking a curvature error selects its responsible section, diagnostics and useful zoom
+PASS Fit Whole Route reliably restores the overview
+PASS GUI regression leaves the original raw file unchanged

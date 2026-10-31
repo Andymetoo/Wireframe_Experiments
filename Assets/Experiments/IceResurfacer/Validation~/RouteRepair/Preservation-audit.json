@@ -1,0 +1,21 @@
+{
+  "changed_existing_sources": [
+    "Core/TrainingRoute.cs",
+    "Core/TrainingRouteEditing.cs",
+    "Editor/IceTrainingGuideValidation.cs",
+    "Editor/TrainingRouteEditorWindow.cs",
+    "Presentation/IceLayoutPlayerProbe.cs",
+    "Presentation/IceRouteGuide.cs",
+    "Presentation/RouteManagerPanel.cs",
+    "Presentation/TrainingGuideStorage.cs",
+    "Presentation/TrainingGuideView.cs",
+    "Documentation/TrainingGuide.txt",
+    "README.txt"
+  ],
+  "unexpected_changes": [],
+  "missing": [],
+  "raw_and_backup_files_unchanged": 17,
+  "all_existing_library_files_unchanged": 23,
+  "protected_simulation_controls_speed_hud_audio_and_route_format_unchanged": true,
+  "scenes_geometry_materials_shaders_unchanged": true
+}

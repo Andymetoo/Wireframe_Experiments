@@ -1,0 +1,148 @@
+[
+  {
+    "kind": "Derived curvature",
+    "start": 154.79206481575966,
+    "end": 155.23389005102217,
+    "count": 16,
+    "representative": {
+      "i": 5196,
+      "distance": 154.79206481575966,
+      "control": 61,
+      "lo": 804,
+      "hi": 817,
+      "source": 804,
+      "rawDistance": 154.87070730665963,
+      "curvatureError": true,
+      "boundaryError": false,
+      "radius": 2.6623237,
+      "nearest": 0.046462994,
+      "rawClear": true,
+      "fittedClear": true,
+      "rawVehicle": {
+        "vehicleX": 6.766096,
+        "vehicleZ": -28.011398,
+        "vehicleHeadingRadians": -1.962192,
+        "speedMetersPerSecond": 1.9616356,
+        "direction": 1,
+        "conditionerLift": 0,
+        "tankLift": 0
+      },
+      "fitVehicle": {
+        "x": 6.7349133,
+        "z": -27.976954,
+        "heading": -1.9484144
+      },
+      "rawConditioner": {
+        "conditionerX": 7.7738914,
+        "conditionerZ": -27.570953,
+        "conditionerHeadingRadians": -1.9970987
+      },
+      "fitConditioner": {
+        "conditionerX": 7.748681,
+        "conditionerZ": -27.550434,
+        "conditionerHeading": -1.9833211
+      },
+      "rawContact": {
+        "Reason": "Clear",
+        "Obstacle": 0,
+        "VehicleX": 0,
+        "VehicleZ": 0,
+        "Heading": 0,
+        "PointX": 0,
+        "PointZ": 0,
+        "NormalX": 0,
+        "NormalZ": 0,
+        "PointY": 0,
+        "GuideRoller": false
+      },
+      "fittedContact": {
+        "Reason": "Clear",
+        "Obstacle": 0,
+        "VehicleX": 0,
+        "VehicleZ": 0,
+        "Heading": 0,
+        "PointX": 0,
+        "PointZ": 0,
+        "NormalX": 0,
+        "NormalZ": 0,
+        "PointY": 0,
+        "GuideRoller": false
+      },
+      "rawBadCorners": [],
+      "fitBadCorners": []
+    }
+  },
+  {
+    "kind": "Vehicle boundary",
+    "start": 158.1510789990425,
+    "end": 159.86417824588716,
+    "count": 63,
+    "representative": {
+      "i": 5335,
+      "distance": 158.9912387765944,
+      "control": 62,
+      "lo": 817,
+      "hi": 830,
+      "source": 825,
+      "rawDistance": 159.09222189645422,
+      "curvatureError": false,
+      "boundaryError": true,
+      "radius": 10.525082,
+      "nearest": 0.04184853,
+      "rawClear": true,
+      "fittedClear": false,
+      "rawVehicle": {
+        "vehicleX": 2.616541,
+        "vehicleZ": -28.68456,
+        "vehicleHeadingRadians": -1.6283661,
+        "speedMetersPerSecond": 2.01168,
+        "direction": 1,
+        "conditionerLift": 0,
+        "tankLift": 0
+      },
+      "fitVehicle": {
+        "x": 2.600737,
+        "z": -28.645811,
+        "heading": -1.7800151
+      },
+      "rawConditioner": {
+        "conditionerX": 3.7141507,
+        "conditionerZ": -28.612457,
+        "conditionerHeadingRadians": -1.6419519
+      },
+      "fitConditioner": {
+        "conditionerX": 3.6766253,
+        "conditionerZ": -28.41676,
+        "conditionerHeading": -1.7809352
+      },
+      "rawContact": {
+        "Reason": "Clear",
+        "Obstacle": 0,
+        "VehicleX": 0,
+        "VehicleZ": 0,
+        "Heading": 0,
+        "PointX": 0,
+        "PointZ": 0,
+        "NormalX": 0,
+        "NormalZ": 0,
+        "PointY": 0,
+        "GuideRoller": false
+      },
+      "fittedContact": {
+        "Reason": "Rink boards",
+        "Obstacle": 3,
+        "VehicleX": 2.600737,
+        "VehicleZ": -28.645811,
+        "Heading": -1.7800151,
+        "PointX": 0.37644935,
+        "PointZ": -30.206827,
+        "NormalX": 0,
+        "NormalZ": 1,
+        "PointY": 0,
+        "GuideRoller": false
+      },
+      "rawBadCorners": [],
+      "fitBadCorners": []
+    }
+  }
+]

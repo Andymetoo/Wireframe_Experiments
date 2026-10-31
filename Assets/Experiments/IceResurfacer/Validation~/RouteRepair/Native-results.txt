@@ -1,0 +1,383 @@
+Aurora native development-player HUD validation / Unity 6000.4.1f1
+Actual player framebuffer captures include the world and live IMGUI instruments.
+The opt-in probe disables the Development Console overlay; native presentation diagnostics remain in the player log and are counted by the launcher.
+Native mouse messages target only this player's own window; hydraulic checks advance fixed simulation ticks while held and after release.
+Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
+The results capture follows an actual raised, dry entry and safe return through the normal finish path.
+PASS 1366x768 / Requested client resolution (actual 1366x768)
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical forward moves actual mechanism to full UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical back moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / HUD forward after physical moves actual mechanism partly UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / HUD back moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical forward after HUD moves actual mechanism partly UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / HUD back moves actual mechanism to full DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical forward moves actual mechanism to full UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical back moves actual mechanism to full DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / HUD forward moves actual mechanism to full UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / held HUD center release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after held HUD center
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD reversal / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for HUD reversal
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / HUD reversal moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / keyboard / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for keyboard
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / keyboard moves actual mechanism partly UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / keyboard release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after keyboard
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / keyboard / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for keyboard
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / keyboard moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / keyboard release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after keyboard
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / unrelated machinery unchanged
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical forward moves actual mechanism to full UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical back moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD forward after physical moves actual mechanism partly UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD back moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical forward after HUD moves actual mechanism partly UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD back moves actual mechanism to full DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical forward moves actual mechanism to full UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical back moves actual mechanism to full DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD forward moves actual mechanism to full UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / held HUD center release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after held HUD center
+PASS 1366x768 / TankLift / HUD reversal / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for HUD reversal
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD reversal moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / keyboard / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for keyboard
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / keyboard moves actual mechanism partly UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / keyboard release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after keyboard
+PASS 1366x768 / TankLift / keyboard / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for keyboard
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / keyboard moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / keyboard release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after keyboard
+PASS 1366x768 / TankLift / unrelated machinery unchanged
+PASS 1366x768 / Default HUD uses collapsed side console
+PASS 1366x768 / Persistent status reports actual raised conditioner
+PASS 1366x768 / Right console expands through actual UI target
+PASS 1366x768 / Message history opens without altering machine state
+PASS 1366x768 / Message history closes through persistent control
+PASS 1366x768 / Machine Load meter opens its demand explanation
+PASS 1366x768 / Machine Load explanation closes without changing machinery
+PASS 1366x768 / Native map pointer selects actual ice for magnified treatment inspection
+PASS 1366x768 / Survey inspection does not apply water or alter machinery
+PASS 1366x768 / Conditioner held direction
+PASS 1366x768 / Conditioner springs to neutral on native mouse release
+PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / Neutral lever preserves actual partly lowered status
+PASS 1366x768 / Horizontal auger switch
+PASS 1366x768 / Vertical auger switch
+PASS 1366x768 / Board brush switch
+PASS 1366x768 / Precise quarter-turn blade handwheel drag
+PASS 1366x768 / three full turns retain remaining blade adjustment
+PASS 1366x768 / 3.5 full turns reach deepest blade stop
+PASS 1366x768 / blade mechanical end stop rejects extra rotation
+PASS 1366x768 / blade reverses continuously from end stop
+PASS 1366x768 / Analog quarter-turn wash handle
+PASS 1366x768 / Pickup pump switch
+PASS 1366x768 / Independent analog quarter-turn flood handle
+PASS 1366x768 / TankLift held direction
+PASS 1366x768 / TankLift springs to neutral on native mouse release
+PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / Actual lowered conditioner has explicit persistent DOWN status
+PASS 1366x768 / Manual snow-breaker button and interlock
+PASS 1366x768 / Guide button opens
+PASS 1366x768 / Guide button closes
+PASS 1366x768 / Pause button
+PASS 1366x768 / Resume button
+PASS 1366x768 / Service help explains physical hose without silently topping up tanks
+PASS 1366x768 / Free Simulation may finish a partial session without a progression guard
+PASS 1366x768 / New-session button
+PASS 1366x768 / Unscored-practice launch button
+PASS 1366x768 / Scored-run launch button
+PASS 1366x768 / Legal partial run reaches results through normal finish path
+PASS 1366x768 / F3 fixture crosses traversable grate and reaches actual rear wall
+PASS 1366x768 / Route guide toggle only changes drawing
+PASS 1366x768 / Validation virtual keyboard receives Q while player is non-focused
+PASS 1366x768 / Held Q enters temporary inspection
+PASS 1366x768 / Inspection Q clears side-console pointer obstruction
+PASS 1366x768 / Release Q restores the operating view
+PASS 1366x768 / Validation virtual keyboard receives E while player is non-focused
+PASS 1366x768 / Held E enters temporary inspection
+PASS 1366x768 / Inspection E clears side-console pointer obstruction
+PASS 1366x768 / Release E restores the operating view
+PASS 1366x768 / Validation virtual keyboard receives C while player is non-focused
+PASS 1366x768 / Held C enters temporary inspection
+PASS 1366x768 / Inspection C clears side-console pointer obstruction
+PASS 1366x768 / Release C restores the operating view
+PASS 1366x768 / Validation virtual keyboard receives LeftShift while player is non-focused
+PASS 1366x768 / Held LeftShift enters temporary inspection
+PASS 1366x768 / Inspection LeftShift clears side-console pointer obstruction
+PASS 1366x768 / Release LeftShift restores the operating view
+PASS 1366x768 / Persistent Route Recorder button opens the authoring panel
+PASS 1366x768 / Native Start New button starts a take
+PASS 1366x768 / Typing/keys in the route panel do not drive, toggle machinery or dismount
+PASS 1366x768 / Close and Drive retains the active recording
+PASS 1366x768 / Normal S/Ctrl game input and fixed simulation observer capture a real driven reverse segment
+PASS 1366x768 / Native Stop button finalizes raw observations
+PASS 1366x768 / Native Save Named Copy persists JSON in the configured standalone library
+PASS 1366x768 / modal route controls cannot actuate miniature hydraulics behind the panel
+PASS 1366x768 / Native saved-route list loads the clearly labeled deterministic fixture
+PASS 1366x768 / First loaded-route repaint renders every raw sample instead of the preceding take
+PASS 1366x768 / Preview and point inspection preserve the original raw file
+PASS 1366x768 / Recorder closes through native UI after loading a saved route
+PASS 1366x768 / Training fixture has not replaced or enabled the original F5 default
+PASS 1366x768 / Native F6 Training Guides tab opens full-route authoring preview
+PASS 1366x768 / Explicit fixture selection loads a labeled physically validated guide without enabling F5
+PASS 1366x768 / runtime missed-area view excludes all future unconfirmed passes
+PASS 1366x768 / Native Original F5 Reference button restores the default source
+PASS 1366x768 / Native guide-file list loads a persisted .guide.json without code changes
+PASS 1366x768 / Native Show Guide / F5 button enables advisory guide
+PASS 1366x768 / fixture includes straight work passes followed by curved perimeter context
+PASS 1366x768 / live world preview stays bounded to current/upcoming 28 m
+PASS 1366x768 / Surface Survey uses limited cached route section rather than full overlapping pattern
+PASS 1366x768 / actual R input enters standing cockpit with guide enabled
+PASS 1366x768 / rejoin and repeated F5 toggles preserve free control, exact pose and machinery state
+PASS 1366x768 / runtime preview and guidance do not mutate saved guide data
+PASS 1366x768 / native framebuffer: training line is visible on exposed ground and hidden behind an opaque solid
+PASS 1366x768 / native validation restores original F5 source and leaves guide off
+PASS 1366x768 / physical keypad Numpad 9 starts native take 1
+PASS 1366x768 / Numpad 9 stops and auto-saves a unique native recording
+PASS 1366x768 / physical keypad Numpad 9 starts native take 2
+PASS 1366x768 / Numpad 9 stops and auto-saves a unique native recording
+PASS 1366x768 / two named native takes have different persistent filenames
+PASS 1366x768 / Numpad 8 opens readable route manager containing both takes
+PASS 1366x768 / keypad keys in a focused route-name field do not start recording or toggle GPS
+PASS 1366x768 / native saved-route row selects the first named recording
+PASS 1366x768 / native Use as GPS automatically fits the selected raw take and keeps its name
+PASS 1366x768 / GPS enabled in manager never draws silhouette continuation across menus
+PASS 1366x768 / recorded-pose replay crosses several native GPS legs without a manual rejoin or blank line
+PASS 1366x768 / actual seated hood/tank silhouette receives a restrained GPS continuation
+PASS 1366x768 / an intervening real arena board/wall blocks the machine continuation query
+PASS 1366x768 / world and minimap share the same approximately 40-foot progress window
+PASS 1366x768 / canceling delete leaves both native recordings intact
+PASS 1366x768 / actual operator route loads directly as native GPS
+PASS 1366x768 / native operator route use preserves every original input byte
+PASS 1366x768 / actual operator route loads directly as native GPS
+PASS 1366x768 / native operator route use preserves every original input byte
+PASS 1366x768 / actual operator route loads directly as native GPS
+PASS 1366x768 / native operator route use preserves every original input byte
+PASS 1366x768 / saved launch scene retains original 2.65 m/s calibration
+PASS 1366x768 / native ESC slider selects minimum 3.00 MPH
+PASS 1366x768 / native ESC slider selects maximum 8.00 MPH
+PASS 1366x768 / native ESC slider selects practical quarter-MPH setting
+PASS 1366x768 / native reset restores exact original speed and clears only the speed preference
+PASS 1366x768 / Conditioner held direction
+PASS 1366x768 / Conditioner springs to neutral on native mouse release
+PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / Conditioner held direction
+PASS 1366x768 / Conditioner springs to neutral on native mouse release
+PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / TankLift held direction
+PASS 1366x768 / TankLift springs to neutral on native mouse release
+PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / TankLift held direction
+PASS 1366x768 / TankLift springs to neutral on native mouse release
+PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / native survey collapse keeps compact header accessible
+PASS 1366x768 / native survey expand restores full inspection/GPS map
+PASS 1366x768 / actual Num8 opens route manager before video toggle
+PASS 1366x768 / actual Num1 clears route manager including focused text field
+PASS 1366x768 / clean video suppresses F2 diagnostic ice coloring and keeps its selection
+PASS 1366x768 / video hides GPS drawing while preserving enabled route selection
+PASS 1366x768 / hidden console releases former pointer hit region
+PASS 1366x768 / normal throttle works with all gameplay UI hidden
+PASS 1366x768 / number-row 1 continues physical machinery operation in video mode
+PASS 1366x768 / video clears control highlighting without removing machine audio sources
+PASS 1366x768 / explicit ESC menu remains available in video mode
+PASS 1366x768 / actual Num1 restores normal HUD, selected ice debug mode and enabled GPS
+PASS: all player HUD checks.
+Native hidden-window D3D presentation warnings: 10 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

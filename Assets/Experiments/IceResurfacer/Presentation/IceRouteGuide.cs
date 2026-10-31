@@ -176,23 +176,23 @@ namespace IceResurfacer.Presentation
             try
             {
                 if(path.EndsWith(".guide.json",System.StringComparison.OrdinalIgnoreCase))
-                {if(!LoadTrainingGuide(path))return false;ActiveSourcePath=path;ActiveRouteName=RouteLibraryCatalog.DisplayName(path,ActiveRouteName);TrainingStatus="Loaded: "+ActiveRouteName+" — GPS Ready";return true;}
+                {if(!LoadTrainingGuide(path))return false;ActiveSourcePath=path;ActiveRouteName=RouteLibraryCatalog.DisplayName(path,ActiveRouteName);TrainingStatus="Loaded: "+ActiveRouteName+" — GPS Ready"+(ActiveFit.recordedSamples>0?" / recorded track; ideal spline not certified":" / smooth spline validated");return true;}
                 var raw=RouteRecordingStorage.Read(path);if(!raw.complete)throw new System.InvalidOperationException("This is a recovery draft. Stop and save it before following.");
-                string name=RouteLibraryCatalog.DisplayName(path,raw.name);var d=TrainingGuideStorage.Create(raw);d.name=name+" / auto fit";
-                TrainingRouteEditing.ConstrainTangents(d,80,true);
+                string name=RouteLibraryCatalog.DisplayName(path,raw.name);var d=TrainingGuideStorage.Create(raw);d.name=name+" / recorded track";
                 if(!SelectTrainingGuide(d))return false;
                 // Separate editable copy; the selected recording is never rewritten.
                 AutoFitPath=TrainingGuideStorage.SaveCopy(System.IO.Path.Combine(GuideDirectory,"AutoFit"),d);
-                ActiveRouteName=name;ActiveSourcePath=path;TrainingStatus="Loaded: "+name+" — GPS Ready (automatically fitted; optional Edit Route).";
+                ActiveRouteName=name;ActiveSourcePath=path;TrainingStatus="Loaded: "+name+" — recorded-track GPS Ready (clearance validated; optional Edit Route).";
                 game.Notice=TrainingStatus;return true;
             }
             catch(System.Exception e){TrainingStatus="Couldn't prepare GPS: "+e.Message;return false;}
         }
         public string EditSavedRoute(string path)
         {
-            if(path!=ActiveSourcePath||string.IsNullOrEmpty(AutoFitPath))
+            bool corrected=path.EndsWith(".guide.json",System.StringComparison.OrdinalIgnoreCase);
+            if(!corrected&&(path!=ActiveSourcePath||string.IsNullOrEmpty(AutoFitPath)))
             {if(!UseSavedRouteAsGps(path))return TrainingStatus;}
-            string edit=path.EndsWith(".guide.json",System.StringComparison.OrdinalIgnoreCase)?path:AutoFitPath;
+            string edit=corrected?path:AutoFitPath;
             if(EditRouteRequested!=null){EditRouteRequested(edit);return "Opened the selected route in the Training Route Editor.";}
             return "Editable copy prepared. Open it in the Unity Training Route Editor: "+edit;
         }
@@ -227,7 +227,7 @@ namespace IceResurfacer.Presentation
                 if(!fit.Ready){TrainingStatus="Draft guide: repair turning/boundary issues in the Editor before live use.";return false;}
                 if(!fit.Compatible(game.Sim.Config)){TrainingStatus="Guide machine/rink calibration differs; revalidate in the Editor.";return false;}
                 selectedGuide=definition;selectedFit=fit;Route=new ResurfacingRoute(fit);Progress=null;Footprints=null;Available=true;ActiveRouteName=definition.name;ActiveSourcePath="";AutoFitPath="";
-                PrepareNavigation();TrainingStatus="Loaded: "+definition.name+" — GPS Ready. Numpad 7 shows/hides GPS.";return true;
+                PrepareNavigation();TrainingStatus="Loaded: "+definition.name+" — GPS Ready"+(fit.recordedSamples>0?" / recorded track, clearance validated; ideal spline not certified":" / smooth spline validated")+". Numpad 7 shows/hides GPS.";return true;
             }
             catch(System.Exception e){TrainingStatus="Guide rejected: "+e.Message;return false;}
         }

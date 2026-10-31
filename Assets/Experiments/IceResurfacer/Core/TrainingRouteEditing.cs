@@ -4,10 +4,19 @@ namespace IceResurfacer.Core
 {
     public static class TrainingRouteEditing
     {
-        public static int Split(TrainingRouteDefinition d,int segment)
+        public static int Split(TrainingRouteDefinition d,int segment,RecordedRouteData raw=null)
         {
             if(segment<0||segment>=d.controls.Count-1)throw new ArgumentOutOfRangeException(nameof(segment));
             var a=d.controls[segment];var b=d.controls[segment+1];float sign=a.direction;
+            if(a.recordedTrack)
+            {
+                if(raw==null)throw new InvalidOperationException("Recorded-track subdivision requires the original source.");
+                int sequence=(a.sourceSequence+b.sourceSequence)/2;
+                if(sequence==a.sourceSequence)throw new InvalidOperationException("No source observation between these anchors; move a point to edit this section as Bezier.");
+                var sample=raw.samples[sequence];var point=a.Copy();point.sourceSequence=sequence;point.x=sample.vehicleX;point.z=sample.vehicleZ;point.headingRadians=sample.vehicleHeadingRadians;
+                point.direction=RecordedTrackReconstruction.Direction(raw,sequence);point.marker=RouteMarker.None;point.label="";
+                d.controls.Insert(segment+1,point);return segment+1;
+            }
             float p1x=a.x+(float)Math.Sin(a.headingRadians)*a.outgoing*sign,p1z=a.z+(float)Math.Cos(a.headingRadians)*a.outgoing*sign;
             float p2x=b.x-(float)Math.Sin(b.headingRadians)*b.incoming*sign,p2z=b.z-(float)Math.Cos(b.headingRadians)*b.incoming*sign;
             float q0x=(a.x+p1x)*.5f,q0z=(a.z+p1z)*.5f,q1x=(p1x+p2x)*.5f,q1z=(p1z+p2z)*.5f,q2x=(p2x+b.x)*.5f,q2z=(p2z+b.z)*.5f;
@@ -19,11 +28,13 @@ namespace IceResurfacer.Core
             a.outgoing*=.5f;b.incoming*=.5f;d.controls.Insert(segment+1,p);return segment+1;
         }
         public static bool Remove(TrainingRouteDefinition d,int point)
-        {if(point<=0||point>=d.controls.Count-1||d.controls.Count<=2)return false;d.controls.RemoveAt(point);return true;}
+        {if(point<=0||point>=d.controls.Count-1||d.controls.Count<=2)return false;d.controls[point-1].recordedTrack&=d.controls[point].recordedTrack;d.controls.RemoveAt(point);return true;}
         public static void ConstrainTangents(TrainingRouteDefinition d,int iterations=60,bool allowPositionAdjustment=false)
         {
-            // Derived tangents/headings and optional 12 cm control adjustments stay
-            // within the source corridor. Full body/conditioner checks decide readiness.
+            // Legacy Bezier utility, retained for authored/test curves. Its position
+            // budget is per invocation, not an immutable source corridor. Recording
+            // imports/corrections use RecordedTrackReconstruction.Restore instead.
+            // Full body/conditioner checks still decide readiness after this utility.
             float limit=(float)Math.Tan(d.configuration.MaxSteeringRadians)/d.configuration.Wheelbase;
             var headings=new float[d.controls.Count];for(int i=0;i<headings.Length;i++)headings[i]=d.controls[i].headingRadians;
             var positionsX=new float[headings.Length];var positionsZ=new float[headings.Length];for(int i=0;i<headings.Length;i++){positionsX[i]=d.controls[i].x;positionsZ[i]=d.controls[i].z;}

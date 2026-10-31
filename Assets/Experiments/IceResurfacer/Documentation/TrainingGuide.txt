@@ -10,19 +10,25 @@ Choose Free Simulation / Practice, park, F6 > Raw Recording, name the take,
 Start New (F7), Close and Drive. Drive the whole entry, passes, turns and return
 with normal controls. F7 stops; F6 > Save Named Copy preserves the raw take.
 The machine continues simulating while this authoring panel is open. Park first.
-No real operator route was supplied for this pass.
+The current repair is validated against the real Andy_Try_1 recording as well
+as labeled deterministic fixtures. See Documentation/RouteRepair.txt.
 
 Edit after recording
 1. Leave Play Mode. Experiments > Ice Resurfacer > Training Route Editor.
    Open raw .route.json accepts any existing recorder version-1 file, at any
    local path. The older Route Recordings inspector also has Edit Fitted Guide.
 2. Gray traces show immutable vehicle/actual conditioner observations; cyan is
-   the fitted rear-axle driving path; gold is the conditioner predicted by the
-   simulator's existing linkage solver. Green/orange dots identify start/end.
+   the derived rear-axle driving path. Gold follows the actual recorded
+   conditioner on recorded spans and the existing linkage solver on edited
+   Bezier spans. Green/orange dots identify start/end.
 3. Click a control square; drag it or its tangent handles, or edit X/Z, heading,
    handle lengths and outgoing direction numerically. Shift-click near a curve
-   or Insert After adds an exact de Casteljau split. Remove deletes an interior
-   point. Undo/Redo buttons and Ctrl+Z / Ctrl+Shift+Z retain up to 64 edits.
+   or Insert After adds an actual source anchor on a recorded span, or an exact
+   de Casteljau split on a Bezier span. Selecting alone preserves the track;
+   moving a point or handle converts only adjacent spans to editable Bezier.
+   Remove deletes an interior point. Undo/Redo and Ctrl+Z / Ctrl+Shift+Z retain
+   up to 64 edits. Wheel zooms at the cursor; middle drag pans; Fit Whole Route
+   and Zoom to Selected Point frame the desired view. Markers thin at overview.
 4. Mark Turn / Pass / Stop / Entry / Exit and give significant transitions a
    label. Markers split sequential contexts for guidance and deliberate rejoin.
    Set intended blade/flood state and nominal pace where appropriate. These
@@ -32,11 +38,12 @@ Edit after recording
    becomes brighter green. Missed blade is red, water-only misses blue; excess
    blade is amber, water-only excess blue. Actual ice conditions remain in the
    existing Surface Survey. Inspect overlap before accepting a correction.
-6. Red curve sections identify radius or clearance failures. Constrain Fit can
-   adjust derived controls within 12 cm of their current positions and headings
-   within four degrees, while optimizing tangents. Inspect the result: pressing
-   this repeatedly uses the current edit as its new corridor. It never edits raw
-   observations. Bad sections may require moving/removing/adding controls.
+6. Magenta identifies excessive derived curvature, red actual clearance failure
+   locations. Next/Previous Error and Zoom to Error navigate grouped regions.
+   Clicking an error opens source/guide poses, deviation, radius and exact
+   collision point. Restore faithful recorded track restores the authoritative
+   observations together, with no accumulating offsets; it is undoable. A valid
+   recorded trajectory can be GPS READY without claiming ideal spline smoothness.
 7. Save Corrected COPY creates a new .guide.json, including invalid drafts;
    drafts cannot be selected for live guidance until their checks pass. Existing
    copies and the original .route.json are never overwritten. Editor autosaves
@@ -56,10 +63,12 @@ C:/Users/agaug/AppData/LocalLow/Impossible Structures/The Vector Cabinet/
 IceResurfacer/Routes/Guides. Validation players use separate company/product settings.
 Copy a corrected .guide.json into that build's Guides directory and Refresh;
 no source-code changes are needed. Raw files are imported/edited in the Editor.
-The same version-1 guide format works in Editor and player. No scene-object
+Current Editor/player support legacy Bezier guide version 1 and recorded-track
+guide version 2. Older builds reject version 2 rather than misreading its geometry.
+Raw recordings remain byte-preserved version 1. No scene-object
 changes are relied upon for persistence. The guide embeds the exact original
 raw JSON and its SHA-256, with source ID, copied physical calibration, ordered
-cubic control points, handles, directions, source sequence anchors, markers,
+cubic control points, optional recorded-track spans, handles, directions, source sequence anchors, markers,
 intent and pace. A second SHA-256 covers the entire guide object. Serialization
 rejects missing/unsupported schema, corrupt checksums and invalid finite values.
 Atomic copy/draft publication reuses the existing recorder storage implementation.
@@ -100,13 +109,16 @@ There is no automatic restart or teleport. Guide toggling, fitting, tracking and
 footprint analysis never write vehicle controls, machinery, ice state or scores.
 
 Geometry, pace and limits
-The derived path is piecewise cubic Bezier with shared body-heading tangents,
-explicit forward/reverse cusps and dense approximately 3 cm validation samples.
+New raw imports use bounded interpolation of recorded position and body heading,
+with actual conditioner observations, at no more than 2.5 cm / .23 degree
+validation spacing. This observed track is distinguished from an ideal spline.
+Edited spans use cubic Bezier with shared body-heading tangents, explicit
+forward/reverse cusps and dense approximately 3 cm validation samples.
 Minimum rear-axle radius is wheelbase/tan(max steering): currently 4.485012 m.
 Full existing body/guide-roller/tank collision probes plus conditioner corners
 check rink and service boundaries. A separate private scratch Simulation reuses
-the actual conditioner hitch/yaw solver; the live Simulation is never fitted.
-Raw actual conditioner poses remain available for comparison. Turning rate,
+the actual conditioner hitch/yaw solver on Bezier spans; the live Simulation is
+never fitted. Recorded spans retain actual conditioner positions. Turning rate,
 nominal pace and sampled steering-angle change produce an advisory pace cap.
 G1 joins can change curvature; creep or stop to set steering at sharp joins.
 This is not a C2 trajectory or a dynamic speed/steering feasibility certificate.

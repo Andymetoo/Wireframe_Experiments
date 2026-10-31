@@ -11,6 +11,8 @@ namespace IceResurfacer.Core
         public float x,z,headingRadians,incoming,outgoing;
         public int direction=1,sourceSequence;
         public bool cutting,flooding;
+        // Optional derived-guide field. Raw recording schema is unchanged.
+        public bool recordedTrack;
         public float nominalSpeed=.9f,tankLift;
         public RouteMarker marker;
         public string label="";
@@ -25,17 +27,20 @@ namespace IceResurfacer.Core
         public List<RouteControlPoint> controls=new List<RouteControlPoint>();
         public void Validate()
         {
-            if(version!=1||!Guid.TryParseExact(id,"N",out _)||string.IsNullOrWhiteSpace(name)||name.Length>100||
+            if((version!=1&&version!=2)||!Guid.TryParseExact(id,"N",out _)||string.IsNullOrWhiteSpace(name)||name.Length>100||
                 string.IsNullOrEmpty(sourceRecordingId)||string.IsNullOrEmpty(sourceSha256)||string.IsNullOrEmpty(rawRecordingJson)||configuration==null)
                 throw new FormatException("Invalid training-guide identity or raw-source reference.");
             configuration.Validate();
             if(controls==null||controls.Count<2||controls.Count>5000)throw new FormatException("A guide needs 2–5000 ordered control points.");
             foreach(var p in controls)
+            {
+                if(version==1&&p!=null&&p.recordedTrack)throw new FormatException("Recorded-track spans require derived guide version 2; raw recordings remain version 1.");
                 if(p==null||!RecordedRouteData.Finite(p.x)||!RecordedRouteData.Finite(p.z)||Math.Abs(p.x)>10000||Math.Abs(p.z)>10000||
                     !RecordedRouteData.Finite(p.headingRadians)||Math.Abs(p.headingRadians)>1000||!RecordedRouteData.Finite(p.incoming)||!RecordedRouteData.Finite(p.outgoing)||
                     p.incoming<.01f||p.outgoing<.01f||p.incoming>50||p.outgoing>50||Math.Abs(p.direction)!=1||p.sourceSequence<0||
                     !RecordedRouteData.Finite(p.nominalSpeed)||p.nominalSpeed<.05f||p.nominalSpeed>5||!RecordedRouteData.Finite(p.tankLift)||p.tankLift<0||p.tankLift>1)
                     throw new FormatException("Invalid control point. Tangents, poses and direction must be finite and bounded.");
+            }
         }
         public static SimulatorConfig CopyConfiguration(SimulatorConfig source)
         {
@@ -99,6 +104,12 @@ namespace IceResurfacer.Core
         public bool cutting,flooding;
         public float tankLift;
         public bool curvatureError,boundaryError;
+        public bool recordedTrack,recordedRadiusWarning;
+        public int sourceSequence;
+        public float sourceFraction,conditionerLift;
+        public double sourceDistance;
+        public MovementContact boundaryContact;
+        public bool conditionerBoundary;
     }
     public struct GuideLeg
     {
@@ -115,8 +126,12 @@ namespace IceResurfacer.Core
         public SimulatorConfig configuration;
         public string name,provenance;
         public int curvatureErrors,boundaryErrors;
+        public int recordedRadiusWarnings,recordedSamples,sourceErrors;
+        public bool validationPerformed;
+        public readonly List<RouteProblemRegion> problems=new List<RouteProblemRegion>();
         public float minimumRadius=float.PositiveInfinity,maximumRawDeviation;
-        public bool Ready => curvatureErrors==0&&boundaryErrors==0&&samples.Count>1;
+        public bool Ready => curvatureErrors==0&&boundaryErrors==0&&sourceErrors==0&&samples.Count>1;
+        public bool IdealSplineCertified=>Ready&&validationPerformed&&recordedSamples==0;
         public double Length => samples.Count==0?0:samples[samples.Count-1].distance;
         public GuideSample At(double distance)
         {
@@ -151,6 +166,11 @@ namespace IceResurfacer.Core
             for(int segment=0;segment<d.controls.Count-1;segment++)
             {
                 var a=d.controls[segment];var b=d.controls[segment+1];float chord=TrainingRouteDefinition.Distance(a.x,a.z,b.x,b.z);
+                if(a.recordedTrack)
+                {
+                    RecordedTrackReconstruction.Append(fit,raw,a,b,segment,ref distance);
+                    continue;
+                }
                 int divisions=Math.Max(4,(int)Math.Ceiling((chord+a.outgoing+b.incoming)*2/.10));
                 if(divisions>20000||chord<.03f){fit.issues.Add("Degenerate or excessively long segment "+segment);fit.curvatureErrors++;continue;}
                 for(int step=segment==0?0:1;step<=divisions;step++)
@@ -165,13 +185,17 @@ namespace IceResurfacer.Core
             Complete(fit,raw.samples[0].conditionerHeadingRadians-raw.samples[0].vehicleHeadingRadians);
             ApplyMarkers(fit,d);
             // Compare each fitted sample only to its corresponding raw sequence interval.
-            foreach(var p in fit.samples)
+            for(int sample=0;sample<fit.samples.Count;sample++)
             {
+                var p=fit.samples[sample];
+                if(p.recordedTrack)continue;
                 int lo=d.controls[p.control].sourceSequence,hi=d.controls[p.control+1].sourceSequence;
                 lo=Math.Max(0,Math.Min(raw.samples.Count-1,lo));hi=Math.Max(lo,Math.Min(raw.samples.Count-1,hi));float nearest=float.PositiveInfinity;
-                for(int i=lo;i<=hi;i++)nearest=Math.Min(nearest,TrainingRouteDefinition.Distance(p.x,p.z,raw.samples[i].vehicleX,raw.samples[i].vehicleZ));
+                RecordedTrackReconstruction.Match(raw,p.x,p.z,lo,hi,out int sequence,out float fraction,out nearest);
+                p.sourceSequence=sequence;p.sourceFraction=fraction;p.sourceDistance=RecordedTrackReconstruction.Interpolate(raw,sequence,fraction).distanceMeters;fit.samples[sample]=p;
                 fit.maximumRawDeviation=Math.Max(fit.maximumRawDeviation,nearest);
             }
+            RouteFitDiagnostics.Build(fit,raw);
             return fit;
         }
         static void ApplyMarkers(RouteFit fit,TrainingRouteDefinition d)
@@ -226,6 +250,7 @@ namespace IceResurfacer.Core
         }
         static void Complete(RouteFit fit,float initialRelative,bool check=true)
         {
+            fit.validationPerformed=check;
             var c=fit.configuration;var coarse=TrainingRouteDefinition.CopyConfiguration(c);coarse.CellSize=.5f;
             var workspace=new Simulation(coarse,true);var first=fit.samples[0];
             workspace.Conditioner.Heading=TrainingRouteDefinition.Angle(first.heading+initialRelative);
@@ -237,16 +262,24 @@ namespace IceResurfacer.Core
                 var p=fit.samples[i];var prior=i==0?p:fit.samples[i-1];float ds=(float)(p.distance-prior.distance);
                 p.safeSpeed=Math.Min(p.safeSpeed,p.direction<0?c.ReverseSpeed:c.ForwardSpeed);
                 int ticks=Math.Max(1,(int)Math.Ceiling(ds/(Math.Max(.15f,p.safeSpeed)*.02f)));
-                for(int tick=1;tick<=ticks;tick++)
+                for(int tick=1;!p.recordedTrack&&tick<=ticks;tick++)
                 {
                     float t=tick/(float)ticks;
                     workspace.ProjectGuideConditioner(prior.x+(p.x-prior.x)*t,prior.z+(p.z-prior.z)*t,prior.heading+TrainingRouteDefinition.Angle(p.heading-prior.heading)*t,
                         p.direction*Math.Max(.15f,p.safeSpeed),ds/Math.Max(.15f,p.safeSpeed)/ticks,p.tankLift);
                 }
-                p.conditionerX=workspace.Conditioner.X;p.conditionerZ=workspace.Conditioner.Z;p.conditionerHeading=workspace.Conditioner.Heading;
+                if(p.recordedTrack){workspace.SetGuideObservation(p);fit.recordedSamples++;}
+                else {p.conditionerX=workspace.Conditioner.X;p.conditionerZ=workspace.Conditioner.Z;p.conditionerHeading=workspace.Conditioner.Heading;}
                 float absolute=Math.Abs(p.curvature);if(absolute>.0001f)fit.minimumRadius=Math.Min(fit.minimumRadius,1/absolute);
-                p.curvatureError=absolute>limit*1.001f;
-                p.boundaryError=check&&(!workspace.ProbeVehiclePose(p.x,p.z,p.heading,out _)||!ConditionerClear(workspace,p));
+                p.curvatureError=!p.recordedTrack&&absolute>limit*1.001f;
+                p.recordedRadiusWarning=p.recordedTrack&&absolute>limit*1.001f;
+                if(p.recordedRadiusWarning)fit.recordedRadiusWarnings++;
+                if(check)
+                {
+                    bool body=workspace.ProbeVehiclePose(p.x,p.z,p.heading,out var contact);
+                    bool conditioner=ConditionerClear(workspace,p,out var conditionerContact);
+                    p.boundaryError=!body||!conditioner;p.conditionerBoundary=body&&!conditioner;p.boundaryContact=body?conditionerContact:contact;
+                }
                 if(check&&p.curvatureError)fit.curvatureErrors++;if(p.boundaryError)fit.boundaryErrors++;
                 if(i>0&&ds>.0001f)
                 {
@@ -266,17 +299,25 @@ namespace IceResurfacer.Core
             {var leg=fit.legs[i];leg.start=fit.samples[leg.first].distance;leg.end=i+1<fit.legs.Count?fit.samples[fit.legs[i+1].first].distance:fit.Length;fit.legs[i]=leg;}
             if(fit.curvatureErrors>0)fit.issues.Add(fit.curvatureErrors+" samples exceed minimum rear-axle radius "+(1/limit).ToString("F3")+" m.");
             if(fit.boundaryErrors>0)fit.issues.Add(fit.boundaryErrors+" samples intersect body/conditioner boundaries. Repair red sections before using this guide.");
+            if(fit.recordedSamples>0)fit.issues.Add("Recorded-track reconstruction preserves observed vehicle heading and actual conditioner poses. Clearance validated; not certified as an ideal smooth spline.");
+            if(fit.recordedRadiusWarnings>0)fit.issues.Add(fit.recordedRadiusWarnings+" observed heading changes exceed the ideal bicycle-radius constraint; inspect recorded maneuvers. This does not certify a derived spline.");
         }
         static void AddLeg(RouteFit fit,int first,int last,bool turn)
         {if(last<first)return;var p=fit.samples[first];fit.legs.Add(new GuideLeg{first=first,last=last,direction=p.direction,turn=turn,label=(p.direction<0?"Reverse / ":"")+(turn?"turn":p.cutting?"processing pass":"travel")});}
-        static bool ConditionerClear(Simulation workspace,GuideSample p)
+        internal static bool ConditionerClear(Simulation workspace,GuideSample p,out MovementContact contact)
         {
+            contact=default;
             float sn=(float)Math.Sin(p.conditionerHeading),cs=(float)Math.Cos(p.conditionerHeading);var c=workspace.Config;
             for(int side=-1;side<=1;side+=2)for(int fore=-1;fore<=1;fore+=2)
             {
                 float x=p.conditionerX+cs*side*c.ConditionerWidth*.5f+sn*fore*c.ConditionerLength*.5f;
                 float z=p.conditionerZ-sn*side*c.ConditionerWidth*.5f+cs*fore*c.ConditionerLength*.5f;
-                if(!workspace.Ice.IsInside(x,z,.005f)&&!workspace.Layout.ContainsFloor(x,z,.005f))return false;
+                if(!workspace.Ice.IsInside(x,z,.005f)&&!workspace.Layout.ContainsFloor(x,z,.005f))
+                {
+                    workspace.Layout.ToLocal(x,z,out float localSide,out float outward);
+                    contact=new MovementContact{Obstacle=outward>workspace.Layout.NeckStart&&Math.Abs(localSide)<workspace.Layout.RoomHalfWidth+3?MovementObstacle.ServiceWall:MovementObstacle.RinkBoards,
+                        PointX=x,PointZ=z,VehicleX=p.x,VehicleZ=p.z,Heading=p.heading};return false;
+                }
             }
             return true;
         }
@@ -287,5 +328,7 @@ namespace IceResurfacer.Core
         // It reuses the production conditioner authority without changing live physics.
         internal void ProjectGuideConditioner(float x,float z,float heading,float speed,float dt,float lift)
         {Vehicle.X=x;Vehicle.Z=z;Vehicle.Heading=heading;Vehicle.Speed=speed;TankLift=lift;UpdateConditioner(dt);}
+        internal void SetGuideObservation(GuideSample p)
+        {Vehicle.X=p.x;Vehicle.Z=p.z;Vehicle.Heading=p.heading;TankLift=p.tankLift;Conditioner.X=p.conditionerX;Conditioner.Z=p.conditionerZ;Conditioner.Heading=p.conditionerHeading;Conditioner.Lift=p.conditionerLift;}
     }
 }

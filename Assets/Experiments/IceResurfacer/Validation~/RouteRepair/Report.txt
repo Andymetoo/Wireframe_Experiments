@@ -1,0 +1,127 @@
+AURORA R-54 / ANDY_TRY_1 ROUTE REPAIR / 30 OCTOBER 2026
+
+Result
+Your raw recording passes the production pose checks. The reported 16 curvature
+and 63 boundary failures are in the saved derived geometry. The repaired guide
+has 0 curvature failures, 0 boundary failures and 0 observed-radius warnings.
+The real recording, not an invented historical route, is the acceptance case.
+
+Before / after
+Saved derived draft: 33,701 samples; minimum radius 2.662324 m; maximum original
+nearest-source-sample deviation 0.366617 m; fitted length 1003.275814 m.
+Raw: 5,130 observations; 1003.234406572 m over 519.9 seconds; 0 raw vehicle and
+0 raw conditioner corner failures. Its minimum observed radius is 4.484842 m.
+Fresh old automatic fitting: 0 curvature failures but the same 63 body failures.
+Repaired recorded track: 46,616 dense validation samples; 1003.234406572 m;
+zero displacement from the corresponding raw polyline and actual conditioner
+interpolation. The unchanged ideal rear-axle radius is 4.485012 m; the 0.17 mm
+observed numerical difference is inside the pre-existing 0.1% tolerance.
+
+Root cause and exact regions
+The two grouped regions are at derived distances 154.792065–155.233890 m
+(curvature, control 61) and 158.151079–159.864178 m (vehicle boundary, control 62).
+The latter is the front-left production body-envelope sample intersecting the
+south boards. Its centerline can look inside while its fitted body heading puts
+the corner through the board. The raw pose is clear. This is not a conditioner
+collision or a legal service-floor point being rejected as outside the rink.
+The selected endpoint X=14.506881, Z=-31.132488 is control 397 / source 5129,
+on the service floor at Side=0.264735 / Outward=5.387131 m; its full pose is clear.
+
+The old optimizer scored curvature without body clearance and applied its
+12 cm cap relative to each invocation, allowing cumulative drift. The saved
+control 62 is 0.366617 m from its source anchor. Shared Bezier handles/headings
+couple adjacent curves, so changing/deleting a point can shift failure into its
+neighbor. Restore recorded track restores the source spans together instead.
+Analysis.txt and Failure-regions.json give source indices, distances, raw and
+derived vehicle/conditioner positions and headings, exact contact coordinates,
+body-local geometry, normals, deviation and production raw-pose results for
+each distinct region. Before-saved-draft.json retains the detailed reproduction.
+
+Use the corrected copy
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\RouteRecordings~\Guides\Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json
+NUMPAD 8 > Refresh if needed > select Andy_Try_1 / recorded track (repaired) >
+USE AS GPS. NUMPAD 7 toggles the advisory line. The original generated reference
+remains the default for a new Play instance. A new operator route can be loaded
+the same way without code modifications.
+
+New raw imports preserve observed position, heading, direction and actual
+conditioner motion, using bounded interpolation. Recorded-track GPS READY means
+sampled clearance passed; it is not an ideal C2 spline certificate. Unsafe raw
+geometry stays blocked. Derived Bezier edits still face the unchanged radius
+and clearance checks. No physics, scoring, driving or machinery is operated by
+guidance. Existing progression and the 40-foot display framework are preserved.
+
+Editor workflow
+Experiments > Ice Resurfacer > Training Route Editor. Open the original raw
+recording or the old derived draft. Wheel zooms about the cursor; middle drag
+pans. Fit Whole Route resets overview, Zoom to Selected Point frames a control.
+Next/Previous Error and Zoom to Error navigate grouped failures; clicking an
+error selects it, with raw comparison, reason, radius, deviation and contact.
+Selected errors show raw/derived body envelopes and exact collision markers.
+Overview markers are thinned; zoom in for detailed points/handles. Raw/guide/
+conditioner visibility toggles make coincident paths inspectable. Every layer
+and hitbox uses one viewport transform, with clipping and outside-edit protection.
+Selecting alone preserves the track. Dragging a point/handle converts only its
+adjacent spans to Bezier. Insert/remove/mark and undo/redo remain available.
+Restore faithful recorded track is undoable; Save corrected COPY is separate.
+
+Validation
+40/40 deterministic simulation scenarios pass. Full Unity 6000.4.1f1 regression
+suites pass with zero runtime errors/exceptions, including existing route,
+audio, controls, HUD/video, speed setting and scoring checks.
+New validation counts: {"editor_GUI": 20, "actual_recording": 120, "native_player": 375}.
+Actual saved draft reproduces the exact reported counts. All 46,616 reconstructed
+vehicle and conditioner positions match their source-interval interpolation
+within 0.001 mm. Guide save/reload and Route Manager loading pass. Undo restores
+the legacy guide with the original 16 + 63 counts, and redo restores the repair.
+Replaying all 5,130 recorded observations completes 1003.234406572 m across 132
+contexts without jumping to a later loop. Maximum source-distance lead is
+0.201903 m (one raw sampling interval during context transitions); max local
+search is 336 samples. Exact replay time is in Unity-real-route-results.txt.
+The actual corrected version-2 file also reloads in a fresh Unity process after
+Play ended, with identical embedded raw data and validated full length
+(Fresh-guide-persistence.txt). The 40-foot look-ahead is checked independently. An intentionally
+translated synthetic raw track outside the floor is refused, preserving the
+prior valid selection. Unsafe edited raw anchors are also refused.
+
+Real EditorWindow Layout/Repaint tests clamp stale indices -1, 398 and
+int.MaxValue before indexing. They exercise empty collections, insertion,
+deletion, undo/redo, loading a shorter route, wheel zoom, middle pan, precise
+point/handle dragging, outside-viewport protection and error clicks/navigation.
+The hidden test host uses genuine Layout/Repaint and injects pointer events
+inside OnGUI to bypass Unity's native focus handling for an undisplayed window.
+An earlier direct-input harness attempt hit AuxWindowManager::OnGotFocus; it
+was isolated to the test process. Final tests do not use that focus path.
+Native player screenshots separately verify actual rendered GPS/HUD and input.
+
+Persistence and preservation
+All 17 existing raw/backup files and all 23 pre-existing library files retain
+their exact starting SHA-256 values. The corrected guide is an additional file.
+Raw recording format remains version 1. Derived guide version 2 explicitly
+identifies recorded spans so old builds reject, rather than silently misread,
+the representation. Current readers retain legacy guide-v1 support. Embedded
+raw JSON and checksum remain intact. Raw input is never destructively smoothed.
+Vehicle physics, speed calibration/preference code, snow/water/scoring, physical
+controls, spatial audio, HUD/video, raw schema and progress tracker files remain
+byte-identical. Scene, geometry, materials and shaders remain unchanged.
+Only IceResurfacer changed. No branch, commit or push.
+
+Known limits
+Recorded interpolation is not C2 smoothing or full dynamic certification. It
+cannot recreate unobserved detail between original samples; validation checks
+no more than 2.5 cm / .23 degree spacing. Conditioner clearance is a 2D floor
+envelope check, separate from the production vehicle collision probe. The real
+route passes both. Editable Bezier sections may still need deliberate authoring;
+the recovery option restores observed geometry rather than guessing new turns.
+Imports/footprint analysis are synchronous and can pause briefly on long takes;
+the existing 100,000-guide-sample budget remains. Runtime search/rendering remain
+bounded. The automated full-route traversal replays observations through the
+tracker; it is not a new manual full driving run or an autopilot demonstration.
+Viewport images are exports of the actual shared Unity map renderer at tested
+zoom/pan settings; native player images include the normal development watermark.
+Hidden-window presentation warnings are retained in Native-results.txt and do
+not establish focused-window latency or subjective audio quality.
+
+See Screenshots.html, Analysis.txt, Editor-GUI-results.txt, Unity-real-route-results.txt,
+Unity-regression-results.txt, Core-results.txt, Native-results.txt, ModifiedFiles.txt
+and Preservation-audit.json.
