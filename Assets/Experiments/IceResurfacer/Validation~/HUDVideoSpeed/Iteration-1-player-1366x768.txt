@@ -1,0 +1,374 @@
+Aurora native development-player HUD validation / Unity 6000.4.1f1
+Actual player framebuffer captures include the world and live IMGUI instruments.
+The opt-in probe disables the Development Console overlay; native presentation diagnostics remain in the player log and are counted by the launcher.
+Native mouse messages target only this player's own window; hydraulic checks advance fixed simulation ticks while held and after release.
+Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
+The results capture follows an actual raised, dry entry and safe return through the normal finish path.
+PASS 1366x768 / Requested client resolution (actual 1366x768)
+PASS 1366x768 / Default HUD uses collapsed side console
+PASS 1366x768 / Persistent status reports actual raised conditioner
+PASS 1366x768 / Right console expands through actual UI target
+PASS 1366x768 / Message history opens without altering machine state
+PASS 1366x768 / Message history closes through persistent control
+PASS 1366x768 / Machine Load meter opens its demand explanation
+PASS 1366x768 / Machine Load explanation closes without changing machinery
+PASS 1366x768 / Native map pointer selects actual ice for magnified treatment inspection
+PASS 1366x768 / Survey inspection does not apply water or alter machinery
+PASS 1366x768 / Conditioner held direction
+PASS 1366x768 / Conditioner springs to neutral on native mouse release
+PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / Neutral lever preserves actual partly lowered status
+PASS 1366x768 / Horizontal auger switch
+PASS 1366x768 / Vertical auger switch
+PASS 1366x768 / Board brush switch
+PASS 1366x768 / Precise quarter-turn blade handwheel drag
+PASS 1366x768 / three full turns retain remaining blade adjustment
+PASS 1366x768 / 3.5 full turns reach deepest blade stop
+PASS 1366x768 / blade mechanical end stop rejects extra rotation
+PASS 1366x768 / blade reverses continuously from end stop
+PASS 1366x768 / Analog quarter-turn wash handle
+PASS 1366x768 / Pickup pump switch
+PASS 1366x768 / Independent analog quarter-turn flood handle
+PASS 1366x768 / TankLift held direction
+PASS 1366x768 / TankLift springs to neutral on native mouse release
+PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / Actual lowered conditioner has explicit persistent DOWN status
+PASS 1366x768 / Manual snow-breaker button and interlock
+PASS 1366x768 / Guide button opens
+PASS 1366x768 / Guide button closes
+PASS 1366x768 / Pause button
+PASS 1366x768 / Resume button
+PASS 1366x768 / Service help explains physical hose without silently topping up tanks
+PASS 1366x768 / Free Simulation may finish a partial session without a progression guard
+PASS 1366x768 / New-session button
+PASS 1366x768 / Unscored-practice launch button
+PASS 1366x768 / Scored-run launch button
+PASS 1366x768 / Legal partial run reaches results through normal finish path
+PASS 1366x768 / F3 fixture crosses traversable grate and reaches actual rear wall
+PASS 1366x768 / Route guide toggle only changes drawing
+PASS 1366x768 / Validation virtual keyboard receives Q while player is non-focused
+PASS 1366x768 / Held Q enters temporary inspection
+PASS 1366x768 / Inspection Q clears side-console pointer obstruction
+PASS 1366x768 / Release Q restores the operating view
+PASS 1366x768 / Validation virtual keyboard receives E while player is non-focused
+PASS 1366x768 / Held E enters temporary inspection
+PASS 1366x768 / Inspection E clears side-console pointer obstruction
+PASS 1366x768 / Release E restores the operating view
+PASS 1366x768 / Validation virtual keyboard receives C while player is non-focused
+PASS 1366x768 / Held C enters temporary inspection
+PASS 1366x768 / Inspection C clears side-console pointer obstruction
+PASS 1366x768 / Release C restores the operating view
+PASS 1366x768 / Validation virtual keyboard receives LeftShift while player is non-focused
+PASS 1366x768 / Held LeftShift enters temporary inspection
+PASS 1366x768 / Inspection LeftShift clears side-console pointer obstruction
+PASS 1366x768 / Release LeftShift restores the operating view
+PASS 1366x768 / Persistent Route Recorder button opens the authoring panel
+PASS 1366x768 / Native Start New button starts a take
+PASS 1366x768 / Typing/keys in the route panel do not drive, toggle machinery or dismount
+PASS 1366x768 / Close and Drive retains the active recording
+PASS 1366x768 / Normal S/Ctrl game input and fixed simulation observer capture a real driven reverse segment
+PASS 1366x768 / Native Stop button finalizes raw observations
+PASS 1366x768 / Native Save Named Copy persists JSON in the configured standalone library
+PASS 1366x768 / Preview and point inspection preserve the original raw file
+PASS 1366x768 / Recorder closes through native UI after loading a saved route
+PASS 1366x768 / Training fixture has not replaced or enabled the original F5 default
+PASS 1366x768 / Native F6 Training Guides tab opens full-route authoring preview
+PASS 1366x768 / Explicit fixture selection loads a labeled physically validated guide without enabling F5
+PASS 1366x768 / runtime missed-area view excludes all future unconfirmed passes
+PASS 1366x768 / Native Original F5 Reference button restores the default source
+PASS 1366x768 / Native guide-file list loads a persisted .guide.json without code changes
+PASS 1366x768 / Native Show Guide / F5 button enables advisory guide
+PASS 1366x768 / fixture includes straight work passes followed by curved perimeter context
+PASS 1366x768 / live world preview stays bounded to current/upcoming 28 m
+PASS 1366x768 / Surface Survey uses limited cached route section rather than full overlapping pattern
+PASS 1366x768 / actual R input enters standing cockpit with guide enabled
+PASS 1366x768 / rejoin and repeated F5 toggles preserve free control, exact pose and machinery state
+PASS 1366x768 / runtime preview and guidance do not mutate saved guide data
+PASS 1366x768 / native framebuffer: training line is visible on exposed ground and hidden behind an opaque solid
+PASS 1366x768 / native validation restores original F5 source and leaves guide off
+PASS 1366x768 / physical keypad Numpad 9 starts native take 1
+PASS 1366x768 / Numpad 9 stops and auto-saves a unique native recording
+PASS 1366x768 / physical keypad Numpad 9 starts native take 2
+PASS 1366x768 / Numpad 9 stops and auto-saves a unique native recording
+PASS 1366x768 / two named native takes have different persistent filenames
+PASS 1366x768 / Numpad 8 opens readable route manager containing both takes
+PASS 1366x768 / keypad keys in a focused route-name field do not start recording or toggle GPS
+PASS 1366x768 / native saved-route row selects the first named recording
+PASS 1366x768 / native Use as GPS automatically fits the selected raw take and keeps its name
+PASS 1366x768 / GPS enabled in manager never draws silhouette continuation across menus
+PASS 1366x768 / recorded-pose replay crosses several native GPS legs without a manual rejoin or blank line
+PASS 1366x768 / actual seated hood/tank silhouette receives a restrained GPS continuation
+PASS 1366x768 / an intervening real arena board/wall blocks the machine continuation query
+PASS 1366x768 / world and minimap share the same approximately 40-foot progress window
+PASS 1366x768 / canceling delete leaves both native recordings intact
+PASS 1366x768 / actual operator route loads directly as native GPS
+PASS 1366x768 / native operator route use preserves every original input byte
+PASS 1366x768 / actual operator route loads directly as native GPS
+PASS 1366x768 / native operator route use preserves every original input byte
+PASS 1366x768 / saved launch scene retains original 2.65 m/s calibration
+PASS 1366x768 / native ESC slider selects minimum 3.00 MPH
+PASS 1366x768 / native ESC slider selects maximum 8.00 MPH
+PASS 1366x768 / native ESC slider selects practical quarter-MPH setting
+PASS 1366x768 / native reset restores exact original speed and clears only the speed preference
+PASS 1366x768 / Conditioner held direction
+PASS 1366x768 / Conditioner springs to neutral on native mouse release
+PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / Conditioner held direction
+PASS 1366x768 / Conditioner springs to neutral on native mouse release
+PASS 1366x768 / Conditioner holds attained position after release
+PASS 1366x768 / TankLift held direction
+PASS 1366x768 / TankLift springs to neutral on native mouse release
+PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / TankLift held direction
+PASS 1366x768 / TankLift springs to neutral on native mouse release
+PASS 1366x768 / TankLift holds attained position after release
+PASS 1366x768 / native survey collapse keeps compact header accessible
+PASS 1366x768 / native survey expand restores full inspection/GPS map
+PASS 1366x768 / actual Num1 clears route manager including focused text field
+PASS 1366x768 / video hides GPS drawing while preserving enabled route selection
+PASS 1366x768 / hidden console releases former pointer hit region
+PASS 1366x768 / normal throttle works with all gameplay UI hidden
+PASS 1366x768 / number-row 1 continues physical machinery operation in video mode
+PASS 1366x768 / video clears control highlighting without removing machine audio sources
+PASS 1366x768 / explicit ESC menu remains available in video mode
+PASS 1366x768 / actual Num1 restores normal HUD and enabled GPS
+FAIL 1366x768 / Native saved-route list loads the clearly labeled deterministic fixture
+FAIL 1366x768 / First loaded-route repaint renders every raw sample instead of the preceding take
+FAIL 1366x768 / actual Num8 opens route manager before video toggle
+POST mouseDown client=(1187.32, 695.47)
+IMGUI mouseDown position=(1187.00, 696.00)
+POST mouseUp client=(1187.32, 695.47)
+IMGUI mouseUp position=(1187.00, 696.00)
+POST mouseDown client=(1102.84, 741.97)
+IMGUI mouseDown position=(1103.00, 743.00)
+POST mouseUp client=(1102.84, 741.97)
+IMGUI mouseUp position=(1103.00, 743.00)
+POST mouseDown client=(1102.84, 741.97)
+IMGUI mouseDown position=(1103.00, 743.00)
+POST mouseUp client=(1102.84, 741.97)
+IMGUI mouseUp position=(1103.00, 743.00)
+POST mouseDown client=(779.00, 52.91)
+IMGUI mouseDown position=(779.00, 54.00)
+POST mouseUp client=(779.00, 52.91)
+IMGUI mouseUp position=(779.00, 54.00)
+POST mouseDown client=(779.00, 52.91)
+IMGUI mouseDown position=(779.00, 54.00)
+POST mouseUp client=(779.00, 52.91)
+IMGUI mouseUp position=(779.00, 54.00)
+POST mouseDown client=(81.40, 157.01)
+IMGUI mouseDown position=(81.00, 158.00)
+POST mouseUp client=(81.40, 157.01)
+IMGUI mouseUp position=(81.00, 158.00)
+POST mouseDown client=(452.60, 110.93)
+IMGUI mouseDown position=(453.00, 112.00)
+POST mouseUp client=(452.60, 110.93)
+IMGUI mouseUp position=(453.00, 112.00)
+POST mouseDown client=(1147.21, 314.03)
+IMGUI mouseDown position=(1147.00, 315.00)
+POST mouseUp client=(1147.21, 314.03)
+IMGUI mouseUp position=(1147.00, 315.00)
+POST mouseDown client=(1217.19, 343.89)
+IMGUI mouseDown position=(1217.00, 345.00)
+POST mouseUp client=(1217.19, 343.89)
+IMGUI mouseUp position=(1217.00, 345.00)
+POST mouseDown client=(1077.24, 343.89)
+IMGUI mouseDown position=(1077.00, 345.00)
+POST mouseUp client=(1077.24, 343.89)
+IMGUI mouseUp position=(1077.00, 345.00)
+POST mouseDown client=(1113.93, 625.49)
+IMGUI mouseDown position=(1114.00, 626.00)
+POST mouseUp client=(1113.93, 625.49)
+IMGUI mouseUp position=(1114.00, 626.00)
+POST mouseDown client=(1305.08, 460.80)
+IMGUI mouseDown position=(1305.00, 462.00)
+POST mouseDrag client=(1281.19, 484.69)
+IMGUI mouseDrag position=(1281.00, 486.00)
+POST mouseUp client=(1281.19, 484.69)
+IMGUI mouseUp position=(1281.00, 486.00)
+POST mouseDown client=(1305.08, 460.80)
+IMGUI mouseDown position=(1305.00, 462.00)
+POST mouseDrag client=(1281.19, 484.69)
+IMGUI mouseDrag position=(1281.00, 486.00)
+POST mouseDrag client=(1257.29, 460.80)
+IMGUI mouseDrag position=(1257.00, 462.00)
+POST mouseDrag client=(1281.19, 436.91)
+IMGUI mouseDrag position=(1281.00, 438.00)
+POST mouseDrag client=(1305.08, 460.80)
+IMGUI mouseDrag position=(1305.00, 462.00)
+POST mouseDrag client=(1281.19, 484.69)
+IMGUI mouseDrag position=(1281.00, 486.00)
+POST mouseDrag client=(1257.29, 460.80)
+IMGUI mouseDrag position=(1257.00, 462.00)
+POST mouseDrag client=(1281.19, 436.91)
+IMGUI mouseDrag position=(1281.00, 438.00)
+POST mouseDrag client=(1305.08, 460.80)
+IMGUI mouseDrag position=(1305.00, 462.00)
+POST mouseDrag client=(1281.19, 484.69)
+IMGUI mouseDrag position=(1281.00, 486.00)
+POST mouseDrag client=(1257.29, 460.80)
+IMGUI mouseDrag position=(1257.00, 462.00)
+POST mouseDrag client=(1281.19, 436.91)
+IMGUI mouseDrag position=(1281.00, 438.00)
+POST mouseDrag client=(1305.08, 460.80)
+IMGUI mouseDrag position=(1305.00, 462.00)
+POST mouseDrag client=(1281.19, 484.69)
+IMGUI mouseDrag position=(1281.00, 486.00)
+POST mouseDrag client=(1257.29, 460.80)
+IMGUI mouseDrag position=(1257.00, 462.00)
+POST mouseDrag client=(1281.19, 436.91)
+IMGUI mouseDrag position=(1281.00, 438.00)
+POST mouseDrag client=(1257.29, 460.80)
+IMGUI mouseDrag position=(1257.00, 462.00)
+POST mouseUp client=(1257.29, 460.80)
+IMGUI mouseUp position=(1257.00, 462.00)
+POST mouseDown client=(1156.77, 461.65)
+IMGUI mouseDown position=(1157.00, 463.00)
+POST mouseDrag client=(1161.32, 476.43)
+IMGUI mouseDrag position=(1161.00, 477.00)
+POST mouseUp client=(1161.32, 476.43)
+IMGUI mouseUp position=(1161.00, 477.00)
+POST mouseDown client=(1259.00, 625.49)
+IMGUI mouseDown position=(1259.00, 626.00)
+POST mouseUp client=(1259.00, 625.49)
+IMGUI mouseUp position=(1259.00, 626.00)
+POST mouseDown client=(1059.49, 461.65)
+IMGUI mouseDown position=(1059.00, 463.00)
+POST mouseDrag client=(1065.26, 478.09)
+IMGUI mouseDrag position=(1065.00, 479.00)
+POST mouseUp client=(1065.26, 478.09)
+IMGUI mouseUp position=(1065.00, 479.00)
+POST mouseDown client=(1287.16, 373.76)
+IMGUI mouseDown position=(1287.00, 375.00)
+POST mouseUp client=(1287.16, 373.76)
+IMGUI mouseUp position=(1287.00, 375.00)
+POST mouseDown client=(1113.93, 661.33)
+IMGUI mouseDown position=(1114.00, 662.00)
+POST mouseUp client=(1113.93, 661.33)
+IMGUI mouseUp position=(1114.00, 662.00)
+POST mouseDown client=(1203.96, 741.97)
+IMGUI mouseDown position=(1204.00, 743.00)
+POST mouseUp client=(1203.96, 741.97)
+IMGUI mouseUp position=(1204.00, 743.00)
+POST mouseDown client=(1203.96, 741.97)
+IMGUI mouseDown position=(1204.00, 743.00)
+POST mouseUp client=(1203.96, 741.97)
+IMGUI mouseUp position=(1204.00, 743.00)
+POST mouseDown client=(1296.12, 741.97)
+IMGUI mouseDown position=(1296.00, 743.00)
+POST mouseUp client=(1296.12, 741.97)
+IMGUI mouseUp position=(1296.00, 743.00)
+POST mouseDown client=(1296.12, 741.97)
+IMGUI mouseDown position=(1296.00, 743.00)
+POST mouseUp client=(1296.12, 741.97)
+IMGUI mouseUp position=(1296.00, 743.00)
+POST mouseDown client=(1259.00, 661.33)
+IMGUI mouseDown position=(1259.00, 662.00)
+POST mouseUp client=(1259.00, 661.33)
+IMGUI mouseUp position=(1259.00, 662.00)
+POST mouseDown client=(1113.93, 697.17)
+IMGUI mouseDown position=(1114.00, 698.00)
+POST mouseUp client=(1113.93, 697.17)
+IMGUI mouseUp position=(1114.00, 698.00)
+POST mouseDown client=(1259.00, 697.17)
+IMGUI mouseDown position=(1259.00, 698.00)
+POST mouseUp client=(1259.00, 697.17)
+IMGUI mouseUp position=(1259.00, 698.00)
+POST mouseDown client=(811.00, 409.60)
+IMGUI mouseDown position=(811.00, 411.00)
+POST mouseUp client=(811.00, 409.60)
+IMGUI mouseUp position=(811.00, 411.00)
+POST mouseDown client=(435.53, 418.13)
+IMGUI mouseDown position=(436.00, 419.00)
+POST mouseUp client=(435.53, 418.13)
+IMGUI mouseUp position=(436.00, 419.00)
+POST mouseDown client=(949.24, 741.97)
+IMGUI mouseDown position=(949.00, 743.00)
+POST mouseUp client=(949.24, 741.97)
+IMGUI mouseUp position=(949.00, 743.00)
+POST mouseDown client=(894.20, 203.95)
+IMGUI mouseDown position=(894.00, 205.00)
+POST mouseUp client=(894.20, 203.95)
+IMGUI mouseUp position=(894.00, 205.00)
+POST mouseDown client=(1143.80, 250.03)
+IMGUI mouseDown position=(1144.00, 251.00)
+POST mouseUp client=(1143.80, 250.03)
+IMGUI mouseUp position=(1144.00, 251.00)
+POST mouseDown client=(949.24, 741.97)
+IMGUI mouseDown position=(949.00, 743.00)
+POST mouseUp client=(949.24, 741.97)
+POST mouseDown client=(1143.80, 203.95)
+POST mouseUp client=(1143.80, 203.95)
+POST mouseDown client=(894.20, 250.03)
+POST mouseUp client=(894.20, 250.03)
+POST mouseDown client=(1195.00, 354.99)
+POST mouseUp client=(1195.00, 354.99)
+POST mouseDown client=(947.53, 393.39)
+POST mouseUp client=(947.53, 393.39)
+POST mouseDown client=(601.93, 691.20)
+POST mouseUp client=(601.93, 691.20)
+POST mouseDown client=(1212.07, 85.33)
+POST mouseUp client=(1212.07, 85.33)
+POST mouseDown client=(949.24, 741.97)
+POST mouseUp client=(949.24, 741.97)
+POST mouseDown client=(1049.93, 85.33)
+POST mouseUp client=(1049.93, 85.33)
+POST mouseDown client=(1020.07, 206.08)
+POST mouseUp client=(1020.07, 206.08)
+POST mouseDown client=(589.13, 645.97)
+POST mouseUp client=(589.13, 645.97)
+POST mouseDown client=(149.67, 645.97)
+POST mouseUp client=(149.67, 645.97)
+POST mouseDown client=(1143.80, 162.13)
+POST mouseUp client=(1143.80, 162.13)
+POST mouseDown client=(1195.00, 247.47)
+POST mouseUp client=(1195.00, 247.47)
+POST mouseDown client=(939.00, 285.87)
+POST mouseUp client=(939.00, 285.87)
+POST mouseDown client=(894.20, 162.13)
+POST mouseUp client=(894.20, 162.13)
+POST mouseDown client=(1212.07, 85.33)
+POST mouseUp client=(1212.07, 85.33)
+POST mouseDown client=(384.33, 180.91)
+POST mouseUp client=(384.33, 180.91)
+POST mouseDown client=(318.20, 359.25)
+POST mouseUp client=(318.20, 359.25)
+POST mouseDown client=(299.00, 506.88)
+POST mouseUp client=(299.00, 506.88)
+POST mouseDown client=(843.00, 526.51)
+POST mouseUp client=(843.00, 526.51)
+POST mouseDown client=(1126.73, 526.51)
+POST mouseUp client=(1126.73, 526.51)
+POST mouseDown client=(1088.33, 721.92)
+POST mouseUp client=(1088.33, 721.92)
+POST mouseDown client=(949.24, 741.97)
+POST mouseUp client=(949.24, 741.97)
+POST mouseDown client=(1171.53, 589.65)
+POST mouseUp client=(1171.53, 589.65)
+POST mouseDown client=(896.33, 482.13)
+POST mouseUp client=(896.33, 482.13)
+POST mouseDown client=(1088.33, 721.92)
+POST mouseUp client=(1088.33, 721.92)
+POST mouseDown client=(344.23, 437.76)
+POST mouseUp client=(344.23, 437.76)
+POST mouseDown client=(1021.77, 437.76)
+POST mouseUp client=(1021.77, 437.76)
+POST mouseDown client=(683.00, 437.76)
+POST mouseUp client=(683.00, 437.76)
+POST mouseDown client=(683.00, 483.84)
+POST mouseUp client=(683.00, 483.84)
+POST mouseDown client=(1147.21, 314.03)
+POST mouseUp client=(1147.21, 314.03)
+POST mouseDown client=(1147.21, 373.76)
+POST mouseUp client=(1147.21, 373.76)
+POST mouseDown client=(1287.16, 373.76)
+POST mouseUp client=(1287.16, 373.76)
+POST mouseDown client=(1287.16, 314.03)
+POST mouseUp client=(1287.16, 314.03)
+POST mouseDown client=(275.96, 40.53)
+POST mouseUp client=(275.96, 40.53)
+POST mouseDown client=(275.96, 40.53)
+POST mouseUp client=(275.96, 40.53)
+POST mouseDown client=(384.33, 180.91)
+POST mouseUp client=(384.33, 180.91)
+FAIL: 3 check(s).
+Native hidden-window D3D presentation warnings: 3 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

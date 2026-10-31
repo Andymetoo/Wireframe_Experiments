@@ -1,0 +1,26 @@
+PASS actual launch calibration is 2.65 m/s / 5.92788 mph
+PASS runtime 3 mph setting leaves serialized calibration unchanged
+PASS speed selection preserves active GPS geometry at 3 mph
+PASS runtime 5.5 mph setting leaves serialized calibration unchanged
+PASS speed selection preserves active GPS geometry at 5.5 mph
+PASS runtime 8 mph setting leaves serialized calibration unchanged
+PASS speed selection preserves active GPS geometry at 8 mph
+PASS unchanged raw route format records actual driving at 3 mph target
+PASS unchanged raw route format records actual driving at 8 mph target
+PASS PlayerPrefs maximum restores on a new session
+PASS run diagnostics record selected speed independently of scoring
+PASS Reset deletes only this operator preference and restores the exact original target
+PASS route manager is open before video toggle
+PASS actual Numpad 1 hides UI and closes blocking menus
+PASS clean video suppresses ice diagnostic coloring while retaining the selected debug mode
+PASS hidden UI does not intercept the centre mouse pointer
+PASS GPS selection/progress remain active while all route graphics are hidden
+PASS normal driving inputs remain active in clean video
+PASS number-row machinery control is independent from Numpad 1
+PASS explicit ESC remains recoverable during video mode
+PASS Numpad 1 restores HUD, selected ice debug mode and previously enabled GPS
+PASS survey defaults to upper-left coordinates
+PASS schematic identifies retracted blade
+PASS schematic follows actual shallow engagement
+PASS schematic follows deep effective bite
+PASS actual conditioner lift removes schematic contact despite a deep setting

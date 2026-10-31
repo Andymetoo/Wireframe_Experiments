@@ -11,6 +11,7 @@ internal static class TrainingGuideValidation
     static void Check(bool pass,string message){if(!pass)throw new Exception(message);Console.WriteLine("  training guide: "+message);}
     public static void Run()
     {
+        RouteUXCoreValidation.Run();
         string source="Assets/Experiments/IceResurfacer/Validation~/RouteRecording/Deterministic-fixture.route.json";
         string bytes=File.ReadAllText(source);
         var raw=JsonSerializer.Deserialize<Envelope>(bytes,new JsonSerializerOptions{IncludeFields=true}).route;

@@ -1,0 +1,152 @@
+PASS configuration rejects nonfinite physics values
+PASS fixed-step deterministic across render cadence
+PASS hydrostatic coast and service braking
+PASS reversal brakes through zero
+  rejected dump recovery: throttle=1, brake=False, tank=0, target=0, speed=0.45816, message=Training assistance: raise over the pit while stopped, controls neutral, equipment stowed and hose clear. Free Simulation removes this assistance.
+PASS rejected dump command cannot latch forward drive off on ice
+  24 accumulated machinery interactions resumed through normal throttle at centre and 85 mm board-margin fixtures.
+PASS repeated machinery stop/interact/resume at centre and boards
+PASS spring-centred hydraulics hold position and preserve tank interlocks
+PASS visible contact inhibit recovers by reversing clear
+PASS board collision contains machine
+PASS conditioner follows inside turn
+PASS only actual trailing footprint is processed
+  physical blade=1.956m, water=2.100m; rasterized cut=2.00–2.00m at 0.05m cells
+PASS 77-inch working width matches cut and wet cell extents
+PASS turning cut and water remain inside the articulated footprint
+PASS footprint conserves water and collected snow material
+PASS conditioner lift removes blade contact
+PASS separate augers, overflow, load and finite tank
+PASS manual snow breaker conserves material and respects interlocks
+PASS wash valve gravity feed and pickup priming
+PASS stationary flood pooling and finite water
+PASS left brush cleans board contact
+PASS exit and tank interlocks prevent instant finish
+PASS continuous controls and practice report
+  20-yard lane setting=0.35mm: before=0.047101 after=0.013751m3 ratio=0.292 fill=0.388%
+  20-yard lane setting=0.8mm: before=0.098188 after=0.075481m3 ratio=0.769 fill=2.132%
+PASS measured 20-yard snow calibration and excessive bite
+PASS full tank spills persist, conserve snow, jam and can be recovered
+PASS dump transfers snow progressively with operating interlocks
+  glancing board pass: travel=8.88m retained speed=1.11m/s roller=0.47m
+PASS guide roller preserves shallow tangential travel without penetration
+  close-board physical margin=85mm; rasterized wet edge=0mm
+PASS close board water edge uses physical distribution width
+  dump site=0 heading=0.38 discharged=0.05480m3 pit=0.00000 ice=0.05480 ground=0.00000
+  dump site=1 heading=2.53 discharged=0.05480m3 pit=0.05480 ice=0.00000 ground=0.00000
+  dump site=2 heading=0.01 discharged=0.05480m3 pit=0.00000 ice=0.00000 ground=0.05480
+  traction peak=9.6% maximum lateral drift=0.22m/s; 2m/s coast=3.97m brake=1.38m
+  diagonal gate=10.510,-27.510; reverse departure and forward return under drive controls PASS
+  unconventional driven session: coverage=1.45%, score=6.6, misuse=9, floor water=0.79L, dumped ontoice=0.00822m3; completed without reset
+  Free Simulation, training isolation, moving dismount, arbitrary dumps, material balance, traction and southeast geometry PASS
+PASS Free Simulation consequences, geometry, traction and guided separation
+PASS service freedom: moving unsafe exits, persistent machinery, free hose departure, physical breakaway, forgiving return, dropped-nozzle recovery, volume balance, and explicit training-only gates
+PASS southeast hose freedom, breakaway and recovery
+  aging 1min: liquid/wet fraction=86.69%, freeze time constant=420s
+  aging 5min: liquid/wet fraction=48.95%, freeze time constant=420s
+  aging 15min: liquid/wet fraction=11.73%, freeze time constant=420s
+  aging 20min: liquid/wet fraction=5.74%, freeze time constant=420s
+  fractional stamp: 1 partial longitudinal boundary rows; deposited 0.007200L equals emitted supply
+  wear: seeded groove depth=0.037..0.145mm; shallow/deep remaining mean=0.0251/0.0002mm across 11440 cut cells
+  overlap: tire exterior=0.793m; blade edges=-1.000..1.000m; strong wet band=2.300m; all-liquid band=2.400m; second center=1.942m; measured-boundary nominal towel overlap=0.157m; ideal continuous towel-edge alignment overlap=0.257m; dry/scored cell gaps=0/0; coverage=3.61%
+  perimeter: physical wet gap=0.000m; shavable=589736/599224 cells; excluded=9488; no non-ice cells wetted
+  pickup: 5.945L recovered in 5s; ice loss and wash gain agree; overwater summed depth 7465.37 -> 4918.35mm
+  portal pickup: 0.0001001L within 0.0001001L tank room; runoff remains conserved
+  incremental report: independent full-scan counts/totals match; 0.0121ms per changed report, 0 managed bytes
+  core 5000 active ticks: 0.1109ms/tick, 0 managed bytes (CPU only; no Unity/render/UI)
+  Ice calibration PASS: tire-aligned contiguous passes, physical fringe, shaving mask, real liquid pickup, frozen balance, brush contact
+PASS tire overlap, liquid recovery, perimeter mask and finite spread
+  blade calibration: .15/.35/.80 settings -> .024/.056/.600 mm actual; normal 1 m/s load=.349; maximum load=1.4837; 3.5 turns and 3.54 m3 capacity preserved.
+  side escape/recovery: escaped=0.043669 m3; left/right persistent bands=0.023739/0.023738 m3; actual recovered surface=0.058315 m3; mass residual=0.00000016 m3.
+  failure states: horizontal OFF retains trough then both sides; vertical OFF fills throat then both sides; full tank rejects upper chute then jams; jam stops upper transport; raised bin misses upper chute without a jam.
+  Snow calibration PASS: normal/deep blade mapping, finite two-sided overflow, recovered stock, distinct failures, board retention and source accounting.
+PASS snow production, side escape and recoverable deposits
+  minimap seam: 80 truly wet/uncut cells versus 0 with tire-aligned overlap; original treatment thresholds retained
+PASS truthful minimap states and measured wet-but-uncut slivers
+Traversable snow grate, bounded conditioner and physical contact validation
+grate approach=0deg crossed with speed=0.424m/s; no contact event=True
+grate approach=-15deg crossed with speed=0.424m/s; no contact event=True
+grate approach=15deg crossed with speed=0.424m/s; no contact event=True
+grate approach=-30deg crossed with speed=0.424m/s; no contact event=True
+grate approach=30deg crossed with speed=0.424m/s; no contact event=True
+grate approach=90deg crossed with speed=0.424m/s; no contact event=True
+contact normal m/s slow/direct/glancing/wall=0.300/2.000/0.160/0.600; events over held10s=1
+conditioner maximum yaw=2.000deg, chassis path unchanged; kinematic full-lock rear axle radius=4.4850m
+floor water: input=20.0000L, remaining=0.4716L, drained=19.5284L, wet cells=21
+tank contacts: lift stopped=0.5055, actual surface contact height=0.6350m; reverse/continued lift/pit overhang passed
+PASS traversable grate, impact severity, limited conditioner and finite drainage
+  southeast full run: coverage=96.97%, wholeice combinedcoverage=95.43%, watercoverage=97.33%, finish=77.6%, score=89.0, water=677.0L, pit=0.729m3, time=1787s, mistakes=0, properexit=True, return=16.20,-33.20
+PASS complete scored southeast route, return and angled unload
+PASS water service: separate capacities, hose lifecycle, safety, reach, partial flow, overflow and material balance
+PASS water service state, capacities, conservation and recovery
+AURORA / surface consistency regression
+Initial strict snow cells=69995; heavy-snow overview blocks=0/37560. Initial .12-.26mm dust plus .17mm sensitive-zone increment is retained.
+PASS one-cell 5cm wet/uncut seam=25% of its20cm block; watercoverage100%, cutting75%; actual2L snow deposit remains visible.
+5s: released=9.0000L, retained=9.0000L, liquid=8.9469L, frozen=0.0532L, >.08mm area=2.1300m2, peak=9.811mm, gross lateral transfer=12.456L.
+15s: released=26.9998L, retained=27.0002L, liquid=26.5243L, frozen=0.4759L, >.08mm area=4.3350m2, peak=19.774mm, gross lateral transfer=90.235L.
+30s: released=53.9993L, retained=54.0006L, liquid=52.1183L, frozen=1.8823L, >.08mm area=7.1600m2, peak=29.294mm, gross lateral transfer=297.622L.
+30s pool recovery through actual squeegee=7.7476L.
+Age 0s: liquid=0.30000mm frozen=0.00000mm opticalwet=1.0000.
+Age 300s: liquid=0.14686mm frozen=0.15314mm opticalwet=0.6065.
+Age 600s: liquid=0.07190mm frozen=0.22810mm opticalwet=0.3679.
+Age 1200s: liquid=0.01723mm frozen=0.28277mm opticalwet=0.1353.
+Age 1800s: liquid=0.00413mm frozen=0.29587mm opticalwet=0.0498.
+PASS finite spreading, board retention, pickup, aggregated map and physical phase progression. No scoring thresholds weakened.
+
+PASS aggregated overview, finite puddles and progressive freezing
+  deliberate deep-cut / conveyors OFF begins at waypoint 129, world -11.42,-14.29, time=63.0
+  conveyors ON after 0.049787 m3 escaped; 3021 actual cells gained >0.25mm loose snow; trough=0.080000 m3
+  stationary flood5s: released=8.9998L, retained liquid+frozen delta=9.0000L; maximum liquid=10.276mm
+  water audit detail: field=685.991194L, floor=0.000000L, drain=0.000000L, integrated actual discharge=685.989337L, float released counter=686.198303L, tank delta=686.305481L, error=0.001858L
+  same-cell windrow witnesses: deposited excess=0.049116m3, remaining excess=0.024180m3, net recovered=0.024936m3 across 1540 cells; total loose pickup=0.320275m3; physical snow balance error=0.00000327m3
+  final water: liquid=137.7363L, frozen=548.2549L, floor=0.0000L, drain=0.0000L, balance error=0.001858L; 1661.8s since stationary flood (whole-sheet liquid then 33.083L)
+  No pose writes, refills, material resets or scoring changes. Runtime guide remains read-only; this test controller drives the generated path. Guide visibility and manual departures are separate native UI tests.
+  generated advisory route: 4056 points / 1568.7 m; overlap spacing=1.600m radius=4.600m; coverage=95.69% water=96.12% score=79.6 flood=686.20L pit=0.8099m3 elapsed=1791.0s misuse=7
+PASS advisory generated path, actual driven departure, passes and return
+  recorded route: start recording
+  recorded route: repeated start preserves current take
+  recorded route: stationary periods and duplicate observer calls do not create points
+  recorded route: stop is idempotent
+  recorded route: raw recording projects into the existing ResurfacingRoute representation
+  recorded route: new simulation cannot silently concatenate a different session
+  recorded route: actual reverse departure and forward travel retained
+  recorded route: rounded turns and actual conditioner/engagement states retained
+  recorded route: 20 cm / 2 degree policy retains turn precision; maximum sampled distance 0.2163 m
+  recorded route: nearby parallel passes retain distinct later sequence positions
+  recorded route: fixture is explicitly distinguished from real operator driving
+  deterministic fixture: 2092 points / 434.257 m / 514.74 s; paired physics and every ice cell identical
+PASS raw driven route recording, sequence and unchanged physics
+  route UX: original reference automatically traverses all 137 legs; first boundary=19.706 m
+  route UX: actual operator take 152.9 m: auto fit ready; 18 boundaries crossed from original recorded poses; raw bytes unchanged
+  route UX: actual operator take 93.5 m: auto fit ready; 7 boundaries crossed from original recorded poses; raw bytes unchanged
+  training guide: unconstrained reconstruction exposes real over-tight sections
+  training guide: constrained fixture passes turning radius and complete body/conditioner boundary checks
+  training guide: fit preserves exact raw file and embedded source
+  training guide: fixture stays within 20 cm of its recorded trajectory
+  training guide: inserting a control preserves the exact cubic to under 0.01 mm
+  training guide: intermediate controls can be removed; endpoints are protected
+  training guide: pass markers create an explicit sequential rejoin context
+  training guide: out-of-rink edits remain drafts and fail readiness
+  training guide: full reverse entry, straightaways, rounded perimeter and inward loops complete in order
+  training guide: three exactly coincident loops cannot skip to a later pass
+  training guide: stationary periods do not advance route progress
+  training guide: wrong travel direction holds the current context
+  training guide: normal travel clears a prior direction-warning status without manual restart
+  training guide: opposite heading cannot acquire a nearby pass
+  training guide: driving deviation and return rejoins the same sequential context
+  training guide: discontinuous position changes hold progress
+  training guide: explicit leg selection allows deliberate distant rejoin without a restart
+  training guide: original F5 reference starts with its existing reverse departure
+  training guide: original generated F5 positions and sequence remain exact
+  training guide: future passes are excluded from live missed-area diagnostics
+  training guide: unprocessed expected blade and flood areas are reported separately
+  training guide: explicit earlier rejoin resets expected prefix while preserving actual observations
+  training guide: following modeled conditioner/contact widths covers the intended geometry exactly
+  training guide: repeated revisits report excess overlap for both independent footprints
+  training guide: independent transverse samples verify blade width, wider flood fringe and separate rearward water outlet
+  training guide: conditioner processing line is physically behind the rear-axle driving line
+  training guide: paired 900-step work passes retain exact vehicle/conditioner physics, water, every ice cell and scoring report
+  fixture: 14547 samples / 433.928 m / min radius 4.4980 m / raw deviation 0.1458 m; max local search 641 samples
+  stationary progress cost: 0.123 ms / 10000 calls; allocation including Stopwatch=40 bytes
+PASS constrained editable route, sequential GPS progression and conditioner footprints
+PASS: 39 deterministic simulation scenarios.

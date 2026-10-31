@@ -1,0 +1,139 @@
+AURORA R-54 / ROUTE MANAGER, KEYPAD AND GPS VISIBILITY REFINEMENT
+
+Operator workflow
+Record: NUMPAD 8 opens Route Manager. Enter a name, RECORD NEW ROUTE and drive.
+        NUMPAD 9 also begins recording directly. A red recording banner is shown.
+Save:   NUMPAD 9 stops and saves automatically, or click STOP & SAVE.
+Load:   NUMPAD 8 > LOAD SAVED ROUTE > select by name/date/length > USE AS GPS.
+        NUMPAD 7 toggles it. The selected raw recording is fitted automatically.
+Documentation/RouteOperator.txt contains the concise three-action guide.
+
+What changed
+Primary Route Manager now presents large buttons, readable names/dates/lengths,
+an obvious active GPS name and selection, scrollable saved routes and a full
+preview. Technical statistics/footprint layers/manual recovery remain behind
+Diagnostics / Advanced. The existing Training Route Editor and its spline
+geometry are preserved; EDIT ROUTE opens/prepares the selected editable fit.
+
+Raw saved routes no longer require an Editor conversion before following.
+The existing fitter and constrained-tangent implementation create a separate
+editable guide in Guides/AutoFit. The checksummed raw file remains untouched.
+Both actual supplied operator recordings (152.9 m and 93.5 m) fit successfully.
+Unusable/too-short takes report preparation errors and retain the active route.
+The built-in reference and labeled test remain explicit library choices.
+
+Save always generates a new readable filename with UTC timestamp and random
+suffix. Repeated names create unique copies; existing files are never silently
+overwritten. Save As New Copy can copy the selected saved route. Rename writes
+a separate versioned/checksummed RouteNames.json display-name index, preserving
+the original route bytes and filename. Delete requires a per-file confirmation;
+Cancel changes nothing. The active GPS can remain in memory if its saved file
+is deliberately deleted. Recovery drafts remain separate and untouched.
+OPEN ROUTES FOLDER opens the current library only on the user's click.
+
+The filesystem-dialog discrepancy came from the Editor raw inspector's
+Save Portable Copy action, which used EditorUtility.SaveFilePanel. It is now
+explicitly labeled EXPORT TO LOCATION (opens file picker). Ordinary in-game
+Save consistently writes a unique copy directly and displays a saved message.
+
+Keypad controls use Input System's actual Numpad7/Numpad8/Numpad9 keys.
+F5/F6/F7 remain compatibility aliases. Number-row machinery controls retain
+their original implementation. Route shortcuts are suppressed while name fields
+or confirmation dialogs own text input. Virtual-device tests exercise raw keypad
+events with Num Lock key state present and absent and with native mouse focus.
+No global OS keyboard state was changed; physical laptop/USB Num Lock behavior
+still deserves a manual hardware check.
+
+Guidance disappearance investigation
+The unmodified reference reproduced a stop at approximately 19.705883 m,
+near the first direction-change boundary (137 total contexts). Its look-ahead
+was clipped to the active/next context and direction, then the final four meters
+were hidden. A tiny adjacent reverse context could also hold progress while
+the vehicle had already changed direction.
+Progress now accepts only the immediately adjacent direction change near its
+shared endpoint with compatible heading. Automatic transitions do not acquire
+an unrestricted next leg. All sequence/distance/travel-budget guards remain.
+The reference probe now traverses all 137 contexts to 1568.674 m without manual
+rejoining. Actual recorded-pose tests cross 18 and 7 contexts respectively.
+Closely overlapping/coincident loop tests retain their original no-skip behavior.
+
+The world and Surface Survey use the same confirmed progress and a 12.192 m
+(40 ft) forward window, crossing context boundaries. Completed portions leave
+the window. The map keeps its ice classifications and current-position arrow,
+adding a thin magenta route, direction chevron, upcoming turn and active leg.
+
+Default world styling is vivid magenta/fuchsia with a dark border and fading
+ends; the ribbon lies flat on the ice. Color/opacity controls are in Advanced.
+A restrained screen continuation appears only when the nearest opaque-mesh
+ray hit belongs to the actual machine/conditioner and is closer than the ground
+guide point. Opaque walls/stands block it; menus suppress it. Queries use an
+isolated local physics scene with cached mesh colliders and no rendering or
+simulation actors. Degenerate effect triangles are filtered in private query
+meshes; source meshes and the main physics scene are unchanged. The screen
+transform respects the scaled Game-view canvas. No always-on-top world pass
+was introduced. Sources/colliders are cached, not created each frame.
+
+Validation evidence
+- Core-validation.txt: all existing 39 deterministic scenarios, plus integrated
+  reference-boundary and actual operator-recording replay checks.
+- Unity-workflow-results.txt: actual control-driven straight/U-turn/return
+  recordings, two named persistent files, keypad start/stop/save, raw-to-GPS
+  selection, continuous multi-leg progress, non-destructive rename/copy/delete
+  checks on disposable test data, both supplied operator recordings fitting.
+- Fresh-play-results.txt: a separate Unity process restarts Play Mode, opens
+  Route Manager using Numpad 8, loads/fits the first saved route, enables GPS
+  with Numpad 7, restores its renamed label and retains the second recording.
+- Player-*/HUD-player-results-*.txt and layout reports: actual native mouse/UI
+  actions, keypad input, focused text, delete cancellation, 40-foot synchronization,
+  boundary replay, seated machine continuation, opaque-wall rejection and loading
+  actual operator recordings. Tested at 1366x768, 1920x1080 and 960x600, the last
+  emulating a smaller Editor Game view. Captures include white, blue-gray, wet,
+  reflective and deposited-snow visual fixtures. These seeded visual poses are
+  identified separately from the control-driven recording and actual input data.
+- Preservation-audit.json: all 12 original route-library files (including raw
+  takes and recovery/corrected drafts/backups) retain their hashes. Protected
+  physics, ice, scoring, water, snow, geometry, audio and scene sources remain
+  unchanged. No tracked changes outside IceResurfacer.
+- Screenshots.html: actual framebuffer gallery, not a generated UI mockup.
+- Performance/Performance-1366x768.csv: matched normal-control work passes,
+  299 measured frames each after warmup. Guide off/on mean frame time was
+  4.050 / 5.159 ms; p95 7.385 / 8.455 ms. Measured simulation/machine/guide
+  CPU work was 1.274 / 1.318 ms with zero work-loop allocations. Whole-frame
+  allocation was 12,501 / 20,378 B/frame, including IMGUI. Both modes shaved
+  exactly 0.000716 m3 and used 3.461 L flood water with 7,558 active wet cells.
+  These short hidden development-player samples indicate about 1.1 ms added
+  whole-frame cost in this fixture, not a focused-play FPS or latency promise.
+
+Files changed (relative to IceResurfacer; new files include Unity metadata)
+Core/RouteProgress.cs — adjacent direction-change handoff; original ordering guards.
+Presentation/IceRouteGuide.cs — keypad actions, automatic fit, save/load/name APIs,
+  bounded continuous display, magenta/border ribbons and visibility integration.
+Presentation/RouteManagerPanel.cs — primary operator interface (new).
+Presentation/RouteLibraryCatalog.cs — saved-route metadata, names/copy/delete (new).
+Presentation/RouteSilhouetteContinuation.cs — isolated visible-machine queries (new).
+Presentation/RouteRecordingPanel.cs, TrainingGuidePanel.cs — advanced access/options.
+Presentation/IceDashboard.cs — primary labels, record banner and 40-foot survey.
+Resources/TrainingRoute.shader — new default color; ordinary depth test retained.
+Editor/RouteManagerEditorBridge.cs — existing editor workflow integration (new).
+Editor/IceRouteRecordingsWindow.cs — explicit export-dialog action label.
+Editor/IceRouteUXValidation.cs — Unity workflow/fresh-Play checks (new).
+Editor/IceResurfacerEditor.cs — regression-suite hook.
+Presentation/IceLayoutPlayerProbe.cs — native manager/visibility checks/captures.
+Validation~/RouteUXCoreValidation.cs and TrainingGuideValidation.cs — integrated
+  reference/operator progress checks; IceResurfacer.Validation.csproj includes them.
+Validation~/RunIsolatedUnity.ps1 — fresh-Play action.
+README.txt, Documentation/TrainingGuide.txt and new Documentation/RouteOperator.txt.
+
+Remaining limitations
+Fitting/load is synchronous and can pause briefly on large takes. Physical/rink
+constraint failures still need optional editing; fitting never changes the raw
+trajectory. Major sequence skips still use explicit recovery. The visibility
+query meshes represent the current authored opaque arena/machine; arbitrary new
+opaque scene geometry added during Play requires a query refresh/restart. Thin
+masked continuation is advisory. Footprint diagnostics retain their prior 20 cm
+geometry/quantity limitations. Color/pace/overlap should be calibrated manually
+with the actual operator. Native hidden-window presentation warnings prevent
+claims about focused-window input latency or subjective hardware readability.
+
+No branch, commit or push. No original saved route was deleted or rewritten
+during implementation; destructive operation tests used new disposable copies.

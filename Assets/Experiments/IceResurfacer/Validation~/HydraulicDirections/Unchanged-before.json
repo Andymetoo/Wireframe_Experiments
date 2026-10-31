@@ -1,0 +1,242 @@
+[
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\EnvironmentField.cs",
+        "Hash":  "94377D4392A837DC838A52C116E7FE7C4BD8043F1526B4AFF5647C8C860DFAC7"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\EnvironmentField.cs.meta",
+        "Hash":  "4F39E875D2187EEC1D4C4520902177A0A45B552775CBE75CEB3CA9DA74D46C77"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\FreedomCalibration.cs",
+        "Hash":  "A2148C25928CF7CD92EF676868E94F7593C38CCB72E4B4EC1E1A81ECC68934C3"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\FreedomCalibration.cs.meta",
+        "Hash":  "2666D247965AB9FB013FD8AC0B4C38ED6320FC43DF5C9D289CA112CB7F354403"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceCalibrationConfig.cs",
+        "Hash":  "ED8FB82A1553A3A657F55D8AA2F2DA7618C9069D36A20040BAD2DB73F5726C96"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceCalibrationConfig.cs.meta",
+        "Hash":  "A2D0C86531A9412C4A5732EB13FCE8465E1612C539B8B078798FABC4DDB02CB8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceCoverage.cs",
+        "Hash":  "2BA8A19C3FFDBC505DE23FC1AF0093AF1588E142B0858CE18045E44DF3B4E2E8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceCoverage.cs.meta",
+        "Hash":  "794E1E2D33D276A905988EE863C06B8E783EEDC43E489740D26974367F039387"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceField.cs",
+        "Hash":  "E27957C5D94164D3BEBEB5F1D1945D3F835FB6681E9B34209CB4A60C99010537"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceField.cs.meta",
+        "Hash":  "744670EF2D6F12292C0006255CB03B8A7E093C82D7BF0945A4B8716A0D8C30AD"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceOverview.cs",
+        "Hash":  "7FF510B9B72555124CFBD28212EF5D9CE1CE6B53FBD8FC8901192339139E6512"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceOverview.cs.meta",
+        "Hash":  "54897113BCFC879EDD3915862663ABF04FF1E62928C84071C46E433A49722B76"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceWaterSpread.cs",
+        "Hash":  "0F3C828AD325C1B227C72A8B459609B52ACF9039CC51E89E2EE074EB8AC3C882"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\IceWaterSpread.cs.meta",
+        "Hash":  "09D1C2D60EC41CC8676D7BC6C0DD5964BC8AD8A974114D3719AF049FBAEF8FCC"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\MachineGeometryConfig.cs",
+        "Hash":  "862BE87DCC3C9DA549E8C3961DE790A0A042552C07248702501EFC8C91A9BCFC"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\MachineGeometryConfig.cs.meta",
+        "Hash":  "1B8956F826BABB142C47DDACA539B2AB68257A7D047D78FFD449AD6B2EE6BC74"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\MovementContact.cs",
+        "Hash":  "F2B5864CBF80257FD3148C02BF840A9F3F69AB0E48DE06594451B298B1AC7BD6"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\MovementContact.cs.meta",
+        "Hash":  "2656FDB78E50F2643FCC3BA586BB08B771A8E55DD4A2E0666A01AEE6BF5719C4"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\ResurfacingRoute.cs",
+        "Hash":  "052C6EB1B1179677F20E81759B38D68FB795ACE8540E61D77B2C2834583142B0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\ResurfacingRoute.cs.meta",
+        "Hash":  "1BD58C5041B31F878B580A930568B31CE065C4D37079B147ACA2C3957B40ED18"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\RouteFootprints.cs",
+        "Hash":  "EFAE38980A97CE1BD4D076DE4698E373D2EB8C7073C1161F6750E9BCFA51E5D5"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\RouteFootprints.cs.meta",
+        "Hash":  "6E1B937965BC56F0ED837E4822976743AB6954B9C6AFBB83ABB2D1B3F51F0CE4"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\RouteProgress.cs",
+        "Hash":  "B57E1309924D24795322311D7AAB986BCE8EA6698D6A3869DB228374A3F4117B"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\RouteProgress.cs.meta",
+        "Hash":  "A5ED8EF9E309E70AC843FC989D4485D712C81E6D649ABD18ADDF70271497134D"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\RouteRecording.cs",
+        "Hash":  "39CCF27CF074A166A3172A9C3E2240A140D3058372FA765D6D70DF41E6BC7072"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\RouteRecording.cs.meta",
+        "Hash":  "031E5FF2C34E31162477FA839F330CE862B26DDED76647CE751B4F8DC797E71C"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\ServiceLayout.cs",
+        "Hash":  "6E6F681CFD29FFFCC209B8EC4872989557E9FC29B8D3A204CE1EC8CE6D9F0F9D"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\ServiceLayout.cs.meta",
+        "Hash":  "1342223BE3CB6A142582307D8422053907561D6D2537C0B624556B0AA853E3AF"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\Simulation.cs",
+        "Hash":  "4178F310008075D906B6B59E037C74BDA37C240CAD0030188B6305C52724B7A4"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\Simulation.cs.meta",
+        "Hash":  "2A39435D0B9D3099AC0E050981FE0CFE8321537918E26A7BE64AD9B3814F3170"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\SimulatorConfig.cs",
+        "Hash":  "528BF5F42945814F51FD87A077D7D1AD7BA201830A3E3862E7C661FF28BEE792"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\SimulatorConfig.cs.meta",
+        "Hash":  "2DEF84FD9D1B02D80ECB5AB8A6EE59FAB009455EB218BD948C99C711C30224D3"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\SurfaceProcessing.cs",
+        "Hash":  "077F9D7EE49FFE41993691914BBB60EAFCDAF32A6F7A91C9F906A1FE74018B34"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\SurfaceProcessing.cs.meta",
+        "Hash":  "CD50726F779D7976A5C94B99180C47792495E89FE3D461E45CEE2A077B59D458"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\TankCollision.cs",
+        "Hash":  "419AC54512BBD1A342BC8076C1874D9B4DABB89F1690FC02FFCA367C30F5CCF0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\TankCollision.cs.meta",
+        "Hash":  "7C1A36705CA607DEA502109CFAD34E1ABDB38AF2A7EB0DCA9DB1F2FECE14B753"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\TrainingRoute.cs",
+        "Hash":  "64740BD3802DF09ED5F982B9816FCE76922FFFDF0FBA3DA2D03725BCA6636C6B"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\TrainingRoute.cs.meta",
+        "Hash":  "6677A2D49FF2D6174C94D698C648ED04A857B88D63D7085C5380CBFB7A096484"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\TrainingRouteEditing.cs",
+        "Hash":  "DF4C0C88C12E9106E61F3A86A42F334352BEC330142A2F32327DBAB9CA251D55"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\TrainingRouteEditing.cs.meta",
+        "Hash":  "551EE5657200E63A03962988CA28B893CAEAC726CEB6005784DD184994816A9F"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\WaterService.cs",
+        "Hash":  "9366BBE16CD857A817B7B14D7921474225C16F58B45F2F6E8903E04CFE60F502"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Core\\WaterService.cs.meta",
+        "Hash":  "AFD4F56BD39A00844699A0C0ED1DCC847F6FAE9358F58CE72FE81D6613E12401"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Scenes\\IceResurfacer.unity",
+        "Hash":  "8C64357436C8FBDB6FE94F4E5E0C931604E57E0841277A7F96B735B6252DC305"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Scenes\\IceResurfacer.unity.meta",
+        "Hash":  "584BC1FA5103590F166237A030107BC5BB94BED43EC6A9C02500FC16A63999D8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\AuroraLit.mat",
+        "Hash":  "B007FFB0696F90C102249F46C9D3A62B61BE251B60841065AE1073B5B0A8A64F"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\AuroraLit.mat.meta",
+        "Hash":  "68DAF87F63D033082532FA47DE0CF4ABA0D321883710A282A12D07CA85C9E018"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\CollisionOverlay.shader",
+        "Hash":  "630DEFC236214E009D66D0DDAE691305AF2982512137DB7D892466E4769870C3"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\CollisionOverlay.shader.meta",
+        "Hash":  "48C7FD3AA2E7FB340507BF7DA8BAB9B03D113132569E10B49C7EBA62066E50C0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\NorthlineIce.mat",
+        "Hash":  "7E31544482B97370017202B6D9DCC7C2FF56E7CB857B33553EEF3D1A1E09A9B5"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\NorthlineIce.mat.meta",
+        "Hash":  "86BE2F54468B5E9FC87B416A9BDDD5EFCACEAD397497D6147BD354F5DAC79671"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\TrainingRoute.shader",
+        "Hash":  "82F53DCC93BC8B17D305F817685193400853B92ED671705E60D3AA9A480C0B0B"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\TrainingRoute.shader.meta",
+        "Hash":  "B8F2411BA6F9ABAD8A6CE9A1B1E3F1A633D44D20C5F889C12E01F1ED0B6040E8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\TrainingTestGuide.json",
+        "Hash":  "543F89DFE0DACBB664E580A451501F96ECA8012BA293CCE497D843CC250A948C"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\TrainingTestGuide.json.meta",
+        "Hash":  "55438FDD565A36DB4ED5B0C972C1DAD8B3069C62169B30F18B812793E1284877"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\WetFloor.shader",
+        "Hash":  "D849CECABD00BB842647C715CE6E1AFDE272C14DCA2BEB6305996AF38DFFE897"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\WetFloor.shader.meta",
+        "Hash":  "152396AB0206447C8816D2BDF4B82BD114976B869A502492A401F0744EB0B6B0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\WorldText.shader",
+        "Hash":  "9CCBF5BFAF5ABF31C9100A40FD36FCD581CF94CC21A4C714D91B990F59EDC716"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Resources\\WorldText.shader.meta",
+        "Hash":  "6E3586362B546173831698CE314DABC77536E5FD4F4D1104C491D3410CBF34D1"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Shaders\\SpatialIce.shader",
+        "Hash":  "42210C3E1B8BB9BB3A98FFB8C90489486C2158396C778F8AF774C66DC4E43E5D"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Shaders\\SpatialIce.shader.meta",
+        "Hash":  "E5A8F7DCD3CA09F87B4BB6BC64F700B7BB780AA570DAD84452EAAF603155A593"
+    }
+]

@@ -1,0 +1,18 @@
+PASS Numpad 9 starts named take 1
+PASS Numpad 9 stops and saves a unique complete file with Num Lock state present
+PASS actual control-driven straight, rounded turn and return pass are recorded
+PASS Numpad 9 starts named take 2
+PASS Numpad 9 stops and saves a unique complete file with Num Lock state present
+PASS actual control-driven straight, rounded turn and return pass are recorded
+PASS both differently named recordings remain separately available
+PASS Numpad 8 opens route manager with both saved recordings
+PASS saved raw route becomes GPS-ready without an external editor: Loaded: Practice west loop — GPS Ready (automatically fitted; optional Edit Route).
+PASS active name and separately saved automatic fit are exposed
+PASS Numpad 7 shows synchronized 40-foot world/map previews
+PASS recorded trajectory crosses multiple boundaries automatically without disappearing
+PASS rename changes checksummed library metadata, retaining exact original route bytes
+PASS copy/delete operations on disposable test files retain both original recordings
+PASS actual operator recording automatically fits: Operator_route_20261031_010840_4d4b5ed5.route.json / Loaded: Operator route — GPS Ready (automatically fitted; optional Edit Route).
+PASS actual operator input remains unchanged
+PASS actual operator recording automatically fits: Operator_route_20261031_011611_e0c83283.route.json / Loaded: Operator route — GPS Ready (automatically fitted; optional Edit Route).
+PASS actual operator input remains unchanged

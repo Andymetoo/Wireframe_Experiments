@@ -1,0 +1,4 @@
+PASS fresh Play instance opens saved routes with Numpad 8
+PASS fresh Play loads and fits first raw recording without opening editor
+PASS renamed active route, enabled GPS and second recording survive Play restart
+PASS fresh Play retains synchronized 40-foot preview

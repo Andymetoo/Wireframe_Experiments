@@ -46,6 +46,7 @@ internal static class Program
         Test("advisory generated path, actual driven departure, passes and return", RouteGuideValidation.Run);
         Test("raw driven route recording, sequence and unchanged physics", RouteRecordingCoreValidation.Run);
         Test("constrained editable route, sequential GPS progression and conditioner footprints", TrainingGuideValidation.Run);
+        Test("operator forward target limits, smooth transitions and preserved dynamics", OperatorSpeedValidation.Run);
         Console.WriteLine("PASS: " + passed + " deterministic simulation scenarios.");
     }
 

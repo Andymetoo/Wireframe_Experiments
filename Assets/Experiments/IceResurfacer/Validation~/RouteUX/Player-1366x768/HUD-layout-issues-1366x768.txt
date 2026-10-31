@@ -1,0 +1,1 @@
+PASS: no measured text clipping in captured HUD states.

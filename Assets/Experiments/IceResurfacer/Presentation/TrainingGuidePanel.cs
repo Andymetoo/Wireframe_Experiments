@@ -45,7 +45,10 @@ namespace IceResurfacer.Presentation
             view.Draw(new Rect(112,134,770,594),fit);
             int nextLayer=GUI.Toolbar(new Rect(112,740,770,35),layer,new[]{"Paths","Intended","Actual cut","Actual water","Missed","Excess"},button);
             if(nextLayer!=layer){layer=nextLayer;refreshAt=0;}
-            GUI.Label(new Rect(120,785,750,44),"Gray: immutable raw. Cyan: fitted vehicle. Gold: modeled conditioner.\n20 cm geometry diagnostics; ice-condition survey and scoring remain authoritative.",small);
+            GUI.Label(new Rect(120,782,750,25),"Raw gray / fitted cyan / conditioner gold. GPS appearance:",small);
+            if(GUI.Button(new Rect(120,808,145,27),"MAGENTA",button))guide.GpsColor=new Color(1,.035f,.72f,guide.GpsColor.a);
+            if(GUI.Button(new Rect(278,808,145,27),"AMBER",button))guide.GpsColor=new Color(1,.5f,.03f,guide.GpsColor.a);
+            GUI.Label(new Rect(437,806,150,27),"Opacity",small);var color=guide.GpsColor;color.a=GUI.HorizontalSlider(new Rect(548,813,310,20),color.a,.45f,1);guide.GpsColor=color;
             string title=shown==null?"Original generated reference":shown.name;
             if(title.Length>53)title=title.Substring(0,50)+"…";
             GUI.Label(new Rect(910,135,570,30),title,label);
@@ -72,7 +75,7 @@ namespace IceResurfacer.Presentation
                 GUI.Label(new Rect(910,725,570,77),"Intended prefix vs live footprint geometry:\nMissed cut "+(footprints.MissedBladeCells*.04f).ToString("F1")+" m² / water "+(footprints.MissedWaterCells*.04f).ToString("F1")+" m²\nExcess revisit: cut "+(footprints.ExcessBladeCells*.04f).ToString("F1")+" m² / water "+(footprints.ExcessWaterCells*.04f).ToString("F1")+" m²",small);
             }
             GUI.Label(new Rect(910,797,570,42),guide.TrainingStatus,small);
-            GUI.Label(new Rect(112,840,1368,43),"GUIDES / "+guide.GuideDirectory+"   |   F5 remains advisory; no steering, machinery, score or position changes.",small);
+            GUI.Label(new Rect(430,840,1050,43),"GUIDES / "+guide.GuideDirectory+"   |   Advisory GPS / NUMPAD 7",small);
         }
         public void Dispose(){view.Dispose();}
     }

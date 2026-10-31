@@ -72,7 +72,7 @@ namespace IceResurfacer.Editor
                 GUILayout.Label("Colors advance every 40 m in sequence. Orange = reverse. Start green; end red. No smoothing or path editing.",EditorStyles.wordWrappedLabel);
                 if(GUILayout.Button("EDIT FITTED GUIDE / preserve raw"))
                 {try{TrainingRouteEditorWindow.OpenRecording(data);}catch(Exception e){status=e.Message;}}
-                if(GUILayout.Button("Save portable copy…"))
+                if(GUILayout.Button("EXPORT TO LOCATION… (opens file picker)"))
                 {
                     string path=EditorUtility.SaveFilePanel("Save raw route JSON",RouteRecordingStorage.DefaultDirectory,data.name,"route.json");
                     if(!string.IsNullOrEmpty(path))

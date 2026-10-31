@@ -1,0 +1,1 @@
+PASS: 60 Core, scene, resource and shader files remain byte-for-byte unchanged.

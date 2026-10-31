@@ -1,0 +1,39 @@
+HYDRAULIC DIRECTIONS / FINAL VALIDATION
+
+PASS: Both conditioner and snow dump tank lower when pulled BACK toward the
+operator and raise when pushed FORWARD. Physical gestures, cockpit animation,
+HUD gestures, HUD grip direction, labels and tooltips agree. Release centers
+the lever and holds the actual attained mechanism position.
+
+The Core simulation already used +1 to raise and -1 to lower. Its equations,
+rates, position conventions, machinery behavior and interlocks were preserved.
+Position indicators already read actual lift. Keyboard mappings were preserved:
+1 lower / Right Shift+1 raise; 7 raise / Right Shift+7 lower.
+
+PASS: 40 deterministic core simulation scenarios (Core-results.txt).
+PASS: 240 hydraulic assertions at 1366x768 (Player-1366x768.txt).
+PASS: 240 hydraulic assertions at 1920x1080 (Player-1920x1080.txt).
+PASS: Full existing native development-player HUD suite at both resolutions
+      (../HUD-player-results-1366x768.txt and ../HUD-player-results-1920x1080.txt).
+PASS: Full existing Unity 6000.4.1f1 Play Mode regression suite, exit 0,
+      final runtime error/exception count 0 (Unity-results.txt).
+PASS: 60 Core, scene, resource and shader files preserved byte-for-byte
+      (Preservation-results.txt and Unchanged-before.json).
+PASS: git diff --check with CRLF recognized as line endings.
+
+The 480 hydraulic assertions exercise real physical Input System mouse picks
+and gestures, native window HUD clicks/drags, and the existing keyboard handler.
+Both controls undergo full and partial raising/lowering, spring neutral and
+position hold, held HUD center/reversal, physical/HUD switching, independent
+machinery checks, status checks, and actual geometry checks. Setup only seeds
+a clear rink pose; lift/angle changes use the production controls and simulation.
+Screenshots were inspected at both resolutions. HUD grip travel was reduced
+slightly to keep the RAISE and LOWER labels readable at full deflection.
+
+Framebuffer evidence: ../HUDVideoSpeed/Player-*/Hydraulic-*.png.
+The existing invisible-window test harness logs native D3D presentation warnings;
+these runs establish control behavior and display consistency, not focused-window
+latency or subjective lever feel.
+
+Changes are confined to the IceResurfacer experiment. Existing unrelated working
+changes were retained. No branch, commit or push was performed.

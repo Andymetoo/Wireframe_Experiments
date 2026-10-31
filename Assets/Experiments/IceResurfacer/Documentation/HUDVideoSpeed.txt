@@ -1,0 +1,55 @@
+AURORA R-54 / HUD, VIDEO AND OPERATOR SPEED CALIBRATION
+
+ESC opens the pause menu during any active session. MAX FORWARD SPEED ranges
+from 3.00 to 8.00 MPH, rounded to quarter MPH steps. The selected MPH value and
+km/h conversion appear above the slider. Resume with ESC. Increasing the limit
+uses normal acceleration; lowering it while overspeed uses the existing
+hydrostatic deceleration law and traction response. The setting changes only
+the forward target. It never assigns velocity or changes serialized calibration.
+Existing machine load, snow resistance, traction and braking retain authority.
+
+Verified saved launch calibration: 2.65 m/s = 5.9279 MPH, displayed as 5.93 MPH.
+RESET TO ORIGINAL SPEED selects this exact value, even though it is between
+quarter-MPH slider ticks. With no saved preference, the original is the default.
+Reverse remains 1.00 m/s. Minimum is 1.34112 m/s; maximum is 3.57632 m/s.
+
+The personal choice is saved immediately using PlayerPrefs.Save, under the
+experiment-specific key AuroraR54.Operator.MaxForwardSpeedMph.v1. It survives
+new sessions, leaving Play Mode and restarting the application. Reset removes
+only this key. Windows stores PlayerPrefs in the Unity application/company
+registry namespace (Editor and built player use their respective namespaces).
+This does not rewrite the scene, routes or guide files. No manufacturer maximum
+is asserted. Results and RunReport.SelectedMaxForwardSpeedMph report the current
+selected target; RunReport.OriginalMaxForwardSpeedMph records the baseline.
+If you change the limit within one run, this field shows the final selection,
+not a history of the run's settings. Use separate runs for direct comparisons.
+
+NUMPAD 1 toggles clean video mode. All ordinary HUD, route ribbons and screen
+continuations, diagnostics, messages, tooltips and control/interaction highlights
+hide together. The actual machine, water, snow, audio and controls keep working.
+Entering video mode closes old pause/help/route/history/inspection panels and
+releases their mouse capture. Explicit ESC, F1 or NUMPAD 8 menus remain available
+when requested; NUMPAD 1 always restores the UI, including from a focused route
+name field. Number-row 1 and NUMPAD 7/8/9 retain their independent controls.
+
+Surface Survey is at the upper left and instruments are at the upper right.
+MAP - collapses the survey to its header; MAP + restores it. Held Q/E/C/rear
+inspection views clear the side interfaces as before. Existing map inspection,
+surface debug modes, vehicle marker and 40-foot route preview remain available.
+TAB expands the lower-right mini console. Collapse the map for an unobstructed
+left-side view when a custom RMB camera angle benefits from it.
+
+Both miniature hydraulic controls now match the actual physical levers:
+top / push FORWARD = RAISE; bottom / pull BACK toward the seat = LOWER.
+Release returns the lever to neutral and holds actual attained height.
+Physical lever animation follows the same directions. Keyboard bindings and
+the underlying hydraulic simulation retain their existing raise/lower signs.
+
+The expanded console contains a BLADE / SCHEMATIC side view beside the existing
+numeric SET and CONTACT readouts. Blue is the ice reference; the body follows
+actual conditioner lift; the blade contact follows effective extension times
+conditioner pressure. Amber marks the selected extension. RETRACTED, SHALLOW
+CUT, DEEP CUT and OFF ICE distinguish the states. Vertical travel is exaggerated
+for readability; this is extension/contact feedback, not a blade pitch model.
+Standing still can show contact without shaving material, as in the simulation.
+The graphic hides with the HUD in video mode.

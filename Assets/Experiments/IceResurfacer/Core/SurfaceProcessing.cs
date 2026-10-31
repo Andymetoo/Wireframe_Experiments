@@ -260,6 +260,7 @@ namespace IceResurfacer.Core
             float handlingPoints=(tank+(ProperExit?1:0))*2.5f,misuse=Math.Min(30,Mistakes*1.2f);
             return new RunReport
             {
+                SelectedMaxForwardSpeedMph=MaximumForwardSpeedTarget/.44704f,OriginalMaxForwardSpeedMph=Config.ForwardSpeed/.44704f,
                 Coverage=coverage,ShavingCoverage=(float)reportCut/Math.Max(1,Ice.ShavableCellCount),
                 WaterCoverage=(float)reportWet/Ice.IceCellCount,WaterDistribution=water,
                 MissedFraction=1-coverage,FinishQuality=q,OverwaterFraction=over,OperationalEfficiency=efficiency,

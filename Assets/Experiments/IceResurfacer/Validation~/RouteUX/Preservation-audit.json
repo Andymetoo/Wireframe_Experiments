@@ -1,0 +1,19 @@
+{
+  "original_route_library_files": 12,
+  "changed_original_route_library_files": [],
+  "protected_simulation_geometry_audio_scene_changes": [],
+  "tracked_changes_outside_experiment": [],
+  "intentional_existing_file_changes": [
+    "README.txt",
+    "Core/RouteProgress.cs",
+    "Documentation/TrainingGuide.txt",
+    "Editor/IceResurfacerEditor.cs",
+    "Editor/IceRouteRecordingsWindow.cs",
+    "Presentation/IceDashboard.cs",
+    "Presentation/IceLayoutPlayerProbe.cs",
+    "Presentation/IceRouteGuide.cs",
+    "Presentation/RouteRecordingPanel.cs",
+    "Presentation/TrainingGuidePanel.cs",
+    "Resources/TrainingRoute.shader"
+  ]
+}

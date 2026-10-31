@@ -87,19 +87,19 @@ namespace IceResurfacer.Editor
 
                 Aim(w.ConditionerLever,Vector3.up*.225f);Vector2 knob=Screen(w.ConditionerLever.TransformPoint(0,.225f,0));
                 Vector2 pull=(Screen(w.ConditionerLever.position-w.Machine.forward*.15f)-Screen(w.ConditionerLever.position)).normalized;
-                Pointer(knob,false);Pointer(knob,true);Pointer(knob-pull*80,true);
-                Check(c.ConditionerHydraulic<-.9f,"pushing the physical lever requests conditioner lowering");
+                Pointer(knob,false);Pointer(knob,true);Pointer(knob+pull*80,true);
+                Check(c.ConditionerHydraulic<-.9f,"pulling the physical lever back toward the seat requests conditioner lowering");
                 s.Step(.30f);render(0);float attained=s.Conditioner.Lift;
                 Check(attained<1&&attained>0,"conditioner lowering takes time");
-                Pointer(knob-pull*80,false);s.Step(.5f);render(0);
+                Pointer(knob+pull*80,false);s.Step(.5f);render(0);
                 Check(c.ConditionerHydraulic==0&&Mathf.Abs(s.Conditioner.Lift-attained)<.00001f,"released spring control returns neutral and holds attained height");
                 Check(Quaternion.Angle(w.ConditionerLever.localRotation,Quaternion.identity)<.01f,"rendered hydraulic lever springs to neutral");
                 Check(c.TankHydraulic==0&&!c.HorizontalAuger&&!c.VerticalAuger,"relocated conditioner gesture leaves tank and augers untouched");
                 Aim(w.DumpLever,Vector3.up*.225f);knob=Screen(w.DumpLever.TransformPoint(0,.225f,0));
                 pull=(Screen(w.DumpLever.position-w.Machine.forward*.15f)-Screen(w.DumpLever.position)).normalized;
-                Pointer(knob,false);Pointer(knob,true);Pointer(knob+pull*80,true);render(0);
+                Pointer(knob,false);Pointer(knob,true);Pointer(knob-pull*80,true);render(0);
                 Check(c.TankHydraulic>.9f&&c.ConditionerHydraulic==0&&!c.HorizontalAuger&&!c.VerticalAuger,"rightmost dump lever raises only the snow tank while held");
-                s.Step(.2f);render(0);float tank=s.TankLift;Pointer(knob+pull*80,false);s.Step(.3f);render(0);
+                s.Step(.2f);render(0);float tank=s.TankLift;Pointer(knob-pull*80,false);s.Step(.3f);render(0);
                 Check(c.TankHydraulic==0&&Mathf.Abs(s.TankLift-tank)<.000001f&&Quaternion.Angle(w.DumpLever.localRotation,Quaternion.identity)<.01f,"dump lever springs to neutral and holds attained tank angle on release");
                 Check(w.ConditionerCylinderRods[0].localScale.y>0&&w.TankCylinderRods[0].localScale.y>0,"both hydraulic mechanisms have extended physical piston rods");
                 game.SelectCameraView("Controls");

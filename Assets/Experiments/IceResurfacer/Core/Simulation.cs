@@ -18,6 +18,14 @@ namespace IceResurfacer.Core
         public readonly ServiceLayout Layout;
         public readonly EnvironmentField Environment;
         public readonly bool Practice;
+        float forwardSpeedOverride;
+        public float MaximumForwardSpeedTarget=>forwardSpeedOverride>0?forwardSpeedOverride:Config.ForwardSpeed;
+        /// <summary>Runtime operator target only; calibration and actual velocity remain untouched.</summary>
+        public void SetMaximumForwardSpeed(float metersPerSecond)
+        {
+            if(float.IsNaN(metersPerSecond)||float.IsInfinity(metersPerSecond)||metersPerSecond<=0)throw new ArgumentOutOfRangeException(nameof(metersPerSecond));
+            forwardSpeedOverride=metersPerSecond;
+        }
         public readonly SimulationMode Mode;
         public bool GuidedTraining { get { return Mode == SimulationMode.GuidedTraining; } }
         public float Time { get; private set; }
@@ -232,13 +240,14 @@ namespace IceResurfacer.Core
                 command = 0;
             }
             EffectiveDriveDemand = command;
-            float target = command * (command >= 0 ? Config.ForwardSpeed : Config.ReverseSpeed);
+            float target = command * (command >= 0 ? MaximumForwardSpeedTarget : Config.ReverseSpeed);
             float speed = Vehicle.Speed;
             float massFactor = 1f / (1f + SnowTankM3 * .09f);
             float rate;
             if (Controls.Brake || trainingBrake) { target = 0; rate = Config.ServiceBrakeDeceleration; }
             else if (Math.Abs(command) < .01f) { target = 0; rate = Config.HydrostaticDeceleration + Math.Abs(speed) * .12f; }
             else if (speed * command < -.005f) { target = 0; rate = Config.ServiceBrakeDeceleration; }
+            else if (forwardSpeedOverride>0&&command>0&&speed>MaximumForwardSpeedTarget) { rate=Config.HydrostaticDeceleration+Math.Abs(speed)*.12f; }
             else rate = Config.Acceleration * massFactor * Math.Max(.20f, 1f - MachineLoad * .35f);
             float lateralDemand=speed*speed*Math.Abs((float)Math.Tan(Vehicle.SteeringAngle))/Config.Wheelbase;
             bool onIce=Ice.IsInside(Vehicle.X,Vehicle.Z);

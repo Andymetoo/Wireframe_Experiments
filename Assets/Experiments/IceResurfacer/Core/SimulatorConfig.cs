@@ -157,6 +157,7 @@ namespace IceResurfacer.Core
     public struct RunReport
     {
         public float Coverage, FinishQuality, OverwaterFraction, MissedFraction, Score, ElapsedSeconds;
+        public float SelectedMaxForwardSpeedMph, OriginalMaxForwardSpeedMph;
         public float ShavingCoverage, WaterCoverage, WaterDistribution, OperationalEfficiency;
         public float CoveragePoints, FinishPoints, WaterPoints, OverwaterPoints, EfficiencyPoints, HandlingPoints, MisusePenalty;
         public int Mistakes, TankDumps;

@@ -1,5 +1,10 @@
 AURORA R-54 / EDITABLE ROUTES AND OPTIONAL TRAINING GUIDANCE
 
+Ordinary operation now uses Route Manager: NUMPAD 8; record/stop-and-save with
+NUMPAD 9; load any saved route and Use as GPS; NUMPAD 7 toggles the line.
+Documentation/RouteOperator.txt is the concise operator workflow. The Editor
+steps below remain optional advanced refinement, not a prerequisite to following.
+
 Start with a real recording
 Choose Free Simulation / Practice, park, F6 > Raw Recording, name the take,
 Start New (F7), Close and Drive. Drive the whole entry, passes, turns and return
@@ -67,10 +72,14 @@ it is not the operator's pattern and is not installed as a permanent default.
 Source selection survives a new session within the same Play instance when
 physical calibration matches. A new Play instance starts with the original.
 
-The ground line starts four route-meters ahead and shows at most 28 m, bounded
-by current plus immediately upcoming context. Completed segments disappear;
-line ends fade. The dedicated transparent shader uses ZTest LEqual and ordinary
-depth occlusion. A cockpit card gives the current leg/direction, upcoming turn,
+The ground line starts 0.55 route-meters ahead and shows at most 12.192 m / 40 ft,
+crossing sequential context and direction boundaries. Completed segments disappear;
+line ends fade. Magenta with a dark border replaces the original cyan styling.
+The dedicated shader uses ZTest LEqual and ordinary depth occlusion. A thin screen
+continuation appears only where a closest opaque-mesh ray hit belongs to the
+machine. An isolated physics query scene holds these meshes; it cannot affect
+the driving simulation. Walls/stands and menus occlude/suppress the continuation.
+A cockpit card gives the current leg/direction, upcoming turn,
 offset and recommended pace when the body hides the near ground. It also works
 standing and in chase view. It does not draw route geometry through the vehicle.
 The normal Surface Survey keeps its ice texture and current-position marker,

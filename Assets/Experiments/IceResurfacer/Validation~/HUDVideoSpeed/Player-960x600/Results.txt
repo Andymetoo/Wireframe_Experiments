@@ -1,0 +1,141 @@
+Aurora native development-player HUD validation / Unity 6000.4.1f1
+Actual player framebuffer captures include the world and live IMGUI instruments.
+The opt-in probe disables the Development Console overlay; native presentation diagnostics remain in the player log and are counted by the launcher.
+Native mouse messages target only this player's own window; hydraulic checks advance fixed simulation ticks while held and after release.
+Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
+The results capture follows an actual raised, dry entry and safe return through the normal finish path.
+PASS 960x600 / Requested client resolution (actual 960x600)
+PASS 960x600 / Default HUD uses collapsed side console
+PASS 960x600 / Persistent status reports actual raised conditioner
+PASS 960x600 / Right console expands through actual UI target
+PASS 960x600 / Message history opens without altering machine state
+PASS 960x600 / Message history closes through persistent control
+PASS 960x600 / Machine Load meter opens its demand explanation
+PASS 960x600 / Machine Load explanation closes without changing machinery
+PASS 960x600 / Native map pointer selects actual ice for magnified treatment inspection
+PASS 960x600 / Survey inspection does not apply water or alter machinery
+PASS 960x600 / Conditioner held direction
+PASS 960x600 / Conditioner springs to neutral on native mouse release
+PASS 960x600 / Conditioner holds attained position after release
+PASS 960x600 / Neutral lever preserves actual partly lowered status
+PASS 960x600 / Horizontal auger switch
+PASS 960x600 / Vertical auger switch
+PASS 960x600 / Board brush switch
+PASS 960x600 / Precise quarter-turn blade handwheel drag
+PASS 960x600 / three full turns retain remaining blade adjustment
+PASS 960x600 / 3.5 full turns reach deepest blade stop
+PASS 960x600 / blade mechanical end stop rejects extra rotation
+PASS 960x600 / blade reverses continuously from end stop
+PASS 960x600 / Analog quarter-turn wash handle
+PASS 960x600 / Pickup pump switch
+PASS 960x600 / Independent analog quarter-turn flood handle
+PASS 960x600 / TankLift held direction
+PASS 960x600 / TankLift springs to neutral on native mouse release
+PASS 960x600 / TankLift holds attained position after release
+PASS 960x600 / Actual lowered conditioner has explicit persistent DOWN status
+PASS 960x600 / Manual snow-breaker button and interlock
+PASS 960x600 / Guide button opens
+PASS 960x600 / Guide button closes
+PASS 960x600 / Pause button
+PASS 960x600 / Resume button
+PASS 960x600 / Service help explains physical hose without silently topping up tanks
+PASS 960x600 / Free Simulation may finish a partial session without a progression guard
+PASS 960x600 / New-session button
+PASS 960x600 / Unscored-practice launch button
+PASS 960x600 / Scored-run launch button
+PASS 960x600 / Legal partial run reaches results through normal finish path
+PASS 960x600 / F3 fixture crosses traversable grate and reaches actual rear wall
+PASS 960x600 / Route guide toggle only changes drawing
+PASS 960x600 / Validation virtual keyboard receives Q while player is non-focused
+PASS 960x600 / Held Q enters temporary inspection
+PASS 960x600 / Inspection Q clears side-console pointer obstruction
+PASS 960x600 / Release Q restores the operating view
+PASS 960x600 / Validation virtual keyboard receives E while player is non-focused
+PASS 960x600 / Held E enters temporary inspection
+PASS 960x600 / Inspection E clears side-console pointer obstruction
+PASS 960x600 / Release E restores the operating view
+PASS 960x600 / Validation virtual keyboard receives C while player is non-focused
+PASS 960x600 / Held C enters temporary inspection
+PASS 960x600 / Inspection C clears side-console pointer obstruction
+PASS 960x600 / Release C restores the operating view
+PASS 960x600 / Validation virtual keyboard receives LeftShift while player is non-focused
+PASS 960x600 / Held LeftShift enters temporary inspection
+PASS 960x600 / Inspection LeftShift clears side-console pointer obstruction
+PASS 960x600 / Release LeftShift restores the operating view
+PASS 960x600 / Persistent Route Recorder button opens the authoring panel
+PASS 960x600 / Native Start New button starts a take
+PASS 960x600 / Typing/keys in the route panel do not drive, toggle machinery or dismount
+PASS 960x600 / Close and Drive retains the active recording
+PASS 960x600 / Normal S/Ctrl game input and fixed simulation observer capture a real driven reverse segment
+PASS 960x600 / Native Stop button finalizes raw observations
+PASS 960x600 / Native Save Named Copy persists JSON in the configured standalone library
+PASS 960x600 / modal route controls cannot actuate miniature hydraulics behind the panel
+PASS 960x600 / Native saved-route list loads the clearly labeled deterministic fixture
+PASS 960x600 / First loaded-route repaint renders every raw sample instead of the preceding take
+PASS 960x600 / Preview and point inspection preserve the original raw file
+PASS 960x600 / Recorder closes through native UI after loading a saved route
+PASS 960x600 / Training fixture has not replaced or enabled the original F5 default
+PASS 960x600 / Native F6 Training Guides tab opens full-route authoring preview
+PASS 960x600 / Explicit fixture selection loads a labeled physically validated guide without enabling F5
+PASS 960x600 / runtime missed-area view excludes all future unconfirmed passes
+PASS 960x600 / Native Original F5 Reference button restores the default source
+PASS 960x600 / Native guide-file list loads a persisted .guide.json without code changes
+PASS 960x600 / Native Show Guide / F5 button enables advisory guide
+PASS 960x600 / fixture includes straight work passes followed by curved perimeter context
+PASS 960x600 / live world preview stays bounded to current/upcoming 28 m
+PASS 960x600 / Surface Survey uses limited cached route section rather than full overlapping pattern
+PASS 960x600 / actual R input enters standing cockpit with guide enabled
+PASS 960x600 / rejoin and repeated F5 toggles preserve free control, exact pose and machinery state
+PASS 960x600 / runtime preview and guidance do not mutate saved guide data
+PASS 960x600 / native framebuffer: training line is visible on exposed ground and hidden behind an opaque solid
+PASS 960x600 / native validation restores original F5 source and leaves guide off
+PASS 960x600 / physical keypad Numpad 9 starts native take 1
+PASS 960x600 / Numpad 9 stops and auto-saves a unique native recording
+PASS 960x600 / physical keypad Numpad 9 starts native take 2
+PASS 960x600 / Numpad 9 stops and auto-saves a unique native recording
+PASS 960x600 / two named native takes have different persistent filenames
+PASS 960x600 / Numpad 8 opens readable route manager containing both takes
+PASS 960x600 / keypad keys in a focused route-name field do not start recording or toggle GPS
+PASS 960x600 / native saved-route row selects the first named recording
+PASS 960x600 / native Use as GPS automatically fits the selected raw take and keeps its name
+PASS 960x600 / GPS enabled in manager never draws silhouette continuation across menus
+PASS 960x600 / recorded-pose replay crosses several native GPS legs without a manual rejoin or blank line
+PASS 960x600 / actual seated hood/tank silhouette receives a restrained GPS continuation
+PASS 960x600 / an intervening real arena board/wall blocks the machine continuation query
+PASS 960x600 / world and minimap share the same approximately 40-foot progress window
+PASS 960x600 / canceling delete leaves both native recordings intact
+PASS 960x600 / actual operator route loads directly as native GPS
+PASS 960x600 / native operator route use preserves every original input byte
+PASS 960x600 / actual operator route loads directly as native GPS
+PASS 960x600 / native operator route use preserves every original input byte
+PASS 960x600 / saved launch scene retains original 2.65 m/s calibration
+PASS 960x600 / native ESC slider selects minimum 3.00 MPH
+PASS 960x600 / native ESC slider selects maximum 8.00 MPH
+PASS 960x600 / native ESC slider selects practical quarter-MPH setting
+PASS 960x600 / native reset restores exact original speed and clears only the speed preference
+PASS 960x600 / Conditioner held direction
+PASS 960x600 / Conditioner springs to neutral on native mouse release
+PASS 960x600 / Conditioner holds attained position after release
+PASS 960x600 / Conditioner held direction
+PASS 960x600 / Conditioner springs to neutral on native mouse release
+PASS 960x600 / Conditioner holds attained position after release
+PASS 960x600 / TankLift held direction
+PASS 960x600 / TankLift springs to neutral on native mouse release
+PASS 960x600 / TankLift holds attained position after release
+PASS 960x600 / TankLift held direction
+PASS 960x600 / TankLift springs to neutral on native mouse release
+PASS 960x600 / TankLift holds attained position after release
+PASS 960x600 / native survey collapse keeps compact header accessible
+PASS 960x600 / native survey expand restores full inspection/GPS map
+PASS 960x600 / actual Num8 opens route manager before video toggle
+PASS 960x600 / actual Num1 clears route manager including focused text field
+PASS 960x600 / clean video suppresses F2 diagnostic ice coloring and keeps its selection
+PASS 960x600 / video hides GPS drawing while preserving enabled route selection
+PASS 960x600 / hidden console releases former pointer hit region
+PASS 960x600 / normal throttle works with all gameplay UI hidden
+PASS 960x600 / number-row 1 continues physical machinery operation in video mode
+PASS 960x600 / video clears control highlighting without removing machine audio sources
+PASS 960x600 / explicit ESC menu remains available in video mode
+PASS 960x600 / actual Num1 restores normal HUD, selected ice debug mode and enabled GPS
+PASS: all player HUD checks.
+Native hidden-window D3D presentation warnings: 2 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

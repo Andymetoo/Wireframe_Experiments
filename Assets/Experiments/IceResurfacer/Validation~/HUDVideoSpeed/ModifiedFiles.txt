@@ -1,0 +1,32 @@
+THIS PASS ONLY (prior route/cockpit changes were already present and preserved)
+
+Runtime
+Core/Simulation.cs - runtime forward target; gradual overspeed response only.
+Core/SimulatorConfig.cs - two diagnostic fields in RunReport, no calibration edits.
+Core/SurfaceProcessing.cs - populate selected/original speed report fields only.
+Presentation/IceOperatorPreferences.cs (+meta, new) - scoped PlayerPrefs storage.
+Presentation/IceResurfacerGame.cs - apply preference, exact reset, video input/state.
+Presentation/IceDashboard.cs - pause slider, HUD layout, collapse, hydraulic gestures,
+  blade schematic, speed in results, hidden/modal pointer handling.
+Presentation/IcePhysicalControls.cs - suppress/clear highlights while video is active.
+Presentation/IceWaterService.cs - suppress service interaction highlights in video.
+Presentation/IceCollisionOverlay.cs - suppress F3 geometry overlays in video.
+Presentation/IceRouteGuide.cs - hide route world renderers in video; retain progress.
+Presentation/RouteSilhouetteContinuation.cs - hide existing screen continuation in video.
+
+Validation
+Presentation/IceLayoutPlayerProbe.cs - updated HUD targets/gestures, native slider,
+  video, collapse, schematic, modal checks and screenshot captures.
+Editor/IceHUDVideoSpeedValidation.cs (+meta, new) - runtime, input, route compatibility
+  and fresh-Play PlayerPrefs checks.
+Editor/IceResurfacerEditor.cs - register new validation suite only this pass.
+Validation~/OperatorSpeedValidation.cs (new) - deterministic speed/dynamics checks.
+Validation~/Program.cs - register 40th scenario.
+Validation~/IceResurfacer.Validation.csproj - include new speed fixture.
+Validation~/RunIsolatedUnity.ps1 - fresh-Play preference actions.
+Validation~/HUDVideoSpeed/ - baseline hashes, before snapshots, reports, gallery,
+  screenshots and reproducible evidence/audit scripts.
+
+Operator documentation
+README.txt - current controls/layout and personal speed calibration.
+Documentation/HUDVideoSpeed.txt (+meta, new) - controls, persistence and limitations.

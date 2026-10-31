@@ -18,6 +18,28 @@ namespace IceResurfacer.Presentation
         public bool Started { get; private set; }
         public bool Paused { get; private set; }
         public bool HelpVisible { get; private set; }
+        public bool HudHidden {get;private set;}
+        public float OriginalForwardSpeedMph=>calibration.ForwardSpeed/IceOperatorPreferences.MetersPerSecondPerMph;
+        public float SelectedForwardSpeedMph=>(Sim==null?calibration.ForwardSpeed:Sim.MaximumForwardSpeedTarget)/IceOperatorPreferences.MetersPerSecondPerMph;
+        public void SetOperatorSpeedMph(float mph)
+        {
+            float value=IceOperatorPreferences.SnapMph(mph);IceOperatorPreferences.SaveMph(value);
+            Sim.SetMaximumForwardSpeed(value*IceOperatorPreferences.MetersPerSecondPerMph);Report=Sim.GetReport();
+        }
+        public void ResetOperatorSpeed()
+        {IceOperatorPreferences.ResetSpeed();Sim.SetMaximumForwardSpeed(calibration.ForwardSpeed);Report=Sim.GetReport();}
+        public void ToggleVideoMode()
+        {
+            HudHidden=!HudHidden;
+            if(HudHidden)
+            {
+                if(RouteGuide!=null&&RouteGuide.PanelOpen)RouteGuide.ToggleRecordingPanel();
+                Paused=false;HelpVisible=false;dashboard?.ClearTransientPanels();ReleaseControls();ReleaseLook();
+            }
+            PhysicalControls?.RefreshVisibility();WaterService?.RefreshInteractionVisibility();RouteGuide?.Refresh();
+            Surface?.SetDebugMode(HudHidden?0:SurfaceDebugMode);
+            GetComponent<IceCollisionOverlay>()?.Refresh();
+        }
         public bool Looking { get; private set; }
         public Camera DriverCamera { get; private set; }
         public RunReport Report { get; private set; }
@@ -140,10 +162,11 @@ namespace IceResurfacer.Presentation
             chaseCamera?.Leave();quicklook="";savedHead=restoringHead=suppressQuicklook=preservedOffset=false;
             snowView?.Reset();
             Surface?.Dispose(); Sim=new Simulation(calibration,practice,546,mode);
+            if(PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey))Sim.SetMaximumForwardSpeed(IceOperatorPreferences.LoadMph(OriginalForwardSpeedMph)*IceOperatorPreferences.MetersPerSecondPerMph);
             Sim.Controls.HydraulicHoldControls=true;
             WaterService?.ResetSession();
             Surface=new IceSurfaceView(Sim.Ice,World.IceMesh,iceTemplate,Sim.Config);
-            Surface.SetDebugMode(SurfaceDebugMode);
+            Surface.SetDebugMode(HudHidden?0:SurfaceDebugMode);
             Started=start; Paused=false; HelpVisible=false; Looking=false;
             accumulator=0; surveyTimer=0; yaw=0; pitch=5; Notice=""; observedMistakes=0; breakerAnimation=0;
             recenterTime=RecenterSeconds; stance=0; controlLean=sideLean=0; Standing=false; CameraView="Forward";
@@ -189,11 +212,12 @@ namespace IceResurfacer.Presentation
             var keys=Keyboard.current;
             if(keys!=null)
             {
+                if(keys.numpad1Key.wasPressedThisFrame)ToggleVideoMode();
                 if(keys.escapeKey.wasPressedThisFrame) TogglePause();
                 if(keys.f1Key.wasPressedThisFrame) ToggleHelp();
                 if(keys.f3Key.wasPressedThisFrame) DiagnosticsVisible=!DiagnosticsVisible;
                 if(keys.f4Key.wasPressedThisFrame) PerformanceVisible=!PerformanceVisible;
-                if(keys.f2Key.wasPressedThisFrame) { SurfaceDebugMode=(SurfaceDebugMode+1)%3; Surface.SetDebugMode(SurfaceDebugMode); }
+                if(keys.f2Key.wasPressedThisFrame) { SurfaceDebugMode=(SurfaceDebugMode+1)%3; Surface.SetDebugMode(HudHidden?0:SurfaceDebugMode); }
                 if(keys.tabKey.wasPressedThisFrame) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
             }
             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;

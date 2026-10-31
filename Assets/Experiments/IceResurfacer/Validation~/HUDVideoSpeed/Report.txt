@@ -1,0 +1,75 @@
+AURORA R-54 / HUD, VIDEO AND OPERATOR SPEED / 30 OCTOBER 2026
+
+Controls
+ESC > MAX FORWARD SPEED: 3.00-8.00 MPH in .25 MPH steps. Immediate PlayerPrefs
+save. RESET TO ORIGINAL SPEED restores exact 2.65 m/s, including between ticks.
+NUMPAD 1 hides/restores ordinary gameplay UI, GPS, F2 surface diagnostic colors,
+F3 contact overlays, FPS, tooltips and interaction highlights. Machinery, audio,
+driving and camera control remain active. Explicit menus remain recoverable.
+MAP - / MAP + collapses/restores the upper-left survey; TAB expands the lower-
+right console. Instruments sit at the top right. Hydraulic mini-controls:
+top/forward LOWER; bottom/toward seat RAISE; release holds actual height.
+Blade side view is a schematic of extension and pressure-adjusted contact,
+with exaggerated vertical travel. Numeric readouts remain; no pitch model added.
+
+Before / after comparison (unloaded, raised/dry, straight, full pedal)
+Before: serialized maximum 2.650000 m/s = 5.92788 MPH.
+After / no preference or exact Reset: 2.650000 m/s = 5.92788 MPH.
+After / minimum: measured 1.341120 m/s = 3.00000 MPH.
+After / maximum: measured 3.576320 m/s = 8.00000 MPH.
+These are test-fixture steady speeds, not a manufacturer's specification.
+No permanent 15 percent reduction was applied. Exact-original steering/motion
+matches the comparison fixture. Normal acceleration, reverse, geometry,
+hydrostatic coefficients and traction calibration are unchanged. Lowering the
+limit never assigns velocity: existing hydrostatic deceleration and traction
+approach the new target. Normal acceleration approaches a higher target.
+Snow-tank load, deep cutting/snow resistance, service braking and hydrostatic
+pedal-release braking retained their effects in deterministic checks.
+
+Validation
+Core: 40/40 deterministic scenarios passed (Core-results.txt).
+Unity 6000.4.1f1: actual Play Mode, all regression suites passed, zero runtime
+errors/exceptions (Unity-regression-results.txt). New control checks include
+3 / 5.5 / 8 MPH, unchanged GPS geometry, recording actual driving at 3 and 8 MPH,
+PlayerPrefs session restoration/reset, Numpad 1, independent number-row controls,
+ESC recovery, F2 suppression/restoration, and all four blade engagement states.
+Fresh process: selected 5.50 MPH in Play, exited, launched a new Unity process,
+entered Play again and recovered 5.50 MPH; reset restored unchanged 2.65 m/s.
+Validation preferences use a separate test company/product from the real app.
+Native player checks: {"1920x1080": 133, "1366x768": 133, "960x600": 133}.
+All three resolutions passed, with no measured text clipping. Native mouse
+checks cover slider ends and quarter-MPH setting, exact reset, partial hydraulic
+travel in both directions, release-to-hold, survey collapse/expand, and modal
+route-panel input isolation. Virtual device checks exercise the actual Num1,
+Num8, number-row 1, W and ESC handlers, including a focused route-name field.
+The modal regression fix prevents expanded mini-controls consuming route UI clicks.
+Existing route-editor, nearby-pass progression, native depth occlusion, map
+inspection, audio structure, scored-run and vehicle simulation checks passed.
+
+Preservation
+All 17 pre-existing route-library files retain their exact SHA-256 values.
+Saved scene calibration, world/conditioner geometry, audio implementation,
+materials, shaders and route serialization formats retain their baseline hashes.
+Prior uncommitted cockpit, route-manager and GPS work was preserved against the
+start-of-pass working-tree snapshot, rather than restored from Git HEAD.
+Only Assets/Experiments/IceResurfacer changed. No branch, commit or push.
+See Preservation-audit.json and ModifiedFiles.txt for the detailed scope.
+
+Persistence and limitations
+PlayerPrefs key: AuroraR54.Operator.MaxForwardSpeedMph.v1. Reset deletes only it.
+Results and RunReport include selected and original MPH. The field reports the
+final selection, not a history of mid-run adjustments; compare separate runs.
+The original value is available with Reset, rather than rounding it to a .25 tick.
+Slider calibration is personal; manual full-cut driving feel remains for the
+operator to judge. The schematic shows geometric effective contact, including
+lift pressure, but stationary contact does not imply material is being removed.
+The survey collapse state is a runtime UI choice, not a saved preference.
+Screenshots establish layout and rendering at 1920x1080, 1366x768 and 960x600.
+Small text at 960x600 still merits operator review on the intended monitor.
+Hidden-window D3D presentation warnings are counted in each native Results.txt;
+these captures do not establish focused-window latency or subjective audio quality.
+The Development Build watermark belongs to the validation build. It is absent
+from the normal Editor Game view and a non-development player build.
+An initial capture found a schematic-line/readout overlap, corrected before the
+final captures. Earlier native iterations exposed modal click-through and a
+test helper that omitted the route component's Update; both were corrected.

@@ -34,6 +34,14 @@ namespace IceResurfacer.Core
             if(Math.Abs(speed)<.02f||step<.000001f&&!explicitJoin)return;
             int direction=speed<0?-1:1;
             var context=route.legs[Leg];
+            // A driver can stop/reverse slightly before the mathematical cusp.
+            // Accept only the adjacent context, near its shared endpoint and heading.
+            if(direction!=context.direction&&Leg+1<route.legs.Count&&route.legs[Leg+1].direction==direction&&context.end-Distance<=1.25)
+            {
+                var endpoint=route.At(context.end);var next=route.samples[route.legs[Leg+1].first];
+                if(TrainingRouteDefinition.Distance(x,z,endpoint.x,endpoint.z)<=1.5f&&Math.Abs(TrainingRouteDefinition.Angle(heading-next.heading))<1.15f)
+                {Leg++;Distance=route.legs[Leg].start;context=route.legs[Leg];explicitJoin=false;detourTravel=Math.Max(step,.08f);statusLeg=-1;}
+            }
             if(direction!=context.direction){OffRoute=true;statusLeg=-1;Status=context.direction<0?"Selected leg expects reverse travel":"Selected leg expects forward travel";return;}
             double horizon;
             if(explicitJoin)horizon=context.end;
@@ -76,7 +84,7 @@ namespace IceResurfacer.Core
             {
                 var end=route.At(route.legs[Leg].end);
                 if(TrainingRouteDefinition.Distance(x,z,end.x,end.z)<.8f&&route.legs[Leg+1].direction!=direction)
-                {Leg++;Distance=route.legs[Leg].start;explicitJoin=true;Status="Direction change / leg "+(Leg+1);}
+                {Leg++;Distance=route.legs[Leg].start;explicitJoin=false;detourTravel=0;statusLeg=-1;Status="Direction change / leg "+(Leg+1);}
             }
         }
         public int UpcomingTurn(double lookAhead=28)

@@ -62,6 +62,7 @@ namespace IceResurfacer.Presentation
         public Vector3 FloorDrainPosition { get { return drainPosition; } }
         public Vector3 BoardingPoint { get { return StepPoint(); } }
         public bool HolderHighlighted { get { return holderHighlight!=null && holderHighlight.gameObject.activeSelf; } }
+        public void RefreshInteractionVisibility(){if(game!=null&&game.HudHidden&&holderHighlight!=null)holderHighlight.gameObject.SetActive(false);}
         public bool FootLookActive { get { return footLook; } }
         public string Status
         {
@@ -151,7 +152,7 @@ namespace IceResurfacer.Presentation
             }
             ApplyFootCamera();
             selected=FindTarget(mouse);
-            holderHighlight.gameObject.SetActive(selected==Target.Holder&&s.HoseState==WaterHoseState.Carried);
+            holderHighlight.gameObject.SetActive(!game.HudHidden&&selected==Target.Holder&&s.HoseState==WaterHoseState.Carried);
             prompt=PromptFor(selected);
             if(movementStatusTime>0)prompt=movementStatus;
             bool interact=keys!=null&&keys.eKey.wasPressedThisFrame;

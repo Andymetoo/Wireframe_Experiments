@@ -18,7 +18,7 @@ namespace IceResurfacer.Presentation
     /// Explicit development-player validation only. The normal launch scene never contains
     /// this component; the editor build tool attaches it to a disposable scene clone.
     /// </summary>
-    public sealed class IceLayoutPlayerProbe : MonoBehaviour
+    public sealed partial class IceLayoutPlayerProbe : MonoBehaviour
     {
         readonly List<string> failures = new List<string>();
         readonly List<string> layoutIssues = new List<string>();
@@ -33,7 +33,7 @@ namespace IceResurfacer.Presentation
         IntPtr playerWindow;
         bool active, complete;
         InputSettings originalInputSettings,validationInputSettings;
-        string ArtifactDirectory => Path.Combine(outputDirectory,"TrainingGuide","Player-"+currentResolution);
+        string ArtifactDirectory => Path.Combine(outputDirectory,"HUDVideoSpeed","Player-"+currentResolution);
 
         IEnumerator Start()
         {
@@ -91,7 +91,7 @@ namespace IceResurfacer.Presentation
             while (game == null || game.Sim == null || game.Dashboard == null)
             { game = UnityEngine.Object.FindAnyObjectByType<IceResurfacerGame>(); yield return null; }
             game.enabled = false;
-            game.NewSession(false);
+            game.ResetOperatorSpeed();game.NewSession(false);
             game.Dashboard.AuditLayout = true;
             // The launcher selects the client resolution before native startup.
             // One resolution per process avoids runtime swapchain changes.
@@ -111,6 +111,7 @@ namespace IceResurfacer.Presentation
                 "Requested client resolution (actual " + Screen.width + "x" + Screen.height + ")");
             // Give the native player window and its repaint loop time to settle.
             for (int i = 0; i < 8; i++) yield return null;
+            yield return ValidateHydraulicDirections();
             game.NewSession(false);
             game.Dashboard.AuditLayout = true;
             yield return Capture("HUD-" + currentResolution + ".png", "normal HUD");
@@ -273,6 +274,8 @@ namespace IceResurfacer.Presentation
             yield return Capture("HUD-"+currentResolution+"-service.png","service panel");
             yield return ValidateRouteRecorder();
             yield return ValidateTrainingGuide();
+            yield return ValidateRouteManager();
+            yield return ValidateHUDVideoSpeed();
         }
 
         IEnumerator ValidateTrainingGuide()
@@ -280,6 +283,7 @@ namespace IceResurfacer.Presentation
             game.NewSession(true);var guide=game.RouteGuide;guide.Refresh();guide.UseOriginalReference();
             Check(guide.SelectedGuide==null&&!guide.Visible,"Training fixture has not replaced or enabled the original F5 default");
             yield return Click("RouteRecorder");yield return ClickAt(new Vector2(1230,100));
+            guide.ShowTrainingPanel();
             Check(guide.TrainingPanelOpen,"Native F6 Training Guides tab opens full-route authoring preview");
             yield return ClickAt(TrainingGuidePanel.ControlRect("Fixture").center);
             Check(guide.IsTestGuide&&guide.ActiveFit.Ready&&!guide.Visible,"Explicit fixture selection loads a labeled physically validated guide without enabling F5");
@@ -364,9 +368,10 @@ namespace IceResurfacer.Presentation
         IEnumerator ValidateRouteRecorder()
         {
             game.NewSession(true);var guide=game.RouteGuide;
-            guide.ConfigureValidationStorage(Path.Combine(outputDirectory,"TrainingGuide","Player-Library-"+currentResolution));
+            guide.ConfigureValidationStorage(Path.Combine(outputDirectory,"RouteUX","Legacy-Library-"+currentResolution));
             guide.RecordingName="Native UI validation — not an operator route";
             yield return Click("RouteRecorder");
+            guide.ShowRawDetails();
             Check(guide.PanelOpen,"Persistent Route Recorder button opens the authoring panel");
             yield return Capture("Route-recorder-"+currentResolution+"-ready.png","route recorder accessible controls and persistence instructions");
             yield return ClickAt(RouteRecordingPanel.ControlRect("Start").center);
@@ -391,7 +396,7 @@ namespace IceResurfacer.Presentation
             }
             finally
             {Time.captureFramerate=capture;InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();}
-            yield return Click("RouteRecorder");yield return ClickAt(RouteRecordingPanel.ControlRect("Stop").center);
+            yield return Click("RouteRecorder");guide.ShowRawDetails();yield return ClickAt(RouteRecordingPanel.ControlRect("Stop").center);
             Check(!guide.Recorder.Recording&&guide.Recorder.Data.complete,"Native Stop button finalizes raw observations");
             yield return ClickAt(RouteRecordingPanel.ControlRect("Save").center);
             Check(File.Exists(guide.LastSavedPath),"Native Save Named Copy persists JSON in the configured standalone library");
@@ -400,7 +405,11 @@ namespace IceResurfacer.Presentation
             var data=RouteRecordingStorage.Read(fixture);
             string copy=Path.Combine(guide.Library.DirectoryPath,"Deterministic-fixture.route.json");
             RouteRecordingStorage.Export(copy,data,File.Exists(copy));
+            // Repeated validation runs can retain destination timestamps through
+            // atomic replacement. Explicitly order this disposable fixture first.
+            File.SetLastWriteTimeUtc(copy,DateTime.UtcNow.AddMinutes(1));
             yield return ClickAt(RouteRecordingPanel.ControlRect("Refresh").center);
+            Check(game.Sim.Controls.ConditionerHydraulic==0&&game.Sim.Controls.TankHydraulic==0,"modal route controls cannot actuate miniature hydraulics behind the panel");
             yield return ClickAt(new Vector2(1110,461));
             Check(guide.Recorder.Data.provenance.Contains("NOT the operator")&&guide.Recorder.Data.samples.Count==data.samples.Count,"Native saved-route list loads the clearly labeled deterministic fixture");
             string bytes=File.ReadAllText(copy);
@@ -411,6 +420,107 @@ namespace IceResurfacer.Presentation
             Check(File.ReadAllText(copy)==bytes,"Preview and point inspection preserve the original raw file");
             yield return ClickAt(RouteRecordingPanel.ControlRect("Close").center);
             Check(!guide.PanelOpen,"Recorder closes through native UI after loading a saved route");
+        }
+
+        IEnumerator ValidateRouteManager()
+        {
+            game.NewSession(true);var g=game.RouteGuide;
+            if(g.PanelOpen)g.ToggleRecordingPanel();if(g.Visible)g.Toggle();g.UseOriginalReference();
+            g.ConfigureValidationStorage(Path.Combine(outputDirectory,"RouteUX","Native-Library-"+currentResolution));
+            var previous=Keyboard.current;var keyboard=InputSystem.AddDevice<Keyboard>();
+            var input=typeof(IceRouteGuide).GetMethod("Update",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            void KeyInput(params Key[] keys){InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));InputSystem.Update();input.Invoke(g,null);}
+            var paths=new List<string>();
+            try
+            {
+                for(int take=0;take<2;take++)
+                {
+                    game.NewSession(true);g.Refresh();var s=game.Sim;
+                    s.Vehicle.X=-6+take;s.Vehicle.Z=-18;s.Vehicle.Heading=s.Vehicle.Speed=0;s.Conditioner.X=s.Vehicle.X;s.Conditioner.Z=-19.1f;s.Conditioner.Heading=0;
+                    g.RecordingName=take==0?"Native west loop":"Native east loop";
+                    KeyInput();KeyInput(take==0?new[]{Key.Numpad9}:new[]{Key.NumLock,Key.Numpad9});KeyInput();
+                    Check(g.Recorder.Recording,"physical keypad Numpad 9 starts native take "+(take+1));
+                    if(take==0)yield return Capture("GPS-"+currentResolution+"-recording.png","prominent red recording state while normal driving remains available");
+                    s.Controls.Throttle=.42f;for(int i=0;i<300;i++){s.Step(.02f);g.ObserveSimulationStep(s);}
+                    float turn=0,before=s.Vehicle.Heading;s.Controls.Steer=.9f;
+                    for(int i=0;i<2000&&turn<Mathf.PI-.04f;i++){s.Step(.02f);g.ObserveSimulationStep(s);turn+=Mathf.Abs(TrainingRouteDefinition.Angle(s.Vehicle.Heading-before));before=s.Vehicle.Heading;}
+                    s.Controls.Steer=0;for(int i=0;i<300;i++){s.Step(.02f);g.ObserveSimulationStep(s);}
+                    s.Controls.Throttle=0;s.Controls.Brake=true;for(int i=0;i<180;i++){s.Step(.02f);g.ObserveSimulationStep(s);}
+                    KeyInput(Key.Numpad9);KeyInput();Check(!g.Recorder.Recording&&File.Exists(g.LastSavedPath),"Numpad 9 stops and auto-saves a unique native recording");paths.Add(g.LastSavedPath);
+                }
+                Check(paths[0]!=paths[1],"two named native takes have different persistent filenames");
+                KeyInput(Key.Numpad8);KeyInput();Check(g.PanelOpen&&g.Manager.SavedCount>=2,"Numpad 8 opens readable route manager containing both takes");
+                yield return Capture("Manager-"+currentResolution+"-two-routes.png","large primary route manager controls and readable names/dates/lengths");
+                yield return ClickAt(RouteManagerPanel.ControlRect("Name").center);
+                KeyInput(Key.Numpad9,Key.Numpad7);KeyInput();Check(!g.Recorder.Recording&&!g.Visible,"keypad keys in a focused route-name field do not start recording or toggle GPS");
+                yield return ClickAt(RouteManagerPanel.ControlRect("Load").center);
+                yield return ClickAt(new Vector2(350,594));
+                Check(g.Manager.SelectedPath==paths[0],"native saved-route row selects the first named recording");
+                yield return ClickAt(RouteManagerPanel.ControlRect("UseGps").center);
+                Check(g.ActiveSourcePath==paths[0]&&g.ActiveRouteName=="Native west loop","native Use as GPS automatically fits the selected raw take and keeps its name");
+                yield return Capture("Manager-"+currentResolution+"-gps-ready.png","saved operator-style recording loaded directly as GPS without editor conversion");
+                yield return ClickAt(RouteManagerPanel.ControlRect("ToggleGps").center);
+                Check(g.Visible&&g.SilhouetteSegments==0,"GPS enabled in manager never draws silhouette continuation across menus");
+                yield return ClickAt(RouteManagerPanel.ControlRect("Drive").center);
+                var raw=RouteRecordingStorage.Read(paths[0]);int transitions=0,leg=0;
+                foreach(var p in raw.samples)
+                {
+                    game.Sim.Vehicle.X=p.vehicleX;game.Sim.Vehicle.Z=p.vehicleZ;game.Sim.Vehicle.Heading=p.vehicleHeadingRadians;game.Sim.Vehicle.Speed=p.speedMetersPerSecond;
+                    g.ObserveSimulationStep(game.Sim);g.Refresh();if(g.Progress.Leg>leg){transitions+=g.Progress.Leg-leg;leg=g.Progress.Leg;}
+                    if(g.ActiveFit.Length-g.Progress.Distance>1&&g.DisplayPointCount==0)throw new Exception("Native GPS vanished at an ordinary boundary");
+                }
+                Check(transitions>=2&&g.ActiveFit.Length-g.Progress.Distance<1,"recorded-pose replay crosses several native GPS legs without a manual rejoin or blank line");
+                int longLeg=0;for(int i=0;i<g.ActiveFit.legs.Count;i++)if(g.ActiveFit.legs[i].end-g.ActiveFit.legs[i].start>4&&!g.ActiveFit.legs[i].turn){longLeg=i;break;}
+                SetGuidePose(longLeg,g.ActiveFit.legs[longLeg].start+1);game.SelectCameraView("Forward");game.TickInspectionCamera(2);
+                yield return Capture("GPS-"+currentResolution+"-seated-magenta.png","seated bright magenta GPS with dark border, machine-only continuation and 40-foot survey");
+                Check(g.SilhouetteSegments>0,"actual seated hood/tank silhouette receives a restrained GPS continuation");
+                var camera=game.DriverCamera;Vector3 position=camera.transform.position;Quaternion rotation=camera.transform.rotation;
+                camera.transform.position=new Vector3(game.Sim.Vehicle.X,1.3f,40);
+                Check(!g.Continuation.MachineOccludes(camera,new Vector3(game.Sim.Vehicle.X,.05f,game.Sim.Vehicle.Z+2)),"an intervening real arena board/wall blocks the machine continuation query");
+                camera.transform.SetPositionAndRotation(position,rotation);
+                Check(g.LookEnd-g.Progress.Distance<=12.193&&Math.Abs(g.MapPointAt(g.MapPointCount-1).distance-g.LookEnd)<.001,"world and minimap share the same approximately 40-foot progress window");
+                yield return CaptureGpsSurfaces();
+                yield return Click("RouteRecorder");yield return ClickAt(RouteManagerPanel.ControlRect("Delete").center);
+                yield return Capture("Manager-"+currentResolution+"-delete-confirmation.png","deletion requires a clear per-route confirmation");
+                yield return ClickAt(new Vector2(1050,565));Check(File.Exists(paths[0])&&File.Exists(paths[1]),"canceling delete leaves both native recordings intact");
+                yield return ClickAt(RouteManagerPanel.ControlRect("Drive").center);g.Toggle();g.UseOriginalReference();
+                string inputs=Path.Combine(outputDirectory,"RouteUX","OperatorInputs");
+                if(Directory.Exists(inputs))foreach(string path in Directory.GetFiles(inputs,"*.route.json"))
+                {
+                    string bytes=File.ReadAllText(path);Check(g.UseSavedRouteAsGps(path),"actual operator route loads directly as native GPS");
+                    if(!g.Visible)g.Toggle();int at=0;
+                    for(int i=0;i<g.ActiveFit.legs.Count;i++)if(!g.ActiveFit.legs[i].turn&&g.ActiveFit.legs[i].end-g.ActiveFit.legs[i].start>5){at=i;break;}
+                    SetGuidePose(at,g.ActiveFit.legs[at].start+1);game.SelectCameraView("Forward");game.TickInspectionCamera(2);
+                    yield return Capture("GPS-"+currentResolution+"-operator-"+Mathf.RoundToInt((float)g.ActiveFit.Length)+"m.png","actual supplied operator recording loaded through the automatic-fit path; seeded seated render pose");
+                    Check(File.ReadAllText(path)==bytes,"native operator route use preserves every original input byte");g.Toggle();g.UseOriginalReference();
+                }
+            }
+            finally{InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();if(g.PanelOpen)g.ToggleRecordingPanel();if(g.Visible)g.Toggle();g.UseOriginalReference();}
+        }
+
+        IEnumerator CaptureGpsSurfaces()
+        {
+            var s=game.Sim;
+            foreach(string mode in new[]{"blue-gray","reflective","dark-wet"})
+            {
+                // Explicit visual calibration fixtures only. Never part of gameplay
+                // guidance, recording or fitting; production water APIs retain phase behavior.
+                for(int i=0;i<s.Ice.Cells.Length;i++)
+                {
+                    var cell=s.Ice.Cells[i];if(!cell.IsIce)continue;
+                    float x=s.Ice.MinX+(i%s.Ice.Columns+.5f)*s.Ice.CellSize,z=s.Ice.MinZ+(i/s.Ice.Columns+.5f)*s.Ice.CellSize;
+                    if(Mathf.Abs(x-s.Vehicle.X)>18||Mathf.Abs(z-s.Vehicle.Z)>18)continue;
+                    cell.SnowMm=0;if(mode!="blue-gray"){cell.Covered=true;cell.CutDepthMm=.35f;}
+                    s.Ice.AddWater(ref cell,mode=="blue-gray"?.1f:mode=="reflective"?.45f:2,s.Time);s.Ice.ResolveLiquid(ref cell,s.Time);s.Ice.UpdateQuality(ref cell);s.Ice.Cells[i]=cell;s.Ice.MarkCellChanged(i);
+                }
+                game.Surface.Invalidate();game.Surface.Refresh(s);
+                yield return Capture("GPS-"+currentResolution+"-"+mode+".png","seated magenta GPS contrast over explicit "+mode+" ice visual fixture");
+            }
+            var g=game.RouteGuide;
+            for(double distance=g.Progress.Distance+2;distance<g.LookEnd;distance+=.4)
+            {var p=g.ActiveFit.At(distance);s.Environment.Deposit(p.x,p.z,.003f,0);}
+            game.Surface.Invalidate();game.Surface.Refresh(s);
+            yield return Capture("GPS-"+currentResolution+"-snow.png","seated magenta GPS contrast over actual deposited snow geometry");
         }
 
         IEnumerator CaptureQuicklooks()
@@ -438,7 +548,74 @@ namespace IceResurfacer.Presentation
             finally {InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();}
         }
 
-        IEnumerator Click(string key) { yield return ClickAt(IceDashboard.ControlRect(key).center); }
+        IEnumerator ValidateHUDVideoSpeed()
+        {
+            game.NewSession(true);game.ResetOperatorSpeed();game.Dashboard.Compact=false;
+            var g=game.RouteGuide;g.Refresh();if(g.PanelOpen)g.ToggleRecordingPanel();if(g.Visible)g.Toggle();g.UseOriginalReference();
+            Check(game.calibration.ForwardSpeed==2.65f,"saved launch scene retains original 2.65 m/s calibration");
+            game.TogglePause();yield return null;
+            Rect slider=IceDashboard.ControlRect("SpeedSlider");
+            yield return ClickAt(new Vector2(slider.x+3,slider.center.y));
+            Check(Mathf.Abs(game.SelectedForwardSpeedMph-3)<.001f,"native ESC slider selects minimum 3.00 MPH");
+            yield return ClickAt(new Vector2(slider.xMax-3,slider.center.y));
+            Check(Mathf.Abs(game.SelectedForwardSpeedMph-8)<.001f,"native ESC slider selects maximum 8.00 MPH");
+            yield return ClickAt(new Vector2(slider.x+slider.width*.5f,slider.center.y));
+            Check(Mathf.Abs(game.SelectedForwardSpeedMph-5.5f)<.001f,"native ESC slider selects practical quarter-MPH setting");
+            yield return Capture("Refinement-"+currentResolution+"-speed.png","ESC personal maximum forward speed slider / 5.50 MPH");
+            yield return Click("SpeedReset");Check(game.Sim.MaximumForwardSpeedTarget==game.calibration.ForwardSpeed&&!PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey),"native reset restores exact original speed and clears only the speed preference");
+            game.TogglePause();
+            var s=game.Sim;var c=s.Controls;
+            s.Vehicle.X=-5;s.Vehicle.Z=-10;s.Vehicle.Heading=s.Vehicle.Speed=0;s.Conditioner.X=-5;s.Conditioner.Z=-12;s.Conditioner.Heading=0;
+            typeof(IceResurfacerGame).GetMethod("UpdateMachine",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game,new object[]{.02f});
+            yield return HoldHydraulic("Conditioner",false);yield return HoldHydraulic("Conditioner",true);
+            yield return HoldHydraulic("TankLift",true);yield return HoldHydraulic("TankLift",false);
+            s.Conditioner.Lift=0;c.ConditionerTarget=0;c.BladeDepthMm=0;
+            game.SelectCameraView("Forward");game.TickInspectionCamera(2);
+            yield return Capture("Refinement-"+currentResolution+"-blade-retracted.png","blade extension schematic / retracted");
+            c.BladeDepthMm=.1f;yield return Capture("Refinement-"+currentResolution+"-blade-shallow.png","blade extension schematic / actual shallow contact");
+            c.BladeDepthMm=.8f;yield return Capture("Refinement-"+currentResolution+"-blade-deep.png","blade extension schematic / actual deep contact");
+            s.Conditioner.Lift=.6f;yield return Capture("Refinement-"+currentResolution+"-blade-lifted.png","blade extension schematic / lift removes actual ice contact");
+            game.Dashboard.Compact=true;
+            c.Throttle=.5f;c.Steer=1;for(int i=0;i<100;i++)s.Step(.02f);c.Throttle=c.Steer=0;
+            typeof(IceResurfacerGame).GetMethod("UpdateMachine",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(game,new object[]{.02f});
+            game.DriverCamera.transform.localRotation=Quaternion.Euler(5,65,0);
+            yield return Capture("Refinement-"+currentResolution+"-right-turn.png","real seated rightward view after control-driven sharp turn / upper-left survey");
+            yield return Click("SurveyCollapse");Check(game.Dashboard.SurveyCollapsed,"native survey collapse keeps compact header accessible");
+            yield return Capture("Refinement-"+currentResolution+"-map-collapsed.png","collapsed map clears left-side view");
+            yield return Click("SurveyCollapse");Check(!game.Dashboard.SurveyCollapsed,"native survey expand restores full inspection/GPS map");
+            game.SelectCameraView("Forward");game.TickInspectionCamera(2);if(!g.Visible)g.Toggle();
+            var previous=Keyboard.current;var keyboard=InputSystem.AddDevice<Keyboard>();
+            var update=typeof(IceResurfacerGame).GetMethod("Update",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var routeUpdate=typeof(IceRouteGuide).GetMethod("Update",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            void Input(params Key[] keys){InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));InputSystem.Update();update.Invoke(game,null);routeUpdate.Invoke(g,null);}
+            int sources=game.GetComponentsInChildren<AudioSource>(true).Length;
+            try
+            {
+                Input();Input(Key.F2);Input();Input(Key.F3);Input();
+                Input(Key.Numpad8);Input();Check(g.PanelOpen,"actual Num8 opens route manager before video toggle");
+                yield return ClickAt(RouteManagerPanel.ControlRect("Name").center);
+                Input(Key.Numpad1);Input();Check(game.HudHidden&&!g.PanelOpen,"actual Num1 clears route manager including focused text field");
+                yield return null;g.Refresh();
+                Check(game.Surface.DebugMode==0&&game.SurfaceDebugMode!=0,"clean video suppresses F2 diagnostic ice coloring and keeps its selection");
+                var line=g.transform.Find("F5 advisory upcoming route").GetComponent<LineRenderer>();
+                Check(g.Visible&&!line.enabled,"video hides GPS drawing while preserving enabled route selection");
+                Vector2 ui=IceDashboard.CanvasToViewport(new Vector2(1400,790),Screen.width,Screen.height);
+                Check(!game.Dashboard.PointerOverInterface(game,new Vector2(ui.x,Screen.height-ui.y)),"hidden console releases former pointer hit region");
+                Input(Key.W);Check(game.RawThrottle==1,"normal throttle works with all gameplay UI hidden");Input();
+                Input(Key.Digit1);Check(game.HudHidden&&c.ConditionerHydraulic<0,"number-row 1 continues physical machinery operation in video mode");Input();
+                Check(game.PhysicalControls.HighlightedControl==""&&game.GetComponentsInChildren<AudioSource>(true).Length==sources,"video clears control highlighting without removing machine audio sources");
+                yield return Capture("Refinement-"+currentResolution+"-video.png","clean video with all UI, diagnostics, highlights and GPS suppressed");
+                Input(Key.Escape);Input();Check(game.Paused&&game.HudHidden,"explicit ESC menu remains available in video mode");
+                yield return Capture("Refinement-"+currentResolution+"-video-menu.png","explicitly requested ESC in clean video mode");
+                Input(Key.Escape);Input();Input(Key.Numpad1);Input();g.Refresh();
+                Check(!game.HudHidden&&line.enabled&&game.Surface.DebugMode==game.SurfaceDebugMode,"actual Num1 restores normal HUD, selected ice debug mode and enabled GPS");
+                while(game.SurfaceDebugMode!=0){Input(Key.F2);Input();}Input(Key.F3);Input();
+                yield return Capture("Refinement-"+currentResolution+"-restored.png","normal HUD and GPS restored after video");
+            }
+            finally{InputSystem.RemoveDevice(keyboard);if(previous!=null&&previous.added)previous.MakeCurrent();if(game.HudHidden)game.ToggleVideoMode();if(g.PanelOpen)g.ToggleRecordingPanel();if(g.Visible)g.Toggle();game.ResetOperatorSpeed();}
+        }
+
+        IEnumerator Click(string key) { yield return ClickAt(IceDashboard.ControlRect(key=="Console"&&!game.Dashboard.Compact?"ConsoleExpanded":key).center); }
 
         IEnumerator HoldHydraulic(string key,bool raise)
         {
@@ -603,6 +780,8 @@ namespace IceResurfacer.Presentation
                 string entry = currentResolution + " / " + context + ": " + issue;
                 if (!layoutIssues.Contains(entry)) layoutIssues.Add(entry);
             }
+            if(game.RouteGuide.PanelOpen)foreach(string issue in game.RouteGuide.Manager.LayoutIssues)
+            {string entry=currentResolution+" / "+context+": "+issue;if(!layoutIssues.Contains(entry))layoutIssues.Add(entry);}
             File.WriteAllText(Path.Combine(ArtifactDirectory, "HUD-layout-issues-" + currentResolution + ".txt"),
                 layoutIssues.Count == 0 ? "PASS: no measured text clipping in captured HUD states.\n" : string.Join("\n", layoutIssues) + "\n");
         }

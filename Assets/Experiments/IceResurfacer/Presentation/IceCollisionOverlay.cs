@@ -29,7 +29,7 @@ namespace IceResurfacer.Presentation
         public void Refresh()
         {
             if(game==null||game.Sim==null)return;
-            bool visible=game.DiagnosticsVisible;var s=game.Sim;var hit=s.LastMovementContact;
+            bool visible=game.DiagnosticsVisible&&!game.HudHidden;var s=game.Sim;var hit=s.LastMovementContact;
             for(int i=0;i<lines.Length;i++)lines[i].enabled=visible&&(i!=1&&i<4||hit.Obstacle!=MovementObstacle.None);
             if(!visible)return;
             Body(lines[0],s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading,.20f);

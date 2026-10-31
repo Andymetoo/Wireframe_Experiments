@@ -85,9 +85,9 @@ namespace IceResurfacer.Editor
             Input(); Input(null, 1, pointer);
             Check(game.PhysicalControls.IsDragging && game.PhysicalControls.ActiveControl.Contains("Conditioner"),
                 "LMB ray picks the real conditioner lever knob");
-            pointer -= PullAxis() * Mathf.Max(50, Screen.height * .08f);
+            pointer += PullAxis() * Mathf.Max(50, Screen.height * .08f);
             Input(null, 1, pointer);
-            Check(game.Sim.Controls.ConditionerHydraulic < -.9f, "physical push commands conditioner LOWER");
+            Check(game.Sim.Controls.ConditionerHydraulic < -.9f, "physical pull BACK commands conditioner LOWER");
             return pointer;
         }
         public static void Run(IceResurfacerGame target, Keyboard keys, Mouse pointer)

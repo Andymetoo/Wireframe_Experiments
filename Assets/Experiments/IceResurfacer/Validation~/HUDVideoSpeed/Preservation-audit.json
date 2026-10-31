@@ -1,0 +1,21 @@
+{
+  "changed_existing_files_this_pass": [
+    "Core/Simulation.cs",
+    "Core/SimulatorConfig.cs",
+    "Core/SurfaceProcessing.cs",
+    "Presentation/IceCollisionOverlay.cs",
+    "Presentation/IceDashboard.cs",
+    "Presentation/IceLayoutPlayerProbe.cs",
+    "Presentation/IcePhysicalControls.cs",
+    "Presentation/IceResurfacerGame.cs",
+    "Presentation/IceRouteGuide.cs",
+    "Presentation/IceWaterService.cs",
+    "Presentation/RouteSilhouetteContinuation.cs",
+    "Editor/IceResurfacerEditor.cs",
+    "README.txt"
+  ],
+  "unexpected_changes": [],
+  "missing_files": [],
+  "route_library_files_unchanged": 17,
+  "scene_geometry_materials_audio_route_formats_unchanged": true
+}

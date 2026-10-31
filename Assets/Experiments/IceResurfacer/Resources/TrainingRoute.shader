@@ -1,6 +1,6 @@
 Shader "IceResurfacer/TrainingRoute"
 {
-    Properties { _BaseColor("Guide color",Color)=(.3,.9,.75,.58) }
+    Properties { _BaseColor("Guide color",Color)=(1,.035,.72,.95) }
     SubShader
     {
         Tags { "RenderType"="Transparent" "Queue"="Transparent+15" "RenderPipeline"="UniversalPipeline" }

@@ -47,6 +47,7 @@ namespace IceResurfacer.Presentation
 
         void Highlight(Control control,bool dragging)
         {
+            if(game.HudHidden){control=Control.None;dragging=false;}
             if(highlighted==control&&highlightedDrag==dragging)return;
             if(highlighted!=Control.None)
             {
@@ -68,6 +69,7 @@ namespace IceResurfacer.Presentation
                 }
             }
         }
+        public void RefreshVisibility(){if(game.HudHidden)Highlight(Control.None,false);}
 
         public void Release()
         {
@@ -116,8 +118,10 @@ namespace IceResurfacer.Presentation
             var c=game.Sim.Controls;
             float pull=Vector2.Dot(pointer-startPointer,pullAxis);
             float demand=Mathf.Abs(pull)<8?0:Mathf.Clamp(pull/Mathf.Max(22,Screen.height*.035f),-1,1);
-            if(active==Control.Conditioner)c.ConditionerHydraulic=demand;
-            else if(active==Control.Dump)c.TankHydraulic=demand;
+            // Pull is toward the seat (-machine forward). Core demand is positive
+            // for raising, so both hydraulic spools lower on a backward pull.
+            if(active==Control.Conditioner)c.ConditionerHydraulic=-demand;
+            else if(active==Control.Dump)c.TankHydraulic=-demand;
             else if(active==Control.Flood||active==Control.Wash)
             {
                 if(PlaneAngle(active,ray,out float angle))
@@ -246,7 +250,7 @@ namespace IceResurfacer.Presentation
             switch(control)
             {
                 case Control.Conditioner:case Control.Dump:
-                    return Name(control)+" / LMB drag toward seat to raise, forward to lower. Release to hold.";
+                    return Name(control)+" / LMB pull BACK toward seat to LOWER; push FORWARD to RAISE. Release to hold.";
                 case Control.Horizontal:case Control.Vertical:return Name(control)+" / click to latch RUN or OFF.";
                 case Control.Flood:case Control.Wash:return Name(control)+" / drag handle: 9 o'clock CLOSED to 6 o'clock OPEN.";
                 case Control.Blade:return "Blade handwheel / rotate or scroll for fine adjustment; 3.5 turns stop to stop.";
@@ -259,8 +263,8 @@ namespace IceResurfacer.Presentation
         {
             if(game.Sim==null)return;
             var c=game.Sim.Controls;
-            world.ConditionerLever.localRotation=Quaternion.Euler(-24*c.ConditionerHydraulic,0,0);
-            world.DumpLever.localRotation=Quaternion.Euler(-24*c.TankHydraulic,0,0);
+            world.ConditionerLever.localRotation=Quaternion.Euler(24*c.ConditionerHydraulic,0,0);
+            world.DumpLever.localRotation=Quaternion.Euler(24*c.TankHydraulic,0,0);
             world.HorizontalAugerLever.localRotation=Quaternion.Euler(c.HorizontalAuger?24:0,0,0);
             world.VerticalAugerLever.localRotation=Quaternion.Euler(c.VerticalAuger?24:0,0,0);
             world.WashValve.localRotation=Quaternion.Euler(0,-90*c.WashValve,0);

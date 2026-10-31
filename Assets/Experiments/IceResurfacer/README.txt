@@ -45,10 +45,11 @@ F1                    Operator guide; pauses the simulation.
 F2                    Normal overview / shaving mask / actual material channels.
 F3                    Machinery diagnostics, actual contact and footprint overlays.
 F4                    Smoothed FPS / frame-time meter.
-F5                    Toggle advisory reference route.
-F6                    Open / close Route Recorder (also a persistent HUD button).
-F7                    Start / stop route recording in Free Simulation.
-ESC                   Pause / resume; eye adjustment is in the pause panel.
+NUMPAD 7              Show / hide the selected GPS route (F5 alias).
+NUMPAD 8              Open / close Route Manager (F6 alias).
+NUMPAD 9              Start recording / stop and save (F7 alias).
+NUMPAD 1              Toggle clean video mode: hide/restore HUD, GPS and highlights.
+ESC                   Pause / resume; eye adjustment and MAX FORWARD SPEED slider.
 
 Left Shift is exclusively a rear glance. Use RIGHT SHIFT for precision and
 machinery modifiers. Releasing Q/E/C/Left Shift restores the exact saved head
@@ -66,15 +67,29 @@ Dragging retains that feedback until release; camera/input transitions clear it.
 The taller water stems flank the closer blade handwheel. The complete snow
 breaker assembly sits beside the rightmost hydraulic lever.
 
-TAB opens functional miniature controls below the Surface Survey on the right.
+The Surface Survey defaults to the upper left; MAP - / MAP + collapses it.
+The instruments occupy the top right; TAB opens the lower-right mini console.
 They, keyboard shortcuts and physical 3D controls write the same state.
+Both hydraulic controls agree with the physical levers: pull BACK toward the
+seat (mini-lever bottom) to LOWER; push FORWARD (mini-lever top) to RAISE.
+Release centers the levers and holds actual attained position. A schematic beside
+the blade controls shows extension and pressure-adjusted contact, with vertical
+movement exaggerated for clarity. It does not model blade pitch.
 The console starts collapsed. Held inspection views clear the side UI.
 The main instruments permanently report CONDITIONER UP / DOWN / RAISING /
 LOWERING / PARTIALLY LOWERED from actual lift. Blade screw setting and
 pressure-adjusted contact depth are separate; standing still does not shave ice.
+See Documentation/HydraulicDirections.txt for the direction audit and validation.
 Ordinary notifications fade after eight seconds. Serious equipment alerts stay
 compact. MESSAGES opens scrollable history and an ordinary-message visibility
 setting. F1 retains operating guidance. TAB also selects compact F3 diagnostics.
+
+ESC > MAX FORWARD SPEED sets a personal 3.00-8.00 MPH target in .25 MPH steps.
+PlayerPrefs saves it immediately across Play Mode and later launches. RESET TO
+ORIGINAL SPEED restores the exact serialized 2.65 m/s (5.9279 MPH) calibration.
+The scene asset is unchanged; acceleration, traction, reverse and braking still
+govern actual speed. The run report records the selected limit. This operator
+preference is not a manufacturer specification. See Documentation/HUDVideoSpeed.txt.
 
 Machinery and visual editing
 The centered tank crown is 150 mm lower; walls, window, door and cylinder
@@ -178,23 +193,26 @@ sound. It is not horsepower or fuel use and does not impose a travel lock or
 change configured top speed. Click its meter or use F3 for the breakdown.
 
 Recording an operator route
-Choose FREE SIMULATION / PRACTICE. Park, open RECORDER F6, name the take
-and click START NEW (or press F7). CLOSE AND DRIVE, then drive the entire entry,
-overlapping passes, turns and return with the normal controls. F7 stops. F6 opens
-the full overhead preview; inspect sequence with the slider and SAVE NAMED COPY.
+Choose FREE SIMULATION / PRACTICE. NUMPAD 8 opens Route Manager. Type a name,
+RECORD NEW ROUTE and drive normally. NUMPAD 9 stops and saves automatically;
+STOP & SAVE does the same in the manager. LOAD SAVED ROUTE shows readable names,
+dates, lengths and previews. Select a take, USE AS GPS, then NUMPAD 7 shows it.
+No Editor conversion or file-extension knowledge is required. Existing raw files
+remain unchanged; an editable fit is saved separately. Diagnostics / Advanced
+retains full raw inspection, footprint analysis and optional manual recovery.
 Colors advance every 40 m, reverse travel is orange, START/END are marked, and
 the gray trace shows the actual conditioner. This view never smooths the data.
 The machine keeps running while the panel is open; park before using it.
 
 Editor files: Assets/Experiments/IceResurfacer/RouteRecordings~/*.route.json.
 After leaving Play Mode, use Experiments > Ice Resurfacer > Route Recordings,
-or enter Play again, F6 and select the saved file. Standalone builds use
+or enter Play again, NUMPAD 8 and select the saved file. Standalone builds use
 Application.persistentDataPath/IceResurfacer/Routes; the panel shows the full path.
 The same portable JSON format works in both. Per-take recovery drafts are
 checkpointed every ten real seconds and finalized on normal shutdown/Play exit.
 An abnormal process crash can lose the interval since the latest checkpoint.
-F5 still displays the original optional reference; recording adds no driving
-assistance. Documentation/RouteRecording.txt explains schema, checks and limits.
+The reference and labeled demo remain explicit choices. Documentation/RouteOperator.txt
+gives the three-action workflow. RouteRecording.txt documents the preserved schema.
 
 Editable routes and live training guidance
 Experiments > Ice Resurfacer > Training Route Editor opens any saved .route.json.
@@ -203,8 +221,11 @@ blade/water footprints. Save Corrected COPY preserves the exact original raw
 source in a portable .guide.json. Red invalid sections must be repaired before
 live use. Editor guides live under RouteRecordings~/Guides; standalone guides
 under persistentDataPath/IceResurfacer/Routes/Guides. Copy files there and Refresh.
-In Play, F6 > Training Guides selects a corrected guide; F5 toggles it. Only the
-current/upcoming 28 m is shown in the world and Surface Survey. For a major
+In Play, Route Manager loads raw recordings directly as GPS or selects corrected
+guides. NUMPAD 7 toggles guidance. The next 12.192 m (40 ft) is shown in the world
+and Surface Survey, crossing leg boundaries continuously. Magenta guidance has
+a dark border and a restrained continuation across visible machine surfaces;
+actual walls and stands occlude it. For a major
 detour, select a leg and explicitly Rejoin; this changes only the guide cursor.
 The original F5 reference remains the default. The labeled perimeter/loop test
 fixture is selected explicitly and is not an actual operator recording.

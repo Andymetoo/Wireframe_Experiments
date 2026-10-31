@@ -235,6 +235,8 @@ namespace IceResurfacer.Editor
                     Suite("Ice overlap / pickup rendering",()=>IceCalibrationRuntimeValidation.Run(game));
                     Suite("Spatial machine audio",()=>IceSpatialAudioValidation.CheckStructure(game));
                     Suite("Training route editing and advisory guidance",()=>IceTrainingGuideValidation.Run(game,testKeyboard,testMouse));
+                    Suite("Route manager and keypad workflow",()=>IceRouteUXValidation.Run(game,testKeyboard,testMouse));
+                    Suite("HUD video mode and operator speed",()=>IceHUDVideoSpeedValidation.Run(game,testKeyboard,testMouse));
                     Suite("Route recording and persistence",()=>IceRouteRecordingValidation.Run(game,testKeyboard,testMouse));
                     resultReport+="Final runtime error/exception count: "+failures+"\n";
                     File.WriteAllText(Root+"Validation~/Unity-results.txt",resultReport);

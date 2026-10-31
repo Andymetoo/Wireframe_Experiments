@@ -1,0 +1,241 @@
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical forward moves actual mechanism to full UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical back moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / HUD forward after physical moves actual mechanism partly UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / HUD back moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical forward after HUD moves actual mechanism partly UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / HUD back moves actual mechanism to full DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical forward moves actual mechanism to full UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / physical grip starts in neutral dead zone
+PASS 1366x768 / Conditioner / physical mouse drag / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / physical tooltip directions
+PASS 1366x768 / Conditioner / physical back moves actual mechanism to full DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / physical release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after physical
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD center is neutral
+PASS 1366x768 / Conditioner / native HUD drag / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / HUD forward moves actual mechanism to full UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / held HUD center release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after held HUD center
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / HUD reversal / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for HUD reversal
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / HUD reversal moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / HUD release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after HUD
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / keyboard / demand RAISE
+PASS 1366x768 / Conditioner / physical grip tilts FORWARD for keyboard
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / keyboard moves actual mechanism partly UP
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / keyboard release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after keyboard
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / keyboard / demand LOWER
+PASS 1366x768 / Conditioner / physical grip tilts BACK for keyboard
+PASS 1366x768 / Conditioner / other hydraulic remains neutral
+PASS 1366x768 / Conditioner / actual status agrees with demand
+PASS 1366x768 / Conditioner / keyboard moves actual mechanism partly DOWN
+PASS 1366x768 / Conditioner / tank geometry follows actual lift
+PASS 1366x768 / Conditioner / conditioner geometry follows actual lift
+PASS 1366x768 / Conditioner / keyboard release stops and holds attained position
+PASS 1366x768 / Conditioner / physical lever springs to center after keyboard
+PASS 1366x768 / Conditioner / neutral status reports actual position
+PASS 1366x768 / Conditioner / unrelated machinery unchanged
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical forward moves actual mechanism to full UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical back moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD forward after physical moves actual mechanism partly UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD back moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical forward after HUD moves actual mechanism partly UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD back moves actual mechanism to full DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical forward moves actual mechanism to full UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / physical grip starts in neutral dead zone
+PASS 1366x768 / TankLift / physical mouse drag / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for physical mouse drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / physical tooltip directions
+PASS 1366x768 / TankLift / physical back moves actual mechanism to full DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / physical release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after physical
+PASS 1366x768 / TankLift / HUD center is neutral
+PASS 1366x768 / TankLift / native HUD drag / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for native HUD drag
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD forward moves actual mechanism to full UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / held HUD center release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after held HUD center
+PASS 1366x768 / TankLift / HUD reversal / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for HUD reversal
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / HUD reversal moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / HUD release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after HUD
+PASS 1366x768 / TankLift / keyboard / demand RAISE
+PASS 1366x768 / TankLift / physical grip tilts FORWARD for keyboard
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / keyboard moves actual mechanism partly UP
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / keyboard release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after keyboard
+PASS 1366x768 / TankLift / keyboard / demand LOWER
+PASS 1366x768 / TankLift / physical grip tilts BACK for keyboard
+PASS 1366x768 / TankLift / other hydraulic remains neutral
+PASS 1366x768 / TankLift / keyboard moves actual mechanism partly DOWN
+PASS 1366x768 / TankLift / tank geometry follows actual lift
+PASS 1366x768 / TankLift / conditioner geometry follows actual lift
+PASS 1366x768 / TankLift / keyboard release stops and holds attained position
+PASS 1366x768 / TankLift / physical lever springs to center after keyboard
+PASS 1366x768 / TankLift / unrelated machinery unchanged
+PASS: all hydraulic direction checks (240).
