@@ -38,6 +38,13 @@ namespace IceResurfacer.Editor
             if(EditorApplication.isPlayingOrWillChangePlaymode)
             { EditorGUILayout.HelpBox("Stop Play Mode to author geometry. This tool does not stop or switch the Editor for you.",MessageType.Info);return; }
             scroll=EditorGUILayout.BeginScrollView(scroll);
+            var rig=source.GetComponentInChildren<IceMachineRig>(true);
+            if(rig!=null)
+            {
+                EditorGUILayout.HelpBox("Authored machine detected. Edit its visuals and operator controls directly in the Scene or prefab. "+
+                    "Physics-anchor fields below are applied to the authored anchors from the rig Inspector. Cockpit placement is authored in the prefab.",MessageType.Warning);
+                if(GUILayout.Button("Select authored machine rig"))Selection.activeGameObject=rig.gameObject;
+            }
             var serialized=new SerializedObject(source);
             serialized.Update();
             var config=serialized.FindProperty("calibration");
@@ -48,6 +55,9 @@ namespace IceResurfacer.Editor
             Field(config,"BrushPivotX","Brush mount lateral (m)");
             Field(config,"BrushPivotZ","Brush mount forward (m)");
             Field(config,"BrushArmLength","Brush extension (m)");
+            // With an authored machine these would be a second source of truth for its controls.
+            using(new EditorGUI.DisabledScope(rig!=null))
+            {
             Field(config,"CockpitOffsetX","Operator station lateral (m)");
             Field(config,"CockpitOffsetZ","Operator station forward (m)");
             Field(config,"SteeringWheelZ","Steering hub forward (m)");
@@ -59,6 +69,7 @@ namespace IceResurfacer.Editor
             Field(config,"WaterValveStemHeight","Water handle stem height (m)");
             Field(config,"SnowBreakerX","Snow breaker lateral (m)");
             Field(config,"SnowBreakerZ","Snow breaker forward (m)");
+            }
             serialized.ApplyModifiedProperties();
             try { source.calibration.Validate();problem=null; }
             catch(Exception e) { problem=e.Message; }
@@ -92,27 +103,13 @@ namespace IceResurfacer.Editor
                 world=IceWorldBuilder.BuildMachinePreview(preview.transform,source.litTemplate,source.calibration);
                 world.Conditioner.localPosition=new Vector3(0,.34f,-source.calibration.HitchBehindAxle-source.calibration.DrawbarLength);
                 // Runtime-owned cylinder transforms normally follow the hydraulics.
-                // Give the static preview its real lowered anchors explicitly.
-                for(int i=0;i<2;i++)
-                {
-                    float side=i==0?-1:1;
-                    PreviewCylinder(world.TankCylinderBarrels[i],world.TankCylinderRods[i],
-                        world.Machine.TransformPoint(side*.69f,.55f,.72f),world.TankPivot.TransformPoint(source.calibration.TankLateralOffset+side*.69f,source.calibration.TankGeometryY(.40f),-.74f),.095f,.043f,.64f);
-                    PreviewCylinder(world.ConditionerCylinderBarrels[i],world.ConditionerCylinderRods[i],
-                        world.Machine.TransformPoint(side*.55f,.76f,-.57f),world.Conditioner.TransformPoint(side*.55f,.43f,.30f),.074f,.035f,.42f);
-                }
+                // Give the static preview its real lowered clevis pins explicitly.
+                IcePhysicalControls.PoseCylinders(world);
                 foreach(var transform in preview.GetComponentsInChildren<Transform>(true))
                     transform.gameObject.hideFlags=HideFlags.DontSaveInEditor|HideFlags.DontSaveInBuild;
                 Selection.activeGameObject=preview;SceneView.lastActiveSceneView?.FrameSelected();
             }
             catch(Exception e) { ClearPreview();problem=e.Message; }
-        }
-        static void PreviewCylinder(Transform barrel,Transform rod,Vector3 anchor,Vector3 clevis,float bore,float shaft,float barrelLength)
-        {
-            Vector3 axis=clevis-anchor;float length=axis.magnitude;axis/=Mathf.Max(.001f,length);
-            float body=Mathf.Min(barrelLength,length*.78f),start=body*.78f;
-            barrel.SetPositionAndRotation(anchor+axis*body*.5f,Quaternion.FromToRotation(Vector3.up,axis));barrel.localScale=new Vector3(bore,body*.5f,bore);
-            rod.SetPositionAndRotation(anchor+axis*(start+length)*.5f,barrel.rotation);rod.localScale=new Vector3(shaft,(length-start)*.5f,shaft);
         }
         void ClearPreview()
         {

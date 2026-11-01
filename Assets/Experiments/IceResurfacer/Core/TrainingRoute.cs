@@ -327,7 +327,7 @@ namespace IceResurfacer.Core
         // Only the private workspace created by RouteFitter calls this method.
         // It reuses the production conditioner authority without changing live physics.
         internal void ProjectGuideConditioner(float x,float z,float heading,float speed,float dt,float lift)
-        {Vehicle.X=x;Vehicle.Z=z;Vehicle.Heading=heading;Vehicle.Speed=speed;TankLift=lift;UpdateConditioner(dt);}
+        {Vehicle.X=x;Vehicle.Z=z;Vehicle.Heading=heading;Vehicle.Speed=speed;TankLift=lift;UpdateConditioner();}
         internal void SetGuideObservation(GuideSample p)
         {Vehicle.X=p.x;Vehicle.Z=p.z;Vehicle.Heading=p.heading;TankLift=p.tankLift;Conditioner.X=p.conditionerX;Conditioner.Z=p.conditionerZ;Conditioner.Heading=p.conditionerHeading;Conditioner.Lift=p.conditionerLift;}
     }

@@ -18,6 +18,12 @@ namespace IceResurfacer.Presentation
         public Transform TankInspection, TankDischarge, DumpOutlet, TankDoor, PitSnow, GuideRoller, ConditionerLeftEdge;
         public Transform DumpLever, WashValveMount, FloodValveMount;
         public Transform[] TankCylinderBarrels, TankCylinderRods, ConditionerCylinderBarrels, ConditionerCylinderRods;
+        // Clevis pins are the cylinder end points; hydraulics follow wherever they are authored.
+        public Transform[] TankCylinderBase, TankCylinderClevis, ConditionerCylinderBase, ConditionerCylinderClevis;
+        // Physical audio anchors, explicit so a replaced or renamed part can be rebound.
+        public Transform EngineCover, Chassis, WashManifold, WashPickup;
+        // Runtime-owned depth-tested lettering; never a persistent asset (its atlas texture changes).
+        public Material Lettering;
         public float WorkingWidth;
         // Geometry witnesses survive batching. Built-in cube meshes are referenced,
         // never added to the owned Meshes list or destroyed by this experiment.
@@ -35,7 +41,10 @@ namespace IceResurfacer.Presentation
         public static IceWorld Build(Transform root, Material litTemplate, SimulatorConfig config = null)
         {
             var builder = new Builder(root, litTemplate, config ?? new SimulatorConfig());
-            return builder.Build();
+            // An authored machine prefab under the game root replaces only the generated
+            // machine. Without one (the launch scene) the original runtime build is unchanged.
+            var rig = root.GetComponentInChildren<IceMachineRig>(true);
+            return rig == null ? builder.Build() : builder.BuildWithAuthoredMachine(rig);
         }
         // Explicit Editor preview uses the exact same authoring functions but
         // preserves each selectable part. Runtime keeps material mesh batching.
@@ -53,6 +62,7 @@ namespace IceResurfacer.Presentation
             readonly bool batchGeometry;
             readonly ServiceLayout serviceLayout;
             readonly IceWorld world = new IceWorld();
+            bool authoredBatching;
             Material white, navy, cyan, steel, rubber, black, orange, red, yellow, concrete;
             Material roof, glass, lightMat, pale, snow, cloth, blue, lettering;
             Font font;
@@ -73,6 +83,17 @@ namespace IceResurfacer.Presentation
                 if(includeArena)Arena();
                 Machine();
                 if(batchGeometry)BatchMachine();
+                return world;
+            }
+
+            // Saved prefab geometry is bound, never regenerated. Batching then runs on the
+            // Play Mode instance only: it removes renderer components, never mesh/material assets.
+            public IceWorld BuildWithAuthoredMachine(IceMachineRig rig)
+            {
+                Palette();
+                Arena();
+                rig.Bind(world);
+                if(batchGeometry&&rig.batchAtRuntime) { authoredBatching=true; BatchMachine(); BatchMeshes(world.BrushRoller); }
                 return world;
             }
 
@@ -111,6 +132,7 @@ namespace IceResurfacer.Presentation
                 lettering=new Material(Resources.Load<Shader>("WorldText")) { name="IceResurfacer / depth tested arena lettering" };
                 lettering.mainTexture=font.material.mainTexture;
                 world.Materials.Add(lettering);
+                world.Lettering=lettering;
                 root.gameObject.AddComponent<IceWorldTextAtlas>().Initialize(font,lettering);
             }
 
@@ -288,7 +310,7 @@ namespace IceResurfacer.Presentation
             void BatchMeshes(Transform parent, HashSet<Transform> excluded = null)
             {
                 if(!batchGeometry)return;
-                var batches = new Dictionary<Material,List<CombineInstance>>();
+                var batches = new Dictionary<(Material,ShadowCastingMode),List<CombineInstance>>();
                 var sources = new List<MeshRenderer>();
                 Matrix4x4 toLocal = parent.worldToLocalMatrix;
                 foreach(var renderer in parent.GetComponentsInChildren<MeshRenderer>())
@@ -298,25 +320,30 @@ namespace IceResurfacer.Presentation
                     if(excluded != null)
                         foreach(var t in excluded)
                             if(renderer.transform == t || renderer.transform.IsChildOf(t)) { skip=true; break; }
+                    if(authoredBatching && renderer.GetComponentInParent<IceKeepUnbatched>(true) != null) skip=true;
                     if(skip) continue;
                     var filter = renderer.GetComponent<MeshFilter>();
                     if(filter == null || filter.sharedMesh == null || renderer.sharedMaterial == null)continue;
                     Material material = renderer.sharedMaterial;
-                    if(!batches.TryGetValue(material,out var list))
-                    { list=new List<CombineInstance>(); batches.Add(material,list); }
+                    // Authored parts keep their own shadow setting; generated parts keep the original rule.
+                    var key=(material,authoredBatching?renderer.shadowCastingMode:ShadowCastingMode.On);
+                    if(!batches.TryGetValue(key,out var list))
+                    { list=new List<CombineInstance>(); batches.Add(key,list); }
                     list.Add(new CombineInstance { mesh=filter.sharedMesh, transform=toLocal*renderer.transform.localToWorldMatrix });
                     sources.Add(renderer);
                 }
                 foreach(var entry in batches)
                 {
-                    var mesh = new Mesh { name="IceResurfacer / Combined " + entry.Key.name, indexFormat=IndexFormat.UInt32 };
+                    Material material=entry.Key.Item1;
+                    var mesh = new Mesh { name="IceResurfacer / Combined " + material.name, indexFormat=IndexFormat.UInt32 };
                     mesh.CombineMeshes(entry.Value.ToArray(),true,true);
                     world.Meshes.Add(mesh);
-                    var node=Group("Batched " + entry.Key.name,parent);
+                    var node=Group("Batched " + material.name,parent);
                     node.gameObject.AddComponent<MeshFilter>().sharedMesh=mesh;
                     var renderer=node.gameObject.AddComponent<MeshRenderer>();
-                    renderer.sharedMaterial=entry.Key;
-                    if(entry.Key==glass || entry.Key==lightMat)renderer.shadowCastingMode=ShadowCastingMode.Off;
+                    renderer.sharedMaterial=material;
+                    if(authoredBatching)renderer.shadowCastingMode=entry.Key.Item2;
+                    else if(material==glass || material==lightMat)renderer.shadowCastingMode=ShadowCastingMode.Off;
                 }
                 foreach(var renderer in sources)
                 {
@@ -574,11 +601,11 @@ namespace IceResurfacer.Presentation
                 // A narrow central chassis and between-axle sills leave the actual
                 // swept tire volumes open. The previous full-width blocks ran
                 // straight through both axles and concealed front-wheel steering.
-                Box("Central steel chassis",machine,new Vector3(0,.47f,.77f),new Vector3(.72f,.23f,3),black);
+                world.Chassis=Box("Central steel chassis",machine,new Vector3(0,.47f,.77f),new Vector3(.72f,.23f,3),black);
                 FrontWheelWellSill(machine);
                 Box("Rear crossmember",machine,new Vector3(0,.79f,-.71f),new Vector3(1.95f,.15f,.24f),steel);
                 Box("Right equipment deck",machine,new Vector3(.48f,.83f,-.37f),new Vector3(.99f,.13f,1),steel);
-                BevelBox("Shaped engine cover / right of operator",machine,new Vector3(.46f,1.13f,-.02f),new Vector3(.85f,.63f,.8f),.10f,navy);
+                world.EngineCover=BevelBox("Shaped engine cover / right of operator",machine,new Vector3(.46f,1.13f,-.02f),new Vector3(.85f,.63f,.8f),.10f,navy);
                 for(int i=0;i<8;i++)Box("Engine cooling louvre",machine,new Vector3(.895f,1.02f+i*.052f,-.08f),new Vector3(.025f,.018f,.48f),black);
                 Tank(machine);
                 Wheels(machine);
@@ -716,6 +743,7 @@ namespace IceResurfacer.Presentation
                 world.TankSnow=SnowSurface("Uneven snow surface / actual tank contents",tank,new Vector3(config.TankLateralOffset,.085f,config.TankSnowCenterZ));
                 world.DumpOutlet=Group("Snow exiting tilted tank at forward door",tank,new Vector3(config.TankLateralOffset,.16f,.12f));
                 world.TankCylinderBarrels=new Transform[2];world.TankCylinderRods=new Transform[2];
+                world.TankCylinderBase=new Transform[2];world.TankCylinderClevis=new Transform[2];
                 for(int side=-1;side<=1;side+=2)
                 {
                     var stripe=Box("Flush tank glacier stripe",tank,TankPoint(.20f+side*.741f,.39f,-.93f),new Vector3(.002f,.23f,1.56f),cyan);
@@ -725,8 +753,8 @@ namespace IceResurfacer.Presentation
                     int i=(side+1)/2;
                     world.TankCylinderBarrels[i]=Cylinder("Tank lift cylinder barrel / articulated",machine,Vector3.zero,.095f,1,navy,Vector3.up);
                     world.TankCylinderRods[i]=Cylinder("Tank lift chrome piston / telescoping",machine,Vector3.zero,.043f,1,steel,Vector3.up);
-                    Cylinder("Tank cylinder lower clevis pin",machine,new Vector3(side*.69f,.55f,.72f),.12f,.10f,steel,Vector3.right);
-                    Cylinder("Tank cylinder moving clevis pin",tank,new Vector3(config.TankLateralOffset+side*.69f,config.TankGeometryY(.40f),-.74f),.10f,.11f,steel,Vector3.right);
+                    world.TankCylinderBase[i]=Cylinder("Tank cylinder lower clevis pin",machine,new Vector3(side*.69f,.55f,.72f),.12f,.10f,steel,Vector3.right);
+                    world.TankCylinderClevis[i]=Cylinder("Tank cylinder moving clevis pin",tank,new Vector3(config.TankLateralOffset+side*.69f,config.TankGeometryY(.40f),-.74f),.10f,.11f,steel,Vector3.right);
                 }
                 Label("AURORA",tank,TankPoint(.20f,.68f,.033f),.13f,new Color(.035f,.12f,.16f),Quaternion.identity);
                 Box("Front accent panel",tank,TankPoint(.20f,.34f,.030f),new Vector3(1.35f,.19f,.018f),navy);
@@ -996,21 +1024,22 @@ namespace IceResurfacer.Presentation
                     Beam("Auger inspection guard rod",c,new Vector3(x,.12f,-.44f),new Vector3(x,.38f,-.44f),.012f,navy);
                     Cylinder("Flood outlet nozzle",c,new Vector3(x,.08f,-.42f),.014f,.05f,black,Vector3.down);
                 }
-                Beam("Wash water manifold",c,new Vector3(-half+.1f,.42f,-.19f),new Vector3(half-.1f,.42f,-.19f),.042f,cyan);
-                Box("Wash pickup squeegee contact",c,new Vector3(0,.027f,config.WashPickupContactFore),new Vector3(width,.025f,config.WashPickupContactLength),rubber);
+                world.WashManifold=Beam("Wash water manifold",c,new Vector3(-half+.1f,.42f,-.19f),new Vector3(half-.1f,.42f,-.19f),.042f,cyan);
+                world.WashPickup=Box("Wash pickup squeegee contact",c,new Vector3(0,.027f,config.WashPickupContactFore),new Vector3(width,.025f,config.WashPickupContactLength),rubber);
                 Beam("Flood distribution manifold",c,new Vector3(-wetWidth*.5f+.02f,.11f,-.42f),new Vector3(wetWidth*.5f-.02f,.11f,-.42f),.035f,steel);
                 world.WaterOutlet=Group("Visible flood emission",c,new Vector3(0,.09f,-.43f));
                 world.SnowOutlet=Group("Escaping snow at conditioner",c,new Vector3(half-.2f,.16f,-.41f));
                 Label("AURORA  /  CONDITIONER",c,new Vector3(0,.477f,.01f),.065f,Color.white,Quaternion.Euler(270,180,0));
                 world.ConditionerCylinderBarrels=new Transform[2];world.ConditionerCylinderRods=new Transform[2];
+                world.ConditionerCylinderBase=new Transform[2];world.ConditionerCylinderClevis=new Transform[2];
                 for(int side=-1;side<=1;side+=2)
                 {
                     Beam("Hydraulic flexible hose",c,new Vector3(side*.23f,.44f,.12f),new Vector3(side*.29f,.70f,.64f),.03f,rubber);
                     int i=(side+1)/2;
                     world.ConditionerCylinderBarrels[i]=Cylinder("Conditioner lift barrel / articulated",world.Machine,Vector3.zero,.074f,1,navy,Vector3.up);
                     world.ConditionerCylinderRods[i]=Cylinder("Conditioner lift chrome piston / telescoping",world.Machine,Vector3.zero,.035f,1,steel,Vector3.up);
-                    Cylinder("Conditioner lift lower clevis",c,new Vector3(side*.55f,.43f,.30f),.09f,.10f,steel,Vector3.right);
-                    Cylinder("Conditioner lift chassis clevis",world.Machine,new Vector3(side*.55f,.76f,-.57f),.09f,.10f,steel,Vector3.right);
+                    world.ConditionerCylinderClevis[i]=Cylinder("Conditioner lift lower clevis",c,new Vector3(side*.55f,.43f,.30f),.09f,.10f,steel,Vector3.right);
+                    world.ConditionerCylinderBase[i]=Cylinder("Conditioner lift chassis clevis",world.Machine,new Vector3(side*.55f,.76f,-.57f),.09f,.10f,steel,Vector3.right);
                 }
             }
 

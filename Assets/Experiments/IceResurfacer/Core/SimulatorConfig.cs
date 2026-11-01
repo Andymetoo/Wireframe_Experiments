@@ -24,9 +24,9 @@ namespace IceResurfacer.Core
         public float ConditionerLength = 0.8f;
         public float HitchBehindAxle = 0.45f;
         public float DrawbarLength = 0.65f;
-        // Close-mounted lifting linkage compliance: 2 degrees, an Aurora visual
-        // calibration informed by operator feedback, not a manufacturer limit.
-        public float ConditionerYawLimitRadians = .034906585f;
+        // Legacy serialized calibration retained for existing assets/recordings.
+        // Motion always locks the conditioner to the chassis; this is ignored.
+        public float ConditionerYawLimitRadians = 0;
         public float MaxSteeringRadians = 0.412f;
         public float SteeringRate = 0.55f;
         public float ForwardSpeed = 2.65f;

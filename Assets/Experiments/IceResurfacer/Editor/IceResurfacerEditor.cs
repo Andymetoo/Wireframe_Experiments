@@ -16,7 +16,25 @@ namespace IceResurfacer.Editor
     [InitializeOnLoad]
     public static class IceResurfacerEditor
     {
-        public const string ScenePath="Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity";
+        public const string LaunchScenePath="Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity";
+        // Validation targets the launch scene unless a run passes -iceScene <path>, e.g. the
+        // authored-machine experiment. Only scenes inside this experiment are accepted.
+        public static string ScenePath
+        {
+            get
+            {
+                var args=Environment.GetCommandLineArgs();
+                for(int i=0;i<args.Length-1;i++)
+                    if(args[i]=="-iceScene")
+                    {
+                        string path=args[i+1].Replace('\\','/');
+                        if(!path.StartsWith(Root+"Scenes/")||!path.EndsWith(".unity"))
+                            throw new ArgumentException("-iceScene must name a scene in "+Root+"Scenes/: "+path);
+                        return path;
+                    }
+                return LaunchScenePath;
+            }
+        }
         const string Root="Assets/Experiments/IceResurfacer/";
         const string BatchKey="IceResurfacer.BatchValidation";
         static int frame;
@@ -44,7 +62,7 @@ namespace IceResurfacer.Editor
         {
             if(EditorApplication.isPlaying)return;
             if(!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())return;
-            EditorSceneManager.OpenScene(ScenePath);
+            EditorSceneManager.OpenScene(LaunchScenePath);
         }
         [MenuItem("Experiments/Ice Resurfacer/Validate Assets")]
         public static void ValidateAssets()

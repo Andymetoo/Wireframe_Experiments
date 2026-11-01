@@ -27,7 +27,7 @@ namespace IceResurfacer.Presentation
             world=GetComponent<IceResurfacerGame>().World;
             string[] names={"Engine / combustion","Blade / shaved ice","Horizontal auger / gearbox","Hydraulic cylinders / pressure","Wash and flood water","Enclosed arena / ventilation","Vertical elevator / gearbox","Hydrostatic pump / traction and deceleration","Board guide roller / contact","Snow / bin discharge and shakeout"};
             for(int i=0;i<clips.Length;i++)clips[i]=CreateLoop(names[i],i);
-            Loop(Layer.Engine,0,Find("Shaped engine cover / right of operator"));
+            Loop(Layer.Engine,0,world.EngineCover??Find("Shaped engine cover / right of operator"));
             Loop(Layer.Blade,1,world.CuttingBlade,new Vector3(0,-.5f,0));
             Loop(Layer.Horizontal,2,world.HorizontalAuger);
             Loop(Layer.ConditionerLeft,3,world.ConditionerCylinderBarrels[0]);
@@ -35,11 +35,11 @@ namespace IceResurfacer.Presentation
             Loop(Layer.TankLeft,3,world.TankCylinderBarrels[0]);
             Loop(Layer.TankRight,3,world.TankCylinderBarrels[1]);
             Loop(Layer.Flood,4,world.WaterOutlet);
-            Loop(Layer.Wash,4,Find("Wash water manifold"));
-            Loop(Layer.Pickup,4,Find("Wash pickup squeegee contact"));
+            Loop(Layer.Wash,4,world.WashManifold??Find("Wash water manifold"));
+            Loop(Layer.Pickup,4,world.WashPickup??Find("Wash pickup squeegee contact"));
             Loop(Layer.Arena,5,transform,Vector3.zero,false);
             Loop(Layer.Vertical,6,world.VerticalAuger,new Vector3(0,.21f,0));
-            Loop(Layer.Drive,7,Find("Central steel chassis"));
+            Loop(Layer.Drive,7,world.Chassis??Find("Central steel chassis"));
             Loop(Layer.Roller,8,transform);
             Loop(Layer.Discharge,9,world.TankDischarge);
             Loop(Layer.Dump,9,transform);

@@ -1,0 +1,75 @@
+AURORA R-54 / AUTHORED MACHINE (PHASE 1, EXPERIMENTAL)
+
+Purpose
+The machine can exist as persistent, editable Scene/prefab geometry instead of being
+generated at Play. The launch scene (Scenes/IceResurfacer.unity) is unchanged and still
+uses the runtime builder. The authored machine lives in a separate experimental scene.
+
+Files
+  Scenes/IceResurfacer_AuthoredMachine.unity  copy of the launch scene + one prefab instance
+  Machine/AuroraR54.prefab                     the editable machine (527 selectable renderers)
+  Machine/AuroraR54.Meshes.asset               the 26 procedural meshes (readable sub-assets)
+  Machine/Materials/*.mat                      the 12 machine palette materials
+  Presentation/IceMachineRig.cs                binds authored parts into the IceWorld contract
+  Presentation/IceKeepUnbatched.cs             opt a part out of runtime batching
+  Editor/IceMachineBaker.cs                    bake / experimental-scene menu commands
+  Editor/IceMachineRigEditor.cs                ownership report and anchor tools (rig Inspector)
+  Editor/IceAuthoredMachineValidation.cs       batch proof (isolated project only)
+
+Workflow
+1. Experiments > Ice Resurfacer > Authored Machine > Create Experimental Scene.
+   Copies the launch scene (same calibration) and opens the copy. The launch scene is not saved.
+2. Experiments > Ice Resurfacer > Authored Machine > Bake Machine Prefab.
+   Runs the same IceWorldBuilder machine code once, unbatched, saves meshes/materials/prefab and
+   places one instance under the game object. Refuses to run in the launch scene.
+3. Edit normally: select parts in the Scene view or Hierarchy, move/rotate/scale, change
+   materials, replace children. Prefer Prefab Mode (open AuroraR54.prefab) so edits live in the
+   prefab rather than as scene overrides. Save. Edits survive restarting Unity.
+4. Press Play. IceWorldBuilder sees the IceMachineRig under the game root, builds only the arena,
+   binds the saved parts, and batches static parts on the Play instance only. No second machine
+   is generated. Exiting Play restores the instance; saved assets are never modified or destroyed.
+
+Ownership (shown in the IceMachineRig Inspector)
+  Physics anchors / SimulatorConfig is authoritative:
+    wheel pivots (WheelTrack, Wheelbase), tank dump hinge (0,.78,2.46), tank shell (snow capacity),
+    conveyor discharge, board brush pivot, guide roller, blade and towel widths.
+    The Inspector reports drift > 1 mm. Change the calibration (Machine Geometry Editor) and use
+    "Apply config to physics anchors"; do not drag these, or physics and visuals disagree.
+  Operator controls / authored freely:
+    operator deck, seat, steering column, dashboard, pedals, hydraulic lever bank, water valve
+    manifold and bearings, blade handwheel assembly, snow breaker assembly, mounting boxes.
+    Move or rotate whole mounts. Runtime only animates lever/valve rotation, handwheel turns,
+    pedal travel and plunger stroke, always relative to the authored rest pose. Picking, hover
+    highlight, drag direction (each lever's own bank), valve/handwheel turning, the E/Controls
+    view and the spool/breaker audio follow the authored controls.
+    In the experimental scene the Machine Geometry Editor disables its cockpit placement fields.
+    A non-blocking advisory reports grips beyond 0.85 m from the seated eye, grips closer than
+    6 cm to each other, and grips outside the body envelope.
+  Cosmetic / authored freely: bodywork, panels, trim, and children under any driven pivot.
+  Runtime-driven pivots (edit their children, not the pivot): machine root, conditioner root,
+    tank door, guide roller, brush arm/brush/link/roller, cutting blade, both augers, and the
+    hydraulic barrels/rods. Cylinders always span their clevis pins, so moving a pin moves the
+    cylinder ("Re-pose hydraulic cylinders" previews this in Edit Mode).
+
+Rebake policy
+Shape-defining calibration (tank roof height/offset, conveyor offset, conditioner and water
+widths, tire width, guide roller radius, brush arm length, valve stem height) is baked into
+meshes. The rig Inspector warns when it changed since the bake. Rebaking regenerates the prefab
+and DISCARDS manual edits (a confirmation dialog says so). Selective rebake is a later phase.
+
+Known limits
+- IceWaterService fill ports and level gauges remain runtime-generated (not visible in Edit Mode).
+- Labels use the font's built-in material in Edit Mode (drawn through geometry); Play swaps to
+  the runtime depth-tested lettering material.
+- The E/Controls preset keeps its fixed 61-degree vertical lens. It aims at the authored grips,
+  but a very wide rearrangement can leave the outermost grip just outside the frame.
+- Emissive materials are saved with the RealtimeEmissive GI flag; URP's import validation would
+  otherwise strip _EMISSION from the fixture material.
+
+Validation (isolated copy only: Validation~/StageUnityValidation.ps1 -UpdateOnly, then)
+  RunIsolatedUnity.ps1 -Action AuthoredBake
+  RunIsolatedUnity.ps1 -Action AuthoredVerify
+  RunIsolatedUnity.ps1 -Action AuthoredWriteRearrangement
+  RunIsolatedUnity.ps1 -Action AuthoredVerifyRearrangement
+  RunIsolatedUnity.ps1 -Action RunBatch -Scene Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
+Results: Validation~/UnityProject/Assets/Experiments/IceResurfacer/Validation~/AuthoredMachine-results.txt

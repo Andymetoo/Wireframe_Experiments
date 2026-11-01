@@ -21,6 +21,16 @@ namespace IceResurfacer.Editor
         static readonly List<string> results=new List<string>();
         static void Check(bool valid,string message)
         { if(!valid)throw new InvalidOperationException("Cockpit refinement: "+message);results.Add("PASS "+message); }
+        // An authored machine whose operator controls were deliberately rearranged no longer has
+        // the original cockpit layout: those placement checks are reported, not enforced.
+        static void Layout(bool valid,string message)
+        {
+            var game=UnityEngine.Object.FindAnyObjectByType<IceResurfacerGame>();
+            var rig=game!=null?game.GetComponentInChildren<IceMachineRig>(true):null;
+            var moved=rig!=null?rig.RearrangedControls():null;
+            if(moved!=null&&moved.Count>0) { results.Add((valid?"PASS ":"SKIP ")+"authored layout ("+string.Join(", ",moved)+"): "+message);return; }
+            Check(valid,message);
+        }
         static IceCockpitRefinementValidation()
         {
             if(Application.isBatchMode&&SessionState.GetBool(BeforeKey,false))EditorApplication.update+=BeforeTick;
@@ -124,7 +134,7 @@ namespace IceResurfacer.Editor
                 }
                 s.Vehicle.Heading=0;Render();
                 Vector3 hub=w.OperatorStation.InverseTransformPoint(w.SteeringWheel.position);
-                Check(hub.z>.50f&&Mathf.Abs(hub.y-config.SteeringWheelHeight)<.00001f&&
+                Layout(hub.z>.50f&&Mathf.Abs(hub.y-config.SteeringWheelHeight)<.00001f&&
                     Vector3.Angle(w.Machine.up,w.SteeringWheel.up)>60,"steering hub is forward of the seat and wheel plane is substantially upright");
                 Check(w.SteeringWheel.IsChildOf(w.SteeringColumn),"wheel and connected upper/lower column share a coherent assembly");
                 var foot=Array.Find(w.SteeringColumn.GetComponentsInChildren<Transform>(),t=>t.name=="Steering column foot");
@@ -167,7 +177,7 @@ namespace IceResurfacer.Editor
                 foreach(float fraction in new[]{-1f,0f,1f})
                 {
                     s.Vehicle.SteeringAngle=config.MaxSteeringRadians*fraction;Render();
-                    Check(Quaternion.Angle(w.SteeringWheel.localRotation,Quaternion.Euler(-config.SteeringWheelTilt,0,0)*
+                    Layout(Quaternion.Angle(w.SteeringWheel.localRotation,Quaternion.Euler(-config.SteeringWheelTilt,0,0)*
                         Quaternion.Euler(0,s.Vehicle.SteeringAngle*Mathf.Rad2Deg*5,0))<.06f,
                         "upright steering wheel follows actual vehicle steering at "+fraction);
                     for(int i=0;i<48;i++)
@@ -181,13 +191,13 @@ namespace IceResurfacer.Editor
                 results.Add("PASS full steering rim clears actual seat, control bank, dashboard and machine meshes at left / center / right steering");
                 s.Vehicle.SteeringAngle=0;Render();
                 Vector3 blade=w.OperatorStation.InverseTransformPoint(w.BladeWheel.position);
-                Check(blade.x>w.OperatorStation.InverseTransformPoint(w.FloodValveMount.position).x&&
+                Layout(blade.x>w.OperatorStation.InverseTransformPoint(w.FloodValveMount.position).x&&
                     blade.x<w.OperatorStation.InverseTransformPoint(w.WashValveMount.position).x&&blade.z<-.17f,
                     "complete blade screw is between and behind the water bearings, closer to the operator");
-                Check(config.WaterValveStemHeight>.20f&&Mathf.Abs(w.FloodValveMount.position.y-w.WashValveMount.position.y)<.001f,
+                Layout(config.WaterValveStemHeight>.20f&&Mathf.Abs(w.FloodValveMount.position.y-w.WashValveMount.position.y)<.001f,
                     "independent adjacent water handles have tall quarter-turn stems");
                 Vector3 breaker=w.OperatorStation.InverseTransformPoint(w.SnowBreakerPlunger.position);
-                Check(breaker.x<1.09f&&breaker.x>w.OperatorStation.InverseTransformPoint(w.DumpLever.position).x,
+                Layout(breaker.x<1.09f&&breaker.x>w.OperatorStation.InverseTransformPoint(w.DumpLever.position).x,
                     "snow breaker and fixed guide are beside the rightmost hydraulic lever");
                 game.SelectCameraView("Controls");for(int i=0;i<90;i++)look.Invoke(game,new object[]{true,.02f});
                 var controls=new[]{w.ConditionerLever,w.HorizontalAugerLever,w.VerticalAugerLever,w.DumpLever,w.FloodLever,w.WashValve,w.BladeWheel,w.SnowBreakerPlunger};

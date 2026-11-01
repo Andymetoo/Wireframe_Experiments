@@ -23,6 +23,8 @@ namespace IceResurfacer.Presentation
         readonly MaterialPropertyBlock[][] savedBlocks=new MaterialPropertyBlock[9][];
         readonly MaterialPropertyBlock tintBlock=new MaterialPropertyBlock();
         static readonly int BaseColor=Shader.PropertyToID("_BaseColor");
+        // Authored rest orientation of each moving control; animation is applied on top of it.
+        readonly Quaternion[] restRotations=new Quaternion[9];
         Control highlighted;
         bool highlightedDrag;
         public string Hint { get; private set; } = "";
@@ -42,6 +44,7 @@ namespace IceResurfacer.Presentation
                 highlightRenderers[i]=System.Array.FindAll(TransformFor((Control)i).GetComponentsInChildren<Renderer>(),r=>r.enabled);
                 savedBlocks[i]=new MaterialPropertyBlock[highlightRenderers[i].Length];
                 for(int j=0;j<savedBlocks[i].Length;j++)savedBlocks[i][j]=new MaterialPropertyBlock();
+                restRotations[i]=TransformFor((Control)i).localRotation;
             }
         }
 
@@ -104,7 +107,8 @@ namespace IceResurfacer.Presentation
                 Transform control=TransformFor(active);
                 Vector3 pivot=control.position;
                 Vector3 a=game.DriverCamera.WorldToScreenPoint(pivot);
-                Vector3 b=game.DriverCamera.WorldToScreenPoint(pivot-world.Machine.forward*.15f);
+                // Pull toward the seat along the lever's own fixed bank, wherever it is mounted.
+                Vector3 b=game.DriverCamera.WorldToScreenPoint(pivot-control.parent.forward*.15f);
                 pullAxis=new Vector2(b.x-a.x,b.y-a.y).normalized;
                 if(pullAxis.sqrMagnitude<.01f)pullAxis=Vector2.down;
                 angleValid=PlaneAngle(active,ray,out lastAngle);
@@ -263,23 +267,27 @@ namespace IceResurfacer.Presentation
         {
             if(game.Sim==null)return;
             var c=game.Sim.Controls;
-            world.ConditionerLever.localRotation=Quaternion.Euler(24*c.ConditionerHydraulic,0,0);
-            world.DumpLever.localRotation=Quaternion.Euler(24*c.TankHydraulic,0,0);
-            world.HorizontalAugerLever.localRotation=Quaternion.Euler(c.HorizontalAuger?24:0,0,0);
-            world.VerticalAugerLever.localRotation=Quaternion.Euler(c.VerticalAuger?24:0,0,0);
-            world.WashValve.localRotation=Quaternion.Euler(0,-90*c.WashValve,0);
-            world.FloodLever.localRotation=Quaternion.Euler(0,-90*c.FloodFlow,0);
-            for(int i=0;i<2;i++)
-            {
-                float side=i==0?-1:1;
-                Cylinder(world.TankCylinderBarrels[i],world.TankCylinderRods[i],
-                    world.Machine.TransformPoint(side*.69f,.55f,.72f),world.TankPivot.TransformPoint(game.Sim.Config.TankLateralOffset+side*.69f,game.Sim.Config.TankGeometryY(.40f),-.74f),.095f,.043f,.64f);
-                Cylinder(world.ConditionerCylinderBarrels[i],world.ConditionerCylinderRods[i],
-                    world.Machine.TransformPoint(side*.55f,.76f,-.57f),world.Conditioner.TransformPoint(side*.55f,.43f,.30f),.074f,.035f,.42f);
-            }
+            world.ConditionerLever.localRotation=restRotations[(int)Control.Conditioner]*Quaternion.Euler(24*c.ConditionerHydraulic,0,0);
+            world.DumpLever.localRotation=restRotations[(int)Control.Dump]*Quaternion.Euler(24*c.TankHydraulic,0,0);
+            world.HorizontalAugerLever.localRotation=restRotations[(int)Control.Horizontal]*Quaternion.Euler(c.HorizontalAuger?24:0,0,0);
+            world.VerticalAugerLever.localRotation=restRotations[(int)Control.Vertical]*Quaternion.Euler(c.VerticalAuger?24:0,0,0);
+            world.WashValve.localRotation=restRotations[(int)Control.Wash]*Quaternion.Euler(0,-90*c.WashValve,0);
+            world.FloodLever.localRotation=restRotations[(int)Control.Flood]*Quaternion.Euler(0,-90*c.FloodFlow,0);
+            PoseCylinders(world);
         }
 
-        static void Cylinder(Transform barrel,Transform rod,Vector3 anchor,Vector3 clevis,float bore,float shaft,float barrelLength)
+        /// <summary>Hydraulic barrels and rods span their clevis pins, wherever those are authored.</summary>
+        public static void PoseCylinders(IceWorld world)
+        {
+            for(int i=0;i<2;i++)
+            {
+                Cylinder(world.TankCylinderBarrels[i],world.TankCylinderRods[i],Pin(world.TankCylinderBase[i]),Pin(world.TankCylinderClevis[i]),.095f,.043f,.64f);
+                Cylinder(world.ConditionerCylinderBarrels[i],world.ConditionerCylinderRods[i],Pin(world.ConditionerCylinderBase[i]),Pin(world.ConditionerCylinderClevis[i]),.074f,.035f,.42f);
+            }
+        }
+        static Vector3 Pin(Transform pin) { return pin.parent.TransformPoint(pin.localPosition); }
+
+        public static void Cylinder(Transform barrel,Transform rod,Vector3 anchor,Vector3 clevis,float bore,float shaft,float barrelLength)
         {
             Vector3 axis=clevis-anchor;float length=axis.magnitude;
             if(length<.001f)return;

@@ -16,10 +16,10 @@ internal static class Program
         Test("spring-centred hydraulics hold position and preserve tank interlocks", HydraulicHold);
         Test("visible contact inhibit recovers by reversing clear", ContactRecovery);
         Test("board collision contains machine", Boundaries);
-        Test("conditioner follows inside turn", Tracking);
+        Test("conditioner stays square to chassis in forward, reverse and lift positions", Tracking);
         Test("only actual trailing footprint is processed", Footprint);
         Test("77-inch working width matches cut and wet cell extents", PhysicalWidth);
-        Test("turning cut and water remain inside the articulated footprint", TurnFootprint);
+        Test("turning cut and water remain inside the chassis-aligned conditioner footprint", TurnFootprint);
         Test("footprint conserves water and collected snow material", MaterialBalance);
         Test("conditioner lift removes blade contact", Lift);
         Test("separate augers, overflow, load and finite tank", Snow);
@@ -39,7 +39,7 @@ internal static class Program
         Test("tire overlap, liquid recovery, perimeter mask and finite spread", IceCalibrationValidation.Run);
         Test("snow production, side escape and recoverable deposits", SnowCalibrationValidation.Run);
         Test("truthful minimap states and measured wet-but-uncut slivers", MinimapValidation.Run);
-        Test("traversable grate, impact severity, limited conditioner and finite drainage", () => ServiceCollisionValidation.Run());
+        Test("traversable grate, impact severity, aligned conditioner and finite drainage", () => ServiceCollisionValidation.Run());
         Test("complete scored southeast route, return and angled unload", FreedomValidation.FullRun);
         Test("water service state, capacities, conservation and recovery", ServiceValidation.Run);
         Test("aggregated overview, finite puddles and progressive freezing", SurfaceConsistencyValidation.Run);
@@ -255,10 +255,32 @@ internal static class Program
     }
     static void Tracking()
     {
-        var s = new Simulation(); Place(s, 0, -10); s.Controls.Throttle = .4f; s.Controls.Steer = 1; Tick(s, 5);
-        Assert(s.Conditioner.Heading < s.Vehicle.Heading && s.Conditioner.Heading > 0, "conditioner did not trail steering");
-        float dx = s.Vehicle.X - s.Conditioner.X, dz = s.Vehicle.Z - s.Conditioner.Z;
-        Assert(dx * dx + dz * dz > .8f, "conditioner teleported to axle");
+        // A saved nonzero yaw calibration must never restore the old pivot.
+        var s = new Simulation(new SimulatorConfig { ConditionerYawLimitRadians = .034906585f }, true);
+        foreach (float lift in new[] { 0f, .5f, 1f })
+        foreach (float throttle in new[] { .4f, -.4f, 0f })
+        foreach (float steer in new[] { -1f, 1f })
+        {
+            Place(s, 0, -10, steer * 3.13f);
+            s.Controls.HydraulicHoldControls = true;
+            s.Conditioner.Lift = lift;
+            s.Controls.Throttle = throttle; s.Controls.Steer = steer;
+            // Deliberately seed a stale trailer pose; even a stopped machine must align.
+            s.Conditioner.Heading += .5f; s.Conditioner.X += .3f;
+            float startHeading = s.Vehicle.Heading;
+            for (int i = 0; i < 300; i++)
+            {
+                s.Step(.02f);
+                Near(s.Conditioner.Heading, s.Vehicle.Heading, 0, "conditioner pivots relative to chassis");
+                float dx = s.Conditioner.X - s.Vehicle.X, dz = s.Conditioner.Z - s.Vehicle.Z;
+                float sin = (float)Math.Sin(s.Vehicle.Heading), cos = (float)Math.Cos(s.Vehicle.Heading);
+                Near(dx * cos - dz * sin, 0, .00001f, "conditioner swings sideways");
+                Near(dx * sin + dz * cos, -s.Config.HitchBehindAxle - s.Config.DrawbarLength, .00001f, "conditioner rear offset changed");
+                Near(s.Conditioner.Lift, lift, 0, "alignment changed hydraulic lift");
+            }
+            if (throttle != 0)
+                Assert(Math.Abs(s.Vehicle.Heading - startHeading) > .05f, "fixture did not exercise a turn");
+        }
     }
     static void Footprint()
     {
@@ -315,13 +337,12 @@ internal static class Program
         var previousCut = new float[s.Ice.Cells.Length];
         var previousFlood = new float[s.Ice.Cells.Length];
         int touched = 0;
-        bool articulated = false;
+        float startHeading = s.Vehicle.Heading;
         for (int tick = 0; tick < 360; tick++)
         {
             s.Step(.02f);
             float sin = (float)Math.Sin(s.Conditioner.Heading), cos = (float)Math.Cos(s.Conditioner.Heading);
-            articulated |= Math.Abs(s.Conditioner.Heading - s.Vehicle.Heading) > .02f;
-            Assert(Math.Abs(s.Conditioner.Heading-s.Vehicle.Heading)<=s.Config.ConditionerYawLimitRadians+.0001f,"conditioner exceeded close-mounted compliance");
+            Near(s.Conditioner.Heading, s.Vehicle.Heading, 0, "processing footprint pivots relative to chassis");
             for (int i = 0; i < s.Ice.Cells.Length; i++)
             {
                 var cell = s.Ice.Cells[i];
@@ -344,7 +365,7 @@ internal static class Program
                 previousCut[i] = cell.CutDepthMm; previousFlood[i] = cell.FloodMm;
             }
         }
-        Assert(touched > 500 && articulated, "test did not exercise a working articulated turn");
+        Assert(touched > 500 && Math.Abs(s.Vehicle.Heading - startHeading) > .2f, "test did not exercise a working turn");
         Assert(s.Ice.RedistributedWaterLiters==0,"moving footprint fixture must isolate direct outlet application from standing-water redistribution");
     }
 

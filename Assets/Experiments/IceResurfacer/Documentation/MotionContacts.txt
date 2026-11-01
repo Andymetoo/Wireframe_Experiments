@@ -21,15 +21,17 @@ water balance. Deposited snow retains its existing PitSnowM3 receiver stock.
 No open fall/drop or tire suspension simulation is claimed for the new grate.
 
 Conditioner mounting
-The previous free-trailing heading had a +/-0.9 radian (51.6 degree) limit, far
-more than the close-mounted lifting linkage shown in the operator references.
-The same hitch and drawbar positions now constrain relative yaw to +/-2 degrees.
-This is an Aurora compliance calibration, not a published manufacturer limit.
+Updated 1 November 2026: the conditioner stays square to the chassis with zero
+relative yaw. Its centre remains HitchBehindAxle + DrawbarLength behind the rear
+axle, with no lateral swing or steering lag, forward, reversing or stationary.
+This supersedes both the original free-trailing model and the +/-2 degree limit.
+The legacy ConditionerYawLimitRadians field is retained for saved data but is
+ignored by motion, so existing nonzero calibrations cannot restore a pivot.
 The actual rendered heading, blade, water outlet, pickup and snow exits all use
-the same Conditioner state. Hydraulic lift remains independent of this yaw.
+the same Conditioner state. Hydraulic lift remains independent of alignment.
 No chassis wheelbase, steering rate, maximum steering angle or traction equation
-was changed by this correction. Comparing zero-yaw and 2-degree-yaw fixtures
-gives identical chassis positions/headings for every tested step. Full-lock
+was changed by this correction. Default and legacy-yaw calibration fixtures
+must give identical chassis and conditioner poses at every tested step. Full-lock
 kinematic rear-axle radius remains 4.4850 m at the established steering angle.
 
 Physical contact audio
@@ -49,6 +51,7 @@ The clips are intentionally dull and short, with a restrained secondary body
 vibration. Final perceived volume and timbre remain an operator listening check.
 
 Executed core evidence
+The results below record the 29 October validation, before the zero-yaw update.
 The final core aggregate passes all 37 groups, including these contact tests.
 Validation~/Operator-ergonomics-core.txt is the current aggregate report;
 Validation~/Motion-contact-focused.txt records the focused .NET fixture:

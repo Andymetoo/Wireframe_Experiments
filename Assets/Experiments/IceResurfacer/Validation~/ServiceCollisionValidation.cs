@@ -5,8 +5,8 @@ internal static class ServiceCollisionValidation
 {
     public static void Run(bool baseline=false)
     {
-        Console.WriteLine("Traversable snow grate, bounded conditioner and physical contact validation");
-        TraverseGrate();ContactAudio();ConditionerCompliance();WaterFloor();TankContacts();
+        Console.WriteLine("Traversable snow grate, aligned conditioner and physical contact validation");
+        TraverseGrate();ContactAudio();ConditionerAlignment();WaterFloor();TankContacts();
     }
     static void Place(Simulation s,float side,float outward,float heading)
     {
@@ -67,9 +67,9 @@ internal static class ServiceCollisionValidation
         Check(brake.ContactEventSequence==0,"braking/nonphysical refusal emits no collision sound");
         Console.WriteLine("contact normal m/s slow/direct/glancing/wall="+slow.AudibleContactNormalSpeed.ToString("F3")+"/"+hardNormal.ToString("F3")+"/"+glance.AudibleContactNormalSpeed.ToString("F3")+"/"+wall.AudibleContactNormalSpeed.ToString("F3")+"; events over held10s="+(hard.ContactEventSequence-first));
     }
-    static void ConditionerCompliance()
+    static void ConditionerAlignment()
     {
-        var rigid=new Simulation(new SimulatorConfig{ConditionerYawLimitRadians=0},true);var compliant=new Simulation(practice:true);
+        var rigid=new Simulation(new SimulatorConfig{ConditionerYawLimitRadians=.034906585f},true);var compliant=new Simulation(practice:true);
         rigid.Vehicle.X=compliant.Vehicle.X=0;rigid.Vehicle.Z=compliant.Vehicle.Z=-12;rigid.Vehicle.Heading=compliant.Vehicle.Heading=0;
         rigid.Conditioner.X=compliant.Conditioner.X=0;rigid.Conditioner.Z=compliant.Conditioner.Z=-13.1f;rigid.Conditioner.Heading=compliant.Conditioner.Heading=0;
         rigid.Controls.Throttle=compliant.Controls.Throttle=.4f;rigid.Controls.Steer=compliant.Controls.Steer=1;float peak=0;
@@ -77,10 +77,11 @@ internal static class ServiceCollisionValidation
         {
             rigid.Step(.02f);compliant.Step(.02f);
             float yaw=(float)Math.Atan2(Math.Sin(compliant.Conditioner.Heading-compliant.Vehicle.Heading),Math.Cos(compliant.Conditioner.Heading-compliant.Vehicle.Heading));peak=Math.Max(peak,Math.Abs(yaw));
-            Check(Math.Abs(yaw)<=compliant.Config.ConditionerYawLimitRadians+.00001f,"conditioner remains within physical compliance");
+            Check(yaw==0&&rigid.Conditioner.Heading==rigid.Vehicle.Heading,"conditioner stays square with default and legacy yaw calibration");
+            Check(rigid.Conditioner.X==compliant.Conditioner.X&&rigid.Conditioner.Z==compliant.Conditioner.Z,"legacy yaw calibration cannot swing the conditioner sideways");
             Check(Math.Abs(rigid.Vehicle.X-compliant.Vehicle.X)<.00001f&&Math.Abs(rigid.Vehicle.Z-compliant.Vehicle.Z)<.00001f&&Math.Abs(rigid.Vehicle.Heading-compliant.Vehicle.Heading)<.00001f,"conditioner correction does not change chassis turn");
         }
-        Check(peak>.02f,"curved pass exercises limited compliance");
+        Check(peak==0&&Math.Abs(compliant.Vehicle.Heading)>.2f,"curved pass has zero conditioner pivot");
         Console.WriteLine("conditioner maximum yaw="+(peak*180/Math.PI).ToString("F3")+"deg, chassis path unchanged; kinematic full-lock rear axle radius="+(compliant.Config.Wheelbase/Math.Tan(compliant.Config.MaxSteeringRadians)).ToString("F4")+"m");
     }
     static void WaterFloor()

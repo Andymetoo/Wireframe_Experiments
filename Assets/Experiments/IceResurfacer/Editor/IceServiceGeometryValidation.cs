@@ -60,7 +60,8 @@ namespace IceResurfacer.Editor
             Capture("Conditioner-straight.png",center+new Vector3(.01f,7,-.5f),center+new Vector3(0,0,.5f));
             s.Controls.Steer=1;for(int i=0;i<250;i++)Tick();
             float yaw=Mathf.DeltaAngle(s.Vehicle.Heading*Mathf.Rad2Deg,s.Conditioner.Heading*Mathf.Rad2Deg);
-            Check(Mathf.Abs(yaw)<=s.Config.ConditionerYawLimitRadians*Mathf.Rad2Deg+.001f,"rendered curved conditioner is limited to close-mounted yaw compliance");
+            Check(yaw==0,"curved conditioner stays square to the chassis");
+            Check(Quaternion.Angle(game.World.Conditioner.rotation,game.World.Machine.rotation)<.01f,"rendered conditioner stays aligned with the chassis");
             Check(Quaternion.Angle(game.World.Conditioner.rotation,Quaternion.Euler(0,s.Conditioner.Heading*Mathf.Rad2Deg,0))<.01f,"rendered conditioner uses processing heading");
             center=new Vector3(s.Vehicle.X,0,s.Vehicle.Z);
             Capture("Conditioner-curved.png",center+new Vector3(.01f,7,-.5f),center+new Vector3(0,0,.5f));

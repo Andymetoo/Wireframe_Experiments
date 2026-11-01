@@ -177,7 +177,7 @@ namespace IceResurfacer.Core
             if (oldLift > .15f && Conditioner.Lift <= .15f && Controls.BladeDepthMm > .02f)
                 Fault(1, "Lower with the blade retracted; adjust cutting depth after the conditioner is down.");
             UpdateVehicle(dt);
-            UpdateConditioner(dt);
+            UpdateConditioner();
             CheckExit();
             FindFootprint();
             ProcessIce(dt);
@@ -352,20 +352,16 @@ namespace IceResurfacer.Core
             return Ice.IsInside(x, z, .02f) || Layout.ContainsVehicleFloor(x,z);
         }
 
-        void UpdateConditioner(float dt)
+        void UpdateConditioner()
         {
             lastConditionerX = Conditioner.X; lastConditionerZ = Conditioner.Z;
             float sn = (float)Math.Sin(Vehicle.Heading), cs = (float)Math.Cos(Vehicle.Heading);
-            float hitchX = Vehicle.X - sn * Config.HitchBehindAxle, hitchZ = Vehicle.Z - cs * Config.HitchBehindAxle;
-            float desired = (float)Math.Atan2(hitchX - Conditioner.X, hitchZ - Conditioner.Z);
-            // The close-mounted conditioner has limited compliance, not a
-            // trailer axle. Keep its genuine hitch/lift geometry while limiting
-            // yaw to the small clearance of the two lifting links.
-            float delta = Wrap(desired - Conditioner.Heading);
-            if (Math.Abs(Vehicle.Speed) > .001f) Conditioner.Heading = Wrap(Conditioner.Heading + Clamp(delta, -1.7f * dt, 1.7f * dt));
-            Conditioner.Heading = Wrap(Vehicle.Heading + Clamp(Wrap(Conditioner.Heading - Vehicle.Heading), -Config.ConditionerYawLimitRadians, Config.ConditionerYawLimitRadians));
-            Conditioner.X = hitchX - (float)Math.Sin(Conditioner.Heading) * Config.DrawbarLength;
-            Conditioner.Z = hitchZ - (float)Math.Cos(Conditioner.Heading) * Config.DrawbarLength;
+            // The lifting links hold the conditioner square to the chassis at
+            // every lift height, including while reversing or standing still.
+            float behindAxle = Config.HitchBehindAxle + Config.DrawbarLength;
+            Conditioner.Heading = Vehicle.Heading;
+            Conditioner.X = Vehicle.X - sn * behindAxle;
+            Conditioner.Z = Vehicle.Z - cs * behindAxle;
         }
 
         void CheckExit()
