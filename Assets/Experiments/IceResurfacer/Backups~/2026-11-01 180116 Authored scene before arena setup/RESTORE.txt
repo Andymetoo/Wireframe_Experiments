@@ -1,0 +1,9 @@
+Aurora / Northline recovery backup: Authored scene before arena setup
+Made 2026-11-01T18:01:16
+
+Restore inside Unity: Experiments > Ice Resurfacer > Advanced Recovery > Replace or Restore Authored Assets... > Restore backup.
+Restore by hand: close Unity, then copy every file in this folder (keeping its relative path, including .meta files) over Assets/Experiments/IceResurfacer/
+
+Files (path relative to the project, SHA-256):
+  Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity  0D9BE94C8664E6B6DEB6794765D07082C0866871505F311BA1D6DA235D0E5050
+  Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity.meta  E11C8DA3BA68A5C885E11367D66E166153DD6FB39D0886927071098E7231149F

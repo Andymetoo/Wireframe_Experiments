@@ -14,17 +14,17 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.1, g: 0.15, b: 0.2, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.0035
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.8392157, g: 0.89411765, b: 0.9607843, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -150,6 +150,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1440189820}
+  - {fileID: 313410077}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1002
@@ -261,6 +262,72 @@ MonoBehaviour:
     FreezeSeconds: 420
     MinimumScoredCoverage: 0.95
   operatorEyeHeight: 0.06
+--- !u!1001 &313410076
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1001}
+    m_Modifications:
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2609415197165657979, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_Text
+      value: NORTHLINE  /  ASS WORKS
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289172619396261899, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_Name
+      value: NorthlineArena
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+--- !u!4 &313410077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+  m_PrefabInstance: {fileID: 313410076}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1440189819
 PrefabInstance:
   m_ObjectHideFlags: 0

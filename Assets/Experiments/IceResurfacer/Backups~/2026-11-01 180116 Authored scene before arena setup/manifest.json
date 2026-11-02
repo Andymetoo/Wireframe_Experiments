@@ -1,0 +1,14 @@
+{
+    "label": "Authored scene before arena setup",
+    "created": "2026-11-01T18:01:16",
+    "files": [
+        {
+            "path": "Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity",
+            "sha256": "0D9BE94C8664E6B6DEB6794765D07082C0866871505F311BA1D6DA235D0E5050"
+        },
+        {
+            "path": "Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity.meta",
+            "sha256": "E11C8DA3BA68A5C885E11367D66E166153DD6FB39D0886927071098E7231149F"
+        }
+    ]
+}
