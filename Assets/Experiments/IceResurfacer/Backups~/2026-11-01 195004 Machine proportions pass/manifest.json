@@ -1,0 +1,22 @@
+{
+    "label": "Machine proportions pass",
+    "created": "2026-11-01T19:50:05",
+    "files": [
+        {
+            "path": "Assets/Experiments/IceResurfacer/Machine/AuroraR54.prefab",
+            "sha256": "71578F2B49B9D66F88EDFFD7609B0928FEE39B9C595C92E1AB3A0C0844965642"
+        },
+        {
+            "path": "Assets/Experiments/IceResurfacer/Machine/AuroraR54.prefab.meta",
+            "sha256": "BB1D980BC6BA1D2520546D87DA4A356844C5C088B45D1D2B6FC66B07FF0387E2"
+        },
+        {
+            "path": "Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity",
+            "sha256": "B3C1AC46FE0CCC9D6FAE61ABFB9920774E3A125C4CFBC8441E2FED80C8425D66"
+        },
+        {
+            "path": "Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity.meta",
+            "sha256": "E11C8DA3BA68A5C885E11367D66E166153DD6FB39D0886927071098E7231149F"
+        }
+    ]
+}
