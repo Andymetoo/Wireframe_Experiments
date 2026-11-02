@@ -60,6 +60,25 @@ namespace IceResurfacer.Editor
             }
             if(GUILayout.Button("Conditioner Alignment..."))IceConditionerAlignmentWindow.Open();
 
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("WATER FILL PORTS / hose couplings and tank gauges",EditorStyles.boldLabel);
+            var fillPorts=rig.GetComponentsInChildren<IceWaterFillPort>(true);
+            var fillGauges=rig.GetComponentsInChildren<IceWaterLevelGauge>(true);
+            if(fillPorts.Length==0&&fillGauges.Length==0)
+            {
+                EditorGUILayout.HelpBox("Generated at Play (not editable). Add them to the prefab to move, reshape or replace them.",MessageType.Info);
+                using(new EditorGUI.DisabledScope(Application.isPlaying))
+                    if(GUILayout.Button("Add Persistent Water Fill Ports to Machine..."))EditorApplication.ExecuteMenuItem("Experiments/Ice Resurfacer/Authored Scene/Add Persistent Water Fill Ports to Machine...");
+            }
+            else
+            {
+                foreach(var p in fillPorts)
+                    if(GUILayout.Button("Select "+p.Label+" fill port"+(p.IsComplete?"":" (sockets missing)")))Selection.activeObject=p.gameObject;
+                foreach(var g in fillGauges)
+                    if(GUILayout.Button("Select "+(g.tank==WaterFillPort.Flood?"flood":"wash")+" tank gauge"+(g.IsComplete?"":" (indicator missing)")))Selection.activeObject=g.gameObject;
+                EditorGUILayout.LabelField("Each port's Inspector checks operator reach, hose length and routing, nozzle direction and overflow at the parked pose.",EditorStyles.wordWrappedMiniLabel);
+            }
+
             var changed=rig.ShapeFieldsChangedSinceBake(config);
             if(changed.Count>0)EditorGUILayout.HelpBox("Changed since bake, affecting mesh shape: "+string.Join(", ",changed)+
                 ". The machine is never regenerated automatically: use Advanced Recovery > Generate Fresh Machine Copy for a new baseline "+

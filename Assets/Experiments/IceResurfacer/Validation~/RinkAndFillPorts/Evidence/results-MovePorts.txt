@@ -1,0 +1,2 @@
+== Deliberately moving the fill ports in the prefab / 2026-11-02T14:14:04
+INFO flood port assembly +10 cm up, +35 cm forward, yawed 12 deg; wash hose socket moved alone (+2,-6,-8 cm, rolled 20 deg); wash overflow moved; wash gauge moved

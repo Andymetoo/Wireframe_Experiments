@@ -1,0 +1,10 @@
+Backup: Assets/Experiments/IceResurfacer/Backups~/2026-11-02 135434 Before rink boards and glass refinement
+White impact dasher: mesh 'Rink boards and ice sheet.Meshes' rebuilt in place (2832 -> 1896 vertices)
+Yellow kick strip: mesh '002 Yellow kick strip' rebuilt in place (2832 -> 3784 vertices)
+Dark top rail: mesh '003 Dark top rail' rebuilt in place (2832 -> 3784 vertices)
+Continuous safety glass: mesh '004 Continuous safety glass' rebuilt in place (2832 -> 2840 vertices)
+Added Glass top edge channel
+Glass supports raised to the local glass height: 48
+Added Service gate board post / southwest
+Added Service gate board post / northeast
+Saved Assets/Experiments/IceResurfacer/Arena/Sections/Rink boards and ice sheet.prefab and Assets/Experiments/IceResurfacer/Arena/Sections/Rink boards and ice sheet.Meshes.asset (GUIDs unchanged).

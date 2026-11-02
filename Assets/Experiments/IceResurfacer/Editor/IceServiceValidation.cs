@@ -73,7 +73,9 @@ namespace IceResurfacer.Editor
         static void WalkToValve(){WalkTo(-4.25f,6.65f);Aim(service.SupplyPosition);}
         static void WalkToPort(bool wash=false)
         {
-            WalkLocal(1.75f,wash?Simulation.WashFillLocalZ:Simulation.FloodFillLocalZ);
+            // Stand beside the actual socket (authored ports may be anywhere along the right side).
+            Vector3 socket=game.World.Machine.InverseTransformPoint(wash?service.WashInlet.position:service.FloodInlet.position);
+            WalkLocal(1.75f,socket.z);
             Aim(wash?service.WashInlet.position:service.FloodInlet.position);
             Vector3 local=game.World.Machine.InverseTransformPoint(service.FootPosition);
             Check(local.x>1.65f,"walking reaches "+(wash?"wash":"flood")+" inlet from outside the solid body");

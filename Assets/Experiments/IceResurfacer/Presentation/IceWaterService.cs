@@ -12,7 +12,9 @@ namespace IceResurfacer.Presentation
         enum Target { None, Holder, Supply, Flood, Wash, Step, LooseNozzle }
         IceResurfacerGame game;
         Transform root, nozzle, supplyHandle, floodInlet, washInlet, overflowOutlet;
-        Transform floodGauge, washGauge;
+        Transform floodGauge, washGauge, floodOverflow, washOverflow;
+        IceWaterLevelGauge floodLevel, washLevel;
+        Footprint footprint = Footprint.Generated;
         Transform holderHighlight, station;
         bool generateFixtures;
         LineRenderer hose, runoff;
@@ -24,10 +26,6 @@ namespace IceResurfacer.Presentation
         TextMesh levels;
         readonly List<Material> ownedMaterials = new List<Material>();
         readonly Vector3[] route = new Vector3[16];
-        readonly Vector2[] nodes = new Vector2[6];
-        readonly float[] distances = new float[6];
-        readonly bool[] visited = new bool[6];
-        readonly int[] previous = new int[6], reversePath = new int[6];
         Vector3 footPosition, seatedPosition;
         Quaternion seatedRotation;
         Vector2 savedCursor;
@@ -102,6 +100,8 @@ namespace IceResurfacer.Presentation
             ownedMaterials.Add(textMaterial);
             root.gameObject.AddComponent<IceWorldTextAtlas>().Initialize(font,textMaterial);
             BuildStation(); BuildPorts(); BuildEffects(); BuildAudio();
+            // An authored machine may reach further than the generated one; walking and the hose keep clear of all of it.
+            if(game.World.Machine.GetComponentInParent<IceMachineRig>()!=null)footprint=Footprint.Enclosing(game.World.Machine,game.World.Machine,game.World.Conditioner);
             root.gameObject.AddComponent<IceCollisionOverlay>().Initialize(game);
         }
 
@@ -114,6 +114,14 @@ namespace IceResurfacer.Presentation
             game.DriverCamera.transform.localPosition=Vector3.zero;
             game.DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
             prompt="";movementStatus="";movementStatusTime=0;levelUpdate=0;groundRevision=-1;groundUpdate=0;
+            // Each session's simulation couples, breaks away and overflows at the actual sockets.
+            if(game.Sim!=null&&floodInlet!=null)
+                foreach(var port in new[]{WaterFillPort.Flood,WaterFillPort.Wash})
+                {
+                    Vector3 socket=game.World.Machine.InverseTransformPoint(port==WaterFillPort.Flood?floodInlet.position:washInlet.position);
+                    Vector3 overflow=game.World.Machine.InverseTransformPoint(port==WaterFillPort.Flood?floodOverflow.position:washOverflow.position);
+                    game.Sim.SetFillPortGeometry(port,socket.x,socket.z,overflow.x,overflow.z);
+                }
             if(holderHighlight!=null)holderHighlight.gameObject.SetActive(false);
             if(spray!=null)spray.Clear();
         }
@@ -230,7 +238,7 @@ namespace IceResurfacer.Presentation
             var s=game.Sim;
             if(!s.Ice.IsInside(position.x,position.z,.22f)&&!s.Layout.ContainsFloor(position.x,position.z,.22f))return Blocked("Wall or boards ahead. Follow the clear aisle.",showBlock);
             Vector3 local=game.World.Machine.InverseTransformPoint(position);
-            if(Mathf.Abs(local.x)<1.38f&&local.z> -1.88f&&local.z<2.84f)return Blocked("Machine ahead. Use the clear aisle beside the fill couplings.",showBlock);
+            if(footprint.Contains(local))return Blocked("Machine ahead. Use the clear aisle beside the fill couplings.",showBlock);
             if(checkHose&&game.Sim.HoseState==WaterHoseState.Carried)
             {
                 Vector3 end=position+Vector3.up*1.68f+Quaternion.Euler(footPitch,footYaw,0)*new Vector3(.27f,-.56f,.44f);
@@ -247,7 +255,8 @@ namespace IceResurfacer.Presentation
         {
             // Prefer the left step, then the aisle behind or the opposite side.
             // Every candidate uses the same ground and obstruction checks as walking.
-            Vector3[] local={new Vector3(-1.67f,0,-.45f),new Vector3(-1.67f,0,-1.65f),new Vector3(1.67f,0,-.45f),new Vector3(0,0,-2.25f),new Vector3(-1.67f,0,2.5f)};
+            float side=footprint.HalfWidth+.29f;
+            Vector3[] local={new Vector3(-side,0,-.45f),new Vector3(-side,0,-1.65f),new Vector3(side,0,-.45f),new Vector3(0,0,-footprint.Rear-.37f),new Vector3(-side,0,2.5f)};
             for(int i=0;i<local.Length;i++){Vector3 p=game.World.Machine.TransformPoint(local[i]);p.y=0;if(Walkable(p,false))return p;}
             Vector3 origin=game.World.Machine.position;origin.y=0;
             for(float radius=1.6f;radius<=4.4f;radius+=.35f)
@@ -370,7 +379,7 @@ namespace IceResurfacer.Presentation
                 hose.SetPosition(17,holderPosition);
             }
             float spill=running?(s.HoseConnected?s.ServiceOverflowLitersPerSecond:s.ServiceFlowLitersPerSecond):0;
-            Vector3 spillOrigin=s.HoseConnected?inlet.position-game.World.Machine.right*.03f-Vector3.up*.25f+game.World.Machine.forward*.13f:endpoint;
+            Vector3 spillOrigin=s.HoseConnected?(s.HoseState==WaterHoseState.Wash?washOverflow:floodOverflow).position:endpoint;
             overflowOutlet.position=spillOrigin;
             overflowing.transform.position=spillOrigin;
             if(s.HoseConnected&&filling.transform.parent!=inlet)
@@ -385,29 +394,82 @@ namespace IceResurfacer.Presentation
             filling.volume=Mathf.Lerp(filling.volume,running&&s.HoseConnected?s.ServiceFlowLitersPerSecond/12*.20f:0,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
             overflowing.volume=Mathf.Lerp(overflowing.volume,spill/12*.24f,1-Mathf.Exp(-7*Time.unscaledDeltaTime));
             filling.pitch=.8f+.4f*(1-(s.HoseState==WaterHoseState.Wash?s.WashWaterLiters/s.Config.WashCapacityLiters:s.FloodWaterLiters/s.Config.FloodCapacityLiters));
-            UpdateGauge(floodGauge,s.FloodWaterLiters/s.Config.FloodCapacityLiters);
-            UpdateGauge(washGauge,s.WashWaterLiters/s.Config.WashCapacityLiters);
+            if(floodLevel!=null){floodLevel.Show(s.FloodWaterLiters/s.Config.FloodCapacityLiters);washLevel.Show(s.WashWaterLiters/s.Config.WashCapacityLiters);}
+            else{UpdateGauge(floodGauge,s.FloodWaterLiters/s.Config.FloodCapacityLiters);UpdateGauge(washGauge,s.WashWaterLiters/s.Config.WashCapacityLiters);}
             levelUpdate-=dt;
             if(levelUpdate<=0){levelUpdate=.2f;levels.text="FLOOD WATER  "+s.FloodWaterLiters.ToString("0")+" / 738 L\nWASH WATER  "+s.WashWaterLiters.ToString("0")+" / 310 L\n"+(s.ServiceOverflowLitersPerSecond>.01f?"OVERFLOW — CLOSE SUPPLY":"SUPPLY  "+s.ServiceFlowLitersPerSecond.ToString("0.0")+" L/s");}
             UpdateGroundMaterials(dt);
+        }
+
+        /// <summary>The machine's keep-out box for walking and hose routing (machine space). The
+        /// generated values enclose the procedural machine; an authored machine whose parts reach
+        /// further enlarges it, never shrinks it.</summary>
+        public struct Footprint
+        {
+            public float HalfWidth, Rear, Front;
+            public static readonly Footprint Generated=new Footprint{HalfWidth=1.38f,Rear=1.88f,Front=2.84f};
+            public bool Contains(Vector3 local){ return Mathf.Abs(local.x)<HalfWidth&&local.z> -Rear&&local.z<Front; }
+            public static Footprint Enclosing(Transform machine,params Transform[] roots)
+            {
+                var f=Generated;
+                foreach(var root in roots)
+                    if(root!=null)
+                        foreach(var r in root.GetComponentsInChildren<MeshRenderer>(true))
+                        {
+                            var filter=r.GetComponent<MeshFilter>();
+                            if(!r.enabled||r.GetComponent<TextMesh>()!=null||filter==null||filter.sharedMesh==null)continue;
+                            var b=filter.sharedMesh.bounds;
+                            for(int i=0;i<8;i++)
+                            {
+                                Vector3 p=machine.InverseTransformPoint(r.transform.TransformPoint(new Vector3(i%2==0?b.min.x:b.max.x,(i/2)%2==0?b.min.y:b.max.y,i/4==0?b.min.z:b.max.z)));
+                                if(p.y>2.2f)continue; // walking and the floor hose pass under overhead parts
+                                f.HalfWidth=Mathf.Max(f.HalfWidth,Mathf.Abs(p.x)+.08f);f.Rear=Mathf.Max(f.Rear,-p.z+.08f);f.Front=Mathf.Max(f.Front,p.z+.08f);
+                            }
+                        }
+                return f;
+            }
+        }
+
+        /// <summary>Where a coupled hose leaves the floor: below the socket, on the nearest side of the footprint.</summary>
+        public static Vector3 HoseDrop(Vector3 socketLocal,Footprint f)
+        {
+            float edge=f.HalfWidth+.15f,right=edge-socketLocal.x,left=edge+socketLocal.x,front=f.Front+.14f-socketLocal.z,rear=f.Rear+.14f+socketLocal.z;
+            float best=Mathf.Min(Mathf.Min(right,left),Mathf.Min(front,rear));
+            if(best==right)return new Vector3(edge,0,socketLocal.z);
+            if(best==left)return new Vector3(-edge,0,socketLocal.z);
+            return new Vector3(Mathf.Clamp(socketLocal.x,-edge,edge),0,best==front?f.Front+.14f:-f.Rear-.14f);
         }
 
         // A short visibility graph routes the floor hose around the machine footprint.
         // Six fixed nodes and reusable buffers avoid runtime object/particle accumulation.
         int BuildRoute(Vector3 endpoint,out float length)
         {
-            Transform machine=game.World.Machine;
             Vector3 groundStart=anchorPosition-station.right*.12f;groundStart.y=.03f;
-            Vector3 localEnd=machine.InverseTransformPoint(endpoint);
+            return Route(game.World.Machine.localToWorldMatrix,anchorPosition,groundStart,endpoint,game.Sim!=null&&game.Sim.HoseConnected,footprint,route,out length);
+        }
+
+        static readonly Vector2[] routeNodes=new Vector2[6];
+        static readonly float[] routeDistances=new float[6];
+        static readonly bool[] routeVisited=new bool[6];
+        static readonly int[] routePrevious=new int[6],routeReverse=new int[6];
+
+        /// <summary>The floor hose from the wall reel to endpoint around the machine footprint. Shared by
+        /// play and the fill-port Inspector (any machine pose). Returns the point count written to route.</summary>
+        public static int Route(Matrix4x4 machine,Vector3 anchor,Vector3 groundStart,Vector3 endpoint,bool connected,Footprint f,Vector3[] route,out float length)
+        {
+            Matrix4x4 toLocal=machine.inverse;
+            Vector3 localEnd=toLocal.MultiplyPoint3x4(endpoint);
             Vector3 groundEnd=endpoint;
-            if(game.Sim!=null&&game.Sim.HoseConnected)groundEnd=machine.TransformPoint(new Vector3(1.53f,0,localEnd.z));
-            else if(Mathf.Abs(localEnd.x)<1.48f&&localEnd.z> -1.98f&&localEnd.z<2.95f)
-                groundEnd=machine.TransformPoint(new Vector3(localEnd.x>=0?1.53f:-1.53f,0,localEnd.z));
+            float edge=f.HalfWidth+.15f,node=f.HalfWidth+.14f;
+            if(connected)groundEnd=machine.MultiplyPoint3x4(HoseDrop(localEnd,f));
+            else if(Mathf.Abs(localEnd.x)<f.HalfWidth+.10f&&localEnd.z> -f.Rear-.10f&&localEnd.z<f.Front+.11f)
+                groundEnd=machine.MultiplyPoint3x4(new Vector3(localEnd.x>=0?edge:-edge,0,localEnd.z));
             groundEnd.y=.03f;
-            Vector3 a=machine.InverseTransformPoint(groundStart),b=machine.InverseTransformPoint(groundEnd);
+            Vector3 a=toLocal.MultiplyPoint3x4(groundStart),b=toLocal.MultiplyPoint3x4(groundEnd);
+            var nodes=routeNodes;var distances=routeDistances;var visited=routeVisited;var previous=routePrevious;
             nodes[0]=new Vector2(a.x,a.z);nodes[1]=new Vector2(b.x,b.z);
-            nodes[2]=new Vector2(-1.52f,-2.02f);nodes[3]=new Vector2(1.52f,-2.02f);
-            nodes[4]=new Vector2(-1.52f,2.98f);nodes[5]=new Vector2(1.52f,2.98f);
+            nodes[2]=new Vector2(-node,-f.Rear-.14f);nodes[3]=new Vector2(node,-f.Rear-.14f);
+            nodes[4]=new Vector2(-node,f.Front+.14f);nodes[5]=new Vector2(node,f.Front+.14f);
             for(int i=0;i<6;i++){distances[i]=float.PositiveInfinity;visited[i]=false;previous[i]=-1;}
             distances[0]=0;
             for(int pass=0;pass<6;pass++)
@@ -417,30 +479,45 @@ namespace IceResurfacer.Presentation
                 if(current<0||current==1)break;visited[current]=true;
                 for(int i=0;i<6;i++)
                 {
-                    if(i==current||visited[i]||CrossesMachine(nodes[current],nodes[i]))continue;
+                    if(i==current||visited[i]||CrossesMachine(nodes[current],nodes[i],f))continue;
                     float candidate=distances[current]+Vector2.Distance(nodes[current],nodes[i]);
                     if(candidate<distances[i]){distances[i]=candidate;previous[i]=current;}
                 }
             }
-            int count=0;route[count++]=anchorPosition;route[count++]=groundStart;
+            int count=0;route[count++]=anchor;route[count++]=groundStart;
             int n=0,index=1;
-            while(index>0&&n<6){reversePath[n++]=index;index=previous[index];}
+            while(index>0&&n<6){routeReverse[n++]=index;index=previous[index];}
             if(index<0){route[count++]=groundEnd;length=float.PositiveInfinity;route[count++]=endpoint;return count;}
-            for(int i=n-1;i>=0;i--){Vector2 p=nodes[reversePath[i]];Vector3 p3=machine.TransformPoint(new Vector3(p.x,0,p.y));p3.y=.03f;route[count++]=p3;}
+            for(int i=n-1;i>=0;i--){Vector2 p=nodes[routeReverse[i]];Vector3 p3=machine.MultiplyPoint3x4(new Vector3(p.x,0,p.y));p3.y=.03f;route[count++]=p3;}
             route[count++]=endpoint;length=0;
             for(int i=1;i<count;i++)length+=Vector3.Distance(route[i-1],route[i]);
             return count;
         }
-        static bool CrossesMachine(Vector2 a,Vector2 b)
+        static bool CrossesMachine(Vector2 a,Vector2 b,Footprint f)
         {
             float t0=0,t1=1;Vector2 d=b-a;
-            return Slab(a.x,d.x,-1.39f,1.39f,ref t0,ref t1)&&Slab(a.y,d.y,-1.89f,2.85f,ref t0,ref t1)&&t1>t0;
+            return Slab(a.x,d.x,-f.HalfWidth-.01f,f.HalfWidth+.01f,ref t0,ref t1)&&Slab(a.y,d.y,-f.Rear-.01f,f.Front+.01f,ref t0,ref t1)&&t1>t0;
         }
         static bool Slab(float origin,float direction,float min,float max,ref float low,ref float high)
         {
             if(Mathf.Abs(direction)<.00001f)return origin>min&&origin<max;
             float a=(min-origin)/direction,b=(max-origin)/direction;if(a>b){float swap=a;a=b;b=swap;}
             low=Mathf.Max(low,a);high=Mathf.Min(high,b);return high>=low;
+        }
+
+        /// <summary>The generated water station's frame (game space).</summary>
+        public static Matrix4x4 GeneratedStation(SimulatorConfig c)
+        {
+            var layout=new ServiceLayout(c);float wallInset=6-layout.RoomHalfWidth;
+            layout.ToWorld(wallInset,Simulation.ServiceAnchorOutward*2,out float sx,out float sz);
+            return Matrix4x4.TRS(new Vector3(sx,0,sz),Quaternion.Euler(0,135,0),Vector3.one);
+        }
+        /// <summary>The wall reel's hose anchor and the point where the hose meets the floor, for a station frame.</summary>
+        public static void HoseAnchor(Matrix4x4 station,SimulatorConfig c,out Vector3 anchor,out Vector3 groundStart)
+        {
+            var layout=new ServiceLayout(c);float wallInset=6-layout.RoomHalfWidth;
+            anchor=station.MultiplyPoint3x4(new Vector3(wallInset-Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward));
+            groundStart=anchor-station.MultiplyVector(Vector3.right).normalized*.12f;groundStart.y=.03f;
         }
 
         void BuildStation()
@@ -537,14 +614,42 @@ namespace IceResurfacer.Presentation
         {
             if(Application.isPlaying)Destroy(target);else DestroyImmediate(target);
         }
+        // The fixed ports and gauges: the authored machine's own (IceWaterFillPort / IceWaterLevelGauge),
+        // or, for the generated machine, built here exactly as before.
         void BuildPorts()
         {
-            floodInlet=Port("FLOOD WATER",new Vector3(Simulation.FillPortLocalX,Simulation.FloodFillHeight,Simulation.FloodFillLocalZ),blue);
-            washInlet=Port("WASH WATER",new Vector3(Simulation.FillPortLocalX,Simulation.WashFillHeight,Simulation.WashFillLocalZ),teal);
+            var machine=game.World.Machine;
+            var ports=machine.GetComponentsInChildren<IceWaterFillPort>(true);
+            var gauges=machine.GetComponentsInChildren<IceWaterLevelGauge>(true);
+            if(ports.Length>0||gauges.Length>0){BindPorts(ports,gauges);return;}
+            floodInlet=Port("FLOOD WATER",new Vector3(Simulation.FillPortLocalX,Simulation.FloodFillHeight,Simulation.FloodFillLocalZ),blue,out floodOverflow);
+            washInlet=Port("WASH WATER",new Vector3(Simulation.FillPortLocalX,Simulation.WashFillHeight,Simulation.WashFillLocalZ),teal,out washOverflow);
             floodGauge=Gauge(new Vector3(Simulation.FillPortLocalX+.01f,.80f,Simulation.FloodFillLocalZ),blue);
             washGauge=Gauge(new Vector3(Simulation.FillPortLocalX+.01f,1.06f,Simulation.WashFillLocalZ),teal);
         }
-        Transform Port(string name,Vector3 position,Material material)
+        void BindPorts(IceWaterFillPort[] ports,IceWaterLevelGauge[] gauges)
+        {
+            T One<T>(T[] all,System.Func<T,bool> match,string what) where T:Object
+            {
+                var found=System.Array.FindAll(all,x=>match(x));
+                if(found.Length!=1)throw new System.InvalidOperationException("The authored machine needs exactly one "+what+" (found "+found.Length+"). Fix it in AuroraR54.prefab; see the fill port Inspector.");
+                return found[0];
+            }
+            var flood=One(ports,p=>p.port==WaterFillPort.Flood,"FLOOD WATER fill port (IceWaterFillPort)");
+            var wash=One(ports,p=>p.port==WaterFillPort.Wash,"WASH WATER fill port (IceWaterFillPort)");
+            foreach(var p in new[]{flood,wash})if(!p.IsComplete)throw new System.InvalidOperationException(p.Label+" fill port needs its hose and overflow sockets assigned.");
+            floodLevel=One(gauges,g=>g.tank==WaterFillPort.Flood,"flood tank level gauge (IceWaterLevelGauge)");
+            washLevel=One(gauges,g=>g.tank==WaterFillPort.Wash,"wash tank level gauge (IceWaterLevelGauge)");
+            foreach(var g in new[]{floodLevel,washLevel})
+            {
+                if(!g.IsComplete)throw new System.InvalidOperationException(g.name+" needs its indicator assigned (a child of the gauge).");
+                var r=g.indicator.GetComponent<Renderer>();
+                if(r!=null&&!r.enabled)Debug.LogWarning(g.name+": the level indicator was combined by runtime batching and cannot move. Add IceKeepUnbatched to it.",g);
+            }
+            floodInlet=flood.hoseSocket;floodOverflow=flood.overflowSocket;
+            washInlet=wash.hoseSocket;washOverflow=wash.overflowSocket;
+        }
+        Transform Port(string name,Vector3 position,Material material,out Transform overflow)
         {
             Transform inlet=Group(name+" fill coupling",game.World.Machine,position);
             Box("Fill-port mounting plate",inlet,new Vector3(-.015f,0,0),new Vector3(.025f,.26f,.32f),material);
@@ -554,6 +659,8 @@ namespace IceResurfacer.Presentation
             Beam("Overflow standpipe",inlet,new Vector3(-.01f,-.07f,.13f),new Vector3(.11f,-.25f,.13f),.027f,steel);
             Label(name,inlet,new Vector3(.025f,.22f,0),.053f,Color.white,Quaternion.Euler(0,90,0));
             Label("E  INTERACT",inlet,new Vector3(.025f,.15f,0),.034f,Color.white,Quaternion.Euler(0,90,0));
+            // The standpipe's open end, where overflow leaves.
+            overflow=Group(name+" overflow discharge",inlet,new Vector3(.11f,-.25f,.13f));
             return Group(name+" hose attachment",inlet,new Vector3(.14f,0,0));
         }
         Transform Gauge(Vector3 position,Material material)

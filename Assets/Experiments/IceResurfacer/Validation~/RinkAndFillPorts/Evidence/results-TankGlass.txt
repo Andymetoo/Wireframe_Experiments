@@ -1,0 +1,2 @@
+INFO TANK GLASS | east side glass | stopped at lift 45% (TankGlass at y 1.68 m) | visible tank beyond the board line: below 2.55 m 2 mm, between 2.55 m and the new glass top 0 mm
+INFO TANK GLASS | north end glass | stopped at lift 100% (None at y 0.00 m) | visible tank beyond the board line: below 2.55 m 0 mm, between 2.55 m and the new glass top 0 mm

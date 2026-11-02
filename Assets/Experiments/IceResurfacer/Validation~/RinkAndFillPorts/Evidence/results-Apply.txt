@@ -1,0 +1,1183 @@
+== Machine before migration / 2026-11-02T14:07:13
+INFO machine transforms: 578
+== Rink boards and glass (Authored Scene > Refine Rink Boards and Glass) / 2026-11-02T14:07:13
+INFO Backup: Assets/Experiments/IceResurfacer/Backups~/2026-11-02 140713 Before rink boards and glass refinement
+INFO White impact dasher: mesh 'Rink boards and ice sheet.Meshes' rebuilt in place (2832 -> 1896 vertices)
+INFO Yellow kick strip: mesh '002 Yellow kick strip' rebuilt in place (2832 -> 3784 vertices)
+INFO Dark top rail: mesh '003 Dark top rail' rebuilt in place (2832 -> 3784 vertices)
+INFO Continuous safety glass: mesh '004 Continuous safety glass' rebuilt in place (2832 -> 2840 vertices)
+INFO Added Glass top edge channel
+INFO Glass supports raised to the local glass height: 48
+INFO Added Service gate board post / southwest
+INFO Added Service gate board post / northeast
+INFO Saved Assets/Experiments/IceResurfacer/Arena/Sections/Rink boards and ice sheet.prefab and Assets/Experiments/IceResurfacer/Arena/Sections/Rink boards and ice sheet.Meshes.asset (GUIDs unchanged).
+== Water fill ports (Authored Scene > Add Persistent Water Fill Ports to Machine) / 2026-11-02T14:07:14
+INFO Backup: Assets/Experiments/IceResurfacer/Backups~/2026-11-02 140714 Before persistent water fill ports
+INFO Created Assets/Experiments/IceResurfacer/Machine/Materials/Flood water inlet - blue.mat
+INFO Created Assets/Experiments/IceResurfacer/Machine/Materials/Wash inlet - teal.mat
+INFO Added Water Fill Connections
+INFO Added Flood Fill Port at machine (1.020, 1.220, 0.050)
+INFO Added Flood Tank Level Gauge at machine (1.030, 0.800, 0.050)
+INFO Added Wash Fill Port at machine (1.020, 1.480, -0.550)
+INFO Added Wash Tank Level Gauge at machine (1.030, 1.060, -0.550)
+INFO Saved Assets/Experiments/IceResurfacer/Machine/AuroraR54.prefab (GUID unchanged). Play now binds these instead of generating its own.
+PASS running the migration again changes nothing (no duplicates)
+PASS running the rink refinement again changes nothing
+PASS existing machine part still present: AuroraR54#0.0.
+PASS machine part unchanged: AuroraR54#0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin#0.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin#0.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge#0.0.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge#0.0.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell#0.0.0.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell#0.0.0.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank lower side skin#0.0.0.0.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank lower side skin#0.0.0.0.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank sloped upper shoulder#0.0.0.0.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank sloped upper shoulder#0.0.0.0.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank lower side skin#0.0.0.0.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank lower side skin#0.0.0.0.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank sloped upper shoulder#0.0.0.0.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Hollow centered snow tank shell/Tank sloped upper shoulder#0.0.0.0.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered steel tank floor / inside shell footprint#0.0.0.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered steel tank floor / inside shell footprint#0.0.0.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall above or below inlet#0.0.0.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall above or below inlet#0.0.0.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet#0.0.0.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet#0.0.0.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet (2)#0.0.0.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet (2)#0.0.0.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet (3)#0.0.0.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet (3)#0.0.0.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet (1)#0.0.0.0.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall left of inlet (1)#0.0.0.0.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall right of inlet#0.0.0.0.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall right of inlet#0.0.0.0.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall right of inlet (1)#0.0.0.0.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall right of inlet (1)#0.0.0.0.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall above or below inlet#0.0.0.0.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tapered rear wall above or below inlet#0.0.0.0.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Forward dump door hinge#0.0.0.0.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Forward dump door hinge#0.0.0.0.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Forward dump door hinge/Tapered opening snow dump door#0.0.0.0.10.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Forward dump door hinge/Tapered opening snow dump door#0.0.0.0.10.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Sloping forward tank crown#0.0.0.0.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Sloping forward tank crown#0.0.0.0.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Roof rear rim#0.0.0.0.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Roof rear rim#0.0.0.0.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Roof rear left rim#0.0.0.0.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Roof rear left rim#0.0.0.0.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Roof right of inspection window#0.0.0.0.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Roof right of inspection window#0.0.0.0.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline#0.0.0.0.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline#0.0.0.0.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window side frame#0.0.0.0.15.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window side frame#0.0.0.0.15.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window end frame#0.0.0.0.15.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window end frame#0.0.0.0.15.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window side frame#0.0.0.0.15.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window side frame#0.0.0.0.15.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window end frame#0.0.0.0.15.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Black inspection window end frame#0.0.0.0.15.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Inspection opening protective crossbar#0.0.0.0.15.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Physical snow inspection opening / clear sightline/Inspection opening protective crossbar#0.0.0.0.15.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Uneven snow surface / actual tank contents#0.0.0.0.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Uneven snow surface / actual tank contents#0.0.0.0.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Snow exiting tilted tank at forward door#0.0.0.0.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Snow exiting tilted tank at forward door#0.0.0.0.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Flush tank glacier stripe#0.0.0.0.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Flush tank glacier stripe#0.0.0.0.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/AURORA#0.0.0.0.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/AURORA#0.0.0.0.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/R - 54#0.0.0.0.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/R - 54#0.0.0.0.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tank cylinder moving clevis pin#0.0.0.0.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tank cylinder moving clevis pin#0.0.0.0.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Flush tank glacier stripe#0.0.0.0.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Flush tank glacier stripe#0.0.0.0.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/AURORA#0.0.0.0.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/AURORA#0.0.0.0.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/R - 54#0.0.0.0.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/R - 54#0.0.0.0.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tank cylinder moving clevis pin#0.0.0.0.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Tank cylinder moving clevis pin#0.0.0.0.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/AURORA#0.0.0.0.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/AURORA#0.0.0.0.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Front accent panel#0.0.0.0.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Snow tank forward dump hinge/Front accent panel#0.0.0.0.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station#0.0.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station#0.0.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator floor#0.0.0.1.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator floor#0.0.0.1.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/DashControlBoard#0.0.0.1.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/DashControlBoard#0.0.0.1.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Non-slip operator floor mat#0.0.0.1.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Non-slip operator floor mat#0.0.0.1.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left platform support#0.0.0.1.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left platform support#0.0.0.1.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Inboard operator side panel#0.0.0.1.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Inboard operator side panel#0.0.0.1.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat pedestal#0.0.0.1.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat pedestal#0.0.0.1.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat slide rail#0.0.0.1.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat slide rail#0.0.0.1.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat suspension bushing#0.0.0.1.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat suspension bushing#0.0.0.1.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat slide rail#0.0.0.1.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat slide rail#0.0.0.1.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat suspension bushing#0.0.0.1.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Seat suspension bushing#0.0.0.1.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left#0.0.0.1.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left#0.0.0.1.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Operator cushion#0.0.0.1.10.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Operator cushion#0.0.0.1.10.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Operator seat back#0.0.0.1.10.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Operator seat back#0.0.0.1.10.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Seat left rear arm pad#0.0.0.1.10.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Seat left rear arm pad#0.0.0.1.10.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Seat right rear arm pad#0.0.0.1.10.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Seat right rear arm pad#0.0.0.1.10.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Seated eyes / attached to driver seat#0.0.0.1.10.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver seat assembly / left/Seated eyes / attached to driver seat#0.0.0.1.10.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column#0.0.0.1.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column#0.0.0.1.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column lower shaft#0.0.0.1.11.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column lower shaft#0.0.0.1.11.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column universal joint#0.0.0.1.11.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column universal joint#0.0.0.1.11.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column upper shaft#0.0.0.1.11.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column upper shaft#0.0.0.1.11.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column foot#0.0.0.1.11.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column foot#0.0.0.1.11.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column support#0.0.0.1.11.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering column support#0.0.0.1.11.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation#0.0.0.1.11.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation#0.0.0.1.11.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel rim#0.0.0.1.11.5.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel rim#0.0.0.1.11.5.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel spoke#0.0.0.1.11.5.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel spoke#0.0.0.1.11.5.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel spoke#0.0.0.1.11.5.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel spoke#0.0.0.1.11.5.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel spoke#0.0.0.1.11.5.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering wheel spoke#0.0.0.1.11.5.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering centre#0.0.0.1.11.5.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering centre#0.0.0.1.11.5.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering retaining nut#0.0.0.1.11.5.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete steering column/Steering wheel rotation/Steering retaining nut#0.0.0.1.11.5.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left#0.0.0.1.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left#0.0.0.1.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Angled console fascia#0.0.0.1.12.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Angled console fascia#0.0.0.1.12.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/LCD bezel#0.0.0.1.12.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/LCD bezel#0.0.0.1.12.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/LCD face#0.0.0.1.12.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/LCD face#0.0.0.1.12.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/AURORA#0.0.0.1.12.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/AURORA#0.0.0.1.12.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Pressure dial bezel#0.0.0.1.12.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Pressure dial bezel#0.0.0.1.12.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Pressure dial face#0.0.0.1.12.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Pressure dial face#0.0.0.1.12.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Pressure dial needle#0.0.0.1.12.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Driver-facing dashboard / left/Pressure dial needle#0.0.0.1.12.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp#0.0.0.1.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp#0.0.0.1.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Operator work lamp stalk#0.0.0.1.13.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Operator work lamp stalk#0.0.0.1.13.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Shielded operator work lamp#0.0.0.1.13.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Shielded operator work lamp#0.0.0.1.13.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Operator lamp downward diffuser#0.0.0.1.13.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Operator lamp downward diffuser#0.0.0.1.13.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Operator instrument illumination#0.0.0.1.13.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete operator instrument lamp/Operator instrument illumination#0.0.0.1.13.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor#0.0.0.1.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor#0.0.0.1.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Pedal backing plate#0.0.0.1.14.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Pedal backing plate#0.0.0.1.14.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot#0.0.0.1.14.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot#0.0.0.1.14.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator pedal#0.0.0.1.14.1.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator pedal#0.0.0.1.14.1.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator pedal pivot/Accelerator rubber tread#0.0.0.1.14.1.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot#0.0.0.1.14.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot#0.0.0.1.14.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake pedal#0.0.0.1.14.2.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake pedal#0.0.0.1.14.2.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake pedal pivot/Brake rubber tread#0.0.0.1.14.2.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator hinge pin#0.0.0.1.14.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Accelerator hinge pin#0.0.0.1.14.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake hinge pin#0.0.0.1.14.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Left operator pedal floor/Brake hinge pin#0.0.0.1.14.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank#0.0.0.1.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank#0.0.0.1.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve bank steel chassis#0.0.0.1.15.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve bank steel chassis#0.0.0.1.15.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Brushed hydraulic label fascia#0.0.0.1.15.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Brushed hydraulic label fascia#0.0.0.1.15.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever#0.0.0.1.15.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever#0.0.0.1.15.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever/Polished hydraulic lever stem#0.0.0.1.15.8.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever/Polished hydraulic lever stem#0.0.0.1.15.8.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever/Black phenolic hydraulic grip#0.0.0.1.15.8.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever/Black phenolic hydraulic grip#0.0.0.1.15.8.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever/Lever identification collar#0.0.0.1.15.8.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever/Lever identification collar#0.0.0.1.15.8.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/V AUG#0.0.0.1.15.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/V AUG#0.0.0.1.15.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/RUN#0.0.0.1.15.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/RUN#0.0.0.1.15.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/OFF#0.0.0.1.15.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/OFF#0.0.0.1.15.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever#0.0.0.1.15.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever#0.0.0.1.15.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever/Polished hydraulic lever stem#0.0.0.1.15.19.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever/Polished hydraulic lever stem#0.0.0.1.15.19.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever/Black phenolic hydraulic grip#0.0.0.1.15.19.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever/Black phenolic hydraulic grip#0.0.0.1.15.19.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever/Lever identification collar#0.0.0.1.15.19.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever/Lever identification collar#0.0.0.1.15.19.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/LIFT#0.0.0.1.15.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/LIFT#0.0.0.1.15.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/DOWN#0.0.0.1.15.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/DOWN#0.0.0.1.15.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/UP#0.0.0.1.15.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/UP#0.0.0.1.15.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever#0.0.0.1.15.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever#0.0.0.1.15.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever/Polished hydraulic lever stem#0.0.0.1.15.30.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever/Polished hydraulic lever stem#0.0.0.1.15.30.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever/Black phenolic hydraulic grip#0.0.0.1.15.30.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever/Black phenolic hydraulic grip#0.0.0.1.15.30.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever/Lever identification collar#0.0.0.1.15.30.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever/Lever identification collar#0.0.0.1.15.30.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/H AUG#0.0.0.1.15.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/H AUG#0.0.0.1.15.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/RUN#0.0.0.1.15.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/RUN#0.0.0.1.15.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/OFF#0.0.0.1.15.34.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/OFF#0.0.0.1.15.34.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.35.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Fixed valve spool collar#0.0.0.1.15.35.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.36.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.36.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.37.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.37.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.38.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.38.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.39.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Accordion lever boot#0.0.0.1.15.39.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.40.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic lever cross pivot#0.0.0.1.15.40.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever#0.0.0.1.15.41.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever#0.0.0.1.15.41.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever/Polished hydraulic lever stem#0.0.0.1.15.41.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever/Polished hydraulic lever stem#0.0.0.1.15.41.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever/Black phenolic hydraulic grip#0.0.0.1.15.41.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever/Black phenolic hydraulic grip#0.0.0.1.15.41.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever/Lever identification collar#0.0.0.1.15.41.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever/Lever identification collar#0.0.0.1.15.41.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.42.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Engraved lever identification plate#0.0.0.1.15.42.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/DUMP#0.0.0.1.15.43.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/DUMP#0.0.0.1.15.43.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/DOWN#0.0.0.1.15.44.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/DOWN#0.0.0.1.15.44.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/UP#0.0.0.1.15.45.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/UP#0.0.0.1.15.45.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.46.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.46.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.47.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.47.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.48.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.48.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.49.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.49.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.50.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.50.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.51.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.51.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.52.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Hydraulic spool pipe#0.0.0.1.15.52.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.53.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Valve manifold fitting#0.0.0.1.15.53.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold#0.0.0.1.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold#0.0.0.1.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Back_Behind_Conditioner#0.0.0.1.16.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Back_Behind_Conditioner#0.0.0.1.16.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing#0.0.0.1.16.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing#0.0.0.1.16.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Water valve body#0.0.0.1.16.1.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Water valve body#0.0.0.1.16.1.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Water valve mounting collar#0.0.0.1.16.1.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Water valve mounting collar#0.0.0.1.16.1.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Water valve gland nut#0.0.0.1.16.1.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Water valve gland nut#0.0.0.1.16.1.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Independent valve outlet pipe#0.0.0.1.16.1.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Independent valve outlet pipe#0.0.0.1.16.1.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Independent valve rubber line#0.0.0.1.16.1.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Independent valve rubber line#0.0.0.1.16.1.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle#0.0.0.1.16.1.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle#0.0.0.1.16.1.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Visible rotating valve stem#0.0.0.1.16.1.5.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Visible rotating valve stem#0.0.0.1.16.1.5.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Quarter turn valve stop dog#0.0.0.1.16.1.5.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Quarter turn valve stop dog#0.0.0.1.16.1.5.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Right angle valve handle#0.0.0.1.16.1.5.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Right angle valve handle#0.0.0.1.16.1.5.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Valve grip#0.0.0.1.16.1.5.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle/Valve grip#0.0.0.1.16.1.5.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Quarter turn valve index#0.0.0.1.16.1.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Valve closed mechanical stop#0.0.0.1.16.1.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Valve closed mechanical stop#0.0.0.1.16.1.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Valve open mechanical stop#0.0.0.1.16.1.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/Valve open mechanical stop#0.0.0.1.16.1.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER#0.0.0.1.16.1.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/FLOOD WATER#0.0.0.1.16.1.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/CLOSED#0.0.0.1.16.1.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/CLOSED#0.0.0.1.16.1.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/OPEN#0.0.0.1.16.1.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Flood valve fixed bearing/OPEN#0.0.0.1.16.1.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing#0.0.0.1.16.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing#0.0.0.1.16.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Water valve body#0.0.0.1.16.2.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Water valve body#0.0.0.1.16.2.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Water valve mounting collar#0.0.0.1.16.2.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Water valve mounting collar#0.0.0.1.16.2.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Water valve gland nut#0.0.0.1.16.2.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Water valve gland nut#0.0.0.1.16.2.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Independent valve outlet pipe#0.0.0.1.16.2.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Independent valve outlet pipe#0.0.0.1.16.2.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Independent valve rubber line#0.0.0.1.16.2.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Independent valve rubber line#0.0.0.1.16.2.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle#0.0.0.1.16.2.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle#0.0.0.1.16.2.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Visible rotating valve stem#0.0.0.1.16.2.5.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Visible rotating valve stem#0.0.0.1.16.2.5.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Quarter turn valve stop dog#0.0.0.1.16.2.5.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Quarter turn valve stop dog#0.0.0.1.16.2.5.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Right angle valve handle#0.0.0.1.16.2.5.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Right angle valve handle#0.0.0.1.16.2.5.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Valve grip#0.0.0.1.16.2.5.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER / quarter turn L handle/Valve grip#0.0.0.1.16.2.5.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Quarter turn valve index#0.0.0.1.16.2.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Valve closed mechanical stop#0.0.0.1.16.2.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Valve closed mechanical stop#0.0.0.1.16.2.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Valve open mechanical stop#0.0.0.1.16.2.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/Valve open mechanical stop#0.0.0.1.16.2.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER#0.0.0.1.16.2.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/WASH WATER#0.0.0.1.16.2.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/CLOSED#0.0.0.1.16.2.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/CLOSED#0.0.0.1.16.2.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/OPEN#0.0.0.1.16.2.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Adjacent flood and wash water manifold/Wash valve fixed bearing/OPEN#0.0.0.1.16.2.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Water manifold right bracket#0.0.0.1.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Water manifold right bracket#0.0.0.1.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly#0.0.0.1.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly#0.0.0.1.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel#0.0.0.1.18.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel#0.0.0.1.18.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel rim#0.0.0.1.18.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel rim#0.0.0.1.18.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel spoke#0.0.0.1.18.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel spoke#0.0.0.1.18.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel spoke#0.0.0.1.18.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel spoke#0.0.0.1.18.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel spoke#0.0.0.1.18.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel spoke#0.0.0.1.18.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Handwheel crank#0.0.0.1.18.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Handwheel crank#0.0.0.1.18.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel machined hub#0.0.0.1.18.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade depth handwheel/Blade handwheel machined hub#0.0.0.1.18.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade spindle fixed bearing#0.0.0.1.18.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade spindle fixed bearing#0.0.0.1.18.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade spindle lower collar#0.0.0.1.18.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade spindle lower collar#0.0.0.1.18.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade index support#0.0.0.1.18.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade index support#0.0.0.1.18.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/BLADE  /  3.5 TURNS#0.0.0.1.18.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/BLADE  /  3.5 TURNS#0.0.0.1.18.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade adjustment spindle#0.0.0.1.18.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete blade screw and handwheel assembly/Blade adjustment spindle#0.0.0.1.18.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly#0.0.0.1.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly#0.0.0.1.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker fixed guide#0.0.0.1.19.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker fixed guide#0.0.0.1.19.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker guide collar#0.0.0.1.19.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker guide collar#0.0.0.1.19.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke#0.0.0.1.19.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke#0.0.0.1.19.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke/Snow breaker sliding rod#0.0.0.1.19.2.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke/Snow breaker sliding rod#0.0.0.1.19.2.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke/Snow breaker T handle#0.0.0.1.19.2.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke/Snow breaker T handle#0.0.0.1.19.2.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker hand guard#0.0.0.1.19.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker hand guard#0.0.0.1.19.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/R-54#0.0.0.1.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-hand operator station/R-54#0.0.0.1.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access#0.0.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access#0.0.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Boarding lower step#0.0.0.2.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Boarding lower step#0.0.0.2.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Left-side boarding access/Step non-slip tread#0.0.0.2.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side#0.0.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side#0.0.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Board brush link / compliant extension#0.0.0.3.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Board brush link / compliant extension#0.0.0.3.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush deployment hinge#0.0.0.3.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush deployment hinge#0.0.0.3.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush#0.0.0.3.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush#0.0.0.3.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Brush motor housing#0.0.0.3.2.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Brush motor housing#0.0.0.3.2.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Brush plate#0.0.0.3.2.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Brush plate#0.0.0.3.2.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Rotating board brush/Board brush bristle bundle#0.0.0.3.2.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush contact roller carriage#0.0.0.3.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush contact roller carriage#0.0.0.3.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush contact roller carriage/Brush contact roller stalk#0.0.0.3.3.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush contact roller carriage/Brush contact roller stalk#0.0.0.3.3.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush contact roller carriage/Board brush kickplate contact roller#0.0.0.3.3.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Board brush articulated arm / left side/Brush contact roller carriage/Board brush kickplate contact roller#0.0.0.3.3.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet#0.0.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet#0.0.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Lower elevator shroud#0.0.0.4.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Lower elevator shroud#0.0.0.4.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical auger moving flights#0.0.0.4.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical auger moving flights#0.0.0.4.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical auger moving flights/Elevator drive shaft#0.0.0.4.1.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical auger moving flights/Elevator drive shaft#0.0.0.4.1.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical auger moving flights/Vertical elevator flight#0.0.0.4.1.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical auger moving flights/Vertical elevator flight#0.0.0.4.1.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Elevator inspection guard#0.0.0.4.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Compact discharge casing#0.0.0.4.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Compact discharge casing#0.0.0.4.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical conveyor hydraulic motor#0.0.0.4.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Vertical conveyor hydraulic motor#0.0.0.4.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Conveyor motor end cap#0.0.0.4.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Conveyor motor end cap#0.0.0.4.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Hydraulic motor return hose#0.0.0.4.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Hydraulic motor return hose#0.0.0.4.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Rear-wall auger discharge into tank#0.0.0.4.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Rear-wall auger discharge into tank#0.0.0.4.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Covered snow transfer throat#0.0.0.4.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Covered snow transfer throat#0.0.0.4.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Short rear-wall delivery throat#0.0.0.4.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Compact vertical snow conveyor / rear tank inlet/Short rear-wall delivery throat#0.0.0.4.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush#0.0.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush#0.0.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel#0.0.0.5.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel#0.0.0.5.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel/Guide roller rubber tire#0.0.0.5.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel/Guide roller rubber tire#0.0.0.5.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel/Guide roller axle cap#0.0.0.5.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel/Guide roller axle cap#0.0.0.5.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel/Guide roller rotation witness#0.0.0.5.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Board guide freely rotating wheel/Guide roller rotation witness#0.0.0.5.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Guide roller bracket#0.0.0.5.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Front-left board guide / distinct from board brush/Guide roller bracket#0.0.0.5.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels#0.0.0.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels#0.0.0.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle#0.0.0.6.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle#0.0.0.6.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel#0.0.0.6.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel#0.0.0.6.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire carcass#0.0.0.6.0.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire carcass#0.0.0.6.0.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Pressed steel rim#0.0.0.6.0.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Pressed steel rim#0.0.0.6.0.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Hub cap#0.0.0.6.0.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Hub cap#0.0.0.6.0.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.0.0.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.34.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.0.0.34.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle#0.0.0.6.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle#0.0.0.6.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel#0.0.0.6.1.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel#0.0.0.6.1.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire carcass#0.0.0.6.1.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire carcass#0.0.0.6.1.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Pressed steel rim#0.0.0.6.1.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Pressed steel rim#0.0.0.6.1.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Hub cap#0.0.0.6.1.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Hub cap#0.0.0.6.1.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Wheel lug#0.0.0.6.1.0.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.34.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Front steering knuckle/Treaded drive wheel/Tire traction block#0.0.0.6.1.0.34.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub#0.0.0.6.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub#0.0.0.6.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel#0.0.0.6.2.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel#0.0.0.6.2.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire carcass#0.0.0.6.2.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire carcass#0.0.0.6.2.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Pressed steel rim#0.0.0.6.2.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Pressed steel rim#0.0.0.6.2.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Hub cap#0.0.0.6.2.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Hub cap#0.0.0.6.2.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.2.0.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.34.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.2.0.34.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub#0.0.0.6.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub#0.0.0.6.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel#0.0.0.6.3.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel#0.0.0.6.3.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire carcass#0.0.0.6.3.0.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire carcass#0.0.0.6.3.0.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Pressed steel rim#0.0.0.6.3.0.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Pressed steel rim#0.0.0.6.3.0.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Hub cap#0.0.0.6.3.0.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Hub cap#0.0.0.6.3.0.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Wheel lug#0.0.0.6.3.0.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.34.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Wheels/Rear wheel hub/Treaded drive wheel/Tire traction block#0.0.0.6.3.0.34.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment#0.0.0.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment#0.0.0.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift cylinder barrel / articulated#0.0.0.7.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift cylinder barrel / articulated#0.0.0.7.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift cylinder barrel / articulated#0.0.0.7.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift cylinder barrel / articulated#0.0.0.7.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift chrome piston / telescoping#0.0.0.7.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift chrome piston / telescoping#0.0.0.7.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift chrome piston / telescoping#0.0.0.7.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank lift chrome piston / telescoping#0.0.0.7.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift barrel / articulated#0.0.0.7.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift barrel / articulated#0.0.0.7.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift barrel / articulated#0.0.0.7.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift barrel / articulated#0.0.0.7.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chrome piston / telescoping#0.0.0.7.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chrome piston / telescoping#0.0.0.7.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chrome piston / telescoping#0.0.0.7.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chrome piston / telescoping#0.0.0.7.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank cylinder lower clevis pin#0.0.0.7.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank cylinder lower clevis pin#0.0.0.7.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank cylinder lower clevis pin#0.0.0.7.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Tank cylinder lower clevis pin#0.0.0.7.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chassis clevis#0.0.0.7.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chassis clevis#0.0.0.7.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chassis clevis#0.0.0.7.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Hydraulic equipment/Conditioner lift chassis clevis#0.0.0.7.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork#0.0.0.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork#0.0.0.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Central steel chassis#0.0.0.8.0.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Central steel chassis#0.0.0.8.0.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Tapered between-axle casing / front wheel wells#0.0.0.8.1.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Tapered between-axle casing / front wheel wells#0.0.0.8.1.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear crossmember#0.0.0.8.2.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear crossmember#0.0.0.8.2.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Shaped engine cover / right of operator#0.0.0.8.3.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Shaped engine cover / right of operator#0.0.0.8.3.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.4.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.4.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.5.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.5.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.6.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.6.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.7.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.7.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.8.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.8.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.9.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.9.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.10.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.10.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.11.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Engine cooling louvre#0.0.0.8.11.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Inboard front wheel splash guard#0.0.0.8.12.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Inboard front wheel splash guard#0.0.0.8.12.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Inboard front wheel splash guard#0.0.0.8.13.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Inboard front wheel splash guard#0.0.0.8.13.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear wheel arch mudguard#0.0.0.8.14.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear wheel arch mudguard#0.0.0.8.14.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear wheel arch mudguard (1)#0.0.0.8.15.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear wheel arch mudguard (1)#0.0.0.8.15.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Equipment-side rear safety rail#0.0.0.8.16.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Equipment-side rear safety rail#0.0.0.8.16.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Equipment-side top safety rail#0.0.0.8.17.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Equipment-side top safety rail#0.0.0.8.17.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Filler neck#0.0.0.8.18.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Filler neck#0.0.0.8.18.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Filler cap#0.0.0.8.19.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Filler cap#0.0.0.8.19.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear bumper#0.0.0.8.20.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear bumper#0.0.0.8.20.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front bumper#0.0.0.8.21.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front bumper#0.0.0.8.21.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/EngineBloc#0.0.0.8.22.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/EngineBloc#0.0.0.8.22.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/BackBloc#0.0.0.8.23.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/BackBloc#0.0.0.8.23.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front lamp housing#0.0.0.8.24.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front lamp housing#0.0.0.8.24.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front LED lamp#0.0.0.8.25.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front LED lamp#0.0.0.8.25.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear marker#0.0.0.8.26.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Rear marker#0.0.0.8.26.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.27.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.27.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.28.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.28.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.29.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.29.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front lamp housing#0.0.0.8.30.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front lamp housing#0.0.0.8.30.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front LED lamp#0.0.0.8.31.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Front LED lamp#0.0.0.8.31.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.32.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.32.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.33.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.33.
+PASS existing machine part still present: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.34.
+PASS machine part unchanged: AuroraR54/AURORA R-54 / rear axle origin/Chassis and bodywork/Frame bolt#0.0.0.8.34.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch#0.0.1.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch#0.0.1.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Conditioner stainless housing#0.0.1.0.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Conditioner stainless housing#0.0.1.0.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Conditioner upper guard#0.0.1.1.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Conditioner upper guard#0.0.1.1.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Trailing distribution towel#0.0.1.2.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Trailing distribution towel#0.0.1.2.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.3.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.3.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.4.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.4.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.5.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.5.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.6.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.6.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.7.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.7.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.8.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.8.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.9.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.9.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.10.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.10.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.11.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.11.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.12.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.12.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.13.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.13.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.14.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.14.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.15.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.15.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.16.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.16.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.17.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.17.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.18.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.18.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.19.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Towel longitudinal fold#0.0.1.19.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Cutting blade edge#0.0.1.20.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Cutting blade edge#0.0.1.20.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Exposed conditioner side plate#0.0.1.21.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Exposed conditioner side plate#0.0.1.21.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Amber conditioner clearance edge#0.0.1.22.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Amber conditioner clearance edge#0.0.1.22.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Lift linkage#0.0.1.23.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Lift linkage#0.0.1.23.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Conditioner runner#0.0.1.24.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Conditioner runner#0.0.1.24.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Exposed conditioner side plate#0.0.1.25.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Exposed conditioner side plate#0.0.1.25.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Amber conditioner clearance edge#0.0.1.26.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Amber conditioner clearance edge#0.0.1.26.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Lift linkage#0.0.1.27.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Lift linkage#0.0.1.27.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Conditioner runner#0.0.1.28.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Conditioner runner#0.0.1.28.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection recess#0.0.1.29.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection recess#0.0.1.29.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft#0.0.1.30.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft#0.0.1.30.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft/Horizontal auger core#0.0.1.30.0.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft/Horizontal auger core#0.0.1.30.0.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft/Left conveyor flight#0.0.1.30.1.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft/Left conveyor flight#0.0.1.30.1.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft/Right conveyor flight#0.0.1.30.2.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Horizontal auger shaft/Right conveyor flight#0.0.1.30.2.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.31.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.31.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.32.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.32.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.33.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.33.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.34.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.34.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.35.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.35.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.36.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.36.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.37.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.37.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.38.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.38.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.39.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.39.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.40.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.40.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.41.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.41.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.42.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.42.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.43.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.43.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.44.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.44.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.45.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.45.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.46.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.46.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.47.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.47.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.48.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.48.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.49.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.49.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.50.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.50.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.51.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Auger inspection guard rod#0.0.1.51.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.52.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood outlet nozzle#0.0.1.52.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Wash water manifold#0.0.1.53.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Wash water manifold#0.0.1.53.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Wash pickup squeegee contact#0.0.1.54.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Wash pickup squeegee contact#0.0.1.54.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Flood distribution manifold#0.0.1.55.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Flood distribution manifold#0.0.1.55.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Visible flood emission#0.0.1.56.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Visible flood emission#0.0.1.56.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Escaping snow at conditioner#0.0.1.57.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Escaping snow at conditioner#0.0.1.57.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/AURORA  /  CONDITIONER#0.0.1.58.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/AURORA  /  CONDITIONER#0.0.1.58.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Hydraulic flexible hose#0.0.1.59.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Hydraulic flexible hose#0.0.1.59.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Conditioner lift lower clevis#0.0.1.60.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Conditioner lift lower clevis#0.0.1.60.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Hydraulic flexible hose#0.0.1.61.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Hydraulic flexible hose#0.0.1.61.
+PASS existing machine part still present: AuroraR54/Trailing conditioner / articulated hitch/Conditioner lift lower clevis#0.0.1.62.
+PASS machine part unchanged: AuroraR54/Trailing conditioner / articulated hitch/Conditioner lift lower clevis#0.0.1.62.
+PASS every added transform is inside Water Fill Connections (41)
+INFO all 578 existing machine transforms, meshes and materials unchanged; 41 added

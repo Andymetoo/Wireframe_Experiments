@@ -96,7 +96,8 @@ Validation (isolated copy): RunIsolatedUnity.ps1 -Action ProportionsSurvey | Pro
 Results and side/cockpit screenshots: Validation~/MachineProportions-results.txt, Validation~/MachineProportions/
 
 Known limits
-- IceWaterService fill ports and level gauges remain runtime-generated (not visible in Edit Mode).
+- Fill ports and level gauges are authored prefab parts (Water Fill Connections) after "Add Persistent
+  Water Fill Ports to Machine..."; see RinkAndFillPorts.txt. The carried nozzle and live hose stay runtime.
 - Labels use the font's built-in material in Edit Mode (drawn through geometry); Play swaps to
   the runtime depth-tested lettering material.
 - The E/Controls preset keeps its fixed 61-degree vertical lens. It aims at the authored grips,

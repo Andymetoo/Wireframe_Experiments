@@ -1,0 +1,2 @@
+== Migrated arena prefab vs the updated procedural builder / 2026-11-02T14:19:43
+PASS arena equivalence passed (details in Validation~/AuthoredArena-results.txt)

@@ -1,0 +1,66 @@
+== Edit Mode after restarting Unity (ports moved in the prefab) / 2026-11-02T14:14:30
+PASS opening the scene does not dirty it
+PASS exactly one complete flood and one complete wash fill port in the prefab
+PASS two complete gauges, indicators kept unbatched
+PASS FLOOD WATER port is visible in Edit Mode
+PASS FLOOD WATER port lives in the prefab, not as a scene addition
+INFO analysis FLOOD WATER: Info Operator reach 0.31 of 2.0 m from the floor beside the machine.
+INFO analysis FLOOD WATER: Info Hose routed 5.9 of 11 m from the wall reel (5.1 m slack).
+PASS FLOOD WATER port is reachable and within hose length at the parked pose (reach 0.31 m, hose 5.9 m)
+PASS WASH WATER port is visible in Edit Mode
+PASS WASH WATER port lives in the prefab, not as a scene addition
+INFO analysis WASH WATER: Info Operator reach 0.36 of 2.0 m from the floor beside the machine.
+INFO analysis WASH WATER: Info Hose routed 6.1 of 11 m from the wall reel (4.9 m slack).
+PASS WASH WATER port is reachable and within hose length at the parked pose (reach 0.36 m, hose 6.1 m)
+PASS no scene additions on the machine instance
+PASS arena drift report: all 24 physical checks within 2 mm
+== Play: one set of fittings, bound to the prefab (moved ports) / 2026-11-02T14:14:36
+PASS exactly two fill ports under the machine in Play
+PASS no generated fill couplings or gauges (nothing duplicated)
+PASS the water service couples at the authored sockets
+PASS exactly one carried nozzle (1)
+== Play: FLOOD WATER port / 2026-11-02T14:14:36
+PASS tanks set partly full for the fill test
+PASS operator steps off in the bay
+PASS E/click aimed at the socket selects FLOOD WATER (Flood)
+PASS within operator reach from beside the machine (0.62 m)
+PASS nozzle taken from the holder
+PASS Interact couples the hose to FLOOD WATER: Hose coupled to ice-making water. Open the wall supply valve to fill.
+PASS coupled nozzle sits on the socket in the socket's orientation
+PASS routed hose 5.89 m within the 11 m hose
+PASS the live hose ends at the socket
+PASS supply opened
+PASS FLOOD WATER tank fills (295 -> 343 L)
+PASS the FLOOD WATER gauge rises
+PASS gauge height matches the tank (47%)
+PASS filling to capacity overflows
+PASS overflow water leaves at the authored overflow socket
+PASS water conserved: supplied 48.0 L = stored + drained/overflowed (residual 0.0000 L; single-precision bound 0.0176 L)
+PASS supply closed and hose disconnected
+PASS nozzle in hand after disconnecting
+== Play: WASH WATER port / 2026-11-02T14:14:38
+PASS tanks set partly full for the fill test
+PASS operator steps off in the bay
+PASS E/click aimed at the socket selects WASH WATER (Wash)
+PASS within operator reach from beside the machine (0.63 m)
+PASS nozzle taken from the holder
+PASS Interact couples the hose to WASH WATER: Hose coupled to wash water. Open the wall supply valve to fill.
+PASS coupled nozzle sits on the socket in the socket's orientation
+PASS routed hose 6.07 m within the 11 m hose
+PASS the live hose ends at the socket
+PASS supply opened
+PASS WASH WATER tank fills (124 -> 172 L)
+PASS the WASH WATER gauge rises
+PASS gauge height matches the tank (55%)
+PASS filling to capacity overflows
+PASS overflow water leaves at the authored overflow socket
+PASS water conserved: supplied 132.2 L = stored + drained/overflowed (residual -0.0029 L; single-precision bound 0.0204 L)
+PASS supply closed and hose disconnected
+PASS nozzle in hand after disconnecting
+== Play: the rink / 2026-11-02T14:14:39
+PASS collision boards unchanged: the simulated board line is still at the 26 m x 60 m rink edge
+PASS hose coupled to the Flood port
+INFO Moved Flood socket machine (1.157, 1.320, 0.429), hose 5.89 m
+PASS hose coupled to the Wash port
+INFO Moved Wash socket machine (1.180, 1.420, -0.630), hose 6.07 m
+PASS zero Unity runtime errors or exceptions in Play (0)

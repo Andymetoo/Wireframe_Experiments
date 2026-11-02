@@ -20,6 +20,23 @@ namespace IceResurfacer.Core
         public const float WashFillLocalZ = -.55f;
         public const float FloodFillHeight = 1.22f;
         public const float WashFillHeight = 1.48f;
+        // Where the hose couples and where overflow leaves, in machine space (x right, z forward of
+        // the rear axle). The presentation supplies the authored sockets; these defaults are the
+        // generated ports' sockets (hose attachment 14 cm out, standpipe end 11 cm out, 13 cm forward).
+        float floodSocketX = FillPortLocalX + .14f, floodSocketZ = FloodFillLocalZ, washSocketX = FillPortLocalX + .14f, washSocketZ = WashFillLocalZ;
+        float floodOverflowX = FillPortLocalX + .11f, floodOverflowZ = FloodFillLocalZ + .13f, washOverflowX = FillPortLocalX + .11f, washOverflowZ = WashFillLocalZ + .13f;
+        public void SetFillPortGeometry(WaterFillPort port, float socketX, float socketZ, float overflowX, float overflowZ)
+        {
+            if (!Finite(socketX) || !Finite(socketZ) || !Finite(overflowX) || !Finite(overflowZ)) throw new ArgumentException("Fill port geometry must be finite.");
+            if (port == WaterFillPort.Flood) { floodSocketX = socketX; floodSocketZ = socketZ; floodOverflowX = overflowX; floodOverflowZ = overflowZ; }
+            else if (port == WaterFillPort.Wash) { washSocketX = socketX; washSocketZ = socketZ; washOverflowX = overflowX; washOverflowZ = overflowZ; }
+            else throw new ArgumentException("Only the flood and wash ports have sockets.");
+        }
+        void ConnectedSocket(out float x, out float z)
+        {
+            bool wash = HoseState == WaterHoseState.Wash;
+            VehiclePoint(wash ? washSocketX : floodSocketX, wash ? washSocketZ : floodSocketZ, out x, out z);
+        }
         public const float ServiceAnchorSide = ServiceLayout.SupplySide;
         public const float ServiceAnchorOutward = ServiceLayout.SupplyOutward;
         public float HoseLooseX { get; private set; }
@@ -144,7 +161,7 @@ namespace IceResurfacer.Core
         {
             if (!HoseConnected || GuidedTraining || float.IsNaN(routedLength) || routedLength <= ServiceHoseLengthMeters) return false;
             Layout.SupplyAnchor(out float ax, out float az);
-            VehiclePoint(FillPortLocalX + .14f, HoseState == WaterHoseState.Wash ? WashFillLocalZ : FloodFillLocalZ, out float x, out float z);
+            ConnectedSocket(out float x, out float z);
             float dx=x-ax,dz=z-az,d=(float)Math.Sqrt(dx*dx+dz*dz),scale=Math.Min(1,(ServiceHoseLengthMeters-1.4f)/Math.Max(.001f,d));
             HoseLooseX=ax+dx*scale;HoseLooseZ=az+dz*scale;
             HoseState=WaterHoseState.Dropped;HoseBreakaways++;
@@ -186,7 +203,7 @@ namespace IceResurfacer.Core
             if (HoseConnected && !GuidedTraining)
             {
                 Layout.SupplyAnchor(out float ax, out float az);
-                VehiclePoint(FillPortLocalX + .14f, HoseState == WaterHoseState.Wash ? WashFillLocalZ : FloodFillLocalZ, out float x, out float z);
+                ConnectedSocket(out float x, out float z);
                 float dx=x-ax,dz=z-az;
                 CheckHoseReach((float)Math.Sqrt(dx*dx+dz*dz)+.9f);
             }
@@ -215,7 +232,7 @@ namespace IceResurfacer.Core
             ServiceOverflowLitersPerSecond = overflow / dt;
             if(overflow>0)
             {
-                VehiclePoint(FillPortLocalX+.11f,(flood?FloodFillLocalZ:WashFillLocalZ)+.13f,out float sx,out float sz);
+                VehiclePoint(flood?floodOverflowX:washOverflowX,flood?floodOverflowZ:washOverflowZ,out float sx,out float sz);
                 DepositRunoff(sx,sz,overflow);
             }
         }

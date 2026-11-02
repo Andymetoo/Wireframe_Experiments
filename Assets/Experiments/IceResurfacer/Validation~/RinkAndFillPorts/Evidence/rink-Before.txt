@@ -1,0 +1,75 @@
+arena instance overrides:
+  NorthlineArena.m_LocalPosition.x = 0
+  NorthlineArena.m_LocalPosition.y = 0
+  NorthlineArena.m_LocalPosition.z = 0
+  NorthlineArena.m_LocalRotation.w = 1
+  NorthlineArena.m_LocalRotation.x = 0
+  NorthlineArena.m_LocalRotation.y = 0
+  NorthlineArena.m_LocalRotation.z = 0
+  NorthlineArena.m_LocalEulerAnglesHint.x = 0
+  NorthlineArena.m_LocalEulerAnglesHint.y = 0
+  NorthlineArena.m_LocalEulerAnglesHint.z = 0
+  NORTHLINE  /  ICE WORKS.m_Text = NORTHLINE  /  ASS WORKS
+  NorthlineArena.m_Name = NorthlineArena
+rink section children: 53; prefab source Assets/Experiments/IceResurfacer/Arena/NorthlineArena.prefab
+  1 x White impact dasher
+  1 x Yellow kick strip
+  1 x Dark top rail
+  1 x Continuous safety glass
+  48 x Glass support
+  1 x Continuous spatial ice sheet
+BAND White impact dasher | role RinkBoardBand | y 0.170..1.130 | verts 2832 tris 1416 | mesh 'Rink boards and ice sheet.Meshes' in Rink boards and ice sheet.Meshes.asset | material Porcelain enamel | normals True | localScale (1.00, 1.00, 1.00) localPos (0.00, 0.00, 0.00)
+     board distance 0.000..0.170 (thickness 0.170)
+     gate end southwest: closest |side| 2.732 (gate half width 2.7), outward -0.451
+     gate end northeast: closest |side| 2.732 (gate half width 2.7), outward -0.451
+BAND Yellow kick strip | role RinkBoardBand | y 0.015..0.170 | verts 2832 tris 1416 | mesh '002 Yellow kick strip' in Rink boards and ice sheet.Meshes.asset | material Dasher kickplate | normals True | localScale (1.00, 1.00, 1.00) localPos (0.00, 0.00, 0.00)
+     board distance 0.000..0.190 (thickness 0.190)
+     gate end southwest: closest |side| 2.732 (gate half width 2.7), outward -0.451
+     gate end northeast: closest |side| 2.732 (gate half width 2.7), outward -0.451
+BAND Dark top rail | role RinkBoardBand | y 1.130..1.220 | verts 2832 tris 1416 | mesh '003 Dark top rail' in Rink boards and ice sheet.Meshes.asset | material Aurora midnight blue | normals True | localScale (1.00, 1.00, 1.00) localPos (0.00, 0.00, 0.00)
+     board distance 0.000..0.210 (thickness 0.210)
+     gate end southwest: closest |side| 2.732 (gate half width 2.7), outward -0.451
+     gate end northeast: closest |side| 2.732 (gate half width 2.7), outward -0.451
+BAND Continuous safety glass | role RinkBoardBand | y 1.220..2.550 | verts 2832 tris 1416 | mesh '004 Continuous safety glass' in Rink boards and ice sheet.Meshes.asset | material Arena safety glass | normals True | localScale (1.00, 1.00, 1.00) localPos (0.00, 0.00, 0.00)
+     board distance 0.000..0.012 (thickness 0.012)
+     gate end southwest: closest |side| 2.732 (gate half width 2.7), outward -0.451
+     gate end northeast: closest |side| 2.732 (gate half width 2.7), outward -0.451
+BAND Continuous spatial ice sheet | role IceSheet | y 0.005..0.005 | verts 247 tris 246 | mesh '005 Continuous spatial ice sheet' in Rink boards and ice sheet.Meshes.asset | material Porcelain enamel | normals True | localScale (1.00, 1.00, 1.00) localPos (0.00, 0.00, 0.00)
+     board distance -13.000..0.000 (thickness 13.000)
+     gate end southwest: closest |side| 0.556 (gate half width 2.7), outward -0.018
+     gate end northeast: closest |side| 0.000 (gate half width 2.7), outward 0.000
+GLASS SUPPORTS 48: y 1.200..2.540, scale (0.03, 0.67, 0.03)
+GATE PART Portal overhead lintel | side 0.000 outward 0.800 | y 3.975..4.625 | scale (6.20, 0.65, 1.50)
+GATE PART Gate opened along portal jamb | side -2.820 outward 0.750 | y 0.010..1.210 | scale (0.18, 1.20, 1.50)
+GATE PART Open gate glass | side -2.820 outward 0.750 | y 1.230..2.530 | scale (0.03, 1.30, 1.50)
+GATE PART Portal upright | side -2.850 outward 0.750 | y 0.000..4.200 | scale (0.18, 4.20, 1.75)
+GATE PART Portal protection bollard | side -2.970 outward -0.120 | y 0.000..1.100 | scale (0.16, 0.55, 0.16)
+GATE PART Gate opened along portal jamb | side 2.820 outward 0.750 | y 0.010..1.210 | scale (0.18, 1.20, 1.50)
+GATE PART Open gate glass | side 2.820 outward 0.750 | y 1.230..2.530 | scale (0.03, 1.30, 1.50)
+GATE PART Portal upright | side 2.850 outward 0.750 | y 0.000..4.200 | scale (0.18, 4.20, 1.75)
+GATE PART Portal protection bollard | side 2.970 outward -0.120 | y 0.000..1.100 | scale (0.16, 0.55, 0.16)
+== drift
+  ok    Arena origin on the simulation origin: moved/rotated relative to the game root
+  ok    Rink width and length (ice sheet footprint): 26 x 60 m (simulated 26 x 60)
+  ok    Ice sheet edge on the simulated boards: largest edge offset 0.0 mm
+  ok    Rounded corner positions: corner radius 8.5 m, largest offset 0.0 mm
+  ok    Rink boards: White impact dasher: inner face 0.0 mm from the simulated boards
+  ok    Rink boards: Yellow kick strip: inner face 0.0 mm from the simulated boards
+  ok    Rink boards: Dark top rail: inner face 0.0 mm from the simulated boards
+  ok    Rink boards: Continuous safety glass: inner face 0.0 mm from the simulated boards
+  ok    Southeast service gate frame: gate centre and diagonal heading
+  ok    Service-bay floor: spans side -5.5..5.5, outward 1.6..14 (collision floor +-5.5, 1.6..14)
+  ok    Service-bay southwest side wall: inner face 5.5 m from the bay axis (collision 5.5)
+  ok    Service-bay northeast side wall: inner face 5.5 m from the bay axis (collision 5.5)
+  ok    Service-bay rear wall: inner face 14 m outward (collision 14)
+  ok    Service gate return wall (southwest): opening edge 2.7 (gate half width 2.7)
+  ok    Service gate return wall (northeast): opening edge 2.7 (gate half width 2.7)
+  ok    Service gate opening: Gate opened along portal jamb: clear face 2.73 m from the gate axis (collision 2.7)
+  ok    Service gate opening: Portal upright: clear face 2.76 m from the gate axis (collision 2.7)
+  ok    Service gate opening: Gate opened along portal jamb: clear face 2.73 m from the gate axis (collision 2.7)
+  ok    Service gate opening: Portal upright: clear face 2.76 m from the gate axis (collision 2.7)
+  ok    Snow pit boundary: receiver 4 x 2.4 m (simulated 4 x 2.4)
+  ok    Dumped snow surface over the pit: centre of the simulated pit pile
+  ok    Water station (hose holder, supply valve, drain): fixture frame at the simulated service wall
+  ok    Water station supply valve: at its generated place in the station
+  ok    Water station nozzle holder: at its generated place in the station

@@ -226,6 +226,19 @@ namespace IceResurfacer.Presentation
             Transform Beam(string name, Transform parent, Vector3 a, Vector3 b, float diameter, Material material)
                 => Cylinder(name, parent, (a+b)*.5f, diameter, (b-a).magnitude, material, b-a);
 
+            MeshRenderer MeshObject(string name, Transform parent, Mesh mesh, Material material)
+            {
+                var obj = new GameObject(name);
+                obj.transform.SetParent(parent, false);
+                mesh.name = "IceResurfacer / " + name;
+                world.Meshes.Add(mesh);
+                obj.AddComponent<MeshFilter>().sharedMesh = mesh;
+                var renderer = obj.AddComponent<MeshRenderer>();
+                renderer.sharedMaterial = material;
+                if(material==glass)renderer.shadowCastingMode=ShadowCastingMode.Off;
+                return renderer;
+            }
+
             MeshRenderer MeshObject(string name, Transform parent, List<Vector3> vertices, List<int> triangles, Material material, List<Vector2> uv = null)
             {
                 var obj = new GameObject(name);
@@ -293,21 +306,46 @@ namespace IceResurfacer.Presentation
                 return points;
             }
 
-            void RingBand(string name, Transform parent, List<Vector3> boundary, float y0, float y1, float thickness, Material material)
+            // Closed dasher, kickplate, rail and glass solids (IceRinkBoards), taller glass around the
+            // ends and corners, supports at the local glass height, and a solid post at each side of
+            // the service entrance. The board-contact boundary is unchanged.
+            void RinkBoards(Transform rink)
             {
-                var v=new List<Vector3>();var tri=new List<int>();
-                for(int i=0;i<boundary.Count;i++)
+                var c=config;var layout=serviceLayout;
+                var boundary=IceRinkBoards.Boundary(c);
+                var profile=new IceRinkBoards.GlassProfile(c,boundary,layout);
+                float boards=IceRinkBoards.BoardClip(layout),glassClip=IceRinkBoards.GlassClip(layout);
+                // Meet the kickplate at one edge: the old .13-.17 overlap
+                // emitted two coplanar inner faces and visibly flickered.
+                MeshObject("White impact dasher",rink,IceRinkBoards.Band("dasher",c,layout,boundary,IceRinkBoards.KickTop,IceRinkBoards.BoardTop,IceRinkBoards.BoardThickness,boards,null,false),white);
+                MeshObject("Yellow kick strip",rink,IceRinkBoards.Band("kick",c,layout,boundary,IceRinkBoards.KickBottom,IceRinkBoards.KickTop,IceRinkBoards.KickThickness,boards,null,true,true),yellow);
+                MeshObject("Dark top rail",rink,IceRinkBoards.Band("rail",c,layout,boundary,IceRinkBoards.BoardTop,IceRinkBoards.RailTop,IceRinkBoards.RailThickness,boards,null,true,true),navy);
+                MeshObject("Continuous safety glass",rink,IceRinkBoards.Band("glass",c,layout,boundary,IceRinkBoards.RailTop,0,IceRinkBoards.GlassThickness,glassClip,profile.Top),glass);
+                // A slim aluminium channel along the glass top makes the height steps read as built.
+                MeshObject("Glass top edge channel",rink,IceRinkBoards.Band("edge",c,layout,boundary,0,0,.024f,glassClip,p=>profile.Top(p)+.022f,true,true,-.006f,profile.Top),steel);
+                foreach(int i in IceRinkBoards.SupportIndices(boundary,layout))
                 {
-                    Vector3 a=boundary[i], b=boundary[(i+1)%boundary.Count];
-                    if(serviceLayout.IsPortal((a.x+b.x)*.5f,(a.z+b.z)*.5f))continue;
-                    Vector3 outward = new Vector3(-(b-a).z,0,(b-a).x).normalized*thickness;
-                    Vector3 al=a+Vector3.up*y0, bl=b+Vector3.up*y0, ah=a+Vector3.up*y1, bh=b+Vector3.up*y1;
-                    Quad(v,tri,al,ah,bh,bl);
-                    Quad(v,tri,bl+outward,bh+outward,ah+outward,al+outward);
-                    Quad(v,tri,ah,bh,bh+outward,ah+outward);
+                    var p=boundary[i].Position;float top=profile.Top(p);
+                    Cylinder("Glass support",rink,p+Vector3.up*(IceRinkBoards.RailTop-.02f+top)*.5f,.028f,top-(IceRinkBoards.RailTop-.02f),steel,Vector3.up);
                 }
-                var renderer=MeshObject(name,parent,v,tri,material);
-                if(material==glass)renderer.shadowCastingMode=ShadowCastingMode.Off;
+                foreach(var post in IceRinkBoards.GatePosts(c,layout,profile,UprightFront))GatePost(rink,post);
+            }
+
+            // The upright's ice-side face (ServiceBay: centre .75 m outward, 1.75 m deep).
+            const float UprightFront=.75f-1.75f*.5f;
+
+            void GatePost(Transform rink,IceRinkBoards.GatePost post)
+            {
+                var group=Group("Service gate board post / "+post.Side,rink);
+                MeshObject("Gate post kick plate",group,IceRinkBoards.Prism("post kick",post.Plan,IceRinkBoards.KickBottom,IceRinkBoards.KickTop),yellow);
+                MeshObject("Gate post board",group,IceRinkBoards.Prism("post board",post.Plan,IceRinkBoards.KickTop,IceRinkBoards.BoardTop),white);
+                MeshObject("Gate post top rail",group,IceRinkBoards.Prism("post rail",post.Plan,IceRinkBoards.BoardTop,IceRinkBoards.RailTop),navy);
+                Beam("Gate post rubber edge guard",group,post.GuardBottom,post.GuardTop,.045f,rubber);
+                var stanchion=Box("Gate glass end stanchion",group,post.StanchionCentre+Vector3.up*(IceRinkBoards.RailTop+post.GlassTop+.022f)*.5f,
+                    new Vector3(.045f,post.GlassTop+.022f-IceRinkBoards.RailTop,.045f),steel);
+                stanchion.localRotation=Quaternion.Euler(0,-45,0);
+                MeshObject("Gate post glass return",group,IceRinkBoards.Panel("post glass",post.ReturnStart,post.ReturnEnd,IceRinkBoards.RailTop,post.GlassTop,IceRinkBoards.GlassThickness),glass);
+                MeshObject("Gate glass return top edge",group,IceRinkBoards.Panel("post edge",post.ReturnStart,post.ReturnEnd,post.GlassTop,post.GlassTop+.022f,.024f),steel);
             }
 
             void Arena()
@@ -322,18 +360,7 @@ namespace IceResurfacer.Presentation
                 Box("Service exterior wall",shell,new Vector3(2,6,-45),new Vector3(50,13,.4f),pale);
                 var rink=Section("Rink boards and ice sheet",arena);
                 var edge=RinkBoundary();
-                // Meet the kickplate at one edge: the old .13-.17 overlap
-                // emitted two coplanar inner faces and visibly flickered.
-                RingBand("White impact dasher",rink,edge,.17f,1.13f,.17f,white);
-                RingBand("Yellow kick strip",rink,edge,.015f,.17f,.19f,yellow);
-                RingBand("Dark top rail",rink,edge,1.13f,1.22f,.21f,navy);
-                RingBand("Continuous safety glass",rink,edge,1.22f,2.55f,.012f,glass);
-                for(int i=0;i<edge.Count;i+=5)
-                {
-                    var p=edge[i];
-                    if(serviceLayout.IsPortal(p.x,p.z))continue;
-                    Cylinder("Glass support",rink,p+Vector3.up*1.87f,.028f,1.34f,steel,Vector3.up);
-                }
+                RinkBoards(rink);
                 var vertices=new List<Vector3>{new Vector3(0,.005f,0)};
                 var uvs=new List<Vector2>{new Vector2(.5f,.5f)};
                 var triangles=new List<int>();

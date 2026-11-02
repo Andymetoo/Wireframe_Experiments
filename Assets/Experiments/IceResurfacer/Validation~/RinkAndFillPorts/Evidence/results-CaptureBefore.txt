@@ -1,0 +1,5 @@
+PASS hose coupled to the Flood port
+INFO Before Flood socket machine (1.160, 1.220, 0.050), hose 5.79 m
+PASS hose coupled to the Wash port
+INFO Before Wash socket machine (1.160, 1.480, -0.550), hose 6.12 m
+PASS zero Unity runtime errors or exceptions in Play (0)
