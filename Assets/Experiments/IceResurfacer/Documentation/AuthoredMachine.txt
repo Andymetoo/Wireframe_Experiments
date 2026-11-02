@@ -64,6 +64,31 @@ Advanced Recovery > Replace or Restore Authored Assets: it lists the affected pr
 materials and scene links, requires typing REBUILD MACHINE, makes a verified backup in Backups~,
 keeps GUIDs, and rolls back automatically on any failure (details in AuthoredArena.txt).
 
+Reference proportions pass (Editor/IceMachineProportionPass.cs)
+Experiments > Ice Resurfacer > Authored Scene > Apply Reference Proportions Pass (machine)...
+A one-time, bounded edit of Machine/AuroraR54.prefab toward the reference resurfacer (operator seated
+high at the rear, over the conditioner). No rebake: it moves or rescales existing objects only.
+  Operator station (whole deck)        +0.13 m up, 0.15 m back: seat over the front of the conditioner,
+                                       platform above its raised linkage; seat-to-steering unchanged; eye 2.03 m
+                                       (further back pushes the board brush out of the fixed Q quicklook frame)
+  Equipment-side rear and top rails    same shift, so they still frame the station
+  Right equipment deck                 +0.13 m up, 0.15 m back, 1.3x longer, under the moved right controls
+  Hydraulic lever bank (station)       0.06 m lower, angled 10 deg toward the seat, scaled 0.9 (clears the
+                                       steering rim at full lock)
+  Water valve manifold + 2 brackets    0.26 m back, 0.02 m lower: side console beside the seat, above the
+                                       blade crank's sweep
+  Blade handwheel assembly             low at the seat's front-right corner; its screw spindle shortened
+                                       to stop at the platform instead of passing into the conditioner
+Not touched: wheels, wheelbase, tank, dump hinge, conveyor/discharge, brush, guide roller, conditioner,
+cylinder pins, steering column, dashboard, pedals, snow breaker (they move only with the station).
+Each part is changed only if it is still at its generated pose (parts you moved are skipped and listed),
+so running it twice changes nothing. The prefab, its .meta and the authored scene are backed up to
+Backups~/<time> Machine proportions pass first. Undo: Advanced Recovery > Replace or Restore Authored
+Assets > Restore backup (type RESTORE BACKUP). The rig Inspector afterwards lists the station and its
+controls as rearranged; that is expected.
+Validation (isolated copy): RunIsolatedUnity.ps1 -Action ProportionsSurvey | ProportionsApply | ProportionsVerify
+Results and side/cockpit screenshots: Validation~/MachineProportions-results.txt, Validation~/MachineProportions/
+
 Known limits
 - IceWaterService fill ports and level gauges remain runtime-generated (not visible in Edit Mode).
 - Labels use the font's built-in material in Edit Mode (drawn through geometry); Play swaps to
