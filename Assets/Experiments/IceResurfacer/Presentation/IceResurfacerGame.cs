@@ -80,7 +80,8 @@ namespace IceResurfacer.Presentation
         int lookWarmup;
         Quaternion tankRest, bladeRest, steeringRest;
         Quaternion acceleratorRest, brakeRest;
-        Vector3 breakerRest;
+        Vector3 breakerRest, cuttingBladeRest;
+        IceBoardBrushRig brushRig;
         Quaternion[] frontRest, rearRest;
         int observedMistakes;
         Color oldAmbient, oldFog;
@@ -122,7 +123,11 @@ namespace IceResurfacer.Presentation
             cameraObject.AddComponent<AudioListener>();
             tankRest=World.TankPivot.localRotation; bladeRest=World.BladeWheel.localRotation;
             steeringRest=World.SteeringWheel.localRotation;
-            breakerRest=World.SnowBreakerPlunger.localPosition;
+            breakerRest=World.SnowBreakerPlunger.localPosition; cuttingBladeRest=World.CuttingBlade.localPosition;
+            brushRig=World.BrushArm!=null?World.BrushArm.GetComponent<IceBoardBrushRig>():null;
+            if(brushRig!=null&&!brushRig.IsComplete) { Debug.LogWarning("Board brush rig is missing parts; using the default brush articulation.",brushRig); brushRig=null; }
+            if(brushRig!=null&&!brushRig.mechanism.Matches(IceBoardBrushRig.Mechanism.From(calibration)))
+                Debug.LogWarning("Board brush rig geometry has not been applied to the simulation. Play poses the brush from the scene calibration; use Apply Brush Geometry to Simulation in the rig Inspector.",brushRig);
             acceleratorRest=World.AcceleratorPedal.localRotation; brakeRest=World.BrakePedal.localRotation;
             frontRest=Capture(World.FrontWheels); rearRest=Capture(World.RearWheels);
             machineAudio=gameObject.AddComponent<IceMachineAudio>(); machineAudio.Initialize();
@@ -526,7 +531,8 @@ namespace IceResurfacer.Presentation
             World.SteeringWheel.localRotation=steeringRest*Quaternion.Euler(0,v.SteeringAngle*Mathf.Rad2Deg*5,0);
             World.TankPivot.localRotation=tankRest*Quaternion.Euler(Sim.TankLift*58,0,0);
             World.BladeWheel.localRotation=bladeRest*Quaternion.Euler(0,c.BladeDepthMm/calibration.MaxBladeDepthMm*calibration.BladeWheelTurns*360,0);
-            World.CuttingBlade.localPosition=new Vector3(0,.043f-Sim.ActualBladeDepthMm*.001f,.30f);
+            // Rest-relative: the authored blade pose is depth zero (the generated rest is 0,.043,.30).
+            World.CuttingBlade.localPosition=cuttingBladeRest-Vector3.up*(Sim.ActualBladeDepthMm*.001f);
             World.GuideRoller.localRotation=Quaternion.Euler(0,Sim.GuideRollerTravel/calibration.GuideRollerRadius*Mathf.Rad2Deg,0);
             World.TankDoor.localRotation=Quaternion.Euler(-Mathf.Clamp01((Sim.TankLift-.45f)/.4f)*105,0,0);
             World.AcceleratorPedal.localRotation=acceleratorRest*Quaternion.Euler(Mathf.Abs(c.Throttle)*16,0,0);
@@ -537,9 +543,11 @@ namespace IceResurfacer.Presentation
             World.SnowBreakerPlunger.localPosition=breakerRest-Vector3.up*(Mathf.Clamp01(stroke)*.18f);
             if(c.HorizontalAuger&&!Sim.ConveyorJammed)World.HorizontalAuger.Rotate(Vector3.right,dt*390*(1-Sim.ConveyorCongestion*.35f),Space.Self);
             if(c.VerticalAuger&&!Sim.ConveyorJammed)World.VerticalAuger.Rotate(Vector3.up,dt*540*(1-Sim.ConveyorCongestion*.5f),Space.Self);
-            if(World.BrushArm!=null)
+            if(brushRig!=null)
+                brushRig.Pose(IceBoardBrushRig.Mechanism.From(calibration),Sim.BrushDeployment,new Vector3(Sim.BrushWorldX,0,Sim.BrushWorldZ),c.BoardBrush?dt*540:0);
+            else if(World.BrushArm!=null)
             {
-                World.BrushArm.localRotation=Quaternion.Euler(0,-(1-Sim.BrushDeployment)*calibration.BrushRetractedDegrees,0);
+                World.BrushArm.localRotation=Quaternion.Euler(0,-BoardBrushArticulation.ArmDegrees(calibration,Sim.BrushDeployment),0);
                 World.Brush.position=new Vector3(Sim.BrushWorldX,.15f+(1-Sim.BrushDeployment)*.15f,Sim.BrushWorldZ);
                 Vector3 from=World.BrushArm.position,to=World.Brush.position+Vector3.up*.05f;
                 World.BrushLink.position=(from+to)*.5f;
@@ -548,7 +556,7 @@ namespace IceResurfacer.Presentation
                 World.BrushRoller.position=World.Brush.position+Vector3.up*.20f;
                 World.BrushRoller.rotation=World.Machine.rotation;
             }
-            if(c.BoardBrush)World.Brush.Rotate(Vector3.up,dt*540,Space.Self);
+            if(brushRig==null&&c.BoardBrush)World.Brush.Rotate(Vector3.up,dt*540,Space.Self);
             snowView.Update(Sim,dt);
             water.transform.position=World.WaterOutlet.position;
             water.transform.rotation=World.Conditioner.rotation*Quaternion.Euler(90,0,0);

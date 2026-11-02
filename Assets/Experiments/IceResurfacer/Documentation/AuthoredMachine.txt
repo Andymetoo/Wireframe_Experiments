@@ -16,6 +16,8 @@ Files
   Editor/IceAuthoredRecovery.cs                Open Authored Scene, first-time setup, Advanced Recovery
   Editor/IceMachineRigEditor.cs                ownership report and anchor tools (rig Inspector)
   Editor/IceAuthoredMachineValidation.cs       batch proof (isolated project only)
+  Presentation/IceBoardBrushRig.cs             board brush articulation authoring (see BoardBrushAndConditioner.txt)
+  Editor/IceConditionerAlignment.cs            conditioner visual-vs-simulation measurements and window
   The arena is documented in AuthoredArena.txt.
 
 Workflow
@@ -50,13 +52,14 @@ Ownership (shown in the IceMachineRig Inspector)
     6 cm to each other, and grips outside the body envelope.
   Cosmetic / authored freely: bodywork, panels, trim, and children under any driven pivot.
   Runtime-driven pivots (edit their children, not the pivot): machine root, conditioner root,
-    tank door, guide roller, brush arm/brush/link/roller, cutting blade, both augers, and the
+    tank door, guide roller, brush arm/brush/link/roller (author them with the board brush rig),
+    cutting blade (rest-relative: its authored pose is depth zero), both augers, and the
     hydraulic barrels/rods. Cylinders always span their clevis pins, so moving a pin moves the
     cylinder ("Re-pose hydraulic cylinders" previews this in Edit Mode).
 
 Rebake policy
 Shape-defining calibration (tank roof height/offset, conveyor offset, conditioner and water
-widths, tire width, guide roller radius, brush arm length, valve stem height) is baked into
+widths, tire width, guide roller radius, valve stem height) is baked into
 meshes. The rig Inspector warns when it changed since the bake. The machine is never regenerated
 automatically. Advanced Recovery > Generate Fresh Machine Copy writes a new baseline under Recovery/
 and leaves the authored prefab alone. Replacing the authored machine in place is only possible in

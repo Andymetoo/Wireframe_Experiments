@@ -191,14 +191,16 @@ namespace IceResurfacer.Core
         void UpdateBoardBrush(float dt,float distance)
         {
             BrushDeployment=MoveTowards(BrushDeployment,Controls.BoardBrush?1:0,dt*1.6f);
-            float angle=(1-BrushDeployment)*Config.BrushRetractedDegrees*(float)Math.PI/180;
-            float localX=Config.BrushPivotX-Config.BrushArmLength*(float)Math.Cos(angle);
-            float localZ=Config.BrushPivotZ-Config.BrushArmLength*(float)Math.Sin(angle);
+            BoardBrushArticulation.Contact(Config,BrushDeployment,out float localX,out float localZ);
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
             BrushWorldX=Vehicle.X+localX*cs+localZ*sn;BrushWorldZ=Vehicle.Z-localX*sn+localZ*cs;
             float boardDistance=Ice.BoardDistance(BrushWorldX,BrushWorldZ,out float nx,out float nz);
-            BrushContact=BrushDeployment>.5f&&Ice.IsInside(Vehicle.X,Vehicle.Z)&&boardDistance>=-Config.BrushRadius-.025f;
-            if(BrushContact&&boardDistance>-Config.BrushRadius)
+            bool onIce=Ice.IsInside(Vehicle.X,Vehicle.Z);
+            BrushContact=BrushDeployment>.5f&&onIce&&boardDistance>=-Config.BrushRadius-.025f;
+            // The disc never passes through the kickplate at any deployment, so the arm swings
+            // into contact without a snap. Above half deployment this is exactly the previous
+            // contact compression; sweeping still requires BrushContact.
+            if(onIce&&boardDistance>-Config.BrushRadius)
             {
                 float compression=boardDistance+Config.BrushRadius;
                 BrushWorldX+=nx*compression;BrushWorldZ+=nz*compression;

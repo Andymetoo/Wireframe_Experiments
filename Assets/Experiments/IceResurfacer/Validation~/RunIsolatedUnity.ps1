@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery','ProportionsSurvey','ProportionsApply','ProportionsVerify')][string]$Action='RunBatch',
+    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery','ProportionsSurvey','ProportionsApply','ProportionsVerify','BrushSetUp','BrushVerify')][string]$Action='RunBatch',
     [string]$LogName='Operator-ergonomics-unity-1.log',
     # Optional scene for the existing validators, e.g. Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
     [string]$Scene=''
@@ -28,6 +28,8 @@ if($Action -eq 'ArenaWriteEdits'){$method='IceResurfacer.Editor.IceAuthoredArena
 if($Action -eq 'ArenaVerifyEdits'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.VerifyEdits'}
 if($Action -eq 'ArenaRecovery'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.Recovery'}
 if($Action -like 'Proportions*'){$method='IceResurfacer.Editor.IceMachineProportionsValidation.'+$Action.Substring(11)}
+if($Action -eq 'BrushSetUp'){$method='IceResurfacer.Editor.IceBrushConditionerValidation.SetUp'}
+if($Action -eq 'BrushVerify'){$method='IceResurfacer.Editor.IceBrushConditionerValidation.Verify'}
 $arguments=@('-batchmode','-force-d3d11','-projectPath',('"'+$stage+'"'),'-executeMethod',$method,'-logFile',('"'+$log+'"'))
 if($Scene -ne ''){$arguments+=@('-iceScene',$Scene)}
 $child=Start-Process -FilePath $unity -ArgumentList $arguments -WindowStyle Hidden -PassThru

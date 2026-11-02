@@ -49,6 +49,21 @@ namespace IceResurfacer.Editor
             using(new EditorGUI.DisabledScope(!drift||game==null||Application.isPlaying))
                 if(GUILayout.Button("Apply config to physics anchors"))ApplyConfig(w,config);
 
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("BOARD BRUSH / articulation",EditorStyles.boldLabel);
+            var brushRig=w.BrushArm!=null?w.BrushArm.GetComponent<IceBoardBrushRig>():null;
+            using(new EditorGUI.DisabledScope(Application.isPlaying||w.BrushArm==null))
+            {
+                if(brushRig==null&&GUILayout.Button("Add Board Brush Rig (keeps the current brush pose)"))
+                {
+                    brushRig=IceBoardBrushRigEditor.AddRig(w,config,out string summary);
+                    Debug.Log("Board brush rig added. "+summary,brushRig);
+                    Selection.activeObject=brushRig.gameObject;
+                }
+                else if(brushRig!=null&&GUILayout.Button("Select Board Brush Rig"))Selection.activeObject=brushRig.gameObject;
+            }
+            if(GUILayout.Button("Conditioner Alignment..."))IceConditionerAlignmentWindow.Open();
+
             var changed=rig.ShapeFieldsChangedSinceBake(config);
             if(changed.Count>0)EditorGUILayout.HelpBox("Changed since bake, affecting mesh shape: "+string.Join(", ",changed)+
                 ". The machine is never regenerated automatically: use Advanced Recovery > Generate Fresh Machine Copy for a new baseline "+
@@ -139,8 +154,13 @@ namespace IceResurfacer.Editor
             var anchors=IceMachineRig.MechanicalAnchors(w,config);
             var parts=new List<UnityEngine.Object>();
             foreach(var anchor in anchors)parts.Add(anchor.Part);
+            // A brush rig re-poses the arm from its draft, so config wins there too.
+            var brushRig=w.BrushArm!=null?w.BrushArm.GetComponent<IceBoardBrushRig>():null;
+            if(brushRig!=null)parts.Add(brushRig);
             Undo.RecordObjects(parts.ToArray(),"Apply Aurora config anchors");
+            if(brushRig!=null)brushRig.mechanism=IceBoardBrushRig.Mechanism.From(config);
             foreach(var anchor in anchors)anchor.Part.position=anchor.Frame.TransformPoint(anchor.Expected);
+            if(brushRig!=null)IceBoardBrushRigEditor.Repose(brushRig);
         }
     }
 }

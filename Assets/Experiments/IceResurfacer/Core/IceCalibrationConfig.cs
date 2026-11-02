@@ -27,6 +27,9 @@ namespace IceResurfacer.Core
         public float BrushArmLength = .38f;
         public float BrushRadius = .25f;
         public float BrushRetractedDegrees = 85f;
+        // Working arm angle (0 = straight out to the left). Deployment interpolates between
+        // this and BrushRetractedDegrees; see BoardBrushArticulation.
+        public float BrushDeployedDegrees = 0f;
 
         void ValidateIceCalibration()
         {
@@ -34,7 +37,7 @@ namespace IceResurfacer.Core
                 WaterFilmSpreadMeters,WaterFilmFringeFraction,WashPickupLitersPerSecond,
                 WashPickupContactLength,WashPickupContactFore,WashPickupResidualMm,FloodContactLength,FloodContactFore,
                 MinimumGougeDepthMm,TypicalGougeDepthMm,DeepGougeDepthMm,GougeRoughnessDepthMm,BrushPivotX,BrushPivotZ,
-                BrushArmLength,BrushRadius,BrushRetractedDegrees};
+                BrushArmLength,BrushRadius,BrushRetractedDegrees,BrushDeployedDegrees};
             foreach(float value in values)
                 if(float.IsNaN(value)||float.IsInfinity(value))
                     throw new ArgumentException("Ice calibration requires finite numbers.");
@@ -47,7 +50,8 @@ namespace IceResurfacer.Core
                 Math.Abs(WashPickupContactFore)+WashPickupContactLength*.5f>ConditionerLength*.5f||
                 WashPickupResidualMm<0||WashPickupResidualMm>GoodFloodDepthMm||
                 MinimumGougeDepthMm<0||TypicalGougeDepthMm<=MinimumGougeDepthMm||DeepGougeDepthMm<TypicalGougeDepthMm||GougeRoughnessDepthMm<=0||
-                BrushArmLength<=0||BrushRadius<=0||BrushRetractedDegrees<0||BrushRetractedDegrees>100)
+                BrushArmLength<=0||BrushRadius<=0||BrushRetractedDegrees<0||BrushRetractedDegrees>100||
+                BrushDeployedDegrees< -45||BrushDeployedDegrees>BrushRetractedDegrees)
                 throw new ArgumentException("Invalid tire, film, pickup, perimeter or brush calibration.");
         }
     }

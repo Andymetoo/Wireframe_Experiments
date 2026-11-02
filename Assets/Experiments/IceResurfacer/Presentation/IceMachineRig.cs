@@ -128,7 +128,9 @@ namespace IceResurfacer.Presentation
             list.Add(new MechanicalAnchor("Snow tank dump hinge",w.TankPivot,w.Machine,new Vector3(0,.78f,2.46f)));
             list.Add(new MechanicalAnchor("Tank shell (snow capacity)",w.BodyTank,w.TankPivot,new Vector3(c.TankLateralOffset,c.TankGeometryY(.51f),-.98f)));
             list.Add(new MechanicalAnchor("Conveyor discharge into tank",w.TankDischarge,w.Machine,new Vector3(c.ConveyorOutletX,c.ConveyorOutletY,c.ConveyorOutletZ)));
-            list.Add(new MechanicalAnchor("Board brush pivot",w.BrushArm,w.Machine,new Vector3(c.BrushPivotX,.38f,c.BrushPivotZ)));
+            // An IceBoardBrushRig owns the (cosmetic) pivot height; X/Z stay calibration-bound.
+            var brushRig=w.BrushArm!=null?w.BrushArm.GetComponent<IceBoardBrushRig>():null;
+            list.Add(new MechanicalAnchor("Board brush pivot",w.BrushArm,w.Machine,new Vector3(c.BrushPivotX,brushRig!=null?brushRig.pivotHeight:.38f,c.BrushPivotZ)));
             list.Add(new MechanicalAnchor("Board guide roller",w.GuideRoller,w.Machine,new Vector3(c.GuideRollerX,.53f,c.GuideRollerZ)));
             return list;
         }
@@ -165,10 +167,11 @@ namespace IceResurfacer.Presentation
         }
 
         /// <summary>Configuration that changes mesh shape, not just placement: changing it
-        /// after the bake needs a rebake of the affected subassembly.</summary>
+        /// after the bake needs a rebake of the affected subassembly. (Brush arm length is not
+        /// shape: the link and head are posed from it at runtime.)</summary>
         public static readonly string[] ShapeFields =
             { "TankRoofHeight","TankLateralOffset","ConveyorHeightOffset","ConditionerWidth","WaterDistributionWidth",
-              "TireWidth","GuideRollerRadius","BrushArmLength","WaterValveStemHeight" };
+              "TireWidth","GuideRollerRadius","WaterValveStemHeight" };
 
         public List<string> ShapeFieldsChangedSinceBake(SimulatorConfig current)
         {

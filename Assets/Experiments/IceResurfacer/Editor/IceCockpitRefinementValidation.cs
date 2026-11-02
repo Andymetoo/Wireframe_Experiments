@@ -119,15 +119,14 @@ namespace IceResurfacer.Editor
                 s.Vehicle.X=s.Vehicle.Z=s.Vehicle.Heading=0;
                 s.Conditioner.X=0;s.Conditioner.Z=-1.14f;s.Conditioner.Heading=0;
                 s.Step(.02f);Render();
-                Check(Mathf.Abs(w.BrushArm.localPosition.z-1.16f)<.00001f,"complete brush mount moves 0.46 m forward from the handoff geometry");
+                Check(Mathf.Abs(w.BrushArm.localPosition.z-config.BrushPivotZ)<.00001f,"complete brush mount sits at the calibrated pivot (1.16 m by default, 0.46 m forward of the handoff geometry)");
                 for(int phase=0;phase<2;phase++)
                 for(int step=0;step<41;step++)
                 {
                     c.BoardBrush=phase==0;s.Vehicle.Heading=step%3==0?.64f:step%3==1?-1.67f:0;
                     s.Step(.02f);Render();
-                    float angle=(1-s.BrushDeployment)*config.BrushRetractedDegrees*Mathf.Deg2Rad;
-                    Vector3 expected=w.Machine.TransformPoint(config.BrushPivotX-config.BrushArmLength*Mathf.Cos(angle),0,
-                        config.BrushPivotZ-config.BrushArmLength*Mathf.Sin(angle));
+                    IceResurfacer.Core.BoardBrushArticulation.Contact(config,s.BrushDeployment,out float contactX,out float contactZ);
+                    Vector3 expected=w.Machine.TransformPoint(contactX,0,contactZ);
                     Check(new Vector2(w.Brush.position.x-s.BrushWorldX,w.Brush.position.z-s.BrushWorldZ).magnitude<.00001f&&
                         new Vector2(expected.x-s.BrushWorldX,expected.z-s.BrushWorldZ).magnitude<.0001f,
                         "brush footprint / pivot / visible disc agree through "+(phase==0?"deployment ":"retraction ")+step);
