@@ -1,0 +1,42 @@
+Flood valve fixed bearing parent Adjacent flood and wash water manifold local (-0.1300,0.0200,0.0000) machine (-0.0400,1.6140,-0.8600) rotM (0.0,0.0,0.0)
+Wash valve fixed bearing parent Adjacent flood and wash water manifold local (0.0635,0.0200,0.0000) machine (0.1535,1.6140,-0.8600) rotM (0.0,0.0,0.0)
+FLOOD WATER / quarter turn L handle parent Flood valve fixed bearing local (-0.1195,0.0250,-0.1160) machine (-0.1595,1.6390,-0.9760) rotM (0.0,0.0,0.0)
+WASH WATER / quarter turn L handle parent Wash valve fixed bearing local (0.0000,0.0250,-0.1178) machine (0.1535,1.6390,-0.9778) rotM (0.0,0.0,0.0)
+  FLOOD WATER / quarter turn L handle 0 deg grip machine (-0.2495,1.8790,-0.9760)
+  FLOOD WATER / quarter turn L handle 15 deg grip machine (-0.2464,1.8790,-0.9993)
+  FLOOD WATER / quarter turn L handle 30 deg grip machine (-0.2374,1.8790,-1.0210)
+  FLOOD WATER / quarter turn L handle 45 deg grip machine (-0.2231,1.8790,-1.0396)
+  FLOOD WATER / quarter turn L handle 60 deg grip machine (-0.2045,1.8790,-1.0539)
+  FLOOD WATER / quarter turn L handle 75 deg grip machine (-0.1828,1.8790,-1.0629)
+  FLOOD WATER / quarter turn L handle 90 deg grip machine (-0.1595,1.8790,-1.0660)
+  WASH WATER / quarter turn L handle 0 deg grip machine (0.0635,1.8790,-0.9778)
+  WASH WATER / quarter turn L handle 15 deg grip machine (0.0666,1.8790,-1.0011)
+  WASH WATER / quarter turn L handle 30 deg grip machine (0.0756,1.8790,-1.0228)
+  WASH WATER / quarter turn L handle 45 deg grip machine (0.0899,1.8790,-1.0414)
+  WASH WATER / quarter turn L handle 60 deg grip machine (0.1085,1.8790,-1.0557)
+  WASH WATER / quarter turn L handle 75 deg grip machine (0.1302,1.8790,-1.0647)
+  WASH WATER / quarter turn L handle 90 deg grip machine (0.1535,1.8790,-1.0678)
+closest grip-to-grip over both quarter turns: 235 mm
+steering foot bounds (-0.6390,1.2555,-0.3290)..(-0.4990,1.3305,-0.1890)
+left floor bounds (-0.7864,1.0140,-0.8036)..(0.8224,1.2320,0.0056)
+foot bottom minus floor top: 23.5 mm; foot inside floor footprint x True z True
+Conditioner lift lever lossy (0.5394,0.5394,0.5394) grip machine (-0.0518,1.7935,-0.6580) eye distance 0.907 local distance 1.803 parent chain scale (0.5394,0.5394,0.5394)
+Horizontal auger lever lossy (0.5394,0.5394,0.5394) grip machine (0.0398,1.7935,-0.6580) eye distance 0.986 local distance 1.940 parent chain scale (0.5394,0.5394,0.5394)
+Vertical auger lever lossy (0.5394,0.5394,0.5394) grip machine (-0.1435,1.7935,-0.6580) eye distance 0.831 local distance 1.672 parent chain scale (0.5394,0.5394,0.5394)
+Snow dump hydraulic lever lossy (0.5394,0.5394,0.5394) grip machine (0.1315,1.7935,-0.6580) eye distance 1.067 local distance 2.082 parent chain scale (0.5394,0.5394,0.5394)
+sightline to WASH WATER / quarter turn L handle (0.987 m), in handwheel frame (lossy (1.000,1.000,1.000)):
+   t 0.70 local (-0.188,0.186,0.172) radial 0.255
+   t 0.75 local (-0.143,0.165,0.166) radial 0.219
+   t 0.80 local (-0.099,0.144,0.159) radial 0.188
+   t 0.85 local (-0.055,0.123,0.153) radial 0.162
+   t 0.90 local (-0.011,0.102,0.146) radial 0.146
+   t 0.95 local (0.033,0.081,0.139) radial 0.143
+   t 1.00 local (0.077,0.060,0.133) radial 0.154
+sightline to FLOOD WATER / quarter turn L handle (0.720 m), in handwheel frame (lossy (1.000,1.000,1.000)):
+   t 0.90 local (-0.293,0.102,0.148) radial 0.328
+   t 0.95 local (-0.264,0.081,0.141) radial 0.299
+   t 1.00 local (-0.236,0.060,0.135) radial 0.271
+E eye offset (0.00,0.06,0.00): rim clear 8/8; blockers 
+E eye offset (0.00,0.06,-0.18): rim clear 5/8; blockers 5:Operator seat back(Driver seat assembly / left), 6:Operator seat back(Driver seat assembly / left), 7:Operator seat back(Driver seat assembly / left)
+E eye offset (0.52,0.09,-0.18): rim clear 8/8; blockers 
+handwheel visible bounds (own frame) (-0.148,-0.035,-0.148)..(0.148,0.090,0.148)

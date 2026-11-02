@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using IceResurfacer.Presentation;
 using UnityEditor;
@@ -31,8 +32,14 @@ namespace IceResurfacer.Editor
             Require(w.CameraMount.IsChildOf(w.Seat),"Camera is attached to the physical seat");
             Require(LocalX(w.CameraMount)<-.5f&&game.World.Machine.InverseTransformPoint(w.CameraMount.position).y>1.65f,"Realistic left seated eye position");
             Require(Mathf.Abs(LocalX(w.BodyTank)-game.Sim.Config.TankLateralOffset)<.00001f,"Tank body follows the authored centered shell offset");
-            Require(w.TankPivot.localScale==Vector3.one&&w.BodyTank.localScale==Vector3.one,"Tank roof is authored lower without scaling moving assembly parents");
-            Require(Mathf.Abs(w.TankInspection.localPosition.y-game.Sim.Config.TankGeometryY(1.05f))<.00001f,"Inspection opening follows the lowered real shell");
+            // An authored tank may be scaled on its dump hinge only, and only by the scale the simulation's
+            // collision shell and dump outlet use. The shell itself is never scaled.
+            var c=game.Sim.Config;var tankScale=new Vector3(c.TankScaleX,c.TankScaleY,c.TankScaleZ);
+            Require((w.TankPivot.localScale-tankScale).magnitude<.0005f&&w.BodyTank.localScale==Vector3.one,"Tank scale lives on the dump hinge only and equals the simulated tank scale "+tankScale.ToString("F4"));
+            bool authored=game.GetComponentInChildren<IceMachineRig>(true)!=null;
+            float inspection=w.TankInspection.localPosition.y;
+            Require(authored?inspection>=c.TankGeometryY(.94f)&&inspection<=c.TankGeometryY(1.10f):Mathf.Abs(inspection-c.TankGeometryY(1.05f))<.00001f,
+                authored?"Inspection opening sits in the roof band of the shell":"Inspection opening follows the lowered real shell");
             Vector3 inlet=w.Machine.InverseTransformPoint(w.TankDischarge.position);
             Require(Vector3.Distance(inlet,new Vector3(game.Sim.Config.ConveyorOutletX,game.Sim.Config.ConveyorOutletY,game.Sim.Config.ConveyorOutletZ))<.00001f,"Actual compact rear-wall outlet matches snow transport coordinates");
             bool overheadPipe=false;
@@ -41,7 +48,8 @@ namespace IceResurfacer.Editor
             Require(!overheadPipe,"Oversized overhead conveyor assembly is absent");
             Require(RenderSettings.ambientLight==new Color(214f/255f,228f/255f,245f/255f),"Scene-specific ambient matches the requested Environment color-picker RGB");
             Require(LocalX(w.SnowBreakerPlunger)>LocalX(w.Seat),"Manual plunger is within reach to operator's right");
-            Require(LocalX(w.Brush)<-.8f,"Board brush remains on the left while retracted");
+            Require(authored?LocalX(w.Brush)<-.25f&&StowedBrushClearsTyres():LocalX(w.Brush)<-.8f,
+                authored?"Retracted board brush stays on the left, clear of every tyre":"Board brush remains on the left while retracted");
             foreach(var t in w.Machine.GetComponentsInChildren<Transform>())
                 Require(t.localScale.x>0&&t.localScale.y>0&&t.localScale.z>0,"Positive physical transform scale: "+t.name);
             float blade=w.CuttingBladeMesh.bounds.size.x*w.CuttingBlade.lossyScale.x;
@@ -57,6 +65,20 @@ namespace IceResurfacer.Editor
             observations.Add("61-degree seated lens and real water spread: apparent wet half-width ratio="+projection.ToString("F3")+" versus prior 64-degree lens / 1.956m water; scored coverage still requires actual blade contact.");
             observations.Add("Tank roof="+game.Sim.Config.TankRoofHeight.ToString("F3")+"m above hinge; conservative tapered interior="+game.Sim.Config.TankSnowPhysicalCapacityM3.ToString("F3")+"m3; full loose-equivalent stock="+game.Sim.Config.SnowCapacityM3.ToString("F2")+"m3; effective compaction="+(game.Sim.Config.SnowCapacityM3/game.Sim.Config.TankSnowPhysicalCapacityM3).ToString("F3")+":1. No material is added or discarded by visual compaction.");
         }
+        /// <summary>The stowed contact disc (machine plan view) stays outside every tyre's footprint.</summary>
+        static bool StowedBrushClearsTyres()
+        {
+            var w=game.World;var c=game.Sim.Config;
+            Vector3 head=w.Machine.InverseTransformPoint(w.Brush.position);
+            foreach(var wheel in w.FrontWheels.Concat(w.RearWheels))
+            {
+                Vector3 hub=w.Machine.InverseTransformPoint(wheel.position);
+                float dx=Mathf.Max(0,Mathf.Abs(head.x-hub.x)-c.TireWidth*.5f),dz=Mathf.Max(0,Mathf.Abs(head.z-hub.z)-.41f);
+                if(new Vector2(dx,dz).magnitude<c.BrushRadius)return false;
+            }
+            return true;
+        }
+
         static void CheckGeometryAuthoring()
         {
             var container=new GameObject("Validation only / unbatched authoring preview");

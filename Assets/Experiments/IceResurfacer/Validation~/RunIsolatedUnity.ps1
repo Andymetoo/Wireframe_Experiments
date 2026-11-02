@@ -1,8 +1,10 @@
 param(
-    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery','ProportionsSurvey','ProportionsApply','ProportionsVerify','BrushSetUp','BrushVerify')][string]$Action='RunBatch',
+    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery','ProportionsSurvey','ProportionsApply','ProportionsVerify','BrushSetUp','BrushVerify','ReconcileSurvey','ReconcileCapture','ReconcileApply','ReconcileVerify','ReconcileLaunch','ReconcileClearance')][string]$Action='RunBatch',
     [string]$LogName='Operator-ergonomics-unity-1.log',
     # Optional scene for the existing validators, e.g. Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
-    [string]$Scene=''
+    [string]$Scene='',
+    # Screenshot prefix for ReconcileCapture (Before or After)
+    [string]$ReconcilePrefix='Before'
 )
 $ErrorActionPreference='Stop'
 $stage=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'UnityProject')).Path
@@ -30,8 +32,12 @@ if($Action -eq 'ArenaRecovery'){$method='IceResurfacer.Editor.IceAuthoredArenaVa
 if($Action -like 'Proportions*'){$method='IceResurfacer.Editor.IceMachineProportionsValidation.'+$Action.Substring(11)}
 if($Action -eq 'BrushSetUp'){$method='IceResurfacer.Editor.IceBrushConditionerValidation.SetUp'}
 if($Action -eq 'BrushVerify'){$method='IceResurfacer.Editor.IceBrushConditionerValidation.Verify'}
+if($Action -like 'Reconcile*'){$method='IceResurfacer.Editor.IceMechanicalReconciliationValidation.'+@{ReconcileCapture='Capture';ReconcileApply='Apply';ReconcileVerify='Verify';ReconcileLaunch='LaunchCompat'}[$Action]}
+if($Action -eq 'ReconcileClearance'){$method='IceResurfacer.Editor.IceMechanicalSurvey.Clearance'}
+if($Action -eq 'ReconcileSurvey'){$method='IceResurfacer.Editor.IceMechanicalSurvey.Survey'}
 $arguments=@('-batchmode','-force-d3d11','-projectPath',('"'+$stage+'"'),'-executeMethod',$method,'-logFile',('"'+$log+'"'))
 if($Scene -ne ''){$arguments+=@('-iceScene',$Scene)}
+if($Action -eq 'ReconcileCapture'){$arguments+=@('-reconcilePrefix',$ReconcilePrefix)}
 $child=Start-Process -FilePath $unity -ArgumentList $arguments -WindowStyle Hidden -PassThru
 Write-Output "Isolated Unity $Action started, owned pid=$($child.Id), log=$log"
 $child.WaitForExit()

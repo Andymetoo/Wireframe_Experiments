@@ -50,7 +50,7 @@ namespace IceResurfacer.Core
                     ly=lowerY+(upperY-lowerY)*u;lz=-2.03f+2.05f*v;
                 }
                 lx=Config.TankGeometryX(lx);if(surface!=0&&surface!=6)ly=Config.TankGeometryY(ly);
-                float height=.78f+tc*ly-ts*lz,forward=2.46f+ts*ly+tc*lz;
+                Config.TankPointToMachine(lx,ly,lz,angle,out lx,out float height,out float forward);
                 // Everything behind this plane remains inside the existing
                 // chassis footprint; do not enlarge ordinary driving bounds.
                 if(forward<=Config.BodyFront)continue;

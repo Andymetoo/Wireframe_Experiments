@@ -179,11 +179,14 @@ namespace IceResurfacer.Presentation
 
         Control Pick(Ray ray)
         {
+            // Hit regions are in each control's own (possibly scaled) space; reach and
+            // ordering compare world distances, so an authored, rescaled mount stays pickable.
             Control best=Control.None;float nearest=1.7f;
             for(int i=1;i<=(int)Control.Breaker;i++)
             {
                 var kind=(Control)i;Transform t=TransformFor(kind);
                 Ray local=new Ray(t.InverseTransformPoint(ray.origin),t.InverseTransformDirection(ray.direction));
+                float World(float along){ return Vector3.Distance(ray.origin,t.TransformPoint(local.GetPoint(along))); }
                 if(kind==Control.Conditioner||kind==Control.Horizontal||kind==Control.Vertical||kind==Control.Dump)
                 {
                     // A broad rectangular hit region on a transverse bank can
@@ -195,8 +198,22 @@ namespace IceResurfacer.Presentation
                     if(determinant>=0)
                     {
                         float gripDistance=-b-Mathf.Sqrt(determinant);
-                        if(gripDistance>=0&&gripDistance<nearest){nearest=gripDistance;best=kind;}
+                        if(gripDistance>=0&&World(gripDistance)<nearest){nearest=World(gripDistance);best=kind;}
                     }
+                    continue;
+                }
+                if(kind==Control.Blade)
+                {
+                    // Rim, spokes and hub as a thin disc, plus the spinner knob: a thick box over
+                    // the wheel also caught rays aimed at a valve grip mounted just above the rim.
+                    if(new Bounds(Vector3.zero,new Vector3(.33f,.07f,.33f)).IntersectRay(local,out float face))
+                    {
+                        Vector3 p=local.GetPoint(face);
+                        if(new Vector2(p.x,p.z).magnitude<=.165f&&World(face)<nearest){nearest=World(face);best=kind;}
+                    }
+                    Vector3 knob=local.origin-new Vector3(.11f,.045f,0);
+                    float kb=Vector3.Dot(knob,local.direction),kc=knob.sqrMagnitude-.045f*.045f,kd=kb*kb-kc;
+                    if(kd>=0){float along=-kb-Mathf.Sqrt(kd);if(along>=0&&World(along)<nearest){nearest=World(along);best=kind;}}
                     continue;
                 }
                 Vector3 center;Vector3 size;
@@ -212,8 +229,8 @@ namespace IceResurfacer.Presentation
                 else if(kind==Control.Breaker)
                 { center=new Vector3(0,.22f,0);size=new Vector3(.26f,.095f,.095f); }
                 else { center=new Vector3(0,.20f,0);size=new Vector3(.10f,.14f,.10f); }
-                if(new Bounds(center,size).IntersectRay(local,out float distance)&&distance<nearest)
-                { nearest=distance;best=kind; }
+                if(new Bounds(center,size).IntersectRay(local,out float distance)&&World(distance)<nearest)
+                { nearest=World(distance);best=kind; }
             }
             return best;
         }

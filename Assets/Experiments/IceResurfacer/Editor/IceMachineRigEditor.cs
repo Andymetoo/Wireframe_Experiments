@@ -31,23 +31,19 @@ namespace IceResurfacer.Editor
             if(game==null)EditorGUILayout.HelpBox("Prefab view: comparing against the configuration captured at bake time.",MessageType.None);
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("PHYSICS ANCHORS / SimulatorConfig is authoritative",EditorStyles.boldLabel);
+            DrawAlignment(w,config,game);
             bool drift=false;
-            foreach(var anchor in IceMachineRig.MechanicalAnchors(w,config))
-            {
-                float error=Vector3.Distance(anchor.Actual,anchor.Expected);
-                drift|=error>DriftTolerance;
-                EditorGUILayout.LabelField(anchor.Label,error>DriftTolerance?(error*1000).ToString("F1")+" mm from config":"matches config");
-            }
+            foreach(var anchor in IceMachineRig.MechanicalAnchors(w,config))drift|=Vector3.Distance(anchor.Actual,anchor.Expected)>DriftTolerance;
             foreach(var width in Widths(w,config))
             {
                 drift|=Mathf.Abs(width.Value)>DriftTolerance;
-                EditorGUILayout.LabelField(width.Key,Mathf.Abs(width.Value)>DriftTolerance?(width.Value*1000).ToString("+0.0;-0.0")+" mm from config":"matches config");
+                EditorGUILayout.LabelField(width.Key,Mathf.Abs(width.Value)>DriftTolerance?(width.Value*1000).ToString("+0.0;-0.0")+" mm from config (working width is never changed from visuals)":"matches config");
             }
-            if(drift)EditorGUILayout.HelpBox("These parts disagree with the simulation's configuration, so physics and visuals would differ. "+
-                "Change the value in the scene calibration (Machine Geometry Editor) and apply, rather than moving the anchor.",MessageType.Warning);
             using(new EditorGUI.DisabledScope(!drift||game==null||Application.isPlaying))
-                if(GUILayout.Button("Apply config to physics anchors"))ApplyConfig(w,config);
+                if(GUILayout.Button("Snap Visual Anchors to Simulation (moves your parts)...")&&
+                    EditorUtility.DisplayDialog("Snap visuals to simulation","Move the wheels, tank hinge, conveyor discharge, brush pivot and guide roller back to the scene calibration? "+
+                        "This discards your placement of those parts (Undo is available). To keep your placement, use Transfer Authored Geometry to Simulation instead.","Move parts","Cancel"))
+                    ApplyConfig(w,config);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("BOARD BRUSH / articulation",EditorStyles.boldLabel);
@@ -94,6 +90,74 @@ namespace IceResurfacer.Editor
                 }
             DrawParts();
         }
+
+        static bool ShowOverlay { get { return EditorPrefs.GetBool("IceMachineRig.AlignmentOverlay",true); } set { EditorPrefs.SetBool("IceMachineRig.AlignmentOverlay",value); } }
+
+        /// <summary>Unified mechanical alignment: every simulation-critical assembly, its millimetre
+        /// difference, Edit Mode lift/tilt preview, and the explicit transfer into the calibration.</summary>
+        static void DrawAlignment(IceWorld w,SimulatorConfig config,IceResurfacerGame game)
+        {
+            EditorGUILayout.LabelField("MECHANICAL ALIGNMENT / visible machine vs simulation",EditorStyles.boldLabel);
+            var items=IceMechanicalAlignment.Measure(w,config);
+            foreach(var item in items)
+            {
+                string status=item.Kind==IceMechanicalAlignment.Kind.Matches?"matches":item.Kind==IceMechanicalAlignment.Kind.Info?"":item.ErrorMm.ToString("F0")+" mm";
+                EditorGUILayout.LabelField(item.Label,status);
+                if(item.Kind==IceMechanicalAlignment.Kind.Blocked)EditorGUILayout.HelpBox((item.Detail!=""?item.Detail+" ":"")+"Not transferable: "+item.Blocker,MessageType.Error);
+                else if(item.Kind==IceMechanicalAlignment.Kind.Mechanical&&item.Detail!="")EditorGUILayout.HelpBox(item.Detail,MessageType.Warning);
+                else if(item.Kind==IceMechanicalAlignment.Kind.Info&&item.Detail!="")EditorGUILayout.LabelField(item.Detail,EditorStyles.wordWrappedMiniLabel);
+            }
+            using(new EditorGUI.DisabledScope(Application.isPlaying))
+            {
+                EditorGUI.BeginChangeCheck();
+                bool on=IceMechanicalAlignment.Previewing;
+                float lift=EditorGUILayout.Slider("Preview conditioner lift %",(on?IceMechanicalAlignment.PreviewLift:1)*100,0,100)/100;
+                float tilt=EditorGUILayout.Slider("Preview tank dump %",(on?IceMechanicalAlignment.PreviewTankTilt:0)*100,0,100)/100;
+                if(EditorGUI.EndChangeCheck())IceMechanicalAlignment.Preview(w,config,lift,tilt);
+                using(new EditorGUILayout.HorizontalScope())
+                {
+                    if(GUILayout.Button("Lowered"))IceMechanicalAlignment.Preview(w,config,0,0);
+                    if(GUILayout.Button("Raised"))IceMechanicalAlignment.Preview(w,config,1,0);
+                    if(GUILayout.Button("Tank up"))IceMechanicalAlignment.Preview(w,config,1,1);
+                    using(new EditorGUI.DisabledScope(!on))if(GUILayout.Button("End Preview"))IceMechanicalAlignment.EndPreview();
+                }
+                EditorGUILayout.LabelField("The preview poses parts exactly as Play does and is never saved (save, Play and recompiles end it).",EditorStyles.wordWrappedMiniLabel);
+                ShowOverlay=EditorGUILayout.Toggle("Scene overlay (orange visible / cyan simulated)",ShowOverlay);
+                var mechanical=items.FindAll(i=>i.Kind==IceMechanicalAlignment.Kind.Mechanical&&i.Transfer!=null);
+                var fixes=items.FindAll(i=>i.VisualFix!=null);
+                bool blocked=items.Exists(i=>i.Kind==IceMechanicalAlignment.Kind.Blocked&&i.Transfer!=null);
+                using(new EditorGUI.DisabledScope(game==null||mechanical.Count==0&&fixes.Count==0))
+                    if(GUILayout.Button("Transfer Authored Geometry to Simulation..."))
+                    {
+                        var lines=new List<string>();
+                        foreach(var i in mechanical)lines.Add("CALIBRATION  "+i.Label);
+                        foreach(var i in fixes)lines.Add("PREFAB  "+i.Label+": "+i.VisualFixLabel);
+                        if(blocked)lines.Add("\nSkipped (cannot be made physical as authored): "+string.Join(", ",items.FindAll(i=>i.Kind==IceMechanicalAlignment.Kind.Blocked&&i.Transfer!=null).ConvertAll(i=>i.Label)));
+                        var routes=IceConditionerAlignment.RoutesAffectedByHitch(config);
+                        if(mechanical.Exists(i=>i.Label.StartsWith("Conditioner")))lines.Add("\n"+routes.Count+" saved route(s)/guide(s) use the current hitch and will need new calibrated guide copies (Training Route Editor > Revalidate). Originals are not modified.");
+                        if(EditorUtility.DisplayDialog("Transfer authored geometry",string.Join("\n",lines)+"\n\nUndo is available.","Transfer","Cancel"))
+                        {
+                            if(IceMechanicalAlignment.Reconcile(w,game,out var changes,out string error))Debug.Log("Aurora alignment transferred:\n"+string.Join("\n",changes));
+                            else EditorUtility.DisplayDialog("Not transferred",error,"OK");
+                        }
+                        GUIUtility.ExitGUI();
+                    }
+            }
+            if(ShowOverlay)
+            {
+                lastOverlay=w;lastItems=items;
+                SceneView.duringSceneGui-=DrawOverlay;SceneView.duringSceneGui+=DrawOverlay;
+            }
+            else SceneView.duringSceneGui-=DrawOverlay;
+        }
+        static IceWorld lastOverlay; static List<IceMechanicalAlignment.Item> lastItems;
+        static void DrawOverlay(SceneView view)
+        {
+            if(lastOverlay==null||lastOverlay.Machine==null||Selection.activeGameObject==null||Selection.activeGameObject.GetComponent<IceMachineRig>()==null){SceneView.duringSceneGui-=DrawOverlay;return;}
+            IceMechanicalAlignment.DrawOverlay(lastOverlay,lastItems);
+        }
+
+        void OnDisable() { IceMechanicalAlignment.EndPreview(); }
 
         void DrawParts()
         {

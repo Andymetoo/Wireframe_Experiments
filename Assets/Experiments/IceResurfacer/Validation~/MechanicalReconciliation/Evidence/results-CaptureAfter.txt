@@ -1,0 +1,5 @@
+== Captures After / 2026-11-02T09:52:13
+INFO After lowered: root z -0.885, blade edge 0.0 mm above ice, cylinder 0.402 m
+INFO After raised: cylinder 0.230 m
+INFO PERF | machine step+presentation over 600 frames: mean 0.722 ms, p95 1.266 ms, max 4.335 ms | managed+native allocated 271.6 MB (delta 0 KB) | enabled renderers 233 | mono heap 801.6 MB
+PASS zero Unity runtime errors or exceptions in Play (0)

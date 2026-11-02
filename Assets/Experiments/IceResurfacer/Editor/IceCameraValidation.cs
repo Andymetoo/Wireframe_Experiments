@@ -129,7 +129,13 @@ namespace IceResurfacer.Editor
                 }
                 else Check(Head.parent==game.World.CameraMount,"operator quicklook stays attached to physical seated eyes");
                 if(key==Key.LeftShift)Check(!game.ChaseActive&&game.HeldQuicklook=="Rear"&&Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)-160)<.01f&&Head.localPosition.x>0&&game.World.Machine.InverseTransformDirection(Head.forward).z<0,"Left Shift looks rearward over the operator's RIGHT shoulder");
-                if(key==Key.Q)Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)+65)<.01f&&Head.localPosition.x<-.25f,"Q looks down along the left working edge with a small left lean");
+                if(key==Key.Q)
+                {
+                    // The generated layout keeps the fixed -65 degree preset; an authored machine may turn
+                    // it (left/rear only) so that the conditioner edge and brush both stay framed (checked below).
+                    float qYaw=Mathf.DeltaAngle(0,Head.localEulerAngles.y);bool authored=game.GetComponentInChildren<IceMachineRig>(true)!=null;
+                    Check((authored?qYaw>=-110&&qYaw<=-40:Mathf.Abs(qYaw+65)<.01f)&&Head.localPosition.x<-.25f,"Q looks down along the left working edge with a small left lean (yaw "+qYaw.ToString("F1")+")");
+                }
                 passes.Add(key+" held pose: machine eyes="+game.World.Machine.InverseTransformPoint(Head.position)+" local angles="+Head.localEulerAngles);
                 IceResurfacerEditor.Capture(game.DriverCamera,"Camera-preset-"+key+".png",1920,1080);
                 Step();Check(Quaternion.Angle(before,Head.localRotation)>.5f,key+" release animates instead of snapping");
@@ -239,14 +245,15 @@ namespace IceResurfacer.Editor
                 Physics.SyncTransforms();
                 Vector3 hub=game.World.BladeWheel.TransformPoint(0,.034f,0);
                 Check(Physics.Raycast(Head.position,(hub-Head.position).normalized,out hit,3)&&hit.transform.IsChildOf(game.World.BladeWheel),"E preset exposes actual blade hub without seat or manifold obstruction");
-                int visibleRim=0;
+                int visibleRim=0;var blockers=new HashSet<string>();
                 for(int i=0;i<8;i++)
                 {
                     float angle=i*Mathf.PI/4;
                     Vector3 rim=game.World.BladeWheel.TransformPoint(Mathf.Cos(angle)*.13f,.012f,Mathf.Sin(angle)*.13f);
                     if(Physics.Raycast(Head.position,(rim-Head.position).normalized,out hit,3)&&hit.transform.IsChildOf(game.World.BladeWheel))visibleRim++;
+                    else blockers.Add(hit.transform!=null?hit.transform.name:"nothing");
                 }
-                Check(visibleRim>=6,"E preset exposes blade rim for mouse operation ("+visibleRim+"/8 rays)");
+                Check(visibleRim>=6,"E preset exposes blade rim for mouse operation ("+visibleRim+"/8 rays"+(blockers.Count>0?"; blocked by "+string.Join(", ",blockers):"")+")");
                 float last=-1;
                 foreach(var lever in new[]{game.World.VerticalAugerLever,game.World.ConditionerLever,game.World.HorizontalAugerLever,game.World.DumpLever})
                 {

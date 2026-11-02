@@ -1,0 +1,27 @@
+== Launch scene calibration and saved routes / 2026-11-02T09:53:22
+PASS launch scene still builds the procedural machine at runtime
+PASS launch scene TankHingeHeight = default 0.78
+PASS launch scene TankHingeZ = default 2.46
+PASS launch scene TankScaleX = default 1
+PASS launch scene TankScaleY = default 1
+PASS launch scene TankScaleZ = default 1
+PASS launch scene ConveyorDischargeX = default 0.45
+PASS launch scene ConveyorDischargeHeight = default 1.48
+PASS launch scene ConveyorDischargeZ = default 0.47
+PASS launch scene DrawbarLength = default 0.65
+PASS launch scene BrushRadius = default 0.25
+PASS launch scene GuideRollerX = default -1.015
+== GPS routes and guides vs the launch scene calibration / 2026-11-02T09:53:22
+INFO GPS | launch | route | AndyRoute_20261031_024330_fe2f44fa.route.json | 131.631 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | route | AndyRoute_20261031_024516_dd9a2441.route.json | 131.631 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | route | Andy_Try_1_20261031_041839_75958600.route.json | 1003.234 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | route | Operator_route_20261031_010840_4d4b5ed5.route.json | 152.950 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | route | Operator_route_20261031_011611_e0c83283.route.json | 93.491 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | guide | AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json | 131.631 m | INCOMPATIBLE: DrawbarLength: guide=0.435000002, session=0.649999976
+INFO GPS | launch | guide | AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json | 131.631 m | INCOMPATIBLE: DrawbarLength: guide=0.435000002, session=0.649999976
+INFO GPS | launch | guide | Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json | 1003.234 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | guide | Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json | 1003.234 m | COMPATIBLE
+INFO GPS | launch | guide | Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json | 1003.234 m | INCOMPATIBLE: DrawbarLength: guide=0.435000002, session=0.649999976
+INFO GPS | launch | guide | Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json | 1003.234 m | INCOMPATIBLE: DrawbarLength: guide=0.435000002, session=0.649999976
+INFO GPS | launch | guide | AndyRoute___auto_fit_20261031_024356_870d3a31.guide.json | 131.631 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | launch | guide | AndyRoute___auto_fit_20261031_042536_8cdf27b9.guide.json | 131.631 m | INCOMPATIBLE: ConditionerYawLimitRadians: guide=0.0349065848, session=0

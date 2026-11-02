@@ -1,0 +1,588 @@
+calibration {"IceLateralGrip":1.350000023841858,"TireSlipRecovery":1.5,"MaximumLateralSlip":0.2199999988079071,"RaisedTankGripPenalty":0.2199999988079071,"DumpExitSpeed":0.6499999761581421,"WheelTrack":1.3700000047683716,"TireWidth":0.2150000035762787,"ShavingPerimeterExclusion":0.15240000188350678,"WaterFilmSpreadMeters":0.11999999731779099,"WaterFilmFringeFraction":0.05000000074505806,"WashPickupLitersPerSecond":1.4500000476837159,"WashPickupContactLength":0.3199999928474426,"WashPickupContactFore":-0.11999999731779099,"WashPickupResidualMm":0.03500000014901161,"FloodContactLength":0.27000001072883608,"FloodContactFore":-0.4399999976158142,"MinimumGougeDepthMm":0.024000000208616258,"TypicalGougeDepthMm":0.05999999865889549,"DeepGougeDepthMm":0.14499999582767487,"GougeRoughnessDepthMm":0.07999999821186066,"BrushPivotX":-0.8999999761581421,"BrushPivotZ":1.159999966621399,"BrushArmLength":0.3799999952316284,"BrushRadius":0.25,"BrushRetractedDegrees":85.0,"BrushDeployedDegrees":0.0,"TankRoofHeight":0.875,"TankLateralOffset":0.0,"ConveyorHeightOffset":0.0,"CockpitOffsetX":-0.05999999865889549,"CockpitOffsetZ":0.0,"SteeringWheelZ":0.5299999713897705,"SteeringWheelHeight":1.4600000381469727,"SteeringWheelTilt":68.0,"BladeWheelX":0.6499999761581421,"BladeWheelZ":-0.20000000298023225,"BladeWheelHeight":1.559999942779541,"WaterValveStemHeight":0.23999999463558198,"SnowBreakerX":1.0099999904632569,"SnowBreakerZ":0.3400000035762787,"RinkWidth":26.0,"RinkLength":60.0,"CornerRadius":8.5,"CellSize":0.05000000074505806,"GateHalfWidth":2.700000047683716,"BayLength":14.0,"Wheelbase":1.9600000381469727,"VehicleHalfWidth":1.065000057220459,"BodyFront":2.5,"BodyRear":0.44999998807907107,"ConditionerWidth":1.9559999704360963,"WaterDistributionWidth":2.0999999046325685,"GuideRollerX":-1.0149999856948853,"GuideRollerZ":2.380000114440918,"GuideRollerRadius":0.09000000357627869,"ConditionerLength":0.800000011920929,"HitchBehindAxle":0.44999998807907107,"DrawbarLength":0.6499999761581421,"ConditionerYawLimitRadians":0.0,"MaxSteeringRadians":0.41200000047683718,"SteeringRate":0.550000011920929,"ForwardSpeed":2.6500000953674318,"ReverseSpeed":1.0,"Acceleration":0.47999998927116396,"HydrostaticDeceleration":0.3499999940395355,"ServiceBrakeDeceleration":1.4500000476837159,"ConditionerLiftSeconds":2.0999999046325685,"TankLiftSeconds":5.5,"FloodCapacityLiters":738.0,"WashCapacityLiters":310.0,"SnowCapacityM3":3.5399999618530275,"FloodMaxLitersPerSecond":1.7999999523162842,"WashMaxLitersPerSecond":1.0499999523162842,"WashRecoveryFraction":0.8199999928474426,"HorizontalCapacityM3PerSecond":0.012000000104308129,"VerticalCapacityM3PerSecond":0.009999999776482582,"ConditionerSnowCapacityM3":0.07999999821186066,"VerticalSnowCapacityM3":0.054999999701976779,"SnowBreakerStrokeM3":0.004000000189989805,"SnowExpansionRatio":3.0999999046325685,"LooseSnowPickupDepthMm":6.0,"DumpM3PerSecond":0.3499999940395355,"MaxBladeDepthMm":0.800000011920929,"BladeBiteFraction":0.1599999964237213,"MaximumEffectiveBladeDepthMm":0.6000000238418579,"BladeWheelTurns":3.5,"ConveyorJamSeconds":6.0,"RecommendedBladeDepthMm":0.3499999940395355,"CumulativeSafeCutMm":0.800000011920929,"SensitiveCumulativeSafeCutMm":0.6499999761581421,"GoodFloodDepthMm":0.30000001192092898,"ExcessFloodDepthMm":0.8500000238418579,"FreezeSeconds":420.0,"MinimumScoredCoverage":0.949999988079071}
+rig root AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0 machine=AuroraR54#0/AURORA R-54 / rear axle origin#0
+rig world pos (0.000,-3.360,0.000) rot (0.000,0.000,0.000) scale (1.000,1.000,1.000)
+machine world pos (0.000,-3.360,0.000) rot (0.000,0.000,0.000)
+== scene overrides on machine instance
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalPosition.x = -0.62650687
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalPosition.z = 1.2724228
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalRotation.w = 0.701325
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalRotation.x = -0.09024027
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalRotation.y = 0.09024027
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalRotation.z = -0.701325
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalEulerAnglesHint.y = 14.664
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#29 [Transform] .m_LocalEulerAnglesHint.z = -90
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalPosition.x = 0.6277
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalPosition.z = 1.272
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalRotation.w = 0.6928309
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalRotation.x = 0.14136958
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalRotation.y = -0.14136958
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalRotation.z = -0.6928309
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalEulerAnglesHint.y = -23.065
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#34 [Transform] .m_LocalEulerAnglesHint.z = -90
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear crossmember#2 [Transform] .m_LocalScale.x = 1.5120496
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete operator instrument lamp#13/Operator work lamp stalk#0 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalScale.x = 0.052554
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalScale.y = 0.00656517
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalScale.z = 0.052554
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalPosition.y = 0.21999998
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalPosition.z = -0.00000002027838
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalRotation.w = 0.0000004768371
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalRotation.x = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalRotation.z = -1
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19/Snow breaker plunger / manual stroke#2/Snow breaker T handle#1 [Transform] .m_LocalEulerAnglesHint.z = -180
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#9 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Seat slide rail#6 [Transform] .m_LocalPosition.z = -0.244
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/WASH WATER / quarter turn L handle#5/Visible rotating valve stem#0 [Transform] .m_LocalScale.y = 0.573888
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/WASH WATER / quarter turn L handle#5/Visible rotating valve stem#0 [Transform] .m_LocalPosition.y = -0.329
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalScale.y = 0.46564224
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalPosition.x = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalPosition.y = -0.526
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalPosition.z = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalRotation.w = 1
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalRotation.x = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalRotation.y = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalRotation.z = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalEulerAnglesHint.y = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade index support#3 [Transform] .m_LocalEulerAnglesHint.z = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#11 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#11 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#11 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#11 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#11 [Transform] .m_LocalPosition.y = 1.41
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#11 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#11 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column universal joint#1 [Transform] .m_LocalScale.x = 0.0771712
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column universal joint#1 [Transform] .m_LocalScale.y = 0.0771712
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column universal joint#1 [Transform] .m_LocalScale.z = 0.0771712
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#12 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalScale.x = 0.813331
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalScale.y = 0.813331
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalScale.z = 0.813331
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalPosition.x = 0.102
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalPosition.y = 1.31
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalPosition.z = 0.469
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalRotation.w = 0.7071076
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalRotation.x = -0.707106
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver-facing dashboard / left#12 [Transform] .m_LocalEulerAnglesHint.x = -90
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#10 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#10 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#10 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#10 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#10 [Transform] .m_LocalPosition.y = 1.358
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#10 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Front lamp housing#30 [Transform] .m_LocalPosition.x = 0.48
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Water valve gland nut#2 [MeshRenderer] .m_Materials.Array.data[0] =  ref BoardRoller_White
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#10 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalScale.x = 0.53937894
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalScale.y = 0.53937894
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalScale.z = 0.53937894
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalPosition.x = 0.604
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalPosition.y = 1.291
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalPosition.z = -0.018
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalRotation.w = 1
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Transverse four spool hydraulic bank#15 [Transform] .m_LocalRotation.y = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5/Board guide freely rotating wheel#0/Guide roller axle cap#1 [Transform] .m_LocalScale.x = 0.147959
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5/Board guide freely rotating wheel#0/Guide roller axle cap#1 [Transform] .m_LocalScale.y = 0.026421249
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5/Board guide freely rotating wheel#0/Guide roller axle cap#1 [Transform] .m_LocalScale.z = 0.147959
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5/Board guide freely rotating wheel#0/Guide roller axle cap#1 [Transform] .m_LocalPosition.y = 0.0612
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#6 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#11 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Water valve mounting collar#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Seat slide rail#8 [Transform] .m_LocalPosition.z = -0.244
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Independent valve rubber line#4 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Water valve body#0 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Conveyor motor end cap#12 [Transform] .m_LocalPosition.y = 1.5260001
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column universal joint#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Independent valve outlet pipe#3 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalPosition.x = -0.548
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalPosition.y = 0.42
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalPosition.z = 1.3
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalRotation.w = 0.7294036
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalRotation.x = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalRotation.y = -0.6840836
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3 [Transform] .m_LocalEulerAnglesHint.y = -86.327
+  AuroraR54#0/Trailing conditioner / articulated hitch#1/Wash water manifold#53 [Transform] .m_LocalScale.y = 0.76538765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalScale.y = 0.40486035
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalPosition.x = 0.033
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalPosition.z = -0.395
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalRotation.w = 0.7214926
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalRotation.x = 0.65970266
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalRotation.y = -0.1695373
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalRotation.z = -0.12449065
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalEulerAnglesHint.x = 65.468
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalEulerAnglesHint.y = -80
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Covered snow transfer throat#15 [Transform] .m_LocalEulerAnglesHint.z = -76.264
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2 [Transform] .m_LocalPosition.x = 0.06349999
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Front LED lamp#25 [Transform] .m_LocalPosition.x = -0.482
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#10 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered steel tank floor / inside shell footprint#1 [Transform] .m_LocalScale.x = 0.97054
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered steel tank floor / inside shell footprint#1 [Transform] .m_LocalScale.y = 0.97054
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered steel tank floor / inside shell footprint#1 [Transform] .m_LocalScale.z = 0.97054
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered steel tank floor / inside shell footprint#1 [Transform] .m_LocalPosition.y = 0.0017615
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered steel tank floor / inside shell footprint#1 [Transform] .m_LocalPosition.z = -0.02961
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Valve closed mechanical stop#13 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/WASH WATER / quarter turn L handle#5 [Transform] .m_LocalPosition.z = -0.1178
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear marker#26 [Transform] .m_LocalPosition.x = -0.629
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear marker#26 [Transform] .m_LocalPosition.y = 0.897
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear marker#26 [Transform] .m_LocalPosition.z = -1.164
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Shaped engine cover / right of operator#3 [Transform] .m_LocalScale.x = 1.2626901
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Shaped engine cover / right of operator#3 [Transform] .m_LocalScale.z = 0.85294
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Shaped engine cover / right of operator#3 [Transform] .m_LocalPosition.x = 0.267
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Shaped engine cover / right of operator#3 [Transform] .m_LocalPosition.y = 1.3380002
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Shaped engine cover / right of operator#3 [Transform] .m_LocalPosition.z = -0.466
+  AuroraR54#0/Trailing conditioner / articulated hitch#1 [Transform] .m_LocalPosition.z = -0.885
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Tapered between-axle casing / front wheel wells#1 [Transform] .m_LocalScale.x = 0.80272
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#5 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#5 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#5 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#5 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#5 [Transform] .m_LocalPosition.y = 1.098
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#5 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering wheel rotation#5 [Transform] .m_LocalRotation.w = 0.76905537
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering wheel rotation#5 [Transform] .m_LocalRotation.x = -0.6391822
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering wheel rotation#5 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering wheel rotation#5 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering wheel rotation#5 [Transform] .m_LocalEulerAnglesHint.x = -79.462
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#9 [GameObject] .m_IsActive = 0
+  AuroraR54#0 [Transform] .m_LocalPosition.x = 0
+  AuroraR54#0 [Transform] .m_LocalPosition.y = -3.36
+  AuroraR54#0 [Transform] .m_LocalPosition.z = 0
+  AuroraR54#0 [Transform] .m_LocalRotation.w = 1
+  AuroraR54#0 [Transform] .m_LocalRotation.x = 0
+  AuroraR54#0 [Transform] .m_LocalRotation.y = 0
+  AuroraR54#0 [Transform] .m_LocalRotation.z = 0
+  AuroraR54#0 [Transform] .m_LocalEulerAnglesHint.x = 0
+  AuroraR54#0 [Transform] .m_LocalEulerAnglesHint.y = 0
+  AuroraR54#0 [Transform] .m_LocalEulerAnglesHint.z = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalScale.z = 1.0588
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalPosition.y = 0.001
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalPosition.z = 0.026
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalRotation.w = 0.99997425
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalRotation.x = -0.0071806433
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Sloping forward tank crown#11 [Transform] .m_LocalEulerAnglesHint.x = -0.823
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Front LED lamp#31 [Transform] .m_LocalPosition.x = 0.48
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column upper shaft#2 [Transform] .m_LocalScale.y = 0.0755952
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column upper shaft#2 [Transform] .m_LocalPosition.y = -0.032
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column upper shaft#2 [Transform] .m_LocalPosition.z = 0.078
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0 [Transform] .m_LocalScale.x = 1.0684
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0 [Transform] .m_LocalScale.y = 1.2685
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0 [Transform] .m_LocalScale.z = 1.1841
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0 [Transform] .m_LocalPosition.z = 2.411
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator pedal floor#14 [Transform] .m_LocalPosition.x = 0.046
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator pedal floor#14 [Transform] .m_LocalPosition.z = 0.2
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#6 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/WASH WATER / quarter turn L handle#5/Valve grip#3 [Transform] .m_LocalPosition.x = -0.0832
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/BLADE  /  3.5 TURNS#4 [Transform] .m_LocalPosition.x = -0.0065
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/BLADE  /  3.5 TURNS#4 [Transform] .m_LocalPosition.y = -0.2226
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/BLADE  /  3.5 TURNS#4 [Transform] .m_LocalPosition.z = -0.0757
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator floor#0 [Transform] .m_LocalScale.x = 1.6087765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator floor#0 [Transform] .m_LocalScale.y = 0.21799055
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator floor#0 [Transform] .m_LocalScale.z = 0.809274
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator floor#0 [Transform] .m_LocalPosition.x = 0.628
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator floor#0 [Transform] .m_LocalPosition.y = 0.785
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left operator floor#0 [Transform] .m_LocalPosition.z = 0.241
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#7 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#7 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#7 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#7 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#7 [Transform] .m_LocalPosition.y = 1.202
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#7 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/WASH WATER / quarter turn L handle#5/Quarter turn valve stop dog#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#32 [Transform] .m_LocalPosition.x = 0.742
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#32 [Transform] .m_LocalPosition.z = 0.6298
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/FLOOD WATER / quarter turn L handle#5/Quarter turn valve stop dog#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16 [Transform] .m_LocalPosition.y = 1.256
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Front bumper#21 [Transform] .m_LocalScale.x = 1.4716876
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#8 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#8 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#8 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#8 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#8 [Transform] .m_LocalPosition.y = 1.254
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#8 [Transform] .m_LocalPosition.z = -0.453
+   .m_LocalPosition.x = 0.348
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet#3 [Transform] .m_LocalScale.x = 0.573
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet#3 [Transform] .m_LocalScale.y = 1.0506
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet#3 [Transform] .m_LocalPosition.x = -0.3258
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet#3 [Transform] .m_LocalPosition.y = -0.0284
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#12 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalPosition.y = -0.30495274
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalPosition.z = 0.068
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalRotation.w = 0.9962671
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalRotation.x = 0.08632449
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [Transform] .m_LocalEulerAnglesHint.x = 9.904
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#6 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#6 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#6 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#6 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#6 [Transform] .m_LocalPosition.y = 1.15
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#6 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalPosition.x = 0.7291
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalPosition.z = 0.933
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalRotation.w = 0.69706684
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalRotation.x = 0.11873451
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalRotation.y = -0.11873451
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalRotation.z = -0.69706684
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalEulerAnglesHint.y = -19.333
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#33 [Transform] .m_LocalEulerAnglesHint.z = -90
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete operator instrument lamp#13/Operator lamp downward diffuser#2 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [GameObject] .m_Name = Back_Behind_Conditioner
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Water valve gland nut#2 [Transform] .m_LocalPosition.x = -0.11950004
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Water valve gland nut#2 [Transform] .m_LocalPosition.z = -0.11599994
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5 [Transform] .m_LocalPosition.x = -0.827
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5 [Transform] .m_LocalPosition.z = 2.444
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete operator instrument lamp#13/Operator instrument illumination#3 [Transform] .m_LocalPosition.x = 0.027
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete operator instrument lamp#13/Operator instrument illumination#3 [Transform] .m_LocalPosition.y = 1.511
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete operator instrument lamp#13/Operator instrument illumination#3 [Transform] .m_LocalPosition.z = -0.54
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1 [Transform] .m_LocalPosition.y = 0.338
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Independent valve rubber line#4 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#8 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#4 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#4 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#4 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#4 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#4 [Transform] .m_LocalPosition.y = 1.046
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#4 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/FLOOD WATER / quarter turn L handle#5 [Transform] .m_LocalPosition.x = -0.11950001
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/FLOOD WATER / quarter turn L handle#5 [Transform] .m_LocalPosition.z = -0.116
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11 [Transform] .m_LocalPosition.x = 0.041
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11 [Transform] .m_LocalPosition.y = 1.475
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11 [Transform] .m_LocalPosition.z = 0.351
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear wheel arch mudguard#14 [Transform] .m_LocalScale.y = 0.0521773
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear wheel arch mudguard#14 [Transform] .m_LocalPosition.x = -0.505
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear wheel arch mudguard#14 [Transform] .m_LocalPosition.y = 0.845
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalPosition.x = -0.7317
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalPosition.z = 0.9308254
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalRotation.w = 0.69304144
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalRotation.x = -0.14033398
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalRotation.y = 0.14033398
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalRotation.z = -0.69304144
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalEulerAnglesHint.y = 22.894
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#28 [Transform] .m_LocalEulerAnglesHint.z = -90
+  AuroraR54#0/Trailing conditioner / articulated hitch#1/Conditioner upper guard#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Driver seat assembly / left#10 [Transform] .m_LocalPosition.z = -0.296
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18 [Transform] .m_LocalPosition.x = 0.596
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18 [Transform] .m_LocalPosition.y = 1.481
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18 [Transform] .m_LocalPosition.z = -0.4706
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4 [Transform] .m_LocalPosition.x = -0.021
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4 [Transform] .m_LocalPosition.z = -0.334
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Water valve mounting collar#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#9 [Transform] .m_LocalScale.x = 0.02116975
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#9 [Transform] .m_LocalScale.y = 0.012879981
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#9 [Transform] .m_LocalScale.z = 0.4064592
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#9 [Transform] .m_LocalPosition.x = 0.765
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#9 [Transform] .m_LocalPosition.y = 1.306
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Engine cooling louvre#9 [Transform] .m_LocalPosition.z = -0.453
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/FLOOD WATER / quarter turn L handle#5/Visible rotating valve stem#0 [Transform] .m_LocalScale.y = 0.573888
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/FLOOD WATER / quarter turn L handle#5/Visible rotating valve stem#0 [Transform] .m_LocalPosition.y = -0.329
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [MeshRenderer] .m_Materials.Array.data[0] =  ref Aurora glacier enamel
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Water valve gland nut#2 [MeshRenderer] .m_Materials.Array.data[0] =  ref BoardRoller_White
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalScale.x = 2.8215432
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalScale.y = 4.3701205
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalScale.z = 2.9613755
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalPosition.x = -0.0844
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalPosition.y = -0.162
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalPosition.z = 0.791
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalRotation.w = 0.7071068
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalRotation.x = -0.70710677
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Back_Behind_Conditioner#0 [Transform] .m_LocalEulerAnglesHint.x = -90
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-side boarding access#2 [Transform] .m_LocalScale.x = 0.51237
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-side boarding access#2 [Transform] .m_LocalScale.y = 0.4057
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-side boarding access#2 [Transform] .m_LocalPosition.x = -0.868
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-side boarding access#2 [Transform] .m_LocalPosition.y = 0.73056
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-side boarding access#2 [Transform] .m_LocalPosition.z = -0.85
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade spindle fixed bearing#1 [Transform] .m_LocalScale.y = 0.028469795
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade spindle fixed bearing#1 [Transform] .m_LocalPosition.y = -0.197
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Water manifold right bracket#17 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalPosition.x = -0.736
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalPosition.z = 0.6174362
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalRotation.w = 0.706961
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalRotation.x = 0.014359804
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalRotation.y = -0.014359804
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalRotation.z = -0.706961
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalEulerAnglesHint.y = -2.327
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Frame bolt#27 [Transform] .m_LocalEulerAnglesHint.z = -90
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left platform support#3 [Transform] .m_LocalScale.x = 0.35648674
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left platform support#3 [Transform] .m_LocalScale.y = 0.256431
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left platform support#3 [Transform] .m_LocalScale.z = 0.5881285
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left platform support#3 [Transform] .m_LocalPosition.x = 0.004
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left platform support#3 [Transform] .m_LocalPosition.y = 0.77
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Left platform support#3 [Transform] .m_LocalPosition.z = -0.199
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Front-left board guide / distinct from board brush#5/Board guide freely rotating wheel#0/Guide roller rubber tire#0 [MeshRenderer] .m_Materials.Array.data[0] =  ref BoardRoller_White
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Non-slip operator floor mat#2 [Transform] .m_LocalPosition.x = 0.126
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Front lamp housing#24 [Transform] .m_LocalPosition.x = -0.482
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Quarter turn valve index#7 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalScale.x = 0.71716
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalScale.y = 0.71716
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalScale.z = 0.71716
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalPosition.x = -0.38849515
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalPosition.y = -0.265
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalPosition.z = -0.0005453229
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalRotation.w = 0.99754214
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalRotation.x = 0.0044885986
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalRotation.y = -0.00000029802322
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalRotation.z = -0.069925636
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalEulerAnglesHint.x = 0.513
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalEulerAnglesHint.y = -0.036
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 [Transform] .m_LocalEulerAnglesHint.z = -8.02
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Vertical conveyor hydraulic motor#11 [Transform] .m_LocalPosition.y = 1.3960001
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Water valve gland nut#2 [Transform] .m_LocalPosition.z = -0.1178
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Independent valve outlet pipe#3 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete operator instrument lamp#13/Shielded operator work lamp#1 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/FLOOD WATER / quarter turn L handle#5/Right angle valve handle#2 [Transform] .m_LocalPosition.x = -0.0583
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Water valve body#0 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete blade screw and handwheel assembly#18/Blade spindle fixed bearing#1 [MeshRenderer] .m_Materials.Array.data[0] =  ref BoardRoller_White
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Seat pedestal#5 [Transform] .m_LocalPosition.z = -0.309
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete steering column#11/Steering column lower shaft#0 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Wash valve fixed bearing#2/Valve open mechanical stop#14 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Valve open mechanical stop#14 [GameObject] .m_IsActive = 0
+  AuroraR54#0 [GameObject] .m_Name = AuroraR54
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Valve closed mechanical stop#13 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalScale.y = 1.212
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalPosition.y = 0.871
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalPosition.z = -1.624999
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalRotation.w = 0.9999945
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalRotation.x = 0.00331335
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalRotation.y = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalRotation.z = -0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Physical snow inspection opening / clear sightline#15 [Transform] .m_LocalEulerAnglesHint.x = 0.38
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#7 [GameObject] .m_IsActive = 0
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19 [Transform] .m_LocalScale.x = 0.73483
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19 [Transform] .m_LocalScale.y = 0.73483
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19 [Transform] .m_LocalScale.z = 0.73483
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19 [Transform] .m_LocalPosition.x = 0.874
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19 [Transform] .m_LocalPosition.y = 1.389
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Complete snow breaker assembly#19 [Transform] .m_LocalPosition.z = -0.07
+  AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/Adjacent flood and wash water manifold#16/Flood valve fixed bearing#1/Quarter turn valve index#8 [GameObject] .m_IsActive = 0
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet (2)#4
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet (3)#5
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet (1)#6
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall right of inlet (1)#8
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Left-hand operator station#1/DashControlBoard#1
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear wheel arch mudguard (1)#15
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/EngineBloc#22
+  ADDED GO AURORA R-54 / nose-in service and 5 cm ice#0/AuroraR54#0/AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/BackBloc#23
+== scene instance vs prefab asset (machine-space), differences > 0.1 mm / 0.05 deg / scale 1e-4
+  only in scene: AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet (2)#4
+  only in scene: AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet (3)#5
+  only in scene: AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall left of inlet (1)#6
+  only in scene: AURORA R-54 / rear axle origin#0/Snow tank forward dump hinge#0/Tapered rear wall right of inlet (1)#8
+  only in scene: AURORA R-54 / rear axle origin#0/Left-hand operator station#1/DashControlBoard#1
+  only in scene: AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/Rear wheel arch mudguard (1)#15
+  only in scene: AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/EngineBloc#22
+  only in scene: AURORA R-54 / rear axle origin#0/Chassis and bodywork#8/BackBloc#23
+  instance root localPos (0.0000,-3.3600,0.0000) (prefab root (0.0000,0.0000,0.0000))
+  total differing transforms: 0
+== anchors SCENE
+  Front wheel pivot L: actual (-0.685,0.390,1.960) expected (-0.685,0.390,1.960) err 0.0 mm
+  Rear wheel hub L: actual (-0.685,0.390,0.000) expected (-0.685,0.390,0.000) err 0.0 mm
+  Front wheel pivot R: actual (0.685,0.390,1.960) expected (0.685,0.390,1.960) err 0.0 mm
+  Rear wheel hub R: actual (0.685,0.390,0.000) expected (0.685,0.390,0.000) err 0.0 mm
+  Snow tank dump hinge: actual (0.000,0.780,2.411) expected (0.000,0.780,2.460) err 49.0 mm
+  Tank shell (snow capacity): actual (0.000,0.442,-0.980) expected (0.000,0.442,-0.980) err 0.0 mm
+  Conveyor discharge into tank: actual (-0.021,1.480,-0.099) expected (0.450,1.480,0.470) err 738.6 mm
+  Board brush pivot: actual (-0.548,0.420,1.300) expected (-0.900,0.380,1.160) err 380.9 mm
+  Board guide roller: actual (-0.827,0.530,2.444) expected (-1.015,0.530,2.380) err 198.6 mm
+  Machine [AURORA R-54 / rear axle origin] origin (0.000,0.000,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-1.020,-0.020,-1.259)..(1.020,2.093,2.534) parent AuroraR54
+  Conditioner [Trailing conditioner / articulated hitch] origin (0.000,0.340,-0.885) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-1.066,0.345,-1.460)..(1.066,1.055,-0.113) parent AuroraR54
+  TankPivot [Snow tank forward dump hinge] origin (0.000,0.780,2.411) lossy (1.068,1.269,1.184) localScale (1.068,1.269,1.184) rotM (0.000,0.000,0.000) bounds (-0.815,0.797,0.007)..(0.815,1.918,2.457) parent AURORA R-54 / rear axle origin
+  BodyTank [Hollow centered snow tank shell] origin (0.000,1.341,1.251) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.815,0.824,0.007)..(0.815,1.890,2.435) parent Snow tank forward dump hinge
+  BodyTank(in pivot) [Hollow centered snow tank shell] origin (0.000,0.442,-0.980) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.763,0.035,-2.030)..(0.763,0.875,0.020) parent Snow tank forward dump hinge
+  TankSnow [Uneven snow surface / actual tank contents] origin (0.000,0.888,1.215) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  TankSnow(in pivot) [Uneven snow surface / actual tank contents] origin (0.000,0.085,-1.010) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  TankDoor [Forward dump door hinge] origin (0.000,1.885,2.413) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.769,0.797,2.375)..(0.769,1.799,2.452) parent Snow tank forward dump hinge
+  TankDoor(in pivot) [Forward dump door hinge] origin (0.000,0.871,0.002) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.720,0.014,-0.030)..(0.720,0.804,0.034) parent Snow tank forward dump hinge
+  DumpOutlet [Snow exiting tilted tank at forward door] origin (0.000,0.983,2.553) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  DumpOutlet(in pivot) [Snow exiting tilted tank at forward door] origin (0.000,0.160,0.120) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  TankInspection [Physical snow inspection opening / clear sightline] origin (-0.363,1.885,0.487) lossy (1.068,1.537,1.184) localScale (1.000,1.212,1.000) rotM (0.380,0.000,0.000) bounds (-0.649,1.855,0.063)..(-0.077,1.915,0.910) parent Snow tank forward dump hinge
+  TankDischarge [Rear-wall auger discharge into tank] origin (-0.021,1.480,-0.099) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Compact vertical snow conveyor / rear tank inlet
+  SnowOutlet [Escaping snow at conditioner] origin (0.778,0.500,-1.295) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Trailing conditioner / articulated hitch
+  VerticalAuger [Vertical auger moving flights] origin (-0.021,0.980,-0.334) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.126,0.950,-0.439)..(0.084,1.440,-0.229) parent Compact vertical snow conveyor / rear tank inlet
+  HorizontalAuger [Horizontal auger shaft] origin (0.000,0.590,-1.280) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.918,0.465,-1.405)..(0.918,0.715,-1.155) parent Trailing conditioner / articulated hitch
+  VerticalAuger.parent [Compact vertical snow conveyor / rear tank inlet] origin (-0.021,0.400,-0.334) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.181,0.384,-1.149)..(0.182,1.944,-0.099) parent AURORA R-54 / rear axle origin
+  GuideRoller [Board guide freely rotating wheel] origin (-0.827,0.530,2.444) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.917,0.450,2.354)..(-0.737,0.619,2.534) parent Front-left board guide / distinct from board brush
+  GuideRoller.parent [Front-left board guide / distinct from board brush] origin (-0.827,0.530,2.444) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.917,0.450,2.354)..(-0.632,0.619,2.534) parent AURORA R-54 / rear axle origin
+  BrushArm [Board brush articulated arm / left side] origin (-0.548,0.420,1.300) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,273.673,0.000) bounds (-0.762,0.080,0.720)..(-0.383,0.510,1.369) parent AURORA R-54 / rear axle origin
+  Brush [Rotating board brush] origin (-0.572,0.155,0.912) lossy (0.717,0.717,0.717) localScale (0.717,0.717,0.717) rotM (0.513,273.637,351.980) bounds (-0.762,0.080,0.720)..(-0.383,0.337,1.095) parent Board brush articulated arm / left side
+  BrushLink [Board brush link / compliant extension] origin (-0.560,0.330,1.110) lossy (0.065,0.210,0.065) localScale (0.065,0.210,0.065) rotM (0.000,273.673,115.346) bounds (-0.606,0.211,0.905)..(-0.515,0.449,1.316) parent Board brush articulated arm / left side
+  BrushRoller [Brush contact roller carriage] origin (-0.548,0.420,1.300) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,273.673,0.000) bounds (-0.643,0.355,1.065)..(-0.473,0.485,1.301) parent Board brush articulated arm / left side
+  CuttingBlade [Cutting blade edge] origin (0.000,0.043,0.300) lossy (1.956,0.013,0.127) localScale (1.956,0.013,0.127) rotM (0.000,0.000,0.000) bounds (-0.978,0.037,0.237)..(0.978,0.049,0.364) parent Trailing conditioner / articulated hitch
+  Towel [Trailing distribution towel] origin (0.000,0.018,-0.440) lossy (2.100,0.025,0.270) localScale (2.100,0.025,0.270) rotM (0.000,0.000,0.000) bounds (-1.050,0.005,-0.575)..(1.050,0.031,-0.305) parent Trailing conditioner / articulated hitch
+  Housing [Conditioner stainless housing] origin (0.000,0.240,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-1.060,0.080,-0.365)..(1.060,0.400,0.365) parent Trailing conditioner / articulated hitch
+  WaterOutlet [Visible flood emission] origin (0.000,0.090,-0.430) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Trailing conditioner / articulated hitch
+  WashPickup [Wash pickup squeegee contact] origin (0.000,0.027,-0.120) lossy (1.956,0.025,0.320) localScale (1.956,0.025,0.320) rotM (0.000,0.000,0.000) bounds (-0.978,0.015,-0.280)..(0.978,0.039,0.040) parent Trailing conditioner / articulated hitch
+  ConditionerLeftEdge [Exposed conditioner side plate] origin (-1.057,0.140,-0.040) lossy (0.014,0.240,0.800) localScale (0.014,0.240,0.800) rotM (0.000,0.000,0.000) bounds (-1.064,0.020,-0.440)..(-1.050,0.260,0.360) parent Trailing conditioner / articulated hitch
+  Chassis [Central steel chassis] origin (0.000,0.470,0.770) lossy (0.720,0.230,3.000) localScale (0.720,0.230,3.000) rotM (0.000,0.000,0.000) bounds (-0.360,0.355,-0.730)..(0.360,0.585,2.270) parent Chassis and bodywork
+  EngineCover [Shaped engine cover / right of operator] origin (0.267,1.338,-0.466) lossy (1.263,1.000,0.853) localScale (1.263,1.000,0.853) rotM (0.000,0.000,0.000) bounds (-0.270,1.023,-0.807)..(0.804,1.653,-0.125) parent Chassis and bodywork
+  FrontWheel0 [Front steering knuckle] origin (-0.685,0.390,1.960) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.850,-0.020,1.549)..(-0.577,0.800,2.371) parent Wheels
+  RearWheel0 [Rear wheel hub] origin (-0.685,0.390,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.850,-0.020,-0.411)..(-0.577,0.800,0.411) parent Wheels
+  TankCylBase0 [Tank cylinder lower clevis pin] origin (-0.690,0.550,0.720) lossy (0.120,0.050,0.120) localScale (0.120,0.050,0.120) rotM (0.000,0.000,270.000) bounds (-0.740,0.490,0.660)..(-0.640,0.610,0.780) parent Hydraulic equipment
+  TankCylClevis0 [Tank cylinder moving clevis pin] origin (-0.737,1.224,1.535) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (-0.796,1.160,1.476)..(-0.678,1.287,1.594) parent Snow tank forward dump hinge
+  TankCylClevis(in pivot)0 [Tank cylinder moving clevis pin] origin (-0.690,0.350,-0.740) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (-0.745,0.300,-0.790)..(-0.635,0.400,-0.690) parent Snow tank forward dump hinge
+  CondCylBase0 [Conditioner lift chassis clevis] origin (-0.550,0.760,-0.570) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (-0.600,0.715,-0.615)..(-0.500,0.805,-0.525) parent Hydraulic equipment
+  CondCylClevis0 [Conditioner lift lower clevis] origin (-0.550,0.770,-0.585) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (-0.600,0.725,-0.630)..(-0.500,0.815,-0.540) parent Trailing conditioner / articulated hitch
+  CondCylClevis(in cond)0 [Conditioner lift lower clevis] origin (-0.550,0.430,0.300) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (-0.600,0.385,0.255)..(-0.500,0.475,0.345) parent Trailing conditioner / articulated hitch
+  FrontWheel1 [Front steering knuckle] origin (0.685,0.390,1.960) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.578,-0.020,1.549)..(0.850,0.800,2.371) parent Wheels
+  RearWheel1 [Rear wheel hub] origin (0.685,0.390,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.578,-0.020,-0.411)..(0.850,0.800,0.411) parent Wheels
+  TankCylBase1 [Tank cylinder lower clevis pin] origin (0.690,0.550,0.720) lossy (0.120,0.050,0.120) localScale (0.120,0.050,0.120) rotM (0.000,0.000,270.000) bounds (0.640,0.490,0.660)..(0.740,0.610,0.780) parent Hydraulic equipment
+  TankCylClevis1 [Tank cylinder moving clevis pin] origin (0.737,1.224,1.535) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (0.678,1.160,1.476)..(0.796,1.287,1.594) parent Snow tank forward dump hinge
+  TankCylClevis(in pivot)1 [Tank cylinder moving clevis pin] origin (0.690,0.350,-0.740) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (0.635,0.300,-0.790)..(0.745,0.400,-0.690) parent Snow tank forward dump hinge
+  CondCylBase1 [Conditioner lift chassis clevis] origin (0.550,0.760,-0.570) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (0.500,0.715,-0.615)..(0.600,0.805,-0.525) parent Hydraulic equipment
+  CondCylClevis1 [Conditioner lift lower clevis] origin (0.550,0.770,-0.585) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (0.500,0.725,-0.630)..(0.600,0.815,-0.540) parent Trailing conditioner / articulated hitch
+  CondCylClevis(in cond)1 [Conditioner lift lower clevis] origin (0.550,0.430,0.300) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (0.500,0.385,0.255)..(0.600,0.475,0.345) parent Trailing conditioner / articulated hitch
+  machine total renderer bounds (-1.020,-0.020,-1.259)..(1.020,2.093,2.534)
+  tank-pivot subtree bounds (machine) (-0.815,0.797,0.007)..(0.815,1.918,2.457)
+  tank-pivot subtree bounds (pivot) (-0.763,0.014,-2.030)..(0.763,0.897,0.039)
+  chassis/body bounds excluding tank/conditioner/brush (-1.020,-0.020,-1.259)..(1.020,2.093,2.534)  sim: x ±1.065 z -0.45..2.5
+== anchors PREFAB
+  Front wheel pivot L: actual (-0.685,0.390,1.960) expected (-0.685,0.390,1.960) err 0.0 mm
+  Rear wheel hub L: actual (-0.685,0.390,0.000) expected (-0.685,0.390,0.000) err 0.0 mm
+  Front wheel pivot R: actual (0.685,0.390,1.960) expected (0.685,0.390,1.960) err 0.0 mm
+  Rear wheel hub R: actual (0.685,0.390,0.000) expected (0.685,0.390,0.000) err 0.0 mm
+  Snow tank dump hinge: actual (0.000,0.780,2.411) expected (0.000,0.780,2.460) err 49.0 mm
+  Tank shell (snow capacity): actual (0.000,0.442,-0.980) expected (0.000,0.442,-0.980) err 0.0 mm
+  Conveyor discharge into tank: actual (-0.021,1.480,-0.099) expected (0.450,1.480,0.470) err 738.6 mm
+  Board brush pivot: actual (-0.548,0.420,1.300) expected (-0.900,0.380,1.160) err 380.9 mm
+  Board guide roller: actual (-0.827,0.530,2.444) expected (-1.015,0.530,2.380) err 198.6 mm
+  Machine [AURORA R-54 / rear axle origin] origin (0.000,0.000,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-1.020,-0.020,-1.259)..(1.020,2.093,2.534) parent AuroraR54
+  Conditioner [Trailing conditioner / articulated hitch] origin (0.000,0.340,-0.885) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-1.066,0.345,-1.460)..(1.066,1.055,-0.113) parent AuroraR54
+  TankPivot [Snow tank forward dump hinge] origin (0.000,0.780,2.411) lossy (1.068,1.269,1.184) localScale (1.068,1.269,1.184) rotM (0.000,0.000,0.000) bounds (-0.815,0.797,0.007)..(0.815,1.918,2.457) parent AURORA R-54 / rear axle origin
+  BodyTank [Hollow centered snow tank shell] origin (0.000,1.341,1.251) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.815,0.824,0.007)..(0.815,1.890,2.435) parent Snow tank forward dump hinge
+  BodyTank(in pivot) [Hollow centered snow tank shell] origin (0.000,0.442,-0.980) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.763,0.035,-2.030)..(0.763,0.875,0.020) parent Snow tank forward dump hinge
+  TankSnow [Uneven snow surface / actual tank contents] origin (0.000,0.888,1.215) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  TankSnow(in pivot) [Uneven snow surface / actual tank contents] origin (0.000,0.085,-1.010) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  TankDoor [Forward dump door hinge] origin (0.000,1.885,2.413) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.769,0.797,2.375)..(0.769,1.799,2.452) parent Snow tank forward dump hinge
+  TankDoor(in pivot) [Forward dump door hinge] origin (0.000,0.871,0.002) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.720,0.014,-0.030)..(0.720,0.804,0.034) parent Snow tank forward dump hinge
+  DumpOutlet [Snow exiting tilted tank at forward door] origin (0.000,0.983,2.553) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  DumpOutlet(in pivot) [Snow exiting tilted tank at forward door] origin (0.000,0.160,0.120) lossy (1.068,1.269,1.184) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Snow tank forward dump hinge
+  TankInspection [Physical snow inspection opening / clear sightline] origin (-0.363,1.885,0.487) lossy (1.068,1.537,1.184) localScale (1.000,1.212,1.000) rotM (0.380,0.000,0.000) bounds (-0.649,1.855,0.063)..(-0.077,1.915,0.910) parent Snow tank forward dump hinge
+  TankDischarge [Rear-wall auger discharge into tank] origin (-0.021,1.480,-0.099) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Compact vertical snow conveyor / rear tank inlet
+  SnowOutlet [Escaping snow at conditioner] origin (0.778,0.500,-1.295) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Trailing conditioner / articulated hitch
+  VerticalAuger [Vertical auger moving flights] origin (-0.021,0.980,-0.334) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.126,0.950,-0.439)..(0.084,1.440,-0.229) parent Compact vertical snow conveyor / rear tank inlet
+  HorizontalAuger [Horizontal auger shaft] origin (0.000,0.590,-1.280) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.918,0.465,-1.405)..(0.918,0.715,-1.155) parent Trailing conditioner / articulated hitch
+  VerticalAuger.parent [Compact vertical snow conveyor / rear tank inlet] origin (-0.021,0.400,-0.334) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.181,0.384,-1.149)..(0.182,1.944,-0.099) parent AURORA R-54 / rear axle origin
+  GuideRoller [Board guide freely rotating wheel] origin (-0.827,0.530,2.444) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.917,0.450,2.354)..(-0.737,0.619,2.534) parent Front-left board guide / distinct from board brush
+  GuideRoller.parent [Front-left board guide / distinct from board brush] origin (-0.827,0.530,2.444) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.917,0.450,2.354)..(-0.632,0.619,2.534) parent AURORA R-54 / rear axle origin
+  BrushArm [Board brush articulated arm / left side] origin (-0.548,0.420,1.300) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,273.673,0.000) bounds (-0.762,0.080,0.720)..(-0.383,0.510,1.369) parent AURORA R-54 / rear axle origin
+  Brush [Rotating board brush] origin (-0.572,0.155,0.912) lossy (0.717,0.717,0.717) localScale (0.717,0.717,0.717) rotM (0.513,273.637,351.980) bounds (-0.762,0.080,0.720)..(-0.383,0.337,1.095) parent Board brush articulated arm / left side
+  BrushLink [Board brush link / compliant extension] origin (-0.560,0.330,1.110) lossy (0.065,0.210,0.065) localScale (0.065,0.210,0.065) rotM (0.000,273.673,115.346) bounds (-0.606,0.211,0.905)..(-0.515,0.449,1.316) parent Board brush articulated arm / left side
+  BrushRoller [Brush contact roller carriage] origin (-0.548,0.420,1.300) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,273.673,0.000) bounds (-0.643,0.355,1.065)..(-0.473,0.485,1.301) parent Board brush articulated arm / left side
+  CuttingBlade [Cutting blade edge] origin (0.000,0.043,0.300) lossy (1.956,0.013,0.127) localScale (1.956,0.013,0.127) rotM (0.000,0.000,0.000) bounds (-0.978,0.037,0.237)..(0.978,0.049,0.364) parent Trailing conditioner / articulated hitch
+  Towel [Trailing distribution towel] origin (0.000,0.018,-0.440) lossy (2.100,0.025,0.270) localScale (2.100,0.025,0.270) rotM (0.000,0.000,0.000) bounds (-1.050,0.005,-0.575)..(1.050,0.030,-0.305) parent Trailing conditioner / articulated hitch
+  Housing [Conditioner stainless housing] origin (0.000,0.240,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-1.060,0.080,-0.365)..(1.060,0.400,0.365) parent Trailing conditioner / articulated hitch
+  WaterOutlet [Visible flood emission] origin (0.000,0.090,-0.430) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.000,0.000,0.000)..(0.000,0.000,0.000) parent Trailing conditioner / articulated hitch
+  WashPickup [Wash pickup squeegee contact] origin (0.000,0.027,-0.120) lossy (1.956,0.025,0.320) localScale (1.956,0.025,0.320) rotM (0.000,0.000,0.000) bounds (-0.978,0.014,-0.280)..(0.978,0.040,0.040) parent Trailing conditioner / articulated hitch
+  ConditionerLeftEdge [Exposed conditioner side plate] origin (-1.057,0.140,-0.040) lossy (0.014,0.240,0.800) localScale (0.014,0.240,0.800) rotM (0.000,0.000,0.000) bounds (-1.064,0.020,-0.440)..(-1.050,0.260,0.360) parent Trailing conditioner / articulated hitch
+  Chassis [Central steel chassis] origin (0.000,0.470,0.770) lossy (0.720,0.230,3.000) localScale (0.720,0.230,3.000) rotM (0.000,0.000,0.000) bounds (-0.360,0.355,-0.730)..(0.360,0.585,2.270) parent Chassis and bodywork
+  EngineCover [Shaped engine cover / right of operator] origin (0.267,1.338,-0.466) lossy (1.263,1.000,0.853) localScale (1.263,1.000,0.853) rotM (0.000,0.000,0.000) bounds (-0.270,1.023,-0.807)..(0.804,1.653,-0.125) parent Chassis and bodywork
+  FrontWheel0 [Front steering knuckle] origin (-0.685,0.390,1.960) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.850,-0.020,1.549)..(-0.577,0.800,2.371) parent Wheels
+  RearWheel0 [Rear wheel hub] origin (-0.685,0.390,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (-0.850,-0.020,-0.411)..(-0.577,0.800,0.411) parent Wheels
+  TankCylBase0 [Tank cylinder lower clevis pin] origin (-0.690,0.550,0.720) lossy (0.120,0.050,0.120) localScale (0.120,0.050,0.120) rotM (0.000,0.000,270.000) bounds (-0.740,0.490,0.660)..(-0.640,0.610,0.780) parent Hydraulic equipment
+  TankCylClevis0 [Tank cylinder moving clevis pin] origin (-0.737,1.224,1.535) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (-0.796,1.160,1.476)..(-0.678,1.287,1.594) parent Snow tank forward dump hinge
+  TankCylClevis(in pivot)0 [Tank cylinder moving clevis pin] origin (-0.690,0.350,-0.740) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (-0.745,0.300,-0.790)..(-0.635,0.400,-0.690) parent Snow tank forward dump hinge
+  CondCylBase0 [Conditioner lift chassis clevis] origin (-0.550,0.760,-0.570) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (-0.600,0.715,-0.615)..(-0.500,0.805,-0.525) parent Hydraulic equipment
+  CondCylClevis0 [Conditioner lift lower clevis] origin (-0.550,0.770,-0.585) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (-0.600,0.725,-0.630)..(-0.500,0.815,-0.540) parent Trailing conditioner / articulated hitch
+  CondCylClevis(in cond)0 [Conditioner lift lower clevis] origin (-0.550,0.430,0.300) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (-0.600,0.385,0.255)..(-0.500,0.475,0.345) parent Trailing conditioner / articulated hitch
+  FrontWheel1 [Front steering knuckle] origin (0.685,0.390,1.960) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.578,-0.020,1.549)..(0.850,0.800,2.371) parent Wheels
+  RearWheel1 [Rear wheel hub] origin (0.685,0.390,0.000) lossy (1.000,1.000,1.000) localScale (1.000,1.000,1.000) rotM (0.000,0.000,0.000) bounds (0.578,-0.020,-0.411)..(0.850,0.800,0.411) parent Wheels
+  TankCylBase1 [Tank cylinder lower clevis pin] origin (0.690,0.550,0.720) lossy (0.120,0.050,0.120) localScale (0.120,0.050,0.120) rotM (0.000,0.000,270.000) bounds (0.640,0.490,0.660)..(0.740,0.610,0.780) parent Hydraulic equipment
+  TankCylClevis1 [Tank cylinder moving clevis pin] origin (0.737,1.224,1.535) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (0.678,1.160,1.476)..(0.796,1.287,1.594) parent Snow tank forward dump hinge
+  TankCylClevis(in pivot)1 [Tank cylinder moving clevis pin] origin (0.690,0.350,-0.740) lossy (0.127,0.059,0.118) localScale (0.100,0.055,0.100) rotM (0.000,0.000,270.000) bounds (0.635,0.300,-0.790)..(0.745,0.400,-0.690) parent Snow tank forward dump hinge
+  CondCylBase1 [Conditioner lift chassis clevis] origin (0.550,0.760,-0.570) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (0.500,0.715,-0.615)..(0.600,0.805,-0.525) parent Hydraulic equipment
+  CondCylClevis1 [Conditioner lift lower clevis] origin (0.550,0.770,-0.585) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (0.500,0.725,-0.630)..(0.600,0.815,-0.540) parent Trailing conditioner / articulated hitch
+  CondCylClevis(in cond)1 [Conditioner lift lower clevis] origin (0.550,0.430,0.300) lossy (0.090,0.050,0.090) localScale (0.090,0.050,0.090) rotM (0.000,0.000,270.000) bounds (0.500,0.385,0.255)..(0.600,0.475,0.345) parent Trailing conditioner / articulated hitch
+  machine total renderer bounds (-1.020,-0.020,-1.259)..(1.020,2.093,2.534)
+  tank-pivot subtree bounds (machine) (-0.815,0.797,0.007)..(0.815,1.918,2.457)
+  tank-pivot subtree bounds (pivot) (-0.763,0.014,-2.030)..(0.763,0.897,0.039)
+  chassis/body bounds excluding tank/conditioner/brush (-1.020,-0.020,-1.259)..(1.020,2.093,2.534)  sim: x ±1.065 z -0.45..2.5
+== conditioner alignment (scene)
+  ROOT  'Trailing conditioner / articulated hitch' (runtime-driven: placed at the simulated hitch every frame)
+    Authored (machine space)      x +0.000 m  y +0.340 m  z -0.885 m  yaw 0.00 deg
+    Simulated (same lift 100%)       x +0.000 m  y +0.340 m  z -1.100 m
+    Visual minus simulation       forward +0.215 m (0.71 ft), up +0.000 m, lateral +0.000 m
+    Prefab value z -0.885 m; not overridden
+    In Play the root snaps to the simulated position, so this offset does not survive Play Mode.
+  BLADE  (simulated cut band: conditioner z -0.400 m .. +0.400 m, width 1.956 m)
+    Visible blade z +0.237 m .. +0.364 m, width 1.956 m
+    Lowered, depth 0: blade edge +32 mm above the ice top; at max depth 0.8 mm: +31 mm
+  TOWEL  (simulated flood band z -0.575 m .. -0.305 m, width 2.100 m)
+    Visible towel z -0.575 m .. -0.305 m, width 2.100 m, lowered +0 mm above the ice; emitter z -0.430 m
+  PICKUP (simulated wash pickup z -0.280 m .. +0.040 m); visible squeegee z -0.280 m .. +0.040 m
+  HOUSING  z -0.365 m .. +0.365 m, lowered underside +75 mm above the ice
+    Rear tyre back edge z -0.411 m (inner x 0.577); housing gap: simulated 0.324 m clear, authored 0.109 m clear
+    Closest conditioner part beside the tyres (Lift linkage): simulated 0.082 m OVERLAP, authored 0.297 m OVERLAP
+  CYLINDER L  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.018 m (barrel 0.42 m; the rod always ends on the clevis)
+  CYLINDER R  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.018 m (barrel 0.42 m; the rod always ends on the clevis)
+  DRAWBAR  hitch-to-hitch lowered 0.418 m, raised 0.434 m, authored 0.258 m (runtime-stretched, always connected)
+  HITCH  simulated 1.100 m behind the axle; the authored root implies 0.885 m (DrawbarLength 0.650 -> 0.435 to make it physical).
+== conditioner alignment (prefab)
+  ROOT  'Trailing conditioner / articulated hitch' (runtime-driven: placed at the simulated hitch every frame)
+    Authored (machine space)      x +0.000 m  y +0.340 m  z -0.885 m  yaw 0.00 deg
+    Simulated (same lift 100%)       x +0.000 m  y +0.340 m  z -1.100 m
+    Visual minus simulation       forward +0.215 m (0.71 ft), up +0.000 m, lateral +0.000 m
+    In Play the root snaps to the simulated position, so this offset does not survive Play Mode.
+  BLADE  (simulated cut band: conditioner z -0.400 m .. +0.400 m, width 1.956 m)
+    Visible blade z +0.237 m .. +0.364 m, width 1.956 m
+    Lowered, depth 0: blade edge +32 mm above the ice top; at max depth 0.8 mm: +31 mm
+  TOWEL  (simulated flood band z -0.575 m .. -0.305 m, width 2.100 m)
+    Visible towel z -0.575 m .. -0.305 m, width 2.100 m, lowered +0 mm above the ice; emitter z -0.430 m
+  PICKUP (simulated wash pickup z -0.280 m .. +0.040 m); visible squeegee z -0.280 m .. +0.040 m
+  HOUSING  z -0.365 m .. +0.365 m, lowered underside +75 mm above the ice
+    Rear tyre back edge z -0.411 m (inner x 0.577); housing gap: simulated 0.324 m clear, authored 0.109 m clear
+    Closest conditioner part beside the tyres (Lift linkage): simulated 0.082 m OVERLAP, authored 0.297 m OVERLAP
+  CYLINDER L  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.018 m (barrel 0.42 m; the rod always ends on the clevis)
+  CYLINDER R  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.018 m (barrel 0.42 m; the rod always ends on the clevis)
+  DRAWBAR  hitch-to-hitch lowered 0.418 m, raised 0.434 m, authored 0.258 m (runtime-stretched, always connected)
+  HITCH  simulated 1.100 m behind the axle; the authored root implies 0.885 m (DrawbarLength 0.650 -> 0.435 to make it physical).
+== brush rig scene: NONE
+== brush rig prefab: NONE
+== lateral body profile (machine space, renderers below y 1.2 m; excluding tank, conditioner, brush, guide roller)
+  z -1.4: x 0.000 .. 0.000  leftmost 
+  z -1.3: x 0.000 .. 0.000  leftmost 
+  z -1.2: x -0.805 .. 0.182  leftmost Seat pedestal
+  z -1.1: x -0.940 .. 0.182  leftmost Boarding lower step
+  z -1.0: x -1.020 .. 1.020  leftmost Rear bumper
+  z -0.9: x -1.020 .. 1.020  leftmost Rear bumper
+  z -0.8: x -0.940 .. 0.822  leftmost Boarding lower step
+  z -0.7: x -0.940 .. 0.822  leftmost Boarding lower step
+  z -0.6: x -0.786 .. 0.822  leftmost Left operator floor
+  z -0.5: x -0.788 .. 0.822  leftmost Tire traction block
+  z -0.4: x -0.793 .. 0.822  leftmost Tire carcass
+  z -0.3: x -0.813 .. 0.822  leftmost Pressed steel rim
+  z -0.2: x -0.836 .. 0.836  leftmost Wheel lug
+  z -0.1: x -0.850 .. 0.850  leftmost Hub cap
+  z 0.0: x -0.850 .. 0.850  leftmost Hub cap
+  z 0.1: x -0.836 .. 0.836  leftmost Wheel lug
+  z 0.2: x -0.813 .. 0.813  leftmost Pressed steel rim
+  z 0.3: x -0.793 .. 0.793  leftmost Tire carcass
+  z 0.4: x -0.788 .. 0.788  leftmost Tire traction block
+  z 0.5: x -0.745 .. 0.743  leftmost Frame bolt
+  z 0.6: x -0.745 .. 0.750  leftmost Frame bolt
+  z 0.7: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 0.8: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 0.9: x -0.748 .. 0.744  leftmost Frame bolt
+  z 1.0: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 1.1: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 1.2: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 1.3: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 1.4: x -0.743 .. 0.743  leftmost Tapered between-axle casing / front wheel wells
+  z 1.5: x -0.793 .. 0.793  leftmost Tire carcass
+  z 1.6: x -0.793 .. 0.793  leftmost Tire carcass
+  z 1.7: x -0.836 .. 0.836  leftmost Wheel lug
+  z 1.8: x -0.850 .. 0.850  leftmost Hub cap
+  z 1.9: x -0.850 .. 0.850  leftmost Hub cap
+  z 2.0: x -0.850 .. 0.850  leftmost Hub cap
+  z 2.1: x -0.836 .. 0.836  leftmost Wheel lug
+  z 2.2: x -0.793 .. 0.793  leftmost Tire carcass
+  z 2.3: x -0.793 .. 0.793  leftmost Tire carcass
+  z 2.4: x -0.736 .. 0.736  leftmost Front bumper
+  z 2.5: x -0.736 .. 0.736  leftmost Front bumper

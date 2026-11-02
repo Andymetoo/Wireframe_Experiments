@@ -61,8 +61,13 @@ namespace IceResurfacer.Editor
                     w.HorizontalAugerLever.localPosition.x<w.DumpLever.localPosition.x&&
                     Mathf.Abs(w.VerticalAugerLever.localPosition.z-w.DumpLever.localPosition.z)<.00001f,
                     "actual mounted assemblies follow operator-left to right VERTICAL / CONDITIONER / HORIZONTAL / DUMP");
+                // Grips stay apart through both quarter turns (the rig's own crowding threshold).
+                float stem=s.Config.WaterValveStemHeight,closest=float.PositiveInfinity;
+                Vector3 Grip(Transform h,int degrees)=>h.parent.TransformPoint(h.localPosition+h.localRotation*Quaternion.Euler(0,-degrees,0)*new Vector3(-.09f,stem,0));
+                for(int a=0;a<=90;a+=5)for(int b=0;b<=90;b+=5)closest=Mathf.Min(closest,Vector3.Distance(Grip(w.FloodLever,a),Grip(w.WashValve,b)));
                 Check(Mathf.Abs(w.FloodValveMount.localPosition.z-w.WashValveMount.localPosition.z)<.00001f&&
-                    w.WashValveMount.localPosition.x-w.FloodValveMount.localPosition.x>.24f,"water handles occupy adjacent transverse bearings with clearance through quarter turns");
+                    w.WashValveMount.localPosition.x>w.FloodValveMount.localPosition.x&&closest>=IceMachineRigEditor.GripSpacingWarning,
+                    "water handles occupy adjacent transverse bearings with clearance through quarter turns (closest grips "+(closest*1000).ToString("F0")+" mm)");
                 Hit(w.ConditionerLever,new Vector3(0,.225f,0),"Conditioner hydraulic lever");
                 Hit(w.HorizontalAugerLever,new Vector3(0,.225f,0),"Horizontal auger lever");
                 Hit(w.VerticalAugerLever,new Vector3(0,.225f,0),"Vertical auger lever");

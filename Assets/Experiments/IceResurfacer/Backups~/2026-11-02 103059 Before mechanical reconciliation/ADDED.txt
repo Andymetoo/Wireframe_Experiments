@@ -1,0 +1,11 @@
+Documentation\MechanicalReconciliation.txt
+Editor\IceMechanicalAlignment.cs
+Editor\IceMechanicalAlignment.cs.meta
+Editor\IceMechanicalReconciliationValidation.cs
+Editor\IceMechanicalReconciliationValidation.cs.meta
+Editor\IceMechanicalSurvey.cs
+Editor\IceMechanicalSurvey.cs.meta
+RouteRecordings~\Guides\AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json
+RouteRecordings~\Guides\AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json
+RouteRecordings~\Guides\Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json
+RouteRecordings~\Guides\Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json

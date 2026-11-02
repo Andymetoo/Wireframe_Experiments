@@ -286,7 +286,7 @@ namespace IceResurfacer.Presentation
             if(view=="Forward") { targetYaw=0; targetPitch=5; }
             // Keep both the forward brush and trailing conditioner in the same
             // downward inspection without moving the operator's seated origin.
-            else if(view=="Conditioner") { targetYaw=-65;targetPitch=75; }
+            else if(view=="Conditioner") { targetYaw=-65;targetPitch=75;FitConditionerQuicklook(); }
             else if(view=="Chase") { chaseCamera.Enter();return; }
             else if(view=="Rear") { targetYaw=160;targetPitch=22; }
             else
@@ -326,6 +326,36 @@ namespace IceResurfacer.Presentation
                 }
             }
             recenterYaw=yaw;recenterPitch=pitch;recenterTime=0;
+        }
+        // The fixed Q pose frames the generated brush and conditioner. An authored machine that
+        // places either elsewhere tilts the head by the smallest pitch (then yaw) that frames both.
+        void FitConditionerQuicklook()
+        {
+            Vector3 edge=World.Conditioner.TransformPoint(-calibration.WaterDistributionWidth*.5f-.007f,.075f,-.1f),brush=World.Brush.position;
+            // Judge the frame at the posture the head is settling to (standing rises 0.48 m), as UpdateLook does.
+            var head=DriverCamera.transform;Vector3 position=head.localPosition;Quaternion rotation=head.localRotation;float posture=stance;
+            var keys=Keyboard.current;stance=Standing||keys!=null&&keys.spaceKey.isPressed?1:0;
+            bool Fits(float yawValue,float pitchValue)
+            {
+                head.localPosition=HeadOffset(yawValue);head.localRotation=Quaternion.Euler(pitchValue,yawValue,0);
+                foreach(var point in new[]{edge,brush})
+                {
+                    Vector3 v=DriverCamera.WorldToViewportPoint(point);
+                    if(v.z<=0||v.x<.04f||v.x>.96f||v.y<.04f||v.y>.96f)return false;
+                }
+                return true;
+            }
+            try
+            {
+                if(Fits(targetYaw,targetPitch))return;
+                for(int step=1;step<=25;step++)
+                    foreach(float pitchTry in new[]{targetPitch-step,targetPitch+step})
+                        if(pitchTry<=80&&Fits(targetYaw,pitchTry)){targetPitch=pitchTry;return;}
+                for(int step=1;step<=40;step++)
+                    foreach(float yawTry in new[]{targetYaw-step,targetYaw+step})
+                        if(Fits(yawTry,targetPitch)){targetYaw=yawTry;return;}
+            }
+            finally{head.localPosition=position;head.localRotation=rotation;stance=posture;}
         }
         void ChangeQuicklook(string next)
         {

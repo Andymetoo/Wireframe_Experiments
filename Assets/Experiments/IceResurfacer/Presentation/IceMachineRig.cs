@@ -125,7 +125,7 @@ namespace IceResurfacer.Presentation
                 list.Add(new MechanicalAnchor("Front wheel pivot "+(side==0?"L":"R"),w.FrontWheels[side],w.Machine,new Vector3(x,.39f,c.Wheelbase)));
                 list.Add(new MechanicalAnchor("Rear wheel hub "+(side==0?"L":"R"),w.RearWheels[side],w.Machine,new Vector3(x,.39f,0)));
             }
-            list.Add(new MechanicalAnchor("Snow tank dump hinge",w.TankPivot,w.Machine,new Vector3(0,.78f,2.46f)));
+            list.Add(new MechanicalAnchor("Snow tank dump hinge",w.TankPivot,w.Machine,new Vector3(0,c.TankHingeHeight,c.TankHingeZ)));
             list.Add(new MechanicalAnchor("Tank shell (snow capacity)",w.BodyTank,w.TankPivot,new Vector3(c.TankLateralOffset,c.TankGeometryY(.51f),-.98f)));
             list.Add(new MechanicalAnchor("Conveyor discharge into tank",w.TankDischarge,w.Machine,new Vector3(c.ConveyorOutletX,c.ConveyorOutletY,c.ConveyorOutletZ)));
             // An IceBoardBrushRig owns the (cosmetic) pivot height; X/Z stay calibration-bound.

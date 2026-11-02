@@ -35,11 +35,14 @@ Workflow
    is generated. Exiting Play restores the instance; saved assets are never modified or destroyed.
 
 Ownership (shown in the IceMachineRig Inspector)
-  Physics anchors / SimulatorConfig is authoritative:
-    wheel pivots (WheelTrack, Wheelbase), tank dump hinge (0,.78,2.46), tank shell (snow capacity),
-    conveyor discharge, board brush pivot, guide roller, blade and towel widths.
-    The Inspector reports drift > 1 mm. Change the calibration (Machine Geometry Editor) and use
-    "Apply config to physics anchors"; do not drag these, or physics and visuals disagree.
+  Physics anchors / the scene calibration and the drawn part must agree:
+    wheel pivots (WheelTrack, Wheelbase), conditioner hitch (DrawbarLength), tank dump hinge and scale
+    (TankHingeHeight/Z, TankScaleX/Y/Z; never snow capacity), tank shell, conveyor discharge
+    (ConveyorDischargeX/Height/Z), board brush (its rig), guide roller, blade and towel widths.
+    The rig Inspector's MECHANICAL ALIGNMENT lists the millimetre difference of each. To keep what you
+    drew, use "Transfer Authored Geometry to Simulation..." (validated, one Undo step; refuses what cannot
+    be made physical and says why). "Snap Visual Anchors to Simulation" moves your parts instead.
+    Driving geometry and working widths are never transferred from visuals. See MechanicalReconciliation.txt.
   Operator controls / authored freely:
     operator deck, seat, steering column, dashboard, pedals, hydraulic lever bank, water valve
     manifold and bearings, blade handwheel assembly, snow breaker assembly, mounting boxes.

@@ -55,6 +55,14 @@ namespace IceResurfacer.Editor
                 File.WriteAllText("Assets/Experiments/IceResurfacer/Resources/TrainingTestGuide.json",TrainingGuideStorage.Encode(window.Document));AssetDatabase.Refresh();
                 Check(Resources.Load<TextAsset>("TrainingTestGuide")!=null,"standalone fixture is packaged for explicit test selection");
                 Check(guide.SelectedGuide==null&&!guide.Visible,"saving the fixture does not replace or enable the original F5 reference");
+                // The fixture declares the launch-scene calibration. A scene with a different (authored)
+                // calibration must reject it; the operator's path is an explicitly revalidated copy.
+                if(!new RouteFit{configuration=loaded.configuration}.Compatible(game.Sim.Config))
+                {
+                    Check(!guide.LoadTrainingGuide(saved)&&guide.TrainingStatus.Contains("mismatch"),"fixture with a different calibration is rejected in this scene: "+guide.TrainingStatus.Replace("\n"," / "));
+                    saved=TrainingGuideStorage.SaveCopy(Root+"Library",TrainingGuideStorage.RevalidateCopy(loaded,game.Sim.Config,out _));
+                    results.Add("Fixture revalidated for this scene's calibration: "+saved);
+                }
                 Check(guide.LoadTrainingGuide(saved)&&!guide.Visible,"explicit valid guide load does not auto-enable F5");
                 float x=game.Sim.Vehicle.X,z=game.Sim.Vehicle.Z,water=game.Sim.FloodWaterLiters,throttle=game.Sim.Controls.Throttle;
                 KeyInput();KeyInput(Key.F5);KeyInput();guide.Refresh();

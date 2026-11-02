@@ -574,10 +574,9 @@ namespace IceResurfacer.Core
             // Same hinge/outlet coordinates as the authored tank, with gravity
             // and vehicle momentum. No attraction or snapping toward the pit.
             float angle=TankLift*58f*(float)Math.PI/180f;
-            float localZ=2.46f+.16f*(float)Math.Sin(angle)+.12f*(float)Math.Cos(angle);
-            y=.78f+.16f*(float)Math.Cos(angle)-.12f*(float)Math.Sin(angle);
+            Config.TankPointToMachine(Config.TankLateralOffset,.16f,.12f,angle,out float lateral,out y,out float localZ);
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
-            x=Vehicle.X+cs*Config.TankLateralOffset+sn*localZ;z=Vehicle.Z-sn*Config.TankLateralOffset+cs*localZ;
+            x=Vehicle.X+cs*lateral+sn*localZ;z=Vehicle.Z-sn*lateral+cs*localZ;
             float forward=Vehicle.Speed+Config.DumpExitSpeed;
             vx=sn*forward+cs*LateralVelocity;vz=cs*forward-sn*LateralVelocity;vy=-.18f;
         }

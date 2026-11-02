@@ -21,12 +21,28 @@ namespace IceResurfacer.Core
         public float WaterValveStemHeight = .24f;
         public float SnowBreakerX = 1.01f;
         public float SnowBreakerZ = .34f;
+        // Dump hinge (machine space) and the authored tank's per-axis scale about it. The
+        // collision shell, dump outlet and anchors follow these; snow capacity does not.
+        public float TankHingeHeight = .78f;
+        public float TankHingeZ = 2.46f;
+        public float TankScaleX = 1f, TankScaleY = 1f, TankScaleZ = 1f;
+        // Fixed conveyor delivery point into the tank (machine space); ConveyorHeightOffset adds to its height.
+        public float ConveyorDischargeX = .45f;
+        public float ConveyorDischargeHeight = 1.48f;
+        public float ConveyorDischargeZ = .47f;
         public float TankGeometryX(float originalX) { return originalX - .20f + TankLateralOffset; }
         public float TankGeometryY(float originalY) { return .085f + (originalY - .085f) * (TankRoofHeight - .085f) / .94f; }
         public float TankHeightRatio { get { return (TankRoofHeight - .085f) / .94f; } }
-        public float ConveyorOutletX { get { return .45f; } }
-        public float ConveyorOutletY { get { return 1.48f + ConveyorHeightOffset; } }
-        public float ConveyorOutletZ { get { return .47f; } }
+        public float ConveyorOutletX { get { return ConveyorDischargeX; } }
+        public float ConveyorOutletY { get { return ConveyorDischargeHeight + ConveyorHeightOffset; } }
+        public float ConveyorOutletZ { get { return ConveyorDischargeZ; } }
+        /// <summary>A point in tank-pivot space (as authored, before the tank's scale) to machine space at a tilt.</summary>
+        public void TankPointToMachine(float x,float y,float z,float tiltRadians,out float mx,out float my,out float mz)
+        {
+            float s=(float)Math.Sin(tiltRadians),c=(float)Math.Cos(tiltRadians);
+            x*=TankScaleX;y*=TankScaleY;z*=TankScaleZ;
+            mx=x;my=TankHingeHeight+c*y-s*z;mz=TankHingeZ+s*y+c*z;
+        }
         public float TankSnowInteriorWidth { get { return 1.488f; } }
         public float TankSnowFrontWidth { get { return 1.40f; } }
         public float TankSnowMeanWidth { get { return (TankSnowInteriorWidth+TankSnowFrontWidth)*.5f; } }
@@ -57,12 +73,18 @@ namespace IceResurfacer.Core
         {
             float[] values = { TankRoofHeight, TankLateralOffset, ConveyorHeightOffset, CockpitOffsetX, CockpitOffsetZ,
                 SteeringWheelZ,SteeringWheelHeight,SteeringWheelTilt,BladeWheelX,BladeWheelZ,BladeWheelHeight,
-                WaterValveStemHeight,SnowBreakerX,SnowBreakerZ };
+                WaterValveStemHeight,SnowBreakerX,SnowBreakerZ,TankHingeHeight,TankHingeZ,TankScaleX,TankScaleY,TankScaleZ,
+                ConveyorDischargeX,ConveyorDischargeHeight,ConveyorDischargeZ };
             foreach(float value in values)
                 if(float.IsNaN(value)||float.IsInfinity(value))throw new ArgumentException("Machine geometry must be finite.");
+            // The discharge must sit below the tank roof rim and inside its side walls.
             if(TankRoofHeight < .80f || TankRoofHeight > 1.10f || Math.Abs(TankLateralOffset) > .18f ||
                Math.Abs(ConveyorHeightOffset) > .08f || Math.Abs(CockpitOffsetX) > .08f || Math.Abs(CockpitOffsetZ) > .10f ||
-               ConveyorOutletY+.14f > .78f+TankGeometryY(1.02f) || ConveyorOutletX+.14f > TankLateralOffset+.64f)
+               TankHingeHeight < .60f || TankHingeHeight > 1.0f || TankHingeZ < 2.20f || TankHingeZ > 2.60f ||
+               TankScaleX < .8f || TankScaleX > 1.4f || TankScaleY < .8f || TankScaleY > 1.4f || TankScaleZ < .8f || TankScaleZ > 1.4f ||
+               ConveyorDischargeHeight < 1.2f || ConveyorDischargeHeight > 2.0f || ConveyorDischargeZ < -.6f || ConveyorDischargeZ > 1.0f ||
+               ConveyorOutletY+.14f > TankHingeHeight+TankGeometryY(1.02f)*TankScaleY ||
+               Math.Abs(ConveyorOutletX-TankLateralOffset*TankScaleX)+.14f > .64f*TankScaleX)
                 throw new ArgumentException("Machine geometry exceeds the supported mechanical clearances.");
             if(SteeringWheelZ<.50f||SteeringWheelZ>.59f||SteeringWheelHeight<1.43f||SteeringWheelHeight>1.51f||
                SteeringWheelTilt<60||SteeringWheelTilt>76||BladeWheelX<.60f||BladeWheelX>.70f||

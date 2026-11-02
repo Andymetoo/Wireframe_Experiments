@@ -1,0 +1,125 @@
+== Before (as authored) / 2026-11-02T09:50:30
+INFO TABLE | Front wheel pivot L | visual (-0.685,0.390,1.960) | simulated (-0.685,0.390,1.960) | 0.0 mm | Matches | 
+INFO TABLE | Rear wheel hub L | visual (-0.685,0.390,0.000) | simulated (-0.685,0.390,0.000) | 0.0 mm | Matches | 
+INFO TABLE | Front wheel pivot R | visual (0.685,0.390,1.960) | simulated (0.685,0.390,1.960) | 0.0 mm | Matches | 
+INFO TABLE | Rear wheel hub R | visual (0.685,0.390,0.000) | simulated (0.685,0.390,0.000) | 0.0 mm | Matches | 
+INFO TABLE | Conditioner hitch (root) | visual (0.000,0.340,-0.885) | simulated (0.000,0.340,-1.100) | 215.0 mm | Mechanical | Visible conditioner is +215 mm from the simulated cut, flood and pickup. Transfer moves the simulation to it, and the lift-cylinder clevises by -215 mm on the housing so the cylinders keep their stroke.
+INFO TABLE | Cutting blade edge at depth 0 | visual (0.000,0.032,0.000) | simulated (0.000,0.000,0.000) | 31.7 mm | Mechanical | Lowered blade edge +31.7 mm relative to the ice top.
+INFO TABLE | Conditioner lift cylinders | visual (0.000,0.000,0.000) | simulated (0.000,0.000,0.000) | 0.0 mm | Mechanical | Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.018 m (COLLAPSED: the clevis meets the chassis pin)
+INFO TABLE | Conditioner lift linkage vs rear tyres | visual (0.000,0.000,0.000) | simulated (0.000,0.000,0.000) | 30.0 mm | Mechanical | Through the lift range the linkage bars enter the rear tyre sidewalls by 30 mm.
+INFO TABLE | Snow tank dump hinge | visual (0.000,0.780,2.411) | simulated (0.000,0.780,2.460) | 49.0 mm | Mechanical | 
+INFO TABLE | Snow tank scale (per axis, x1000) | visual (1068.400,1268.500,1184.100) | simulated (1000.000,1000.000,1000.000) | 332.7 mm | Mechanical | 
+INFO TABLE | Conveyor discharge into tank | visual (-0.021,1.480,-0.099) | simulated (0.450,1.480,0.470) | 738.6 mm | Mechanical | The discharge ends 128 mm short of the tank wall: snow would fall in the open gap.
+INFO TABLE | Board brush pivot | visual (-0.548,0.420,1.300) | simulated (-0.900,0.380,1.160) | 380.9 mm | Mechanical | Add the Board Brush Rig: it imports this pose and applies pivot, arm, angles and radius together.
+INFO TABLE | Board guide roller | visual (-0.827,0.530,2.444) | simulated (-1.015,0.530,2.380) | 198.6 mm | Blocked | Simulated roller contact is 199 mm from the visible roller. | its outer edge (x = -0.917) is 148 mm inside the simulated body side (VehicleHalfWidth 1.065). The body would always reach the boards first, so the roller could never touch them. Either extend the roller bracket outboard, or narrow the simulated body (driving geometry and GPS compatibility; not done automatically).
+INFO CONDITIONER | ROOT  'Trailing conditioner / articulated hitch' (runtime-driven: placed at the simulated hitch every frame)
+INFO CONDITIONER |   Authored (machine space)      x +0.000 m  y +0.340 m  z -0.885 m  yaw 0.00 deg
+INFO CONDITIONER |   Simulated (same lift 100%)       x +0.000 m  y +0.340 m  z -1.100 m
+INFO CONDITIONER |   Visual minus simulation       forward +0.215 m (0.71 ft), up +0.000 m, lateral +0.000 m
+INFO CONDITIONER |   Prefab value z -0.885 m; not overridden
+INFO CONDITIONER |   In Play the root snaps to the simulated position, so this offset does not survive Play Mode.
+INFO CONDITIONER | BLADE  (simulated cut band: conditioner z -0.400 m .. +0.400 m, width 1.956 m)
+INFO CONDITIONER |   Visible blade z +0.237 m .. +0.364 m, width 1.956 m
+INFO CONDITIONER |   Lowered, depth 0: blade edge +32 mm above the ice top; at max depth 0.8 mm: +31 mm
+INFO CONDITIONER | TOWEL  (simulated flood band z -0.575 m .. -0.305 m, width 2.100 m)
+INFO CONDITIONER |   Visible towel z -0.575 m .. -0.305 m, width 2.100 m, lowered +0 mm above the ice; emitter z -0.430 m
+INFO CONDITIONER | PICKUP (simulated wash pickup z -0.280 m .. +0.040 m); visible squeegee z -0.280 m .. +0.040 m
+INFO CONDITIONER | HOUSING  z -0.365 m .. +0.365 m, lowered underside +75 mm above the ice
+INFO CONDITIONER |   Rear tyre back edge z -0.411 m (inner x 0.577); housing gap: simulated 0.324 m clear, authored 0.109 m clear
+INFO CONDITIONER |   Closest conditioner part beside the tyres (Lift linkage): simulated 0.082 m OVERLAP, authored 0.297 m OVERLAP
+INFO CONDITIONER | CYLINDER L  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.018 m (barrel 0.42 m; the rod always ends on the clevis)
+INFO CONDITIONER | CYLINDER R  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.018 m (barrel 0.42 m; the rod always ends on the clevis)
+INFO CONDITIONER | DRAWBAR  hitch-to-hitch lowered 0.418 m, raised 0.434 m, authored 0.258 m (runtime-stretched, always connected)
+INFO CONDITIONER | HITCH  simulated 1.100 m behind the axle; the authored root implies 0.885 m (DrawbarLength 0.650 -> 0.435 to make it physical).
+== Scene instance clean-up (prefab is authoritative) / 2026-11-02T09:50:30
+PASS clean-up changes no visible transform, mesh or material (co-located duplicates counted once)
+INFO removed 0 duplicate objects, 0 redundant overrides and 0 stale overrides (target no longer in the prefab); kept 11 root/real overrides
+== Transfer Authored Geometry to Simulation (Inspector action) / 2026-11-02T09:50:30
+PASS Reconcile succeeds
+INFO PREFAB Conditioner hitch (root): moves both conditioner lift clevises -215 mm along the housing (clevis z -0.215 m)
+INFO PREFAB Cutting blade edge at depth 0: seats the blade edge on the ice (-31.7 mm) (blade y -31.65 mm)
+INFO PREFAB Conditioner lift linkage vs rear tyres: moves both lift-linkage bars 41 mm inboard so they clear the tyres by 10 mm (bars 41 mm inboard)
+INFO PREFAB Conveyor discharge into tank: re-aims the short delivery throat from the discharge casing into the tank's rear-wall opening and puts the discharge point at its mouth (throat climbs 24.00 deg from y 1.480 to 1.639, mouth at z 0.0236 (wall 0.0286), opening y 1.495..1.845, section at wall 1.507..1.776)
+INFO Conditioner hitch (root): DrawbarLength 0.650 -> 0.435 m (GPS compatibility field)
+INFO Snow tank dump hinge: TankHingeHeight/Z (0.780, 2.460) -> (0.780, 2.411)
+INFO Snow tank scale (per axis, x1000): TankScale (1.000, 1.000, 1.000) -> (1.068, 1.269, 1.184); collision shell and dump outlet only, snow capacity unchanged
+INFO Conveyor discharge into tank: ConveyorDischarge (0.450, 1.480, 0.470) -> (-0.021, 1.639, 0.024)
+INFO SKIPPED Board guide roller: its outer edge (x = -0.917) is 148 mm inside the simulated body side (VehicleHalfWidth 1.065). The body would always reach the boards first, so the roller could never touch them. Either extend the roller bracket outboard, or narrow the simulated body (driving geometry and GPS compatibility; not done automatically).
+== Board brush rig (Inspector: Add Board Brush Rig, set radius to the bristles, Apply) / 2026-11-02T09:50:32
+PASS no brush rig installed yet (none duplicated)
+INFO Imported from the current arm: pivot (-0.548, 1.300) at height 0.420 m, arm length 0.388 m, stowed angle 86.3 deg, head height 0.155 m. Other values from the scene calibration. Draft vs simulation: pivot X -0.9 -> -0.548 m, pivot Z 1.16 -> 1.3 m, arm length 0.38 -> 0.388 m, stowed angle 85 -> 86.327 deg (not applied).
+INFO brush: Working brush edge reaches 0.06 m beyond the body side (tight: the body nearly touches the boards before the brush does).
+PASS brush geometry has no reach error
+INFO brush: Stowed brush centre is at x = -0.573: the layout validation expects it left of x = -0.800 (outboard, clear of the chassis).
+PASS brush geometry has no reach error
+PASS Apply Brush Geometry to Simulation
+== After / 2026-11-02T09:50:34
+INFO TABLE | Front wheel pivot L | visual (-0.685,0.390,1.960) | simulated (-0.685,0.390,1.960) | 0.0 mm | Matches | 
+INFO TABLE | Rear wheel hub L | visual (-0.685,0.390,0.000) | simulated (-0.685,0.390,0.000) | 0.0 mm | Matches | 
+INFO TABLE | Front wheel pivot R | visual (0.685,0.390,1.960) | simulated (0.685,0.390,1.960) | 0.0 mm | Matches | 
+INFO TABLE | Rear wheel hub R | visual (0.685,0.390,0.000) | simulated (0.685,0.390,0.000) | 0.0 mm | Matches | 
+INFO TABLE | Conditioner hitch (root) | visual (0.000,0.340,-0.885) | simulated (0.000,0.340,-0.885) | 0.0 mm | Matches | 
+INFO TABLE | Cutting blade edge at depth 0 | visual (0.000,0.000,0.000) | simulated (0.000,0.000,0.000) | 0.0 mm | Matches | Lowered blade edge +0.0 mm relative to the ice top.
+INFO TABLE | Conditioner lift cylinders | visual (0.000,0.000,0.000) | simulated (0.000,0.000,0.000) | 0.0 mm | Info | Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO TABLE | Conditioner lift linkage vs rear tyres | visual (0.000,0.000,0.000) | simulated (0.000,0.000,0.000) | 0.0 mm | Matches | 
+INFO TABLE | Snow tank dump hinge | visual (0.000,0.780,2.411) | simulated (0.000,0.780,2.411) | 0.0 mm | Matches | 
+INFO TABLE | Snow tank scale (per axis, x1000) | visual (1068.400,1268.500,1184.100) | simulated (1068.400,1268.500,1184.100) | 0.0 mm | Matches | 
+INFO TABLE | Conveyor discharge into tank | visual (-0.021,1.639,0.024) | simulated (-0.021,1.639,0.024) | 0.0 mm | Matches | 
+INFO TABLE | Board brush mechanism | visual (-0.548,0.420,1.300) | simulated (-0.548,0.420,1.300) | 0.0 mm | Matches | 
+INFO TABLE | Board brush radius (visible vs contact, mm) | visual (191.996,0.000,0.000) | simulated (192.000,0.000,0.000) | 0.0 mm | Matches | 
+INFO TABLE | Board guide roller | visual (-0.827,0.530,2.444) | simulated (-1.015,0.530,2.380) | 198.6 mm | Blocked | Simulated roller contact is 199 mm from the visible roller. | its outer edge (x = -0.917) is 148 mm inside the simulated body side (VehicleHalfWidth 1.065). The body would always reach the boards first, so the roller could never touch them. Either extend the roller bracket outboard, or narrow the simulated body (driving geometry and GPS compatibility; not done automatically).
+INFO CONDITIONER | ROOT  'Trailing conditioner / articulated hitch' (runtime-driven: placed at the simulated hitch every frame)
+INFO CONDITIONER |   Authored (machine space)      x +0.000 m  y +0.340 m  z -0.885 m  yaw 0.00 deg
+INFO CONDITIONER |   Simulated (same lift 100%)       x +0.000 m  y +0.340 m  z -0.885 m
+INFO CONDITIONER |   Visual minus simulation       forward +0.000 m (0.00 ft), up +0.000 m, lateral +0.000 m
+INFO CONDITIONER |   Prefab value z -0.885 m; not overridden
+INFO CONDITIONER |   In Play the root snaps to the simulated position, so this offset does not survive Play Mode.
+INFO CONDITIONER | BLADE  (simulated cut band: conditioner z -0.400 m .. +0.400 m, width 1.956 m)
+INFO CONDITIONER |   Visible blade z +0.237 m .. +0.364 m, width 1.956 m
+INFO CONDITIONER |   Lowered, depth 0: blade edge +0 mm above the ice top; at max depth 0.8 mm: -1 mm
+INFO CONDITIONER | TOWEL  (simulated flood band z -0.575 m .. -0.305 m, width 2.100 m)
+INFO CONDITIONER |   Visible towel z -0.575 m .. -0.305 m, width 2.100 m, lowered +0 mm above the ice; emitter z -0.430 m
+INFO CONDITIONER | PICKUP (simulated wash pickup z -0.280 m .. +0.040 m); visible squeegee z -0.280 m .. +0.040 m
+INFO CONDITIONER | HOUSING  z -0.365 m .. +0.365 m, lowered underside +75 mm above the ice
+INFO CONDITIONER |   Rear tyre back edge z -0.411 m (inner x 0.577); housing gap: simulated 0.109 m clear, authored 0.109 m clear
+INFO CONDITIONER |   Closest conditioner part beside the tyres (Conditioner stainless housing): simulated 0.109 m clear, authored 0.109 m clear
+INFO CONDITIONER | CYLINDER L  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.230 m (barrel 0.42 m; the rod always ends on the clevis)
+INFO CONDITIONER | CYLINDER R  pin-to-clevis lowered 0.402 m, raised 0.230 m, authored 0.230 m (barrel 0.42 m; the rod always ends on the clevis)
+INFO CONDITIONER | DRAWBAR  hitch-to-hitch lowered 0.230 m, raised 0.258 m, authored 0.258 m (runtime-stretched, always connected)
+INFO CONDITIONER | HITCH  simulated 0.885 m behind the axle; the authored root implies 0.885 m (DrawbarLength 0.435 -> 0.435 to make it physical).
+PASS aligned: Front wheel pivot L (0.0 mm)
+PASS aligned: Rear wheel hub L (0.0 mm)
+PASS aligned: Front wheel pivot R (0.0 mm)
+PASS aligned: Rear wheel hub R (0.0 mm)
+PASS aligned: Conditioner hitch (root) (0.0 mm)
+PASS aligned: Cutting blade edge at depth 0 (0.0 mm)
+PASS aligned: Conditioner lift cylinders (0.0 mm)
+PASS aligned: Conditioner lift linkage vs rear tyres (0.0 mm)
+PASS aligned: Snow tank dump hinge (0.0 mm)
+PASS aligned: Snow tank scale (per axis, x1000) (0.0 mm)
+PASS aligned: Conveyor discharge into tank (0.0 mm)
+PASS aligned: Board brush mechanism (0.0 mm)
+PASS aligned: Board brush radius (visible vs contact, mm) (0.0 mm)
+INFO CALIBRATION | BrushPivotX | -0.9 -> -0.548
+INFO CALIBRATION | BrushPivotZ | 1.16 -> 1.3
+INFO CALIBRATION | BrushArmLength | 0.38 -> 0.3884955
+INFO CALIBRATION | BrushRadius | 0.25 -> 0.192
+INFO CALIBRATION | BrushRetractedDegrees | 85 -> 86.32715
+INFO CALIBRATION | TankHingeZ | 2.46 -> 2.411
+INFO CALIBRATION | TankScaleX | 1 -> 1.0684
+INFO CALIBRATION | TankScaleY | 1 -> 1.2685
+INFO CALIBRATION | TankScaleZ | 1 -> 1.1841
+INFO CALIBRATION | ConveyorDischargeX | 0.45 -> -0.021
+INFO CALIBRATION | ConveyorDischargeHeight | 1.48 -> 1.63921
+INFO CALIBRATION | ConveyorDischargeZ | 0.47 -> 0.02359068
+INFO CALIBRATION | DrawbarLength | 0.65 -> 0.435 | GPS COMPATIBILITY FIELD
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Board brush link / compliant extension#0 | origin moved 18.0 mm | localPos (-0.19000,-0.09000,0.00000) -> (-0.19425,-0.10750,0.00000) | rot (0.00000,0.00000,0.84501,0.53475) -> (-0.58931,0.34740,0.62835,0.37041) | scale (0.06500,0.21024,0.06500) -> (0.06500,0.22201,0.06500)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 | origin moved 0.6 mm | localPos (-0.38850,-0.26500,-0.00055) -> (-0.38850,-0.26500,0.00000) | rot (0.00449,0.00000,-0.06993,0.99754) -> (0.00449,0.00000,-0.06993,0.99754) | scale (0.71716,0.71716,0.71716) -> (0.71716,0.71716,0.71716)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Brush contact roller carriage#3 | origin moved 393.9 mm | localPos (0.00000,0.00000,0.00000) -> (-0.38850,-0.06500,0.00000) | rot (0.00000,0.00000,0.00000,1.00000) -> (0.00000,0.68408,0.00000,0.72940) | scale (1.00000,1.00000,1.00000) -> (1.00000,1.00000,1.00000)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Rear-wall auger discharge into tank#14 | origin moved 200.9 mm | localPos (0.00000,1.08000,0.23500) -> (0.00000,1.23921,0.35759) | rot (0.00000,0.00000,0.00000,1.00000) -> (0.00000,0.00000,0.00000,1.00000) | scale (1.00000,1.00000,1.00000) -> (1.00000,1.00000,1.00000)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Short rear-wall delivery throat#16 | origin moved 100.5 mm | localPos (0.00000,1.08000,0.11750) -> (0.00000,1.15961,0.17880) | rot (0.70711,0.00000,0.00000,0.70711) -> (0.54464,0.00000,0.00000,0.83867) | scale (0.24500,0.11750,0.24500) -> (0.24500,0.19572,0.24500)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Cutting blade edge#20 | origin moved 31.6 mm | localPos (0.00000,0.04300,0.30000) -> (0.00000,0.01135,0.30000) | rot (0.00000,0.00000,0.00000,1.00000) -> (0.00000,0.00000,0.00000,1.00000) | scale (1.95600,0.01270,0.12700) -> (1.95600,0.01270,0.12700)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Lift linkage#23 | origin moved 41.0 mm | localPos (-0.58000,0.46000,0.50500) -> (-0.53900,0.46000,0.50500) | rot (0.53582,0.00000,0.00000,0.84433) -> (0.53582,0.00000,0.00000,0.84433) | scale (0.05500,0.28182,0.05500) -> (0.05500,0.28182,0.05500)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Lift linkage#27 | origin moved 41.0 mm | localPos (0.58000,0.46000,0.50500) -> (0.53900,0.46000,0.50500) | rot (0.53582,0.00000,0.00000,0.84433) -> (0.53582,0.00000,0.00000,0.84433) | scale (0.05500,0.28182,0.05500) -> (0.05500,0.28182,0.05500)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Conditioner lift lower clevis#60 | origin moved 215.0 mm | localPos (-0.55000,0.43000,0.30000) -> (-0.55000,0.43000,0.08500) | rot (0.00000,0.00000,-0.70711,0.70711) -> (0.00000,0.00000,-0.70711,0.70711) | scale (0.09000,0.05000,0.09000) -> (0.09000,0.05000,0.09000)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Conditioner lift lower clevis#62 | origin moved 215.0 mm | localPos (0.55000,0.43000,0.30000) -> (0.55000,0.43000,0.08500) | rot (0.00000,0.00000,-0.70711,0.70711) -> (0.00000,0.00000,-0.70711,0.70711) | scale (0.09000,0.05000,0.09000) -> (0.09000,0.05000,0.09000)

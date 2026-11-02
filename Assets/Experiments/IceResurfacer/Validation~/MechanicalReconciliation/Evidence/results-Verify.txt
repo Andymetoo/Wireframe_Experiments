@@ -1,0 +1,189 @@
+== Persistence after restarting Unity / 2026-11-02T09:51:05
+PASS prefab, scene and meshes are exactly as saved
+PASS opening the scene does not dirty it
+PASS scene calibration persisted
+PASS scene adds or removes nothing from the prefab
+PASS the saved scene removes no prefab objects (no live or stale removal entries)
+PASS no scene overrides below the instance root (0)
+PASS exactly one complete brush rig, on the bound arm
+PASS brush rig matches the scene calibration
+PASS clearing radius 0.192 m equals the visible bristle radius 0.192 m
+INFO alignment Front wheel pivot L: Matches 0.0 mm 
+INFO alignment Rear wheel hub L: Matches 0.0 mm 
+INFO alignment Front wheel pivot R: Matches 0.0 mm 
+INFO alignment Rear wheel hub R: Matches 0.0 mm 
+INFO alignment Conditioner hitch (root): Matches 0.0 mm 
+INFO alignment Cutting blade edge at depth 0: Matches 0.0 mm Lowered blade edge +0.0 mm relative to the ice top.
+INFO alignment Conditioner lift cylinders: Info 0.0 mm Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO alignment Conditioner lift linkage vs rear tyres: Matches 0.0 mm 
+INFO alignment Snow tank dump hinge: Matches 0.0 mm 
+INFO alignment Snow tank scale (per axis, x1000): Matches 0.0 mm 
+INFO alignment Conveyor discharge into tank: Matches 0.0 mm 
+INFO alignment Board brush mechanism: Matches 0.0 mm 
+INFO alignment Board brush radius (visible vs contact, mm): Matches 0.0 mm 
+INFO alignment Board guide roller: Blocked 198.6 mm Simulated roller contact is 199 mm from the visible roller. / its outer edge (x = -0.917) is 148 mm inside the simulated body side (VehicleHalfWidth 1.065). The body would always reach the boards first, so the roller could never touch them. Either extend the roller bracket outboard, or narrow the simulated body (driving geometry and GPS compatibility; not done automatically).
+== Finished visual proportions / 2026-11-02T09:51:05
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Board brush link / compliant extension#0 | origin moved 18.0 mm | localPos (-0.19000,-0.09000,0.00000) -> (-0.19425,-0.10750,0.00000) | rot (0.00000,0.00000,0.84501,0.53475) -> (-0.58931,0.34740,0.62835,0.37041) | scale (0.06500,0.21024,0.06500) -> (0.06500,0.22201,0.06500)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Rotating board brush#2 | origin moved 0.6 mm | localPos (-0.38850,-0.26500,-0.00055) -> (-0.38850,-0.26500,0.00000) | rot (0.00449,0.00000,-0.06993,0.99754) -> (0.00449,0.00000,-0.06993,0.99754) | scale (0.71716,0.71716,0.71716) -> (0.71716,0.71716,0.71716)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Board brush articulated arm / left side#3/Brush contact roller carriage#3 | origin moved 393.9 mm | localPos (0.00000,0.00000,0.00000) -> (-0.38850,-0.06500,0.00000) | rot (0.00000,0.00000,0.00000,1.00000) -> (0.00000,0.68408,0.00000,0.72940) | scale (1.00000,1.00000,1.00000) -> (1.00000,1.00000,1.00000)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Rear-wall auger discharge into tank#14 | origin moved 200.9 mm | localPos (0.00000,1.08000,0.23500) -> (0.00000,1.23921,0.35759) | rot (0.00000,0.00000,0.00000,1.00000) -> (0.00000,0.00000,0.00000,1.00000) | scale (1.00000,1.00000,1.00000) -> (1.00000,1.00000,1.00000)
+INFO PROPORTION AURORA R-54 / rear axle origin#0/Compact vertical snow conveyor / rear tank inlet#4/Short rear-wall delivery throat#16 | origin moved 100.5 mm | localPos (0.00000,1.08000,0.11750) -> (0.00000,1.15961,0.17880) | rot (0.70711,0.00000,0.00000,0.70711) -> (0.54464,0.00000,0.00000,0.83867) | scale (0.24500,0.11750,0.24500) -> (0.24500,0.19572,0.24500)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Cutting blade edge#20 | origin moved 31.6 mm | localPos (0.00000,0.04300,0.30000) -> (0.00000,0.01135,0.30000) | rot (0.00000,0.00000,0.00000,1.00000) -> (0.00000,0.00000,0.00000,1.00000) | scale (1.95600,0.01270,0.12700) -> (1.95600,0.01270,0.12700)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Lift linkage#23 | origin moved 41.0 mm | localPos (-0.58000,0.46000,0.50500) -> (-0.53900,0.46000,0.50500) | rot (0.53582,0.00000,0.00000,0.84433) -> (0.53582,0.00000,0.00000,0.84433) | scale (0.05500,0.28182,0.05500) -> (0.05500,0.28182,0.05500)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Lift linkage#27 | origin moved 41.0 mm | localPos (0.58000,0.46000,0.50500) -> (0.53900,0.46000,0.50500) | rot (0.53582,0.00000,0.00000,0.84433) -> (0.53582,0.00000,0.00000,0.84433) | scale (0.05500,0.28182,0.05500) -> (0.05500,0.28182,0.05500)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Conditioner lift lower clevis#60 | origin moved 215.0 mm | localPos (-0.55000,0.43000,0.30000) -> (-0.55000,0.43000,0.08500) | rot (0.00000,0.00000,-0.70711,0.70711) -> (0.00000,0.00000,-0.70711,0.70711) | scale (0.09000,0.05000,0.09000) -> (0.09000,0.05000,0.09000)
+INFO PROPORTION Trailing conditioner / articulated hitch#1/Conditioner lift lower clevis#62 | origin moved 215.0 mm | localPos (0.55000,0.43000,0.30000) -> (0.55000,0.43000,0.08500) | rot (0.00000,0.00000,-0.70711,0.70711) -> (0.00000,0.00000,-0.70711,0.70711) | scale (0.09000,0.05000,0.09000) -> (0.09000,0.05000,0.09000)
+PASS the same 10 deliberate mechanical transforms differ from the original; nothing else
+== Edit Mode preview is never saved / 2026-11-02T09:51:05
+PASS lowered preview puts the conditioner on the ice
+PASS tank preview tilts the tank
+PASS saving during a preview restores every part first
+PASS the saved scene is byte-identical
+== Play: conditioner lowered / raised, blade, cylinders, drawbar / 2026-11-02T09:51:12
+PASS lift 0: visible conditioner at the authored position z -0.885 (simulation -0.885)
+PASS lift 0: simulated cut/flood/pickup centre is under the visible conditioner (0.00 mm)
+PASS lift 0: lift cylinder 0 rod on its clevis, length 0.402 m
+INFO cylinder 0 lift 0 length 0.402
+PASS lift 0: lift cylinder 1 rod on its clevis, length 0.402 m
+INFO cylinder 1 lift 0 length 0.402
+PASS lift 0: drawbar spans both hitch points (0.230 m)
+PASS lowered, depth 0: blade edge on the ice top (+0.00 mm)
+PASS lowered: towel on the ice (+0.5 mm)
+PASS lift 0.5: visible conditioner at the authored position z -0.885 (simulation -0.885)
+PASS lift 0.5: simulated cut/flood/pickup centre is under the visible conditioner (0.00 mm)
+PASS lift 0.5: lift cylinder 0 rod on its clevis, length 0.280 m
+INFO cylinder 0 lift 0.5 length 0.280
+PASS lift 0.5: lift cylinder 1 rod on its clevis, length 0.280 m
+INFO cylinder 1 lift 0.5 length 0.280
+PASS lift 0.5: drawbar spans both hitch points (0.176 m)
+PASS lift 1: visible conditioner at the authored position z -0.885 (simulation -0.885)
+PASS lift 1: simulated cut/flood/pickup centre is under the visible conditioner (0.00 mm)
+PASS lift 1: lift cylinder 0 rod on its clevis, length 0.230 m
+INFO cylinder 0 lift 1 length 0.230
+PASS lift 1: lift cylinder 1 rod on its clevis, length 0.230 m
+INFO cylinder 1 lift 1 length 0.230
+PASS lift 1: drawbar spans both hitch points (0.258 m)
+PASS blade edge sits -0.60 mm at actual depth 0.60 mm
+INFO cut cells: front edge z -0.521, x -0.975..0.975; visible housing z -1.250..-0.520
+PASS the front of the shaved band ends under the visible conditioner housing
+PASS shaved band width equals the unchanged 1.956 m working width
+== Play: board brush 0/25/50/75/100%, snow cleared under the visible disc / 2026-11-02T09:51:13
+PASS Play uses the authored brush rig
+PASS stowed in Play exactly at the authored stowed head (no snapping)
+PASS deployment 0%: arm 83.6 deg, link attached (0.00 mm), roller on the head
+PASS deployment 25%: arm 64.2 deg, link attached (0.00 mm), roller on the head
+PASS deployment 50%: arm 42.1 deg, link attached (0.00 mm), roller on the head
+PASS deployment 75%: arm 20.0 deg, link attached (0.00 mm), roller on the head
+PASS deployment 100%: arm 0.0 deg, link attached (0.00 mm), roller on the head
+PASS the working brush reaches the kickplate when the machine runs along the boards
+PASS brush deploys fully without reversing
+PASS visible disc stays on the simulated contact (max 0.000 mm)
+PASS articulation is smooth (largest step beyond travel 18.6 mm per 20 ms)
+PASS working brush sweeps snow (0.22 L)
+PASS snow cleared under the visible disc (240/240 frames)
+INFO working brush: disc centre 0.194 m from the boards, contact=True, radius 0.192
+PASS retracts to the authored stowed pose
+== Play: snow tank lift, door, cylinders and dump outlet / 2026-11-02T09:51:16
+PASS tank reaches 0%
+PASS lift 0: simulated dump origin is the visible outlet (0.00 mm)
+PASS lift 0: collision shell door hinge is the visible door hinge (0.00 mm)
+PASS lift 0: tank cylinder 0 rod on its clevis (length 1.058 m)
+PASS lift 0: tank cylinder 0 clears the front tyre (456 mm)
+PASS lift 0: tank cylinder 1 rod on its clevis (length 1.058 m)
+PASS lift 0: tank cylinder 1 clears the front tyre (456 mm)
+PASS tank reaches 25%
+PASS lift 0.25: simulated dump origin is the visible outlet (0.00 mm)
+PASS lift 0.25: collision shell door hinge is the visible door hinge (0.00 mm)
+PASS lift 0.25: tank cylinder 0 rod on its clevis (length 1.298 m)
+PASS lift 0.25: tank cylinder 0 clears the front tyre (500 mm)
+PASS lift 0.25: tank cylinder 1 rod on its clevis (length 1.298 m)
+PASS lift 0.25: tank cylinder 1 clears the front tyre (500 mm)
+PASS tank reaches 50%
+PASS lift 0.5: simulated dump origin is the visible outlet (0.00 mm)
+PASS lift 0.5: collision shell door hinge is the visible door hinge (0.00 mm)
+PASS lift 0.5: tank cylinder 0 rod on its clevis (length 1.546 m)
+PASS lift 0.5: tank cylinder 0 clears the front tyre (498 mm)
+PASS lift 0.5: tank cylinder 1 rod on its clevis (length 1.546 m)
+PASS lift 0.5: tank cylinder 1 clears the front tyre (498 mm)
+PASS tank reaches 75%
+PASS lift 0.75: simulated dump origin is the visible outlet (0.00 mm)
+PASS lift 0.75: collision shell door hinge is the visible door hinge (0.00 mm)
+PASS lift 0.75: tank cylinder 0 rod on its clevis (length 1.785 m)
+PASS lift 0.75: tank cylinder 0 clears the front tyre (467 mm)
+PASS lift 0.75: tank cylinder 1 rod on its clevis (length 1.785 m)
+PASS lift 0.75: tank cylinder 1 clears the front tyre (467 mm)
+PASS door opens
+PASS tank reaches 100%
+PASS lift 1: simulated dump origin is the visible outlet (0.00 mm)
+PASS lift 1: collision shell door hinge is the visible door hinge (0.00 mm)
+PASS lift 1: tank cylinder 0 rod on its clevis (length 2.008 m)
+PASS lift 1: tank cylinder 0 clears the front tyre (417 mm)
+PASS lift 1: tank cylinder 1 rod on its clevis (length 2.008 m)
+PASS lift 1: tank cylinder 1 clears the front tyre (417 mm)
+PASS door opens
+== Play: snow through intake, conveyor, tank, overflow and dump / 2026-11-02T09:51:17
+PASS simulated discharge coordinate is the visible discharge (0.00 mm)
+PASS conveyed snow is emitted at the visible discharge and fills the tank (17.0 L)
+PASS the discharge looks through the tank's rear-wall opening (no panel in the way, no open gap)
+PASS raised bin: conveyed snow spills from the visible chute (0.00 mm, 8.3 L)
+PASS snow capacity unchanged (3.54 m3)
+INFO tank fill 0.5%, visible surface height in shell 0.005 (tank-local, before scale)
+== Play: water distribution and wash pickup follow the visible conditioner / 2026-11-02T09:51:18
+PASS towel centre at the simulated flood band (fore -0.440)
+PASS squeegee centre at the simulated wash pickup (fore -0.120)
+PASS flood emitter over the flood band
+== Play: board guide roller at straight boards, corner and service gate / 2026-11-02T09:51:18
+PASS straight left boards: the visible roller never enters the boards or walls (0 frames)
+INFO GUIDE ROLLER | straight left boards | board/roller contact True | visible roller tyre 206 mm from the boards at first simulated contact | closest 204 mm
+PASS rounded corner: the visible roller never enters the boards or walls (0 frames)
+INFO GUIDE ROLLER | rounded corner | board/roller contact True | visible roller tyre 65 mm from the boards at first simulated contact | closest 62 mm
+PASS service gate approach: the visible roller never enters the boards or walls (0 frames)
+INFO GUIDE ROLLER | service gate approach | board/roller contact False | visible roller tyre n/a from the boards at first simulated contact | closest Infinity mm
+== Captures After / 2026-11-02T09:51:20
+INFO After lowered: root z -0.885, blade edge 0.0 mm above ice, cylinder 0.402 m
+INFO After raised: cylinder 0.230 m
+INFO PERF | machine step+presentation over 600 frames: mean 0.716 ms, p95 1.228 ms, max 6.971 ms | managed+native allocated 376.8 MB (delta 0 KB) | enabled renderers 233 | mono heap 1177.5 MB
+== GPS routes and guides vs the authored scene calibration / 2026-11-02T09:51:23
+INFO GPS | authored | route | AndyRoute_20261031_024330_fe2f44fa.route.json | 131.631 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | route | AndyRoute_20261031_024516_dd9a2441.route.json | 131.631 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | route | Andy_Try_1_20261031_041839_75958600.route.json | 1003.234 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | route | Operator_route_20261031_010840_4d4b5ed5.route.json | 152.950 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | route | Operator_route_20261031_011611_e0c83283.route.json | 93.491 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | guide | Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json | 1003.234 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | guide | Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json | 1003.234 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002
+INFO GPS | authored | guide | AndyRoute___auto_fit_20261031_024356_870d3a31.guide.json | 131.631 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+INFO GPS | authored | guide | AndyRoute___auto_fit_20261031_042536_8cdf27b9.guide.json | 131.631 m | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0
+PASS Andy_Try_1 raw recording is the 1,003.234 m operator drive (1003.234407 m)
+INFO GPS | new calibrated guide Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json from Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json
+PASS new guide identity keeps the exact embedded recording and checksum
+PASS Andy_Try_1 guide revalidates against the reconciled machine: body, recorded and CURRENT attached conditioner clearance, curvature, strict compatibility
+PASS guide keeps 1003.234 m and zero raw-trajectory displacement
+PASS all 398 control points unchanged
+PASS the earlier guide is not mutated
+INFO GPS | clearance: min body n/a min conditioner n/a
+PASS the pre-reconciliation guide is rejected with its DrawbarLength difference: Guide calibration mismatch: / DrawbarLength: guide=0.649999976, session=0.435000002 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS the new calibrated guide is accepted as GPS: Loaded: Andy_Try_1 / recorded track (repaired) / authored Aurora calibration — GPS Ready / recorded track; ideal spline not certified
+PASS guidance replay of all 5130 recorded poses advances in order to the end
+PASS physical replay: all 5130 recorded vehicle poses fit the boards and service walls (0 contacts)
+INFO GPS | new calibrated guide Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json from Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json | ready=True boundary=0 curvature=0 length 1003.234 m
+INFO GPS | new calibrated guide AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json from AndyRoute___auto_fit_20261031_024356_870d3a31.guide.json | ready=True boundary=0 curvature=0 length 131.581 m
+INFO GPS | new calibrated guide AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json from AndyRoute___auto_fit_20261031_042536_8cdf27b9.guide.json | ready=True boundary=0 curvature=0 length 131.581 m
+PASS unchanged: \AndyRoute_20261031_024330_fe2f44fa.route.json
+PASS unchanged: \AndyRoute_20261031_024516_dd9a2441.route.json
+PASS unchanged: \Andy_Try_1_20261031_041839_75958600.route.json
+PASS unchanged: \Operator_route_20261031_010840_4d4b5ed5.route.json
+PASS unchanged: \Operator_route_20261031_011611_e0c83283.route.json
+PASS unchanged: \Drafts\155eee053f5d4d64989ffaf8f78f919b.route.json
+PASS unchanged: \Drafts\7fdbfea1b5c94915ae1b5b67de291f1c.route.json
+PASS unchanged: \Drafts\82d8601d8c5b4988b11914ff60141bdd.route.json
+PASS unchanged: \Drafts\83885131475946c6ad466ad140afd4db.route.json
+PASS unchanged: \Drafts\9ecd3b8c417243478c7cf458e9e3353b.route.json
+PASS unchanged: \Drafts\ce0b5efd533045828f24a39dd8c90503.route.json
+PASS unchanged: \Guides\Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json
+PASS unchanged: \Guides\Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json
+PASS unchanged: \Guides\AutoFit\AndyRoute___auto_fit_20261031_024356_870d3a31.guide.json
+PASS unchanged: \Guides\AutoFit\AndyRoute___auto_fit_20261031_042536_8cdf27b9.guide.json
+PASS unchanged: \Guides\Drafts\48b4215b78a441fc99a28419a1804d59.guide.json
+PASS unchanged: \Guides\Drafts\9aac663cc0e34b76be462bc58992b36e.guide.json
+PASS zero Unity runtime errors or exceptions in Play (0)
+PASS entering and exiting Play leaves the prefab, meshes and scene byte-identical

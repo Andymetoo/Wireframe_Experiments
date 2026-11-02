@@ -77,6 +77,9 @@ MEASURED REPORT: see the section appended below (generated from the user's scene
 
 ------------------------------------------------------------------------------------------
 MEASURED CONDITIONER ALIGNMENT REPORT (user's authored scene, 2026-11-01, isolated copy)
+HISTORICAL. Superseded 2026-11-02 by MechanicalReconciliation.txt: option B was applied (DrawbarLength
+0.435, lift clevises moved with it, blade seated), the brush rig is installed on the prefab, and the tank,
+conveyor and other drift listed at the end of this report are reconciled.
 ------------------------------------------------------------------------------------------
 Machine space: origin rear axle, +Z forward. Simulated conditioner centre = HitchBehindAxle 0.45 +
 DrawbarLength 0.65 = 1.100 m behind the axle, height Lift x 0.34 m.

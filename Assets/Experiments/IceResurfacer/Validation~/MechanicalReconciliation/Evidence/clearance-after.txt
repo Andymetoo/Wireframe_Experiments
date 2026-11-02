@@ -1,0 +1,74 @@
+conditioner 0% | 69 mm | Hydraulic flexible hose  x  BackBloc
+conditioner 0% | 45 mm | Conditioner stainless housing  x  Central steel chassis
+conditioner 0% | 15 mm | Wash water manifold  x  Covered snow transfer throat
+conditioner 25% | 130 mm | Conditioner stainless housing  x  Central steel chassis
+conditioner 25% | 80 mm | Conditioner stainless housing  x  Rear bumper
+conditioner 25% | 64 mm | Conditioner stainless housing  x  Covered snow transfer throat
+conditioner 25% | 53 mm | Hydraulic flexible hose  x  Central steel chassis
+conditioner 25% | 24 mm | Lift linkage  x  BackBloc
+conditioner 50% | 210 mm | Conditioner stainless housing  x  Central steel chassis
+conditioner 50% | 149 mm | Conditioner stainless housing  x  Covered snow transfer throat
+conditioner 50% | 33 mm | Hydraulic flexible hose  x  Rear wheel arch mudguard
+conditioner 50% | 32 mm | Hydraulic flexible hose  x  Rear wheel arch mudguard (1)
+conditioner 50% | 24 mm | Lift linkage  x  BackBloc
+conditioner 75% | 210 mm | Conditioner stainless housing  x  Central steel chassis
+conditioner 75% | 44 mm | Hydraulic flexible hose  x  Rear crossmember
+conditioner 75% | 41 mm | Lift linkage  x  Rear wheel arch mudguard
+conditioner 75% | 41 mm | Lift linkage  x  Rear wheel arch mudguard (1)
+conditioner 75% | 24 mm | Lift linkage  x  BackBloc
+conditioner 75% | 15 mm | Conditioner lift lower clevis  x  Rear crossmember
+conditioner 75% | 11 mm | Conditioner stainless housing  x  BackBloc
+conditioner 75% | 4 mm | Hydraulic flexible hose  x  Rear wheel arch mudguard
+conditioner 75% | 3 mm | Hydraulic flexible hose  x  Rear wheel arch mudguard (1)
+conditioner 100% | 165 mm | Conditioner stainless housing  x  Central steel chassis
+conditioner 100% | 135 mm | Conditioner stainless housing  x  Rear bumper
+conditioner 100% | 84 mm | Lift linkage  x  Rear wheel arch mudguard
+conditioner 100% | 84 mm | Lift linkage  x  Rear wheel arch mudguard (1)
+conditioner 100% | 43 mm | Conditioner stainless housing  x  BackBloc
+conditioner 100% | 39 mm | Hydraulic flexible hose  x  Left operator floor
+conditioner 100% | 30 mm | Hydraulic flexible hose  x  Shaped engine cover / right of operator
+conditioner 100% | 28 mm | Lift linkage  x  Conditioner lift chassis clevis
+conditioner 100% | 25 mm | Conditioner stainless housing  x  Conditioner lift chassis clevis
+conditioner 100% | 25 mm | Conditioner stainless housing  x  Rear crossmember
+conditioner 100% | 24 mm | Lift linkage  x  BackBloc
+conditioner 100% | 15 mm | Lift linkage  x  Rear crossmember
+conditioner 100% | 4 mm | Conditioner stainless housing  x  Visible rotating valve stem
+conditioner 100% | 3 mm | Cutting blade edge  x  Central steel chassis
+conditioner 100% | 2 mm | Hydraulic flexible hose  x  Rear crossmember
+brush 0% | 15 mm | Brush deployment hinge  x  Tapered between-axle casing / front wheel wells
+brush 25% | 15 mm | Brush deployment hinge  x  Tapered between-axle casing / front wheel wells
+brush 50% | 15 mm | Brush deployment hinge  x  Tapered between-axle casing / front wheel wells
+brush 75% | 15 mm | Brush deployment hinge  x  Tapered between-axle casing / front wheel wells
+brush 100% | 15 mm | Brush deployment hinge  x  Tapered between-axle casing / front wheel wells
+tank 0% | 536 mm | Tapered rear wall above or below inlet  x  Rear wheel arch mudguard
+tank 0% | 313 mm | Tapered rear wall above or below inlet  x  BackBloc
+tank 0% | 74 mm | Tapered rear wall above or below inlet  x  Rear wheel arch mudguard (1)
+tank 0% | 57 mm | Tapered opening snow dump door  x  Front lamp housing
+tank 0% | 55 mm | Tapered opening snow dump door  x  EngineBloc
+tank 0% | 55 mm | Tapered opening snow dump door  x  Inboard front wheel splash guard
+tank 0% | 46 mm | Tapered steel tank floor / inside shell footprint  x  Rear wheel arch mudguard
+tank 0% | 46 mm | Tapered steel tank floor / inside shell footprint  x  Rear wheel arch mudguard (1)
+tank 0% | 42 mm | Tapered steel tank floor / inside shell footprint  x  Inboard front wheel splash guard
+tank 0% | 28 mm | Tapered steel tank floor / inside shell footprint  x  EngineBloc
+tank 0% | 21 mm | Tapered steel tank floor / inside shell footprint  x  BackBloc
+tank 0% | 20 mm | Tapered steel tank floor / inside shell footprint  x  Tapered between-axle casing / front wheel wells
+tank 0% | 4 mm | Tapered steel tank floor / inside shell footprint  x  Front lamp housing
+tank 25% | 91 mm | Tapered steel tank floor / inside shell footprint  x  Inboard front wheel splash guard
+tank 25% | 38 mm | Tapered opening snow dump door  x  Inboard front wheel splash guard
+tank 25% | 37 mm | Tapered opening snow dump door  x  Front lamp housing
+tank 25% | 31 mm | Tapered steel tank floor / inside shell footprint  x  Front lamp housing
+tank 25% | 26 mm | Tapered steel tank floor / inside shell footprint  x  EngineBloc
+tank 25% | 26 mm | Tapered opening snow dump door  x  EngineBloc
+tank 25% | 18 mm | Tapered steel tank floor / inside shell footprint  x  Filler neck
+tank 25% | 15 mm | Tapered opening snow dump door  x  Front LED lamp
+tank 25% | 4 mm | Tapered rear wall above or below inlet  x  Filler cap
+tank 50% | 82 mm | Tapered steel tank floor / inside shell footprint  x  Inboard front wheel splash guard
+tank 50% | 58 mm | Tapered steel tank floor / inside shell footprint  x  Front lamp housing
+tank 50% | 27 mm | Tapered steel tank floor / inside shell footprint  x  EngineBloc
+tank 75% | 66 mm | Tapered steel tank floor / inside shell footprint  x  Inboard front wheel splash guard
+tank 75% | 32 mm | Tapered steel tank floor / inside shell footprint  x  EngineBloc
+tank 75% | 21 mm | Tapered steel tank floor / inside shell footprint  x  Front lamp housing
+tank 100% | 43 mm | Tapered steel tank floor / inside shell footprint  x  Inboard front wheel splash guard
+tank 100% | 34 mm | Tapered steel tank floor / inside shell footprint  x  EngineBloc
+tank 100% | 22 mm | Tapered steel tank floor / inside shell footprint  x  Front LED lamp
+tank 100% | 7 mm | Tapered steel tank floor / inside shell footprint  x  Front lamp housing

@@ -100,7 +100,7 @@ namespace IceResurfacer.Editor
                 Check(raised.TankLift>.03f&&raised.TankLift<.99f&&raised.LastMovementContact.Obstacle==MovementObstacle.TankGlass,"raising near actual glass stops the moving shell at contact");
                 Check(raised.LastMovementContact.PointY<2.55f&&raised.LastMovementContact.NormalX<-.99f,"contact is below glass top and normal points onto ice");
                 Check(Quaternion.Angle(game.World.TankPivot.localRotation,Quaternion.Euler(raised.TankLift*58,0,0))<.01f,"rendered tank shares core 58 degree lift geometry");
-                Check(Vector3.Distance(game.World.TankPivot.localPosition,new Vector3(0,.78f,2.46f))<.001f&&Vector3.Distance(game.World.TankDoor.localPosition,new Vector3(raised.Config.TankLateralOffset,raised.Config.TankGeometryY(1.02f),.002f))<.001f,"core and rendered moving contact pivots agree");
+                Check(Vector3.Distance(game.World.TankPivot.localPosition,new Vector3(0,raised.Config.TankHingeHeight,raised.Config.TankHingeZ))<.001f&&Vector3.Distance(game.World.TankDoor.localPosition,new Vector3(raised.Config.TankLateralOffset,raised.Config.TankGeometryY(1.02f),.002f))<.001f,"core and rendered moving contact pivots agree");
                 game.GetComponentInChildren<IceCollisionOverlay>().Refresh();
                 Capture("Raised-tank-glass-contact.png",new Vector3(7,3.1f,-4.5f),new Vector3(11.5f,1.5f,0));
                 float held=raised.TankLift;raised.SetTankHydraulic(0);raised.Controls.Throttle=-.2f;
