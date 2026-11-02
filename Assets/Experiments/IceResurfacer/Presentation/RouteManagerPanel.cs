@@ -13,9 +13,10 @@ namespace IceResurfacer.Presentation
         readonly RouteRecordingPreview rawPreview=new RouteRecordingPreview();
         readonly TrainingGuideView guidePreview=new TrainingGuideView();
         RouteLibraryCatalog.Entry selected;
-        Vector2 scroll;string rename="",confirmation="",status="Choose a saved route, then Use as GPS.";
+        Vector2 scroll,statusScroll;string rename="",confirmation="",status="Choose a saved route, then Use as GPS.";
         GUIStyle title,text,small,button,row,input;
         bool previewDirty=true;
+        string displayedStatus="";
         bool textEditing;
         public bool TextEditing=>textEditing||confirmation.Length>0;
         public string SelectedPath=>selected?.path;
@@ -113,8 +114,12 @@ namespace IceResurfacer.Presentation
             if(Button("Delete","DELETE"))confirmation="delete";
             GUI.enabled=confirmation.Length==0;
             string message=owner.Recorder.Recording?"● RECORDING  /  Numpad 9 stops and saves":owner.HasUnsavedRecording?"RECORDING STOPPED — press Save Recording above":status;
-            GUI.Label(new Rect(110,746,1370,69),message,small);
-            Measure(new Rect(110,746,1370,69),message,small);
+            if(message!=displayedStatus){statusScroll=Vector2.zero;displayedStatus=message;}
+            // Calibration reports can contain several fields. Keep every value
+            // readable without covering the recording and driving controls.
+            float messageHeight=Mathf.Max(69,small.CalcHeight(new GUIContent(message),1340));
+            statusScroll=GUI.BeginScrollView(new Rect(110,746,1370,69),statusScroll,new Rect(0,0,1340,messageHeight));
+            GUI.Label(new Rect(0,0,1340,messageHeight),message,small);GUI.EndScrollView();
             if(Button("Advanced","DIAGNOSTICS / ADVANCED"))advanced();
             if(Button("Folder","OPEN ROUTES FOLDER")){try{owner.OpenRecordingsFolder();}catch(Exception e){status="Couldn't open folder: "+e.Message;}}
             if(Button("Drive","CLOSE & DRIVE"))owner.ToggleRecordingPanel();

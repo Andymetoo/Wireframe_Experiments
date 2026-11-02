@@ -114,6 +114,8 @@ namespace IceResurfacer.Presentation
                 "Requested client resolution (actual " + Screen.width + "x" + Screen.height + ")");
             // Give the native player window and its repaint loop time to settle.
             for (int i = 0; i < 8; i++) yield return null;
+            if(artifactSuite.StartsWith("CalibrationCompatibility",StringComparison.Ordinal))
+            {yield return ValidateCalibrationCompatibility();yield break;}
             yield return ValidateHydraulicDirections();
             game.NewSession(false);
             game.Dashboard.AuditLayout = true;
@@ -565,7 +567,10 @@ namespace IceResurfacer.Presentation
             yield return ClickAt(new Vector2(slider.x+slider.width*.5f,slider.center.y));
             Check(Mathf.Abs(game.SelectedForwardSpeedMph-5.5f)<.001f,"native ESC slider selects practical quarter-MPH setting");
             yield return Capture("Refinement-"+currentResolution+"-speed.png","ESC personal maximum forward speed slider / 5.50 MPH");
-            yield return Click("SpeedReset");Check(game.Sim.MaximumForwardSpeedTarget==game.calibration.ForwardSpeed&&!PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey),"native reset restores exact original speed and clears only the speed preference");
+            // The original reset button was intentionally removed. Clicking its
+            // former location must leave the slider and saved preference alone.
+            yield return ClickAt(new Vector2(800,567));
+            Check(Mathf.Abs(game.SelectedForwardSpeedMph-5.5f)<.001f&&PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey),"former speed-reset location preserves the selected 5.50 MPH and its PlayerPrefs entry");
             game.TogglePause();
             var s=game.Sim;var c=s.Controls;
             s.Vehicle.X=-5;s.Vehicle.Z=-10;s.Vehicle.Heading=s.Vehicle.Speed=0;s.Conditioner.X=-5;s.Conditioner.Z=-12;s.Conditioner.Heading=0;

@@ -43,9 +43,9 @@ namespace IceResurfacer.Core
                     conditionerX=observation.conditionerX,conditionerZ=observation.conditionerZ,conditionerHeading=observation.conditionerHeadingRadians,conditionerLift=observation.conditionerLift};
                 workspace.SetGuideObservation(rawPose);region.rawVehicleClear=workspace.ProbeVehiclePose(rawPose.x,rawPose.z,rawPose.heading,out var hit);region.rawContact=hit;
                 region.rawConditionerClear=RouteFitter.ConditionerClear(workspace,rawPose,out _);
-                region.reason=p.boundaryError?(p.conditionerBoundary?"Conditioner envelope / ":p.boundaryContact.GuideRoller?"Guide roller / ":"Vehicle body envelope / ")+p.boundaryContact.Reason:
+                region.reason=p.boundaryError?(p.conditionerBoundary?(p.currentConditionerBoundary?"Current attached conditioner envelope / ":"Recorded conditioner envelope / "):p.boundaryContact.GuideRoller?"Guide roller / ":"Vehicle body envelope / ")+p.boundaryContact.Reason:
                     p.recordedRadiusWarning?"Observed maneuver exceeds the ideal bicycle radius; smooth-spline certification withheld.":"Derived Bezier curvature exceeds the unchanged steering limit.";
-                region.suggestion=region.rawVehicleClear&&region.rawConditionerClear?"Restore the recorded track; this observation has production vehicle clearance. Inspect neighboring edited curves together.":"Raw clearance also fails here. Inspect the exact contact point; do not certify this section automatically.";
+                region.suggestion=p.currentConditionerBoundary?"The current production linkage places the conditioner outside the physical floor. Inspect the vehicle path and contact point; restoring the historical conditioner observation cannot clear this failure.":region.rawVehicleClear&&region.rawConditionerClear?"Restore the recorded track; this observation has production vehicle clearance. Inspect neighboring edited curves together.":"Raw clearance also fails here. Inspect the exact contact point; do not certify this section automatically.";
             }
         }
     }

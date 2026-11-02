@@ -1,0 +1,22 @@
+Aurora native development-player HUD validation / Unity 6000.4.1f1
+Actual player framebuffer captures include the world and live IMGUI instruments.
+The opt-in probe disables the Development Console overlay; native presentation diagnostics remain in the player log and are counted by the launcher.
+Native mouse messages target only this player's own window; hydraulic checks advance fixed simulation ticks while held and after release.
+Handwheel and valve dragging are tested. Native wheel messages use the OS pointer, so optional scroll shortcuts are not automated here.
+The results capture follows an actual raised, dry entry and safe return through the normal finish path.
+PASS 1366x768 / Requested client resolution (actual 1366x768)
+PASS 1366x768 / native Route Manager selects the earlier repaired guide
+PASS 1366x768 / native mismatch identifies legacy yaw and exact guide/session values
+PASS 1366x768 / native Route Manager selects the new calibrated guide
+PASS 1366x768 / native Use as GPS accepts the corrected guide in the current scene
+PASS 1366x768 / native GPS replays all 5130 raw observations / 132 contexts in sequence; max lead 0.201903 m
+PASS 1366x768 / corrected guide retains limited ground/minimap look-ahead
+PASS 1366x768 / native ESC slider retains 3 MPH minimum
+PASS 1366x768 / native ESC slider retains 8 MPH maximum
+PASS 1366x768 / native ESC slider retains quarter-MPH 5.50 setting
+PASS 1366x768 / clicking removed reset-button area cannot clear the selected speed or PlayerPrefs
+PASS 1366x768 / internal original maximum remains 2.65 m/s
+PASS 1366x768 / saved speed and compatible GPS survive a new session
+PASS 1366x768 / original built-in reference remains available
+PASS: all player HUD checks.
+Native hidden-window D3D presentation warnings: 2 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

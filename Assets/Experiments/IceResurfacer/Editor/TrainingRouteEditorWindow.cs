@@ -67,6 +67,13 @@ namespace IceResurfacer.Editor
             Rebuild();string path=TrainingGuideStorage.SaveCopy(directory??TrainingGuideStorage.DefaultDirectory,definition);
             status=(fit.Ready?"Saved ready guide: ":"Saved DRAFT guide (not ready for live use): ")+path;dirty=false;return path;
         }
+        public string RevalidateForScene(SimulatorConfig current,string directory=null)
+        {
+            if(definition==null)throw new InvalidOperationException("Open a guide first.");
+            var corrected=TrainingGuideStorage.RevalidateCopy(definition,current,out _);
+            string path=TrainingGuideStorage.SaveCopy(directory??TrainingGuideStorage.DefaultDirectory,corrected);
+            LoadGuide(path);status="Saved a NEW guide validated against the active scene, including current conditioner clearance. Original guide and raw recording preserved: "+path;return path;
+        }
         void SaveDraft()
         {
             if(!dirty||definition==null)return;
@@ -173,6 +180,15 @@ namespace IceResurfacer.Editor
                 }
             }
             EditorGUILayout.EndHorizontal();
+            if(definition!=null)
+            {
+                var active=UnityEngine.Object.FindAnyObjectByType<IceResurfacerGame>();
+                using(new EditorGUI.DisabledScope(active==null))
+                    if(GUILayout.Button("Revalidate for active scene (save NEW copy)"))
+                    {Try(()=>RevalidateForScene(active.Sim!=null?active.Sim.Config:active.calibration));GUIUtility.ExitGUI();}
+                if(active!=null&&fit!=null&&!fit.Compatible(active.Sim!=null?active.Sim.Config:active.calibration))
+                    EditorGUILayout.HelpBox(fit.CalibrationMismatchMessage(active.Sim!=null?active.Sim.Config:active.calibration),MessageType.Warning);
+            }
             EditorGUILayout.BeginHorizontal();
             if(GUILayout.Button("Fit Whole Route"))FitWholeRoute();if(GUILayout.Button("Zoom to Selected Point"))ZoomSelected();
             if(GUILayout.Button("Previous Error"))NavigateProblem(-1);if(GUILayout.Button("Next Error"))NavigateProblem(1);

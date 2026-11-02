@@ -139,7 +139,6 @@ namespace IceResurfacer.Presentation
                 case "ConsoleExpanded": return new Rect(1228,292,326,34);
                 case "SurveyCollapse":return new Rect(274,32,98,31);
                 case "SpeedSlider":return new Rect(400,500,800,26);
-                case "SpeedReset":return new Rect(400,543,800,48);
                 case "History": return new Rect(1228,851,128,37);
                 case "RouteRecorder": return new Rect(1018,851,188,37);
                 default: throw new ArgumentException("Unknown Aurora instrument: " + name);
@@ -736,7 +735,6 @@ namespace IceResurfacer.Presentation
             Label(new Rect(400,459,800,28),(current*1.609344f).ToString("F2")+" km/h  /  personal operator setting  /  saved between sessions",text,Muted);
             float next=GUI.HorizontalSlider(ControlRect("SpeedSlider"),current,3,8);
             if(Mathf.Abs(next-current)>.001f)game.SetOperatorSpeedMph(next);
-            if(Button(ControlRect("SpeedReset"),"RESET TO ORIGINAL SPEED  /  "+game.OriginalForwardSpeedMph.ToString("F2")+" MPH",Slate))game.ResetOperatorSpeed();
             if(Button(new Rect(400,620,800,48),"REFILL PRACTICE / PARTLY EMPTY TANKS",Slate))game.StartServicePractice();
             Label(new Rect(400,706,800,54),"3.00–8.00 MPH in 0.25 MPH steps. Original calibration stays intact.\nESC resumes. Numpad 1 toggles HUD / video mode.",text,Muted);
         }

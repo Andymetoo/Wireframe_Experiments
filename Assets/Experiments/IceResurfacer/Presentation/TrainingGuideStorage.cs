@@ -16,6 +16,19 @@ namespace IceResurfacer.Presentation
             var definition=TrainingRouteDefinition.FromRecording(raw,json,RouteRecordingStorage.Integrity(json));
             RecordedTrackReconstruction.Restore(definition,raw);definition.name=raw.name+" / recorded track";return definition;
         }
+        public static TrainingRouteDefinition RevalidateCopy(TrainingRouteDefinition original,SimulatorConfig current,out RouteFit fit)
+        {
+            if(current==null)throw new ArgumentNullException(nameof(current));current.Validate();
+            var copy=Decode(Encode(original)); // Never mutate the old guide or its embedded raw source.
+            copy.configuration=TrainingRouteDefinition.CopyConfiguration(current);
+            copy.id=Guid.NewGuid().ToString("N");copy.createdUtc=DateTimeOffset.UtcNow.ToString("O");
+            const string suffix=" / current calibration";
+            copy.name=copy.name.Substring(0,Math.Min(copy.name.Length,100-suffix.Length))+suffix;
+            fit=RouteFitter.Fit(copy,Raw(copy));
+            if(!fit.Ready||!fit.validationPerformed||!fit.Compatible(current))
+                throw new InvalidOperationException("Revalidation failed: "+fit.curvatureErrors+" curvature, "+fit.boundaryErrors+" boundary, "+fit.sourceErrors+" source errors. No corrected guide was saved. Inspect the Editor error regions.");
+            return copy;
+        }
         public static string Encode(TrainingRouteDefinition definition)
         {
             definition.Validate();var raw=Raw(definition);

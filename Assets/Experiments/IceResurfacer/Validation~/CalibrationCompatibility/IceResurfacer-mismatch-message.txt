@@ -1,0 +1,3 @@
+Guide calibration mismatch:
+ConditionerYawLimitRadians: guide=0.0349065848, session=0
+Open Edit Route > Revalidate for active scene; save a new validated copy.

@@ -1,0 +1,73 @@
+PASS actual scene enters Play Mode: IceResurfacer
+PASS reproduces the single legacy-yaw calibration mismatch
+PASS guide yaw=0.03490658476948738 rad; active scene yaw=0 rad
+FIELD RinkWidth | guide=26 | active=26
+FIELD RinkLength | guide=60 | active=60
+FIELD CornerRadius | guide=8.5 | active=8.5
+FIELD GateHalfWidth | guide=2.70000005 | active=2.70000005
+FIELD BayLength | guide=14 | active=14
+FIELD Wheelbase | guide=1.96000004 | active=1.96000004
+FIELD MaxSteeringRadians | guide=0.412 | active=0.412
+FIELD SteeringRate | guide=0.550000012 | active=0.550000012
+FIELD VehicleHalfWidth | guide=1.06500006 | active=1.06500006
+FIELD BodyFront | guide=2.5 | active=2.5
+FIELD BodyRear | guide=0.449999988 | active=0.449999988
+FIELD HitchBehindAxle | guide=0.449999988 | active=0.449999988
+FIELD DrawbarLength | guide=0.649999976 | active=0.649999976
+FIELD ConditionerYawLimitRadians | guide=0.0349065848 | active=0
+FIELD ConditionerWidth | guide=1.95599997 | active=1.95599997
+FIELD ConditionerLength | guide=0.800000012 | active=0.800000012
+FIELD WaterDistributionWidth | guide=2.0999999 | active=2.0999999
+FIELD WaterFilmSpreadMeters | guide=0.119999997 | active=0.119999997
+FIELD FloodContactFore | guide=-0.439999998 | active=-0.439999998
+FIELD FloodContactLength | guide=0.270000011 | active=0.270000011
+PASS Route Manager rejection contains the exact field and both values
+PASS mismatch preserves original reference and active selection
+PASS new guide identity retains exact embedded original recording and source checksum
+PASS separate guide declares current scene calibration and passes strict compatibility
+PASS full route passes body, observed conditioner, current attached conditioner, and radius checks
+PASS all 46,616 samples preserve 1003.234406572 m and zero raw-trajectory displacement
+PASS all 398 control points, source indices, handles and annotations are unchanged
+PASS revalidation never mutates the earlier repaired guide in memory
+PASS strict mismatch diagnostic for RinkWidth
+PASS strict mismatch diagnostic for RinkLength
+PASS strict mismatch diagnostic for CornerRadius
+PASS strict mismatch diagnostic for GateHalfWidth
+PASS strict mismatch diagnostic for BayLength
+PASS strict mismatch diagnostic for Wheelbase
+PASS strict mismatch diagnostic for MaxSteeringRadians
+PASS strict mismatch diagnostic for SteeringRate
+PASS strict mismatch diagnostic for VehicleHalfWidth
+PASS strict mismatch diagnostic for BodyFront
+PASS strict mismatch diagnostic for BodyRear
+PASS strict mismatch diagnostic for HitchBehindAxle
+PASS strict mismatch diagnostic for DrawbarLength
+PASS strict mismatch diagnostic for ConditionerYawLimitRadians
+PASS strict mismatch diagnostic for ConditionerWidth
+PASS strict mismatch diagnostic for ConditionerLength
+PASS strict mismatch diagnostic for WaterDistributionWidth
+PASS strict mismatch diagnostic for WaterFilmSpreadMeters
+PASS strict mismatch diagnostic for FloodContactFore
+PASS strict mismatch diagnostic for FloodContactLength
+PASS non-finite and missing calibration cannot pass compatibility
+PASS pre-existing 0.0001 compatibility tolerance is preserved
+PASS revalidation against unsafe enlarged geometry is refused rather than certified
+PASS labeled negative fixture: safe historical conditioner cannot conceal current attached-conditioner board collision
+LIBRARY G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\UnityProject\Assets\Experiments\IceResurfacer\Validation~\CC-O\Guides\Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json valid=True error=
+PASS corrected guide appears valid in the live library catalog
+PASS Route Manager discovers the same corrected guide in IceResurfacer
+PASS Route Manager loads the corrected guide: Loaded: Andy_Try_1 / recorded track (repaired) / current calibration — GPS Ready / recorded track; ideal spline not certified
+PASS all 5,130 raw poses traverse all 132 contexts in order without skipping nearby loops
+PASS guidance replay leaves vehicle, conditioner, controls, scoring and simulation state untouched
+PASS live preview retains the existing 40-foot bound
+REPLAY samples=5130 length=1003.234406572 contexts=132 maxLead=0.201903 maxAdvance=0.411230 maxSearch=336 ms=98.461
+PASS persistent 3 MPH selection retains baseline calibration and compatible GPS
+PASS persistent 8 MPH selection retains baseline calibration and compatible GPS
+PASS persistent 5.5 MPH selection retains baseline calibration and compatible GPS
+PASS ESC slider remains present
+PASS removed reset button has no registered UI hitbox
+PASS entire serialized scene calibration remains unchanged
+PASS original raw file remains verbatim in the corrected persisted guide
+PASS importing old raw data prepares a separately revalidated current-calibration guide
+PASS automatic raw import preserves its historical embedded calibration
+PASS zero Unity runtime errors

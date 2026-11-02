@@ -9,14 +9,14 @@ the forward target. It never assigns velocity or changes serialized calibration.
 Existing machine load, snow resistance, traction and braking retain authority.
 
 Verified saved launch calibration: 2.65 m/s = 5.9279 MPH, displayed as 5.93 MPH.
-RESET TO ORIGINAL SPEED selects this exact value, even though it is between
-quarter-MPH slider ticks. With no saved preference, the original is the default.
+With no saved preference, the original remains the internal default. The pause
+menu reset button has been removed; the slider remains the operator control.
 Reverse remains 1.00 m/s. Minimum is 1.34112 m/s; maximum is 3.57632 m/s.
 
 The personal choice is saved immediately using PlayerPrefs.Save, under the
 experiment-specific key AuroraR54.Operator.MaxForwardSpeedMph.v1. It survives
-new sessions, leaving Play Mode and restarting the application. Reset removes
-only this key. Windows stores PlayerPrefs in the Unity application/company
+new sessions, leaving Play Mode and restarting the application.
+Windows stores PlayerPrefs in the Unity application/company
 registry namespace (Editor and built player use their respective namespaces).
 This does not rewrite the scene, routes or guide files. No manufacturer maximum
 is asserted. Results and RunReport.SelectedMaxForwardSpeedMph report the current

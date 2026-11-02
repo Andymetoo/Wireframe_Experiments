@@ -12,16 +12,19 @@ Files
   Machine/Materials/*.mat                      the 12 machine palette materials
   Presentation/IceMachineRig.cs                binds authored parts into the IceWorld contract
   Presentation/IceKeepUnbatched.cs             opt a part out of runtime batching
-  Editor/IceMachineBaker.cs                    bake / experimental-scene menu commands
+  Editor/IceMachineBaker.cs                    machine generation (new locations only; no menus)
+  Editor/IceAuthoredRecovery.cs                Open Authored Scene, first-time setup, Advanced Recovery
   Editor/IceMachineRigEditor.cs                ownership report and anchor tools (rig Inspector)
   Editor/IceAuthoredMachineValidation.cs       batch proof (isolated project only)
+  The arena is documented in AuthoredArena.txt.
 
 Workflow
-1. Experiments > Ice Resurfacer > Authored Machine > Create Experimental Scene.
-   Copies the launch scene (same calibration) and opens the copy. The launch scene is not saved.
-2. Experiments > Ice Resurfacer > Authored Machine > Bake Machine Prefab.
+1. Experiments > Ice Resurfacer > Open Authored Scene. If the scene does not exist yet it offers to
+   create it once as a copy of the launch scene; an existing scene is never replaced.
+2. First time only (when Machine/AuroraR54.prefab does not exist):
+   Experiments > Ice Resurfacer > Advanced Recovery > Set Up Machine (first time only).
    Runs the same IceWorldBuilder machine code once, unbatched, saves meshes/materials/prefab and
-   places one instance under the game object. Refuses to run in the launch scene.
+   places one instance under the game object. It is disabled once the prefab exists.
 3. Edit normally: select parts in the Scene view or Hierarchy, move/rotate/scale, change
    materials, replace children. Prefer Prefab Mode (open AuroraR54.prefab) so edits live in the
    prefab rather than as scene overrides. Save. Edits survive restarting Unity.
@@ -54,8 +57,12 @@ Ownership (shown in the IceMachineRig Inspector)
 Rebake policy
 Shape-defining calibration (tank roof height/offset, conveyor offset, conditioner and water
 widths, tire width, guide roller radius, brush arm length, valve stem height) is baked into
-meshes. The rig Inspector warns when it changed since the bake. Rebaking regenerates the prefab
-and DISCARDS manual edits (a confirmation dialog says so). Selective rebake is a later phase.
+meshes. The rig Inspector warns when it changed since the bake. The machine is never regenerated
+automatically. Advanced Recovery > Generate Fresh Machine Copy writes a new baseline under Recovery/
+and leaves the authored prefab alone. Replacing the authored machine in place is only possible in
+Advanced Recovery > Replace or Restore Authored Assets: it lists the affected prefab, meshes,
+materials and scene links, requires typing REBUILD MACHINE, makes a verified backup in Backups~,
+keeps GUIDs, and rolls back automatically on any failure (details in AuthoredArena.txt).
 
 Known limits
 - IceWaterService fill ports and level gauges remain runtime-generated (not visible in Edit Mode).

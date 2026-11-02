@@ -51,7 +51,8 @@ namespace IceResurfacer.Editor
 
             var changed=rig.ShapeFieldsChangedSinceBake(config);
             if(changed.Count>0)EditorGUILayout.HelpBox("Changed since bake, affecting mesh shape: "+string.Join(", ",changed)+
-                ". Rebake the prefab to regenerate those shapes (rebaking discards manual edits).",MessageType.Warning);
+                ". The machine is never regenerated automatically: use Advanced Recovery > Generate Fresh Machine Copy for a new baseline "+
+                "(your prefab is untouched), or Replace or Restore Authored Assets to replace it behind a backup.",MessageType.Warning);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("OPERATOR CONTROLS / authored here",EditorStyles.boldLabel);

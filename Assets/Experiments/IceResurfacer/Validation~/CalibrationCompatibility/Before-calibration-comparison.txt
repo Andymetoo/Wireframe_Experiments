@@ -1,0 +1,49 @@
+Original repaired guide: Assets\Experiments\IceResurfacer\RouteRecordings~\Guides\Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json
+Compatibility tolerance unchanged: abs(guide-current) <= 0.0001.
+
+IceResurfacer.unity
+Field | embedded guide JSON | scene active config | origin | status
+RinkWidth | 26.0 | 26.0 | serialized | match
+RinkLength | 60.0 | 60.0 | serialized | match
+CornerRadius | 8.5 | 8.5 | serialized | match
+GateHalfWidth | 2.700000047683716 | 2.7 | serialized | match
+BayLength | 14.0 | 14.0 | serialized | match
+Wheelbase | 1.9600000381469727 | 1.96 | serialized | match
+MaxSteeringRadians | 0.41200000047683716 | 0.412 | serialized | match
+SteeringRate | 0.550000011920929 | 0.55 | serialized | match
+VehicleHalfWidth | 1.065000057220459 | 1.065 | serialized | match
+BodyFront | 2.5 | 2.5 | serialized | match
+BodyRear | 0.44999998807907104 | 0.45 | serialized | match
+HitchBehindAxle | 0.44999998807907104 | 0.45 | serialized | match
+DrawbarLength | 0.6499999761581421 | 0.65 | serialized | match
+ConditionerYawLimitRadians | 0.03490658476948738 | 0.0 | SimulatorConfig default | MISMATCH
+ConditionerWidth | 1.9559999704360962 | 1.956 | serialized | match
+ConditionerLength | 0.800000011920929 | 0.8 | serialized | match
+WaterDistributionWidth | 2.0999999046325684 | 2.1 | serialized | match
+WaterFilmSpreadMeters | 0.11999999731779099 | 0.12 | serialized | match
+FloodContactFore | -0.4399999976158142 | -0.44 | serialized | match
+FloodContactLength | 0.27000001072883606 | 0.27 | serialized | match
+
+IceResurfacer_AuthoredMachine.unity
+Field | embedded guide JSON | scene active config | origin | status
+RinkWidth | 26.0 | 26.0 | serialized | match
+RinkLength | 60.0 | 60.0 | serialized | match
+CornerRadius | 8.5 | 8.5 | serialized | match
+GateHalfWidth | 2.700000047683716 | 2.7 | serialized | match
+BayLength | 14.0 | 14.0 | serialized | match
+Wheelbase | 1.9600000381469727 | 1.96 | serialized | match
+MaxSteeringRadians | 0.41200000047683716 | 0.412 | serialized | match
+SteeringRate | 0.550000011920929 | 0.55 | serialized | match
+VehicleHalfWidth | 1.065000057220459 | 1.065 | serialized | match
+BodyFront | 2.5 | 2.5 | serialized | match
+BodyRear | 0.44999998807907104 | 0.45 | serialized | match
+HitchBehindAxle | 0.44999998807907104 | 0.45 | serialized | match
+DrawbarLength | 0.6499999761581421 | 0.65 | serialized | match
+ConditionerYawLimitRadians | 0.03490658476948738 | 0.0 | serialized | MISMATCH
+ConditionerWidth | 1.9559999704360962 | 1.956 | serialized | match
+ConditionerLength | 0.800000011920929 | 0.8 | serialized | match
+WaterDistributionWidth | 2.0999999046325684 | 2.1 | serialized | match
+WaterFilmSpreadMeters | 0.11999999731779099 | 0.12 | serialized | match
+FloodContactFore | -0.4399999976158142 | -0.44 | serialized | match
+FloodContactLength | 0.27000001072883606 | 0.27 | serialized | match
+

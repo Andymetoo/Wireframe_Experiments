@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement')][string]$Action='RunBatch',
+    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery')][string]$Action='RunBatch',
     [string]$LogName='Operator-ergonomics-unity-1.log',
     # Optional scene for the existing validators, e.g. Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
     [string]$Scene=''
@@ -16,10 +16,17 @@ if($Action -eq 'OperatorPrefsRead'){$method='IceResurfacer.Editor.IceHUDVideoSpe
 if($Action -eq 'RouteRepair'){$method='IceResurfacer.Editor.IceRouteRepairValidation.RunBatch'}
 if($Action -eq 'RouteRepairGui'){$method='IceResurfacer.Editor.IceRouteRepairValidation.RunGuiBatch'}
 if($Action -eq 'RouteRepairPersistence'){$method='IceResurfacer.Editor.IceRouteRepairValidation.VerifyPersisted'}
+if($Action -eq 'RouteCalibration'){$method='IceResurfacer.Editor.IceRouteCalibrationValidation.RunBatch'}
 if($Action -eq 'AuthoredBake'){$method='IceResurfacer.Editor.IceAuthoredMachineValidation.Bake'}
 if($Action -eq 'AuthoredVerify'){$method='IceResurfacer.Editor.IceAuthoredMachineValidation.Verify'}
 if($Action -eq 'AuthoredWriteRearrangement'){$method='IceResurfacer.Editor.IceAuthoredMachineValidation.WriteRearrangement'}
 if($Action -eq 'AuthoredVerifyRearrangement'){$method='IceResurfacer.Editor.IceAuthoredMachineValidation.VerifyRearrangement'}
+if($Action -eq 'ArenaBaseline'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.Baseline'}
+if($Action -eq 'ArenaSetUp'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.SetUp'}
+if($Action -eq 'ArenaVerify'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.Verify'}
+if($Action -eq 'ArenaWriteEdits'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.WriteEdits'}
+if($Action -eq 'ArenaVerifyEdits'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.VerifyEdits'}
+if($Action -eq 'ArenaRecovery'){$method='IceResurfacer.Editor.IceAuthoredArenaValidation.Recovery'}
 $arguments=@('-batchmode','-force-d3d11','-projectPath',('"'+$stage+'"'),'-executeMethod',$method,'-logFile',('"'+$log+'"'))
 if($Scene -ne ''){$arguments+=@('-iceScene',$Scene)}
 $child=Start-Process -FilePath $unity -ArgumentList $arguments -WindowStyle Hidden -PassThru

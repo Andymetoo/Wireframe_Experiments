@@ -22,7 +22,7 @@ $stageUserSettings = Join-Path $stageRoot 'UserSettings'
 New-Item -ItemType Directory -Force $stageUserSettings | Out-Null
 [IO.File]::WriteAllText((Join-Path $stageUserSettings 'Search.settings'), '{"indexOnEditorStartup":false}')
 # Explicit folders avoid recursively copying Validation~/UnityProject into itself.
-foreach ($name in @('Core','Presentation','Resources','Shaders','Scenes','Editor','Documentation','Machine')) {
+foreach ($name in @('Core','Presentation','Resources','Shaders','Scenes','Editor','Documentation','Machine','Arena')) {
     if(!(Test-Path -LiteralPath (Join-Path $experimentRoot $name))) { continue }
     Copy-Item -LiteralPath (Join-Path $experimentRoot $name) -Destination $stageExperiment -Recurse -Force
     $metaPath = Join-Path $experimentRoot ($name+'.meta')

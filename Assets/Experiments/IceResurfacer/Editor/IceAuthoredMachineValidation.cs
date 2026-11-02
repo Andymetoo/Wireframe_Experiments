@@ -55,12 +55,13 @@ namespace IceResurfacer.Editor
             {
                 RequireIsolated();
                 Start("Bake");
-                // Each validation bake starts from a fresh copy of the launch scene.
+                // Each validation bake starts from a fresh copy of the launch scene (isolated copy only).
                 AssetDatabase.DeleteAsset(IceMachineBaker.AuthoredScenePath);
-                IceMachineBaker.OpenExperimentalScene();
+                AssetDatabase.DeleteAsset(IceMachineBaker.MachineFolder);
+                IceMachineBaker.OpenOrCreateAuthoredScene();
                 var game=Game();
                 Check(JsonUtility.ToJson(game.calibration)==LaunchCalibration(),"experimental scene carries the launch scene's exact calibration");
-                IceMachineBaker.Bake(game,true);
+                IceMachineBaker.SetUpFirstMachine(game);
                 Pass("baked "+IceMachineBaker.PrefabPath+", meshes and materials");
                 Exit(0);
             });

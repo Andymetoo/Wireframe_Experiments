@@ -1,0 +1,118 @@
+NORTHLINE ARENA / AUTHORED ARENA (PHASE 2, EXPERIMENTAL)
+
+Purpose
+The rink and arena exist as persistent, editable geometry in the authored scene, next to the
+authored Aurora machine. Open Scenes/IceResurfacer_AuthoredMachine.unity and the whole arena and
+machine are visible and selectable without pressing Play. The launch scene
+(Scenes/IceResurfacer.unity) is unchanged and still generates everything at runtime.
+
+Files
+  Arena/NorthlineArena.prefab                 arena root (IceArenaRig) with nine nested section prefabs
+  Arena/Sections/<section>.prefab             one prefab per section, each regenerable on its own
+  Arena/Sections/<section>.Meshes.asset       that section's generated meshes (rink bands, ice sheet, hose coil)
+  Arena/Materials/*.mat                       the arena's 20 materials (shared by the sections)
+  Presentation/IceArenaRig.cs                 binds the saved arena into IceWorld at Play
+  Presentation/IceArenaPart.cs                role marker (ice sheet, boards, gate, walls, pit, lights, station)
+  Presentation/IceArenaDrift.cs               geometry-versus-simulation report
+  Editor/IceArenaBaker.cs                     arena generation (new locations only)
+  Editor/IceArenaRigEditor.cs                 rig Inspector: drift report, restore poses, open sections
+  Editor/IceAuthoredRecovery.cs, IceRecoveryWindow.cs, IceAssetPersistence.cs
+                                              menus, backups, safe replacement (machine and arena)
+  Editor/IceAuthoredArenaValidation.cs        batch proof (isolated project only)
+
+Hierarchy (authored scene)
+  IceResurfacerGame
+    AuroraR54                                 the authored machine (Phase 1)
+    NorthlineArena                            [IceArenaRig]
+      Building shell                          foundation, roof canopy, four insulated walls
+      Rink boards and ice sheet               ice sheet, dasher, yellow kick strip, top rail, glass, glass supports
+      Tiered spectator seating                risers, benches, seat backs, partitions, aisle rails, walkways
+      Steel trusses and arena lighting        trusses, webs, fixture housings, diffusers, 8 pool Lights, ducts
+      Southeast diagonal portal - backstage maintenance room
+                                              gate sill, apron floor, ceiling, lintel, door, jambs, walls,
+                                              bollards, parking marks, pit grate/rims/stripes, pit snow surface,
+                                              signs, cabinet, hose reel, workshop strip lights + 3 Lights
+      Parked goals                            two regulation goals
+      Banners and signage                     end-wall identity, pennants, board advertisements, exit sign
+      Centre suspended scoreboard
+      Southeast service wall - right of nose-in parked machine
+                                              water station: backing, supply riser and valve, pipe clamps,
+                                              hose holder (+ highlight), labels, tank level repeater, floor drain
+  Section names use "-" where the builder's names use "/" (prefab file names cannot contain "/").
+
+Workflow
+1. Experiments > Ice Resurfacer > Open Authored Scene.
+2. First time only: Experiments > Ice Resurfacer > Authored Scene > Set Up Persistent Arena.
+   It generates Arena/ once from the same IceWorldBuilder arena code (plus IceWaterService's own
+   station code), backs up the scene file to Backups~ first, and adds one NorthlineArena instance.
+   It refuses to run again once Arena/ exists. It never touches Machine/, recordings or guides.
+   It also sets this scene's ambient light and fog to what Play uses, so Edit Mode looks like Play.
+3. Edit normally. Prefer opening a section prefab (rig Inspector > Open prefab, or double-click in
+   Arena/Sections) so edits live in that section; scene overrides also work. Save. Edits persist.
+4. Press Play. IceWorldBuilder finds the IceArenaRig, binds the saved ice sheet, pit snow surface and
+   pool Lights instead of generating a second rink, and batches static parts on the Play instance only.
+   IceWaterService binds the saved station and generates only the carried nozzle. Exiting Play leaves
+   every saved file unchanged.
+
+What you can move safely (cosmetic)
+  Stands, seats, roof canopy, outer walls, trusses, ducts, fixture housings and diffusers, the Lights
+  (position, colour, intensity, range), banners, pennants, board advertisements, signs, scoreboard,
+  goals, cabinet, hose reel, parking marks, glass supports, materials and colours of anything.
+  You may delete, duplicate or replace decorative objects and add your own meshes.
+
+What is physical (SimulatorConfig and ServiceLayout decide where it really is)
+  Ice sheet; dasher, kick strip, top rail and glass bands; the gate frame (service-bay root, jambs,
+  uprights, return walls); service-bay floor, side and rear walls; snow pit receiver and pit snow
+  surface; the water station frame (the hose holder, supply valve and drain are simulated at fixed
+  points), its supply valve handle and holder highlight. These carry an IceArenaPart role.
+  Moving or resizing them does NOT move collision. The NorthlineArena Inspector lists every check
+  (rink width/length, ice footprint, rounded corners, each board band, gate opening, floor, walls,
+  pit, station) and warns when anything is more than 2 mm off; Play logs the same warning.
+  "Restore generated poses" puts moved physical parts back. To really change the rink, change the
+  calibration, then regenerate the affected section (Advanced Recovery); the drift report shows
+  what disagrees until then.
+  The ice sheet's material is replaced by the live spatial ice at Play; to change how the ice looks,
+  edit the SpatialIce template material, not the ice sheet's material.
+
+Regeneration and recovery (Experiments > Ice Resurfacer > Advanced Recovery)
+  Generate Fresh Arena/Machine Copy From Procedural Source
+      Writes a complete new baseline under Recovery/<name> <time>. Your authored assets and the scene
+      are not changed. Copy parts from it, or delete the folder.
+  Replace or Restore Authored Assets...
+      Replace the machine, or one arena section, with a fresh procedural version; or restore a backup.
+      Shows exactly which files change, then requires typing REBUILD MACHINE, REBUILD ARENA SECTION or
+      RESTORE BACKUP. The fresh version is generated and checked in a staging folder first; then every
+      affected file, its .meta and the scene are copied to Backups~/<time> <phrase> and verified byte
+      for byte; then files are replaced in place (GUIDs kept, so the scene and arena prefab keep their
+      links). Any failure restores every file from that backup automatically.
+      Materials are kept unless you tick the reset option. Scene/prefab overrides on parts of a
+      replaced section or machine no longer apply afterwards (they pointed at the old objects).
+  Backups~ is ignored by Unity's importer. Each backup has RESTORE.txt (by-hand instructions) and a
+  manifest with SHA-256 hashes.
+  Nothing regenerates automatically: not in Play Mode, on domain reload, on import, when opening the
+  scene, or from Inspector edits.
+
+Inventory: what stays generated at runtime (and why)
+  Ice condition (scratches, snow, finish, wetness, depth) .... IceSurfaceView textures on the saved sheet
+  Spatial ice material ....................................... runtime copy of the SpatialIce template
+  Deposited snow on the ice and in the pit ................... IceDepositedSnowView / IceSnowView meshes
+  Floor water runoff and floor snow .......................... IceWaterService dynamic meshes
+  Tank snow, conditioner trough snow, snow particles ......... IceSnowView
+  Drawbar, water and snow particles, driver camera ........... IceResurfacerGame
+  Carried hose nozzle, live hose, overflow water and spray ... IceWaterService
+  Fill ports and tank level gauges on the machine ............ IceWaterService (they mount on the machine
+      prefab, which this phase does not modify; a later opt-in step can move them into it)
+  GPS route guide, collision overlay (F3), dashboard/HUD ..... route guide, overlay and HUD scripts
+  Depth-tested lettering material ............................ its atlas texture changes at runtime
+  Combined batch meshes ...................................... created on the Play instance only
+
+Validation (isolated copy only: Validation~/StageUnityValidation.ps1 -UpdateOnly, then)
+  RunIsolatedUnity.ps1 -Action ArenaBaseline      machine fingerprint before migration, Edit Mode "before" views
+  RunIsolatedUnity.ps1 -Action ArenaSetUp         first-time setup, machine unchanged, "after" views
+  RunIsolatedUnity.ps1 -Action ArenaVerify        Edit Mode, equivalence with the builder, drift, Play, asset safety
+  RunIsolatedUnity.ps1 -Action ArenaWriteEdits    board advertisement, ceiling fixture + Light, material colour
+  RunIsolatedUnity.ps1 -Action ArenaVerifyEdits   fresh process: persistence, drift detection, Play, restore
+  RunIsolatedUnity.ps1 -Action ArenaRecovery      fresh copies, refused confirmation, rollback, replace, restore
+  RunIsolatedUnity.ps1 -Action RunBatch -Scene Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
+Results: Validation~/UnityProject/Assets/Experiments/IceResurfacer/Validation~/AuthoredArena-results.txt
+Screenshots: Validation~/UnityProject/Assets/Experiments/IceResurfacer/Validation~/AuthoredArena/

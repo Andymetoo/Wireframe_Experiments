@@ -41,10 +41,12 @@ namespace IceResurfacer.Presentation
         public static IceWorld Build(Transform root, Material litTemplate, SimulatorConfig config = null)
         {
             var builder = new Builder(root, litTemplate, config ?? new SimulatorConfig());
-            // An authored machine prefab under the game root replaces only the generated
-            // machine. Without one (the launch scene) the original runtime build is unchanged.
+            // An authored machine prefab and/or authored arena under the game root replace
+            // only what they author. Without either (the launch scene) the original runtime
+            // build is unchanged.
             var rig = root.GetComponentInChildren<IceMachineRig>(true);
-            return rig == null ? builder.Build() : builder.BuildWithAuthoredMachine(rig);
+            var arena = root.GetComponentInChildren<IceArenaRig>(true);
+            return rig == null && arena == null ? builder.Build() : builder.BuildAuthored(rig, arena);
         }
         // Explicit Editor preview uses the exact same authoring functions but
         // preserves each selectable part. Runtime keeps material mesh batching.
@@ -53,13 +55,20 @@ namespace IceResurfacer.Presentation
             config.Validate();
             return new Builder(root,litTemplate,config,false).Build(false);
         }
+        // Explicit arena bake source: the same arena functions, unbatched, with loose parts
+        // gathered into identity-transform section groups (nothing moves).
+        public static IceWorld BuildArenaPreview(Transform root,Material litTemplate,SimulatorConfig config)
+        {
+            config.Validate();
+            return new Builder(root,litTemplate,config,false,true).BuildArenaOnly();
+        }
 
         sealed class Builder
         {
             readonly Transform root;
             readonly Material template;
             readonly SimulatorConfig config;
-            readonly bool batchGeometry;
+            readonly bool batchGeometry, sectioned;
             readonly ServiceLayout serviceLayout;
             readonly IceWorld world = new IceWorld();
             bool authoredBatching;
@@ -67,12 +76,13 @@ namespace IceResurfacer.Presentation
             Material roof, glass, lightMat, pale, snow, cloth, blue, lettering;
             Font font;
 
-            public Builder(Transform root, Material template, SimulatorConfig config,bool batchGeometry=true)
+            public Builder(Transform root, Material template, SimulatorConfig config,bool batchGeometry=true,bool sectioned=false)
             {
                 this.root = root;
                 this.template = template;
                 this.config = config;
                 this.batchGeometry=batchGeometry;
+                this.sectioned=sectioned;
                 serviceLayout = new ServiceLayout(config);
                 world.WorkingWidth = config.ConditionerWidth;
             }
@@ -86,14 +96,36 @@ namespace IceResurfacer.Presentation
                 return world;
             }
 
-            // Saved prefab geometry is bound, never regenerated. Batching then runs on the
-            // Play Mode instance only: it removes renderer components, never mesh/material assets.
-            public IceWorld BuildWithAuthoredMachine(IceMachineRig rig)
+            public IceWorld BuildArenaOnly()
             {
                 Palette();
                 Arena();
-                rig.Bind(world);
-                if(batchGeometry&&rig.batchAtRuntime) { authoredBatching=true; BatchMachine(); BatchMeshes(world.BrushRoller); }
+                return world;
+            }
+
+            // Saved prefab geometry is bound, never regenerated. Batching then runs on the
+            // Play Mode instance only: it removes renderer components, never mesh/material assets.
+            public IceWorld BuildAuthored(IceMachineRig rig, IceArenaRig arena)
+            {
+                Palette();
+                if(arena==null)Arena();
+                else
+                {
+                    arena.Bind(world,config);
+                    if(batchGeometry&&arena.batchAtRuntime)
+                    {
+                        // The authored flag is scoped: a generated machine keeps the original rule.
+                        authoredBatching=true;
+                        BatchMeshes(arena.transform,new HashSet<Transform>{world.IceMesh.transform,world.PitSnow});
+                        authoredBatching=false;
+                    }
+                }
+                if(rig==null) { Machine(); if(batchGeometry)BatchMachine(); }
+                else
+                {
+                    rig.Bind(world);
+                    if(batchGeometry&&rig.batchAtRuntime) { authoredBatching=true; BatchMachine(); BatchMeshes(world.BrushRoller); authoredBatching=false; }
+                }
                 return world;
             }
 
@@ -153,6 +185,15 @@ namespace IceResurfacer.Presentation
                 t.SetParent(parent, false);
                 t.localPosition = position;
                 return t;
+            }
+
+            // Arena bakes gather loose parts under one identity group per section; the
+            // runtime build (unsectioned) keeps its original flat hierarchy.
+            Transform Section(string name, Transform parent)
+            {
+                if(!sectioned)return parent;
+                foreach(Transform child in parent)if(child.name==name)return child;
+                return Group(name,parent);
             }
 
             Transform Primitive(string name, PrimitiveType type, Transform parent, Vector3 position, Vector3 scale, Material material)
@@ -272,35 +313,37 @@ namespace IceResurfacer.Presentation
             void Arena()
             {
                 var arena=Group("NORTHLINE ICE CENTRE / enclosed arena",root);
-                Box("Foundation",arena,new Vector3(2,-.24f,-3),new Vector3(53,.45f,89),concrete);
-                Box("Roof canopy",arena,new Vector3(2,12.7f,-2),new Vector3(52,.28f,88),roof);
-                Box("East insulated wall",arena,new Vector3(27,6,-2),new Vector3(.4f,13,88),pale);
-                Box("West insulated wall",arena,new Vector3(-23,6,-2),new Vector3(.4f,13,88),pale);
-                Box("North insulated wall",arena,new Vector3(2,6,41),new Vector3(50,13,.4f),pale);
-                Box("Service exterior wall",arena,new Vector3(2,6,-45),new Vector3(50,13,.4f),pale);
+                var shell=Section("Building shell",arena);
+                Box("Foundation",shell,new Vector3(2,-.24f,-3),new Vector3(53,.45f,89),concrete);
+                Box("Roof canopy",shell,new Vector3(2,12.7f,-2),new Vector3(52,.28f,88),roof);
+                Box("East insulated wall",shell,new Vector3(27,6,-2),new Vector3(.4f,13,88),pale);
+                Box("West insulated wall",shell,new Vector3(-23,6,-2),new Vector3(.4f,13,88),pale);
+                Box("North insulated wall",shell,new Vector3(2,6,41),new Vector3(50,13,.4f),pale);
+                Box("Service exterior wall",shell,new Vector3(2,6,-45),new Vector3(50,13,.4f),pale);
+                var rink=Section("Rink boards and ice sheet",arena);
                 var edge=RinkBoundary();
                 // Meet the kickplate at one edge: the old .13-.17 overlap
                 // emitted two coplanar inner faces and visibly flickered.
-                RingBand("White impact dasher",arena,edge,.17f,1.13f,.17f,white);
-                RingBand("Yellow kick strip",arena,edge,.015f,.17f,.19f,yellow);
-                RingBand("Dark top rail",arena,edge,1.13f,1.22f,.21f,navy);
-                RingBand("Continuous safety glass",arena,edge,1.22f,2.55f,.012f,glass);
+                RingBand("White impact dasher",rink,edge,.17f,1.13f,.17f,white);
+                RingBand("Yellow kick strip",rink,edge,.015f,.17f,.19f,yellow);
+                RingBand("Dark top rail",rink,edge,1.13f,1.22f,.21f,navy);
+                RingBand("Continuous safety glass",rink,edge,1.22f,2.55f,.012f,glass);
                 for(int i=0;i<edge.Count;i+=5)
                 {
                     var p=edge[i];
                     if(serviceLayout.IsPortal(p.x,p.z))continue;
-                    Cylinder("Glass support",arena,p+Vector3.up*1.87f,.028f,1.34f,steel,Vector3.up);
+                    Cylinder("Glass support",rink,p+Vector3.up*1.87f,.028f,1.34f,steel,Vector3.up);
                 }
                 var vertices=new List<Vector3>{new Vector3(0,.005f,0)};
                 var uvs=new List<Vector2>{new Vector2(.5f,.5f)};
                 var triangles=new List<int>();
                 foreach(var p in edge){ vertices.Add(p+Vector3.up*.005f);uvs.Add(new Vector2(p.x/26+.5f,p.z/60+.5f)); }
                 for(int i=0;i<edge.Count;i++){triangles.Add(0);triangles.Add(i+1);triangles.Add((i+1)%edge.Count+1);}
-                world.IceMesh=MeshObject("Continuous spatial ice sheet",arena,vertices,triangles,white,uvs);
+                world.IceMesh=MeshObject("Continuous spatial ice sheet",rink,vertices,triangles,white,uvs);
                 Seating(arena);
                 RoofStructure(arena);
                 ServiceBay(arena);
-                Banners(arena);
+                Banners(Section("Banners and signage",arena));
                 Scoreboard(arena);
                 BatchMeshes(arena, new HashSet<Transform>{world.IceMesh.transform});
             }
@@ -533,8 +576,8 @@ namespace IceResurfacer.Presentation
                     var lamp=Group("Workshop pool light",bay,new Vector3(0,4.25f,-outward)).gameObject.AddComponent<Light>();
                     lamp.type=LightType.Point;lamp.range=8;lamp.intensity=3.2f;lamp.color=new Color(.86f,.94f,1);lamp.shadows=LightShadows.None;
                 }
-                Goal(parent,new Vector3(-7,0,-34),-15);
-                Goal(parent,new Vector3(-11,0,-34),15);
+                Goal(Section("Parked goals",parent),new Vector3(-7,0,-34),-15);
+                Goal(Section("Parked goals",parent),new Vector3(-11,0,-34),15);
             }
 
             void Goal(Transform parent, Vector3 position, float heading)

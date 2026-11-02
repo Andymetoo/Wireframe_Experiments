@@ -12,6 +12,8 @@ with normal controls. F7 stops; F6 > Save Named Copy preserves the raw take.
 The machine continues simulating while this authoring panel is open. Park first.
 The current repair is validated against the real Andy_Try_1 recording as well
 as labeled deterministic fixtures. See Documentation/RouteRepair.txt.
+For calibration mismatches and saving a current-scene validated copy, see
+Documentation/RouteCalibrationCompatibility.txt.
 
 Edit after recording
 1. Leave Play Mode. Experiments > Ice Resurfacer > Training Route Editor.

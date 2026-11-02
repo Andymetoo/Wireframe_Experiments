@@ -1,0 +1,100 @@
+# ==========================================
+# Unity Cache, Temp, and Build Artifacts
+# ==========================================
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# ==========================================
+# IDE & OS Metadata
+# ==========================================
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.unityproj
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Unity Binary & Large Asset Files
+# (Prevent Claude from reading unparseable raw bytes)
+# ==========================================
+*.unitypackage
+*.asset
+*.prefab
+*.unity
+*.mat
+*.physicMaterial
+*.physicsMaterial2D
+*.renderTexture
+*.anim
+*.controller
+*.overrideController
+*.mask
+
+# Textures, Sprites, and UI Images
+*.png
+*.jpg
+*.jpeg
+*.tga
+*.psd
+*.tif
+*.tiff
+*.bmp
+*.exr
+*.hdr
+*.svg
+
+# Audio & Video
+*.wav
+*.mp3
+*.ogg
+*.aif
+*.aiff
+*.flac
+*.mp4
+*.mov
+*.avi
+*.webm
+
+# 3D Models & Meshes
+*.fbx
+*.obj
+*.blend
+*.dae
+*.3ds
+*.max
+*.dxf
+
+# Fonts
+*.ttf
+*.otf
+*.fnt
+*.fontsettings
+
+# ==========================================
+# Metadata Files
+# ==========================================
+# Claude cannot reason about Unity GUID links effectively;
+# reading .meta files bloats context with useless YAML hashes.
+*.meta
+
+# ==========================================
+# Third-Party / Vendor Packages inside Assets
+# ==========================================
+# Adjust or uncomment if you store large third-party assets in Assets/
+# Assets/Plugins/
+# Assets/TextMesh Pro/

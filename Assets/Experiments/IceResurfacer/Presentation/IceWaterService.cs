@@ -14,6 +14,7 @@ namespace IceResurfacer.Presentation
         Transform root, nozzle, supplyHandle, floodInlet, washInlet, overflowOutlet;
         Transform floodGauge, washGauge;
         Transform holderHighlight, station;
+        bool generateFixtures;
         LineRenderer hose, runoff;
         ParticleSystem spray;
         AudioSource filling, overflowing, coupling;
@@ -449,11 +450,14 @@ namespace IceResurfacer.Presentation
             // wall. Positive scales preserve lettering, pipe and valve geometry.
             float wallInset=6-layout.RoomHalfWidth;
             layout.ToWorld(wallInset,Simulation.ServiceAnchorOutward*2,out float sx,out float sz);
-            station=Group("Southeast service wall / right of nose-in parked machine",root,new Vector3(sx,0,sz));
-            station.localRotation=Quaternion.Euler(0,135,0);
+            // An authored arena owns the fixed fixtures; only the moving nozzle is generated.
+            var authored=generateFixtures?null:IceArenaRig.FindPart(game,IceArenaRole.WaterStation);
+            station=authored!=null?authored:Group("Southeast service wall / right of nose-in parked machine",root,new Vector3(sx,0,sz));
+            if(authored==null)station.localRotation=Quaternion.Euler(0,135,0);
             Vector3 holder=new Vector3(5.40f,1.15f,-6.48f),supply=new Vector3(5.38f,1.25f,-5.28f),anchor=new Vector3(wallInset-Simulation.ServiceAnchorSide,1.26f,-Simulation.ServiceAnchorOutward);
             holderPosition=station.TransformPoint(holder);supplyPosition=station.TransformPoint(supply);anchorPosition=station.TransformPoint(anchor);
             Vector3 drain=new Vector3(4.6f,.025f,-7.35f);drainPosition=station.TransformPoint(drain);
+            if(authored!=null){BindStation();Nozzle();return;}
             Box("Water station backing",station,new Vector3(5.85f,1.52f,-6.05f),new Vector3(.06f,1.40f,2.25f),paint);
             Beam("Wall supply riser",station,new Vector3(5.70f,.18f,-5.28f),new Vector3(5.70f,2.40f,-5.28f),.052f,steel);
             Beam("Supply branch",station,new Vector3(5.70f,1.25f,-5.28f),supply,.052f,steel);
@@ -477,10 +481,7 @@ namespace IceResurfacer.Presentation
                 Beam("Holder highlight horizontal",holderHighlight,new Vector3(0,side*.23f,-.25f),new Vector3(0,side*.23f,.25f),.028f,highlight);
             }
             holderHighlight.gameObject.SetActive(false);
-            nozzle=Group("Service nozzle / carried and coupled",root,holderPosition);
-            Cylinder("Hose bayonet coupling",nozzle,Vector3.zero,.075f,.13f,steel,Vector3.right);
-            Cylinder("Nozzle reinforced grip",nozzle,new Vector3(.10f,0,0),.058f,.13f,rubber,Vector3.right);
-            for(int i=-1;i<=1;i+=2)Box("Coupling lug",nozzle,new Vector3(0,0,i*.043f),new Vector3(.035f,.027f,.025f),steel);
+            Nozzle();
             Label("WATER SERVICE",station,new Vector3(5.79f,2.16f,-6),.105f,Color.white,Quaternion.Euler(0,-90,0));
             Label("SUPPLY\nE  OPEN / CLOSE",station,new Vector3(5.78f,1.72f,-5.28f),.065f,Color.white,Quaternion.Euler(0,-90,0));
             Label("NOZZLE\nE  RETURN HOSE",station,new Vector3(5.78f,.82f,-6.48f),.060f,Color.white,Quaternion.Euler(0,-90,0));
@@ -488,6 +489,53 @@ namespace IceResurfacer.Presentation
             Box("Tank level repeater panel",station,new Vector3(5.81f,2.05f,-7.50f),new Vector3(.035f,.63f,1.65f),rubber);
             Box("Service floor drain recess",station,drain,new Vector3(.85f,.025f,.65f),rubber);
             for(int i=0;i<9;i++)Box("Drain grate bar",station,drain+new Vector3(-.36f+i*.09f,.016f,0),new Vector3(.027f,.014f,.60f),steel);
+        }
+        // The carried nozzle moves with the operator, so it is always generated.
+        void Nozzle()
+        {
+            nozzle=Group("Service nozzle / carried and coupled",root,holderPosition);
+            Cylinder("Hose bayonet coupling",nozzle,Vector3.zero,.075f,.13f,steel,Vector3.right);
+            Cylinder("Nozzle reinforced grip",nozzle,new Vector3(.10f,0,0),.058f,.13f,rubber,Vector3.right);
+            for(int i=-1;i<=1;i+=2)Box("Coupling lug",nozzle,new Vector3(0,0,i*.043f),new Vector3(.035f,.027f,.025f),steel);
+        }
+        void BindStation()
+        {
+            supplyHandle=Required(IceArenaRole.SupplyValveHandle);
+            holderHighlight=Required(IceArenaRole.NozzleHolderHighlight);
+            levels=Required(IceArenaRole.StationLevels).GetComponent<TextMesh>();
+            if(levels==null)throw new System.InvalidOperationException("The authored station's tank level repeater needs its TextMesh.");
+            holderHighlight.gameObject.SetActive(false);
+            foreach(var label in station.GetComponentsInChildren<TextMesh>(true))label.GetComponent<MeshRenderer>().sharedMaterial=textMaterial;
+        }
+        Transform Required(IceArenaRole role)
+        {
+            var part=IceArenaRig.FindPart(game,role);
+            if(part==null||!part.IsChildOf(station))
+                throw new System.InvalidOperationException("The authored water station needs one part marked "+role+" inside it.");
+            return part;
+        }
+        /// <summary>Editor arena bake only: builds the fixed station (no nozzle, ports, hose,
+        /// effects or audio) under parent. Its materials are handed to the caller to persist.</summary>
+        public Transform BuildFixedStation(IceResurfacerGame owner,Transform parent,List<Material> materials)
+        {
+            game=owner;root=parent;generateFixtures=true;
+            steel = Mat("Water station / brushed steel",new Color(.42f,.50f,.53f),.82f,.68f);
+            rubber = Mat("Water station / reinforced hose",new Color(.055f,.075f,.072f),0,.22f);
+            blue = Mat("Flood water inlet / blue",new Color(.075f,.36f,.62f),.3f,.52f);
+            teal = Mat("Wash inlet / teal",new Color(.08f,.57f,.49f),.3f,.52f);
+            paint = Mat("Water station / cream enamel",new Color(.73f,.76f,.70f),.2f,.35f);
+            font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            textMaterial=font.material;
+            try { BuildStation(); }
+            finally { generateFixtures=false; }
+            if(nozzle!=null)Discard(nozzle.gameObject);
+            nozzle=null;
+            materials.AddRange(ownedMaterials);ownedMaterials.Clear();
+            return station;
+        }
+        static void Discard(Object target)
+        {
+            if(Application.isPlaying)Destroy(target);else DestroyImmediate(target);
         }
         void BuildPorts()
         {
@@ -681,9 +729,9 @@ namespace IceResurfacer.Presentation
         static Transform Group(string name,Transform parent,Vector3 position)
         {var go=new GameObject(name);go.transform.SetParent(parent,false);go.transform.localPosition=position;return go.transform;}
         Transform Box(string name,Transform parent,Vector3 position,Vector3 size,Material material)
-        {var go=GameObject.CreatePrimitive(PrimitiveType.Cube);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localScale=size;Destroy(go.GetComponent<Collider>());go.GetComponent<Renderer>().sharedMaterial=material;return go.transform;}
+        {var go=GameObject.CreatePrimitive(PrimitiveType.Cube);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localScale=size;Discard(go.GetComponent<Collider>());go.GetComponent<Renderer>().sharedMaterial=material;return go.transform;}
         Transform Cylinder(string name,Transform parent,Vector3 position,float diameter,float length,Material material,Vector3 axis)
-        {var go=GameObject.CreatePrimitive(PrimitiveType.Cylinder);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localScale=new Vector3(diameter,length*.5f,diameter);go.transform.localRotation=Quaternion.FromToRotation(Vector3.up,axis);Destroy(go.GetComponent<Collider>());go.GetComponent<Renderer>().sharedMaterial=material;return go.transform;}
+        {var go=GameObject.CreatePrimitive(PrimitiveType.Cylinder);go.name=name;go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localScale=new Vector3(diameter,length*.5f,diameter);go.transform.localRotation=Quaternion.FromToRotation(Vector3.up,axis);Discard(go.GetComponent<Collider>());go.GetComponent<Renderer>().sharedMaterial=material;return go.transform;}
         void Beam(string name,Transform parent,Vector3 start,Vector3 end,float diameter,Material material)
         {Cylinder(name,parent,(start+end)*.5f,diameter,(end-start).magnitude,material,(end-start).normalized);}
         TextMesh Label(string text,Transform parent,Vector3 position,float size,Color color,Quaternion rotation)

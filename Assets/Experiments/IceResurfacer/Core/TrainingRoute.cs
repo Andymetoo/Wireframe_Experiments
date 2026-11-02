@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 
 namespace IceResurfacer.Core
@@ -109,7 +110,7 @@ namespace IceResurfacer.Core
         public float sourceFraction,conditionerLift;
         public double sourceDistance;
         public MovementContact boundaryContact;
-        public bool conditionerBoundary;
+        public bool conditionerBoundary,currentConditionerBoundary;
     }
     public struct GuideLeg
     {
@@ -146,11 +147,32 @@ namespace IceResurfacer.Core
         {
             int lo=0,hi=samples.Count-1;while(lo<hi){int mid=(lo+hi+1)/2;if(samples[mid].distance<=distance)lo=mid;else hi=mid-1;}return lo;
         }
+        // Keep the existing calibration contract, including the legacy yaw value.
+        // A changed declaration requires an explicit, clearance-validated copy.
+        internal static readonly string[] CompatibilityFields={"RinkWidth","RinkLength","CornerRadius","GateHalfWidth","BayLength","Wheelbase","MaxSteeringRadians","SteeringRate","VehicleHalfWidth","BodyFront","BodyRear",
+            "HitchBehindAxle","DrawbarLength","ConditionerYawLimitRadians","ConditionerWidth","ConditionerLength","WaterDistributionWidth","WaterFilmSpreadMeters","FloodContactFore","FloodContactLength"};
+        public const float CompatibilityTolerance=.0001f;
+        static bool Differs(float recorded,float current)=>!RecordedRouteData.Finite(recorded)||!RecordedRouteData.Finite(current)||Math.Abs(recorded-current)>CompatibilityTolerance;
         public bool Compatible(SimulatorConfig c)
         {
-            string[] names={"RinkWidth","RinkLength","CornerRadius","GateHalfWidth","BayLength","Wheelbase","MaxSteeringRadians","SteeringRate","VehicleHalfWidth","BodyFront","BodyRear",
-                "HitchBehindAxle","DrawbarLength","ConditionerYawLimitRadians","ConditionerWidth","ConditionerLength","WaterDistributionWidth","WaterFilmSpreadMeters","FloodContactFore","FloodContactLength"};
-            foreach(string name in names){var f=typeof(SimulatorConfig).GetField(name);if(Math.Abs((float)f.GetValue(c)-(float)f.GetValue(configuration))>.0001f)return false;}return true;
+            if(c==null||configuration==null)return false;
+            foreach(string name in CompatibilityFields){var f=typeof(SimulatorConfig).GetField(name);if(Differs((float)f.GetValue(configuration),(float)f.GetValue(c)))return false;}return true;
+        }
+        public List<string> CalibrationDifferences(SimulatorConfig current)
+        {
+            var differences=new List<string>();
+            if(configuration==null||current==null){differences.Add("SimulatorConfig: "+(configuration==null?"guide calibration missing":"session calibration missing"));return differences;}
+            foreach(string name in CompatibilityFields)
+            {
+                var f=typeof(SimulatorConfig).GetField(name);float before=(float)f.GetValue(configuration),after=(float)f.GetValue(current);
+                if(Differs(before,after))differences.Add(name+": guide="+before.ToString("G9",CultureInfo.InvariantCulture)+", session="+after.ToString("G9",CultureInfo.InvariantCulture));
+            }
+            return differences;
+        }
+        public string CalibrationMismatchMessage(SimulatorConfig current)
+        {
+            var differences=CalibrationDifferences(current);if(differences.Count==0)return "";
+            return "Guide calibration mismatch:\n"+string.Join("\n",differences)+"\nOpen Edit Route > Revalidate for active scene; save a new validated copy.";
         }
     }
     public static class RouteFitter
@@ -278,6 +300,17 @@ namespace IceResurfacer.Core
                 {
                     bool body=workspace.ProbeVehiclePose(p.x,p.z,p.heading,out var contact);
                     bool conditioner=ConditionerClear(workspace,p,out var conditionerContact);
+                    // Historical observations remain visible and immutable. Also
+                    // validate the conditioner the current production linkage would
+                    // put at this vehicle pose; old articulated poses cannot mask it.
+                    if(p.recordedTrack)
+                    {
+                        workspace.ProjectGuideConditioner(p.x,p.z,p.heading,p.direction*p.safeSpeed,0,p.tankLift);
+                        var attached=p;attached.conditionerX=workspace.Conditioner.X;attached.conditionerZ=workspace.Conditioner.Z;attached.conditionerHeading=workspace.Conditioner.Heading;
+                        bool attachedClear=ConditionerClear(workspace,attached,out var attachedContact);
+                        if(conditioner&&!attachedClear){p.currentConditionerBoundary=true;conditionerContact=attachedContact;}
+                        conditioner&=attachedClear;
+                    }
                     p.boundaryError=!body||!conditioner;p.conditionerBoundary=body&&!conditioner;p.boundaryContact=body?conditionerContact:contact;
                 }
                 if(check&&p.curvatureError)fit.curvatureErrors++;if(p.boundaryError)fit.boundaryErrors++;

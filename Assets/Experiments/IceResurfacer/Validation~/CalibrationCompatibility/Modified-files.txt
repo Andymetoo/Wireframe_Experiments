@@ -1,0 +1,25 @@
+MODIFIED EXISTING FILES
+Core/RouteFitDiagnostics.cs
+Core/TrainingRoute.cs
+Documentation/HUDVideoSpeed.txt
+Documentation/TrainingGuide.txt
+Editor/TrainingRouteEditorWindow.cs
+Presentation/IceDashboard.cs
+Presentation/IceLayoutPlayerProbe.cs
+Presentation/IceRouteGuide.cs
+Presentation/RouteManagerPanel.cs
+Presentation/TrainingGuideStorage.cs
+Validation~/RunIsolatedUnity.ps1
+
+NEW FILES
+Documentation/RouteCalibrationCompatibility.txt
+Documentation/RouteCalibrationCompatibility.txt.meta
+Editor/IceRouteCalibrationValidation.cs
+Editor/IceRouteCalibrationValidation.cs.meta
+Presentation/IceLayoutPlayerProbe.Calibration.cs
+Presentation/IceLayoutPlayerProbe.Calibration.cs.meta
+RouteRecordings~/Guides/Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json
+
+Evidence: Validation~/CalibrationCompatibility/ and native screenshots in
+Validation~/CalibrationCompatibility-{Original,Authored}/Player-1366x768/.
+Disposable native fixture libraries: Validation~/CC-Native-O/ (and A if present).

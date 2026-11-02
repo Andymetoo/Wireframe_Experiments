@@ -1,0 +1,100 @@
+AURORA R-54 / FOCUSED GPS CALIBRATION COMPATIBILITY FIX
+User-facing date: 2026-11-01, America/Los_Angeles. Saved-guide filenames use UTC.
+
+EXACT ORIGINAL MISMATCH (reported before implementation)
+Field: ConditionerYawLimitRadians
+Earlier repaired guide JSON: 0.03490658476948738 radians (2 degrees)
+IceResurfacer.unity active config: 0 (field absent; current default applies)
+IceResurfacer_AuthoredMachine.unity active config: 0 (explicit serialized value)
+The other 19 fields in RouteFit.Compatible match within the existing 0.0001
+tolerance. Before-calibration-comparison.txt lists every field for BOTH scenes;
+the two Play Mode result files independently log the actual active float values.
+This is independent of the authored prefab.
+
+ROOT CAUSE AND REPAIR
+The earlier repair preserved a derived calibration snapshot copied from the
+historical raw recording. Production motion now locks the conditioner square to
+the chassis and retains its old yaw field only for legacy serialization. The old
+guide still declares 2 degrees, causing the strict compatibility check to refuse it.
+
+No compatibility field or tolerance was removed or relaxed. Current calibration
+is adopted only on a NEW derived copy after full clearance/source/curve checking.
+The fitter also checks the actual current production conditioner attachment at
+every recorded vehicle pose, in addition to the historical observed conditioner.
+Unsafe enlarged geometry and a deliberately false historical conditioner fixture
+are both rejected. No physics or authored geometry was changed to make a guide fit.
+
+NEW CORRECTED GUIDE
+Name: Andy_Try_1 / recorded track (repaired) / current calibration
+Path: G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\RouteRecordings~\Guides\Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json
+SHA-256: a376b5813e7f3bdc8a2d7978d2a20416ba2886edda1f490ab3d900da86c68fd9
+Guide version 2; embedded original raw recording remains version 1.
+All 398 controls, source indices, handles and annotations are exactly preserved.
+Embedded original raw bytes/string and source checksum are exactly preserved.
+The earlier repaired guide and every pre-existing library file remain unchanged.
+Both scenes tested this same new guide. The old guide intentionally still reports
+its stale declaration; select the NEW copy rather than the earlier repaired file.
+
+OPERATOR CONTROLS
+Play > Free Simulation / Practice > Numpad 8 > Refresh > select the new guide
+whose full name ends '/ current calibration' > Use as GPS. Numpad 7 toggles it.
+The built-in original reference remains available and is not permanently replaced.
+
+For future calibration changes, open the intended scene, then Experiments >
+Ice Resurfacer > Training Route Editor; open a guide and choose 'Revalidate for
+active scene (save NEW copy)'. Failed checks prevent publishing a ready copy.
+Route Manager now lists actual mismatched field names and guide/session values;
+its status area scrolls for multiple differences. Old raw .route.json import can
+prepare a current-calibration derived copy after full safety checks, preserving
+the historical raw config and all observations. Existing saved guides require
+explicit revalidation; selection never silently substitutes their calibration.
+
+ESC SPEED CONTROL
+Removed RESET TO ORIGINAL SPEED / 5.93 MPH and its UI hitbox. Kept the existing
+3-8 MPH slider, 0.25 MPH steps, PlayerPrefs key/save behavior and exact 2.65 m/s
+internal default. No velocity, acceleration, load, braking or traction changes.
+Run/session diagnostics still retain the original and selected values.
+
+VALIDATION
+40 deterministic core scenarios: PASS.
+Existing full Unity suite: PASS, final runtime errors/exceptions 0.
+Focused actual Play Mode: 51 checks in original scene,
+51 in authored scene, both PASS.
+Existing actual Editor GUI suite: 20 PASS.
+Native 1366x768 player checks: 14 PASS original,
+14 PASS authored. Real UI clicks reproduce the
+old guide's specific mismatch, accept the new guide, verify speed 3/8/5.50 MPH,
+verify the former reset area does nothing and preserve the built-in reference.
+Screenshots include mismatch/accepted manager, seeded GPS view and ESC menu.
+
+Each scene's Editor AND native replay traversed all 5,130 real recorded poses,
+46,616 guide samples and 132 sequential contexts to the 1003.234406572 m endpoint.
+Maximum source-distance lead 0.201903 m (one original observation interval),
+maximum progress advance 0.411230 m; no later-loop jumps. Local search <=336 samples.
+Current calibrated fit: boundary errors 0, curvature errors 0, source errors 0,
+observed-radius warnings 0, raw trajectory displacement 0. All existing
+compatibility fields tested individually; null/non-finite config rejected.
+Replay leaves live vehicle, conditioner, controls, scoring and simulation state
+unchanged. The live route display remains bounded to the existing 40 feet.
+Fresh authored-scene process reloads the exact guide saved by the original run.
+
+PRESERVATION
+73 protected scene/machine/resource/shader/library files unchanged by SHA-256,
+including 24 existing library files and 17 raw/backup files.
+In total, 292 baseline files outside the focused changes remain
+byte-identical, including physics, SimulatorConfig, speed preferences, progress,
+raw format, ice/snow/water/scoring, cockpit, spatial audio and authored assets.
+Preservation-audit.json and Baseline-sha256.json hold the complete evidence.
+Only IceResurfacer changed. No authored-machine rebake, branch, commit or push.
+
+LIMITATIONS
+This is deterministic observation replay, not a new manual physical drive.
+Recorded conditioner poses remain historical observations; current attached
+conditioner safety is additionally checked. No ideal C2 spline certification is
+asserted. The native test windows run invisibly and report 5 original / 2 authored
+D3D presentation warnings; these tests do not establish focused input latency or
+subjective audio quality. Screenshots are actual native framebuffer captures.
+No remaining supplied-guide calibration mismatch was found in either scene.
+Future calibration changes intentionally require another validated derived copy.
+
+See Modified-files.txt, Screenshots.html and Documentation/RouteCalibrationCompatibility.txt.

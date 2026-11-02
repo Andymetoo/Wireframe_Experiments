@@ -179,6 +179,11 @@ namespace IceResurfacer.Presentation
                 {if(!LoadTrainingGuide(path))return false;ActiveSourcePath=path;ActiveRouteName=RouteLibraryCatalog.DisplayName(path,ActiveRouteName);TrainingStatus="Loaded: "+ActiveRouteName+" — GPS Ready"+(ActiveFit.recordedSamples>0?" / recorded track; ideal spline not certified":" / smooth spline validated");return true;}
                 var raw=RouteRecordingStorage.Read(path);if(!raw.complete)throw new System.InvalidOperationException("This is a recovery draft. Stop and save it before following.");
                 string name=RouteLibraryCatalog.DisplayName(path,raw.name);var d=TrainingGuideStorage.Create(raw);d.name=name+" / recorded track";
+                // A raw recording describes its historical calibration. Preparing
+                // a new derived guide may revalidate current geometry; never apply
+                // this substitution silently to an existing saved guide.
+                if(!new RouteFit{configuration=d.configuration}.Compatible(game.Sim.Config))
+                    d=TrainingGuideStorage.RevalidateCopy(d,game.Sim.Config,out _);
                 if(!SelectTrainingGuide(d))return false;
                 // Separate editable copy; the selected recording is never rewritten.
                 AutoFitPath=TrainingGuideStorage.SaveCopy(System.IO.Path.Combine(GuideDirectory,"AutoFit"),d);
@@ -224,8 +229,8 @@ namespace IceResurfacer.Presentation
             {
                 definition=TrainingGuideStorage.Decode(TrainingGuideStorage.Encode(definition)); // Detach live guidance from subsequent Editor edits.
                 var raw=TrainingGuideStorage.Raw(definition);var fit=RouteFitter.Fit(definition,raw);
+                if(!fit.Compatible(game.Sim.Config)){TrainingStatus=fit.CalibrationMismatchMessage(game.Sim.Config);return false;}
                 if(!fit.Ready){TrainingStatus="Draft guide: repair turning/boundary issues in the Editor before live use.";return false;}
-                if(!fit.Compatible(game.Sim.Config)){TrainingStatus="Guide machine/rink calibration differs; revalidate in the Editor.";return false;}
                 selectedGuide=definition;selectedFit=fit;Route=new ResurfacingRoute(fit);Progress=null;Footprints=null;Available=true;ActiveRouteName=definition.name;ActiveSourcePath="";AutoFitPath="";
                 PrepareNavigation();TrainingStatus="Loaded: "+definition.name+" — GPS Ready"+(fit.recordedSamples>0?" / recorded track, clearance validated; ideal spline not certified":" / smooth spline validated")+". Numpad 7 shows/hides GPS.";return true;
             }
@@ -273,7 +278,7 @@ namespace IceResurfacer.Presentation
                 Available=Mathf.Abs(c.RinkWidth-26)<.001f&&Mathf.Abs(c.RinkLength-60)<.001f&&Mathf.Abs(c.CornerRadius-8.5f)<.001f;
                 Route=null;Progress=null;Footprints=null;NextPoint=1;
                 if(selectedFit!=null&&selectedFit.Compatible(c)){Route=new ResurfacingRoute(selectedFit);Available=true;}
-                else if(selectedFit!=null){Available=false;Visible=false;TrainingStatus="Selected route calibration differs from this session. Route retained; revalidate before showing GPS.";}
+                else if(selectedFit!=null){Available=false;Visible=false;TrainingStatus=selectedFit.CalibrationMismatchMessage(c);}
                 if(Available&&Route==null)
                 {
                     try {Route=new ResurfacingRoute(c);}
