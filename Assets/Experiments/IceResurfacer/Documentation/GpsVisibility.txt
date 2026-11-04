@@ -1,0 +1,83 @@
+AURORA R-54 / TWO GPS GUIDANCE LINES / 2026-11-04
+
+Use the existing GPS toggle (F5 / Numpad 7). No controls or HUD panels were added.
+
+The existing magenta route preview now looks 24.384 m (80 feet) ahead, twice
+the previous 12.192 m. Its minimap preview uses the same window and its existing
+caption now says 80 feet. Sampling clamps to the route end without wrapping or
+advancing navigation into a different leg.
+
+A narrower yellow line starts at the live vehicle rear-axle centre and points
+along its current heading. Its length is configured BodyFront + 6 m: currently
+8.5 m from the axle, about six metres beyond the nose. It does not point toward
+the desired route, move machinery or steer. It points forward even in reverse.
+It remains straight while the desired route curves.
+
+The yellow line has a dark border and a short end fade. Its 7.5-to-6 cm width
+distinguishes it from the wider magenta route. Both use the existing depth-tested
+TrainingRoute shader. The yellow fill/border sit 52/50 mm above the ice versus
+the existing route's 48/46 mm; solid machinery and boards occlude the new line.
+It begins underneath the machine and becomes visible beyond it.
+
+One GuidanceDisplayed predicate controls both lines, their borders, the existing
+route silhouette continuation and the minimap route. They hide when GPS is off,
+guidance is unavailable, the run has not started or has finished, the operator
+is on foot, the game is paused, help/route panels are open, video/HUD-hidden mode
+is active, or the guidance component is disabled. At the route endpoint, when
+no visible upcoming segment remains, both hide. Recording alone never enables
+the yellow line. LateUpdate follows the latest driving pose and mode without
+resampling the route or adding visibility queries.
+
+Rendering remains bounded:
+  Route world points:       35 -> at most 70 (existing 120-point buffer retained)
+  Route map points:         32 -> at most 62 (existing 120-point buffer retained)
+  Heading fill/border:      3 collinear points each; two fixed renderers
+  Silhouette sample budget: 133 -> at most 145 per draw, under 10% growth
+  Heading visibility rays:  zero; no visibility-query colliders added
+
+The first eight metres of silhouette sampling retain approximately 9 cm spacing.
+The remaining fixed sample budget covers the more distant route more coarsely.
+This avoids doubling expensive mesh-ray queries and preserves near-cockpit edges.
+
+Validation completed:
+  - Production preview geometry exercised on real generated-route straight and
+    curved sections, near the endpoint and at completion.
+  - Rear-axle origins, cardinal/oblique/wrapped headings, independent alignment,
+    end clamping, finite coordinates, fixed point/query budgets and dense near
+    silhouette samples pass.
+  - 10,000 preview frames against the fitted route allocate zero managed bytes.
+    Timing is recorded in Validation~/GpsVisibility/geometry-results.txt; this
+    measures CPU sampling, not native rendering or GPU performance.
+  - Existing 41 deterministic simulation scenarios pass, including recorded
+    routes, navigation order, collision safety, scoring and full-cut behavior.
+  - All Core/Presentation/Editor sources compile against the installed Unity
+    6000.4.1f1 managed assemblies with zero errors. Existing warnings remain.
+
+Native Play Mode validation was attempted in the isolated project. Unity exited
+198 with "No valid Unity Editor license found. Please activate your license."
+Camera screenshots, actual renderer transitions and native physics-query timing
+remain unverified. IceGpsVisibilityValidation.Run contains those checks for
+Forward/Controls/Rear/Chase cameras, straight/corner/end poses, GPS and all hide/
+show states, recording with GPS off, late vehicle motion, and visibility budgets.
+It runs only in Validation~/UnityProject; it does not save authored assets.
+
+Tests and raw results: Validation~/GpsVisibility.
+Standalone geometry: dotnet run --project Validation~/GpsVisibility/GpsVisibility.csproj -c Release
+Existing suite: dotnet run --project Validation~/IceResurfacer.Validation.csproj -c Release
+Offline Unity API compile: dotnet build Validation~/GpsVisibility/CompileUnity.csproj -c Release
+Paths above are relative to Assets/Experiments/IceResurfacer.
+
+For native checks, update the disposable project with
+Validation~/StageUnityValidation.ps1 -UpdateOnly, then launch Unity against
+Validation~/UnityProject with -batchmode -force-d3d11 -executeMethod
+IceResurfacer.Editor.IceGpsVisibilityValidation.Run and a log path. Omit -quit.
+The default scene is the authored machine. Add -iceScene
+Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity to check the procedural
+scene separately. Do not point this validator at the main project.
+
+Before editing, seven touched source files were copied and SHA-256 verified in
+Backups~/2026-11-04 GPS two guidance lines. Protected hashes cover Core, machine,
+arena, scenes and saved routes. No route data, recording coordinates, navigation
+or simulation code, assets, tank settings, physical controls or camera anchors
+were changed. Existing validation lookahead assertions were updated to 80 feet.
+No commits, pushes or branches were created.

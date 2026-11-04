@@ -67,7 +67,7 @@ namespace IceResurfacer.Editor
                 float x=game.Sim.Vehicle.X,z=game.Sim.Vehicle.Z,water=game.Sim.FloodWaterLiters,throttle=game.Sim.Controls.Throttle;
                 KeyInput();KeyInput(Key.F5);KeyInput();guide.Refresh();
                 Check(guide.Visible&&guide.ActiveFit.Ready&&guide.DisplayPointCount<=120&&guide.MapPointCount<=120,"actual F5 enables bounded cached ground/minimap previews");
-                Check(guide.LookEnd-guide.Progress.Distance<=IceRouteGuide.LookAheadMeters+.001,"live preview is limited to current/upcoming context within 28 m");
+                Check(guide.LookEnd-guide.Progress.Distance<=IceRouteGuide.LookAheadMeters+.001,"live preview is limited to 24.384 m");
                 guide.RejoinLeg(5);Check(game.Sim.Vehicle.X==x&&game.Sim.Vehicle.Z==z&&game.Sim.FloodWaterLiters==water&&game.Sim.Controls.Throttle==throttle,"selection, F5 and explicit rejoin never operate machinery or move the vehicle");
                 var bad=TrainingGuideStorage.Read(saved);bad.controls[10].x=80;var prior=guide.SelectedGuide;
                 Check(!guide.SelectTrainingGuide(bad)&&guide.SelectedGuide==prior,"invalid draft is refused while prior guidance/driving remain available");

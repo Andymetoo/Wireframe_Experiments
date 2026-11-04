@@ -45,7 +45,7 @@ namespace IceResurfacer.Presentation
                 if(!l.turn&&l.direction>0&&l.end-l.start>5&&Mathf.Abs(p.x)<11&&Mathf.Abs(p.z)<24){leg=i;break;}
             }
             SetGuidePose(leg,g.ActiveFit.legs[leg].start+1);game.SelectCameraView("Forward");game.TickInspectionCamera(2);g.Refresh();
-            Check(g.LookEnd-g.Progress.Distance<=12.192001&&g.DisplayPointCount>0,"corrected guide retains limited ground/minimap look-ahead");
+            Check(g.LookEnd-g.Progress.Distance<=IceRouteGuide.LookAheadMeters+.0001&&g.DisplayPointCount>0,"corrected guide retains bounded ground/minimap look-ahead");
             yield return Capture("Calibration-GPS-"+currentResolution+".png","corrected real route / explicitly seeded seated render pose, not a manual drive");
             game.TogglePause();yield return null;var slider=IceDashboard.ControlRect("SpeedSlider");
             yield return ClickAt(new Vector2(slider.x+3,slider.center.y));

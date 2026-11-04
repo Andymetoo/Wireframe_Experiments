@@ -1,0 +1,1 @@
+﻿PASS: all 190 Core, machine, arena, scene and saved route files remain byte-identical. All seven pre-edit backup hashes verified.

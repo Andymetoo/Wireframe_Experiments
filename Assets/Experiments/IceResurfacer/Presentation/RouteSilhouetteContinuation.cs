@@ -15,6 +15,8 @@ namespace IceResurfacer.Presentation
         readonly Scene scene;
         readonly PhysicsScene physics;
         public int LastVisibleSegments {get;private set;}
+        public int LastSampledPoints {get;private set;}
+        public int LastRayQueries {get;private set;}
         public int ShapeCount=>shapes.Count;
         public RouteSilhouetteContinuation(IceResurfacerGame game)
         {
@@ -54,25 +56,35 @@ namespace IceResurfacer.Presentation
         public bool MachineOccludes(Camera camera,Vector3 target)
         {
             Vector3 delta=target-camera.transform.position;float length=delta.magnitude;
-            return length>.01f&&physics.Raycast(camera.transform.position,delta/length,out var hit,length-.015f)&&machine.Contains(hit.collider.GetInstanceID());
+            if(length<=.01f)return false;LastRayQueries++;
+            return physics.Raycast(camera.transform.position,delta/length,out var hit,length-.015f)&&machine.Contains(hit.collider.GetInstanceID());
         }
         public void Draw(IceResurfacerGame game,float width,float height)
+        {Visit(game,width,height,true);}
+        // Runs the same bounded visibility work outside OnGUI for native validation.
+        public void MeasureVisibility(IceResurfacerGame game,float width,float height)
+        {Visit(game,width,height,false);}
+        void Visit(IceResurfacerGame game,float width,float height,bool draw)
         {
-            LastVisibleSegments=0;var guide=game.RouteGuide;
-            if(guide==null||!guide.Visible||game.HudHidden||guide.ActiveFit==null||!game.Started||game.Paused||game.HelpVisible||guide.PanelOpen||game.Sim.Finished||game.Sim.OnFoot)return;
+            LastVisibleSegments=LastSampledPoints=LastRayQueries=0;var guide=game.RouteGuide;
+            if(guide==null||!guide.GuidanceDisplayed)return;
             foreach(var shape in shapes)if(shape.moving&&shape.source!=null)Copy(shape);
             Physics.SyncTransforms();var camera=game.DriverCamera;var fit=guide.ActiveFit;
             float scale=Mathf.Min(width/1600,height/900);Vector2 offset=new Vector2((width-1600*scale)*.5f,(height-900*scale)*.5f);
             double start=guide.Progress.Distance+.35,end=guide.LookEnd;
             bool previous=false;Vector2 last=default;
-            int count=Mathf.Max(2,Mathf.CeilToInt((float)(end-start)/.09f));
+            int count=GpsGuidanceGeometry.SilhouetteIntervals(end-start);
             for(int i=0;i<=count;i++)
             {
-                var sample=fit.At(start+(end-start)*i/count);var point=new Vector3(sample.x,.048f,sample.z);var screen=camera.WorldToViewportPoint(point);
+                LastSampledPoints++;
+                var sample=fit.At(start+GpsGuidanceGeometry.SilhouetteOffset(i,count,end-start));var point=new Vector3(sample.x,.048f,sample.z);var screen=camera.WorldToViewportPoint(point);
                 bool visible=screen.z>.1f&&screen.x>0&&screen.x<1&&screen.y>0&&screen.y<1&&MachineOccludes(camera,point);
                 Vector2 at=(new Vector2(screen.x*width,(1-screen.y)*height)-offset)/scale;
                 if(visible&&previous&&Vector2.Distance(last,at)<35)
-                {Stroke(last,at,4.8f,new Color(.06f,0,.055f,.88f));var color=guide.GpsColor;color.a*=.78f;Stroke(last,at,2.4f,color);LastVisibleSegments++;}
+                {
+                    if(draw){Stroke(last,at,4.8f,new Color(.06f,0,.055f,.88f));var color=guide.GpsColor;color.a*=.78f;Stroke(last,at,2.4f,color);}
+                    LastVisibleSegments++;
+                }
                 last=at;previous=visible;
             }
         }

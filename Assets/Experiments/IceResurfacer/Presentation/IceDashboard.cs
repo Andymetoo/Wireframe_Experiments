@@ -265,7 +265,7 @@ namespace IceResurfacer.Presentation
             Line(a,b,2,Muted);Line(b,cc,2,Muted);Line(cc,d,2,Muted);Line(d,a,2,Muted);
             Vector2 gate=MapPoint(map,layout.GateX,layout.GateZ,s.Config);
             Box(new Rect(gate.x-3,gate.y-3,6,6),Mint);
-            if(game.RouteGuide!=null&&game.RouteGuide.Visible)DrawRouteMap(game,map);
+            if(game.RouteGuide!=null&&game.RouteGuide.GuidanceDisplayed)DrawRouteMap(game,map);
             Vector2 p = MapPoint(map, s.Vehicle.X, s.Vehicle.Z, s.Config);
             p.x = Mathf.Clamp(p.x, map.x + 3, map.xMax - 3);
             p.y = Mathf.Clamp(p.y, map.y + 8, map.yMax - 8);
@@ -290,7 +290,7 @@ namespace IceResurfacer.Presentation
             }
             else Label(new Rect(206,184,164,130),game.Surface!=null&&game.Surface.DebugMode==1?
                 "F2 / SHAVING MASK\nOrange: excluded rim\nGreen: treatment":"F2 / MATERIAL\nRed cut\nGreen wash\nBlue flood",small,Muted);
-            Label(new Rect(206,337,164,23),game.RouteGuide!=null&&game.RouteGuide.Visible&&game.RouteGuide.Progress!=null?"GPS LEG "+(game.RouteGuide.Progress.Leg+1)+" / 40 ft":"Hover: exact cells",small,game.RouteGuide!=null&&game.RouteGuide.Visible?game.RouteGuide.GpsColor:Muted);
+            Label(new Rect(206,337,164,23),game.RouteGuide!=null&&game.RouteGuide.GuidanceDisplayed&&game.RouteGuide.Progress!=null?"GPS LEG "+(game.RouteGuide.Progress.Leg+1)+" / "+(IceRouteGuide.LookAheadMeters/.3048f).ToString("0")+" ft":"Hover: exact cells",small,game.RouteGuide!=null&&game.RouteGuide.Visible?game.RouteGuide.GpsColor:Muted);
             SurveyDetail(game,map);
         }
 

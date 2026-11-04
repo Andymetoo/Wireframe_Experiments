@@ -14,6 +14,8 @@ namespace IceResurfacer.Presentation
         Material material;
         LineRenderer border;
         Material borderMaterial;
+        LineRenderer headingLine,headingBorder;
+        Material headingMaterial,headingBorderMaterial;
         public Color GpsColor=new Color(1,.035f,.72f,.95f);
         public string ActiveRouteName {get;private set;}="Original reference";
         public string ActiveSourcePath {get;private set;}="";
@@ -25,13 +27,13 @@ namespace IceResurfacer.Presentation
         public RouteSilhouetteContinuation Continuation=>continuation;
         public void DrawSilhouette(float width,float height)
         {
-            if(Visible&&continuation==null)continuation=new RouteSilhouetteContinuation(game);
+            if(GuidanceDisplayed&&continuation==null)continuation=new RouteSilhouetteContinuation(game);
             continuation?.Draw(game,width,height);
         }
         public bool HasUnsavedRecording=>recorder.Data!=null&&!recorder.Recording&&(savedTake!=recorder.Data.id||savedRevision!=recorder.Revision);
         public RouteManagerPanel Manager=>panel.Manager;
-        readonly Vector3[] upcoming=new Vector3[120];
-        readonly GuideSample[] mapUpcoming=new GuideSample[120];
+        readonly Vector3[] upcoming=new Vector3[GpsGuidanceGeometry.PointCapacity];
+        readonly GuideSample[] mapUpcoming=new GuideSample[GpsGuidanceGeometry.PointCapacity];
         RouteFit referenceFit,selectedFit;
         TrainingRouteDefinition selectedGuide;
         float nextComparison;
@@ -42,7 +44,9 @@ namespace IceResurfacer.Presentation
         public int DisplayPointCount {get;private set;}
         public int MapPointCount {get;private set;}
         public double LookEnd {get;private set;}
-        public const float LookAheadMeters=12.192f,HiddenNearMeters=.55f;
+        public const float LookAheadMeters=GpsGuidanceGeometry.LookAheadMeters,HiddenNearMeters=GpsGuidanceGeometry.HiddenNearMeters;
+        public bool GuidanceDisplayed=>isActiveAndEnabled&&Available&&Visible&&DisplayPointCount>=2&&ActiveFit!=null&&
+            game!=null&&game.Sim!=null&&game.Started&&!game.HudHidden&&!game.Paused&&!game.HelpVisible&&!PanelOpen&&!game.Sim.OnFoot&&!game.Sim.Finished;
         public string TrainingStatus {get;private set;}="Original generated F5 reference selected";
         public string GuideDirectory => System.IO.Path.Combine(Library.DirectoryPath,"Guides");
         public GuideSample MapPointAt(int i) => mapUpcoming[i];
@@ -81,7 +85,35 @@ namespace IceResurfacer.Presentation
             edge.transform.rotation=Quaternion.Euler(90,0,0);border.alignment=LineAlignment.TransformZ;
             border.startWidth=.19f;border.endWidth=.125f;border.shadowCastingMode=ShadowCastingMode.Off;border.receiveShadows=false;border.enabled=false;
             var gradient=new Gradient();gradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},new[]{new GradientAlphaKey(.55f,0),new GradientAlphaKey(1,.12f),new GradientAlphaKey(.95f,.86f),new GradientAlphaKey(0,1)});line.colorGradient=border.colorGradient=gradient;
+            headingMaterial=new Material(material){name="GPS actual rear-axle heading / yellow",renderQueue=material.renderQueue+2};
+            headingMaterial.SetColor("_BaseColor",new Color(1,.83f,.035f,.98f));
+            headingBorderMaterial=new Material(borderMaterial){name="GPS heading contrasting border",renderQueue=material.renderQueue+1};
+            headingLine=CreateHeadingLine("GPS vehicle heading / rear axle",headingMaterial,.075f,.06f);
+            headingBorder=CreateHeadingLine("GPS heading border",headingBorderMaterial,.115f,.095f);
+            var headingGradient=new Gradient();headingGradient.SetKeys(new[]{new GradientColorKey(Color.white,0),new GradientColorKey(Color.white,1)},new[]{new GradientAlphaKey(1,0),new GradientAlphaKey(1,.9f),new GradientAlphaKey(0,1)});
+            headingLine.colorGradient=headingBorder.colorGradient=headingGradient;
             Refresh();
+        }
+        LineRenderer CreateHeadingLine(string label,Material surface,float startWidth,float endWidth)
+        {
+            var node=new GameObject(label);node.transform.SetParent(transform,false);node.transform.rotation=Quaternion.Euler(90,0,0);
+            var renderer=node.AddComponent<LineRenderer>();renderer.sharedMaterial=surface;renderer.useWorldSpace=true;renderer.alignment=LineAlignment.TransformZ;
+            renderer.startWidth=startWidth;renderer.endWidth=endWidth;renderer.positionCount=3;
+            renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.enabled=false;return renderer;
+        }
+        void ShowLines(bool show)
+        {
+            line.enabled=border.enabled=headingLine.enabled=headingBorder.enabled=show;
+        }
+        void RefreshHeading()
+        {
+            var vehicle=session.Vehicle;
+            GpsGuidanceGeometry.HeadingEnd(vehicle.X,vehicle.Z,vehicle.Heading,session.Config.BodyFront,out float x,out float z);
+            var start=new Vector3(vehicle.X,.052f,vehicle.Z);var end=new Vector3(x,start.y,z);
+            // Three collinear points retain full contrast until the final fade.
+            headingLine.SetPosition(0,start);headingLine.SetPosition(1,Vector3.Lerp(start,end,.9f));headingLine.SetPosition(2,end);
+            start.y=end.y=.050f;
+            headingBorder.SetPosition(0,start);headingBorder.SetPosition(1,Vector3.Lerp(start,end,.9f));headingBorder.SetPosition(2,end);
         }
         public void Toggle()
         {
@@ -105,6 +137,14 @@ namespace IceResurfacer.Presentation
             Refresh();
             if(recorder.Recording&&Time.unscaledTime>=nextCheckpoint)
             {Checkpoint();nextCheckpoint=Time.unscaledTime+10;}
+        }
+        void LateUpdate()
+        {
+            if(line==null)return;
+            // Match the pose and mode after the driving Update, regardless of
+            // component order, without repeating route sampling or ray queries.
+            bool show=GuidanceDisplayed&&session==game.Sim;ShowLines(show);
+            if(show)RefreshHeading();
         }
         public void ToggleRecordingPanel()
         {
@@ -286,30 +326,33 @@ namespace IceResurfacer.Presentation
                 }
                 if(!Available)Visible=false;
             }
-            if(!Available){line.enabled=border.enabled=false;return;}
+            if(!Available){ShowLines(false);DisplayPointCount=MapPointCount=0;return;}
             material.SetColor("_BaseColor",GpsColor);
-            line.enabled=border.enabled=Visible&&!game.HudHidden&&game.Started&&!session.OnFoot&&!session.Finished&&!game.Paused&&!game.HelpVisible&&!PanelOpen;
-            if(!Visible){DisplayPointCount=MapPointCount=0;return;}
+            if(!Visible){ShowLines(false);DisplayPointCount=MapPointCount=0;return;}
             PrepareNavigation();var fit=ActiveFit;NextPoint=fit.IndexAt(Progress.Distance);
             // Rendering crosses context/direction boundaries; progress remains sequential.
-            LookEnd=System.Math.Min(fit.Length,Progress.Distance+LookAheadMeters);
-            MapPointCount=Mathf.Min(mapUpcoming.Length,Mathf.Max(2,Mathf.CeilToInt((float)(LookEnd-Progress.Distance)/.4f)+1));
+            var window=new GpsGuidanceGeometry.Window(Progress.Distance,fit.Length);
+            LookEnd=window.End;MapPointCount=window.MapPoints;DisplayPointCount=window.WorldPoints;
+            ShowLines(GuidanceDisplayed);
+            if(!GuidanceDisplayed)return;
             for(int i=0;i<MapPointCount;i++)mapUpcoming[i]=fit.At(Progress.Distance+(LookEnd-Progress.Distance)*i/(MapPointCount-1));
-            double start=System.Math.Min(LookEnd,Progress.Distance+HiddenNearMeters);
-            DisplayPointCount=LookEnd-start<.1?0:Mathf.Min(upcoming.Length,Mathf.CeilToInt((float)(LookEnd-start)/.35f)+1);
+            double start=window.Start;
             line.positionCount=border.positionCount=DisplayPointCount;
             for(int i=0;i<DisplayPointCount;i++)
             {var p=fit.At(start+(LookEnd-start)*i/(DisplayPointCount-1));upcoming[i]=new Vector3(p.x,.048f,p.z);line.SetPosition(i,upcoming[i]);border.SetPosition(i,new Vector3(p.x,.046f,p.z));}
+            RefreshHeading();
             if(Time.unscaledTime>=nextComparison){Footprints.Compare();nextComparison=Time.unscaledTime+.5f;}
         }
         public void FlushRecordingForShutdown(string reason)
         {if(recorder.Recording)recorder.Stop(reason);Checkpoint();}
         void OnApplicationPause(bool paused){if(paused)Checkpoint();}
         void OnApplicationQuit(){FlushRecordingForShutdown("Application closed");}
+        void OnDisable(){if(line!=null)ShowLines(false);}
         void OnDestroy()
         {
             if(recorder.Recording)recorder.Stop("Play Mode ended or scene unloaded");
             Checkpoint();panel?.Dispose();continuation?.Dispose();if(material!=null)Destroy(material);if(borderMaterial!=null)Destroy(borderMaterial);
+            if(headingMaterial!=null)Destroy(headingMaterial);if(headingBorderMaterial!=null)Destroy(headingBorderMaterial);
         }
     }
 }

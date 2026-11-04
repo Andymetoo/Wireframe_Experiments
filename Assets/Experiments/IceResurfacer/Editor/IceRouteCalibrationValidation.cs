@@ -121,7 +121,7 @@ namespace IceResurfacer.Editor
             watch.Stop();owner.Refresh();
             Check(ordered&&Math.Abs(owner.Progress.Distance-fit.Length)<.000001&&owner.Progress.Leg==fit.legs.Count-1,"all 5,130 raw poses traverse all 132 contexts in order without skipping nearby loops");
             Check(vehicle==JsonUtility.ToJson(game.Sim.Vehicle)&&conditioner==JsonUtility.ToJson(game.Sim.Conditioner)&&controls==JsonUtility.ToJson(game.Sim.Controls)&&report==JsonUtility.ToJson(game.Sim.GetReport()),"guidance replay leaves vehicle, conditioner, controls, scoring and simulation state untouched");
-            Check(owner.LookEnd-owner.Progress.Distance<=12.192001&&owner.DisplayPointCount<=36,"live preview retains the existing 40-foot bound");
+            Check(owner.LookEnd-owner.Progress.Distance<=IceRouteGuide.LookAheadMeters+.0001&&owner.DisplayPointCount<=70,"live preview retains the 80-foot / 70-point bound");
             results.Add("REPLAY samples="+raw.samples.Count+" length="+fit.Length.ToString("F9")+" contexts="+fit.legs.Count+" maxLead="+maxLead.ToString("F6")+" maxAdvance="+maxAdvance.ToString("F6")+" maxSearch="+maxSearch+" ms="+watch.Elapsed.TotalMilliseconds.ToString("F3"));
             bool had=PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey);float previous=PlayerPrefs.GetFloat(IceOperatorPreferences.SpeedKey);
             try

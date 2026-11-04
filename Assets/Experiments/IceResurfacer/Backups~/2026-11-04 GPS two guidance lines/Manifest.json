@@ -1,0 +1,30 @@
+﻿[
+    {
+        "Path":  "Presentation\\IceRouteGuide.cs",
+        "SHA256":  "C9D8687AF68D0F24AB7779640075618CE10807212A2BA948319237F073A133DF"
+    },
+    {
+        "Path":  "Presentation\\RouteSilhouetteContinuation.cs",
+        "SHA256":  "DD0BC8431CE101D653DB7CF19DCCFCFF0A51AF5F10DD7820BD47CFC397CCF452"
+    },
+    {
+        "Path":  "Presentation\\IceDashboard.cs",
+        "SHA256":  "4F7F84BC3B3E27FA633CC639059C6A18E3AEF760D4C9E56C82AD5972F37163EF"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.Calibration.cs",
+        "SHA256":  "710E7E76E9CFE85F19F4AF7E6C90B5C14152C1BBAAC7253A869D65BD2BF898CE"
+    },
+    {
+        "Path":  "Editor\\IceRouteCalibrationValidation.cs",
+        "SHA256":  "ADF3A6FE5604F212300D2F342C9129F7E651D59D21744AEE6396CC473468ADFF"
+    },
+    {
+        "Path":  "Editor\\IceRouteRepairValidation.cs",
+        "SHA256":  "C437102AFB1A76F4EF04F27D5AB1CEBE41EF7BEF2199D27897A086B9F005E0A8"
+    },
+    {
+        "Path":  "Editor\\IceTrainingGuideValidation.cs",
+        "SHA256":  "96501539A034AED663C9C365DD2AF26E305B650E65CBD46E8B688D234013C3D1"
+    }
+]

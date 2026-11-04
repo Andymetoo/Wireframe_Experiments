@@ -143,7 +143,7 @@ namespace IceResurfacer.Editor
                 var progress=new RouteProgress(fit);double maxAhead=0;int maxSearch=0;var clock=Stopwatch.StartNew();
                 foreach(var p in raw.samples){progress.Observe(p.vehicleX,p.vehicleZ,p.vehicleHeadingRadians,p.speedMetersPerSecond);maxAhead=Math.Max(maxAhead,progress.Distance-p.distanceMeters);maxSearch=Math.Max(maxSearch,progress.LastSearchSamples);if(progress.Distance>p.distanceMeters+.25)throw new Exception("Skipped ahead to a later pass at source "+p.sequence);}
                 clock.Stop();Check(Math.Abs(progress.Distance-fit.Length)<.000001,"all raw observations traverse the full sequential GPS including closely overlapping loops and entrance/exit");
-                Check(game.RouteGuide.LookEnd-game.RouteGuide.Progress.Distance<=12.192001,"live preview remains bounded to 40 feet");
+                Check(game.RouteGuide.LookEnd-game.RouteGuide.Progress.Distance<=IceRouteGuide.LookAheadMeters+.0001,"live preview remains bounded to 80 feet");
                 var unsafeGuide=TrainingGuideStorage.Read(saved);unsafeGuide.controls[30].x=100;
                 Check(!game.RouteGuide.SelectTrainingGuide(unsafeGuide),"unsafe edited recorded-track anchor cannot bypass physical validation");
                 var invalidRaw=RouteRecordingStorage.Decode(bytes);invalidRaw.id=Guid.NewGuid().ToString("N");invalidRaw.name="SYNTHETIC INVALID TRANSLATION";invalidRaw.provenance="Deterministic negative fixture; NOT an operator recording.";
