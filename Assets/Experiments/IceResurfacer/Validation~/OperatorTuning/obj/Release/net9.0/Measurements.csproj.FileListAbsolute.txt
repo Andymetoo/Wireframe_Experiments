@@ -1,0 +1,15 @@
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.GeneratedMSBuildEditorConfig.editorconfig
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.AssemblyInfoInputs.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.AssemblyInfo.cs
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.csproj.CoreCompileInputs.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.sourcelink.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\bin\Release\net9.0\Measurements.exe
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\bin\Release\net9.0\Measurements.deps.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\bin\Release\net9.0\Measurements.runtimeconfig.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\bin\Release\net9.0\Measurements.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\bin\Release\net9.0\Measurements.pdb
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\refint\Measurements.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.pdb
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\Measurements.genruntimeconfig.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\OperatorTuning\obj\Release\net9.0\ref\Measurements.dll

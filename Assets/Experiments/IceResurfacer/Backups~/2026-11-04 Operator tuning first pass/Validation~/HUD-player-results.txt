@@ -1,0 +1,8 @@
+﻿PASS 27 October 2026: native player controls and layouts at 1366x768 and 1920x1080.
+Both reports end PASS: all player HUD checks. Both text-fit reports show no clipping.
+Seven actual framebuffer states per resolution: normal, guide, pause, welcome,
+results, compact, and service. Development Console overlay is disabled only
+in the opt-in validation component; native D3D11 hidden-window presentation
+warnings remain logged and are counted in the per-resolution reports.
+See HUD-player-results-1366x768.txt and HUD-player-results-1920x1080.txt.
+This validation does not prove focused-window input latency or subjective feel.

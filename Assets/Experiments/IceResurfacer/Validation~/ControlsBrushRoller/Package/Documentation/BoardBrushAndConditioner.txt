@@ -1,0 +1,146 @@
+AURORA R-54 / BOARD BRUSH RIG AND CONDITIONER ALIGNMENT
+
+UPDATE 2026-11-02 (ControlsBrushRoller.txt): the Inspector names its calibration source (in Prefab Mode it
+reads the authored scene; a "draft not applied" there was the bake-time fallback). The outermost collision
+point on the brush side is now the guide roller (moved outboard to lead the conditioner). Scene handles are now
+labelled SWEEP (simulation contact) or COSMETIC; reach is checked against the real collision outline;
+"Restore Previous Simulation Geometry" undoes the last Apply across sessions.
+
+Files
+  Core/BoardBrushArticulation.cs          the one arm/contact formula (simulation, runtime visuals, Editor preview)
+  Presentation/IceBoardBrushRig.cs        brush authoring component (on "Board brush articulated arm / left side")
+  Editor/IceBoardBrushRigEditor.cs        Inspector, Edit Mode preview, Scene handles/gizmos, Apply to Simulation
+  Editor/IceConditionerAlignment.cs       conditioner measurements + Conditioner Alignment window
+  Editor/IceBrushConditionerValidation.cs batch proof (isolated project only)
+
+------------------------------------------------------------------------------------------
+ADJUSTING THE BOARD BRUSH (operator guide)
+------------------------------------------------------------------------------------------
+1. Open the authored scene. Select the machine root (AuroraR54, IceMachineRig Inspector) and press
+   "Add Board Brush Rig (keeps the current brush pose)". This is one-time: it adds the rig to the
+   brush arm, reads your current arm position/angle/head height as the starting draft, and keeps the
+   motor housing and guard plate out of runtime batching so they can stay still while the bristles spin.
+   Nothing visibly moves if your arm is posed stowed (as it is now); an arm saved in its working
+   pose is shown stowed, because the saved rest pose is always the one Play starts from. (Undo removes it.)
+2. The Inspector now shows the board brush rig. Sections:
+   MECHANISM (simulation contact, a draft until applied)
+     Pivot lateral X / forward Z  where the arm hinges (machine space: X right, Z forward of the rear axle)
+     Arm length                   pivot to brush-disc centre
+     Brush contact radius         the disc that sweeps snow
+     Working angle                arm angle when deployed (0 = straight out to the left)
+     Stowed angle                 arm angle when retracted (positive swings the head rearward)
+   COSMETIC (never changes contact)
+     Pivot height, head height working/stowed, link attach points and thickness, contact-roller offset,
+     head tilt and scale, motor-housing and guard-plate offsets.
+3. PREVIEW: drag "Deployment %" or press Stowed / 25% / 50% / 75% / Working. The arm, head, link and
+   roller articulate exactly as they will in Play. "Preview geometry" switches between your draft and the
+   simulation (what Play would use). "Reset Preview (stowed)" returns to the rest pose.
+   The preview is never saved: saving the scene or prefab, entering Play, or deselecting the rig puts the
+   brush back to stowed first.
+4. Scene view (with the arm selected):
+     white dot = pivot; green line/disc = working pose; grey = stowed; yellow arc = travel; yellow disc =
+     current preview; red dot = kickplate contact point; blue dotted line = body side; magenta = the
+     simulation's geometry when your draft has not been applied.
+     Drag the green or grey dot to set that angle (and the shared arm length). Moving the arm with the
+     Move tool moves the pivot.
+5. SIMULATION AGREEMENT: the Inspector says "Draft matches the simulation" or lists what is not applied.
+   It also checks reach (the working brush edge must reach past the body side, or the body hits the boards
+   first) and whether the visible bristles match the contact radius.
+   Press "Apply Brush Geometry to Simulation..." to copy pivot X/Z, arm length, radius, working and stowed
+   angles into the scene calibration. It validates first (rejects e.g. a working angle beyond the stowed
+   angle) and is undoable with Edit > Undo. "Revert Draft to Simulation" goes the other way.
+   Until you apply, Play poses the brush from the scene calibration so the visible disc is always where
+   snow is actually swept (a console warning reminds you).
+6. Save the scene. Settings survive restarting Unity. To keep them in the prefab instead of the scene,
+   apply the overrides to the prefab as usual.
+
+Notes
+- Route/GPS compatibility does not include brush fields, so brush changes never invalidate recorded routes.
+- Two existing checks constrain where the brush can go: the layout validation wants the stowed brush
+  centre left of x = -0.80 (the Inspector warns), and the fixed Q (conditioner) quicklook must still show
+  the brush. The brush already sits at the edge of that frame, so moving the pivot much forward of
+  z = 1.16 can push it out of view (a pivot at z 1.25 failed this check in testing).
+- The machine rig's "Apply config to physics anchors" also resets the brush draft to the calibration.
+- Default calibration (working angle 0, stowed 85) reproduces the previous brush exactly; the launch scene
+  (no rig) uses the same formula.
+- The simulated disc is now clamped at the kickplate at every deployment (previously only above 50%),
+  so the swinging brush no longer passes through the boards and snaps back. Sweeping still needs more
+  than 50% deployment, so snow and scoring are unchanged.
+
+------------------------------------------------------------------------------------------
+CONDITIONER ALIGNMENT
+------------------------------------------------------------------------------------------
+Experiments > Ice Resurfacer > Authored Scene > Conditioner Alignment... (also a button on the machine rig)
+Shows every measurement below for the open scene, draws the simulated cut / flood / pickup bands, housing
+and cylinder lines in the Scene view at a chosen lift, and offers three explicit, undoable actions:
+  Seat Blade Edge on Ice (cosmetic)             lowers the drawn blade so its edge meets the ice at depth 0
+  Snap Visible Conditioner to Simulation Pose   discards an Edit Mode move of the conditioner root
+  Move Simulated Conditioner to Authored Position...  MECHANICAL: changes DrawbarLength; lists the effect on
+                                                cut/water/pickup position and on saved routes first
+The runtime blade is now rest-relative (authored pose = depth 0), so seating it is honoured in Play.
+
+MEASURED REPORT: see the section appended below (generated from the user's scene on 2026-11-01).
+
+------------------------------------------------------------------------------------------
+MEASURED CONDITIONER ALIGNMENT REPORT (user's authored scene, 2026-11-01, isolated copy)
+HISTORICAL. Superseded 2026-11-02 by MechanicalReconciliation.txt: option B was applied (DrawbarLength
+0.435, lift clevises moved with it, blade seated), the brush rig is installed on the prefab, and the tank,
+conveyor and other drift listed at the end of this report are reconciled.
+------------------------------------------------------------------------------------------
+Machine space: origin rear axle, +Z forward. Simulated conditioner centre = HitchBehindAxle 0.45 +
+DrawbarLength 0.65 = 1.100 m behind the axle, height Lift x 0.34 m.
+
+What was modified
+  Transform     "Trailing conditioner / articulated hitch" (the conditioner ROOT, World.Conditioner)
+  Kind          runtime-driven root: IceResurfacerGame.UpdateMachine sets its world pose every frame
+  Where         scene override on the prefab instance (prefab value z -1.100; scene z -0.885)
+  Amount        +0.215 m forward (0.71 ft); 0.000 m up. The Edit Mode pose is the fully raised pose
+                (y 0.340 = 1.1 ft above the ice), which is why it reads as "up" in the Scene view.
+  Children      unchanged except "Conditioner upper guard", which is deactivated.
+  Survives Play NO. Verified in Play: lowered z -1.100 y 0.000, raised z -1.100 y 0.340. In Play the
+                visible conditioner and the simulated one coincide; the forward look is lost.
+
+Visible parts against the simulated footprints (conditioner space; identical in Play)
+  Cut band      sim z -0.400..+0.400, width 1.956 | blade z +0.237..+0.364, width 1.956  (inside, matches)
+  Flood band    sim z -0.575..-0.305, width 2.100 | towel z -0.575..-0.305, width 2.100  (exact)
+                water emitter z -0.430 (flood centre -0.440)
+  Wash pickup   sim z -0.280..+0.040              | squeegee z -0.280..+0.040          (exact)
+  Blade height  lowered, depth 0: edge 32 mm ABOVE the ice (31.6 mm measured in Play); at max depth
+                0.8 mm still 31 mm above. The drawn blade floats while cutting -> fix with
+                "Seat Blade Edge on Ice" (cosmetic, -31.7 mm; Play honours it, cutting unchanged).
+  Towel height  lowered, on the ice (0 mm).   Housing underside 75 mm above the ice.
+
+Frame, tyres and linkage (lowered)
+  Rear tyre back edge z -0.411. Housing front to tyre: simulated 0.324 m clear; at the authored
+  position 0.109 m clear.
+  "Lift linkage" (diagonal bar up to the chassis) overlaps the tyre band by bounding box (0.082 m
+  simulated, 0.297 m authored); it passes over the tyre shoulder, so this is not a contact test.
+  Lift cylinders (chassis pin to conditioner clevis): simulated 0.402 m lowered / 0.230 m raised;
+  at the authored position 0.018 m: the clevis lands on the chassis pin, the cylinder collapses.
+  Drawbar (runtime-stretched, always connected): simulated 0.418 / 0.434 m; authored 0.258 m.
+
+Is the simulated conditioner displaced from the visible model?
+  In Play: no (0.000 m). In Edit Mode: the visible one is 0.215 m forward of where it will cut.
+
+Options
+  A. Keep the simulation, keep it honest (recommended for now): Snap Visible Conditioner to
+     Simulation Pose (or leave it; Play does this anyway) and get the "seat over the conditioner"
+     look by moving the station/seat/body rearward instead of the conditioner forward.
+  B. Make the forward position physical (MECHANICAL CALIBRATION, not cosmetic):
+     DrawbarLength 0.650 -> 0.435 ("Move Simulated Conditioner to Authored Position...").
+     Effects: cut, flood and pickup move 0.215 m forward; trailing behaviour in turns changes;
+     housing-to-tyre clearance drops to 0.109 m; the chassis lift-cylinder pins must also move
+     about 0.215 m forward (otherwise the cylinders are 0.33 m lowered and 0.018 m raised);
+     all 7 saved files (5 routes, 2 guides) were recorded with DrawbarLength 0.65 and would be
+     reported calibration-incompatible for GPS guidance (re-record or recalibrate them).
+  Not offered: moving only the housing forward. Blade, towel and pickup match the simulation
+  exactly today; moving the housing alone would draw the machine scraping where it is not.
+
+Other authored drift found (not changed; physics still uses the calibration)
+  Snow tank dump hinge  49 mm rearward of config AND scaled 1.068 x 1.269 x 1.184 (visible tank about
+                        1.6x the simulated capacity; also fails the layout suite's "no scaled moving
+                        parents" check)
+  Conveyor discharge    739 mm from config (conveyor assembly moved)
+  Board guide roller    199 mm from config
+  Board brush pivot     381 mm from config (the brush rig imports this as its draft)
+  Machine prefab root   y -3.36 m in the scene (Edit Mode only; Play places the machine itself)

@@ -1,0 +1,51 @@
+AURORA R-54 / GPS CALIBRATION COMPATIBILITY
+
+Both local scenes rejected Andy_Try_1 / recorded track (repaired) because its
+embedded ConditionerYawLimitRadians was 0.03490658476948738 (2 degrees), while
+the current scenes use 0. IceResurfacer.unity omits the legacy field and uses
+the current SimulatorConfig default; IceResurfacer_AuthoredMachine.unity
+serializes 0 explicitly. The other 19 compatibility fields match. This is
+independent of the authored machine prefab. No scene or prefab was rebaked.
+
+The current production conditioner stays square to the chassis. The legacy
+yaw field is retained in old recordings but is ignored by current motion.
+The original recording and the earlier repaired guide remain unchanged.
+Calibration tolerance and every previously checked field remain enforced.
+
+To revalidate an old guide after intentional machine/rink calibration changes:
+1. Open the intended IceResurfacer scene.
+2. Open Experiments > Ice Resurfacer > Training Route Editor.
+3. Open the saved .guide.json (or open it via Route Manager > Edit Route).
+4. Choose Revalidate for active scene (save NEW copy).
+5. Inspect the result. The action refuses to publish a ready copy if the path
+   fails current clearance, source-integrity or curvature validation.
+6. In Play Mode open Numpad 8, Refresh, choose the new current-calibration guide
+   and Use as GPS. Numpad 7 shows/hides it. The built-in reference is retained.
+
+Revalidation copies the current SimulatorConfig into a new derived guide with
+a new identity and creation time, checks the full trajectory, and saves a new
+.guide.json. It preserves embedded raw bytes/checksum and every control point.
+It does not alter the current scene, physics, raw route, or existing guide file.
+Recorded conditioner observations remain observations; the fitter now ALSO
+checks the conditioner position produced by the current production linkage
+at every guide vehicle pose. Historical poses cannot conceal current clearance
+failures. The GPS remains advisory and recorded-track reconstruction remains
+distinct from ideal smooth-spline certification.
+
+Route Manager reports mismatched field names with guide and session values.
+The status area scrolls when the complete report needs more space. Unsafe
+or incompatible guides remain rejected. No automatic calibration substitution
+occurs when selecting an old guide.
+Importing an old raw .route.json can prepare a new current-calibration derived
+copy after the same full safety checks; the historical raw configuration and
+all observations remain embedded unchanged. This preserves the existing raw
+import workflow across calibration updates.
+
+The ESC speed-reset button is removed. MAX FORWARD SPEED still uses 3-8 MPH
+in quarter-MPH increments, saves its existing PlayerPrefs key immediately,
+and retains 2.65 m/s (5.927881 MPH) as its internal no-preference default.
+
+Validation evidence: Validation~/CalibrationCompatibility/. Replay checks use
+all actual recorded observations; they are deterministic guidance tests, not a
+new manual drive or proof that the historical conditioner pose can occur with
+today's rigid attachment. Vehicle and conditioner physics are unchanged.

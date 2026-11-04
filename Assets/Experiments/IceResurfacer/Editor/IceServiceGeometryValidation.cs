@@ -75,7 +75,13 @@ namespace IceResurfacer.Editor
                 foreach(float angle in new[]{0f,-15f,15f,-30f,30f,90f})
                 {
                     game.NewSession(true,true);var s=game.Sim;
-                    s.Layout.ToWorld(angle==90?5:(float)Math.Sin(angle*Math.PI/180)*3,angle==90?11.5f:6.3f,out s.Vehicle.X,out s.Vehicle.Z);
+                    // Sideways across the bay: the pose leaves the generated machine (rear 0.45 m behind the axle, 1.065 m
+                    // half width) clear of the back wall and the side doorway; a longer or wider calibrated outline starts
+                    // as far clear of them, so only the grate is under test.
+                    float left=0,rear=0;
+                    foreach(var polygon in new[]{s.ChassisCollisionPolygon(),s.ConditionerCollisionPolygon()})
+                        for(int k=0;k<polygon.Length;k+=2){left=Mathf.Max(left,-polygon[k]);rear=Mathf.Max(rear,-polygon[k+1]);}
+                    s.Layout.ToWorld(angle==90?5-Mathf.Max(0,rear-.45f):(float)Math.Sin(angle*Math.PI/180)*3,angle==90?11.5f-Mathf.Max(0,left-1.065f):6.3f,out s.Vehicle.X,out s.Vehicle.Z);
                     s.Vehicle.Heading=s.Layout.OutwardHeading+angle*Mathf.Deg2Rad;s.Controls.Throttle=.16f;
                     bool crossed=false,clear=true;
                     for(int i=0;i<3000;i++)

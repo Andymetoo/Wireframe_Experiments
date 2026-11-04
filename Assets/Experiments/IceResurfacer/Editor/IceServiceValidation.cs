@@ -102,7 +102,10 @@ namespace IceResurfacer.Editor
                 Check(game.Sim.Layout.GateX>9&&game.Sim.Layout.GateZ< -25,"gate is in actual southeast rounded corner");
                 Check(Mathf.Abs(Mathf.DeltaAngle(game.World.Machine.eulerAngles.y,135))<.01f,"parked machine nose faces snow pit and rear faces portal");
                 Check(Vector3.Dot(service.HolderPosition-game.World.Machine.position,game.World.Machine.right)>3,"hose station is on parked machine's RIGHT");
-                Check(service.FloodInlet.localPosition.x>=0&&Vector3.Dot(service.FloodInlet.position-game.World.Machine.position,game.World.Machine.right)>1,"rear-quarter fill necks remain on right fixed water-tank structure");
+                // Right of the centre line on the fixed tank (the generated necks are 1.16 m out; the authored ones
+                // 0.96 m). That the walking driver reaches and couples them from outside the body is checked below.
+                float neck=Vector3.Dot(service.FloodInlet.position-game.World.Machine.position,game.World.Machine.right);
+                Check(service.FloodInlet.localPosition.x>=0&&neck>.5f,"rear-quarter fill necks remain on right fixed water-tank structure ("+neck.ToString("F3")+" m right of centre)");
                 Check(game.Sim.ConfigureWaterForServiceTest(.90f,.8f),"explicit practice partial-tank fixture");
                 service.UpdateViewAndEffects(true,.21f);
                 Capture("Service-bay.png",W(-4.5f,3.6f,2.5f),W(0,1.3f,7));

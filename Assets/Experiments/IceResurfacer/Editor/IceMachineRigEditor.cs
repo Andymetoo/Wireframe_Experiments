@@ -26,9 +26,11 @@ namespace IceResurfacer.Editor
             IceWorld w;
             try { w=rig.Collect(); }
             catch(Exception e) { EditorGUILayout.HelpBox(e.Message,MessageType.Error);DrawParts();return; }
-            var game=rig.GetComponentInParent<IceResurfacerGame>();
-            var config=game!=null?game.calibration:(string.IsNullOrEmpty(rig.BakedConfigJson)?new SimulatorConfig():JsonUtility.FromJson<SimulatorConfig>(rig.BakedConfigJson));
-            if(game==null)EditorGUILayout.HelpBox("Prefab view: comparing against the configuration captured at bake time.",MessageType.None);
+            // The calibration of the scene this machine is used in, also in Prefab Mode (read-only there).
+            var context=IceCalibrationContext.Resolve(rig,rig.BakedConfigJson);
+            var config=context.Config;
+            var game=context.Writable?context.Game:null;
+            IceCalibrationContext.DrawLabel(context);
 
             EditorGUILayout.Space();
             DrawAlignment(w,config,game);
@@ -39,7 +41,7 @@ namespace IceResurfacer.Editor
                 drift|=Mathf.Abs(width.Value)>DriftTolerance;
                 EditorGUILayout.LabelField(width.Key,Mathf.Abs(width.Value)>DriftTolerance?(width.Value*1000).ToString("+0.0;-0.0")+" mm from config (working width is never changed from visuals)":"matches config");
             }
-            using(new EditorGUI.DisabledScope(!drift||game==null||Application.isPlaying))
+            using(new EditorGUI.DisabledScope(!drift||game==null||!context.Trustworthy||Application.isPlaying))
                 if(GUILayout.Button("Snap Visual Anchors to Simulation (moves your parts)...")&&
                     EditorUtility.DisplayDialog("Snap visuals to simulation","Move the wheels, tank hinge, conveyor discharge, brush pivot and guide roller back to the scene calibration? "+
                         "This discards your placement of those parts (Undo is available). To keep your placement, use Transfer Authored Geometry to Simulation instead.","Move parts","Cancel"))
@@ -111,6 +113,7 @@ namespace IceResurfacer.Editor
         }
 
         static bool ShowOverlay { get { return EditorPrefs.GetBool("IceMachineRig.AlignmentOverlay",true); } set { EditorPrefs.SetBool("IceMachineRig.AlignmentOverlay",value); } }
+        static float RollerLead { get { return EditorPrefs.GetFloat("IceMachineRig.RollerLead",.025f); } set { EditorPrefs.SetFloat("IceMachineRig.RollerLead",value); } }
 
         /// <summary>Unified mechanical alignment: every simulation-critical assembly, its millimetre
         /// difference, Edit Mode lift/tilt preview, and the explicit transfer into the calibration.</summary>
@@ -135,12 +138,17 @@ namespace IceResurfacer.Editor
                 if(EditorGUI.EndChangeCheck())IceMechanicalAlignment.Preview(w,config,lift,tilt);
                 using(new EditorGUILayout.HorizontalScope())
                 {
-                    if(GUILayout.Button("Lowered"))IceMechanicalAlignment.Preview(w,config,0,0);
-                    if(GUILayout.Button("Raised"))IceMechanicalAlignment.Preview(w,config,1,0);
-                    if(GUILayout.Button("Tank up"))IceMechanicalAlignment.Preview(w,config,1,1);
-                    using(new EditorGUI.DisabledScope(!on))if(GUILayout.Button("End Preview"))IceMechanicalAlignment.EndPreview();
+                    EditorGUILayout.LabelField("Lift",GUILayout.Width(30));
+                    foreach(float step in IceMechanicalAlignment.PreviewSteps)
+                        if(GUILayout.Button((step*100).ToString("F0")+"%"))IceMechanicalAlignment.Preview(w,config,step,on?IceMechanicalAlignment.PreviewTankTilt:0);
                 }
-                EditorGUILayout.LabelField("The preview poses parts exactly as Play does and is never saved (save, Play and recompiles end it).",EditorStyles.wordWrappedMiniLabel);
+                using(new EditorGUILayout.HorizontalScope())
+                {
+                    if(GUILayout.Button("Tank up"))IceMechanicalAlignment.Preview(w,config,1,1);
+                    using(new EditorGUI.DisabledScope(!on))if(GUILayout.Button("End Preview (authored pose)"))IceMechanicalAlignment.EndPreview();
+                }
+                EditorGUILayout.LabelField("The preview poses the conditioner, its mounted controls, lift linkage, hoses and cylinders exactly as Play does, "+
+                    "and is never saved: saving, Play, recompiles, Undo/Redo and editing a posed part all return it to the authored pose first.",EditorStyles.wordWrappedMiniLabel);
                 ShowOverlay=EditorGUILayout.Toggle("Scene overlay (orange visible / cyan simulated)",ShowOverlay);
                 var mechanical=items.FindAll(i=>i.Kind==IceMechanicalAlignment.Kind.Mechanical&&i.Transfer!=null);
                 var fixes=items.FindAll(i=>i.VisualFix!=null);
@@ -159,6 +167,23 @@ namespace IceResurfacer.Editor
                             if(IceMechanicalAlignment.Reconcile(w,game,out var changes,out string error))Debug.Log("Aurora alignment transferred:\n"+string.Join("\n",changes));
                             else EditorUtility.DisplayDialog("Not transferred",error,"OK");
                         }
+                        GUIUtility.ExitGUI();
+                    }
+            }
+            // Guide roller: an explicit move of your part (never part of Transfer); Transfer then makes it physical.
+            using(new EditorGUI.DisabledScope(game==null||Application.isPlaying))
+            using(new EditorGUILayout.HorizontalScope())
+            {
+                RollerLead=Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Roller lead (mm)","How far the roller's outer edge leads the widest part on its side."),RollerLead*1000,GUILayout.Width(220))/1000,.005f,.10f);
+                float move=IceMechanicalAlignment.GuideRollerShortfall(w,config,RollerLead,out float widest,out string part);
+                using(new EditorGUI.DisabledScope(move<.0005f))
+                    if(GUILayout.Button(move<.0005f?"Guide roller leads the "+part:"Move Guide Roller Outboard "+(move*1000).ToString("F0")+" mm (moves your part)...")&&
+                       EditorUtility.DisplayDialog("Move guide roller outboard","Move the guide roller assembly "+(move*1000).ToString("F0")+" mm outboard so its outer edge leads the "+part+" ("+
+                           widest.ToString("F3")+" m) by "+(RollerLead*1000).ToString("F0")+" mm? The bracket is lengthened to keep meeting the body; nothing else moves. "+
+                           "This edits the prefab (Undo is available). Then use Transfer Authored Geometry so the simulation follows.","Move roller","Cancel"))
+                    {
+                        if(IceMechanicalAlignment.MoveGuideRollerOutboard(w,config,RollerLead,out string summary))Debug.Log("Guide roller: "+summary);
+                        else EditorUtility.DisplayDialog("Guide roller not moved",summary,"OK");
                         GUIUtility.ExitGUI();
                     }
             }
@@ -200,16 +225,17 @@ namespace IceResurfacer.Editor
         /// <summary>Where each control is grabbed, in world space (same points the picker targets).</summary>
         public static List<KeyValuePair<string,Vector3>> Grips(IceWorld w,SimulatorConfig config)
         {
+            var grips=IcePhysicalControls.GripPositions(w,config);
             return new List<KeyValuePair<string,Vector3>>
             {
-                new KeyValuePair<string,Vector3>("Conditioner lever",w.ConditionerLever.TransformPoint(0,.225f,0)),
-                new KeyValuePair<string,Vector3>("Horizontal auger lever",w.HorizontalAugerLever.TransformPoint(0,.225f,0)),
-                new KeyValuePair<string,Vector3>("Vertical auger lever",w.VerticalAugerLever.TransformPoint(0,.225f,0)),
-                new KeyValuePair<string,Vector3>("Dump lever",w.DumpLever.TransformPoint(0,.225f,0)),
-                new KeyValuePair<string,Vector3>("Flood valve",w.FloodLever.TransformPoint(-.09f,config.WaterValveStemHeight,0)),
-                new KeyValuePair<string,Vector3>("Wash valve",w.WashValve.TransformPoint(-.09f,config.WaterValveStemHeight,0)),
-                new KeyValuePair<string,Vector3>("Blade handwheel",w.BladeWheel.TransformPoint(.11f,.045f,0)),
-                new KeyValuePair<string,Vector3>("Snow breaker",w.SnowBreakerPlunger.TransformPoint(0,.22f,0)),
+                new KeyValuePair<string,Vector3>("Conditioner lever",grips[1]),
+                new KeyValuePair<string,Vector3>("Horizontal auger lever",grips[2]),
+                new KeyValuePair<string,Vector3>("Vertical auger lever",grips[3]),
+                new KeyValuePair<string,Vector3>("Dump lever",grips[4]),
+                new KeyValuePair<string,Vector3>("Flood valve",grips[5]),
+                new KeyValuePair<string,Vector3>("Wash valve",grips[6]),
+                new KeyValuePair<string,Vector3>("Blade handwheel",grips[7]),
+                new KeyValuePair<string,Vector3>("Snow breaker",grips[8]),
             };
         }
 

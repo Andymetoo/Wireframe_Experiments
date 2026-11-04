@@ -1,0 +1,11 @@
+AURORA R-54 / COCKPIT REFINEMENT PRESERVATION AUDIT
+Source assets matching the isolated validated project: 51
+Missing metadata: 0
+Duplicate GUIDs: 0
+Outside-experiment modified/untracked paths: 0
+Source/staged mismatches: 0
+Changes to preserved handoff physics config / existing test harnesses: 0
+Metadata GUIDs checked; Unity may add importer defaults only in the disposable copy.
+Validation/build uses Validation~/UnityProject. Original Editor is not switched or stopped.
+No branch, commit, push, original project-settings or shared-package edit was performed.
+PASS

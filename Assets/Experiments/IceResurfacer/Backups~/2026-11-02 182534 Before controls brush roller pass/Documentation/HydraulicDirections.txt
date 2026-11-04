@@ -1,0 +1,51 @@
+AURORA R-54 HYDRAULIC DIRECTION AUDIT
+
+Operator-confirmed convention, for BOTH conditioner and snow dump tank:
+Pull BACK toward the seat = LOWER.
+Push FORWARD away from the seat = RAISE.
+Release = spring-centered neutral; hold the actual attained height/angle.
+
+Audit before correction
+Core Simulation.Tick and UpdateTank already interpret positive demand as raise
+and negative demand as lower. Actual lift runs from 0 (down) to 1 (up).
+The conditioner and tank geometry and percentage indicators use actual lift.
+ConditionerStatus already interprets those positions and demands correctly.
+No hydraulic simulation, rate, target semantics, interlock, machinery behavior,
+position indicator, calibration, scene or keyboard binding required inversion.
+
+The inconsistent mappings were in IcePhysicalControls and IceDashboard:
+- Physical mouse demand was positive when pulled toward -Machine.forward.
+- Both physical grips animated backward for a positive raising demand.
+- HUD bottom sent positive demand, top sent negative demand, and positive
+  demand drew the grip below center. Labels and tooltips described that mapping.
+
+Correction
+Physical drags now negate projected backward travel for both hydraulic spools.
+Positive raising demand tilts both physical grips forward (+local X rotation).
+HUD top/forward sends +1 (RAISE); bottom/back sends -1 (LOWER). The grip follows
+that direction for every input source, including keyboard and physical input.
+Both HUD labels, tooltips, physical hints and current operator descriptions agree.
+Existing dead zones, pointer capture, spring return and release handling remain.
+
+Keyboard preserved
+1 held = conditioner LOWER; Right Shift + 1 held = RAISE.
+7 held = dump tank RAISE; Right Shift + 7 held = LOWER.
+Release either shortcut to hold actual position.
+
+Validation
+Presentation/IceLayoutPlayerProbe.Hydraulics.cs extends the explicitly invoked
+development-player fixture. It is absent from normal launch-scene operation.
+It exercises real Input System cockpit mouse gestures, native player-window
+HUD clicks/drags, and the existing game keyboard input path. Fixed simulation
+ticks advance the actual mechanisms; tests do not assign attained lift values.
+Both systems are checked through full raising/lowering using both controls,
+partial raising/lowering, switching physical/HUD sources, held HUD reversal,
+center dead zones, neutral release and position hold, physical tilt, status,
+actual mechanism geometry and isolation from other machinery controls.
+
+Core regression output: Validation~/HydraulicDirections/Core-results.txt.
+Per-resolution runtime output: Validation~/HydraulicDirections/Player-*.txt.
+Framebuffer evidence: Validation~/HUDVideoSpeed/Player-*/Hydraulic-*.png.
+Core, scene, shader and resource preservation hashes are recorded under
+Validation~/HydraulicDirections. Unity runs in the existing isolated project
+copy under Validation~/UnityProject; the user's open editor is not manipulated.

@@ -1,0 +1,1 @@
+Before model: track1.370m+tire.300m => exterior.835m; strong wet width=2.000m; aligned second center=1.835m; dry/scored cell gaps=0/0. No one-foot physical straight-pass gap reproduced; perceived gap requires operator camera/turn alignment playtesting.

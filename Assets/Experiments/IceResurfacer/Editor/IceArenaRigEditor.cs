@@ -19,9 +19,9 @@ namespace IceResurfacer.Editor
             serializedObject.Update();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("batchAtRuntime"));
             serializedObject.ApplyModifiedProperties();
-            var game=rig.GetComponentInParent<IceResurfacerGame>();
-            var config=game!=null?game.calibration:(string.IsNullOrEmpty(rig.BakedConfigJson)?new SimulatorConfig():JsonUtility.FromJson<SimulatorConfig>(rig.BakedConfigJson));
-            if(game==null)EditorGUILayout.HelpBox("Prefab view: comparing against the calibration captured when the arena was generated.",MessageType.None);
+            var context=IceCalibrationContext.Resolve(rig,rig.BakedConfigJson);
+            var config=context.Config;
+            IceCalibrationContext.DrawLabel(context);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("PHYSICAL RINK / SimulatorConfig and ServiceLayout are authoritative",EditorStyles.boldLabel);

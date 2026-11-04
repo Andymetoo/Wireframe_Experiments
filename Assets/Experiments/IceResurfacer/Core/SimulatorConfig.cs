@@ -77,6 +77,7 @@ namespace IceResurfacer.Core
             ValidateIceCalibration();
             ValidateFreedomCalibration();
             ValidateMachineGeometry();
+            ValidateCollisionOutline();
             float[] values = { RinkWidth, RinkLength, CornerRadius, CellSize, GateHalfWidth, BayLength,
                 Wheelbase, VehicleHalfWidth, BodyFront, BodyRear, ConditionerWidth, WaterDistributionWidth,
                 GuideRollerX, GuideRollerZ, GuideRollerRadius, BladeBiteFraction, MaximumEffectiveBladeDepthMm, BladeWheelTurns, ConveyorJamSeconds, ConditionerLength,

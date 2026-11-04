@@ -1,0 +1,1 @@
+  southeast full run: coverage=97.05%, wholeice combinedcoverage=95.16%, watercoverage=97.25%, finish=82.2%, score=90.4, water=674.8L, pit=0.723m3, time=1759s, mistakes=0, properexit=True, return=15.21,-34.19

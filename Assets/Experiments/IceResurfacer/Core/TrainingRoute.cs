@@ -45,7 +45,7 @@ namespace IceResurfacer.Core
         }
         public static SimulatorConfig CopyConfiguration(SimulatorConfig source)
         {
-            var copy=new SimulatorConfig();foreach(var f in typeof(SimulatorConfig).GetFields(BindingFlags.Instance|BindingFlags.Public))f.SetValue(copy,f.GetValue(source));return copy;
+            var copy=new SimulatorConfig();foreach(var f in typeof(SimulatorConfig).GetFields(BindingFlags.Instance|BindingFlags.Public)){var value=f.GetValue(source);f.SetValue(copy,value is float[] array?(float[])array.Clone():value);}return copy;
         }
         public static TrainingRouteDefinition FromRecording(RecordedRouteData raw,string rawJson,string sha,float spacing=2.5f)
         {
@@ -149,14 +149,33 @@ namespace IceResurfacer.Core
         }
         // Keep the existing calibration contract, including the legacy yaw value.
         // A changed declaration requires an explicit, clearance-validated copy.
+        // The collision outline, conditioner collider and guide roller define where the machine can
+        // physically be; a guide validated against another envelope is never accepted silently.
         internal static readonly string[] CompatibilityFields={"RinkWidth","RinkLength","CornerRadius","GateHalfWidth","BayLength","Wheelbase","MaxSteeringRadians","SteeringRate","VehicleHalfWidth","BodyFront","BodyRear",
-            "HitchBehindAxle","DrawbarLength","ConditionerYawLimitRadians","ConditionerWidth","ConditionerLength","WaterDistributionWidth","WaterFilmSpreadMeters","FloodContactFore","FloodContactLength"};
+            "HitchBehindAxle","DrawbarLength","ConditionerYawLimitRadians","ConditionerWidth","ConditionerLength","WaterDistributionWidth","WaterFilmSpreadMeters","FloodContactFore","FloodContactLength",
+            "CollisionOutline","ConditionerCollisionHalfWidth","ConditionerCollisionFront","ConditionerCollisionRear","GuideRollerX","GuideRollerZ","GuideRollerRadius"};
         public const float CompatibilityTolerance=.0001f;
         static bool Differs(float recorded,float current)=>!RecordedRouteData.Finite(recorded)||!RecordedRouteData.Finite(current)||Math.Abs(recorded-current)>CompatibilityTolerance;
+        static bool Differs(object recorded,object current)
+        {
+            if(recorded is float[]||current is float[])
+            {
+                var a=recorded as float[]??new float[0];var b=current as float[]??new float[0];
+                if(a.Length!=b.Length)return true;
+                for(int i=0;i<a.Length;i++)if(Differs(a[i],b[i]))return true;
+                return false;
+            }
+            return Differs((float)recorded,(float)current);
+        }
+        static string Describe(object value)
+        {
+            if(value is float[] array)return array.Length==0?"legacy rectangle":(array.Length/2)+" vertices";
+            return ((float)value).ToString("G9",CultureInfo.InvariantCulture);
+        }
         public bool Compatible(SimulatorConfig c)
         {
             if(c==null||configuration==null)return false;
-            foreach(string name in CompatibilityFields){var f=typeof(SimulatorConfig).GetField(name);if(Differs((float)f.GetValue(configuration),(float)f.GetValue(c)))return false;}return true;
+            foreach(string name in CompatibilityFields){var f=typeof(SimulatorConfig).GetField(name);if(Differs(f.GetValue(configuration),f.GetValue(c)))return false;}return true;
         }
         public List<string> CalibrationDifferences(SimulatorConfig current)
         {
@@ -164,8 +183,8 @@ namespace IceResurfacer.Core
             if(configuration==null||current==null){differences.Add("SimulatorConfig: "+(configuration==null?"guide calibration missing":"session calibration missing"));return differences;}
             foreach(string name in CompatibilityFields)
             {
-                var f=typeof(SimulatorConfig).GetField(name);float before=(float)f.GetValue(configuration),after=(float)f.GetValue(current);
-                if(Differs(before,after))differences.Add(name+": guide="+before.ToString("G9",CultureInfo.InvariantCulture)+", session="+after.ToString("G9",CultureInfo.InvariantCulture));
+                var f=typeof(SimulatorConfig).GetField(name);object before=f.GetValue(configuration),after=f.GetValue(current);
+                if(Differs(before,after))differences.Add(name+": guide="+Describe(before)+", session="+Describe(after));
             }
             return differences;
         }

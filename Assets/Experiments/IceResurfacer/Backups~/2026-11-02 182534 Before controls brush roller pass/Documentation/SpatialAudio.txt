@@ -1,0 +1,177 @@
+AURORA R-54 / TRUE 3D MACHINE AUDIO
+29 October 2026 / Unity 6000.4.1f1
+
+Launch
+Open Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity and press Play.
+The preceding cockpit refinement remains the geometry and camera baseline.
+
+Finding and scope
+The saved pre-pass local source confirmed the reported problem: nine of the ten
+machine loops, the shared mechanism voice, and all three service-water sources
+used spatialBlend=0. The guide-roller loop and three collision voices were 3D.
+Engine and water consequently had no physical distance attenuation.
+Validation~/SpatialAudioBefore preserves the original sources and baseline hashes.
+
+Physical emitters now use spatialBlend=1 and share one world-meter distance curve.
+Only the existing arena-ventilation loop remains 2D. No UI behavior was changed.
+No simulation, cockpit geometry, steering, brush, camera/listener code, scene,
+material, shader, project setting, package or unrelated experiment was changed.
+
+Origins and movement
+Engine                 Actual right-side engine-cover compartment transform.
+Traction/drivetrain     Central chassis compartment transform.
+Blade scrape           Bottom edge of the actual cutting blade, following depth
+                       adjustment and independent conditioner movement.
+Horizontal auger       Conditioner-mounted shaft center.
+Vertical auger         Inside the actual conveyor housing, following its shaft.
+Hydraulics             Four separate sources on the two conditioner and two
+                       tank-cylinder barrels. Only moving actuator groups sound.
+Flood water            Actual towel/distribution emission outlet.
+Wash water             Conditioner wash manifold.
+Wash pickup            Physical squeegee/pickup contact.
+Guide roller           Existing simulated guide-contact position.
+Snow discharge         Conveyor-to-bin outlet; moving tank dump outlet; actual
+                       upper rejection outlet; both conditioner side exits.
+                       Active spill/dump coordinates match snow-particle origins.
+Hydraulic detent       Operator's physical hydraulic/auger lever bank.
+Manual snow breaker    Moving breaker plunger.
+Board/wall impacts     Exact detected contact XYZ, including height; each pooled
+                       voice keeps its world origin through its playback tail.
+Hose filling           Connected flood or wash inlet, parented to that inlet.
+Water overflow         Same actual spill origin as the visible runoff/particles,
+                       including the connected standpipe or loose nozzle.
+Coupling/valve click    Interacted fixture; inlet/valve clicks follow that fixture.
+
+Sources on machine parts inherit their actual transforms, including the
+independently articulated conditioner. World-space event emitters update from
+existing simulation event positions; collisions stay at the point of impact.
+
+Sound design and source budget
+CreateLoop, CreateMechanism, CreateImpact and service Noise synthesis methods
+are byte-identical to the pre-pass versions. The ten original machine-loop
+clips are shared across the split emitters. Existing engine/load/speed/throttle,
+blade depth, auger congestion/jam, traction and contact volume/pitch formulas
+remain. Water components retain their .12 flood / .09 wash / .06 pump targets.
+The .22 hydraulic target is divided among the active actuator groups; snow's
+existing aggregate target is divided by actual outlet flow rates. Existing
+level smoothing remains. Spatial panning and distance change the received mix.
+
+27 persistent AudioSources: 19 machine/ambience loops, two mechanism voices,
+three contact voices, two service loops and one coupling voice. One-shot voices
+stop before reuse, bounding overlapping voice count and preventing an older tail
+from jumping to a new contact. No AudioSource or AudioClip is created/destroyed
+per frame or camera change. The existing configuration supplies 32 real voices
+and 512 virtual voices. This pass does not claim a new CPU/frame-time benchmark.
+
+Distance and listener
+All physical sources: minDistance=2.5 m, maxDistance=120 m, custom monotonic
+piecewise-linear rolloff. Full amplitude through 2.5 m, sampled inverse-distance
+amplitude (2.5/d) through 80 m, then .01 at 100 m and zero at/beyond 120 m.
+At key distances: 5 m=.5, 10 m=.25, 20 m=.125, 40 m=.0625, 60 m=.04167.
+Interpolation between those keys is linear. There is no short few-meter cutoff.
+Runtime attenuation is Unity's spatial audio, without a second distance-volume
+multiplier. The final zero also avoids a nonzero far-distance plateau.
+
+Doppler=0 preserves the existing state-driven pitch during camera movement.
+Mono clips, spread=0 and centered panStereo use the camera listener's actual
+orientation. Dry output (reverbZoneMix=0) avoids an unintended constant wet bed;
+there are no authored arena acoustic zones in this implementation.
+
+The existing AudioListener on DriverCamera is retained. That SAME camera and
+listener reparent/move for seated, standing, chase and on-foot modes. No new
+listener, per-mode master gain, or pitch compensation was introduced. Camera
+distance therefore changes the level naturally, with the existing camera motion.
+
+Measured native Unity DSP output
+Validation records the spatialized stereo master through Unity AudioRenderer,
+48 kHz, approximately three seconds per probe. The engine and flood loop are
+isolated in turn at fixed source volume=.5 and pitch=1 to measure distance gain
+independently of machine-state changes. Reference is that source at true 2 m
+3D source-to-listener distance. RMS combines the energy of both stereo channels.
+Measurements use the saved scene's real seated and R-standing eye positions.
+Machine at (-9, -20), heading zero; cross-width listener (11, 1.65, -20),
+opposite-end listener (-9, 1.65, 25). All distances below are actual source-to-ear
+distances, not distance to the nearest body panel.
+
+Pose              Engine m / gain / dB          Flood m / gain / dB
+Seated             1.593 / .9993 /  -.006        2.296 / .9994 /  -.005
+Standing           1.867 / 1.0007 / +.006        2.742 / .9189 /  -.735
+2 m                2.000 / 1.0000 /  .000        2.000 / 1.0000 /  .000
+10 m              10.000 / .2500 / -12.041      10.000 / .2498 / -12.050
+Across width      19.547 / .1288 / -17.803      20.119 / .1245 / -18.096
+Opposite end      45.025 / .0572 / -24.848      46.556 / .0556 / -25.093
+
+Tiny deviations from unity reflect capture-buffer boundaries of the synthesized
+loop. The legacy 2D control measured .9993 (-.006 dB) at 25 m versus 2 m,
+reproducing the original fault. At 5 m, a source on the listener's right rendered
+only in the right channel; a 180-degree turn swapped it to the left, with about
+.066% level difference. All twelve spatial probes remained non-silent and
+matched the configured curve within the validation tolerance.
+
+An additional capture uses the actual machinery-state levels/pitches, all sources
+unmuted, with idle engine, both augers, .6 flood valve, .4 wash valve and wash
+pump active. This includes the unchanged 2D ventilation and its constant floor:
+  Seated:        combined RMS .131830; reference gain 1.
+  10 m:          combined RMS .032983; gain .2502 (about -12.0 dB).
+  Opposite end:  combined RMS .009977; gain .0757 (about -22.4 dB).
+The full received mix is therefore substantially quieter at distance as well.
+Listen in Validation~/SpatialAudio/Listening-comparison.html, which links the
+isolated probes, runtime-state mix and raw measurement/validation files.
+
+Unity checks exercise 70 machine/conditioner/tank poses; actual core snow, fill,
+loose-nozzle, full-tank overflow and board-contact events; stable source identities;
+full 3D/mono/falloff configuration; preserved aggregate state targets; actual R,
+C and F camera inputs; one active listener retaining its identity in all four
+modes; actual on-foot WASD movement; and left/right DSP orientation.
+Results and non-normalized stereo WAVs: Validation~/SpatialAudio/.
+
+Regression and preservation
+All 37 deterministic core scenarios passed. The integrated Unity Play Mode
+suite passed with zero runtime errors: saved scene and shader initialization,
+cut/wash/flood and conveyance, input/drive recovery, camera/sightlines, physical
+controls, cockpit refinement, southeast service, ice overlap/pickup and spatial
+machine audio. Existing HUD/player evidence is retained; no new HUD/player build
+was needed for these audio-only changes. Unity-results.txt and Core-results.txt
+in the audio evidence directory record this run.
+The baseline hash audit checks 102 assets: 99 are byte-identical; the only three
+changed baseline files are the two audio implementations and Editor entry point.
+It also checks unchanged synthesis, staged-source matches, metadata GUIDs and
+zero modified/untracked paths outside the experiment. See Preservation-results.txt.
+
+Repeat validation
+In PowerShell at the project root, with other heavy validation runs finished:
+  & 'Assets/Experiments/IceResurfacer/Validation~/StageUnityValidation.ps1' -UpdateOnly
+  & 'Assets/Experiments/IceResurfacer/Validation~/RunIsolatedUnity.ps1' -Action SpatialAudio -LogName Spatial-audio-unity.log
+  & 'Assets/Experiments/IceResurfacer/Validation~/RunIsolatedUnity.ps1' -Action RunBatch -LogName Spatial-audio-regression-unity.log
+DSP recording is guarded to the disposable Validation~/UnityProject copy and
+never routes the probe sequence through the user's live audio device. Results
+are written inside that copy; copy its Validation~/SpatialAudio output to the
+main experiment's Validation~/SpatialAudio after a passing run.
+Stage without -UpdateOnly first if the disposable project does not yet exist.
+
+Remaining listening calibration
+This is measured native stereo rendering, not a human listening assessment.
+Headphone/speaker comfort, perceived loudness against ventilation, mix balance
+with every subsystem running, and the desired mechanical-water detail at the
+operator's ear still need operator audition. The WAVs preserve absolute levels
+for that comparison. No HRTF plugin, wall/cabin occlusion, acoustic reverberation,
+distance filtering or equipment recordings were added; the preserved synthetic
+point-source design has those limits. No acoustic SPL calibration is claimed.
+
+Implementation files
+Presentation/IceAudioSpatialization.cs     Shared physical source/falloff setup.
+Presentation/IceMachineAudio.cs            Physical origins and split loop routing.
+Presentation/IceWaterService.cs            Fill/spill/coupling audio placement only.
+Editor/IceSpatialAudioValidation.cs        Native DSP, origin and listener checks.
+Editor/IceResurfacerEditor.cs              Updated source budget + structure suite.
+README.txt                                Operating audio/falloff notes.
+Documentation/SpatialAudio.txt            This report and calibration limitations.
+Validation~/RunIsolatedUnity.ps1           Explicit SpatialAudio action.
+Validation~/AuditSpatialAudioPreservation.py  Baseline/synthesis/scope hash audit.
+New Unity source/document assets include their own metadata. No commit, branch
+or push was made.
+
+API reference
+https://docs.unity.com/en-us/engine/6000.5/script-reference/unityengine/audiosource/setcustomcurve
+https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/audiorenderer
+https://docs.unity.com/en-us/engine/6000.0/script-reference/unityengine/audiorenderer/render

@@ -1,12 +1,14 @@
 param(
-    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery','ProportionsSurvey','ProportionsApply','ProportionsVerify','BrushSetUp','BrushVerify','ReconcileSurvey','ReconcileCapture','ReconcileApply','ReconcileVerify','ReconcileLaunch','ReconcileClearance','RinkSurvey','RinkCaptureBefore','RinkApply','RinkVerify','RinkMovePorts','RinkVerifyMoved','RinkEquivalence','RinkTankGlass')][string]$Action='RunBatch',
+    [ValidateSet('RunBatch','SpatialAudio','RoutePersistence','TrainingPersistence','RouteUXFresh','OperatorPrefsWrite','OperatorPrefsRead','RouteRepair','RouteRepairGui','RouteRepairPersistence','RouteCalibration','BuildLayoutPlayer','BuildPerformance','AuthoredBake','AuthoredVerify','AuthoredWriteRearrangement','AuthoredVerifyRearrangement','ArenaBaseline','ArenaSetUp','ArenaVerify','ArenaWriteEdits','ArenaVerifyEdits','ArenaRecovery','ProportionsSurvey','ProportionsApply','ProportionsVerify','BrushSetUp','BrushVerify','ReconcileSurvey','ReconcileCapture','ReconcileApply','ReconcileVerify','ReconcileLaunch','ReconcileClearance','RinkSurvey','RinkCaptureBefore','RinkApply','RinkVerify','RinkMovePorts','RinkVerifyMoved','RinkEquivalence','RinkTankGlass','ControlsSurvey','ControlsApply','ControlsVerify')][string]$Action='RunBatch',
     [string]$LogName='Operator-ergonomics-unity-1.log',
     # Optional scene for the existing validators, e.g. Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
     [string]$Scene='',
     # Screenshot prefix for ReconcileCapture (Before or After)
     [string]$ReconcilePrefix='Before',
     # Measurement/screenshot prefix for RinkSurvey (Before or After)
-    [string]$RinkPrefix='Before'
+    [string]$RinkPrefix='Before',
+    # Measurement/screenshot prefix for ControlsSurvey (Before or After)
+    [string]$SurveyPrefix='Before'
 )
 $ErrorActionPreference='Stop'
 $stage=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'UnityProject')).Path
@@ -39,10 +41,14 @@ if($Action -eq 'ReconcileClearance'){$method='IceResurfacer.Editor.IceMechanical
 if($Action -eq 'ReconcileSurvey'){$method='IceResurfacer.Editor.IceMechanicalSurvey.Survey'}
 if($Action -eq 'RinkSurvey'){$method='IceResurfacer.Editor.IceRinkSurvey.Survey'}
 if($Action -like 'Rink*' -and $Action -ne 'RinkSurvey'){$method='IceResurfacer.Editor.IceRinkFillPortValidation.'+$Action.Substring(4)}
+if($Action -eq 'ControlsSurvey'){$method='IceResurfacer.Editor.IceControlsSurvey.Survey'}
+if($Action -eq 'ControlsApply'){$method='IceResurfacer.Editor.IceControlsBrushRollerValidation.Apply'}
+if($Action -eq 'ControlsVerify'){$method='IceResurfacer.Editor.IceControlsBrushRollerValidation.Verify'}
 $arguments=@('-batchmode','-force-d3d11','-projectPath',('"'+$stage+'"'),'-executeMethod',$method,'-logFile',('"'+$log+'"'))
 if($Scene -ne ''){$arguments+=@('-iceScene',$Scene)}
 if($Action -eq 'ReconcileCapture'){$arguments+=@('-reconcilePrefix',$ReconcilePrefix)}
 if($Action -eq 'RinkSurvey'){$arguments+=@('-rinkPrefix',$RinkPrefix)}
+if($Action -eq 'ControlsSurvey'){$arguments+=@('-surveyPrefix',$SurveyPrefix)}
 $child=Start-Process -FilePath $unity -ArgumentList $arguments -WindowStyle Hidden -PassThru
 Write-Output "Isolated Unity $Action started, owned pid=$($child.Id), log=$log"
 $child.WaitForExit()

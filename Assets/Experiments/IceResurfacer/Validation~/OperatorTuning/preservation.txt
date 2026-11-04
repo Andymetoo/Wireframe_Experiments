@@ -1,0 +1,6 @@
+﻿EXPECTED CHANGE Core\SurfaceProcessing.cs
+EXPECTED CHANGE Presentation\IceResurfacerGame.cs
+EXPECTED CHANGE Presentation\IceSnowView.cs
+EXPECTED CHANGE Scenes\IceResurfacer_AuthoredMachine.unity
+PASS: 953 existing files byte-identical, four expected source/scene changes, all 957 backup hashes still verified.
+Machine prefab, mesh assets, arena, materials, original validation harness and procedural launch scene preserved.

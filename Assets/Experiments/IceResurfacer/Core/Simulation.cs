@@ -266,84 +266,59 @@ namespace IceResurfacer.Core
             float x = Vehicle.X + (float)Math.Sin(direction) * travel+(float)Math.Cos(direction)*lateralTravel;
             float z = Vehicle.Z + (float)Math.Cos(direction) * travel-(float)Math.Sin(direction)*lateralTravel;
             float heading = Wrap(Vehicle.Heading + turn);
+            sustainedContact=BoardContact||GuideRollerContact;
             GuideRollerContact=false;
             BoardContact=false;
+            float startSin=(float)Math.Sin(Vehicle.Heading),startCos=(float)Math.Cos(Vehicle.Heading);
+            float startRollerX=Vehicle.X+startCos*Config.GuideRollerX+startSin*Config.GuideRollerZ;
+            float startRollerZ=Vehicle.Z-startSin*Config.GuideRollerX+startCos*Config.GuideRollerZ;
             if (ProbeVehiclePose(x, z, heading,out MovementContact rejected))
             {
                 Vehicle.X = x; Vehicle.Z = z; Vehicle.Heading = heading; Vehicle.Speed = nextSpeed;
             }
             else
             {
-                RecordContact(rejected,(x-Vehicle.X)/dt,(z-Vehicle.Z)/dt,turn/dt);
-                LastMovementContact=rejected;LastMovementContactTime=Time;
+                var hit=DeepestContact(x,z,heading,rejected);
+                RecordContact(hit,(x-Vehicle.X)/dt,(z-Vehicle.Z)/dt,turn/dt);
+                LastMovementContact=hit;LastMovementContactTime=Time;
                 BoardContact=true;
-                if (Math.Abs(speed) > .15f) Fault(4, "Board or service wall contact. Brake and steer clear.");
-                // Project a shallow contact onto the local board tangent. A small
-                // alignment correction follows the roller instead of repeatedly
-                // steering the nose through the wall. Every accepted pose is tested.
-                float nx=rejected.NormalX,nz=rejected.NormalZ;
-                // Preserve the established rink/guide-roller contact response.
-                // Service contact uses the actual rejected sample's boundary.
-                if(rejected.Obstacle==MovementObstacle.RinkBoards)ContactNormal(x,z,heading,out nx,out nz);
-                float dx=x-Vehicle.X,dz=z-Vehicle.Z;
-                float normal=dx*nx+dz*nz;
-                float incidence=Math.Abs(normal)/Math.Max(.000001f,Math.Abs(travel));
-                bool sliding=false;
-                if(incidence<.45f&&Math.Abs(travel)>.000001f)
-                {
-                    float sx=dx-normal*nx,sz=dz-normal*nz;
-                    float tangent=(float)Math.Atan2(sx*Math.Sign(travel),sz*Math.Sign(travel));
-                    float aligned=rejected.Obstacle==MovementObstacle.RinkBoards
-                        ?Wrap(Vehicle.Heading+Clamp(Wrap(tangent-Vehicle.Heading),-.018f,.018f))
-                        :Vehicle.Heading;
-                    float ax=Vehicle.X+sx*.96f,az=Vehicle.Z+sz*.96f;
-                    if(BodyFits(ax,az,aligned))
-                    {
-                        Vehicle.X=ax;Vehicle.Z=az;Vehicle.Heading=aligned;
-                        Vehicle.Speed=MoveTowards(nextSpeed*(float)Math.Sqrt(Math.Max(0,1-incidence*incidence)),0,.12f*dt);
-                        float sn=(float)Math.Sin(aligned),cs=(float)Math.Cos(aligned);
-                        float rx=ax+cs*Config.GuideRollerX+sn*Config.GuideRollerZ;
-                        float rz=az-sn*Config.GuideRollerX+cs*Config.GuideRollerZ;
-                        GuideRollerContact=Ice.BoardDistance(rx,rz,out _,out _)>-Config.GuideRollerRadius-.10f;
-                        sliding=true;
-                    }
-                }
-                if(!sliding){Vehicle.Speed=0;LateralVelocity=0;}
+                // Glancing contact slides, a square impact stops (see ResolveContactStep). Rolling on
+                // the guide roller or a light scrape is not a mistake; a real bump, and any hard hit, is.
+                float allowed=ResolveContactStep(dt,x,z,heading,out float fx,out float fz,out float fh,out float correction,out bool rollerOnly);
+                // A pose already inside the driving margin (placed there, or the envelope changed) may always
+                // move out of it: any step that reduces the deepest penetration is taken, never one deeper.
+                if(allowed<.05f&&DeepestPenetration(Vehicle.X,Vehicle.Z,Vehicle.Heading,out var inside)&&!inside.Tank&&
+                   DeepestPenetration(x,z,heading,out var after)&&!after.Tank&&after.Depth<inside.Depth-.00001f)
+                { fx=x;fz=z;fh=heading;allowed=1;correction=0; }
+                LastContactAllowedFraction=allowed;
+                if (Math.Abs(speed) > .15f && ContactNormalSpeed > (rollerOnly ? .6f : SlidingImpactSpeed)) Fault(4, "Board or service wall contact. Brake and steer clear.");
+                Vehicle.X=fx;Vehicle.Z=fz;Vehicle.Heading=fh;
+                float resolved=allowed<.05f?0:nextSpeed*allowed;
+                // Friction on the board face, from the normal reaction the tyres can sustain.
+                float reaction=Math.Min(correction/(dt*dt),Config.IceLateralGrip);
+                Vehicle.Speed=MoveTowards(resolved,0,(rollerOnly?Config.GuideRollerFriction:Config.BodyContactFriction)*reaction*dt);
+                // The boards also absorb sideways tyre slip toward them.
+                float sn=(float)Math.Sin(fh),cs=(float)Math.Cos(fh);
+                if(Vehicle.Speed==0||LateralVelocity*(cs*hit.NormalX-sn*hit.NormalZ)<0)LateralVelocity=0;
             }
             float rs=(float)Math.Sin(Vehicle.Heading),rc=(float)Math.Cos(Vehicle.Heading);
             float rollerX=Vehicle.X+rc*Config.GuideRollerX+rs*Config.GuideRollerZ;
             float rollerZ=Vehicle.Z-rs*Config.GuideRollerX+rc*Config.GuideRollerZ;
-            GuideRollerContact=!Layout.IsPortal(rollerX,rollerZ)&&Ice.BoardDistance(rollerX,rollerZ,out _,out _)>-Config.GuideRollerRadius-.025f&&Ice.IsInside(Vehicle.X,Vehicle.Z);
-            if(GuideRollerContact)GuideRollerTravel+=Vehicle.Speed*dt;
+            float rollerBoard=Ice.BoardDistance(rollerX,rollerZ,out float boardX,out float boardZ);
+            GuideRollerContact=!Layout.IsPortal(rollerX,rollerZ)&&rollerBoard>-Config.GuideRollerRadius-.025f&&Ice.IsInside(Vehicle.X,Vehicle.Z);
+            if(GuideRollerContact)
+            {
+                // The roller turns with its centre's travel along the board face, forward positive.
+                float tx=-boardZ,tz=boardX;
+                if(tx*rs+tz*rc<0){tx=-tx;tz=-tz;}
+                GuideRollerTravel+=(rollerX-startRollerX)*tx+(rollerZ-startRollerZ)*tz;
+            }
             if (Ice.IsInside(Vehicle.X, Vehicle.Z, 2f)) HasEnteredRink = true;
             if (Vehicle.Speed < -.12f && Conditioner.Lift < .8f) Fault(5, "Raise the conditioner before reversing; the lowered blade scores the surface.");
             if(TankRaised&&Math.Abs(Vehicle.Speed)>.15f)
             {
                 RaisedTankTravelSeconds+=dt;
                 Fault(16,"Raised tank: higher centre of mass reduces cornering grip. Lower it when safe; travel remains under your control.");
-            }
-        }
-
-        bool BodyFits(float x, float z, float heading)
-        {
-            return ProbeVehiclePose(x,z,heading,out _);
-        }
-
-        void ContactNormal(float x,float z,float heading,out float nx,out float nz)
-        {
-            if(!Ice.IsInside(x,z)&&Layout.ContainsFloor(x,z))
-            { Layout.ContactNormal(x,z,out nx,out nz);return; }
-            nx=0;nz=0;float worst=float.MinValue;
-            float sn=(float)Math.Sin(heading),cs=(float)Math.Cos(heading);
-            for(int i=0;i<10;i++)
-            {
-                float lx=i==9?Config.GuideRollerX:(i%3-1)*Config.VehicleHalfWidth;
-                float lz=i==9?Config.GuideRollerZ:-Config.BodyRear+(Config.BodyFront+Config.BodyRear)*(i/3)*.5f;
-                float px=x+cs*lx+sn*lz,pz=z-sn*lx+cs*lz;
-                float d=Ice.BoardDistance(px,pz,out float tx,out float tz)+(i==9?Config.GuideRollerRadius:0);
-                // The service-bay opening is a union, not a solid south board.
-                if(Layout.ContainsVehicleFloor(px,pz))continue;
-                if(d>worst){worst=d;nx=tx;nz=tz;}
             }
         }
 

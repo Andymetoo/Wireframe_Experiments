@@ -1,5 +1,11 @@
 AURORA R-54 / BOARD BRUSH RIG AND CONDITIONER ALIGNMENT
 
+UPDATE 2026-11-02 (ControlsBrushRoller.txt): the Inspector names its calibration source (in Prefab Mode it
+reads the authored scene; a "draft not applied" there was the bake-time fallback). The outermost collision
+point on the brush side is now the guide roller (moved outboard to lead the conditioner). Scene handles are now
+labelled SWEEP (simulation contact) or COSMETIC; reach is checked against the real collision outline;
+"Restore Previous Simulation Geometry" undoes the last Apply across sessions.
+
 Files
   Core/BoardBrushArticulation.cs          the one arm/contact formula (simulation, runtime visuals, Editor preview)
   Presentation/IceBoardBrushRig.cs        brush authoring component (on "Board brush articulated arm / left side")

@@ -23,6 +23,7 @@
     <Compile Include="TrainingGuideValidation.cs" />
     <Compile Include="RouteUXCoreValidation.cs" />
     <Compile Include="OperatorSpeedValidation.cs" />
+    <Compile Include="ContactDrivingValidation.cs" />
     <Compile Include="../Editor/RecordedRouteFixture.cs" />
   </ItemGroup>
 </Project>

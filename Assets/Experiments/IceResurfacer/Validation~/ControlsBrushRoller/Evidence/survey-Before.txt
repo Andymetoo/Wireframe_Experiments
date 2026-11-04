@@ -1,0 +1,317 @@
+== CALIBRATION CONTEXT
+INFO -- scene instance vs authored scene calibration
+INFO    Front wheel pivot L | Matches | 0.0 mm
+INFO    Rear wheel hub L | Matches | 0.0 mm
+INFO    Front wheel pivot R | Matches | 0.0 mm
+INFO    Rear wheel hub R | Matches | 0.0 mm
+INFO    Conditioner hitch (root) | Matches | 0.0 mm
+INFO    Cutting blade edge at depth 0 | Matches | 0.0 mm | Lowered blade edge +0.0 mm relative to the ice top.
+INFO    Conditioner lift cylinders | Info |  | Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO    Conditioner lift linkage vs rear tyres | Matches | 0.0 mm
+INFO    Snow tank dump hinge | Matches | 0.0 mm
+INFO    Snow tank scale (per axis, x1000) | Matches | 0.0 mm
+INFO    Conveyor discharge into tank | Matches | 0.0 mm
+INFO    Board brush mechanism | Matches | 0.0 mm
+INFO    Board brush radius (visible vs contact, mm) | Matches | 0.0 mm
+INFO    Collision outline (plan view) | Mechanical | 1066.0 mm | The simulated body (one 2.13 m wide rectangle) differs from the machine as drawn by up to 500 mm (at z -1.25 m); the conditioner (half width 1.066 m) is not a collider. Transfer fits a 85-vertex outline to 435 parts (widest 1.020 m) and a conditioner collider; it changes where the machine can drive (GPS compatibility).
+INFO    Board guide roller | Mechanical | 198.6 mm | Simulated roller contact is 199 mm from the visible roller.
+INFO    Guide roller vs widest part | Info |  | The roller reaches 0.917 m from the centreline, 149 mm short of the conditioner side plates (1.066 m). Running parallel to the boards that part touches first; the roller leads only with the nose angled toward the boards (about 2.9 deg or more). "Move Guide Roller Outboard..." moves its assembly (a visual change to your part); Transfer then makes it physical.
+INFO prefab root has IceResurfacerGame parent: False (Prefab Mode falls back to the bake-time configuration)
+INFO -- PREFAB MODE as shipped (bake-time configuration)
+INFO    Front wheel pivot L | Matches | 0.0 mm
+INFO    Rear wheel hub L | Matches | 0.0 mm
+INFO    Front wheel pivot R | Matches | 0.0 mm
+INFO    Rear wheel hub R | Matches | 0.0 mm
+INFO    Conditioner hitch (root) | Mechanical | 215.0 mm | Visible conditioner is +215 mm from the simulated cut, flood and pickup. Transfer moves the simulation to it, and the lift-cylinder clevises by -215 mm on the housing so the cylinders keep their stroke.
+INFO    Cutting blade edge at depth 0 | Matches | 0.0 mm | Lowered blade edge +0.0 mm relative to the ice top.
+INFO    Conditioner lift cylinders | Info |  | Pin-to-clevis at the simulated hitch: lowered 0.554 m, raised 0.445 m; at the authored root: 0.230 m
+INFO    Conditioner lift linkage vs rear tyres | Matches | 0.0 mm
+INFO    Snow tank dump hinge | Mechanical | 49.0 mm
+INFO    Snow tank scale (per axis, x1000) | Mechanical | 332.7 mm
+INFO    Conveyor discharge into tank | Mechanical | 668.2 mm
+INFO    Board brush mechanism | Mechanical | 378.8 mm | Rig draft not applied: pivot X -0.9 -> -0.548 m, pivot Z 1.16 -> 1.3 m, arm length 0.38 -> 0.388 m, radius 0.25 -> 0.192 m, stowed angle 85 -> 86.327 deg. Use the rig's Apply.
+INFO    Board brush radius (visible vs contact, mm) | Mechanical | 58.0 mm | Snow is cleared over a 250 mm disc but the bristles show 192 mm.
+INFO    Collision outline (plan view) | Mechanical | 1066.0 mm | The simulated body (one 2.13 m wide rectangle) differs from the machine as drawn by up to 500 mm (at z -1.25 m); the conditioner (half width 1.066 m) is not a collider. Transfer fits a 85-vertex outline to 435 parts (widest 1.020 m) and a conditioner collider; it changes where the machine can drive (GPS compatibility).
+INFO    Board guide roller | Mechanical | 198.6 mm | Simulated roller contact is 199 mm from the visible roller.
+INFO    Guide roller vs widest part | Info |  | The roller reaches 0.917 m from the centreline, 149 mm short of the conditioner side plates (1.066 m). Running parallel to the boards that part touches first; the roller leads only with the nose angled toward the boards (about 2.7 deg or more). "Move Guide Roller Outboard..." moves its assembly (a visual change to your part); Transfer then makes it physical.
+INFO -- prefab vs authored scene calibration
+INFO    Front wheel pivot L | Matches | 0.0 mm
+INFO    Rear wheel hub L | Matches | 0.0 mm
+INFO    Front wheel pivot R | Matches | 0.0 mm
+INFO    Rear wheel hub R | Matches | 0.0 mm
+INFO    Conditioner hitch (root) | Matches | 0.0 mm
+INFO    Cutting blade edge at depth 0 | Matches | 0.0 mm | Lowered blade edge +0.0 mm relative to the ice top.
+INFO    Conditioner lift cylinders | Info |  | Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO    Conditioner lift linkage vs rear tyres | Matches | 0.0 mm
+INFO    Snow tank dump hinge | Matches | 0.0 mm
+INFO    Snow tank scale (per axis, x1000) | Matches | 0.0 mm
+INFO    Conveyor discharge into tank | Matches | 0.0 mm
+INFO    Board brush mechanism | Matches | 0.0 mm
+INFO    Board brush radius (visible vs contact, mm) | Matches | 0.0 mm
+INFO    Collision outline (plan view) | Mechanical | 1066.0 mm | The simulated body (one 2.13 m wide rectangle) differs from the machine as drawn by up to 500 mm (at z -1.25 m); the conditioner (half width 1.066 m) is not a collider. Transfer fits a 85-vertex outline to 435 parts (widest 1.020 m) and a conditioner collider; it changes where the machine can drive (GPS compatibility).
+INFO    Board guide roller | Mechanical | 198.6 mm | Simulated roller contact is 199 mm from the visible roller.
+INFO    Guide roller vs widest part | Info |  | The roller reaches 0.917 m from the centreline, 149 mm short of the conditioner side plates (1.066 m). Running parallel to the boards that part touches first; the roller leads only with the nose angled toward the boards (about 2.9 deg or more). "Move Guide Roller Outboard..." moves its assembly (a visual change to your part); Transfer then makes it physical.
+INFO brush rig draft vs scene calibration: MATCHES
+INFO brush rig draft vs bake-time configuration: pivot X -0.9 -> -0.548 m, pivot Z 1.16 -> 1.3 m, arm length 0.38 -> 0.388 m, radius 0.25 -> 0.192 m, stowed angle 85 -> 86.327 deg
+INFO brush visual bristle radius 0.1920 m; scene BrushRadius 0.1920; baked 0.2500
+INFO conveyor inlet check in the prefab preview scene: ok
+INFO conveyor inlet check in the authored scene: ok
+INFO scene overrides below the instance root: 0
+INFO added objects 0, added components 0, removed components 0
+INFO CALIBRATION scene vs bake | BrushPivotX | bake -0.9 | scene -0.548
+INFO CALIBRATION scene vs bake | BrushPivotZ | bake 1.16 | scene 1.3
+INFO CALIBRATION scene vs bake | BrushArmLength | bake 0.38 | scene 0.3884955
+INFO CALIBRATION scene vs bake | BrushRadius | bake 0.25 | scene 0.192
+INFO CALIBRATION scene vs bake | BrushRetractedDegrees | bake 85 | scene 86.32715
+INFO CALIBRATION scene vs bake | TankHingeZ | bake 2.46 | scene 2.411
+INFO CALIBRATION scene vs bake | TankScaleX | bake 1 | scene 1.0684
+INFO CALIBRATION scene vs bake | TankScaleY | bake 1 | scene 1.2685
+INFO CALIBRATION scene vs bake | TankScaleZ | bake 1 | scene 1.1841
+INFO CALIBRATION scene vs bake | ConveyorDischargeX | bake 0.45 | scene -0.021
+INFO CALIBRATION scene vs bake | ConveyorDischargeHeight | bake 1.48 | scene 1.63921
+INFO CALIBRATION scene vs bake | ConveyorDischargeZ | bake 0.47 | scene 0.02359068
+INFO CALIBRATION scene vs bake | DrawbarLength | bake 0.65 | scene 0.435
+INFO CALIBRATION scene vs bake | CollisionOutline | bake System.Single[] | scene System.Single[]
+== CONTROLS / hierarchy and visible grips (Edit Mode, authored pose)
+INFO Conditioner hydraulic lever | AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Conditioner lift lever | under conditioner False | grip 'Black phenolic hydraulic grip' control-local (0.0000,0.2250,0.0000) | machine (-0.0518,1.7935,-0.6580) | control lossy scale (0.5394,0.5394,0.5394)
+INFO Horizontal auger lever | AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Horizontal auger lever | under conditioner False | grip 'Black phenolic hydraulic grip' control-local (0.0000,0.2250,0.0000) | machine (0.0398,1.7935,-0.6580) | control lossy scale (0.5394,0.5394,0.5394)
+INFO Vertical auger lever | AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Vertical auger lever | under conditioner False | grip 'Black phenolic hydraulic grip' control-local (0.0000,0.2250,0.0000) | machine (-0.1435,1.7935,-0.6580) | control lossy scale (0.5394,0.5394,0.5394)
+INFO Snow tank hydraulic lever | AURORA R-54 / rear axle origin/Left-hand operator station/Transverse four spool hydraulic bank/Snow dump hydraulic lever | under conditioner False | grip 'Black phenolic hydraulic grip' control-local (0.0000,0.2250,0.0000) | machine (0.1315,1.7935,-0.6580) | control lossy scale (0.5394,0.5394,0.5394)
+INFO Flood water valve | Trailing conditioner / articulated hitch/Flood valve fixed bearing/FLOOD WATER / quarter turn L handle | under conditioner True | grip 'Valve grip' control-local (-0.0850,0.5640,0.0000) | machine (-0.2445,2.2770,-0.9760) | control lossy scale (1.0000,1.0000,1.0000)
+INFO Wash water valve | Trailing conditioner / articulated hitch/Wash valve fixed bearing/WASH WATER / quarter turn L handle | under conditioner True | grip 'Valve grip' control-local (-0.0832,0.5640,0.0000) | machine (0.0703,2.2770,-0.9778) | control lossy scale (1.0000,1.0000,1.0000)
+INFO Blade handwheel | Trailing conditioner / articulated hitch/Complete blade screw and handwheel assembly/Blade depth handwheel | under conditioner True | grip 'Handwheel crank' control-local (0.1100,0.0450,0.0000) | machine (0.0707,2.1597,-1.1106) | control lossy scale (0.7702,0.7702,0.7702)
+INFO Snow-breaker plunger | AURORA R-54 / rear axle origin/Left-hand operator station/Complete snow breaker assembly/Snow breaker plunger / manual stroke | under conditioner False | grip 'Snow breaker T handle' control-local (0.0000,0.2200,0.0000) | machine (0.2640,1.8887,-0.7100) | control lossy scale (0.7348,0.7348,0.7348)
+INFO calibration WaterValveStemHeight 0.240 (picker's valve grip height in the handle frame)
+INFO seated eye (camera mount) machine (-0.8200,2.2380,-0.8460) | seat (-0.6100,1.5680,-0.9360)
+== EDIT MODE PREVIEW (scene calibration)
+INFO PREVIEW scene | Flood water valve grip | lift 0% | machine (-0.2445,1.9370,-0.9760)
+INFO PREVIEW scene | Wash water valve grip | lift 0% | machine (0.0703,1.9370,-0.9778)
+INFO PREVIEW scene | Blade handwheel grip | lift 0% | machine (0.0707,1.8197,-1.1106)
+INFO PREVIEW scene | Flood water valve grip | lift 25% | machine (-0.2445,2.0220,-0.9760)
+INFO PREVIEW scene | Wash water valve grip | lift 25% | machine (0.0703,2.0220,-0.9778)
+INFO PREVIEW scene | Blade handwheel grip | lift 25% | machine (0.0707,1.9047,-1.1106)
+INFO PREVIEW scene | Flood water valve grip | lift 50% | machine (-0.2445,2.1070,-0.9760)
+INFO PREVIEW scene | Wash water valve grip | lift 50% | machine (0.0703,2.1070,-0.9778)
+INFO PREVIEW scene | Blade handwheel grip | lift 50% | machine (0.0707,1.9897,-1.1106)
+INFO PREVIEW scene | Flood water valve grip | lift 75% | machine (-0.2445,2.1920,-0.9760)
+INFO PREVIEW scene | Wash water valve grip | lift 75% | machine (0.0703,2.1920,-0.9778)
+INFO PREVIEW scene | Blade handwheel grip | lift 75% | machine (0.0707,2.0747,-1.1106)
+INFO PREVIEW scene | Flood water valve grip | lift 100% | machine (-0.2445,2.2770,-0.9760)
+INFO PREVIEW scene | Wash water valve grip | lift 100% | machine (0.0703,2.2770,-0.9778)
+INFO PREVIEW scene | Blade handwheel grip | lift 100% | machine (0.0707,2.1597,-1.1106)
+== SPANNING MEMBERS (ends in machine space; chassis parts nearest the upper end)
+INFO SPAN lift 100% | Flood valve fixed bearing/Independent valve rubber line | ends (0.040,1.578,-0.860) .. (0.040,1.258,-0.930) | upper end 19 mm from chassis part 'DashControlBoard'
+INFO SPAN lift 100% | Wash valve fixed bearing/Independent valve rubber line | ends (0.234,1.578,-0.860) .. (0.234,1.258,-0.930) | upper end 53 mm from chassis part 'Shaped engine cover / right of operator'
+INFO SPAN lift 100% | Lift linkage | ends (-0.539,0.680,-0.635) .. (-0.539,0.920,-0.125) | upper end 4 mm from chassis part 'BackBloc'
+INFO SPAN lift 100% | Lift linkage | ends (0.539,0.680,-0.635) .. (0.539,0.920,-0.125) | upper end 4 mm from chassis part 'BackBloc'
+INFO SPAN lift 100% | Hydraulic flexible hose | ends (-0.230,0.780,-0.765) .. (-0.290,1.040,-0.245) | upper end 0 mm from chassis part 'Left operator floor'
+INFO SPAN lift 100% | Hydraulic flexible hose | ends (0.230,0.780,-0.765) .. (0.290,1.040,-0.245) | upper end 0 mm from chassis part 'Left operator floor'
+INFO SPAN lift 50% | Flood valve fixed bearing/Independent valve rubber line | ends (0.040,1.408,-0.860) .. (0.040,1.088,-0.930) | upper end 53 mm from chassis part 'Shaped engine cover / right of operator'
+INFO SPAN lift 50% | Wash valve fixed bearing/Independent valve rubber line | ends (0.234,1.408,-0.860) .. (0.234,1.088,-0.930) | upper end 53 mm from chassis part 'Shaped engine cover / right of operator'
+INFO SPAN lift 50% | Lift linkage | ends (-0.539,0.510,-0.635) .. (-0.539,0.920,-0.125) | upper end 4 mm from chassis part 'BackBloc'
+INFO SPAN lift 50% | Lift linkage | ends (0.539,0.510,-0.635) .. (0.539,0.920,-0.125) | upper end 4 mm from chassis part 'BackBloc'
+INFO SPAN lift 50% | Hydraulic flexible hose | ends (-0.230,0.610,-0.765) .. (-0.290,1.040,-0.245) | upper end 0 mm from chassis part 'Left operator floor'
+INFO SPAN lift 50% | Hydraulic flexible hose | ends (0.230,0.610,-0.765) .. (0.290,1.040,-0.245) | upper end 0 mm from chassis part 'Left operator floor'
+INFO SPAN lift 0% | Flood valve fixed bearing/Independent valve rubber line | ends (0.040,1.238,-0.860) .. (0.040,0.918,-0.930) | upper end 53 mm from chassis part 'Shaped engine cover / right of operator'
+INFO SPAN lift 0% | Wash valve fixed bearing/Independent valve rubber line | ends (0.234,1.238,-0.860) .. (0.234,0.918,-0.930) | upper end 53 mm from chassis part 'Shaped engine cover / right of operator'
+INFO SPAN lift 0% | Lift linkage | ends (-0.539,0.340,-0.635) .. (-0.539,0.920,-0.125) | upper end 4 mm from chassis part 'BackBloc'
+INFO SPAN lift 0% | Lift linkage | ends (0.539,0.340,-0.635) .. (0.539,0.920,-0.125) | upper end 4 mm from chassis part 'BackBloc'
+INFO SPAN lift 0% | Hydraulic flexible hose | ends (-0.230,0.440,-0.765) .. (-0.290,1.040,-0.245) | upper end 0 mm from chassis part 'Left operator floor'
+INFO SPAN lift 0% | Hydraulic flexible hose | ends (0.230,0.440,-0.765) .. (0.290,1.040,-0.245) | upper end 0 mm from chassis part 'Left operator floor'
+== PLAN OUTLINE (machine space, all heights; 5 cm stations)
+INFO OUTLINE z -1.25..-1.20 | x -0.830 .. -0.390 | left 'Operator seat back' right 'Operator seat back'
+INFO OUTLINE z -1.20..-1.15 | x -0.960 .. 0.180 | left 'Seat left rear arm pad' right 'DashControlBoard'
+INFO OUTLINE z -1.15..-1.10 | x -0.885 .. 0.024 | left 'Operator cushion' right 'Blade spindle fixed bearing'
+INFO OUTLINE z -1.10..-1.05 | x -0.940 .. 0.022 | left 'Boarding lower step' right 'Blade spindle fixed bearing'
+INFO OUTLINE z -1.05..-1.00 | x -0.927 .. 0.154 | left 'Step non-slip tread' right 'Water valve gland nut'
+INFO OUTLINE z -1.00..-0.95 | x -1.020 .. 1.020 | left 'Rear bumper' right 'Rear bumper'
+INFO OUTLINE z -0.95..-0.90 | x -0.927 .. -0.144 | left 'Step non-slip tread' right 'Non-slip operator floor mat'
+INFO OUTLINE z -0.90..-0.85 | x -0.927 .. -0.809 | left 'Step non-slip tread' right 'Step non-slip tread'
+INFO OUTLINE z -0.85..-0.80 | x -1.020 .. 1.020 | left 'Rear bumper' right 'Rear bumper'
+INFO OUTLINE z -0.80..-0.75 | x -0.927 .. 0.580 | left 'Step non-slip tread' right 'Conditioner lift barrel / articulated'
+INFO OUTLINE z -0.75..-0.70 | x -0.927 .. 0.804 | left 'Step non-slip tread' right 'Shaped engine cover / right of operator'
+INFO OUTLINE z -0.70..-0.65 | x -0.927 .. 0.814 | left 'Step non-slip tread' right 'Fill-port mounting plate'
+INFO OUTLINE z -0.65..-0.60 | x -0.940 .. 0.900 | left 'Boarding lower step' right 'Bayonet inlet lug'
+INFO OUTLINE z -0.60..-0.55 | x -0.764 .. 0.903 | left 'Pedal backing plate' right 'Fill inlet dark aperture'
+INFO OUTLINE z -0.55..-0.50 | x -0.784 .. 0.903 | left 'Left platform support' right 'Fill inlet dark aperture'
+INFO OUTLINE z -0.50..-0.45 | x -0.750 .. 0.900 | left 'Rear wheel arch mudguard' right 'Bayonet inlet lug'
+INFO OUTLINE z -0.45..-0.40 | x -0.724 .. 0.785 | left 'Brake pedal' right 'Tire traction block'
+INFO OUTLINE z -0.40..-0.35 | x -0.793 .. 0.821 | left 'Tire carcass' right 'Level gauge backing'
+INFO OUTLINE z -0.35..-0.30 | x -0.793 .. 0.833 | left 'Tire carcass' right 'Level graduation'
+INFO OUTLINE z -0.30..-0.25 | x -0.788 .. 0.833 | left 'Tire traction block' right 'Level graduation'
+INFO OUTLINE z -0.25..-0.20 | x -0.813 .. 0.813 | left 'Pressed steel rim' right 'Pressed steel rim'
+INFO OUTLINE z -0.20..-0.15 | x -0.836 .. 0.836 | left 'Wheel lug' right 'Wheel lug'
+INFO OUTLINE z -0.15..-0.10 | x -0.836 .. 0.888 | left 'Wheel lug' right 'Fill inlet dark aperture'
+INFO OUTLINE z -0.10..-0.05 | x -0.850 .. 0.888 | left 'Hub cap' right 'Fill inlet dark aperture'
+INFO OUTLINE z -0.05..0.00 | x -0.850 .. 0.888 | left 'Hub cap' right 'Fill inlet dark aperture'
+INFO OUTLINE z 0.00..0.05 | x -0.850 .. 0.885 | left 'Hub cap' right 'Bayonet inlet lug'
+INFO OUTLINE z 0.05..0.10 | x -0.850 .. 0.850 | left 'Hub cap' right 'Hub cap'
+INFO OUTLINE z 0.10..0.15 | x -0.836 .. 0.836 | left 'Wheel lug' right 'Wheel lug'
+INFO OUTLINE z 0.15..0.20 | x -0.836 .. 0.836 | left 'Wheel lug' right 'Wheel lug'
+INFO OUTLINE z 0.20..0.25 | x -0.813 .. 0.813 | left 'Pressed steel rim' right 'Pressed steel rim'
+INFO OUTLINE z 0.25..0.30 | x -0.788 .. 0.788 | left 'Tire traction block' right 'Tire traction block'
+INFO OUTLINE z 0.30..0.35 | x -0.793 .. 0.793 | left 'Tire carcass' right 'Tire carcass'
+INFO OUTLINE z 0.35..0.40 | x -0.810 .. 0.810 | left 'Flush tank glacier stripe' right 'Flush tank glacier stripe'
+INFO OUTLINE z 0.40..0.45 | x -0.585 .. 0.785 | left 'Tire traction block' right 'Tire traction block'
+INFO OUTLINE z 0.45..0.50 | x -0.750 .. 0.751 | left 'Rear wheel arch mudguard' right 'Rear wheel arch mudguard (1)'
+INFO OUTLINE z 0.50..0.55 | x -0.535 .. 0.535 | left 'BackBloc' right 'BackBloc'
+INFO OUTLINE z 0.55..0.60 | x -0.743 .. 0.743 | left 'Frame bolt' right 'Tapered between-axle casing / front wheel wells'
+INFO OUTLINE z 0.60..0.65 | x -0.745 .. 0.750 | left 'Frame bolt' right 'Frame bolt'
+INFO OUTLINE z 0.65..0.70 | x -0.740 .. 0.750 | left 'Tank cylinder lower clevis pin' right 'Frame bolt'
+INFO OUTLINE z 0.70..0.75 | x -0.740 .. 0.740 | left 'Tank cylinder lower clevis pin' right 'Tank cylinder lower clevis pin'
+INFO OUTLINE z 0.75..0.80 | x -0.740 .. 0.740 | left 'Tank cylinder lower clevis pin' right 'Tank cylinder lower clevis pin'
+INFO OUTLINE z 0.85..0.90 | x -0.684 .. 0.684 | left 'Sloping forward tank crown' right 'Sloping forward tank crown'
+INFO OUTLINE z 0.90..0.95 | x -0.748 .. 0.744 | left 'Frame bolt' right 'Frame bolt'
+INFO OUTLINE z 0.95..1.00 | x -0.732 .. 0.731 | left 'Frame bolt' right 'Frame bolt'
+INFO OUTLINE z 1.10..1.15 | x -0.710 .. 0.710 | left 'Tank lift chrome piston / telescoping' right 'Tank lift chrome piston / telescoping'
+INFO OUTLINE z 1.15..1.20 | x -0.712 .. 0.712 | left 'Tank lift chrome piston / telescoping' right 'Tank lift chrome piston / telescoping'
+INFO OUTLINE z 1.20..1.25 | x -0.690 .. 0.690 | left 'Tank lift cylinder barrel / articulated' right 'Tank lift cylinder barrel / articulated'
+INFO OUTLINE z 1.25..1.30 | x -0.738 .. 0.738 | left 'Tank lift cylinder barrel / articulated' right 'Tank lift cylinder barrel / articulated'
+INFO OUTLINE z 1.45..1.50 | x -0.796 .. 0.796 | left 'Tank cylinder moving clevis pin' right 'Tank cylinder moving clevis pin'
+INFO OUTLINE z 1.50..1.55 | x -0.796 .. 0.796 | left 'Tank cylinder moving clevis pin' right 'Tank cylinder moving clevis pin'
+INFO OUTLINE z 1.55..1.60 | x -0.796 .. 0.796 | left 'Tank cylinder moving clevis pin' right 'Tank cylinder moving clevis pin'
+INFO OUTLINE z 1.60..1.65 | x -0.793 .. 0.793 | left 'Tire carcass' right 'Tire carcass'
+INFO OUTLINE z 1.65..1.70 | x -0.788 .. 0.788 | left 'Tire traction block' right 'Tire traction block'
+INFO OUTLINE z 1.70..1.75 | x -0.813 .. 0.813 | left 'Pressed steel rim' right 'Pressed steel rim'
+INFO OUTLINE z 1.75..1.80 | x -0.836 .. 0.836 | left 'Wheel lug' right 'Wheel lug'
+INFO OUTLINE z 1.80..1.85 | x -0.836 .. 0.836 | left 'Wheel lug' right 'Wheel lug'
+INFO OUTLINE z 1.85..1.90 | x -0.850 .. 0.850 | left 'Hub cap' right 'Hub cap'
+INFO OUTLINE z 1.90..1.95 | x -0.850 .. 0.850 | left 'Hub cap' right 'Hub cap'
+INFO OUTLINE z 1.95..2.00 | x -0.850 .. 0.850 | left 'Hub cap' right 'Hub cap'
+INFO OUTLINE z 2.00..2.05 | x -0.850 .. 0.850 | left 'Hub cap' right 'Hub cap'
+INFO OUTLINE z 2.05..2.10 | x -0.850 .. 0.850 | left 'Hub cap' right 'Hub cap'
+INFO OUTLINE z 2.10..2.15 | x -0.836 .. 0.836 | left 'Wheel lug' right 'Wheel lug'
+INFO OUTLINE z 2.15..2.20 | x -0.813 .. 0.813 | left 'Pressed steel rim' right 'Pressed steel rim'
+INFO OUTLINE z 2.20..2.25 | x -0.788 .. 0.788 | left 'Tire traction block' right 'Tire traction block'
+INFO OUTLINE z 2.25..2.30 | x -0.793 .. 0.793 | left 'Tire carcass' right 'Tire carcass'
+INFO OUTLINE z 2.30..2.35 | x -0.793 .. 0.793 | left 'Tire carcass' right 'Tire carcass'
+INFO OUTLINE z 2.35..2.40 | x -0.793 .. 0.793 | left 'Tire carcass' right 'Tire carcass'
+INFO OUTLINE z 2.40..2.45 | x -0.769 .. 0.769 | left 'Tank lower side skin' right 'Tank lower side skin'
+INFO OUTLINE z 2.45..2.50 | x -0.769 .. 0.769 | left 'Tapered opening snow dump door' right 'Tapered opening snow dump door'
+INFO OUTLINE z 2.50..2.55 | x -0.736 .. 0.736 | left 'Front bumper' right 'Front bumper'
+INFO OUTLINE conditioner (authored lift) z -1.50 | x -1.050 .. 1.050
+INFO OUTLINE conditioner (authored lift) z -1.45 | x -0.750 .. 0.812
+INFO OUTLINE conditioner (authored lift) z -1.40 | x -0.774 .. 0.836
+INFO OUTLINE conditioner (authored lift) z -1.35 | x -1.066 .. 1.066
+INFO OUTLINE conditioner (authored lift) z -1.30 | x -1.030 .. 1.030
+INFO OUTLINE conditioner (authored lift) z -1.25 | x -0.985 .. 0.985
+INFO OUTLINE conditioner (authored lift) z -1.20 | x -1.060 .. 1.060
+INFO OUTLINE conditioner (authored lift) z -1.15 | x -0.128 .. 0.100
+INFO OUTLINE conditioner (authored lift) z -1.10 | x -0.765 .. 0.765
+INFO OUTLINE conditioner (authored lift) z -1.05 | x -0.106 .. 0.078
+INFO OUTLINE conditioner (authored lift) z -1.00 | x -0.275 .. 0.162
+INFO OUTLINE conditioner (authored lift) z -0.90 | x 0.000 .. 0.000
+INFO OUTLINE conditioner (authored lift) z -0.85 | x -0.978 .. 0.978
+INFO OUTLINE conditioner (authored lift) z -0.80 | x -0.600 .. 0.600
+INFO OUTLINE conditioner (authored lift) z -0.75 | x -0.921 .. 0.921
+INFO OUTLINE conditioner (authored lift) z -0.70 | x -0.921 .. 0.921
+INFO OUTLINE conditioner (authored lift) z -0.65 | x -0.978 .. 0.978
+INFO OUTLINE conditioner (authored lift) z -0.60 | x -1.060 .. 1.060
+INFO OUTLINE conditioner (authored lift) z -0.55 | x -1.066 .. 1.066
+INFO OUTLINE conditioner (authored lift) z -0.30 | x -0.300 .. 0.300
+INFO OUTLINE conditioner (authored lift) z -0.25 | x -0.305 .. 0.305
+INFO OUTLINE conditioner (authored lift) z -0.15 | x -0.566 .. 0.567
+INFO GUIDE ROLLER visible centre (-0.8270,0.5300,2.4440) radius 0.0900 | simulated (-1.015, 2.38) r 0.09
+INFO SIMULATED BODY rectangle x +-1.065 z -0.45 .. 2.5
+PASS survey did not modify the prefab or the scene
+== PLAY
+== PLAY POSES vs EDIT MODE PREVIEW (same lift)
+INFO POSE lift 0% | Conditioner hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 0% | Horizontal auger lever grip | play-edit 0.0 mm
+INFO POSE lift 0% | Vertical auger lever grip | play-edit 0.0 mm
+INFO POSE lift 0% | Snow tank hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 0% | Flood water valve grip | play-edit 0.0 mm
+INFO POSE lift 0% | Wash water valve grip | play-edit 0.0 mm
+INFO POSE lift 0% | Blade handwheel grip | play-edit 0.0 mm
+INFO POSE lift 0% | Snow-breaker plunger grip | play-edit 0.0 mm
+INFO POSE lift 25% | Conditioner hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 25% | Horizontal auger lever grip | play-edit 0.0 mm
+INFO POSE lift 25% | Vertical auger lever grip | play-edit 0.0 mm
+INFO POSE lift 25% | Snow tank hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 25% | Flood water valve grip | play-edit 0.0 mm
+INFO POSE lift 25% | Wash water valve grip | play-edit 0.0 mm
+INFO POSE lift 25% | Blade handwheel grip | play-edit 0.0 mm
+INFO POSE lift 25% | Snow-breaker plunger grip | play-edit 0.0 mm
+INFO POSE lift 50% | Conditioner hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 50% | Horizontal auger lever grip | play-edit 0.0 mm
+INFO POSE lift 50% | Vertical auger lever grip | play-edit 0.0 mm
+INFO POSE lift 50% | Snow tank hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 50% | Flood water valve grip | play-edit 0.0 mm
+INFO POSE lift 50% | Wash water valve grip | play-edit 0.0 mm
+INFO POSE lift 50% | Blade handwheel grip | play-edit 0.0 mm
+INFO POSE lift 50% | Snow-breaker plunger grip | play-edit 0.0 mm
+INFO POSE lift 75% | Conditioner hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 75% | Horizontal auger lever grip | play-edit 0.0 mm
+INFO POSE lift 75% | Vertical auger lever grip | play-edit 0.0 mm
+INFO POSE lift 75% | Snow tank hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 75% | Flood water valve grip | play-edit 0.0 mm
+INFO POSE lift 75% | Wash water valve grip | play-edit 0.0 mm
+INFO POSE lift 75% | Blade handwheel grip | play-edit 0.0 mm
+INFO POSE lift 75% | Snow-breaker plunger grip | play-edit 0.0 mm
+INFO POSE lift 100% | Conditioner hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 100% | Horizontal auger lever grip | play-edit 0.0 mm
+INFO POSE lift 100% | Vertical auger lever grip | play-edit 0.0 mm
+INFO POSE lift 100% | Snow tank hydraulic lever grip | play-edit 0.0 mm
+INFO POSE lift 100% | Flood water valve grip | play-edit 0.0 mm
+INFO POSE lift 100% | Wash water valve grip | play-edit 0.0 mm
+INFO POSE lift 100% | Blade handwheel grip | play-edit 0.0 mm
+INFO POSE lift 100% | Snow-breaker plunger grip | play-edit 0.0 mm
+== PLAY BATCHING / visible renderers that move with each control
+INFO BATCH Conditioner hydraulic lever | enabled renderers under the control 3 (691 vertices) | highlight renderers 3 (alive 3)
+INFO BATCH Horizontal auger lever | enabled renderers under the control 3 (691 vertices) | highlight renderers 3 (alive 3)
+INFO BATCH Vertical auger lever | enabled renderers under the control 3 (691 vertices) | highlight renderers 3 (alive 3)
+INFO BATCH Snow tank hydraulic lever | enabled renderers under the control 3 (691 vertices) | highlight renderers 3 (alive 3)
+INFO BATCH Flood water valve | enabled renderers under the control 2 (264 vertices) | highlight renderers 2 (alive 2)
+INFO BATCH Wash water valve | enabled renderers under the control 2 (264 vertices) | highlight renderers 2 (alive 2)
+INFO BATCH Blade handwheel | enabled renderers under the control 3 (760 vertices) | highlight renderers 3 (alive 3)
+INFO BATCH Snow-breaker plunger | enabled renderers under the control 2 (176 vertices) | highlight renderers 2 (alive 2)
+INFO BATCH conditioner static batch 'Batched Brushed stainless steel' 656 vertices
+INFO BATCH conditioner static batch 'Batched Flood distribution towel' 432 vertices
+INFO BATCH conditioner static batch 'Batched Amber safety enamel' 48 vertices
+INFO BATCH conditioner static batch 'Batched Instrument graphite' 1168 vertices
+INFO BATCH conditioner static batch 'Batched Aurora midnight blue' 968 vertices
+INFO BATCH conditioner static batch 'Batched Aurora glacier enamel' 88 vertices
+INFO BATCH conditioner static batch 'Batched Tire and hydraulic rubber' 24 vertices
+== PICKING (camera at the seated eye, aimed at each visible grip; virtual mouse through IcePhysicalControls.UpdateInput)
+INFO PICK lift 0% | aim Conditioner hydraulic lever | picked 'Conditioner hydraulic lever' | hover 'Conditioner hydraulic lever' | distance 0.94 m
+INFO PICK lift 0% | aim Horizontal auger lever | picked 'Horizontal auger lever' | hover 'Horizontal auger lever' | distance 1.01 m
+INFO PICK lift 0% | aim Vertical auger lever | picked 'Vertical auger lever' | hover 'Vertical auger lever' | distance 0.86 m
+INFO PICK lift 0% | aim Snow tank hydraulic lever | picked 'Snow tank hydraulic lever' | hover 'Snow tank hydraulic lever' | distance 1.09 m
+INFO PICK lift 0% | aim Flood water valve | picked 'Flood water valve' | hover 'Flood water valve' | distance 0.69 m
+INFO PICK lift 0% | aim Wash water valve | picked 'Wash water valve' | hover 'Wash water valve' | distance 0.97 m
+INFO PICK lift 0% | aim Blade handwheel | picked 'Blade handwheel' | hover 'Blade handwheel' | distance 1.05 m
+INFO PICK lift 0% | aim Snow-breaker plunger | picked 'Snow-breaker plunger' | hover 'Snow-breaker plunger' | distance 1.17 m
+INFO PICK lift 50% | aim Conditioner hydraulic lever | picked 'Conditioner hydraulic lever' | hover 'Conditioner hydraulic lever' | distance 0.94 m
+INFO PICK lift 50% | aim Horizontal auger lever | picked 'Horizontal auger lever' | hover 'Horizontal auger lever' | distance 1.01 m
+INFO PICK lift 50% | aim Vertical auger lever | picked 'Vertical auger lever' | hover 'Vertical auger lever' | distance 0.86 m
+INFO PICK lift 50% | aim Snow tank hydraulic lever | picked 'Snow tank hydraulic lever' | hover 'Snow tank hydraulic lever' | distance 1.09 m
+INFO PICK lift 50% | aim Flood water valve | picked 'Flood water valve' | hover 'Flood water valve' | distance 0.62 m
+INFO PICK lift 50% | aim Wash water valve | picked 'Wash water valve' | hover 'Wash water valve' | distance 0.92 m
+INFO PICK lift 50% | aim Blade handwheel | picked 'Blade handwheel' | hover 'Blade handwheel' | distance 0.98 m
+INFO PICK lift 50% | aim Snow-breaker plunger | picked 'Snow-breaker plunger' | hover 'Snow-breaker plunger' | distance 1.17 m
+INFO PICK lift 100% | aim Conditioner hydraulic lever | picked 'Conditioner hydraulic lever' | hover 'Conditioner hydraulic lever' | distance 0.94 m
+INFO PICK lift 100% | aim Horizontal auger lever | picked 'Horizontal auger lever' | hover 'Horizontal auger lever' | distance 1.01 m
+INFO PICK lift 100% | aim Vertical auger lever | picked 'Vertical auger lever' | hover 'Vertical auger lever' | distance 0.86 m
+INFO PICK lift 100% | aim Snow tank hydraulic lever | picked 'Snow tank hydraulic lever' | hover 'Snow tank hydraulic lever' | distance 1.09 m
+INFO PICK lift 100% | aim Flood water valve | picked 'Flood water valve' | hover 'Flood water valve' | distance 0.59 m
+INFO PICK lift 100% | aim Wash water valve | picked 'Wash water valve' | hover 'Wash water valve' | distance 0.90 m
+INFO PICK lift 100% | aim Blade handwheel | picked 'Blade handwheel' | hover 'Blade handwheel' | distance 0.94 m
+INFO PICK lift 100% | aim Snow-breaker plunger | picked 'Snow-breaker plunger' | hover 'Snow-breaker plunger' | distance 1.17 m
+== DRAG (pointer follows the visible grip turning 45 deg about its own axis)
+INFO DRAG lift 0% | Flood water valve | grabbed 'Flood water valve' | setting 0.000 -> 0.500 (expected 0.500)
+INFO DRAG lift 0% | Wash water valve | grabbed 'Wash water valve' | setting 0.000 -> 0.500 (expected 0.500)
+INFO DRAG lift 0% | Blade handwheel | grabbed 'Blade handwheel' | setting 0.000 -> 0.029 mm (expected about 0.029 mm)
+INFO DRAG lift 50% | Flood water valve | grabbed 'Flood water valve' | setting 0.000 -> 0.500 (expected 0.500)
+INFO DRAG lift 50% | Wash water valve | grabbed 'Wash water valve' | setting 0.000 -> 0.411 (expected 0.500)
+INFO DRAG lift 50% | Blade handwheel | grabbed 'Blade handwheel' | setting 0.000 -> 0.029 mm (expected about 0.029 mm)
+INFO DRAG lift 100% | Flood water valve | grabbed 'Flood water valve' | setting 0.000 -> 0.386 (expected 0.500)
+INFO DRAG lift 100% | Wash water valve | grabbed 'Wash water valve' | setting 0.000 -> 0.410 (expected 0.500)
+INFO DRAG lift 100% | Blade handwheel | grabbed 'Blade handwheel' | setting 0.000 -> 0.029 mm (expected about 0.029 mm)
+== HOLD WHILE THE CONDITIONER MOVES (pointer still)
+INFO HOLD | Flood water valve | grabbed 'Flood water valve' | setting 0.500 -> 0.500 while the conditioner rose 0 -> 100% (pointer still)
+INFO HOLD | Wash water valve | grabbed 'Wash water valve' | setting 0.500 -> 0.500 while the conditioner rose 0 -> 100% (pointer still)
+INFO HOLD | Blade handwheel | grabbed 'Flood water valve' | setting 0.400 -> 0.400 while the conditioner rose 0 -> 100% (pointer still)
+== E CONTROLS VIEW
+INFO E view lift 0% | yaw 82.7 pitch 27.4 | grips in view: Conditioner hydraulic lever, Horizontal auger lever, Vertical auger lever, Snow tank hydraulic lever, Flood water valve, Wash water valve, Blade handwheel, Snow-breaker plunger | picks: Conditioner hydraulic lever->Conditioner hydraulic lever; Horizontal auger lever->Horizontal auger lever; Vertical auger lever->Vertical auger lever; Snow tank hydraulic lever->Snow tank hydraulic lever; Flood water valve->Flood water valve; Wash water valve->Wash water valve; Blade handwheel->Blade handwheel; Snow-breaker plunger->Snow-breaker plunger
+INFO E view lift 100% | yaw 82.7 pitch 17.3 | grips in view: Conditioner hydraulic lever, Horizontal auger lever, Vertical auger lever, Snow tank hydraulic lever, Flood water valve, Wash water valve, Blade handwheel, Snow-breaker plunger | picks: Conditioner hydraulic lever->Conditioner hydraulic lever; Horizontal auger lever->Horizontal auger lever; Vertical auger lever->Vertical auger lever; Snow tank hydraulic lever->Snow tank hydraulic lever; Flood water valve->Flood water valve; Wash water valve->Wash water valve; Blade handwheel->Blade handwheel; Snow-breaker plunger->Snow-breaker plunger
+INFO Unity runtime errors or exceptions in Play: 0

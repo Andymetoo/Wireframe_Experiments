@@ -23,6 +23,8 @@ namespace IceResurfacer.Core
         public double TotalShavedIceM3 { get; private set; }
         public double TotalExpandedShavingsM3 { get; private set; }
         public double TotalLooseSnowPickupM3 { get; private set; }
+        public double TotalWashSuppliedLiters { get; private set; }
+        public double TotalWashRecirculatedLiters { get; private set; }
 
         void FindFootprint()
         {
@@ -102,6 +104,7 @@ namespace IceResurfacer.Core
             float advance=Math.Min(1,distance/Config.ConditionerLength),area=Ice.CellSize*Ice.CellSize;
             float flood=Math.Min(FloodWaterLiters,Controls.FloodFlow*Config.FloodMaxLitersPerSecond*dt);
             float wash=Math.Min(WashWaterLiters,Controls.WashValve*Config.WashMaxLitersPerSecond*dt);
+            TotalWashSuppliedLiters+=wash;
             FloodWaterLiters-=flood;TotalFloodUsedLiters+=flood;WashWaterLiters-=wash;
             float availableLiquid=0;
             if(Controls.WashPump&&pressure>.8f)
@@ -123,6 +126,7 @@ namespace IceResurfacer.Core
             float recovery=Math.Min(pumpCapacity,wash*Config.WashRecoveryFraction);
             recovery=Math.Min(recovery,Math.Max(0,Config.WashCapacityLiters-WashWaterLiters));
             WashWaterLiters+=recovery;TotalWashUsedLiters+=wash-recovery;
+            TotalWashRecirculatedLiters+=recovery;
             // Fresh wash return and old surface water share one finite pump and
             // one tank. A full wash reservoir leaves the excess on the sheet.
             float pickup=Math.Min(availableLiquid,Math.Min(Math.Max(0,pumpCapacity-recovery)*Config.WashRecoveryFraction,

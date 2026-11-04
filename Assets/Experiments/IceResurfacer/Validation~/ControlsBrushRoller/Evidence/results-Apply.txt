@@ -1,0 +1,112 @@
+== Before: Mechanical Alignment in the authored scene / 2026-11-02T21:08:37
+INFO TABLE | Front wheel pivot L | Matches | 0.0 mm | 
+INFO TABLE | Rear wheel hub L | Matches | 0.0 mm | 
+INFO TABLE | Front wheel pivot R | Matches | 0.0 mm | 
+INFO TABLE | Rear wheel hub R | Matches | 0.0 mm | 
+INFO TABLE | Conditioner hitch (root) | Matches | 0.0 mm | 
+INFO TABLE | Cutting blade edge at depth 0 | Matches | 0.0 mm | Lowered blade edge +0.0 mm relative to the ice top.
+INFO TABLE | Conditioner lift cylinders | Info | 0.0 mm | Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO TABLE | Conditioner lift linkage vs rear tyres | Matches | 0.0 mm | 
+INFO TABLE | Snow tank dump hinge | Matches | 0.0 mm | 
+INFO TABLE | Snow tank scale (per axis, x1000) | Matches | 0.0 mm | 
+INFO TABLE | Conveyor discharge into tank | Matches | 0.0 mm | 
+INFO TABLE | Board brush mechanism | Matches | 0.0 mm | 
+INFO TABLE | Board brush radius (visible vs contact, mm) | Matches | 0.0 mm | 
+INFO TABLE | Collision outline (plan view) | Mechanical | 1066.0 mm | The simulated body (one 2.13 m wide rectangle) differs from the machine as drawn by up to 500 mm (at z -1.25 m); the conditioner (half width 1.066 m) is not a collider. Transfer fits a 85-vertex outline to 435 parts (widest 1.020 m) and a conditioner collider; it changes where the machine can drive (GPS compatibility).
+INFO TABLE | Board guide roller | Mechanical | 198.6 mm | Simulated roller contact is 199 mm from the visible roller.
+INFO TABLE | Guide roller vs widest part | Info | 0.0 mm | The roller reaches 0.917 m from the centreline, 149 mm short of the conditioner side plates (1.066 m). Running parallel to the boards that part touches first; the roller leads only with the nose angled toward the boards (about 2.9 deg or more). "Move Guide Roller Outboard..." moves its assembly (a visual change to your part); Transfer then makes it physical.
+== Guide roller: Move Guide Roller Outboard (Inspector action, 25 mm lead) / 2026-11-02T21:08:37
+INFO roller shortfall for a 25 mm lead over the conditioner side plates (1.066 m): 174.0 mm
+PASS the roller assembly moves outboard: roller assembly moved 174 mm outboard: centre x -1.001, outer edge |x| 1.091 leads the conditioner side plates (1.066) by 25 mm; bracket lengthened to 0.369 m, still meeting the body at x -0.632
+INFO roller assembly moved 174 mm outboard: centre x -1.001, outer edge |x| 1.091 leads the conditioner side plates (1.066) by 25 mm; bracket lengthened to 0.369 m, still meeting the body at x -0.632
+INFO transforms changed by the roller move: Front-left board guide / distinct from board brush, Guide roller bracket
+PASS only the roller assembly and its bracket moved (everything else in the machine is untouched)
+PASS the move is written to the prefab, not left as scene overrides
+== Transfer Authored Geometry to Simulation (Inspector action) / 2026-11-02T21:08:38
+PASS Reconcile succeeds
+INFO Collision outline (plan view): CollisionOutline legacy rectangle -> 85 vertices; conditioner collider half width 0.000 -> 1.066 (front 0.365, rear 0.575) (GPS compatibility fields)
+INFO Board guide roller: GuideRoller (-1.015, 2.380, r 0.090) -> (-1.001, 2.444, r 0.090) (GPS compatibility fields)
+== After / 2026-11-02T21:08:38
+INFO TABLE | Front wheel pivot L | Matches | 0.0 mm | 
+INFO TABLE | Rear wheel hub L | Matches | 0.0 mm | 
+INFO TABLE | Front wheel pivot R | Matches | 0.0 mm | 
+INFO TABLE | Rear wheel hub R | Matches | 0.0 mm | 
+INFO TABLE | Conditioner hitch (root) | Matches | 0.0 mm | 
+INFO TABLE | Cutting blade edge at depth 0 | Matches | 0.0 mm | Lowered blade edge +0.0 mm relative to the ice top.
+INFO TABLE | Conditioner lift cylinders | Info | 0.0 mm | Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO TABLE | Conditioner lift linkage vs rear tyres | Matches | 0.0 mm | 
+INFO TABLE | Snow tank dump hinge | Matches | 0.0 mm | 
+INFO TABLE | Snow tank scale (per axis, x1000) | Matches | 0.0 mm | 
+INFO TABLE | Conveyor discharge into tank | Matches | 0.0 mm | 
+INFO TABLE | Board brush mechanism | Matches | 0.0 mm | 
+INFO TABLE | Board brush radius (visible vs contact, mm) | Matches | 0.0 mm | 
+INFO TABLE | Collision outline (plan view) | Matches | 0.0 mm | 
+INFO TABLE | Board guide roller | Matches | 0.0 mm | 
+PASS aligned: Front wheel pivot L (0.0 mm)
+PASS aligned: Rear wheel hub L (0.0 mm)
+PASS aligned: Front wheel pivot R (0.0 mm)
+PASS aligned: Rear wheel hub R (0.0 mm)
+PASS aligned: Conditioner hitch (root) (0.0 mm)
+PASS aligned: Cutting blade edge at depth 0 (0.0 mm)
+PASS aligned: Conditioner lift cylinders (0.0 mm)
+PASS aligned: Conditioner lift linkage vs rear tyres (0.0 mm)
+PASS aligned: Snow tank dump hinge (0.0 mm)
+PASS aligned: Snow tank scale (per axis, x1000) (0.0 mm)
+PASS aligned: Conveyor discharge into tank (0.0 mm)
+PASS aligned: Board brush mechanism (0.0 mm)
+PASS aligned: Board brush radius (visible vs contact, mm) (0.0 mm)
+PASS aligned: Collision outline (plan view) (0.0 mm)
+PASS aligned: Board guide roller (0.0 mm)
+INFO CALIBRATION | GuideRollerX | -1.015 -> -1.001 | GPS COMPATIBILITY FIELD
+INFO CALIBRATION | GuideRollerZ | 2.38 -> 2.444 | GPS COMPATIBILITY FIELD
+INFO CALIBRATION | CollisionOutline | [] -> [85 vertices] | GPS COMPATIBILITY FIELD
+INFO CALIBRATION | ConditionerCollisionHalfWidth | 0 -> 1.066 | GPS COMPATIBILITY FIELD
+INFO CALIBRATION | ConditionerCollisionFront | 0.4 -> 0.365 | GPS COMPATIBILITY FIELD
+INFO CALIBRATION | ConditionerCollisionRear | 0.4 -> 0.575 | GPS COMPATIBILITY FIELD
+PASS collision outline and conditioner collider are in the scene calibration
+PASS the machine meshes are not modified
+== Guide roller hardware after the move / 2026-11-02T21:08:38
+PASS the roller's outer edge |x| 1.091 leads the conditioner side plates (1.066) by 25 mm
+PASS the simulated roller is the visible roller (-1.001, 2.444, r 0.090)
+PASS the bracket ends at the roller axle
+PASS the bracket's inboard end is still inside the drawn body (x -0.632, body side -0.783)
+INFO bracket length 0.369 m (was 0.195 m)
+PASS the front tyre clears the roller and bracket through full steering lock by 33 mm (closest at -18.9 deg)
+== GPS: new validated copies for the authored calibration (originals untouched) / 2026-11-02T21:08:39
+INFO GPS before | Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0; CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS before | Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS before | Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json | INCOMPATIBLE: CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS NOT revalidated | Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json | Revalidation failed: 0 curvature, 31 boundary, 0 source errors. No corrected guide was saved. Inspect the Editor error regions.
+INFO GPS clearance | Andy_Try_1 / recorded track (repaired) / authored Aurora calibration | 4/5130 recorded poses touch boards/walls with the drawn envelope; deepest 12 mm past the 2 cm driving margin (sample 995 at (-11.65, -5.24)); by part: guide roller x2, conditioner side x2
+INFO GPS repair try | 15 mm | ready=True boundary=0 curvature=0
+INFO GPS repaired copy | Andy_Try_1___recorded_track__20261103_050845_a58dcab3.guide.json | control points #60 (seq 791), #61 (seq 804), #68 (seq 894), #69 (seq 907), #75 (seq 985), #76 (seq 998) moved 15 mm away from the boards; the other 392 of 398 points and the embedded recording are unchanged | length 1003.196 m (raw 1003.234 m), max deviation from the recorded track 33 mm
+INFO GPS before | Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json | INCOMPATIBLE: CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS skip | Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json | same route and recording as a guide already copied
+INFO GPS before | AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json | INCOMPATIBLE: CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS copy | AndyRoute___auto_fit___outli_20261103_050846_a07f71fa.guide.json from AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json | ready=True boundary=0 curvature=0 recorded=0 length 131.581 m | compatible=True
+INFO GPS before | AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json | INCOMPATIBLE: CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS skip | AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json | same route and recording as a guide already copied
+INFO GPS before | AndyRoute___auto_fit_20261031_024356_870d3a31.guide.json | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0; CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+INFO GPS before | AndyRoute___auto_fit_20261031_042536_8cdf27b9.guide.json | INCOMPATIBLE: DrawbarLength: guide=0.649999976, session=0.435000002; ConditionerYawLimitRadians: guide=0.0349065848, session=0; CollisionOutline: guide=legacy rectangle, session=85 vertices; ConditionerCollisionHalfWidth: guide=0, session=1.06599998; ConditionerCollisionFront: guide=0.400000006, session=0.36500001; ConditionerCollisionRear: guide=0.400000006, session=0.574999988; GuideRollerX: guide=-1.01499999, session=-1.00099993; GuideRollerZ: guide=2.38000011, session=2.44400001
+PASS original unchanged: \AndyRoute_20261031_024330_fe2f44fa.route.json
+PASS original unchanged: \AndyRoute_20261031_024516_dd9a2441.route.json
+PASS original unchanged: \Andy_Try_1_20261031_041839_75958600.route.json
+PASS original unchanged: \Operator_route_20261031_010840_4d4b5ed5.route.json
+PASS original unchanged: \Operator_route_20261031_011611_e0c83283.route.json
+PASS original unchanged: \Drafts\155eee053f5d4d64989ffaf8f78f919b.route.json
+PASS original unchanged: \Drafts\7fdbfea1b5c94915ae1b5b67de291f1c.route.json
+PASS original unchanged: \Drafts\82d8601d8c5b4988b11914ff60141bdd.route.json
+PASS original unchanged: \Drafts\83885131475946c6ad466ad140afd4db.route.json
+PASS original unchanged: \Drafts\9ecd3b8c417243478c7cf458e9e3353b.route.json
+PASS original unchanged: \Drafts\ce0b5efd533045828f24a39dd8c90503.route.json
+PASS original unchanged: \Guides\AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json
+PASS original unchanged: \Guides\AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json
+PASS original unchanged: \Guides\Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json
+PASS original unchanged: \Guides\Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json
+PASS original unchanged: \Guides\Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json
+PASS original unchanged: \Guides\Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json
+PASS original unchanged: \Guides\AutoFit\AndyRoute___auto_fit_20261031_024356_870d3a31.guide.json
+PASS original unchanged: \Guides\AutoFit\AndyRoute___auto_fit_20261031_042536_8cdf27b9.guide.json
+PASS original unchanged: \Guides\Drafts\48b4215b78a441fc99a28419a1804d59.guide.json
+PASS original unchanged: \Guides\Drafts\9aac663cc0e34b76be462bc58992b36e.guide.json
+PASS previewing after the save does not dirty the saved scene

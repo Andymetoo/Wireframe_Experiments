@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aurora R-54 cockpit refinement — Unity comparisons</title>
+<style>
+  body{margin:0;background:#121c24;color:#e7eef3;font:16px/1.5 system-ui,sans-serif}
+  main{max-width:1800px;margin:auto;padding:32px}h1{font-size:28px;margin:0 0 8px}
+  h2{font-size:21px;margin:32px 0 8px}p{max-width:90ch;color:#b9cbd5}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0;background:#1e2c37;border:1px solid #354a58;border-radius:8px;overflow:hidden}
+  figcaption{padding:10px 14px}img{display:block;width:100%;height:auto}a{color:#9ed9eb}
+  .note{font-size:14px}.single{max-width:1100px}@media(max-width:850px){.pair{grid-template-columns:1fr}main{padding:18px}}
+</style>
+<main>
+<h1>Aurora R-54 — cockpit refinement</h1>
+<p>Actual Unity 6000.4.1f1 camera renders. Before is the handoff state; after is the corrected layout. Click an image for the original 1920 × 1080 capture.</p>
+<p class="note">Steering and fixed-control comparisons use identical seated camera poses. E and rear-glance comparisons use each revision's real inspection target. The brush pair uses an identical external camera with the brush deployed.</p>
+<h2>Complete board brush assembly</h2>
+<p>Pivot and working contact move 46 cm forward, from 0.70 m to 1.16 m ahead of the rear axle.</p>
+<div class="pair">
+<figure><figcaption>Before · rearward mount</figcaption><a href="CockpitRefinementBefore/Brush-deployed.png"><img src="CockpitRefinementBefore/Brush-deployed.png" alt="Before: deployed brush closer to rear wheel"></a></figure>
+<figure><figcaption>After · forward mount and contact</figcaption><a href="CockpitRefinementAfter/Brush-deployed.png"><img src="CockpitRefinementAfter/Brush-deployed.png" alt="After: complete deployed brush moved toward front axle"></a></figure>
+</div>
+<h2>Steering wheel from the seated camera</h2>
+<p>Hub 28 cm farther forward; wheel plane 68° above horizontal. Connected column, dashboard and work lamp follow the new assembly.</p>
+<div class="pair">
+<figure><figcaption>Before · low, close wheel</figcaption><a href="CockpitRefinementBefore/Steering-seated.png"><img src="CockpitRefinementBefore/Steering-seated.png" alt="Before steering from the seated first-person camera"></a></figure>
+<figure><figcaption>After · upright wheel, clear of seat and controls</figcaption><a href="CockpitRefinementAfter/Steering-seated.png"><img src="CockpitRefinementAfter/Steering-seated.png" alt="After steering from the same seated first-person camera pose"></a></figure>
+</div>
+<h2>Blade wheel, water handles and snow breaker</h2>
+<p>The blade spindle moves closer to the driver, behind and between the taller water stems. The complete breaker moves beside the hydraulic bank.</p>
+<div class="pair">
+<figure><figcaption>Before · fixed seated inspection pose</figcaption><a href="CockpitRefinementBefore/Controls-seated-fixed.png"><img src="CockpitRefinementBefore/Controls-seated-fixed.png" alt="Before controls from fixed seated pose"></a></figure>
+<figure><figcaption>After · same seated inspection pose</figcaption><a href="CockpitRefinementAfter/Controls-seated-fixed.png"><img src="CockpitRefinementAfter/Controls-seated-fixed.png" alt="After controls from identical seated pose"></a></figure>
+</div>
+<h2>Actual E inspection</h2>
+<div class="pair">
+<figure><figcaption>Before · real E target</figcaption><a href="CockpitRefinementBefore/Controls-E.png"><img src="CockpitRefinementBefore/Controls-E.png" alt="Before E inspection"></a></figure>
+<figure><figcaption>After · real E target from updated control extents</figcaption><a href="CockpitRefinementAfter/Controls-E.png"><img src="CockpitRefinementAfter/Controls-E.png" alt="After E inspection of all controls"></a></figure>
+</div>
+<h2>Left Shift rear glance</h2>
+<div class="pair">
+<figure><figcaption>Before · left shoulder (−160°)</figcaption><a href="CockpitRefinementBefore/Rear-shoulder.png"><img src="CockpitRefinementBefore/Rear-shoulder.png" alt="Before: incorrect left-shoulder rear glance"></a></figure>
+<figure><figcaption>After · right shoulder (+160°)</figcaption><a href="CockpitRefinementAfter/Rear-shoulder.png"><img src="CockpitRefinementAfter/Rear-shoulder.png" alt="After: right-shoulder rear glance"></a></figure>
+</div>
+<h2>Individual hover feedback</h2>
+<p>Subtle amber tint follows the selected moving control. The existing picker supplies both feedback and interaction.</p>
+<div class="pair">
+<figure><figcaption>Conditioner grip hovered</figcaption><a href="CockpitRefinementAfter/Hover-hydraulic.png"><img src="CockpitRefinementAfter/Hover-hydraulic.png" alt="Only the selected conditioner lever is highlighted"></a></figure>
+<figure><figcaption>Flood water handle hovered</figcaption><a href="CockpitRefinementAfter/Hover-water.png"><img src="CockpitRefinementAfter/Hover-water.png" alt="Only the selected flood water handle is highlighted"></a></figure>
+</div>
+<h2>Native HUD verification</h2>
+<p>Both resolutions passed the live IMGUI control and camera checks with no measured text clipping. These are actual development-player framebuffers.</p>
+<div class="pair">
+<figure><figcaption>1366 × 768 · E inspection and live machinery state</figcaption><a href="CockpitRefinementAfter/NativeHUD/HUD-1366x768-look-E.png"><img src="CockpitRefinementAfter/NativeHUD/HUD-1366x768-look-E.png" alt="Corrected cockpit and live HUD at 1366 by 768"></a></figure>
+<figure><figcaption>1920 × 1080 · E inspection and live machinery state</figcaption><a href="CockpitRefinementAfter/NativeHUD/HUD-1920x1080-look-E.png"><img src="CockpitRefinementAfter/NativeHUD/HUD-1920x1080-look-E.png" alt="Corrected cockpit and live HUD at 1920 by 1080"></a></figure>
+</div>
+<p class="note">Screenshot FPS includes capture waits and is not a benchmark. Offscreen D3D presentation warnings are recorded separately in the validation report.</p>
+<p class="note"><a href="../Documentation/CockpitRefinement.txt">Change details, file inventory, validation and operator-calibration questions</a></p>
+</main>
+</html>

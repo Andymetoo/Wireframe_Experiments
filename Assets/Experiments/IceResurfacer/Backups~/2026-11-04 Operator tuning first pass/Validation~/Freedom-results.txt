@@ -1,0 +1,9 @@
+Extracted from the final 32-scenario aggregate run on 28 October 2026.
+  dump site=0 heading=0.38 discharged=0.01647m3 pit=0.00000 ice=0.01647 ground=0.00000
+  dump site=1 heading=2.53 discharged=0.01647m3 pit=0.01647 ice=0.00000 ground=0.00000
+  dump site=2 heading=0.01 discharged=0.01647m3 pit=0.00000 ice=0.00000 ground=0.01647
+  traction peak=9.6% maximum lateral drift=0.22m/s; 2m/s coast=3.97m brake=1.38m
+  diagonal gate=10.510,-27.510; entry and reverse exit under drive controls PASS
+  unconventional driven session: coverage=2.37%, score=10.5, misuse=7, floor water=12.65L, dumped ontoice=0.01350m3; completed without reset
+  Free Simulation, training isolation, moving dismount, arbitrary dumps, material balance, traction and southeast geometry PASS
+PASS Free Simulation consequences, geometry, traction and guided separation

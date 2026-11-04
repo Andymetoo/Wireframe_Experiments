@@ -1,0 +1,57 @@
+AURORA R-54 / operator ergonomics and surface consistency
+29 October 2026
+
+Launch: Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity
+Current implementation: ../README.txt and ../Documentation/OperatorErgonomics.txt
+
+Core: PASS, 37 deterministic scenario groups, optimized final source.
+Exact water-cache comparison: all six intermediate hashes and final complete
+cell hash match; unchanged counters. Mean .NET core step 1.948 -> 1.086 ms.
+These are core timings, not rendered frame times.
+
+Unity 6000.4.1f1 / D3D11: PASS, final integrated run 8, zero managed errors.
+Camera/sightlines, tank/snow rendering, input/drive recovery, physical controls,
+service/freedom, actual GPU ice/map/pickup/pooling/aging and selective-update
+assertions all pass. Final Unity camera captures are promoted to this folder.
+
+Native HUD: PASS at 1366x768 and 1920x1080, zero measured text clipping.
+Actual native lever/valve/wheel interactions, buttons, map and held quicklooks
+passed. Rendering optimization was subsequently verified by the complete Unity
+suite and final performance player; HUD/control logic did not change.
+Hidden-window D3D presentation warnings: 11 / 6, separate from managed errors.
+
+Optimized rendered performance: COMPLETE, 16 workloads at each resolution.
+Sustained 29,999 measured intervals per run:
+  1366x768: 9.210 ms mean / 23.783 ms p95; CPU work 5.532 ms.
+  1920x1080: 7.818 ms mean / 23.297 ms p95; CPU work 5.518 ms.
+Zero managed errors. Hidden D3D warnings 34 / 43, counted separately.
+Ordinary full-HUD resurfacing mean: 3.261 / 3.802 ms.
+The first 1366 sustained run measured 13.506 / 47.425 ms. Optimization reduces
+mean time 31.8%, p95 time 49.9%, CPU work 48.4% and surface refresh 64.4%, with identical
+physical state. Large accumulated pools remain costlier than the earlier
+feature baseline (4.402 / 5.062 ms mean). No baseline-parity claim.
+PerformanceOperatorErgonomics/Performance-summary.txt contains all scenarios,
+protocol, limitations and links to raw measurements and preserved comparisons.
+
+Normal complete control-driven run: 96.97% reachable treatment, 95.43% whole-ice
+combined coverage, 97.33% water, 77.6% finish, 89.0 score, zero misuse;
+677.0 L flood, 0.729 m3 pit snow, 1,787 simulated seconds and proper return.
+Deliberate-spill generated route: 95.69% reachable, 96.12% water, 79.6 score;
+49.787 L escaped, 24.935 L net same-cell recovery, 0.8099 m3 pit, 1,791 seconds.
+Nine-liter stationary flooding and subsequent physical freezing are included.
+Snow balance -0.00000194 m3; independently integrated liquid+frozen balance
+0.001858 L. Float cumulative/tank counter rounding is disclosed in the report.
+
+Visual evidence: 54 L standing pool reaches 7.160 m2 above .08 mm; 30-minute
+film comparison visibly settles; all 1,458 recovery-band samples show removal.
+
+Preservation audit: 50 source assets match the isolated validation/build copy;
+zero missing source metadata, duplicate GUIDs, outside-experiment changes or
+source mismatches. No branch/commit/push or shared settings/packages changes.
+The user's original Unity Editor was preserved.
+
+Limits: bounded kinematic machinery, finite height-field water and bulk snow;
+no full suspension/fluid/granular simulation. No individual clump collision.
+Custom authored geometry needs swept/contact revalidation. Operator feel and
+sound balance remain subjective. Native offscreen timings do not establish
+focused-window input latency or the user's Editor FPS.

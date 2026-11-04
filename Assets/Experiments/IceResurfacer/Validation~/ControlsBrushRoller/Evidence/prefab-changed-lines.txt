@@ -1,0 +1,6 @@
+=>   m_LocalPosition: {x: -1.0009999, y: 0.53, z: 2.444}
+=>   m_LocalPosition: {x: 0.18449986, y: 0.01999998, z: 0}
+=>   m_LocalScale: {x: 0.055, y: 0.18450001, z: 0.055}
+<=   m_LocalPosition: {x: -0.827, y: 0.53, z: 2.444}
+<=   m_LocalPosition: {x: 0.09749997, y: 0.02000004, z: 0}
+<=   m_LocalScale: {x: 0.055, y: 0.097500004, z: 0.055}

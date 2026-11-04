@@ -1,0 +1,1351 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<doc>
+  <members>
+    <assembly>
+      <name>UnityEditor.GraphToolkitModule</name>
+    </assembly>
+    <member name="T:Unity.GraphToolkit.Editor.BlockNode">
+      <summary>
+        <para>
+ Represents a specialized node that can only exist within a ContextNode.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.BlockNode.ContextNode">
+      <summary>
+        <para>
+ The ContextNode that contains this block node.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.BlockNode.Index">
+      <summary>
+        <para>
+ The index of this block node within the list of blocks in the context node.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.ContextNode">
+      <summary>
+        <para>
+ A specialized node that serves as a dynamic container for compatible BlockNode instances.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.ContextNode.BlockCount">
+      <summary>
+        <para>
+ The number of BlockNodes contained in this context node.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.ContextNode.BlockNodes">
+      <summary>
+        <para>
+ An IEnumerable collection of the BlockNodes contained in this context node.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.ContextNode.GetBlock(System.Int32)">
+      <summary>
+        <para>
+ Retrieves the BlockNode at the specified index in the context node's block list.
+ </para>
+      </summary>
+      <param name="index">The zero-based index of the block to retrieve.</param>
+      <returns>
+        <para>The BlockNode at the specified index.</para>
+      </returns>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.Graph">
+      <summary>
+        <para>
+ Represents the core definition of a graph and defines its behavior.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.GetNode(System.Int32)">
+      <summary>
+        <para>
+ Retrieves a node defined in the graph by its index.
+ </para>
+      </summary>
+      <param name="index">The zero-based index of the node to retrieve.</param>
+      <returns>
+        <para>The INode at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.GetNodes">
+      <summary>
+        <para>
+ Retrieves all nodes in the graph.
+ </para>
+      </summary>
+      <returns>
+        <para>An IEnumerable of all INodes in the graph.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.GetVariable(System.Int32)">
+      <summary>
+        <para>
+ Retrieves a variable declared in the graph by index.
+ </para>
+      </summary>
+      <param name="index">The index of the variable to retrieve.</param>
+      <returns>
+        <para>The IVariable at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.GetVariables">
+      <summary>
+        <para>
+ Retrieves all variables declared in the graph.
+ </para>
+      </summary>
+      <returns>
+        <para>An IEnumerable of all IVariables declared in the graph.</para>
+      </returns>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Graph.Name">
+      <summary>
+        <para>
+ The name of the graph.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Graph.NodeCount">
+      <summary>
+        <para>
+ The number of INodes in the graph.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.OnDisable">
+      <summary>
+        <para>
+ Called when the graph is unloaded, or goes out of scope in the editor.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.OnEnable">
+      <summary>
+        <para>
+ Called when the graph is created or loaded in the editor.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Graph.OnGraphChanged(Unity.GraphToolkit.Editor.GraphLogger)">
+      <summary>
+        <para>
+ Called after the graph has changed.
+ </para>
+      </summary>
+      <param name="graphLogger">The GraphLogger that receives any errors or warnings related to the graph.</param>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Graph.VariableCount">
+      <summary>
+        <para>
+ The number of IVariables declared in the graph.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.GraphAttribute">
+      <summary>
+        <para>
+ Attribute used to declare a graph type by associating it with a file extension and optional configuration options.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphAttribute.#ctor(System.String,Unity.GraphToolkit.Editor.GraphOptions)">
+      <summary>
+        <para>
+ Initializes a new instance of the GraphAttribute class with a file extension and optional graph options.
+ </para>
+      </summary>
+      <param name="extension">
+ The file extension to associate with assets of the graph type. This value must be unique because Unity uses it to select the correct importer.
+ </param>
+      <param name="options">
+ The configuration options for the graph. Defaults to GraphOptions.Default if not specified.
+ </param>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.GraphAttribute.Extension">
+      <summary>
+        <para>
+ Gets the file extension associated with the Graph.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.GraphAttribute.Options">
+      <summary>
+        <para>
+ Gets the graph configuration options.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.GraphDatabase">
+      <summary>
+        <para>
+ Provides functionality needed to access, and perform operations on, graph assets.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.CreateGraph(System.String)">
+      <summary>
+        <para>
+ Creates a new graph asset of type T at the specified file path.
+ </para>
+      </summary>
+      <param name="assetPath">The relative path for the new asset (e.g., "AssetsGraphsMyGraph.mygraph").</param>
+      <returns>
+        <para>The created graph instance.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.GetGraphAssetGUID(Unity.GraphToolkit.Editor.Graph)">
+      <summary>
+        <para>
+ Retrieves the globally unique identifier (GUID) for the asset associated with the specified Graph.
+ </para>
+      </summary>
+      <param name="graph">The graph whose asset GUID you want to retrieve.</param>
+      <returns>
+        <para>The GUID of the graph asset.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.GetGraphAssetPath(Unity.GraphToolkit.Editor.Graph)">
+      <summary>
+        <para>
+ Retrieves the file path of the asset associated with the specified Graph.
+ </para>
+      </summary>
+      <param name="graph">The graph whose asset path you want to retrieve.</param>
+      <returns>
+        <para>The asset's file path.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.LoadGraph(System.String)">
+      <summary>
+        <para>
+ Loads a Graph of type T from the asset at the specified path.
+ </para>
+      </summary>
+      <param name="assetPath">The relative path to the graph asset (for example, "AssetsGraphsMyGraph.mygraph").</param>
+      <returns>
+        <para>The loaded graph instance, or null if no matching graph is found.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.LoadGraphForImporter(System.String)">
+      <summary>
+        <para>
+ Loads a fresh instance of the Graph of type T from disk for use in the asset import pipeline.
+ </para>
+      </summary>
+      <param name="assetPath">The path to the graph asset file.</param>
+      <returns>
+        <para>A new instance of the graph read directly from disk.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.PromptInProjectBrowserToCreateNewAsset(System.String)">
+      <summary>
+        <para>
+ Creates a new graph asset and activates the naming field in the Project Browser.
+ </para>
+      </summary>
+      <param name="defaultName">The default name for the new asset if the user does not rename it. Defaults to "New Graph" if not specified.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphDatabase.SaveGraph(Unity.GraphToolkit.Editor.Graph)">
+      <summary>
+        <para>
+ Saves the asset of the specified Graph to disk if it has unsaved changes.
+ </para>
+      </summary>
+      <param name="graph">The graph to save.</param>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.GraphLogger">
+      <summary>
+        <para>
+ Provides methods for logging messages, warnings, and errors associated with a graph.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphLogger.Log(System.Object,System.Object)">
+      <summary>
+        <para>
+ Logs an informational message.
+ </para>
+      </summary>
+      <param name="message">The message to display.</param>
+      <param name="context">
+ Optional context object to associate with the message. The context is typically a node in the graph that the message relates to.
+ </param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphLogger.LogError(System.Object,System.Object)">
+      <summary>
+        <para>
+ Logs an error message.
+ </para>
+      </summary>
+      <param name="message">The error message to display.</param>
+      <param name="context">
+ Optional context object to associate with the error message. The context is typically a node in the graph that the error relates to.
+ </param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.GraphLogger.LogWarning(System.Object,System.Object)">
+      <summary>
+        <para>
+ Logs a warning message.
+ </para>
+      </summary>
+      <param name="message">The warning message to display.</param>
+      <param name="context">
+ Optional context object to associate with the warning message. The context is typically a node in the graph that the warning relates to.
+ </param>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.GraphOptions">
+      <summary>
+        <para>
+ Flags that define configuration options that affect the behavior and capabilities of a Graph class.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.GraphOptions.Default">
+      <summary>
+        <para>
+ The default graph configuration.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.GraphOptions.DisableAutoInclusionOfNodesFromGraphAssembly">
+      <summary>
+        <para>
+ Indicates that nodes (i.e., subclasses of Node) defined in the same assembly as the graph are not automatically added to the graph item library.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.GraphOptions.None">
+      <summary>
+        <para>
+ No graph options enabled.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.GraphOptions.SupportsSubgraphs">
+      <summary>
+        <para>
+ Indicates that this graph supports subgraphs.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IConstantNode">
+      <summary>
+        <para>
+ Interface for a specialized node that outputs a fixed value of a specific data type.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IConstantNode.DataType">
+      <summary>
+        <para>
+ The data type of the constant node's value.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IConstantNode.TryGetValue(T&amp;)">
+      <summary>
+        <para>
+ Attempts to retrieve the value of the constant node as the specified type.
+ </para>
+      </summary>
+      <param name="value">The output parameter that holds the value if the conversion is successful.</param>
+      <returns>
+        <para>true if the value was successfully retrieved and cast to T; otherwise, false.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IErrorsAndWarnings">
+      <summary>
+        <para>
+ Interface for a container that handles errors, warnings, and informational messages related to a graph or its elements.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IErrorsAndWarnings.Log(System.Object,System.Object)">
+      <summary>
+        <para>
+ Logs an informational message.
+ </para>
+      </summary>
+      <param name="message">The message to display.</param>
+      <param name="context">
+ Optional context object to associate with the message. The context is typically a node in the graph that the message relates to.
+ </param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IErrorsAndWarnings.LogError(System.Object,System.Object)">
+      <summary>
+        <para>
+ Logs an error message.
+ </para>
+      </summary>
+      <param name="message">The error message to display.</param>
+      <param name="context">
+ Optional context object to associate with the error message. The context is typically a node in the graph that the error relates to.
+ </param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IErrorsAndWarnings.LogWarning(System.Object,System.Object)">
+      <summary>
+        <para>
+ Logs a warning message.
+ </para>
+      </summary>
+      <param name="message">The warning message to display.</param>
+      <param name="context">
+ Optional context object to associate with the warning message. The context is typically a node in the graph that the warning relates to.
+ </param>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IInputBasePortBuilder`1">
+      <summary>
+        <para>
+ Base interface for input port builders in a port definition context.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IInputBasePortBuilder_1.Delayed">
+      <summary>
+        <para>
+ Configures the input port to use the DelayedAttribute.
+ </para>
+      </summary>
+      <returns>
+        <para>The current builder instance for method chaining.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IInputPortBuilder">
+      <summary>
+        <para>
+ Interface for defining an input port.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IInputPortBuilder`1">
+      <summary>
+        <para>
+ Interface for defining an input port that uses a specific generic data type.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IInputPortBuilder_1.WithDefaultValue(TData)">
+      <summary>
+        <para>
+ Configures a default value of type TData to the input port.
+ </para>
+      </summary>
+      <param name="defaultValue">The default value of type TData.</param>
+      <returns>
+        <para>An input port builder configured with the default value.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IInputPortBuilder.WithDataType(System.Type)">
+      <summary>
+        <para>
+ Configures the data type of the input port.
+ </para>
+      </summary>
+      <param name="portType">The data type of the port.</param>
+      <returns>
+        <para>An input port builder that supports typed values.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IInputPortBuilder.WithDataType">
+      <summary>
+        <para>
+ Configures the generic data type TData of the input port.
+ </para>
+      </summary>
+      <returns>
+        <para>An input port builder with the specified data type.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.INode">
+      <summary>
+        <para>
+ Interface for a node.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INode.GetInputPort(System.Int32)">
+      <summary>
+        <para>
+ Retrieves an input port using its index.
+ </para>
+      </summary>
+      <param name="index">The index of the input port.</param>
+      <returns>
+        <para>The input port at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INode.GetInputPortByName(System.String)">
+      <summary>
+        <para>
+ Retrieves an input port using its name.
+ </para>
+      </summary>
+      <param name="name">The unique name of the input port within this node.</param>
+      <returns>
+        <para>The input port with the specified name, or null if no match is found.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INode.GetInputPorts">
+      <summary>
+        <para>
+ Retrieves all input ports on the node in the order they are displayed.
+ </para>
+      </summary>
+      <returns>
+        <para>An IEnumerable of input ports.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INode.GetOutputPort(System.Int32)">
+      <summary>
+        <para>
+ Retrieves an output port using its index in the displayed order.
+ </para>
+      </summary>
+      <param name="index">The zero-based index of the output port.</param>
+      <returns>
+        <para>The output port at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INode.GetOutputPortByName(System.String)">
+      <summary>
+        <para>
+ Retrieves an output port using its name.
+ </para>
+      </summary>
+      <param name="name">The unique name of the output port within this node.</param>
+      <returns>
+        <para>The output port with the specified name, or null if no match is found.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INode.GetOutputPorts">
+      <summary>
+        <para>
+ Retrieves all output ports on the node in the order they are displayed.
+ </para>
+      </summary>
+      <returns>
+        <para>An IEnumerable of output ports.</para>
+      </returns>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.INode.InputPortCount">
+      <summary>
+        <para>
+ The number of input ports on the node.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.INode.OutputPortCount">
+      <summary>
+        <para>
+ The number of output ports on the node.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.INodeExtensions">
+      <summary>
+        <para>
+ Provides extension methods related to nodes and ports in a graph.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INodeExtensions.GetNode(Unity.GraphToolkit.Editor.IPort)">
+      <summary>
+        <para>
+ Retrieves the INode that owns the specified port.
+ </para>
+      </summary>
+      <param name="port">The port to get the owning node from.</param>
+      <returns>
+        <para>The INode that contains the specified port.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.INodeOption">
+      <summary>
+        <para>
+ Interface for a node option.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.INodeOption.DataType">
+      <summary>
+        <para>
+ The data type of the node option.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.INodeOption.DisplayName">
+      <summary>
+        <para>
+ The display name of the node option shown in the UI.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.INodeOption.Name">
+      <summary>
+        <para>
+ The unique identifier of the node option.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.INodeOption.TryGetValue(T&amp;)">
+      <summary>
+        <para>
+ Tries to retrieve the value of the node option using the specified type.
+ </para>
+      </summary>
+      <param name="value">The variable to assign the value to, if retrieval succeeds.</param>
+      <returns>
+        <para>true if the option exists and the type matches; otherwise, false.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IOptionBuilder">
+      <summary>
+        <para>
+ Interface used to build and configure node options in a fluent manner.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IOptionBuilder`1">
+      <summary>
+        <para>
+ Interface used to build and configure node options in a fluent manner.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder_1.Build">
+      <summary>
+        <para>
+ Builds and returns the final INodeOption instance based on the current configuration of the builder.
+ </para>
+      </summary>
+      <returns>
+        <para>The constructed INodeOption.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder_1.Delayed">
+      <summary>
+        <para>
+ Configures the input port to use the UnityEngine.DelayedAttribute.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder_1.ShowInInspectorOnly">
+      <summary>
+        <para>
+ Configures the option to be shown only in the inspector, not in the node header.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder_1.WithDefaultValue(TData)">
+      <summary>
+        <para>
+ Configures the default value for the option being built.
+ </para>
+      </summary>
+      <param name="defaultValue">The default value to assign to the option.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder_1.WithDisplayName(System.String)">
+      <summary>
+        <para>
+ Configures the display name of the option being built.
+ </para>
+      </summary>
+      <param name="displayName">The display name to assign to the option.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder_1.WithTooltip(System.String)">
+      <summary>
+        <para>
+ Configures the tooltip text for the option being built.
+ </para>
+      </summary>
+      <param name="tooltip">The tooltip text to assign to the option.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder.Build">
+      <summary>
+        <para>
+ Builds and returns the final INodeOption instance based on the current configuration of the builder.
+ </para>
+      </summary>
+      <returns>
+        <para>The constructed INodeOption.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder.Delayed">
+      <summary>
+        <para>
+ Configures the input port to use the UnityEngine.DelayedAttribute.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder.ShowInInspectorOnly">
+      <summary>
+        <para>
+ Configures the option to be shown only in the inspector, not in the node header.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder.WithDefaultValue(System.Object)">
+      <summary>
+        <para>
+ Configures the default value for the option being built.
+ </para>
+      </summary>
+      <param name="defaultValue">The default value to assign to the option.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder.WithDisplayName(System.String)">
+      <summary>
+        <para>
+ Configures the display name of the option being built.
+ </para>
+      </summary>
+      <param name="displayName">The display name to assign to the option.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOptionBuilder.WithTooltip(System.String)">
+      <summary>
+        <para>
+ Configures the tooltip text for the option being built.
+ </para>
+      </summary>
+      <param name="tooltip">The tooltip text to assign to the option.</param>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IOutputPortBuilder">
+      <summary>
+        <para>
+ Interface for defining an output port.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IOutputPortBuilder`1">
+      <summary>
+        <para>
+ Interface for defining an output port that uses a specific generic data type.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOutputPortBuilder.WithDataType(System.Type)">
+      <summary>
+        <para>
+ Configures the data type of the output port.
+ </para>
+      </summary>
+      <param name="portType">The data type of the port.</param>
+      <returns>
+        <para>An output port builder with the specified data type.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IOutputPortBuilder.WithDataType">
+      <summary>
+        <para>
+ Configures the generic data type TData of the output port.
+ </para>
+      </summary>
+      <returns>
+        <para>An output port builder with the specified data type.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IPort">
+      <summary>
+        <para>
+ Interface for a node port.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IPort.DataType">
+      <summary>
+        <para>
+ Gets the data type associated with the port.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IPort.Direction">
+      <summary>
+        <para>
+ Gets the direction of the port.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IPort.DisplayName">
+      <summary>
+        <para>
+ Gets the label displayed in the UI for the port.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IPort.FirstConnectedPort">
+      <summary>
+        <para>
+ Gets the first port connected to this port, if any.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IPort.GetConnectedPorts(System.Collections.Generic.List`1&lt;Unity.GraphToolkit.Editor.IPort&gt;)">
+      <summary>
+        <para>
+ Retrieves all ports connected to this port.
+ </para>
+      </summary>
+      <param name="outConnectedPorts">A list to populate with the connected ports.</param>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IPort.IsConnected">
+      <summary>
+        <para>
+ Indicates whether the port is currently connected to any other port.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IPort.Name">
+      <summary>
+        <para>
+ Gets the unique identifier name of the port.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IPort.TryGetValue(T&amp;)">
+      <summary>
+        <para>
+ Tries to retrieve the current value assigned to the port’s UI field.
+ </para>
+      </summary>
+      <param name="value">When successful, contains the value assigned to the port’s field.</param>
+      <returns>
+        <para>true if the port is not connected and a field value is available; otherwise, false.
+ </para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IPortBuilder`1">
+      <summary>
+        <para>
+ Base interface representing a generic port builder. Used in a builder pattern to configure and construct ports.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IPortBuilder_1.Build">
+      <summary>
+        <para>
+ Builds and returns the final IPort instance based on the current configuration of the builder.
+ </para>
+      </summary>
+      <returns>
+        <para>The constructed IPort.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IPortBuilder_1.WithConnectorUI(Unity.GraphToolkit.Editor.PortConnectorUI)">
+      <summary>
+        <para>
+ Configures the connector UI shape for the port being built.
+ </para>
+      </summary>
+      <param name="connectorUI">The PortConnectorUI shape to use.</param>
+      <returns>
+        <para>The current builder instance for method chaining.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IPortBuilder_1.WithDisplayName(System.String)">
+      <summary>
+        <para>
+ Configures the display name of the port being built.
+ </para>
+      </summary>
+      <param name="displayName">The display name to assign to the port.</param>
+      <returns>
+        <para>The current builder instance for method chaining.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.ISubgraphNode">
+      <summary>
+        <para>
+ Interface for a specialized node that references a subgraph and exposes its input and output variables as ports.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.ISubgraphNode.GetSubgraph">
+      <summary>
+        <para>
+ Retrieves the subgraph linked to this node.
+ </para>
+      </summary>
+      <returns>
+        <para>The Graph instance that this node references.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.ITypedInputPortBuilder">
+      <summary>
+        <para>
+ Interface for defining a typed input port.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.ITypedInputPortBuilder.WithDefaultValue(System.Object)">
+      <summary>
+        <para>
+ Configures a default value for the input port.
+ </para>
+      </summary>
+      <param name="defaultValue">The default value for the port.</param>
+      <returns>
+        <para>An input port builder configured with the default value.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.ITypedOutputPortBuilder">
+      <summary>
+        <para>
+ Interface for defining a typed output port.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IVariable">
+      <summary>
+        <para>
+ Interface for a graph variable.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IVariable.DataType">
+      <summary>
+        <para>
+ Gets the data type of the variable.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IVariable.Name">
+      <summary>
+        <para>
+ Gets the name of the variable.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.IVariable.TryGetDefaultValue(T&amp;)">
+      <summary>
+        <para>
+ Tries to retrieve the default value of the variable.
+ </para>
+      </summary>
+      <param name="value">The retrieved default value, if available.</param>
+      <returns>
+        <para>true if a default value exists and is of the correct type; otherwise, false.</para>
+      </returns>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IVariable.VariableKind">
+      <summary>
+        <para>
+ Gets the kind of the variable, such as Local, Input, or Output.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.IVariableNode">
+      <summary>
+        <para>
+ Interface for a variable node, which is a specialized node that references a IVariable defined in the graph.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.IVariableNode.Variable">
+      <summary>
+        <para>
+ Retrieves the IVariable associated with the node.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.Node">
+      <summary>
+        <para>
+ The base class for all user-accessible nodes in a graph.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.DefineNode">
+      <summary>
+        <para>
+ Defines the structure of the node by building its ports and options.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetInputPort(System.Int32)">
+      <summary>
+        <para>
+ Retrieves an input port using its index.
+ </para>
+      </summary>
+      <param name="index">The index of the input port.</param>
+      <returns>
+        <para>The input port at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetInputPortByName(System.String)">
+      <summary>
+        <para>
+ Retrieves an input port using its name.
+ </para>
+      </summary>
+      <param name="name">The unique name of the input port within this node.</param>
+      <returns>
+        <para>The input port with the specified name, or null if no match is found.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetInputPorts">
+      <summary>
+        <para>
+ Retrieves all input ports on the node in the order they are displayed.
+ </para>
+      </summary>
+      <returns>
+        <para>An IEnumerable of input ports.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetNodeOption(System.Int32)">
+      <summary>
+        <para>
+ Retrieves a node option using its zero-based index.
+ </para>
+      </summary>
+      <param name="index">Index of the node option, based on display order.</param>
+      <returns>
+        <para>The node option at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetNodeOptionByName(System.String)">
+      <summary>
+        <para>
+ Retrieves a node option using its name.
+ </para>
+      </summary>
+      <param name="name">The unique name of the node option.</param>
+      <returns>
+        <para>The node option with the specified name, or null if none is found.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetOutputPort(System.Int32)">
+      <summary>
+        <para>
+ Retrieves an output port using its index in the displayed order.
+ </para>
+      </summary>
+      <param name="index">The zero-based index of the output port.</param>
+      <returns>
+        <para>The output port at the specified index.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetOutputPortByName(System.String)">
+      <summary>
+        <para>
+ Retrieves an output port using its name.
+ </para>
+      </summary>
+      <param name="name">The unique name of the output port within this node.</param>
+      <returns>
+        <para>The output port with the specified name, or null if no match is found.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.GetOutputPorts">
+      <summary>
+        <para>
+ Retrieves all output ports on the node in the order they are displayed.
+ </para>
+      </summary>
+      <returns>
+        <para>An IEnumerable of output ports.</para>
+      </returns>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Node.InputPortCount">
+      <summary>
+        <para>
+ The number of input ports on the node.
+ </para>
+      </summary>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.Node.IOptionDefinitionContext">
+      <summary>
+        <para>
+ Interface that provides methods to declare node options inside a node.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.IOptionDefinitionContext.AddOption(System.String,System.Type)">
+      <summary>
+        <para>
+ Adds a new node option.
+ </para>
+      </summary>
+      <param name="name">The unique identifier of the option.</param>
+      <param name="dataType">The data type of the option.</param>
+      <returns>
+        <para>An IOptionBuilder to further configure the option.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.IOptionDefinitionContext.AddOption(System.String)">
+      <summary>
+        <para>
+ Adds a new node option.
+ </para>
+      </summary>
+      <param name="name">The unique identifier of the option.</param>
+      <returns>
+        <para>An IOptionBuilder to further configure the option.</para>
+      </returns>
+    </member>
+    <member name="?:Unity.GraphToolkit.Editor.Node.IPortDefinitionContext">
+      <summary>
+        <para>
+ Interface that provides methods to define input and output ports during Node.OnDefinePorts execution.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.IPortDefinitionContext.AddInputPort(System.String)">
+      <summary>
+        <para>
+ Adds a new input port.
+ </para>
+      </summary>
+      <param name="portName">The unique identifier of the input port.</param>
+      <returns>
+        <para>An IInputPortBuilder to further configure the input port.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.IPortDefinitionContext.AddInputPort(System.String)">
+      <summary>
+        <para>
+ Adds a new typed input port with the specified name.
+ </para>
+      </summary>
+      <param name="portName">The unique identifier of the input port.</param>
+      <returns>
+        <para>An IInputPortBuilder_1 to further configure the typed input port.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.IPortDefinitionContext.AddOutputPort(System.String)">
+      <summary>
+        <para>
+ Adds a new output port with the specified name.
+ </para>
+      </summary>
+      <param name="portName">The unique identifier of the output port.</param>
+      <returns>
+        <para>An IOutputPortBuilder to further configure the output port.</para>
+      </returns>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.IPortDefinitionContext.AddOutputPort(System.String)">
+      <summary>
+        <para>
+ Adds a new typed output port with the specified name.
+ </para>
+      </summary>
+      <param name="portName">The unique identifier of the output port.</param>
+      <returns>
+        <para>An IOutputPortBuilder_1 to further configure the typed output port.</para>
+      </returns>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Node.NodeOptionCount">
+      <summary>
+        <para>
+ The number of node options defined in the node.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Node.NodeOptions">
+      <summary>
+        <para>
+ The node options defined on this node.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.OnDefineOptions(Unity.GraphToolkit.Editor.Node/IOptionDefinitionContext)">
+      <summary>
+        <para>
+ Called during DefineNode to define the options available on the node.
+ </para>
+      </summary>
+      <param name="context">Provides methods for defining node options.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.OnDefinePorts(Unity.GraphToolkit.Editor.Node/IPortDefinitionContext)">
+      <summary>
+        <para>
+ Called during DefineNode to define the input and output ports of the node.
+ </para>
+      </summary>
+      <param name="context">Provides methods for defining input and output ports.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.OnDisable">
+      <summary>
+        <para>
+ Called when the node is removed or when the graph is disabled.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.Node.OnEnable">
+      <summary>
+        <para>
+ Called when the node is created or when the graph is enabled.
+ </para>
+      </summary>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.Node.OutputPortCount">
+      <summary>
+        <para>
+ The number of output ports on the node.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.PortConnectorUI">
+      <summary>
+        <para>
+ Specifies the visual style of the connector used to represent a port in the UI.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.PortConnectorUI.Arrowhead">
+      <summary>
+        <para>
+ An arrowhead connector shape.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.PortConnectorUI.Circle">
+      <summary>
+        <para>
+ A circular connector shape.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.PortDirection">
+      <summary>
+        <para>
+ Specifies the direction of a port in the graph.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.PortDirection.Input">
+      <summary>
+        <para>
+ The port receives information. It accepts connections from output ports.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.PortDirection.None">
+      <summary>
+        <para>
+ The port does not have a fixed direction. It may receive or send information.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.PortDirection.Output">
+      <summary>
+        <para>
+ The port sends information. It creates connections to input ports.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.SubgraphAttribute">
+      <summary>
+        <para>
+ Attribute used to define a link between a subgraph type and a main graph type.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.SubgraphAttribute.#ctor(System.Type)">
+      <summary>
+        <para>
+ Initializes a new instance of the SubgraphAttribute class.
+ </para>
+      </summary>
+      <param name="mainGraphType">
+ The type of the main Graph that this subgraph type is compatible with.
+ This must be a type that inherits from Graph.
+ </param>
+    </member>
+    <member name="P:Unity.GraphToolkit.Editor.SubgraphAttribute.MainGraphType">
+      <summary>
+        <para>
+ The type of the main Graph that supports this subgraph type.
+ </para>
+      </summary>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.UseWithContextAttribute">
+      <summary>
+        <para>
+ Attribute used to indicate which types of ContextNode can contain a given BlockNode type.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.UseWithContextAttribute.#ctor(System.Type[])">
+      <summary>
+        <para>
+ Initializes a new instance of the UseWithContextAttribute class with the specified context node types.
+ </para>
+      </summary>
+      <param name="contextTypes">An array of context node types that can contain the decorated block node.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.UseWithContextAttribute.IsContextTypeSupported(System.Type)">
+      <summary>
+        <para>
+ Determines whether the specified context node type supports the block node decorated with this attribute.
+ </para>
+      </summary>
+      <param name="contextType">The type of the context node to check against.</param>
+      <returns>
+        <para>true if the context node type is supported; otherwise, false.</para>
+      </returns>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.UseWithGraphAttribute">
+      <summary>
+        <para>
+ Attribute used to specify which Graph types are compatible with the decorated Node class.
+ </para>
+      </summary>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.UseWithGraphAttribute.#ctor(System.Type[])">
+      <summary>
+        <para>
+ Initializes a new instance of the UseWithGraphAttribute class with the specified supported graph types.
+ </para>
+      </summary>
+      <param name="graphTypes">An array of graph types that support the decorated node type.</param>
+    </member>
+    <member name="M:Unity.GraphToolkit.Editor.UseWithGraphAttribute.IsGraphTypeSupported(System.Type)">
+      <summary>
+        <para>
+ Determines whether the specified graph type supports the node decorated with this attribute.
+ </para>
+      </summary>
+      <param name="graphType">The type of the graph to validate.</param>
+      <returns>
+        <para>true if the graph type supports the node; otherwise, false.</para>
+      </returns>
+    </member>
+    <member name="T:Unity.GraphToolkit.Editor.VariableKind">
+      <summary>
+        <para>
+ Specifies the scope of a IVariable.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.VariableKind.Input">
+      <summary>
+        <para>
+ A variable used as an input to a subgraph.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.VariableKind.Local">
+      <summary>
+        <para>
+ A variable used only within the current graph.
+ </para>
+      </summary>
+    </member>
+    <member name="F:Unity.GraphToolkit.Editor.VariableKind.Output">
+      <summary>
+        <para>
+ A variable used as an output from a subgraph.
+ </para>
+      </summary>
+    </member>
+  </members>
+</doc>

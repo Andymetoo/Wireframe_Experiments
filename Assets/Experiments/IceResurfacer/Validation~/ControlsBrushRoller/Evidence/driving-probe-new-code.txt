@@ -1,0 +1,177 @@
+=== authored scene calibration as saved (new contact response)
+  scenario                                         progress  speed in->out (min) deadStops contacts first   normal  roller  visible-pen sim-pen  heading
+  parallel light contact thr 1.0 steer -0.06       15.90 m  2.65->2.65 (2.65)    0     297  ROLLER  0.09  15.90      0 mm    0 mm     0.0 | max yaw step 0.04 deg
+  parallel light contact thr 0.6 steer -0.06        9.54 m  1.59->1.59 (1.59)    0     295  ROLLER  0.05   9.54      0 mm    0 mm     0.0 | max yaw step 0.02 deg
+  straight thr 1.0  2 deg steer 0 lift 1           13.24 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -2.0 | max yaw step 0.00 deg
+  straight thr 1.0  2 deg steer -0.3 lift 1        13.19 m  2.65->2.65 (2.50)    0     206  ROLLER  0.82  11.07      0 mm    0 mm     0.0 | max yaw step 0.22 deg
+  straight thr 1.0  2 deg steer -1.0 lift 1         7.68 m  2.65->1.53 (1.13)    0     218  ROLLER  1.64   6.22      0 mm    0 mm    -0.7 | max yaw step 0.57 deg
+  straight thr 1.0  2 deg steer +0.3 lift 1        12.00 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    45.1 | max yaw step 0.19 deg
+  straight thr 1.0  5 deg steer 0 lift 1           13.21 m  2.65->2.65 (2.65)    0      91  ROLLER  0.23   5.06      0 mm    0 mm    -0.6 | max yaw step 0.11 deg
+  straight thr 1.0  5 deg steer -0.3 lift 1        12.64 m  2.65->2.65 (1.99)    0     201  ROLLER  0.98  10.38      0 mm    0 mm    -0.1 | max yaw step 0.25 deg
+  straight thr 1.0  5 deg steer -1.0 lift 1         7.34 m  2.65->1.49 (0.97)    0     215  ROLLER  1.91   5.86      0 mm    0 mm    -1.3 | max yaw step 0.62 deg
+  straight thr 1.0  5 deg steer +0.3 lift 1        12.23 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    42.1 | max yaw step 0.19 deg
+  straight thr 1.0 10 deg steer 0 lift 1           13.16 m  2.65->2.65 (2.65)    0     136  ROLLER  0.46   8.51      0 mm    0 mm    -0.3 | max yaw step 0.24 deg
+  straight thr 1.0 10 deg steer -0.3 lift 1        11.74 m  2.65->2.65 (1.58)    0     204  ROLLER  1.15   9.80      0 mm    0 mm    -0.2 | max yaw step 0.29 deg
+  straight thr 1.0 10 deg steer -1.0 lift 1         6.93 m  2.65->1.47 (0.80)    0     214  BODY    2.09   5.62      0 mm    0 mm    -1.9 | max yaw step 0.64 deg
+  straight thr 1.0 10 deg steer +0.3 lift 1        12.53 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    37.1 | max yaw step 0.19 deg
+  straight thr 1.0 15 deg steer 0 lift 1           13.09 m  2.65->2.65 (2.65)    0     155  ROLLER  0.69  10.10      0 mm    0 mm    -0.2 | max yaw step 0.38 deg
+  straight thr 1.0 15 deg steer -0.3 lift 1        10.89 m  2.65->2.65 (1.33)    0     209  BODY    1.32   9.42      0 mm    0 mm    -0.3 | max yaw step 0.30 deg
+  straight thr 1.0 15 deg steer -1.0 lift 1         6.58 m  2.65->1.45 (0.77)    0     217  BODY    2.12   5.40      0 mm    0 mm    -2.4 | max yaw step 0.59 deg
+  straight thr 1.0 15 deg steer +0.3 lift 1        12.74 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    32.1 | max yaw step 0.19 deg
+  straight thr 1.0 25 deg steer 0 lift 1           11.27 m  2.65->2.65 (1.54)    0     196  BODY    1.12   9.71      0 mm    0 mm    -0.4 | max yaw step 0.40 deg
+  straight thr 1.0 25 deg steer -0.3 lift 1         8.46 m  2.65->2.50 (0.91)    0     217  BODY    1.62   7.09      0 mm    0 mm    -1.2 | max yaw step 0.33 deg
+  straight thr 1.0 25 deg steer -1.0 lift 1         5.71 m  2.65->1.38 (0.63)    0     220  BODY    2.19   4.35      0 mm    0 mm    -3.8 | max yaw step 0.53 deg
+  straight thr 1.0 25 deg steer +0.3 lift 1        12.86 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    22.1 | max yaw step 0.19 deg
+  straight thr 1.0 45 deg steer 0 lift 1            5.16 m  2.65->1.75 (0.51)    0     220  BODY    1.87   3.74      0 mm    0 mm    -5.1 | max yaw step 0.40 deg
+  straight thr 1.0 90 deg steer 0 lift 1            0.00 m  2.65->0.00 (0.00)    1     226  BODY    2.65   0.00     30 mm    0 mm   -90.0 | max yaw step 0.00 deg
+  straight thr 0.6  2 deg steer 0 lift 1            7.95 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -2.0 | max yaw step 0.00 deg
+  straight thr 0.6  2 deg steer -0.3 lift 1         7.92 m  1.59->1.59 (1.59)    0     179  ROLLER  0.49   5.89      0 mm    0 mm    -0.8 | max yaw step 0.14 deg
+  straight thr 0.6  2 deg steer -1.0 lift 1         6.96 m  1.59->1.52 (1.09)    0     207  ROLLER  1.09   5.84      0 mm    0 mm    -0.9 | max yaw step 0.41 deg
+  straight thr 0.6  2 deg steer +0.3 lift 1         7.70 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    26.3 | max yaw step 0.12 deg
+  straight thr 0.6  5 deg steer 0 lift 1            7.92 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -5.0 | max yaw step 0.00 deg
+  straight thr 0.6  5 deg steer -0.3 lift 1         7.88 m  1.59->1.59 (1.59)    0     171  ROLLER  0.59   5.69      0 mm    0 mm    -1.2 | max yaw step 0.21 deg
+  straight thr 0.6  5 deg steer -1.0 lift 1         6.54 m  1.59->1.48 (0.92)    0     201  ROLLER  1.19   5.38      0 mm    0 mm    -1.7 | max yaw step 0.41 deg
+  straight thr 0.6  5 deg steer +0.3 lift 1         7.77 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    23.3 | max yaw step 0.12 deg
+  straight thr 0.6 10 deg steer 0 lift 1            7.86 m  1.59->1.59 (1.59)    0      94  ROLLER  0.28   3.13      0 mm    0 mm    -2.7 | max yaw step 0.14 deg
+  straight thr 0.6 10 deg steer -0.3 lift 1         7.82 m  1.59->1.59 (1.56)    0     175  ROLLER  0.69   5.91      0 mm    0 mm    -1.5 | max yaw step 0.29 deg
+  straight thr 0.6 10 deg steer -1.0 lift 1         6.10 m  1.59->1.43 (0.80)    0     199  BODY    1.30   5.10      0 mm    0 mm    -2.6 | max yaw step 0.41 deg
+  straight thr 0.6 10 deg steer +0.3 lift 1         7.85 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    18.3 | max yaw step 0.12 deg
+  straight thr 0.6 15 deg steer 0 lift 1            7.79 m  1.59->1.59 (1.59)    0     140  ROLLER  0.41   4.75      0 mm    0 mm    -2.1 | max yaw step 0.23 deg
+  straight thr 0.6 15 deg steer -0.3 lift 1         7.65 m  1.59->1.59 (1.32)    0     184  BODY    0.79   6.19      0 mm    0 mm    -1.6 | max yaw step 0.31 deg
+  straight thr 0.6 15 deg steer -1.0 lift 1         5.75 m  1.59->1.40 (0.71)    0     202  BODY    1.35   4.66      0 mm    0 mm    -3.3 | max yaw step 0.41 deg
+  straight thr 0.6 15 deg steer +0.3 lift 1         7.86 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    13.3 | max yaw step 0.12 deg
+  straight thr 0.6 25 deg steer 0 lift 1            7.61 m  1.59->1.59 (1.51)    0     177  BODY    0.67   6.05      0 mm    0 mm    -1.9 | max yaw step 0.40 deg
+  straight thr 0.6 25 deg steer -0.3 lift 1         6.74 m  1.59->1.59 (0.92)    0     195  BODY    0.98   5.38      0 mm    0 mm    -2.5 | max yaw step 0.33 deg
+  straight thr 0.6 25 deg steer -1.0 lift 1         4.86 m  1.59->1.32 (0.55)    0     205  BODY    1.43   3.55      0 mm    0 mm    -5.4 | max yaw step 0.41 deg
+  straight thr 0.6 25 deg steer +0.3 lift 1         7.72 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm     3.3 | max yaw step 0.12 deg
+  straight thr 0.6 45 deg steer 0 lift 1            4.49 m  1.59->1.59 (0.51)    0     200  BODY    1.12   3.04      0 mm    0 mm    -6.8 | max yaw step 0.40 deg
+  straight thr 0.6 90 deg steer 0 lift 1            0.00 m  1.59->0.00 (0.00)    1     210  BODY    1.59   0.00     30 mm    0 mm   -90.0 | max yaw step 0.00 deg
+  straight thr 1.0  5 deg steer 0 lift 0           13.21 m  2.65->2.65 (2.65)    0      91  ROLLER  0.23   5.06      0 mm    0 mm    -0.6 | max yaw step 0.11 deg
+  straight thr 0.6 10 deg steer -0.3 lift 0         7.82 m  1.59->1.59 (1.56)    0     175  ROLLER  0.69   5.91      0 mm    0 mm    -1.5 | max yaw step 0.29 deg
+  NW corner thr 1.0 steer 0                        20.45 m  2.65->2.65 (2.47)    0     271  ROLLER  0.72  16.11      2 mm    0 mm    85.8 | max yaw step 0.40 deg
+  NW corner thr 1.0 steer -0.15                    19.53 m  2.65->2.22 (2.02)    0     446  ROLLER  0.75  23.28     11 mm    0 mm    79.9 | max yaw step 0.33 deg
+  NW corner thr 0.6 steer -0.15                    14.22 m  1.59->1.59 (1.59)    0     444  ROLLER  0.51  14.71      8 mm    0 mm    24.3 | max yaw step 0.23 deg
+  NW corner thr 0.6 steer -1.00                    12.91 m  1.59->1.05 (1.05)    0     444  ROLLER  0.85  13.13     17 mm    0 mm    15.0 | max yaw step 0.13 deg
+  head-on 90 deg at 2.65 m/s: stopped=True at 0.58s heading change 0.00 deg | reverse 2 s: 0.92 m, speed -0.92, contact False | visible pen 30 mm
+  head-on 90 deg at 1.00 m/s: stopped=True at 1.50s heading change 0.00 deg | reverse 2 s: 0.92 m, speed -0.92, contact False | visible pen 30 mm
+  glance 12 deg then reverse away (steer right, then left): contact before reverse True | moved 0.93 m, off boards 0.20 m, contact now False | visible pen 0 mm
+  service gate: reversed to outward -7.11 (on ice True), returned to outward 11.48 | contact ticks 79 | visible pen 1 mm
+  gate jamb glance (reverse, off-centre): reached outward -1.08 | contact ticks 0 last Clear | visible pen 0 mm
+=== authored + fitted outline (new contact response)
+  scenario                                         progress  speed in->out (min) deadStops contacts first   normal  roller  visible-pen sim-pen  heading
+  parallel light contact thr 1.0 steer -0.06       15.90 m  2.65->2.65 (2.65)    0     297  ROLLER  0.09  15.90      0 mm    0 mm     0.0 | max yaw step 0.04 deg
+  parallel light contact thr 0.6 steer -0.06        9.54 m  1.59->1.59 (1.59)    0     295  ROLLER  0.05   9.54      0 mm    0 mm     0.0 | max yaw step 0.02 deg
+  straight thr 1.0  2 deg steer 0 lift 1           13.24 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -2.0 | max yaw step 0.00 deg
+  straight thr 1.0  2 deg steer -0.3 lift 1        13.21 m  2.65->2.65 (2.55)    0     207  ROLLER  0.82  11.13      0 mm    0 mm    -0.0 | max yaw step 0.22 deg
+  straight thr 1.0  2 deg steer -1.0 lift 1         7.69 m  2.65->1.53 (1.14)    0     219  ROLLER  1.67   6.26      0 mm    0 mm    -0.7 | max yaw step 0.55 deg
+  straight thr 1.0  2 deg steer +0.3 lift 1        12.00 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    45.1 | max yaw step 0.19 deg
+  straight thr 1.0  5 deg steer 0 lift 1           13.21 m  2.65->2.65 (2.65)    0      91  ROLLER  0.23   5.06      0 mm    0 mm    -0.6 | max yaw step 0.11 deg
+  straight thr 1.0  5 deg steer -0.3 lift 1        12.69 m  2.65->2.65 (2.02)    0     201  ROLLER  0.99  10.47      0 mm    0 mm    -0.1 | max yaw step 0.25 deg
+  straight thr 1.0  5 deg steer -1.0 lift 1         7.37 m  2.65->1.50 (0.99)    0     215  ROLLER  1.92   5.89      0 mm    0 mm    -1.3 | max yaw step 0.62 deg
+  straight thr 1.0  5 deg steer +0.3 lift 1        12.23 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    42.1 | max yaw step 0.19 deg
+  straight thr 1.0 10 deg steer 0 lift 1           13.16 m  2.65->2.65 (2.65)    0     138  ROLLER  0.46   8.51      0 mm    0 mm    -0.3 | max yaw step 0.23 deg
+  straight thr 1.0 10 deg steer -0.3 lift 1        11.88 m  2.65->2.65 (1.64)    0     204  ROLLER  1.16   9.94      0 mm    0 mm    -0.2 | max yaw step 0.28 deg
+  straight thr 1.0 10 deg steer -1.0 lift 1         6.97 m  2.65->1.47 (0.86)    0     215  ROLLER  2.07   5.66      0 mm    0 mm    -2.0 | max yaw step 0.62 deg
+  straight thr 1.0 10 deg steer +0.3 lift 1        12.53 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    37.1 | max yaw step 0.19 deg
+  straight thr 1.0 15 deg steer 0 lift 1           13.09 m  2.65->2.65 (2.65)    0     158  ROLLER  0.69  10.10      0 mm    0 mm    -0.2 | max yaw step 0.37 deg
+  straight thr 1.0 15 deg steer -0.3 lift 1        11.00 m  2.65->2.65 (1.34)    0     210  ROLLER  1.31   9.52      0 mm    0 mm    -0.4 | max yaw step 0.30 deg
+  straight thr 1.0 15 deg steer -1.0 lift 1         6.62 m  2.65->1.45 (0.78)    0     217  ROLLER  2.08   5.56      0 mm    0 mm    -2.5 | max yaw step 0.59 deg
+  straight thr 1.0 15 deg steer +0.3 lift 1        12.74 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    32.1 | max yaw step 0.19 deg
+  straight thr 1.0 25 deg steer 0 lift 1           11.38 m  2.65->2.65 (1.52)    0     197  ROLLER  1.12   9.91      0 mm    0 mm    -0.4 | max yaw step 0.40 deg
+  straight thr 1.0 25 deg steer -0.3 lift 1         9.25 m  2.65->2.65 (0.91)    0     217  ROLLER  1.62   8.52      0 mm    0 mm    -0.9 | max yaw step 0.33 deg
+  straight thr 1.0 25 deg steer -1.0 lift 1         5.85 m  2.65->1.39 (0.63)    0     220  ROLLER  2.19   5.32      0 mm    0 mm    -3.7 | max yaw step 0.53 deg
+  straight thr 1.0 25 deg steer +0.3 lift 1        12.86 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    22.1 | max yaw step 0.19 deg
+  straight thr 1.0 45 deg steer 0 lift 1            7.14 m  2.65->2.34 (0.52)    0     220  ROLLER  1.87   7.39      0 mm    0 mm    -2.3 | max yaw step 0.40 deg
+  straight thr 1.0 90 deg steer 0 lift 1            0.00 m  2.65->0.00 (0.00)    1     226  BODY    2.65   0.00      0 mm    0 mm   -90.0 | max yaw step 0.00 deg
+  straight thr 0.6  2 deg steer 0 lift 1            7.95 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -2.0 | max yaw step 0.00 deg
+  straight thr 0.6  2 deg steer -0.3 lift 1         7.92 m  1.59->1.59 (1.59)    0     180  ROLLER  0.49   5.92      0 mm    0 mm    -0.8 | max yaw step 0.13 deg
+  straight thr 0.6  2 deg steer -1.0 lift 1         6.97 m  1.59->1.52 (1.10)    0     208  ROLLER  1.11   5.87      0 mm    0 mm    -0.9 | max yaw step 0.41 deg
+  straight thr 0.6  2 deg steer +0.3 lift 1         7.70 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    26.3 | max yaw step 0.12 deg
+  straight thr 0.6  5 deg steer 0 lift 1            7.92 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -5.0 | max yaw step 0.00 deg
+  straight thr 0.6  5 deg steer -0.3 lift 1         7.88 m  1.59->1.59 (1.59)    0     171  ROLLER  0.59   5.71      0 mm    0 mm    -1.3 | max yaw step 0.20 deg
+  straight thr 0.6  5 deg steer -1.0 lift 1         6.57 m  1.59->1.47 (0.95)    0     201  ROLLER  1.21   5.41      0 mm    0 mm    -1.7 | max yaw step 0.41 deg
+  straight thr 0.6  5 deg steer +0.3 lift 1         7.77 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    23.3 | max yaw step 0.12 deg
+  straight thr 0.6 10 deg steer 0 lift 1            7.86 m  1.59->1.59 (1.59)    0      94  ROLLER  0.28   3.13      0 mm    0 mm    -2.8 | max yaw step 0.14 deg
+  straight thr 0.6 10 deg steer -0.3 lift 1         7.82 m  1.59->1.59 (1.59)    0     175  ROLLER  0.70   5.94      0 mm    0 mm    -1.5 | max yaw step 0.28 deg
+  straight thr 0.6 10 deg steer -1.0 lift 1         6.15 m  1.59->1.43 (0.81)    0     200  ROLLER  1.29   5.13      0 mm    0 mm    -2.7 | max yaw step 0.41 deg
+  straight thr 0.6 10 deg steer +0.3 lift 1         7.85 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    18.3 | max yaw step 0.12 deg
+  straight thr 0.6 15 deg steer 0 lift 1            7.79 m  1.59->1.59 (1.59)    0     140  ROLLER  0.41   4.75      0 mm    0 mm    -2.2 | max yaw step 0.22 deg
+  straight thr 0.6 15 deg steer -0.3 lift 1         7.68 m  1.59->1.59 (1.34)    0     184  ROLLER  0.79   6.21      0 mm    0 mm    -1.7 | max yaw step 0.30 deg
+  straight thr 0.6 15 deg steer -1.0 lift 1         5.81 m  1.59->1.40 (0.72)    0     202  ROLLER  1.34   5.03      0 mm    0 mm    -3.4 | max yaw step 0.41 deg
+  straight thr 0.6 15 deg steer +0.3 lift 1         7.86 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    13.3 | max yaw step 0.12 deg
+  straight thr 0.6 25 deg steer 0 lift 1            7.62 m  1.59->1.59 (1.49)    0     177  ROLLER  0.67   6.13      0 mm    0 mm    -2.1 | max yaw step 0.40 deg
+  straight thr 0.6 25 deg steer -0.3 lift 1         7.04 m  1.59->1.59 (0.91)    0     195  ROLLER  0.98   6.31      0 mm    0 mm    -2.3 | max yaw step 0.33 deg
+  straight thr 0.6 25 deg steer -1.0 lift 1         5.10 m  1.59->1.34 (0.55)    0     205  ROLLER  1.43   4.79      0 mm    0 mm    -5.1 | max yaw step 0.41 deg
+  straight thr 0.6 25 deg steer +0.3 lift 1         7.72 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm     3.3 | max yaw step 0.12 deg
+  straight thr 0.6 45 deg steer 0 lift 1            5.84 m  1.59->1.59 (0.52)    0     200  ROLLER  1.12   6.06      0 mm    0 mm    -3.9 | max yaw step 0.40 deg
+  straight thr 0.6 90 deg steer 0 lift 1            0.00 m  1.59->0.00 (0.00)    1     210  BODY    1.59   0.00      0 mm    0 mm   -90.0 | max yaw step 0.00 deg
+  straight thr 1.0  5 deg steer 0 lift 0           13.21 m  2.65->2.65 (2.65)    0      91  ROLLER  0.23   5.06      0 mm    0 mm    -0.6 | max yaw step 0.11 deg
+  straight thr 0.6 10 deg steer -0.3 lift 0         7.82 m  1.59->1.59 (1.59)    0     175  ROLLER  0.70   5.94      0 mm    0 mm    -1.5 | max yaw step 0.28 deg
+  NW corner thr 1.0 steer 0                        20.45 m  2.65->2.65 (2.47)    0     272  ROLLER  0.74  16.16      0 mm    0 mm    85.6 | max yaw step 0.40 deg
+  NW corner thr 1.0 steer -0.15                    19.51 m  2.65->2.22 (2.02)    0     446  ROLLER  0.77  23.23      0 mm    0 mm    79.6 | max yaw step 0.33 deg
+  NW corner thr 0.6 steer -0.15                    14.22 m  1.59->1.59 (1.58)    0     444  ROLLER  0.53  14.72      0 mm    0 mm    24.2 | max yaw step 0.23 deg
+  NW corner thr 0.6 steer -1.00                    12.87 m  1.59->1.04 (1.04)    0     444  ROLLER  0.87  13.08      0 mm    0 mm    14.4 | max yaw step 0.14 deg
+  head-on 90 deg at 2.65 m/s: stopped=True at 0.56s heading change 0.00 deg | reverse 2 s: 0.92 m, speed -0.92, contact False | visible pen 0 mm
+  head-on 90 deg at 1.00 m/s: stopped=True at 1.46s heading change 0.00 deg | reverse 2 s: 0.92 m, speed -0.92, contact False | visible pen 0 mm
+  glance 12 deg then reverse away (steer right, then left): contact before reverse True | moved 0.93 m, off boards 0.20 m, contact now False | visible pen 0 mm
+  service gate: reversed to outward -7.11 (on ice True), returned to outward 11.43 | contact ticks 81 | visible pen 0 mm
+  gate jamb glance (reverse, off-centre): reached outward -1.08 | contact ticks 0 last Clear | visible pen 0 mm
+=== launch scene defaults (new contact response)
+  scenario                                         progress  speed in->out (min) deadStops contacts first   normal  roller  visible-pen sim-pen  heading
+  parallel light contact thr 1.0 steer -0.06       15.90 m  2.65->2.65 (2.65)    0     297  ROLLER  0.09  15.90      0 mm    0 mm     0.0 | max yaw step 0.04 deg
+  parallel light contact thr 0.6 steer -0.06        9.54 m  1.59->1.59 (1.59)    0     295  ROLLER  0.05   9.54      0 mm    0 mm     0.0 | max yaw step 0.02 deg
+  straight thr 1.0  2 deg steer 0 lift 1           13.24 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -2.0 | max yaw step 0.00 deg
+  straight thr 1.0  2 deg steer -0.3 lift 1        13.19 m  2.65->2.65 (2.50)    0     206  ROLLER  0.82  11.07      0 mm    0 mm     0.0 | max yaw step 0.22 deg
+  straight thr 1.0  2 deg steer -1.0 lift 1         7.68 m  2.65->1.53 (1.13)    0     218  ROLLER  1.64   6.22      0 mm    0 mm    -0.7 | max yaw step 0.57 deg
+  straight thr 1.0  2 deg steer +0.3 lift 1        12.00 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    45.1 | max yaw step 0.19 deg
+  straight thr 1.0  5 deg steer 0 lift 1           13.21 m  2.65->2.65 (2.65)    0      91  ROLLER  0.23   5.06      0 mm    0 mm    -0.6 | max yaw step 0.11 deg
+  straight thr 1.0  5 deg steer -0.3 lift 1        12.64 m  2.65->2.65 (1.99)    0     201  ROLLER  0.98  10.38      0 mm    0 mm    -0.1 | max yaw step 0.25 deg
+  straight thr 1.0  5 deg steer -1.0 lift 1         7.34 m  2.65->1.49 (0.97)    0     215  ROLLER  1.91   5.86      0 mm    0 mm    -1.3 | max yaw step 0.62 deg
+  straight thr 1.0  5 deg steer +0.3 lift 1        12.23 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    42.1 | max yaw step 0.19 deg
+  straight thr 1.0 10 deg steer 0 lift 1           13.16 m  2.65->2.65 (2.65)    0     136  ROLLER  0.46   8.51      0 mm    0 mm    -0.3 | max yaw step 0.24 deg
+  straight thr 1.0 10 deg steer -0.3 lift 1        11.74 m  2.65->2.65 (1.58)    0     204  ROLLER  1.15   9.80      0 mm    0 mm    -0.2 | max yaw step 0.29 deg
+  straight thr 1.0 10 deg steer -1.0 lift 1         6.93 m  2.65->1.47 (0.80)    0     214  BODY    2.09   5.62      0 mm    0 mm    -1.9 | max yaw step 0.64 deg
+  straight thr 1.0 10 deg steer +0.3 lift 1        12.53 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    37.1 | max yaw step 0.19 deg
+  straight thr 1.0 15 deg steer 0 lift 1           13.09 m  2.65->2.65 (2.65)    0     155  ROLLER  0.69  10.10      0 mm    0 mm    -0.2 | max yaw step 0.38 deg
+  straight thr 1.0 15 deg steer -0.3 lift 1        10.89 m  2.65->2.65 (1.33)    0     209  BODY    1.32   9.42      0 mm    0 mm    -0.3 | max yaw step 0.30 deg
+  straight thr 1.0 15 deg steer -1.0 lift 1         6.58 m  2.65->1.45 (0.77)    0     217  BODY    2.12   5.40      0 mm    0 mm    -2.4 | max yaw step 0.59 deg
+  straight thr 1.0 15 deg steer +0.3 lift 1        12.74 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    32.1 | max yaw step 0.19 deg
+  straight thr 1.0 25 deg steer 0 lift 1           11.27 m  2.65->2.65 (1.54)    0     196  BODY    1.12   9.71      0 mm    0 mm    -0.4 | max yaw step 0.40 deg
+  straight thr 1.0 25 deg steer -0.3 lift 1         8.46 m  2.65->2.50 (0.91)    0     217  BODY    1.62   7.09      0 mm    0 mm    -1.2 | max yaw step 0.33 deg
+  straight thr 1.0 25 deg steer -1.0 lift 1         5.71 m  2.65->1.38 (0.63)    0     220  BODY    2.19   4.35      0 mm    0 mm    -3.8 | max yaw step 0.53 deg
+  straight thr 1.0 25 deg steer +0.3 lift 1        12.86 m  2.65->2.65 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    22.1 | max yaw step 0.19 deg
+  straight thr 1.0 45 deg steer 0 lift 1            5.16 m  2.65->1.75 (0.51)    0     220  BODY    1.87   3.74      0 mm    0 mm    -5.1 | max yaw step 0.40 deg
+  straight thr 1.0 90 deg steer 0 lift 1            0.00 m  2.65->0.00 (0.00)    1     226  BODY    2.65   0.00     30 mm    0 mm   -90.0 | max yaw step 0.00 deg
+  straight thr 0.6  2 deg steer 0 lift 1            7.95 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -2.0 | max yaw step 0.00 deg
+  straight thr 0.6  2 deg steer -0.3 lift 1         7.92 m  1.59->1.59 (1.59)    0     179  ROLLER  0.49   5.89      0 mm    0 mm    -0.8 | max yaw step 0.14 deg
+  straight thr 0.6  2 deg steer -1.0 lift 1         6.96 m  1.59->1.52 (1.09)    0     207  ROLLER  1.09   5.84      0 mm    0 mm    -0.9 | max yaw step 0.41 deg
+  straight thr 0.6  2 deg steer +0.3 lift 1         7.70 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    26.3 | max yaw step 0.12 deg
+  straight thr 0.6  5 deg steer 0 lift 1            7.92 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    -5.0 | max yaw step 0.00 deg
+  straight thr 0.6  5 deg steer -0.3 lift 1         7.88 m  1.59->1.59 (1.59)    0     171  ROLLER  0.59   5.69      0 mm    0 mm    -1.2 | max yaw step 0.21 deg
+  straight thr 0.6  5 deg steer -1.0 lift 1         6.54 m  1.59->1.48 (0.92)    0     201  ROLLER  1.19   5.38      0 mm    0 mm    -1.7 | max yaw step 0.41 deg
+  straight thr 0.6  5 deg steer +0.3 lift 1         7.77 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    23.3 | max yaw step 0.12 deg
+  straight thr 0.6 10 deg steer 0 lift 1            7.86 m  1.59->1.59 (1.59)    0      94  ROLLER  0.28   3.13      0 mm    0 mm    -2.7 | max yaw step 0.14 deg
+  straight thr 0.6 10 deg steer -0.3 lift 1         7.82 m  1.59->1.59 (1.56)    0     175  ROLLER  0.69   5.91      0 mm    0 mm    -1.5 | max yaw step 0.29 deg
+  straight thr 0.6 10 deg steer -1.0 lift 1         6.10 m  1.59->1.43 (0.80)    0     199  BODY    1.30   5.10      0 mm    0 mm    -2.6 | max yaw step 0.41 deg
+  straight thr 0.6 10 deg steer +0.3 lift 1         7.85 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    18.3 | max yaw step 0.12 deg
+  straight thr 0.6 15 deg steer 0 lift 1            7.79 m  1.59->1.59 (1.59)    0     140  ROLLER  0.41   4.75      0 mm    0 mm    -2.1 | max yaw step 0.23 deg
+  straight thr 0.6 15 deg steer -0.3 lift 1         7.65 m  1.59->1.59 (1.32)    0     184  BODY    0.79   6.19      0 mm    0 mm    -1.6 | max yaw step 0.31 deg
+  straight thr 0.6 15 deg steer -1.0 lift 1         5.75 m  1.59->1.40 (0.71)    0     202  BODY    1.35   4.66      0 mm    0 mm    -3.3 | max yaw step 0.41 deg
+  straight thr 0.6 15 deg steer +0.3 lift 1         7.86 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm    13.3 | max yaw step 0.12 deg
+  straight thr 0.6 25 deg steer 0 lift 1            7.61 m  1.59->1.59 (1.51)    0     177  BODY    0.67   6.05      0 mm    0 mm    -1.9 | max yaw step 0.40 deg
+  straight thr 0.6 25 deg steer -0.3 lift 1         6.74 m  1.59->1.59 (0.92)    0     195  BODY    0.98   5.38      0 mm    0 mm    -2.5 | max yaw step 0.33 deg
+  straight thr 0.6 25 deg steer -1.0 lift 1         4.86 m  1.59->1.32 (0.55)    0     205  BODY    1.43   3.55      0 mm    0 mm    -5.4 | max yaw step 0.41 deg
+  straight thr 0.6 25 deg steer +0.3 lift 1         7.72 m  1.59->1.59 ( -  )    0       0  none    0.00   0.00      0 mm    0 mm     3.3 | max yaw step 0.12 deg
+  straight thr 0.6 45 deg steer 0 lift 1            4.49 m  1.59->1.59 (0.51)    0     200  BODY    1.12   3.04      0 mm    0 mm    -6.8 | max yaw step 0.40 deg
+  straight thr 0.6 90 deg steer 0 lift 1            0.00 m  1.59->0.00 (0.00)    1     210  BODY    1.59   0.00     30 mm    0 mm   -90.0 | max yaw step 0.00 deg
+  straight thr 1.0  5 deg steer 0 lift 0           13.21 m  2.65->2.65 (2.65)    0      91  ROLLER  0.23   5.06      0 mm    0 mm    -0.6 | max yaw step 0.11 deg
+  straight thr 0.6 10 deg steer -0.3 lift 0         7.82 m  1.59->1.59 (1.56)    0     175  ROLLER  0.69   5.91      0 mm    0 mm    -1.5 | max yaw step 0.29 deg
+  NW corner thr 1.0 steer 0                        20.45 m  2.65->2.65 (2.47)    0     271  ROLLER  0.72  16.11      2 mm    0 mm    85.8 | max yaw step 0.40 deg
+  NW corner thr 1.0 steer -0.15                    19.53 m  2.65->2.22 (2.02)    0     446  ROLLER  0.75  23.28     11 mm    0 mm    79.9 | max yaw step 0.33 deg
+  NW corner thr 0.6 steer -0.15                    14.22 m  1.59->1.59 (1.59)    0     444  ROLLER  0.51  14.71      8 mm    0 mm    24.3 | max yaw step 0.23 deg
+  NW corner thr 0.6 steer -1.00                    12.91 m  1.59->1.05 (1.05)    0     444  ROLLER  0.85  13.13     17 mm    0 mm    15.0 | max yaw step 0.13 deg
+  head-on 90 deg at 2.65 m/s: stopped=True at 0.58s heading change 0.00 deg | reverse 2 s: 0.92 m, speed -0.92, contact False | visible pen 30 mm
+  head-on 90 deg at 1.00 m/s: stopped=True at 1.50s heading change 0.00 deg | reverse 2 s: 0.92 m, speed -0.92, contact False | visible pen 30 mm
+  glance 12 deg then reverse away (steer right, then left): contact before reverse True | moved 0.93 m, off boards 0.20 m, contact now False | visible pen 0 mm
+  service gate: reversed to outward -7.11 (on ice True), returned to outward 11.48 | contact ticks 79 | visible pen 1 mm
+  gate jamb glance (reverse, off-centre): reached outward -1.08 | contact ticks 0 last Clear | visible pen 0 mm

@@ -65,6 +65,7 @@ namespace IceResurfacer.Presentation
         IceMachineAudio machineAudio;
         ParticleSystem water;
         IceSnowView snowView;
+        IceOperatorTuning operatorTuning;
         Transform drawbar;
         float accumulator, surveyTimer, yaw, pitch=5, wheelRoll, lastLift, lastTankLift, breakerAnimation;
         const float RecenterSeconds=.2f;
@@ -92,6 +93,7 @@ namespace IceResurfacer.Presentation
 
         void Awake()
         {
+            operatorTuning=GetComponent<IceOperatorTuning>();
             if (litTemplate == null || iceTemplate == null)
             { Debug.LogError("Ice Resurfacer needs its owned Lit and SpatialIce materials. Open its saved launch scene.", this); enabled=false; return; }
             oldAmbient=RenderSettings.ambientLight; oldAmbientMode=RenderSettings.ambientMode;
@@ -166,7 +168,8 @@ namespace IceResurfacer.Presentation
             ReleaseLook();
             chaseCamera?.Leave();quicklook="";savedHead=restoringHead=suppressQuicklook=preservedOffset=false;
             snowView?.Reset();
-            Surface?.Dispose(); Sim=new Simulation(calibration,practice,546,mode);
+            Surface?.Dispose();
+            Sim=new Simulation(operatorTuning!=null?operatorTuning.CreateRuntimeConfig(calibration):calibration,practice,546,mode);
             if(PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey))Sim.SetMaximumForwardSpeed(IceOperatorPreferences.LoadMph(OriginalForwardSpeedMph)*IceOperatorPreferences.MetersPerSecondPerMph);
             Sim.Controls.HydraulicHoldControls=true;
             WaterService?.ResetSession();
@@ -213,6 +216,7 @@ namespace IceResurfacer.Presentation
         void Update()
         {
             if(Sim==null) return;
+            if(operatorTuning!=null)operatorTuning.ApplyRuntime(Sim.Config,calibration);
             Performance.BeginFrame(Time.unscaledDeltaTime);
             var keys=Keyboard.current;
             if(keys!=null)
@@ -294,14 +298,10 @@ namespace IceResurfacer.Presentation
                 Vector3 target;
                 if(view=="Controls")
                 {
-                    var controls=new Bounds(World.ConditionerLever.TransformPoint(0,.225f,0),Vector3.zero);
-                    controls.Encapsulate(World.VerticalAugerLever.TransformPoint(0,.225f,0));
-                    controls.Encapsulate(World.HorizontalAugerLever.TransformPoint(0,.225f,0));
-                    controls.Encapsulate(World.DumpLever.TransformPoint(0,.225f,0));
-                    controls.Encapsulate(World.WashValve.TransformPoint(-.09f,calibration.WaterValveStemHeight,0));
-                    controls.Encapsulate(World.FloodLever.TransformPoint(-.09f,calibration.WaterValveStemHeight,0));
-                    controls.Encapsulate(World.BladeWheel.position);
-                    controls.Encapsulate(World.SnowBreakerPlunger.TransformPoint(0,.22f,0));
+                    // The grips as drawn now (a conditioner-mounted control rides with its lift).
+                    var grips=IcePhysicalControls.GripPositions(World,calibration);
+                    var controls=new Bounds(grips[1],Vector3.zero);
+                    for(int i=2;i<=IcePhysicalControls.ControlCount;i++)controls.Encapsulate(i==7?World.BladeWheel.position:grips[i]);
                     target=controls.center;
                 }
                 else if(view=="Conditioner")
@@ -396,19 +396,28 @@ namespace IceResurfacer.Presentation
         float ControlViewYaw(Vector3 eye)
         {
             float minimum=180,maximum=-180;
-            IncludeControlBearing(World.ConditionerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.HorizontalAugerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.VerticalAugerLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.DumpLever.TransformPoint(0,.225f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.WashValve.TransformPoint(-.115f,calibration.WaterValveStemHeight,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.FloodLever.TransformPoint(-.115f,calibration.WaterValveStemHeight,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.SnowBreakerPlunger.TransformPoint(-.105f,.22f,0),eye,ref minimum,ref maximum);
-            IncludeControlBearing(World.SnowBreakerPlunger.TransformPoint(.105f,.22f,0),eye,ref minimum,ref maximum);
+            var grips=World.ControlGrips??IcePhysicalControls.MeasureGrips(World,calibration);
+            // Lever balls and the far ends of the valve grips and breaker T handle, where they are drawn.
+            for(int i=1;i<=IcePhysicalControls.ControlCount;i++)
+            {
+                if(i==7)continue;
+                Transform control=i==1?World.ConditionerLever:i==2?World.HorizontalAugerLever:i==3?World.VerticalAugerLever:i==4?World.DumpLever:
+                    i==5?World.FloodLever:i==6?World.WashValve:World.SnowBreakerPlunger;
+                var g=grips[i];
+                if(i<=4)IncludeControlBearing(control.TransformPoint(g.Center),eye,ref minimum,ref maximum);
+                else
+                {
+                    float reach=i==8?g.Size.x*.5f-.025f:g.Size.x*.5f-.02f;
+                    IncludeControlBearing(control.TransformPoint(g.Center-Vector3.right*reach),eye,ref minimum,ref maximum);
+                    if(i==8)IncludeControlBearing(control.TransformPoint(g.Center+Vector3.right*reach),eye,ref minimum,ref maximum);
+                }
+            }
             // Include the rim, not only its hub, for every handwheel setting.
+            float rimRadius=IcePhysicalControls.BladeRimRadius(World,calibration);
             for(int i=0;i<16;i++)
             {
                 float angle=i*Mathf.PI/8;
-                Vector3 rim=World.BladeWheel.TransformPoint(Mathf.Cos(angle)*.148f,0,Mathf.Sin(angle)*.148f);
+                Vector3 rim=World.BladeWheel.TransformPoint(Mathf.Cos(angle)*rimRadius,0,Mathf.Sin(angle)*rimRadius);
                 IncludeControlBearing(rim,eye,ref minimum,ref maximum);
             }
             return (minimum+maximum)*.5f;
@@ -548,7 +557,8 @@ namespace IceResurfacer.Presentation
         {
             var v=Sim.Vehicle; var c=Sim.Controls;
             World.Machine.SetPositionAndRotation(new Vector3(v.X,0,v.Z),Quaternion.Euler(0,v.Heading*Mathf.Rad2Deg,0));
-            World.Conditioner.SetPositionAndRotation(new Vector3(Sim.Conditioner.X,Sim.Conditioner.Lift*.34f,Sim.Conditioner.Z),
+            // The same pose the Edit Mode lift preview uses: root, members spanning the lift, cylinders.
+            IceConditionerMotion.Pose(World,new Vector3(Sim.Conditioner.X,Sim.Conditioner.Lift*IceConditionerMotion.LiftTravel,Sim.Conditioner.Z),
                 Quaternion.Euler(0,Sim.Conditioner.Heading*Mathf.Rad2Deg,0));
             Vector3 hitchA=World.Machine.TransformPoint(0,.52f,-calibration.HitchBehindAxle);
             Vector3 hitchB=World.Conditioner.TransformPoint(0,.37f,.26f);
@@ -563,7 +573,8 @@ namespace IceResurfacer.Presentation
             World.BladeWheel.localRotation=bladeRest*Quaternion.Euler(0,c.BladeDepthMm/calibration.MaxBladeDepthMm*calibration.BladeWheelTurns*360,0);
             // Rest-relative: the authored blade pose is depth zero (the generated rest is 0,.043,.30).
             World.CuttingBlade.localPosition=cuttingBladeRest-Vector3.up*(Sim.ActualBladeDepthMm*.001f);
-            World.GuideRoller.localRotation=Quaternion.Euler(0,Sim.GuideRollerTravel/calibration.GuideRollerRadius*Mathf.Rad2Deg,0);
+            // Rolls without slipping on its board-side face: a left-side roller turns anticlockwise seen from above.
+            World.GuideRoller.localRotation=Quaternion.Euler(0,(calibration.GuideRollerX<0?-1:1)*Sim.GuideRollerTravel/calibration.GuideRollerRadius*Mathf.Rad2Deg,0);
             World.TankDoor.localRotation=Quaternion.Euler(-Mathf.Clamp01((Sim.TankLift-.45f)/.4f)*105,0,0);
             World.AcceleratorPedal.localRotation=acceleratorRest*Quaternion.Euler(Mathf.Abs(c.Throttle)*16,0,0);
             World.BrakePedal.localRotation=brakeRest*Quaternion.Euler(c.Brake?18:0,0,0);
@@ -587,7 +598,7 @@ namespace IceResurfacer.Presentation
                 World.BrushRoller.rotation=World.Machine.rotation;
             }
             if(brushRig==null&&c.BoardBrush)World.Brush.Rotate(Vector3.up,dt*540,Space.Self);
-            snowView.Update(Sim,dt);
+            snowView.Update(Sim,dt,operatorTuning);
             water.transform.position=World.WaterOutlet.position;
             water.transform.rotation=World.Conditioner.rotation*Quaternion.Euler(90,0,0);
             var waterEmission=water.emission;

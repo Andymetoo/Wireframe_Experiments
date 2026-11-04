@@ -1,0 +1,423 @@
+== Persistence after restarting Unity / 2026-11-02T21:01:47
+PASS prefab, scene and meshes are exactly as saved
+PASS opening the scene does not dirty it
+PASS scene calibration (with collision outline) persisted
+INFO alignment Front wheel pivot L: Matches 0.0 mm 
+INFO alignment Rear wheel hub L: Matches 0.0 mm 
+INFO alignment Front wheel pivot R: Matches 0.0 mm 
+INFO alignment Rear wheel hub R: Matches 0.0 mm 
+INFO alignment Conditioner hitch (root): Matches 0.0 mm 
+INFO alignment Cutting blade edge at depth 0: Matches 0.0 mm Lowered blade edge +0.0 mm relative to the ice top.
+INFO alignment Conditioner lift cylinders: Info 0.0 mm Pin-to-clevis at the simulated hitch: lowered 0.402 m, raised 0.230 m; at the authored root: 0.230 m
+INFO alignment Conditioner lift linkage vs rear tyres: Matches 0.0 mm 
+INFO alignment Snow tank dump hinge: Matches 0.0 mm 
+INFO alignment Snow tank scale (per axis, x1000): Matches 0.0 mm 
+INFO alignment Conveyor discharge into tank: Matches 0.0 mm 
+INFO alignment Board brush mechanism: Matches 0.0 mm 
+INFO alignment Board brush radius (visible vs contact, mm): Matches 0.0 mm 
+INFO alignment Collision outline (plan view): Matches 0.0 mm 
+INFO alignment Board guide roller: Matches 0.0 mm 
+== Guide roller hardware after the move / 2026-11-02T21:01:48
+PASS the roller's outer edge |x| 1.091 leads the conditioner side plates (1.066) by 25 mm
+PASS the simulated roller is the visible roller (-1.001, 2.444, r 0.090)
+PASS the bracket ends at the roller axle
+PASS the bracket's inboard end is still inside the drawn body (x -0.632, body side -0.783)
+INFO bracket length 0.369 m (was 0.195 m)
+PASS the front tyre clears the roller and bracket through full steering lock by 33 mm (closest at -18.9 deg)
+== Calibration context (Inspector source) / 2026-11-02T21:01:48
+INFO scene: Authored scene calibration (IceResurfacer_AuthoredMachine)
+PASS scene instance measures against the live authored scene calibration
+INFO prefab contents: Prefab-only fallback: configuration captured when the machine was baked. No scene using this prefab was found, so differences listed here may be false positives. (PrefabFallback)
+PASS detached prefab contents fall back to the bake-time configuration, read-only and labelled
+INFO prefab asset: Authored scene calibration (IceResurfacer_AuthoredMachine, open; Prefab Mode is read-only) (AuthoredSceneForPrefab)
+PASS the prefab asset is measured against the open authored scene's calibration (read-only)
+INFO Prefab Mode: Authored scene calibration (IceResurfacer_AuthoredMachine, open; Prefab Mode is read-only) (AuthoredSceneForPrefab)
+PASS Prefab Mode measures against the authored scene calibration, read-only
+INFO Prefab Mode alignment Front wheel pivot L: Matches 0.0 mm
+INFO Prefab Mode alignment Rear wheel hub L: Matches 0.0 mm
+INFO Prefab Mode alignment Front wheel pivot R: Matches 0.0 mm
+INFO Prefab Mode alignment Rear wheel hub R: Matches 0.0 mm
+INFO Prefab Mode alignment Conditioner hitch (root): Matches 0.0 mm
+INFO Prefab Mode alignment Cutting blade edge at depth 0: Matches 0.0 mm
+INFO Prefab Mode alignment Conditioner lift cylinders: Info 0.0 mm
+INFO Prefab Mode alignment Conditioner lift linkage vs rear tyres: Matches 0.0 mm
+INFO Prefab Mode alignment Snow tank dump hinge: Matches 0.0 mm
+INFO Prefab Mode alignment Snow tank scale (per axis, x1000): Matches 0.0 mm
+INFO Prefab Mode alignment Conveyor discharge into tank: Matches 0.0 mm
+INFO Prefab Mode alignment Board brush mechanism: Matches 0.0 mm
+INFO Prefab Mode alignment Board brush radius (visible vs contact, mm): Matches 0.0 mm
+INFO Prefab Mode alignment Collision outline (plan view): Matches 0.0 mm
+INFO Prefab Mode alignment Board guide roller: Matches 0.0 mm
+PASS Prefab Mode shows no false-positive discrepancies (hitch, tank, conveyor, brush, outline, roller all match)
+PASS Prefab Mode brush rig: draft matches the scene calibration (no 'not applied' warning)
+PASS Prefab Mode lift preview puts the conditioner where Play does (z -0.885)
+PASS Prefab Mode inspection and preview do not dirty the prefab
+== Edit Mode lift preview: 0/25/50/75/100%, connections, never saved / 2026-11-02T21:01:48
+PASS four members span the lift (2 lift linkage bars, 2 hydraulic hoses): Lift linkage, Lift linkage, Hydraulic flexible hose, Hydraulic flexible hose
+PASS preview 0%: conditioner at the simulated hitch and lift
+PASS preview 0%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.772 m)
+PASS preview 0%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.772 m)
+PASS preview 0%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.796 m)
+PASS preview 0%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.796 m)
+PASS preview 0%: lift cylinder 0 rod on its clevis
+PASS preview 0%: lift cylinder 1 rod on its clevis
+INFO preview 0% Flood water valve grip machine (-0.2445,1.9370,-0.9760) (saved at Apply (-0.2445,1.9370,-0.9760))
+INFO preview 0% Wash water valve grip machine (0.0703,1.9370,-0.9778) (saved at Apply (0.0703,1.9370,-0.9778))
+INFO preview 0% Blade handwheel grip machine (0.0707,1.8197,-1.1106) (saved at Apply (0.0707,1.8197,-1.1106))
+PASS preview 25%: conditioner at the simulated hitch and lift
+PASS preview 25%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.711 m)
+PASS preview 25%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.711 m)
+PASS preview 25%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.734 m)
+PASS preview 25%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.734 m)
+PASS preview 25%: lift cylinder 0 rod on its clevis
+PASS preview 25%: lift cylinder 1 rod on its clevis
+INFO preview 25% Flood water valve grip machine (-0.2445,2.0220,-0.9760) (saved at Apply (-0.2445,2.0220,-0.9760))
+INFO preview 25% Wash water valve grip machine (0.0703,2.0220,-0.9778) (saved at Apply (0.0703,2.0220,-0.9778))
+INFO preview 25% Blade handwheel grip machine (0.0707,1.9047,-1.1106) (saved at Apply (0.0707,1.9047,-1.1106))
+PASS preview 50%: conditioner at the simulated hitch and lift
+PASS preview 50%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.654 m)
+PASS preview 50%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.654 m)
+PASS preview 50%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.677 m)
+PASS preview 50%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.677 m)
+PASS preview 50%: lift cylinder 0 rod on its clevis
+PASS preview 50%: lift cylinder 1 rod on its clevis
+INFO preview 50% Flood water valve grip machine (-0.2445,2.1070,-0.9760) (saved at Apply (-0.2445,2.1070,-0.9760))
+INFO preview 50% Wash water valve grip machine (0.0703,2.1070,-0.9778) (saved at Apply (0.0703,2.1070,-0.9778))
+INFO preview 50% Blade handwheel grip machine (0.0707,1.9897,-1.1106) (saved at Apply (0.0707,1.9897,-1.1106))
+PASS preview 75%: conditioner at the simulated hitch and lift
+PASS preview 75%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.605 m)
+PASS preview 75%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.605 m)
+PASS preview 75%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.627 m)
+PASS preview 75%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.627 m)
+PASS preview 75%: lift cylinder 0 rod on its clevis
+PASS preview 75%: lift cylinder 1 rod on its clevis
+INFO preview 75% Flood water valve grip machine (-0.2445,2.1920,-0.9760) (saved at Apply (-0.2445,2.1920,-0.9760))
+INFO preview 75% Wash water valve grip machine (0.0703,2.1920,-0.9778) (saved at Apply (0.0703,2.1920,-0.9778))
+INFO preview 75% Blade handwheel grip machine (0.0707,2.0747,-1.1106) (saved at Apply (0.0707,2.0747,-1.1106))
+PASS preview 100%: conditioner at the simulated hitch and lift
+PASS preview 100%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.564 m)
+PASS preview 100%: Lift linkage stays pinned to chassis and conditioner (0.00 mm, length 0.564 m)
+PASS preview 100%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.584 m)
+PASS preview 100%: Hydraulic flexible hose stays pinned to chassis and conditioner (0.00 mm, length 0.584 m)
+PASS preview 100%: lift cylinder 0 rod on its clevis
+PASS preview 100%: lift cylinder 1 rod on its clevis
+INFO preview 100% Flood water valve grip machine (-0.2445,2.2770,-0.9760) (saved at Apply (-0.2445,2.2770,-0.9760))
+INFO preview 100% Wash water valve grip machine (0.0703,2.2770,-0.9778) (saved at Apply (0.0703,2.2770,-0.9778))
+INFO preview 100% Blade handwheel grip machine (0.0707,2.1597,-1.1106) (saved at Apply (0.0707,2.1597,-1.1106))
+PASS ending the preview restores every part exactly
+PASS saving during a preview restores the authored pose first
+PASS the scene saved during a preview is byte-identical
+PASS Undo during a preview undoes the edit and returns to the authored pose
+INFO Inspector edit during preview: refusal warnings logged 0
+PASS an Inspector edit of a posed part during the preview is not kept: the authored pose returns and no override is left on it
+PASS scene is byte-identical after the preview safety checks
+== Board brush authoring: draft vs simulation, reach, apply and restore / 2026-11-02T21:01:49
+PASS the authored brush draft equals the scene calibration (the earlier 'not applied' warning was Prefab Mode context)
+PASS snow-clearing radius 0.192 m equals the visible bristles 0.192 m
+INFO brush: Info Working brush edge reaches 37 mm past the guide roller (|x| 1.091), so with the machine along the boards the bristles press into the kickplate.
+INFO brush: Warning Stowed brush centre is at x = -0.573: the layout validation expects it left of x = -0.800 (outboard, clear of the chassis).
+INFO brush reach: working disc edge |x| 1.128 m vs outermost left collision point 1.091 m (guide roller): 37 mm
+PASS the working brush reaches past the outermost collision point on its side, so the bristles can reach the kickplate
+PASS Apply Brush Geometry to Simulation (inward test)
+PASS the scene calibration now holds the inward pivot
+PASS the simulated sweep follows the new contact point (-0.836 m, was -0.936 m)
+PASS Undo reverts both the draft and the scene calibration
+PASS Edit Mode checks leave the saved scene and prefab byte-identical
+== Play poses equal the Edit Mode preview at every lift / 2026-11-02T21:01:54
+PASS every tracked part (8 grips, conditioner, bearings, cylinders, linkage, hoses) is where the preview showed it: worst 0.00 mm (Blade handwheel assembly at 0%)
+== Play: conditioner-mounted controls at 0/25/50/75/100% lift / 2026-11-02T21:01:54
+PASS Flood water valve: its own renderers survive runtime batching (2), so it can turn and highlight
+PASS Wash water valve: its own renderers survive runtime batching (2), so it can turn and highlight
+PASS Blade handwheel: its own renderers survive runtime batching (3), so it can turn and highlight
+PASS lift 0%: hovering the visible Conditioner hydraulic lever grip highlights it (Conditioner hydraulic lever)
+PASS lift 0%: no other control steals clicks within 6 px of the Conditioner hydraulic lever grip
+PASS lift 0%: hovering the visible Horizontal auger lever grip highlights it (Horizontal auger lever)
+PASS lift 0%: no other control steals clicks within 6 px of the Horizontal auger lever grip
+PASS lift 0%: hovering the visible Vertical auger lever grip highlights it (Vertical auger lever)
+PASS lift 0%: no other control steals clicks within 6 px of the Vertical auger lever grip
+PASS lift 0%: hovering the visible Snow tank hydraulic lever grip highlights it (Snow tank hydraulic lever)
+PASS lift 0%: no other control steals clicks within 6 px of the Snow tank hydraulic lever grip
+PASS lift 0%: hovering the visible Flood water valve grip highlights it (Flood water valve)
+PASS lift 0%: Flood water valve renderers are tinted while hovered
+PASS lift 0%: no other control steals clicks within 6 px of the Flood water valve grip
+PASS lift 0%: hovering the visible Wash water valve grip highlights it (Wash water valve)
+PASS lift 0%: Wash water valve renderers are tinted while hovered
+PASS lift 0%: no other control steals clicks within 6 px of the Wash water valve grip
+PASS lift 0%: hovering the visible Blade handwheel grip highlights it (Blade handwheel)
+PASS lift 0%: Blade handwheel renderers are tinted while hovered
+PASS lift 0%: no other control steals clicks within 6 px of the Blade handwheel grip
+PASS lift 0%: hovering the visible Snow-breaker plunger grip highlights it (Snow-breaker plunger)
+PASS lift 0%: no other control steals clicks within 6 px of the Snow-breaker plunger grip
+PASS lift 0%: clicking the visible Flood water valve grabs it (grabbed 'Flood water valve', hover 'Flood water valve')
+PASS lift 0%: dragging the Flood water valve grip 45 deg about its own axis sets 0.5000 (expected 0.5000)
+PASS lift 0%: the visible Flood water valve handle turns with it
+PASS lift 0%: the same 45 deg turn in a single slow frame sets 0.5000 (expected 0.5000; held 'Flood water valve', view |cos| 0.461)
+PASS lift 0%: clicking the visible Wash water valve grabs it (grabbed 'Wash water valve', hover 'Wash water valve')
+PASS lift 0%: dragging the Wash water valve grip 45 deg about its own axis sets 0.5000 (expected 0.5000)
+PASS lift 0%: the visible Wash water valve handle turns with it
+PASS lift 0%: the same 45 deg turn in a single slow frame sets 0.5000 (expected 0.5000; held 'Wash water valve', view |cos| 0.340)
+PASS lift 0%: clicking the visible Blade handwheel grabs it (grabbed 'Blade handwheel', hover 'Blade handwheel')
+PASS lift 0%: dragging the Blade handwheel grip 45 deg about its own axis sets 0.0286 (expected 0.0286)
+PASS lift 0%: the visible Blade handwheel handle turns with it
+PASS lift 0%: the same 45 deg turn in a single slow frame sets 0.0286 (expected 0.0286; held 'Blade handwheel', view |cos| 0.478)
+PASS lift 0%: the valve grip rides 0 mm up with the conditioner
+PASS lift 25%: hovering the visible Conditioner hydraulic lever grip highlights it (Conditioner hydraulic lever)
+PASS lift 25%: no other control steals clicks within 6 px of the Conditioner hydraulic lever grip
+PASS lift 25%: hovering the visible Horizontal auger lever grip highlights it (Horizontal auger lever)
+PASS lift 25%: no other control steals clicks within 6 px of the Horizontal auger lever grip
+PASS lift 25%: hovering the visible Vertical auger lever grip highlights it (Vertical auger lever)
+PASS lift 25%: no other control steals clicks within 6 px of the Vertical auger lever grip
+PASS lift 25%: hovering the visible Snow tank hydraulic lever grip highlights it (Snow tank hydraulic lever)
+PASS lift 25%: no other control steals clicks within 6 px of the Snow tank hydraulic lever grip
+PASS lift 25%: hovering the visible Flood water valve grip highlights it (Flood water valve)
+PASS lift 25%: Flood water valve renderers are tinted while hovered
+PASS lift 25%: no other control steals clicks within 6 px of the Flood water valve grip
+PASS lift 25%: hovering the visible Wash water valve grip highlights it (Wash water valve)
+PASS lift 25%: Wash water valve renderers are tinted while hovered
+PASS lift 25%: no other control steals clicks within 6 px of the Wash water valve grip
+PASS lift 25%: hovering the visible Blade handwheel grip highlights it (Blade handwheel)
+PASS lift 25%: Blade handwheel renderers are tinted while hovered
+PASS lift 25%: no other control steals clicks within 6 px of the Blade handwheel grip
+PASS lift 25%: hovering the visible Snow-breaker plunger grip highlights it (Snow-breaker plunger)
+PASS lift 25%: no other control steals clicks within 6 px of the Snow-breaker plunger grip
+PASS lift 25%: clicking the visible Flood water valve grabs it (grabbed 'Flood water valve', hover 'Flood water valve')
+PASS lift 25%: dragging the Flood water valve grip 45 deg about its own axis sets 0.5000 (expected 0.5000)
+PASS lift 25%: the visible Flood water valve handle turns with it
+PASS lift 25%: the same 45 deg turn in a single slow frame sets 0.5000 (expected 0.5000; held 'Flood water valve', view |cos| 0.369)
+PASS lift 25%: clicking the visible Wash water valve grabs it (grabbed 'Wash water valve', hover 'Wash water valve')
+PASS lift 25%: dragging the Wash water valve grip 45 deg about its own axis sets 0.5000 (expected 0.5000)
+PASS lift 25%: the visible Wash water valve handle turns with it
+PASS lift 25%: the same 45 deg turn in a single slow frame sets 0.5000 (expected 0.5000; held 'Wash water valve', view |cos| 0.267)
+PASS lift 25%: clicking the visible Blade handwheel grabs it (grabbed 'Blade handwheel', hover 'Blade handwheel')
+PASS lift 25%: dragging the Blade handwheel grip 45 deg about its own axis sets 0.0286 (expected 0.0286)
+PASS lift 25%: the visible Blade handwheel handle turns with it
+PASS lift 25%: the same 45 deg turn in a single slow frame sets 0.0286 (expected 0.0286; held 'Blade handwheel', view |cos| 0.409)
+PASS lift 25%: the valve grip rides 85 mm up with the conditioner
+PASS lift 50%: hovering the visible Conditioner hydraulic lever grip highlights it (Conditioner hydraulic lever)
+PASS lift 50%: no other control steals clicks within 6 px of the Conditioner hydraulic lever grip
+PASS lift 50%: hovering the visible Horizontal auger lever grip highlights it (Horizontal auger lever)
+PASS lift 50%: no other control steals clicks within 6 px of the Horizontal auger lever grip
+PASS lift 50%: hovering the visible Vertical auger lever grip highlights it (Vertical auger lever)
+PASS lift 50%: no other control steals clicks within 6 px of the Vertical auger lever grip
+PASS lift 50%: hovering the visible Snow tank hydraulic lever grip highlights it (Snow tank hydraulic lever)
+PASS lift 50%: no other control steals clicks within 6 px of the Snow tank hydraulic lever grip
+PASS lift 50%: hovering the visible Flood water valve grip highlights it (Flood water valve)
+PASS lift 50%: Flood water valve renderers are tinted while hovered
+PASS lift 50%: no other control steals clicks within 6 px of the Flood water valve grip
+PASS lift 50%: hovering the visible Wash water valve grip highlights it (Wash water valve)
+PASS lift 50%: Wash water valve renderers are tinted while hovered
+PASS lift 50%: no other control steals clicks within 6 px of the Wash water valve grip
+PASS lift 50%: hovering the visible Blade handwheel grip highlights it (Blade handwheel)
+PASS lift 50%: Blade handwheel renderers are tinted while hovered
+PASS lift 50%: no other control steals clicks within 6 px of the Blade handwheel grip
+PASS lift 50%: hovering the visible Snow-breaker plunger grip highlights it (Snow-breaker plunger)
+PASS lift 50%: no other control steals clicks within 6 px of the Snow-breaker plunger grip
+PASS lift 50%: clicking the visible Flood water valve grabs it (grabbed 'Flood water valve', hover 'Flood water valve')
+PASS lift 50%: dragging the Flood water valve grip 45 deg about its own axis sets 0.4999 (expected 0.5000)
+PASS lift 50%: the visible Flood water valve handle turns with it
+PASS lift 50%: the same 45 deg turn in a single slow frame sets 0.5000 (expected 0.5000; held 'Flood water valve', view |cos| 0.265)
+PASS lift 50%: clicking the visible Wash water valve grabs it (grabbed 'Wash water valve', hover 'Wash water valve')
+PASS lift 50%: dragging the Wash water valve grip 45 deg about its own axis sets 0.4999 (expected 0.5000)
+PASS lift 50%: the visible Wash water valve handle turns with it
+PASS lift 50%: the same 45 deg turn in a single slow frame sets 0.5001 (expected 0.5000; held 'Wash water valve', view |cos| 0.188)
+PASS lift 50%: clicking the visible Blade handwheel grabs it (grabbed 'Blade handwheel', hover 'Blade handwheel')
+PASS lift 50%: dragging the Blade handwheel grip 45 deg about its own axis sets 0.0286 (expected 0.0286)
+PASS lift 50%: the visible Blade handwheel handle turns with it
+PASS lift 50%: the same 45 deg turn in a single slow frame sets 0.0286 (expected 0.0286; held 'Blade handwheel', view |cos| 0.331)
+PASS lift 50%: the valve grip rides 170 mm up with the conditioner
+PASS lift 75%: hovering the visible Conditioner hydraulic lever grip highlights it (Conditioner hydraulic lever)
+PASS lift 75%: no other control steals clicks within 6 px of the Conditioner hydraulic lever grip
+PASS lift 75%: hovering the visible Horizontal auger lever grip highlights it (Horizontal auger lever)
+PASS lift 75%: no other control steals clicks within 6 px of the Horizontal auger lever grip
+PASS lift 75%: hovering the visible Vertical auger lever grip highlights it (Vertical auger lever)
+PASS lift 75%: no other control steals clicks within 6 px of the Vertical auger lever grip
+PASS lift 75%: hovering the visible Snow tank hydraulic lever grip highlights it (Snow tank hydraulic lever)
+PASS lift 75%: no other control steals clicks within 6 px of the Snow tank hydraulic lever grip
+PASS lift 75%: hovering the visible Flood water valve grip highlights it (Flood water valve)
+PASS lift 75%: Flood water valve renderers are tinted while hovered
+PASS lift 75%: no other control steals clicks within 6 px of the Flood water valve grip
+PASS lift 75%: hovering the visible Wash water valve grip highlights it (Wash water valve)
+PASS lift 75%: Wash water valve renderers are tinted while hovered
+PASS lift 75%: no other control steals clicks within 6 px of the Wash water valve grip
+PASS lift 75%: hovering the visible Blade handwheel grip highlights it (Blade handwheel)
+PASS lift 75%: Blade handwheel renderers are tinted while hovered
+PASS lift 75%: no other control steals clicks within 6 px of the Blade handwheel grip
+PASS lift 75%: hovering the visible Snow-breaker plunger grip highlights it (Snow-breaker plunger)
+PASS lift 75%: no other control steals clicks within 6 px of the Snow-breaker plunger grip
+PASS lift 75%: clicking the visible Flood water valve grabs it (grabbed 'Flood water valve', hover 'Flood water valve')
+PASS lift 75%: dragging the Flood water valve grip 45 deg about its own axis sets 0.5000 (expected 0.5000)
+PASS lift 75%: the visible Flood water valve handle turns with it
+PASS lift 75%: the same 45 deg turn in a single slow frame sets 0.5000 (expected 0.5000; held 'Flood water valve', view |cos| 0.151)
+PASS lift 75%: clicking the visible Wash water valve grabs it (grabbed 'Wash water valve', hover 'Wash water valve')
+PASS lift 75%: dragging the Wash water valve grip 45 deg about its own axis sets 0.5001 (expected 0.5000)
+PASS lift 75%: the visible Wash water valve handle turns with it
+PASS lift 75%: the same 45 deg turn in a single slow frame sets 0.4999 (expected 0.5000; held 'Wash water valve', view |cos| 0.106)
+PASS lift 75%: clicking the visible Blade handwheel grabs it (grabbed 'Blade handwheel', hover 'Blade handwheel')
+PASS lift 75%: dragging the Blade handwheel grip 45 deg about its own axis sets 0.0286 (expected 0.0286)
+PASS lift 75%: the visible Blade handwheel handle turns with it
+PASS lift 75%: the same 45 deg turn in a single slow frame sets 0.0286 (expected 0.0286; held 'Blade handwheel', view |cos| 0.246)
+PASS lift 75%: the valve grip rides 255 mm up with the conditioner
+PASS lift 100%: hovering the visible Conditioner hydraulic lever grip highlights it (Conditioner hydraulic lever)
+PASS lift 100%: no other control steals clicks within 6 px of the Conditioner hydraulic lever grip
+PASS lift 100%: hovering the visible Horizontal auger lever grip highlights it (Horizontal auger lever)
+PASS lift 100%: no other control steals clicks within 6 px of the Horizontal auger lever grip
+PASS lift 100%: hovering the visible Vertical auger lever grip highlights it (Vertical auger lever)
+PASS lift 100%: no other control steals clicks within 6 px of the Vertical auger lever grip
+PASS lift 100%: hovering the visible Snow tank hydraulic lever grip highlights it (Snow tank hydraulic lever)
+PASS lift 100%: no other control steals clicks within 6 px of the Snow tank hydraulic lever grip
+PASS lift 100%: hovering the visible Flood water valve grip highlights it (Flood water valve)
+PASS lift 100%: Flood water valve renderers are tinted while hovered
+PASS lift 100%: no other control steals clicks within 6 px of the Flood water valve grip
+PASS lift 100%: hovering the visible Wash water valve grip highlights it (Wash water valve)
+PASS lift 100%: Wash water valve renderers are tinted while hovered
+PASS lift 100%: no other control steals clicks within 6 px of the Wash water valve grip
+PASS lift 100%: hovering the visible Blade handwheel grip highlights it (Blade handwheel)
+PASS lift 100%: Blade handwheel renderers are tinted while hovered
+PASS lift 100%: no other control steals clicks within 6 px of the Blade handwheel grip
+PASS lift 100%: hovering the visible Snow-breaker plunger grip highlights it (Snow-breaker plunger)
+PASS lift 100%: no other control steals clicks within 6 px of the Snow-breaker plunger grip
+PASS lift 100%: clicking the visible Flood water valve grabs it (grabbed 'Flood water valve', hover 'Flood water valve')
+PASS lift 100%: dragging the Flood water valve grip 45 deg about its own axis sets 0.5002 (expected 0.5000)
+PASS lift 100%: the visible Flood water valve handle turns with it
+INFO lift 100%: the same 45 deg turn in a single slow frame sets 0.4998 (expected 0.5000; held 'Flood water valve', view |cos| 0.030) - edge-on view, a single jump round the end of the stroke is ambiguous (not a check)
+PASS lift 100%: clicking the visible Wash water valve grabs it (grabbed 'Wash water valve', hover 'Wash water valve')
+PASS lift 100%: dragging the Wash water valve grip 45 deg about its own axis sets 0.5002 (expected 0.5000)
+PASS lift 100%: the visible Wash water valve handle turns with it
+INFO lift 100%: the same 45 deg turn in a single slow frame sets 0.0000 (expected 0.5000; held 'Flood water valve', view |cos| 0.021) - edge-on view, a single jump round the end of the stroke is ambiguous (not a check)
+PASS lift 100%: clicking the visible Blade handwheel grabs it (grabbed 'Blade handwheel', hover 'Blade handwheel')
+PASS lift 100%: dragging the Blade handwheel grip 45 deg about its own axis sets 0.0286 (expected 0.0286)
+PASS lift 100%: the visible Blade handwheel handle turns with it
+PASS lift 100%: the same 45 deg turn in a single slow frame sets 0.0286 (expected 0.0286; held 'Blade handwheel', view |cos| 0.156)
+PASS lift 100%: the valve grip rides 340 mm up with the conditioner
+PASS hold: Flood water valve grabbed at 0% lift (grabbed 'Flood water valve', hover 'Flood water valve', pick 'Flood water valve', grip machine (-0.2196,1.9370,-1.0361), eye distance 0.73 m, viewport (0.50, 0.50, 0.73))
+PASS hold: the Flood water valve setting does not change while the conditioner rises 0->100% under a still pointer (0.500 -> 0.500)
+PASS hold: Wash water valve grabbed at 0% lift (grabbed 'Wash water valve', hover 'Wash water valve', pick 'Wash water valve', grip machine (0.0947,1.9370,-1.0366), eye distance 1.00 m, viewport (0.50, 0.50, 1.00))
+PASS hold: the Wash water valve setting does not change while the conditioner rises 0->100% under a still pointer (0.500 -> 0.500)
+PASS hold: Blade handwheel grabbed at 0% lift (grabbed 'Blade handwheel', hover 'Blade handwheel', pick 'Blade handwheel', grip machine (-0.0140,1.8197,-1.0259), eye distance 0.95 m, viewport (0.50, 0.50, 0.95))
+PASS hold: the Blade handwheel setting does not change while the conditioner rises 0->100% under a still pointer (0.400 -> 0.400)
+INFO driver camera 640 x 480 px
+PASS lift 0%: a jittery hand following the Flood water valve grip 48 deg turns it 0.5667 (expected 0.5333; view 31.5 deg off its plane)
+PASS lift 0%: the same hand turns the Flood water valve to its open stop (1.000) and back to closed (0.000)
+PASS lift 0%: a jittery hand following the Wash water valve grip 48 deg turns it 0.4890 (expected 0.5333; view 21.9 deg off its plane)
+PASS lift 0%: the same hand turns the Wash water valve to its open stop (1.000) and back to closed (0.000)
+PASS lift 0%: a jittery hand following the Blade handwheel grip 48 deg turns it 0.0302 (expected 0.0305; view 27.2 deg off its plane)
+PASS lift 50%: a jittery hand following the Flood water valve grip 48 deg turns it 0.5467 (expected 0.5333; view 17.9 deg off its plane)
+PASS lift 50%: the same hand turns the Flood water valve to its open stop (1.000) and back to closed (0.000)
+FAIL lift 50%: a jittery hand following the Wash water valve grip 48 deg turns it 0.4093 (expected 0.5333; view 12.0 deg off its plane)
+PASS lift 50%: the same hand turns the Wash water valve to its open stop (1.000) and back to closed (0.000)
+PASS lift 50%: a jittery hand following the Blade handwheel grip 48 deg turns it 0.0291 (expected 0.0305; view 18.4 deg off its plane)
+FAIL lift 100%: a jittery hand following the Flood water valve grip 48 deg turns it 0.2613 (expected 0.5333; view 2.0 deg off its plane)
+PASS lift 100%: the same hand turns the Flood water valve to its open stop (1.000) and back to closed (0.000)
+FAIL lift 100%: a jittery hand following the Wash water valve grip 48 deg turns it 0.7358 (expected 0.5333; view 1.3 deg off its plane)
+PASS lift 100%: the same hand turns the Wash water valve to its open stop (1.000) and back to closed (0.000)
+PASS lift 100%: a jittery hand following the Blade handwheel grip 48 deg turns it 0.0344 (expected 0.0305; view 8.5 deg off its plane)
+PASS lift 0%: turning the handwheel by its knob reaches the 3.5-turn stop (0.800 mm) and holds it when turned further
+PASS lift 0%: one turn back from the stop leaves 0.571 mm (expected 0.571)
+PASS lift 100%: turning the handwheel by its knob reaches the 3.5-turn stop (0.800 mm) and holds it when turned further
+PASS lift 100%: one turn back from the stop leaves 0.571 mm (expected 0.571)
+INFO E view lift 0%: 8/8 grips in frame; picks Conditioner hydraulic lever->Conditioner hydraulic lever; Horizontal auger lever->Horizontal auger lever; Vertical auger lever->Vertical auger lever; Snow tank hydraulic lever->Snow tank hydraulic lever; Flood water valve->Flood water valve; Wash water valve->Wash water valve; Blade handwheel->Blade handwheel; Snow-breaker plunger->Snow-breaker plunger
+PASS E view at 0% lift frames all 8 grips
+INFO E view lift 50%: 8/8 grips in frame; picks Conditioner hydraulic lever->Conditioner hydraulic lever; Horizontal auger lever->Horizontal auger lever; Vertical auger lever->Vertical auger lever; Snow tank hydraulic lever->Snow tank hydraulic lever; Flood water valve->Flood water valve; Wash water valve->Wash water valve; Blade handwheel->Blade handwheel; Snow-breaker plunger->Snow-breaker plunger
+PASS E view at 50% lift frames all 8 grips
+INFO E view lift 100%: 8/8 grips in frame; picks Conditioner hydraulic lever->Conditioner hydraulic lever; Horizontal auger lever->Horizontal auger lever; Vertical auger lever->Vertical auger lever; Snow tank hydraulic lever->Snow tank hydraulic lever; Flood water valve->Flood water valve; Wash water valve->Wash water valve; Blade handwheel->Blade handwheel; Snow-breaker plunger->Snow-breaker plunger
+PASS E view at 100% lift frames all 8 grips
+== Play: guide roller and board contact with the authored machine / 2026-11-02T21:02:06
+PASS the visible roller radius equals the simulated one (0.090 m)
+INFO DRIVE | parallel, light contact | throttle 1 steer -0.06 lift 1 | progress 13.25 m | speed 2.65->2.65 (min 2.65) | first contact roller | contact steps 247 | dead stops 0 | roller travel 13.25 m, bearing 250/250 steps | conditioner nearest the boards 44 mm | visible penetration 0.0 mm
+PASS parallel, light contact: the visible machine never enters the boards (0.0 mm)
+PASS parallel, light contact: the visible roller turns with its tangential travel
+PASS parallel, light contact: glancing contact keeps moving along the boards (no dead stop, 2.65 m/s)
+PASS parallel, light contact: the guide roller makes first contact (roller)
+PASS parallel, light contact: the conditioner side plate never reaches the boards (nearest 44 mm)
+PASS parallel, light contact: the roller bears on the boards and turns with the straight run (250/250 steps, 13.25 m rolled of 13.25 m)
+INFO DRIVE | parallel, resurfacing speed | throttle 0.6 steer -0.04 lift 1 | progress 7.95 m | speed 1.59->1.59 (min 1.59) | first contact roller | contact steps 197 | dead stops 0 | roller travel 7.95 m, bearing 250/250 steps | conditioner nearest the boards 45 mm | visible penetration 0.0 mm
+PASS parallel, resurfacing speed: the visible machine never enters the boards (0.0 mm)
+PASS parallel, resurfacing speed: the visible roller turns with its tangential travel
+PASS parallel, resurfacing speed: glancing contact keeps moving along the boards (no dead stop, 1.59 m/s)
+PASS parallel, resurfacing speed: the guide roller makes first contact (roller)
+PASS parallel, resurfacing speed: the conditioner side plate never reaches the boards (nearest 45 mm)
+PASS parallel, resurfacing speed: the roller bears on the boards and turns with the straight run (250/250 steps, 7.95 m rolled of 7.95 m)
+INFO DRIVE | parallel, steering neutral | throttle 1 steer 0 lift 1 | progress 13.25 m | speed 2.65->2.65 (min 2.65) | first contact roller | contact steps 0 | dead stops 0 | roller travel 13.25 m, bearing 250/250 steps | conditioner nearest the boards 45 mm | visible penetration 0.0 mm
+PASS parallel, steering neutral: the visible machine never enters the boards (0.0 mm)
+PASS parallel, steering neutral: the visible roller turns with its tangential travel
+PASS parallel, steering neutral: glancing contact keeps moving along the boards (no dead stop, 2.65 m/s)
+PASS parallel, steering neutral: the guide roller makes first contact (roller)
+PASS parallel, steering neutral: the conditioner side plate never reaches the boards (nearest 45 mm)
+PASS parallel, steering neutral: the roller bears on the boards and turns with the straight run (250/250 steps, 13.25 m rolled of 13.25 m)
+INFO DRIVE | 2 deg | throttle 1 steer -0.3 lift 1 | progress 13.21 m | speed 2.65->2.65 (min 2.55) | first contact roller | contact steps 207 | dead stops 0 | roller travel 11.13 m, bearing 207/207 steps | conditioner nearest the boards 45 mm | visible penetration 0.0 mm
+PASS 2 deg: the visible machine never enters the boards (0.0 mm)
+PASS 2 deg: the visible roller turns with its tangential travel
+PASS 2 deg: glancing contact keeps moving along the boards (no dead stop, 2.65 m/s)
+PASS 2 deg: the guide roller makes first contact (roller)
+PASS 2 deg: the conditioner side plate never reaches the boards (nearest 45 mm)
+INFO DRIVE | 5 deg | throttle 1 steer 0 lift 1 | progress 13.21 m | speed 2.65->2.65 (min 2.65) | first contact roller | contact steps 91 | dead stops 0 | roller travel 5.06 m, bearing 94/94 steps | conditioner nearest the boards 78 mm | visible penetration 0.0 mm
+PASS 5 deg: the visible machine never enters the boards (0.0 mm)
+PASS 5 deg: the visible roller turns with its tangential travel
+PASS 5 deg: glancing contact keeps moving along the boards (no dead stop, 2.65 m/s)
+PASS 5 deg: the guide roller makes first contact (roller)
+PASS 5 deg: the conditioner side plate never reaches the boards (nearest 78 mm)
+INFO DRIVE | 10 deg | throttle 0.6 steer -0.3 lift 0 | progress 7.82 m | speed 1.59->1.59 (min 1.59) | first contact roller | contact steps 175 | dead stops 0 | roller travel 5.94 m, bearing 176/176 steps | conditioner nearest the boards 125 mm | visible penetration 0.0 mm
+PASS 10 deg: the visible machine never enters the boards (0.0 mm)
+PASS 10 deg: the visible roller turns with its tangential travel
+PASS 10 deg: glancing contact keeps moving along the boards (no dead stop, 1.59 m/s)
+PASS 10 deg: the guide roller makes first contact (roller)
+PASS 10 deg: the conditioner side plate never reaches the boards (nearest 125 mm)
+INFO DRIVE | 15 deg | throttle 1 steer -0.3 lift 1 | progress 11.00 m | speed 2.65->2.65 (min 1.34) | first contact roller | contact steps 210 | dead stops 0 | roller travel 9.52 m, bearing 210/210 steps | conditioner nearest the boards 63 mm | visible penetration 0.0 mm
+PASS 15 deg: the visible machine never enters the boards (0.0 mm)
+PASS 15 deg: the visible roller turns with its tangential travel
+PASS 15 deg: glancing contact keeps moving along the boards (no dead stop, 2.65 m/s)
+PASS 15 deg: the guide roller makes first contact (roller)
+PASS 15 deg: the conditioner side plate never reaches the boards (nearest 63 mm)
+INFO DRIVE | 25 deg | throttle 1 steer 0 lift 1 | progress 11.38 m | speed 2.65->2.65 (min 1.52) | first contact roller | contact steps 197 | dead stops 0 | roller travel 9.91 m, bearing 206/206 steps | conditioner nearest the boards 67 mm | visible penetration 0.0 mm
+PASS 25 deg: the visible machine never enters the boards (0.0 mm)
+PASS 25 deg: the visible roller turns with its tangential travel
+INFO DRIVE | 45 deg | throttle 1 steer 0 lift 1 | progress 7.14 m | speed 2.65->2.34 (min 0.52) | first contact roller | contact steps 220 | dead stops 0 | roller travel 7.39 m, bearing 220/220 steps | conditioner nearest the boards 163 mm | visible penetration 0.0 mm
+PASS 45 deg: the visible machine never enters the boards (0.0 mm)
+PASS 45 deg: the visible roller turns with its tangential travel
+INFO DRIVE | head-on | throttle 1 steer 0 lift 1 | progress 0.00 m | speed 2.65->0.00 (min 0.00) | first contact body | contact steps 226 | dead stops 1 | roller travel 0.00 m, bearing 0/226 steps | conditioner nearest the boards 3090 mm | visible penetration 0.0 mm
+PASS head-on: the visible machine never enters the boards (0.0 mm)
+PASS head-on: the visible roller turns with its tangential travel
+PASS head-on: the boards stop the machine
+INFO DRIVE | full lock into the boards at 5 deg | throttle 1 steer -1 lift 1 | progress 7.37 m | speed 2.65->1.50 (min 0.99) | first contact roller | contact steps 215 | dead stops 0 | roller travel 5.89 m, bearing 215/215 steps | conditioner nearest the boards 114 mm | visible penetration 0.0 mm
+PASS full lock into the boards at 5 deg: the visible machine never enters the boards (0.0 mm)
+PASS full lock into the boards at 5 deg: the visible roller turns with its tangential travel
+PASS full lock into the boards at 5 deg: glancing contact keeps moving along the boards (no dead stop, 1.50 m/s)
+PASS full lock into the boards at 5 deg: the guide roller makes first contact (roller)
+PASS full lock into the boards at 5 deg: the conditioner side plate never reaches the boards (nearest 114 mm)
+INFO DRIVE | steer away at 5 deg | throttle 1 steer 0.3 lift 1 | progress 12.23 m | speed 2.65->2.65 (min -) | first contact none | contact steps 0 | dead stops 0 | roller travel 0.00 m, bearing 0/0 steps | conditioner nearest the boards 837 mm | visible penetration 0.0 mm
+PASS steer away at 5 deg: the visible machine never enters the boards (0.0 mm)
+PASS steer away at 5 deg: the visible roller turns with its tangential travel
+PASS steer away at 5 deg: glancing contact keeps moving along the boards (no dead stop, 2.65 m/s)
+INFO DRIVE | NW corner, steer -0.15 | heading 79.6 deg | speed 2.22 | roller travel 23.23 m, bearing 447/450 steps | contact steps: conditioner 0, body 0 | conditioner nearest the board face 20.12 mm (driving margin 20 mm), within 0.1 mm of the margin 0 steps | visible penetration 0.0 mm
+PASS the boards carry the machine round the NW corner without a dead stop or penetration
+PASS round the corner the roller alone bears; the conditioner never reaches the boards or the 20 mm driving margin (nearest 20.12 mm, contact steps 0, at the margin 0)
+INFO DRIVE | NW corner, steer -0.50 | heading 55.0 deg | speed 1.42 | roller travel 19.38 m, bearing 447/450 steps | contact steps: conditioner 0, body 0 | conditioner nearest the board face 20.03 mm (driving margin 20 mm), within 0.1 mm of the margin 1 steps | visible penetration 0.0 mm
+PASS held hard into the boards round the NW corner, the visible machine never enters them (0.0 mm)
+PASS after a head-on stop, reversing recovers (0.92 m)
+PASS service gate: reverse out onto the ice and drive back into the bay through the gate, walls solid (0.0 mm)
+== Play: board brush along the boards in normal driving / 2026-11-02T21:02:16
+PASS Play uses the authored brush rig
+INFO brush along the boards: contact steps 189/300, swept 272/272 checked cells, visible disc vs simulated contact max 0.000 mm, swept 0.57 L
+PASS driving normally along the boards (roller and conditioner touching), the working brush reaches the kickplate
+PASS the visible bristle disc is the simulated sweep disc
+PASS snow is swept under the visible disc
+== GPS: compatibility with the outline calibration / 2026-11-02T21:02:16
+INFO GPS old | AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json | rejected | Guide calibration mismatch: / CollisionOutline: guide=legacy rectangle, session=85 vertices / ConditionerCollisionHalfWidth: guide=0, session=1.06599998 / ConditionerCollisionFront: guide=0.400000006, session=0.36500001 / ConditionerCollisionRear: guide=0.400000006, session=0.574999988 / GuideRollerX: guide=-1.01499999, session=-1.00099993 / GuideRollerZ: guide=2.38000011, session=2.44400001 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS an earlier guide is not silently accepted: AndyRoute___auto_fit___autho_20261102_175134_5260654d.guide.json
+INFO GPS old | AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json | rejected | Guide calibration mismatch: / CollisionOutline: guide=legacy rectangle, session=85 vertices / ConditionerCollisionHalfWidth: guide=0, session=1.06599998 / ConditionerCollisionFront: guide=0.400000006, session=0.36500001 / ConditionerCollisionRear: guide=0.400000006, session=0.574999988 / GuideRollerX: guide=-1.01499999, session=-1.00099993 / GuideRollerZ: guide=2.38000011, session=2.44400001 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS an earlier guide is not silently accepted: AndyRoute___auto_fit___autho_20261102_175135_92b77865.guide.json
+INFO GPS old | Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json | rejected | Guide calibration mismatch: / DrawbarLength: guide=0.649999976, session=0.435000002 / ConditionerYawLimitRadians: guide=0.0349065848, session=0 / CollisionOutline: guide=legacy rectangle, session=85 vertices / ConditionerCollisionHalfWidth: guide=0, session=1.06599998 / ConditionerCollisionFront: guide=0.400000006, session=0.36500001 / ConditionerCollisionRear: guide=0.400000006, session=0.574999988 / GuideRollerX: guide=-1.01499999, session=-1.00099993 / GuideRollerZ: guide=2.38000011, session=2.44400001 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS an earlier guide is not silently accepted: Andy_Try_1___recorded_track__20261031_052846_ec332e9e.guide.json
+INFO GPS old | Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json | rejected | Guide calibration mismatch: / DrawbarLength: guide=0.649999976, session=0.435000002 / CollisionOutline: guide=legacy rectangle, session=85 vertices / ConditionerCollisionHalfWidth: guide=0, session=1.06599998 / ConditionerCollisionFront: guide=0.400000006, session=0.36500001 / ConditionerCollisionRear: guide=0.400000006, session=0.574999988 / GuideRollerX: guide=-1.01499999, session=-1.00099993 / GuideRollerZ: guide=2.38000011, session=2.44400001 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS an earlier guide is not silently accepted: Andy_Try_1___recorded_track__20261102_000337_e9c2c923.guide.json
+INFO GPS old | Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json | rejected | Guide calibration mismatch: / CollisionOutline: guide=legacy rectangle, session=85 vertices / ConditionerCollisionHalfWidth: guide=0, session=1.06599998 / ConditionerCollisionFront: guide=0.400000006, session=0.36500001 / ConditionerCollisionRear: guide=0.400000006, session=0.574999988 / GuideRollerX: guide=-1.01499999, session=-1.00099993 / GuideRollerZ: guide=2.38000011, session=2.44400001 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS an earlier guide is not silently accepted: Andy_Try_1___recorded_track__20261102_175127_ddb9e873.guide.json
+INFO GPS old | Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json | rejected | Guide calibration mismatch: / CollisionOutline: guide=legacy rectangle, session=85 vertices / ConditionerCollisionHalfWidth: guide=0, session=1.06599998 / ConditionerCollisionFront: guide=0.400000006, session=0.36500001 / ConditionerCollisionRear: guide=0.400000006, session=0.574999988 / GuideRollerX: guide=-1.01499999, session=-1.00099993 / GuideRollerZ: guide=2.38000011, session=2.44400001 / Open Edit Route > Revalidate for active scene; save a new validated copy.
+PASS an earlier guide is not silently accepted: Andy_Try_1___recorded_track__20261102_175134_3c56ad7e.guide.json
+INFO GPS new | Andy_Try_1___recorded_track__20261103_042256_2d839c22.guide.json | ready True boundary 0 | accepted | Loaded: Andy_Try_1 / recorded track (repaired) / outline calibration (repaired 15 mm) — GPS Ready / recorded track; ideal spline not certified
+INFO GPS new | AndyRoute___auto_fit___outli_20261103_042257_125e2982.guide.json | ready True boundary 0 | accepted | Loaded: AndyRoute / auto fit / outline calibration — GPS Ready / smooth spline validated
+INFO Andy_Try_1 physical replay: 5126/5130 recorded poses fit the outline envelope; contacts: Rink boards (roller) x2, Rink boards x2
+== Captures / 2026-11-02T21:02:25
+PASS zero Unity runtime errors or exceptions in Play (0)
+PASS entering and exiting Play leaves the prefab, meshes and scene byte-identical
+INFO TOTAL checks passed: 324

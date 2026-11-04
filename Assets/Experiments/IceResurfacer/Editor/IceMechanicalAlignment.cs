@@ -150,23 +150,55 @@ namespace IceResurfacer.Editor
                 if(radius.Kind!=Kind.Matches)radius.Detail="Snow is cleared over a "+(c.BrushRadius*1000).ToString("F0")+" mm disc but the bristles show "+(visual*1000).ToString("F0")+" mm.";
             }
 
-            // Board guide roller: contact is only real if it is the outermost point at the front corner.
+            // Collision outline: the plan view the simulation collides with, against the machine as drawn.
+            var fit=IceCollisionOutlineFit.Measure(w,c);
+            float[] simulated=c.HasCollisionOutline?c.CollisionOutline:new[]{-c.VehicleHalfWidth,-c.BodyRear,-c.VehicleHalfWidth,c.BodyFront,c.VehicleHalfWidth,c.BodyFront,c.VehicleHalfWidth,-c.BodyRear};
+            float outlineError=IceCollisionOutlineFit.Difference(fit.Outline,simulated,out float outlineZ);
+            float conditionerError=Mathf.Max(Mathf.Abs(fit.ConditionerHalfWidth-c.ConditionerCollisionHalfWidth),
+                c.ConditionerCollisionHalfWidth>0?Mathf.Max(Mathf.Abs(fit.ConditionerFront-c.ConditionerCollisionFront),Mathf.Abs(fit.ConditionerRear-c.ConditionerCollisionRear)):0);
+            var outline=new Item{Label="Collision outline (plan view)",ErrorMm=Mathf.Max(outlineError,conditionerError)*1000};
+            outline.Kind=outline.ErrorMm<=5?Kind.Matches:Kind.Mechanical;
+            if(outline.Kind!=Kind.Matches)
+            {
+                outline.Detail=(c.HasCollisionOutline?"The collision outline":"The simulated body (one "+(2*c.VehicleHalfWidth).ToString("F2")+" m wide rectangle)")+
+                    " differs from the machine as drawn by up to "+(outlineError*1000).ToString("F0")+" mm (at z "+outlineZ.ToString("F2")+" m)"+
+                    (c.ConditionerCollisionHalfWidth>0?"":"; the conditioner (half width "+fit.ConditionerHalfWidth.ToString("F3")+" m) is not a collider")+
+                    ". Transfer fits a "+fit.Vertices+"-vertex outline to "+fit.Renderers+" parts (widest "+fit.MaxHalfWidth.ToString("F3")+" m) and a conditioner collider; "+
+                    "it changes where the machine can drive (GPS compatibility).";
+                outline.Transfer=cfg=>
+                {
+                    cfg.CollisionOutline=(float[])fit.Outline.Clone();
+                    cfg.ConditionerCollisionHalfWidth=fit.ConditionerHalfWidth;cfg.ConditionerCollisionFront=fit.ConditionerFront;cfg.ConditionerCollisionRear=fit.ConditionerRear;
+                    return "CollisionOutline "+(c.HasCollisionOutline?(c.CollisionOutline.Length/2)+" vertices":"legacy rectangle")+" -> "+fit.Vertices+" vertices; conditioner collider half width "+
+                        c.ConditionerCollisionHalfWidth.ToString("F3")+" -> "+fit.ConditionerHalfWidth.ToString("F3")+" (front "+fit.ConditionerFront.ToString("F3")+", rear "+fit.ConditionerRear.ToString("F3")+") (GPS compatibility fields)";
+                };
+            }
+            items.Add(outline);
+
+            // Board guide roller: its contact only happens if it reaches past the body beside it.
             Vector3 roller=M(w,w.GuideRoller);
             float rollerRadius=GuideRollerRadius(w);
             var guide=Add(items,"Board guide roller",roller,new Vector3(c.GuideRollerX,roller.y,c.GuideRollerZ),cfg=>
             {
                 cfg.GuideRollerX=roller.x;cfg.GuideRollerZ=roller.z;cfg.GuideRollerRadius=rollerRadius;
                 return "GuideRoller ("+c.GuideRollerX.ToString("F3")+", "+c.GuideRollerZ.ToString("F3")+", r "+c.GuideRollerRadius.ToString("F3")+") -> ("+
-                    roller.x.ToString("F3")+", "+roller.z.ToString("F3")+", r "+rollerRadius.ToString("F3")+")";
+                    roller.x.ToString("F3")+", "+roller.z.ToString("F3")+", r "+rollerRadius.ToString("F3")+") (GPS compatibility fields)";
             },null);
+            // Against the outline that will be in force after Transfer (the fitted one).
+            IceCollisionOutlineFit.Extent(fit.Outline,roller.z,out float sideLeft,out float sideRight);
+            float bodySide=roller.x<0?(float.IsNaN(sideLeft)?0:-sideLeft):(float.IsNaN(sideRight)?0:sideRight);
+            float reach=Mathf.Abs(roller.x)+rollerRadius-bodySide;
             if(guide.Kind!=Kind.Matches)
             {
-                float outer=-(roller.x-rollerRadius);
-                if(outer<=c.VehicleHalfWidth)Block(guide,"its outer edge (x = -"+outer.ToString("F3")+") is "+((c.VehicleHalfWidth-outer)*1000).ToString("F0")+
-                    " mm inside the simulated body side (VehicleHalfWidth "+c.VehicleHalfWidth.ToString("F3")+"). The body would always reach the boards first, so the roller "+
-                    "could never touch them. Either extend the roller bracket outboard, or narrow the simulated body (driving geometry and GPS compatibility; not done automatically).");
                 guide.Detail="Simulated roller contact is "+guide.ErrorMm.ToString("F0")+" mm from the visible roller.";
+                if(reach<=0)Block(guide,"its outer edge is "+(-reach*1000).ToString("F0")+" mm inside the drawn body beside it (z "+roller.z.ToString("F2")+"), so the body would always reach the boards first. Extend the roller bracket outboard.");
             }
+            float widest=Mathf.Max(fit.MaxHalfWidth,fit.ConditionerHalfWidth);
+            if(Mathf.Abs(roller.x)+rollerRadius<widest-.001f)
+                items.Add(new Item{Label="Guide roller vs widest part",Kind=Kind.Info,Detail="The roller reaches "+(Mathf.Abs(roller.x)+rollerRadius).ToString("F3")+" m from the centreline, "+
+                    ((widest-Mathf.Abs(roller.x)-rollerRadius)*1000).ToString("F0")+" mm short of the "+(fit.ConditionerHalfWidth>=fit.MaxHalfWidth?"conditioner side plates":"widest body part")+" ("+widest.ToString("F3")+" m). "+
+                    "Running parallel to the boards that part touches first; the roller leads only with the nose angled toward the boards (about "+
+                    (Mathf.Atan2(widest-Mathf.Abs(roller.x)-rollerRadius,roller.z+(c.HitchBehindAxle+c.DrawbarLength-fit.ConditionerFront))*Mathf.Rad2Deg).ToString("F1")+" deg or more). \"Move Guide Roller Outboard...\" moves its assembly (a visual change to your part); Transfer then makes it physical."});
             return items;
         }
 
@@ -184,7 +216,8 @@ namespace IceResurfacer.Editor
         public static float GuideRollerRadius(IceWorld w)
         {
             var b=IceConditionerAlignment.LocalBounds(w.GuideRoller.GetComponentsInChildren<Renderer>(true),w.GuideRoller);
-            return Mathf.Max(b.max.x,-b.min.x,b.max.z,-b.min.z);
+            // To 0.1 mm: mesh bounds carry float noise that would otherwise read as a calibration change.
+            return Mathf.Round(Mathf.Max(b.max.x,-b.min.x,b.max.z,-b.min.z)*10000)/10000;
         }
 
         /// <summary>Null when the discharge sits in an open part of the tank's rear wall (within 6 cm of
@@ -201,18 +234,20 @@ namespace IceResurfacer.Editor
                     var mc=r.gameObject.AddComponent<MeshCollider>();mc.hideFlags=HideFlags.HideAndDontSave;mc.sharedMesh=f.sharedMesh;colliders.Add(mc);
                 }
                 Physics.SyncTransforms();
+                // The machine's own physics scene: Prefab Mode and prefab previews are separate worlds.
+                var physics=w.Machine.gameObject.scene.GetPhysicsScene();
                 Transform m=w.Machine;Vector3 p=w.TankDischarge.position,forward=m.forward;
                 // Is the discharge looking through an opening? Rays along the throat at its centre and rim.
                 int blocked=0;
                 foreach(var o in new[]{Vector3.zero,m.up*.06f,-m.up*.06f,m.right*.06f,-m.right*.06f})
-                    if(Physics.Raycast(p+o-forward*.10f,forward,out var hit,.25f)&&Vector3.Dot(hit.point-p,forward)<.12f)blocked++;
+                    if(physics.Raycast(p+o-forward*.10f,forward,out var hit,.25f)&&Vector3.Dot(hit.point-p,forward)<.12f)blocked++;
                 if(blocked>0)return "The discharge faces solid tank wall ("+blocked+"/5 sample rays blocked within 12 cm): snow would pass through a panel.";
                 // The wall around the opening: an outer ring of rays finds its plane.
                 float wall=float.PositiveInfinity;
                 for(int i=0;i<8;i++)
                 {
                     float a=i*Mathf.PI*.25f;Vector3 o=(m.right*Mathf.Cos(a)+m.up*Mathf.Sin(a))*.24f;
-                    if(Physics.Raycast(p+o-forward*.3f,forward,out var ring,.8f))wall=Mathf.Min(wall,Vector3.Dot(ring.point-p,forward));
+                    if(physics.Raycast(p+o-forward*.3f,forward,out var ring,.8f))wall=Mathf.Min(wall,Vector3.Dot(ring.point-p,forward));
                 }
                 if(float.IsPositiveInfinity(wall))return "No tank wall around the discharge.";
                 if(wall>.03f)return "The discharge ends "+(wall*1000).ToString("F0")+" mm short of the tank wall: snow would fall in the open gap.";
@@ -304,11 +339,12 @@ namespace IceResurfacer.Editor
                     var mc=mr.gameObject.AddComponent<MeshCollider>();mc.hideFlags=HideFlags.HideAndDontSave;mc.sharedMesh=f.sharedMesh;colliders.Add(mc);
                 }
                 Physics.SyncTransforms();
+                var physics=m.gameObject.scene.GetPhysicsScene();
                 // Wall plane and the open band straight ahead of the casing.
                 float wall=float.PositiveInfinity,openLow=float.NaN,openHigh=float.NaN,best=float.PositiveInfinity,runLow=float.NaN;
                 for(float y=c.y-.3f;y<=c.y+.8f;y+=.005f)
                 {
-                    bool hit=Physics.Raycast(m.TransformPoint(c.x,y,c.z),m.forward,out var h,3f);
+                    bool hit=physics.Raycast(m.TransformPoint(c.x,y,c.z),m.forward,out var h,3f);
                     float z=hit?m.InverseTransformPoint(h.point).z:float.PositiveInfinity;
                     if(hit&&z<wall+.05f)wall=Mathf.Min(wall,z);
                 }
@@ -317,7 +353,7 @@ namespace IceResurfacer.Editor
                 // use the one nearest the casing that the throat can pass through.
                 for(float y=c.y-.3f;y<=c.y+.8f;y+=.005f)
                 {
-                    bool open=!Physics.Raycast(m.TransformPoint(c.x,y,c.z),m.forward,out var h,3f)||m.InverseTransformPoint(h.point).z>wall+.05f;
+                    bool open=!physics.Raycast(m.TransformPoint(c.x,y,c.z),m.forward,out var h,3f)||m.InverseTransformPoint(h.point).z>wall+.05f;
                     if(open&&float.IsNaN(runLow))runLow=y;
                     if(!open&&!float.IsNaN(runLow))
                     {
@@ -330,12 +366,12 @@ namespace IceResurfacer.Editor
                 // The wall face at the opening itself (lower lips of a tapered wall can sit further back).
                 float face=float.PositiveInfinity;
                 foreach(float y in new[]{openLow-.01f,openHigh+.01f})
-                    if(Physics.Raycast(m.TransformPoint(c.x,y,c.z),m.forward,out var lip,3f))face=Mathf.Min(face,m.InverseTransformPoint(lip.point).z);
+                    if(physics.Raycast(m.TransformPoint(c.x,y,c.z),m.forward,out var lip,3f))face=Mathf.Min(face,m.InverseTransformPoint(lip.point).z);
                 if(!float.IsPositiveInfinity(face))wall=face;
                 // Lateral fit at the opening's middle.
                 float midY=(openLow+openHigh)*.5f;
                 foreach(float side in new[]{-1f,1f})
-                    if(Physics.Raycast(m.TransformPoint(c.x+side*(r+.005f),midY,c.z),m.forward,out var lateral,3f)&&m.InverseTransformPoint(lateral.point).z<wall+.05f)
+                    if(physics.Raycast(m.TransformPoint(c.x+side*(r+.005f),midY,c.z),m.forward,out var lateral,3f)&&m.InverseTransformPoint(lateral.point).z<wall+.05f)
                     {summary="the opening is narrower than the throat at x = "+(c.x+side*(r+.005f)).ToString("F3");return false;}
                 float tipZ=wall-.005f,run=tipZ-c.z;
                 for(float degrees=0;degrees<=45;degrees+=.25f)
@@ -359,6 +395,61 @@ namespace IceResurfacer.Editor
                 return false;
             }
             finally { foreach(var mc in colliders)UnityEngine.Object.DestroyImmediate(mc); }
+        }
+
+        /// <summary>
+        /// The roller's outer edge must lead the widest part on its side (the conditioner side plates on the
+        /// authored machine) for the roller, not that part, to bear on the boards in a straight run. Returns how
+        /// far the roller assembly has to move outboard for the given lead (0 when it already leads by it).
+        /// </summary>
+        public static float GuideRollerShortfall(IceWorld w,SimulatorConfig c,float lead,out float widest,out string part)
+        {
+            var fit=IceCollisionOutlineFit.Measure(w,c);
+            Vector3 roller=M(w,w.GuideRoller);float side=Mathf.Sign(roller.x);
+            widest=0;part="body";
+            for(int i=0;i<fit.Outline.Length;i+=2)if(Mathf.Sign(fit.Outline[i])==side)widest=Mathf.Max(widest,Mathf.Abs(fit.Outline[i]));
+            if(fit.ConditionerHalfWidth>widest){widest=fit.ConditionerHalfWidth;part="conditioner side plates";}
+            return Mathf.Max(0,widest+lead-(Mathf.Abs(roller.x)+GuideRollerRadius(w)));
+        }
+
+        /// <summary>
+        /// Moves the guide roller assembly (its group: wheel, cap, bracket) straight outboard so the roller's
+        /// outer edge leads the widest part on its side by lead, and lengthens "Guide roller bracket" so its
+        /// inboard end stays where it meets the body. Nothing else moves; one Undo step; written to the prefab.
+        /// Transfer Authored Geometry then makes the new roller position physical.
+        /// </summary>
+        public static bool MoveGuideRollerOutboard(IceWorld w,SimulatorConfig c,float lead,out string summary)
+        {
+            summary="";
+            Transform m=w.Machine,group=w.GuideRoller.parent;
+            if(group==null||group==m){summary="the roller has no assembly of its own to move";return false;}
+            float move=GuideRollerShortfall(w,c,lead,out float widest,out string part);
+            if(move<.0005f){summary="the roller already leads the "+part+" by "+(lead*1000).ToString("F0")+" mm or more";return false;}
+            float side=Mathf.Sign(M(w,w.GuideRoller).x);
+            var bracket=Child(group,"Guide roller bracket");
+            Vector3 inner=Vector3.zero,outer=Vector3.zero;
+            if(bracket!=null)
+            {
+                Vector3 half=bracket.up*bracket.lossyScale.y,a=bracket.position-half,b=bracket.position+half;
+                bool aInner=Mathf.Abs(m.InverseTransformPoint(a).x)<Mathf.Abs(m.InverseTransformPoint(b).x);
+                inner=aInner?a:b;outer=aInner?b:a;
+            }
+            Undo.RecordObjects(bracket!=null?new UnityEngine.Object[]{group,bracket}:new UnityEngine.Object[]{group},"Move guide roller outboard");
+            Vector3 offset=m.right*side*move;
+            group.position+=offset;
+            if(bracket!=null)
+            {
+                outer+=offset;Vector3 axis=outer-inner;
+                bool upOutboard=Vector3.Dot(bracket.up,m.right*side)>0;
+                bracket.SetPositionAndRotation((inner+outer)*.5f,Quaternion.FromToRotation(Vector3.up,upOutboard?axis:-axis));
+                var scale=bracket.localScale;scale.y=axis.magnitude*.5f/(bracket.parent!=null?bracket.parent.lossyScale.y:1);bracket.localScale=scale;
+            }
+            CommitToPrefab(group);if(bracket!=null)CommitToPrefab(bracket);
+            Vector3 roller=M(w,w.GuideRoller);float radius=GuideRollerRadius(w);
+            summary="roller assembly moved "+(move*1000).ToString("F0")+" mm outboard: centre x "+roller.x.ToString("F3")+", outer edge |x| "+(Mathf.Abs(roller.x)+radius).ToString("F3")+
+                " leads the "+part+" ("+widest.ToString("F3")+") by "+((Mathf.Abs(roller.x)+radius-widest)*1000).ToString("F0")+" mm"+
+                (bracket!=null?"; bracket lengthened to "+(2*bracket.lossyScale.y).ToString("F3")+" m, still meeting the body at x "+m.InverseTransformPoint(inner).x.ToString("F3"):"");
+            return true;
         }
 
         // ---- Explicit actions (Undo) ------------------------------------------------------------
@@ -428,9 +519,21 @@ namespace IceResurfacer.Editor
         }
 
         // ---- Edit Mode lift / tilt preview (never saved) ----------------------------------------
+        // The same pose Play draws (IceConditionerMotion): root at the simulated hitch and lift, the lift
+        // linkage and hoses spanning their pins, cylinders on their clevises; controls mounted on the
+        // conditioner ride with it. Nothing is recorded for Undo; every pose is restored before a save,
+        // Play, a recompile, an Undo/Redo, or a manual edit of a previewed part (which is not applied).
 
         static readonly Dictionary<Transform,(Vector3 p,Quaternion r,Vector3 s)> saved=new Dictionary<Transform,(Vector3,Quaternion,Vector3)>();
+        static List<IceConditionerLinkage.Span> previewSpans;
+        static IceWorld previewWorld;
+        static SimulatorConfig previewConfig;
+        // An edit made to a posed part may have recorded a prefab override on it; only such new pose overrides
+        // on previewed parts are removed again (the user's other overrides are never touched).
+        static GameObject previewInstance;
+        static PropertyModification[] previewModifications;
         public static float PreviewLift=-1, PreviewTankTilt=-1;
+        public static readonly float[] PreviewSteps={0,.25f,.5f,.75f,1};
         public static bool Previewing { get { return saved.Count>0; } }
 
         [InitializeOnLoadMethod]
@@ -440,22 +543,51 @@ namespace IceResurfacer.Editor
             UnityEditor.SceneManagement.PrefabStage.prefabSaving+=root=>EndPreview();
             EditorApplication.playModeStateChanged+=state=>{ if(state==PlayModeStateChange.ExitingEditMode)EndPreview(); };
             AssemblyReloadEvents.beforeAssemblyReload+=EndPreview;
+            Undo.undoRedoPerformed+=EndPreview;
+            Undo.postprocessModifications+=DropPreviewEdits;
         }
 
-        /// <summary>Poses the conditioner at the simulated hitch and lift (0 lowered .. 1 raised) and
-        /// the tank at a tilt (0..1 of the 58 degree dump), exactly as Play does, with cylinders on their pins.</summary>
+        static UndoPropertyModification[] DropPreviewEdits(UndoPropertyModification[] modifications)
+        {
+            if(saved.Count==0)return modifications;
+            var kept=new List<UndoPropertyModification>();bool dropped=false;
+            foreach(var m in modifications)
+            {
+                var target=m.currentValue!=null?m.currentValue.target as Transform:null;
+                if(target!=null&&saved.ContainsKey(target)){dropped=true;continue;}
+                kept.Add(m);
+            }
+            if(dropped)
+            {
+                Debug.LogWarning("Lift preview ended: a previewed part was edited while posed. The edit was not applied; the authored pose is restored. Repeat it after the preview.");
+                EditorApplication.delayCall+=EndPreview;
+            }
+            return kept.ToArray();
+        }
+
+        /// <summary>Poses the conditioner at the simulated hitch and lift (0 lowered .. 1 raised) and the tank
+        /// at a tilt (0..1 of the 58 degree dump), exactly as Play does.</summary>
         public static void Preview(IceWorld w,SimulatorConfig c,float lift,float tankTilt)
         {
             if(Application.isPlaying)return;
+            if(saved.Count==0)
+            {
+                previewSpans=IceConditionerLinkage.Capture(w);
+                previewInstance=PrefabUtility.GetNearestPrefabInstanceRoot(w.Machine);
+                previewModifications=previewInstance!=null?PrefabUtility.GetPropertyModifications(previewInstance):null;
+            }
+            w.ConditionerSpans=previewSpans;
             var parts=new List<Transform>{w.Conditioner,w.TankPivot,w.TankDoor};
             foreach(var g in new[]{w.TankCylinderBarrels,w.TankCylinderRods,w.ConditionerCylinderBarrels,w.ConditionerCylinderRods})parts.AddRange(g);
-            foreach(var t in parts)if(!saved.ContainsKey(t))saved[t]=(t.localPosition,t.localRotation,t.localScale);
-            PreviewLift=lift;PreviewTankTilt=tankTilt;
-            w.Conditioner.SetPositionAndRotation(w.Machine.TransformPoint(0,lift*IceConditionerAlignment.LiftTravel,-(c.HitchBehindAxle+c.DrawbarLength)),w.Machine.rotation);
+            foreach(var span in previewSpans)parts.Add(span.Part);
+            foreach(var t in parts)if(t!=null&&!saved.ContainsKey(t))saved[t]=(t.localPosition,t.localRotation,t.localScale);
+            PreviewLift=lift;PreviewTankTilt=tankTilt;previewWorld=w;previewConfig=c;
+            IceConditionerMotion.PoseLocal(w,c,lift);
             var tankRest=saved[w.TankPivot].r;
             w.TankPivot.localRotation=tankRest*Quaternion.Euler(tankTilt*58,0,0);
             w.TankDoor.localRotation=Quaternion.Euler(-Mathf.Clamp01((tankTilt-.45f)/.4f)*105,0,0);
             IcePhysicalControls.PoseCylinders(w);
+            SceneView.duringSceneGui-=DrawPreview;SceneView.duringSceneGui+=DrawPreview;
             SceneView.RepaintAll();
         }
 
@@ -463,8 +595,40 @@ namespace IceResurfacer.Editor
         {
             if(saved.Count==0)return;
             foreach(var pair in saved)if(pair.Key!=null){pair.Key.localPosition=pair.Value.p;pair.Key.localRotation=pair.Value.r;pair.Key.localScale=pair.Value.s;}
-            saved.Clear();PreviewLift=PreviewTankTilt=-1;
+            RemovePreviewOverrides();
+            saved.Clear();previewSpans=null;previewWorld=null;previewConfig=null;previewInstance=null;previewModifications=null;PreviewLift=PreviewTankTilt=-1;
+            SceneView.duringSceneGui-=DrawPreview;
             SceneView.RepaintAll();
+        }
+
+        static void RemovePreviewOverrides()
+        {
+            if(previewInstance==null||previewModifications==null)return;
+            var current=PrefabUtility.GetPropertyModifications(previewInstance);
+            if(current==null)return;
+            string Key(PropertyModification m){ return (m.target!=null?m.target.GetInstanceID():0)+"/"+m.propertyPath; }
+            var before=new HashSet<string>();foreach(var m in previewModifications)before.Add(Key(m));
+            var posed=new HashSet<UnityEngine.Object>();
+            foreach(var t in saved.Keys)if(t!=null){var source=PrefabUtility.GetCorrespondingObjectFromSource(t);if(source!=null)posed.Add(source);}
+            var kept=new List<PropertyModification>();
+            foreach(var m in current)
+            {
+                bool pose=m.propertyPath.StartsWith("m_LocalPosition")||m.propertyPath.StartsWith("m_LocalRotation")||m.propertyPath.StartsWith("m_LocalScale")||m.propertyPath.StartsWith("m_LocalEulerAnglesHint");
+                if(pose&&m.target!=null&&posed.Contains(m.target)&&!before.Contains(Key(m)))continue;
+                kept.Add(m);
+            }
+            if(kept.Count!=current.Length)PrefabUtility.SetPropertyModifications(previewInstance,kept.ToArray());
+        }
+
+        /// <summary>Play generates the drawbar at runtime; the preview draws where it will be.</summary>
+        static void DrawPreview(SceneView view)
+        {
+            var w=previewWorld;var c=previewConfig;
+            if(w==null||c==null||w.Machine==null||w.Conditioner==null){SceneView.duringSceneGui-=DrawPreview;return;}
+            Vector3 a=w.Machine.TransformPoint(0,.52f,-c.HitchBehindAxle),b=w.Conditioner.TransformPoint(0,.37f,.26f);
+            Handles.color=new Color(.55f,.65f,.7f,.9f);
+            Handles.DrawLine(a,b,6);
+            Handles.Label((a+b)*.5f+w.Machine.up*.08f,"drawbar (generated in Play)  lift "+(PreviewLift*100).ToString("F0")+"%");
         }
 
         // ---- Scene overlay -----------------------------------------------------------------------

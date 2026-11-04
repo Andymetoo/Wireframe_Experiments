@@ -256,14 +256,15 @@ namespace IceResurfacer.Editor
         void OnEnable() { SceneView.duringSceneGui+=DrawScene; }
         void OnDisable() { SceneView.duringSceneGui-=DrawScene; }
 
+        static IceCalibrationContext.Context source;
         static bool Find(out IceWorld w,out SimulatorConfig c,out IceResurfacerGame game)
         {
             w=null; c=null; game=null;
             var rig=UnityEngine.Object.FindFirstObjectByType<IceMachineRig>(FindObjectsInactive.Include);
             if(rig==null)return false;
             try { w=rig.Collect(); } catch { return false; }
-            game=rig.GetComponentInParent<IceResurfacerGame>();
-            c=game!=null?game.calibration:(string.IsNullOrEmpty(rig.BakedConfigJson)?new SimulatorConfig():JsonUtility.FromJson<SimulatorConfig>(rig.BakedConfigJson));
+            var context=IceCalibrationContext.Resolve(rig,rig.BakedConfigJson);
+            c=context.Config;game=context.Writable?context.Game:null;source=context;
             return true;
         }
 
@@ -271,6 +272,7 @@ namespace IceResurfacer.Editor
         {
             if(!Find(out var w,out var c,out var game)){EditorGUILayout.HelpBox("Open the authored scene (or the machine prefab).",MessageType.Info);return;}
             var r=IceConditionerAlignment.Measure(w,c);
+            if(source!=null)IceCalibrationContext.DrawLabel(source);
             scroll=EditorGUILayout.BeginScrollView(scroll);
             foreach(string line in r.Lines)EditorGUILayout.LabelField(line,EditorStyles.wordWrappedMiniLabel);
             EditorGUILayout.EndScrollView();

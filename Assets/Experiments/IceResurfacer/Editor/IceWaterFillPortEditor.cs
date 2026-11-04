@@ -37,10 +37,10 @@ namespace IceResurfacer.Editor
 
         static SimulatorConfig Config(Component part,out IceResurfacerGame game)
         {
-            game=part.GetComponentInParent<IceResurfacerGame>();
-            if(game!=null)return game.calibration;
             var rig=part.GetComponentInParent<IceMachineRig>();
-            return rig!=null&&!string.IsNullOrEmpty(rig.BakedConfigJson)?JsonUtility.FromJson<SimulatorConfig>(rig.BakedConfigJson):new SimulatorConfig();
+            var context=IceCalibrationContext.Resolve(part,rig!=null?rig.BakedConfigJson:null);
+            game=context.Writable?context.Game:null;
+            return context.Config;
         }
 
         /// <summary>Reach, hose and clearance at the service-bay parking pose. Positions are machine space.</summary>

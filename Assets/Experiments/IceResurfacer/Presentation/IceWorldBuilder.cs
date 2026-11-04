@@ -28,6 +28,11 @@ namespace IceResurfacer.Presentation
         // Geometry witnesses survive batching. Built-in cube meshes are referenced,
         // never added to the owned Meshes list or destroyed by this experiment.
         public Mesh CuttingBladeMesh, DistributionTowelMesh, ConditionerHousingMesh;
+        // Measured from the unbatched parts at build time: where each control is grabbed (its own frame),
+        // what of the seat can hide a control, and chassis-to-conditioner members that span the lift.
+        public IcePhysicalControls.Grip[] ControlGrips;
+        public List<IcePhysicalControls.Occluder> ControlOccluders;
+        public List<IceConditionerLinkage.Span> ConditionerSpans;
         public Transform[] FrontWheels, RearWheels;
         public MeshRenderer IceMesh;
         public Light[] ArenaLights;
@@ -92,8 +97,18 @@ namespace IceResurfacer.Presentation
                 Palette();
                 if(includeArena)Arena();
                 Machine();
+                Measure(false);
                 if(batchGeometry)BatchMachine();
                 return world;
+            }
+
+            // Control grips and seat occluders come from the parts before batching merges their
+            // renderers. Spans exist only on an authored machine (the generated one is unchanged).
+            void Measure(bool authored)
+            {
+                world.ControlGrips=IcePhysicalControls.MeasureGrips(world,config);
+                world.ControlOccluders=IcePhysicalControls.MeasureOccluders(world);
+                world.ConditionerSpans=authored?IceConditionerLinkage.Capture(world):new List<IceConditionerLinkage.Span>();
             }
 
             public IceWorld BuildArenaOnly()
@@ -120,10 +135,11 @@ namespace IceResurfacer.Presentation
                         authoredBatching=false;
                     }
                 }
-                if(rig==null) { Machine(); if(batchGeometry)BatchMachine(); }
+                if(rig==null) { Machine(); Measure(false); if(batchGeometry)BatchMachine(); }
                 else
                 {
                     rig.Bind(world);
+                    Measure(true);
                     if(batchGeometry&&rig.batchAtRuntime) { authoredBatching=true; BatchMachine(); BatchMeshes(world.BrushRoller); authoredBatching=false; }
                 }
                 return world;
@@ -460,7 +476,12 @@ namespace IceResurfacer.Presentation
                 BatchMeshes(world.VerticalAuger);
                 BatchMeshes(world.BrushArm,new HashSet<Transform>{world.Brush,world.BrushLink,world.BrushRoller});
                 BatchMeshes(world.Brush);
-                BatchMeshes(world.Conditioner,new HashSet<Transform>{world.HorizontalAuger,world.CuttingBlade});
+                // Controls an author mounts on the conditioner (handwheel, valves) and members that span
+                // the lift keep their own renderers; only what is rigid on the conditioner is merged.
+                var riding=new HashSet<Transform>(moving){world.HorizontalAuger,world.CuttingBlade};
+                if(world.ConditionerSpans!=null)foreach(var span in world.ConditionerSpans)riding.Add(span.Part);
+                riding.Remove(world.Conditioner);
+                BatchMeshes(world.Conditioner,riding);
                 BatchMeshes(world.HorizontalAuger);
             }
 

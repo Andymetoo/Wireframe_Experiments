@@ -32,22 +32,22 @@ namespace IceResurfacer.Presentation
             bool visible=game.DiagnosticsVisible&&!game.HudHidden;var s=game.Sim;var hit=s.LastMovementContact;
             for(int i=0;i<lines.Length;i++)lines[i].enabled=visible&&(i!=1&&i<4||hit.Obstacle!=MovementObstacle.None);
             if(!visible)return;
-            Body(lines[0],s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading,.20f);
-            Body(lines[1],hit.VehicleX,hit.VehicleZ,hit.Heading,.25f);
+            // The outline the simulation actually collides with (calibrated outline or legacy rectangle),
+            // followed by the conditioner collider when there is one (one short joining segment).
+            Loops(lines[0],s.ChassisCollisionPolygon(),s.ConditionerCollisionPolygon(),s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading,.20f);
+            Loops(lines[1],s.ChassisCollisionPolygon(),s.ConditionerCollisionPolygon(),hit.VehicleX,hit.VehicleZ,hit.Heading,.25f);
             Pit(lines[2],0,.035f);Pit(lines[3],-.10f,.04f);
             Vector3 contact=new Vector3(hit.PointX,Mathf.Max(.32f,hit.PointY),hit.PointZ),normal=new Vector3(hit.NormalX,0,hit.NormalZ);
             Vector3 end=contact+normal*.85f,tangent=new Vector3(-normal.z,0,normal.x)*.12f;
             lines[4].SetPosition(0,contact);lines[4].SetPosition(1,end);lines[4].SetPosition(2,end-normal*.20f+tangent);lines[4].SetPosition(3,end);
             for(int i=0;i<5;i++){float a=i*Mathf.PI*.5f;lines[5].SetPosition(i,contact+new Vector3(Mathf.Cos(a)*.09f,0,Mathf.Sin(a)*.09f));}
         }
-        void Body(LineRenderer line,float x,float z,float heading,float y)
+        static void Loops(LineRenderer line,float[] chassis,float[] conditioner,float x,float z,float heading,float y)
         {
-            var c=game.Sim.Config;float sn=Mathf.Sin(heading),cs=Mathf.Cos(heading);
-            for(int i=0;i<5;i++)
-            {
-                int corner=i%4;float lx=corner==0||corner==3?-c.VehicleHalfWidth:c.VehicleHalfWidth,lz=corner<2?-c.BodyRear:c.BodyFront;
-                line.SetPosition(i,new Vector3(x+cs*lx+sn*lz,y,z-sn*lx+cs*lz));
-            }
+            float sn=Mathf.Sin(heading),cs=Mathf.Cos(heading);int a=chassis.Length/2,b=conditioner.Length/2;
+            line.positionCount=a+1+(b>0?b+1:0);
+            for(int i=0;i<=a;i++){float lx=chassis[i%a*2],lz=chassis[i%a*2+1];line.SetPosition(i,new Vector3(x+cs*lx+sn*lz,y,z-sn*lx+cs*lz));}
+            for(int i=0;b>0&&i<=b;i++){float lx=conditioner[i%b*2],lz=conditioner[i%b*2+1];line.SetPosition(a+1+i,new Vector3(x+cs*lx+sn*lz,y,z-sn*lx+cs*lz));}
         }
         void Pit(LineRenderer line,float margin,float y)
         {

@@ -1,0 +1,8 @@
+AURORA / operator ergonomics preservation audit
+Source assets matched to isolated validated/build project: 50
+Missing source metadata: 0
+Duplicate source GUIDs: 0
+Outside-experiment modified/untracked paths: 0
+Runtime/editor/asset mismatches: 0
+Unity checks and builds use only Validation~/UnityProject; original Editor not switched/stopped.
+No branch, commit, push, shared package or original project-settings changes.

@@ -12,7 +12,7 @@ namespace IceResurfacer.Presentation
         readonly Surface tank, pit, trough;
         readonly ParticleSystem discharge, overflow, leftEscape, rightEscape, dump;
         readonly ParticleSystem[] pools;
-        float tankValue=-1,pitValue=-1,tankTilt=-1,troughValue=-1;
+        float tankValue=-1,pitValue=-1,tankTilt=-1,troughValue=-1,visualMultiplier=-1;
 
         sealed class Surface
         {
@@ -143,16 +143,17 @@ namespace IceResurfacer.Presentation
             foreach(var ps in pools)ps.Clear();
             tankValue=-1;pitValue=-1;tankTilt=-1;troughValue=-1;
         }
-        public void Update(Simulation sim,float dt)
+        public void Update(Simulation sim,float dt,IceOperatorTuning tuning=null)
         {
             float fill=Mathf.Clamp01(sim.SnowTankM3/sim.Config.SnowCapacityM3);
-            if(Mathf.Abs(fill-tankValue)>.00001f||Mathf.Abs(sim.TankLift-tankTilt)>.0001f)
+            float visual=tuning!=null?tuning.TankVisualMultiplier:1;
+            if(Mathf.Abs(fill-tankValue)>.00001f||Mathf.Abs(sim.TankLift-tankTilt)>.0001f||visual!=visualMultiplier)
             {
                 // Same conserved loose-equivalent stock, fitted to the authored
                 // tapered shell through an explicit physical compaction ratio.
-                var c=sim.Config;float target=fill*c.TankSnowPhysicalCapacityM3;
-                tank.SetTank(target,fill,Mathf.Clamp01(sim.TankLift)*(1-fill),c);
-                tankValue=fill;tankTilt=sim.TankLift;
+                var c=sim.Config;float shown=Mathf.Clamp01(fill*visual),target=shown*c.TankSnowPhysicalCapacityM3;
+                tank.SetTank(target,shown,Mathf.Clamp01(sim.TankLift)*(1-shown),c);
+                tankValue=fill;tankTilt=sim.TankLift;visualMultiplier=visual;
             }
             if(sim.PitSnowM3!=pitValue)
             { pit.Set(sim.PitSnowM3/(3.5f*1.6f),0,true);pitValue=sim.PitSnowM3; }
@@ -162,11 +163,13 @@ namespace IceResurfacer.Presentation
                 trough.Set(height,Mathf.Min(height*.25f,.014f),false);troughValue=sim.HorizontalSnowM3;
             }
             bool active=dt>0;
+            float density=tuning!=null?tuning.OverflowDensityMultiplier:1;
+            float size=tuning!=null?tuning.OverflowSizeMultiplier:1;
             Rate(discharge,active?sim.DischargeSnowRate:0,world.TankDischarge.position,world.Machine.forward*.45f+Vector3.down*.25f);
             // Upper rejection/missed raised bin originates at the fixed chute,
             // separate from low conditioner-side overflow. Core supplies the
             // same trajectory used to place its finite persistent deposit.
-            Rate(overflow,active?sim.VerticalSpillRate:0,new Vector3(sim.UpperSnowOriginX,sim.UpperSnowOriginY,sim.UpperSnowOriginZ),
+            Rate(overflow,active?sim.VerticalSpillRate*density:0,new Vector3(sim.UpperSnowOriginX,sim.UpperSnowOriginY,sim.UpperSnowOriginZ),
                 new Vector3(sim.UpperSnowVelocityX,sim.UpperSnowVelocityY,sim.UpperSnowVelocityZ));
             float upperTime=(sim.UpperSnowVelocityY+Mathf.Sqrt(sim.UpperSnowVelocityY*sim.UpperSnowVelocityY+2*9.81f*Mathf.Max(.01f,sim.UpperSnowOriginY)))/9.81f;
             var upperMain=overflow.main;upperMain.startLifetime=upperTime;
@@ -177,10 +180,12 @@ namespace IceResurfacer.Presentation
             float flight=(.30f+Mathf.Sqrt(.09f+2*9.81f*Mathf.Max(.01f,exitY)))/9.81f;
             var leftOrigin=new Vector3(sim.ConditionerLeftExitX,exitY,sim.ConditionerLeftExitZ);
             var rightOrigin=new Vector3(sim.ConditionerRightExitX,exitY,sim.ConditionerRightExitZ);
-            Rate(leftEscape,active?sim.ConditionerLeftEscapeRate:0,leftOrigin,new Vector3((sim.ConditionerLeftLandingX-leftOrigin.x)/flight,.30f,(sim.ConditionerLeftLandingZ-leftOrigin.z)/flight),true);
-            Rate(rightEscape,active?sim.ConditionerRightEscapeRate:0,rightOrigin,new Vector3((sim.ConditionerRightLandingX-rightOrigin.x)/flight,.30f,(sim.ConditionerRightLandingZ-rightOrigin.z)/flight),true);
+            Rate(leftEscape,active?sim.ConditionerLeftEscapeRate*density:0,leftOrigin,new Vector3((sim.ConditionerLeftLandingX-leftOrigin.x)/flight,.30f,(sim.ConditionerLeftLandingZ-leftOrigin.z)/flight),true);
+            Rate(rightEscape,active?sim.ConditionerRightEscapeRate*density:0,rightOrigin,new Vector3((sim.ConditionerRightLandingX-rightOrigin.x)/flight,.30f,(sim.ConditionerRightLandingZ-rightOrigin.z)/flight),true);
             var leftMain=leftEscape.main;leftMain.startLifetime=flight;
             var rightMain=rightEscape.main;rightMain.startLifetime=flight;
+            leftMain.startSize=rightMain.startSize=new ParticleSystem.MinMaxCurve(.045f*.55f*size,.045f*1.35f*size);
+            upperMain.startSize=new ParticleSystem.MinMaxCurve(.06f*.55f*size,.06f*1.35f*size);
             // Render the same ballistic discharge as Core. Never steer particles
             // toward the pit: off-centre and on-ice dumps must visibly miss it.
             float fallTime=(sim.DumpVelocityY+Mathf.Sqrt(sim.DumpVelocityY*sim.DumpVelocityY+2*9.81f*Mathf.Max(.08f,sim.DumpOriginY)))/9.81f;

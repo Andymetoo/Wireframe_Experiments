@@ -1,5 +1,11 @@
 AURORA R-54 / AUTHORED MACHINE (PHASE 1, EXPERIMENTAL)
 
+UPDATE 2026-11-02 (ControlsBrushRoller.txt): controls may be mounted on the moving conditioner (they keep
+their own renderers, grips are measured from the drawn parts); the collision outline, conditioner collider
+and guide roller follow the drawn machine (Transfer Authored Geometry); the lift preview is the Play pose.
+The board guide roller assembly was moved 174 mm outboard so it, not the conditioner side plates, rides the
+boards ("Move Guide Roller Outboard..." in the machine rig Inspector; nothing else in the machine moved).
+
 Purpose
 The machine can exist as persistent, editable Scene/prefab geometry instead of being
 generated at Play. The launch scene (Scenes/IceResurfacer.unity) is unchanged and still

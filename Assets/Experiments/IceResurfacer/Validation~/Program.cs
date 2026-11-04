@@ -33,6 +33,7 @@ internal static class Program
         Test("full tank spills persist, conserve snow, jam and can be recovered", SpillRecovery);
         Test("dump transfers snow progressively with operating interlocks", ProgressiveDump);
         Test("guide roller preserves shallow tangential travel without penetration", GuideRoller);
+        Test("board contact: glancing slides, impacts stop, authored outline and original rectangle", ContactDrivingValidation.Run);
         Test("close board water edge uses physical distribution width", PerimeterWater);
         Test("Free Simulation consequences, geometry, traction and guided separation", FreedomValidation.Run);
         Test("southeast hose freedom, breakaway and recovery", ServiceFreedomValidation.Run);

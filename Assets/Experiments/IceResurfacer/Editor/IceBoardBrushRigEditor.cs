@@ -47,12 +47,18 @@ namespace IceResurfacer.Editor
             return preview.TryGetValue(rig.GetInstanceID(),out float d)?d:0;
         }
 
+        static IceCalibrationContext.Context Context(IceBoardBrushRig rig)
+        {
+            var machineRig=rig.GetComponentInParent<IceMachineRig>();
+            return IceCalibrationContext.Resolve(rig,machineRig!=null?machineRig.BakedConfigJson:null);
+        }
+
+        /// <summary>The scene calibration the brush is measured against (also in Prefab Mode); game is set only where Apply may write.</summary>
         static SimulatorConfig Simulation(IceBoardBrushRig rig,out IceResurfacerGame game)
         {
-            game=rig.GetComponentInParent<IceResurfacerGame>();
-            if(game!=null)return game.calibration;
-            var machineRig=rig.GetComponentInParent<IceMachineRig>();
-            return machineRig!=null&&!string.IsNullOrEmpty(machineRig.BakedConfigJson)?JsonUtility.FromJson<SimulatorConfig>(machineRig.BakedConfigJson):new SimulatorConfig();
+            var context=Context(rig);
+            game=context.Writable?context.Game:null;
+            return context.Config;
         }
 
         static IceBoardBrushRig.Mechanism Shown(IceBoardBrushRig rig)
@@ -68,7 +74,24 @@ namespace IceResurfacer.Editor
             float d=PreviewDeployment(rig);
             rig.PosePreview(Shown(rig),d);
             if(d==0&&PrefabUtility.IsPartOfPrefabInstance(rig))
-                foreach(var t in new[]{rig.transform,rig.head,rig.link,rig.roller})PrefabUtility.RecordPrefabInstancePropertyModifications(t);
+                foreach(var t in new[]{rig.transform,rig.head,rig.link,rig.roller})
+                {
+                    if(SnapToSource(t))PrefabUtility.RevertObjectOverride(t,InteractionMode.AutomatedAction);
+                    else PrefabUtility.RecordPrefabInstancePropertyModifications(t);
+                }
+        }
+
+        // A re-posed part that equals its prefab pose up to float noise takes that exact pose and carries no
+        // scene override (its pose is the prefab's); only real differences are recorded as overrides.
+        static bool SnapToSource(Transform t)
+        {
+            var source=PrefabUtility.GetCorrespondingObjectFromSource(t);
+            if(source==null)return false;
+            bool p=(t.localPosition-source.localPosition).sqrMagnitude<1e-10f,r=Quaternion.Angle(t.localRotation,source.localRotation)<.001f,s=(t.localScale-source.localScale).sqrMagnitude<1e-10f;
+            if(p)t.localPosition=source.localPosition;
+            if(r)t.localRotation=source.localRotation;
+            if(s)t.localScale=source.localScale;
+            return p&&r&&s;
         }
 
         void OnEnable()
@@ -88,11 +111,13 @@ namespace IceResurfacer.Editor
         {
             var rig=(IceBoardBrushRig)target;
             if(!rig.IsComplete){EditorGUILayout.HelpBox("Machine, head, link and roller must be assigned (head under this arm).",MessageType.Error);DrawDefaultInspector();return;}
-            var config=Simulation(rig,out var game);
+            var context=Context(rig);
+            var config=context.Config;var game=context.Writable?context.Game:null;
             AdoptManualMove(rig);
             serializedObject.Update();
+            IceCalibrationContext.DrawLabel(context);
 
-            EditorGUILayout.LabelField("MECHANISM / simulation contact (draft until applied)",EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("MECHANISM / where snow is swept (SWEEP handles; draft until applied)",EditorStyles.boldLabel);
             var m=serializedObject.FindProperty("mechanism");
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(m.FindPropertyRelative("PivotX"),new GUIContent("Pivot lateral X (m)","Machine space; negative is the left side."));
@@ -103,7 +128,7 @@ namespace IceResurfacer.Editor
             EditorGUILayout.PropertyField(m.FindPropertyRelative("RetractedDegrees"),new GUIContent("Stowed angle (deg)"));
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("COSMETIC / never affects contact",EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("COSMETIC / never affects contact (COSMETIC handles)",EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("pivotHeight"),new GUIContent("Pivot height (m)"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("deployedHeadHeight"),new GUIContent("Head height, working (m)"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("retractedHeadHeight"),new GUIContent("Head height, stowed (m)"));
@@ -139,16 +164,33 @@ namespace IceResurfacer.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("SIMULATION AGREEMENT",EditorStyles.boldLabel);
             var simulation=IceBoardBrushRig.Mechanism.From(config);
-            if(rig.mechanism.Matches(simulation))EditorGUILayout.HelpBox("Draft matches the simulation. Play shows exactly this articulation.",MessageType.Info);
+            if(rig.mechanism.Matches(simulation))EditorGUILayout.HelpBox("Draft matches the simulation. Play sweeps snow exactly under this articulation.",MessageType.Info);
             else EditorGUILayout.HelpBox("Not applied: "+string.Join(", ",Differences(rig.mechanism,simulation))+
-                ". Play poses the brush from the scene calibration (simulation), not this draft.",MessageType.Warning);
+                ". Play poses the brush, and sweeps snow, from the scene calibration (magenta in the Scene view), not this draft.",MessageType.Warning);
             foreach(var line in Diagnose(rig,config,rig.mechanism))EditorGUILayout.HelpBox(line.Value,line.Key);
+            float visual=VisualRadius(rig);
+            using(new EditorGUI.DisabledScope(Application.isPlaying))
+            using(new EditorGUILayout.HorizontalScope())
+            {
+                using(new EditorGUI.DisabledScope(Mathf.Abs(visual-rig.mechanism.Radius)<.0005f))
+                {
+                    if(GUILayout.Button("Contact radius = bristles ("+visual.ToString("F3")+" m)"))
+                    { Undo.RecordObject(rig,"Brush contact radius to bristles");rig.mechanism.Radius=Mathf.Round(visual*1000)/1000;Repose(rig); }
+                    if(GUILayout.Button("Scale bristles to contact radius"))
+                    {
+                        Undo.RecordObject(rig.head,"Scale brush head to contact radius");
+                        rig.head.localScale*=rig.mechanism.Radius/Mathf.Max(.001f,visual);
+                        if(PrefabUtility.IsPartOfPrefabInstance(rig.head))PrefabUtility.RecordPrefabInstancePropertyModifications(rig.head);
+                    }
+                }
+            }
             using(new EditorGUI.DisabledScope(game==null||Application.isPlaying||rig.mechanism.Matches(simulation)))
             {
                 if(GUILayout.Button("Apply Brush Geometry to Simulation..."))
                 {
                     string summary="Copy the brush mechanism into the scene calibration?\n\n"+string.Join("\n",Differences(rig.mechanism,simulation))+
-                        "\n\nThis changes where the simulated brush sweeps snow. Undo is available (Edit > Undo).";
+                        "\n\nThis changes where the simulated brush sweeps snow. Undo is available (Edit > Undo), and the previous geometry is kept for "+
+                        "\"Restore Previous Simulation Geometry\". Brush fields are not GPS compatibility fields: routes stay usable.";
                     if(EditorUtility.DisplayDialog("Apply Brush Geometry to Simulation",summary,"Apply","Cancel")&&!ApplyToSimulation(rig,game,out string error))
                         EditorUtility.DisplayDialog("Brush geometry not applied",error,"OK");
                 }
@@ -159,7 +201,30 @@ namespace IceResurfacer.Editor
                     Repose(rig);
                 }
             }
-            if(game==null)EditorGUILayout.HelpBox("Prefab Mode: open the authored scene to apply geometry to its calibration.",MessageType.None);
+            var previous=default(IceBoardBrushRig.Mechanism);
+            bool history=game!=null&&Previous(game,out previous)&&!previous.Matches(simulation);
+            using(new EditorGUI.DisabledScope(!history||Application.isPlaying))
+                if(GUILayout.Button("Restore Previous Simulation Geometry..."+(history?" ("+string.Join(", ",Differences(previous,simulation))+")":"")))
+                {
+                    Previous(game,out previous);
+                    if(EditorUtility.DisplayDialog("Restore previous brush geometry","Write the brush geometry that was in the scene calibration before the last Apply back into it, and into this draft?\n\n"+
+                        string.Join("\n",Differences(previous,simulation)),"Restore","Cancel"))
+                    {
+                        Undo.RecordObject(rig,"Restore previous brush geometry");rig.mechanism=previous;
+                        if(!ApplyToSimulation(rig,game,out string error))EditorUtility.DisplayDialog("Brush geometry not restored",error,"OK");
+                    }
+                }
+            if(game==null)EditorGUILayout.HelpBox("Read-only here: open the authored scene and select the brush arm to apply geometry to its calibration.",MessageType.None);
+        }
+
+        static string HistoryKey(IceResurfacerGame game){ return "IceBoardBrushRig.Previous."+game.gameObject.scene.path; }
+        static bool Previous(IceResurfacerGame game,out IceBoardBrushRig.Mechanism mechanism)
+        {
+            mechanism=default;
+            string json=EditorPrefs.GetString(HistoryKey(game),"");
+            if(json=="")return false;
+            mechanism=JsonUtility.FromJson<IceBoardBrushRig.Mechanism>(json);
+            return true;
         }
 
         public static void SetPreview(IceBoardBrushRig rig,float d)
@@ -227,8 +292,11 @@ namespace IceResurfacer.Editor
             Write(copy,rig.mechanism);
             try { copy.Validate(); }
             catch(Exception e) { error="The scene calibration would be invalid: "+e.Message; return false; }
+            var before=IceBoardBrushRig.Mechanism.From(game.calibration);
             Undo.RecordObject(game,"Apply brush geometry to simulation");
             Write(game.calibration,rig.mechanism);
+            if(!before.Matches(rig.mechanism))EditorPrefs.SetString(HistoryKey(game),JsonUtility.ToJson(before));
+            Debug.Log("Board brush geometry applied to "+game.gameObject.scene.name+": "+string.Join(", ",Differences(rig.mechanism,before))+". Previous: "+JsonUtility.ToJson(before),game);
             EditorUtility.SetDirty(game);
             if(PrefabUtility.IsPartOfPrefabInstance(game))PrefabUtility.RecordPrefabInstancePropertyModifications(game);
             EditorSceneManager.MarkSceneDirty(game.gameObject.scene);
@@ -246,13 +314,14 @@ namespace IceResurfacer.Editor
         public static List<KeyValuePair<MessageType,string>> Diagnose(IceBoardBrushRig rig,SimulatorConfig config,IceBoardBrushRig.Mechanism m)
         {
             var list=new List<KeyValuePair<MessageType,string>>();
-            float side=config.VehicleHalfWidth;
+            // How close the machine can get to boards on the brush side: its outermost collision point there.
+            float side=CollisionSide(config,m.PivotX<0?-1:1,out string sidePart);
             Vector3 working=IceBoardBrushRig.ContactLocal(m,1),stowed=IceBoardBrushRig.ContactLocal(m,0);
-            float reach=-(working.x-m.Radius)-side;
-            if(reach<=0)list.Add(new KeyValuePair<MessageType,string>(MessageType.Error,"Working brush edge is "+(-reach).ToString("F2")+
-                " m inside the body side (x = -"+side.ToString("F3")+"): the body would reach the boards before the brush."));
-            else list.Add(new KeyValuePair<MessageType,string>(reach<.08f?MessageType.Warning:MessageType.Info,"Working brush edge reaches "+reach.ToString("F2")+
-                " m beyond the body side"+(reach<.08f?" (tight: the body nearly touches the boards before the brush does).":".")));
+            float reach=Mathf.Abs(working.x)+m.Radius-side;
+            if(reach<=0)list.Add(new KeyValuePair<MessageType,string>(MessageType.Error,"Working brush edge is "+(-reach*1000).ToString("F0")+
+                " mm inside the "+sidePart+" (|x| "+side.ToString("F3")+"): driving along the boards, the machine touches them before the brush. Snow at the kickplate cannot be swept."));
+            else list.Add(new KeyValuePair<MessageType,string>(reach<.03f?MessageType.Warning:MessageType.Info,"Working brush edge reaches "+(reach*1000).ToString("F0")+
+                " mm past the "+sidePart+" (|x| "+side.ToString("F3")+"), so with the machine along the boards the bristles press into the kickplate"+(reach<.03f?" only lightly.":".")));
             float stowOut=-(stowed.x-m.Radius)-side;
             if(stowed.x>-.8f)list.Add(new KeyValuePair<MessageType,string>(MessageType.Warning,"Stowed brush centre is at x = "+stowed.x.ToString("F3")+
                 ": the layout validation expects it left of x = -0.800 (outboard, clear of the chassis)."));
@@ -266,6 +335,17 @@ namespace IceResurfacer.Editor
                     "Match Head scale to the radius, or set the radius to the visible size."));
             }
             return list;
+        }
+
+        /// <summary>Outermost collision point on one side (-1 left, +1 right): outline, conditioner collider, guide roller.</summary>
+        public static float CollisionSide(SimulatorConfig c,int sign,out string part)
+        {
+            float side=0;part="body side";
+            if(c.HasCollisionOutline){for(int i=0;i<c.CollisionOutline.Length;i+=2)if(Mathf.Sign(c.CollisionOutline[i])==sign)side=Mathf.Max(side,Mathf.Abs(c.CollisionOutline[i]));part="drawn body";}
+            else side=c.VehicleHalfWidth;
+            if(c.ConditionerCollisionHalfWidth>side){side=c.ConditionerCollisionHalfWidth;part="conditioner side plate";}
+            if(Mathf.Sign(c.GuideRollerX)==sign&&Mathf.Abs(c.GuideRollerX)+c.GuideRollerRadius>side){side=Mathf.Abs(c.GuideRollerX)+c.GuideRollerRadius;part="guide roller";}
+            return side;
         }
 
         /// <summary>Horizontal extent of the spinning head (excluding motor and guard), machine units.</summary>
@@ -289,6 +369,11 @@ namespace IceResurfacer.Editor
             return radius;
         }
 
+        // Scene handles. SWEEP (round dots, green / grey / cyan / yellow) change where snow is swept and
+        // stay a draft until Apply. COSMETIC (square, orange) only move drawn parts: heights, link ends,
+        // the kickplate roller carriage. Every drag is undoable and re-poses the rig immediately.
+        static readonly Color Cosmetic=new Color(1f,.55f,.1f);
+
         void OnSceneGUI()
         {
             var rig=(IceBoardBrushRig)target;
@@ -299,10 +384,12 @@ namespace IceResurfacer.Editor
             Vector3 P(Vector3 local)=>machine.TransformPoint(local);
             Vector3 pivot=P(new Vector3(m.PivotX,rig.pivotHeight,m.PivotZ));
             Vector3 up=machine.up;
+            var config=Simulation(rig,out _);
+            Vector3 work=IceBoardBrushRig.ContactLocal(m,1),stow=IceBoardBrushRig.ContactLocal(m,0);
             if(ShowGizmos)
             {
                 // Travel arc at pivot height, working (green), stowed (grey) and contact disc outlines on the ice.
-                Vector3 work=IceBoardBrushRig.ContactLocal(m,1),stow=IceBoardBrushRig.ContactLocal(m,0),now=IceBoardBrushRig.ContactLocal(m,PreviewDeployment(rig));
+                Vector3 now=IceBoardBrushRig.ContactLocal(m,PreviewDeployment(rig));
                 Handles.color=new Color(1,.8f,.2f,.8f);
                 Vector3 from=P(new Vector3(work.x,rig.pivotHeight,work.z))-pivot;
                 Handles.DrawWireArc(pivot,-up,from.normalized,m.RetractedDegrees-m.DeployedDegrees,m.ArmLength);
@@ -313,10 +400,11 @@ namespace IceResurfacer.Editor
                 Vector3 outward=(work-new Vector3(m.PivotX,0,m.PivotZ)).normalized;
                 Handles.color=Color.red; Handles.SphereHandleCap(0,P(work+outward*m.Radius),Quaternion.identity,.04f,EventType.Repaint);
                 Handles.Label(P(work+outward*m.Radius)+up*.08f,"kickplate contact");
-                // Body side reference line.
+                // Closest approach to the boards on this side: the outermost collision point (outline, conditioner, roller).
                 Handles.color=new Color(.3f,.7f,1,.6f);
-                var config=Simulation(rig,out _);
-                Handles.DrawDottedLine(P(new Vector3(-config.VehicleHalfWidth,0,-config.BodyRear)),P(new Vector3(-config.VehicleHalfWidth,0,config.BodyFront)),4);
+                float side=CollisionSide(config,m.PivotX<0?-1:1,out string sidePart)*(m.PivotX<0?-1:1);
+                Handles.DrawDottedLine(P(new Vector3(side,0,-1.6f)),P(new Vector3(side,0,config.BodyFront)),4);
+                Handles.Label(P(new Vector3(side,.05f,config.BodyFront)),"boards can come no closer ("+sidePart+")");
                 // Simulation ghost when the draft is not applied.
                 var sim=IceBoardBrushRig.Mechanism.From(config);
                 if(!m.Matches(sim))
@@ -325,14 +413,116 @@ namespace IceResurfacer.Editor
                     Vector3 simPivot=P(new Vector3(sim.PivotX,rig.pivotHeight,sim.PivotZ));
                     Handles.DrawDottedLine(simPivot,P(IceBoardBrushRig.ContactLocal(sim,1)+Vector3.up*rig.pivotHeight),3);
                     Handles.DrawWireDisc(P(IceBoardBrushRig.ContactLocal(sim,1)),up,sim.Radius);
-                    Handles.Label(simPivot+up*.12f,"simulation (Play)");
+                    Handles.Label(simPivot+up*.12f,"simulation (what Play sweeps until you Apply)");
                 }
-                Handles.color=Color.white; Handles.SphereHandleCap(0,pivot,Quaternion.identity,.05f,EventType.Repaint);
-                Handles.Label(pivot+up*.1f,"brush pivot");
             }
-            // Drag the working and stowed head points: sets that angle and the shared arm length.
+            // SWEEP: pivot, working and stowed ends, reach along the working arm, contact radius.
+            PivotHandle(rig);
             EndHandle(rig,1,"Board brush working position");
             EndHandle(rig,0,"Board brush stowed position");
+            ReachHandle(rig);
+            RadiusHandle(rig);
+            // COSMETIC: heights, roller carriage, link ends.
+            CosmeticHandles(rig);
+        }
+
+        static void Label(Vector3 at,Vector3 up,string text,Color color)
+        {
+            var style=new GUIStyle(EditorStyles.miniBoldLabel){normal={textColor=color}};
+            Handles.Label(at+up*.06f,text,style);
+        }
+
+        static void PivotHandle(IceBoardBrushRig rig)
+        {
+            var m=rig.mechanism;Transform machine=rig.machine;
+            Vector3 world=machine.TransformPoint(m.PivotX,rig.pivotHeight,m.PivotZ);
+            Handles.color=Color.white;
+            EditorGUI.BeginChangeCheck();
+            Vector3 moved=Handles.Slider2D(world,machine.up,machine.right,machine.forward,HandleUtility.GetHandleSize(world)*.09f,Handles.SphereHandleCap,Vector2.zero);
+            Label(world,machine.up,"SWEEP pivot",Color.white);
+            if(!EditorGUI.EndChangeCheck())return;
+            Vector3 p=machine.InverseTransformPoint(moved);
+            Undo.RecordObject(rig,"Move board brush pivot");
+            rig.mechanism.PivotX=p.x;rig.mechanism.PivotZ=p.z;previewSimulation=false;
+            Repose(rig);
+        }
+
+        static void ReachHandle(IceBoardBrushRig rig)
+        {
+            var m=rig.mechanism;Transform machine=rig.machine;
+            Vector3 pivot=new Vector3(m.PivotX,0,m.PivotZ),work=IceBoardBrushRig.ContactLocal(m,1);
+            Vector3 along=(work-pivot).normalized;
+            Vector3 world=machine.TransformPoint(new Vector3(work.x,rig.pivotHeight,work.z)-along*m.ArmLength*.35f);
+            Handles.color=Color.cyan;
+            EditorGUI.BeginChangeCheck();
+            Vector3 moved=Handles.Slider(world,machine.TransformDirection(along),HandleUtility.GetHandleSize(world)*.07f,Handles.DotHandleCap,0);
+            Label(world,machine.up,"SWEEP reach (arm length)",Color.cyan);
+            if(!EditorGUI.EndChangeCheck())return;
+            float delta=Vector3.Dot(machine.InverseTransformPoint(moved)-machine.InverseTransformPoint(world),along);
+            Undo.RecordObject(rig,"Board brush reach");
+            rig.mechanism.ArmLength=Mathf.Max(.05f,m.ArmLength+delta);
+            Repose(rig);
+        }
+
+        static void RadiusHandle(IceBoardBrushRig rig)
+        {
+            var m=rig.mechanism;Transform machine=rig.machine;
+            Vector3 work=IceBoardBrushRig.ContactLocal(m,1),pivot=new Vector3(m.PivotX,0,m.PivotZ);
+            Vector3 sideways=Vector3.Cross(Vector3.up,(work-pivot).normalized);
+            Vector3 world=machine.TransformPoint(work+sideways*m.Radius);
+            Handles.color=Color.yellow;
+            EditorGUI.BeginChangeCheck();
+            Vector3 moved=Handles.Slider(world,machine.TransformDirection(sideways),HandleUtility.GetHandleSize(world)*.06f,Handles.DotHandleCap,0);
+            Label(world,machine.up,"SWEEP contact radius",Color.yellow);
+            if(!EditorGUI.EndChangeCheck())return;
+            Undo.RecordObject(rig,"Board brush contact radius");
+            rig.mechanism.Radius=Mathf.Max(.05f,Vector3.Dot(machine.InverseTransformPoint(moved)-work,sideways));
+            Repose(rig);
+        }
+
+        static void CosmeticHandles(IceBoardBrushRig rig)
+        {
+            var m=rig.mechanism;Transform machine=rig.machine;Vector3 up=machine.up;
+            float size(Vector3 at)=>HandleUtility.GetHandleSize(at)*.05f;
+            Handles.color=Cosmetic;
+            // Pivot height.
+            Vector3 pivot=machine.TransformPoint(m.PivotX,rig.pivotHeight,m.PivotZ)+up*.12f;
+            EditorGUI.BeginChangeCheck();
+            Vector3 p=Handles.Slider(pivot,up,size(pivot),Handles.CubeHandleCap,0);
+            Label(pivot,up,"COSMETIC pivot height",Cosmetic);
+            if(EditorGUI.EndChangeCheck()){Undo.RecordObject(rig,"Board brush pivot height");rig.pivotHeight+=Vector3.Dot(p-pivot,up);Repose(rig);}
+            // Head heights at the working and stowed ends.
+            foreach(float deployment in new[]{1f,0f})
+            {
+                Vector3 c=IceBoardBrushRig.ContactLocal(m,deployment);
+                Vector3 at=machine.TransformPoint(c.x,rig.HeadHeight(deployment),c.z);
+                EditorGUI.BeginChangeCheck();
+                Vector3 q=Handles.Slider(at,up,size(at),Handles.CubeHandleCap,0);
+                Label(at,up,"COSMETIC head height ("+(deployment>0?"working":"stowed")+")",Cosmetic);
+                if(EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(rig,"Board brush head height");
+                    float h=machine.InverseTransformPoint(q).y;
+                    if(deployment>0)rig.deployedHeadHeight=h;else rig.retractedHeadHeight=h;
+                    Repose(rig);
+                }
+            }
+            // Kickplate roller carriage and the link ends: free moves, machine-oriented offsets from the head / arm.
+            Vector3 roller=rig.roller.position;
+            EditorGUI.BeginChangeCheck();
+            Vector3 r=Handles.FreeMoveHandle(roller,size(roller),Vector3.zero,Handles.RectangleHandleCap);
+            Label(roller,up,"COSMETIC roller carriage",Cosmetic);
+            if(EditorGUI.EndChangeCheck()){Undo.RecordObject(rig,"Board brush roller offset");rig.rollerOffset+=Quaternion.Inverse(machine.rotation)*(r-roller);Repose(rig);}
+            Vector3 linkHead=rig.head.position+machine.rotation*rig.linkHeadOffset;
+            EditorGUI.BeginChangeCheck();
+            Vector3 lh=Handles.FreeMoveHandle(linkHead,size(linkHead),Vector3.zero,Handles.RectangleHandleCap);
+            Label(linkHead,up,"COSMETIC link on head",Cosmetic);
+            if(EditorGUI.EndChangeCheck()){Undo.RecordObject(rig,"Board brush link end");rig.linkHeadOffset+=Quaternion.Inverse(machine.rotation)*(lh-linkHead);Repose(rig);}
+            Vector3 linkArm=rig.transform.TransformPoint(rig.linkPivotOffset);
+            EditorGUI.BeginChangeCheck();
+            Vector3 la=Handles.FreeMoveHandle(linkArm,size(linkArm),Vector3.zero,Handles.RectangleHandleCap);
+            Label(linkArm,-up,"COSMETIC link on arm",Cosmetic);
+            if(EditorGUI.EndChangeCheck()){Undo.RecordObject(rig,"Board brush link end");rig.linkPivotOffset=rig.transform.InverseTransformPoint(la);Repose(rig);}
         }
 
         static void EndHandle(IceBoardBrushRig rig,float deployment,string label)
@@ -344,6 +534,7 @@ namespace IceResurfacer.Editor
             Handles.color=deployment>0?Color.green:Color.gray;
             EditorGUI.BeginChangeCheck();
             Vector3 moved=Handles.Slider2D(world,machine.up,machine.right,machine.forward,HandleUtility.GetHandleSize(world)*.08f,Handles.DotHandleCap,Vector2.zero);
+            Label(world,machine.up,deployment>0?"SWEEP working end":"SWEEP stowed end",deployment>0?Color.green:Color.gray);
             if(!EditorGUI.EndChangeCheck())return;
             Vector3 p=machine.InverseTransformPoint(moved);
             float dx=m.PivotX-p.x,dz=m.PivotZ-p.z;

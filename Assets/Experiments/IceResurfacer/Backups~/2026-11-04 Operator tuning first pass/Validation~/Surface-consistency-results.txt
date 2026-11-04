@@ -1,0 +1,13 @@
+AURORA / surface consistency regression
+Initial strict snow cells=69995; heavy-snow overview blocks=0/37560. Initial .12-.26mm dust plus .17mm sensitive-zone increment is retained.
+PASS one-cell 5cm wet/uncut seam=25% of its20cm block; watercoverage100%, cutting75%; actual2L snow deposit remains visible.
+5s: released=9.0000L, retained=9.0000L, liquid=8.9469L, frozen=0.0532L, >.08mm area=2.1300m2, peak=9.811mm, gross lateral transfer=12.456L.
+15s: released=26.9998L, retained=27.0002L, liquid=26.5243L, frozen=0.4759L, >.08mm area=4.3350m2, peak=19.774mm, gross lateral transfer=90.235L.
+30s: released=53.9993L, retained=54.0006L, liquid=52.1183L, frozen=1.8823L, >.08mm area=7.1600m2, peak=29.294mm, gross lateral transfer=297.622L.
+30s pool recovery through actual squeegee=7.7476L.
+Age 0s: liquid=0.30000mm frozen=0.00000mm opticalwet=1.0000.
+Age 300s: liquid=0.14686mm frozen=0.15314mm opticalwet=0.6065.
+Age 600s: liquid=0.07190mm frozen=0.22810mm opticalwet=0.3679.
+Age 1200s: liquid=0.01723mm frozen=0.28277mm opticalwet=0.1353.
+Age 1800s: liquid=0.00413mm frozen=0.29587mm opticalwet=0.0498.
+PASS finite spreading, board retention, pickup, aggregated map and physical phase progression. No scoring thresholds weakened.

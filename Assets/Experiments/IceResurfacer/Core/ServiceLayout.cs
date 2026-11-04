@@ -82,6 +82,18 @@ namespace IceResurfacer.Core
             float a=(min-origin)/direction,b=(max-origin)/direction;if(a>b){float t=a;a=b;b=t;}
             low=Math.Max(low,a);high=Math.Min(high,b);return high>=low;
         }
+        /// <summary>How far a point lies outside the gate neck and room floor (same margin as
+        /// ContainsFloor); zero on the floor.</summary>
+        public float FloorPenetration(float x,float z,float margin=.02f)
+        {
+            ToLocal(x,z,out float side,out float outward);
+            float Outside(float halfWidth,float low,float high)
+            {
+                float a=Math.Max(0,Math.Abs(side)-halfWidth),b=Math.Max(0,Math.Max(low-outward,outward-high));
+                return (float)Math.Sqrt(a*a+b*b);
+            }
+            return Math.Min(Outside(GateHalfWidth-margin,NeckStart,RoomStart+margin),Outside(RoomHalfWidth-margin,RoomStart+margin,RoomLength-margin));
+        }
         public void ContactNormal(float x,float z,out float nx,out float nz)
         {
             ToLocal(x,z,out float side,out float outward);

@@ -1,0 +1,17 @@
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-agaug"
+ICE VALIDATION: assets and initial simulation passed. Use standalone validation for mechanics.
+Saved launch scene, camera, world, conditioner, state textures, twenty-seven audio sources: PASS
+Genuine simulated cut/wash/flood lane and snow conveyance: PASS
+Input System: persistent RMB motion/release, W+RightShift precision pedal, Ctrl brake: PASS
+Camera and sightlines: FAIL Camera: E preset exposes blade rim for mouse operation (5/8 rays; blocked by Batched Tire and hydraulic rubber)
+Snow operation rendering: PASS
+Input and drive recovery: PASS
+Physical controls: PASS
+Cockpit refinement: FAIL Cockpit refinement: steering column foot seats on the actual operator platform without a floating mount
+Southeast service and freedom: PASS
+Ice overlap / pickup rendering: PASS
+Spatial machine audio: PASS
+Training route editing and advisory guidance: PASS
+Route manager and keypad workflow: PASS
+HUD video mode and operator speed: PASS
+Route recording and persistence: PASS

@@ -1,0 +1,3830 @@
+﻿[
+    {
+        "Path":  "Core\\BoardBrushArticulation.cs",
+        "SHA256":  "998DC2A03B6990A60CDE59166C8EE6496B1224F335A65124ADC54CBB3521931D"
+    },
+    {
+        "Path":  "Core\\BoardBrushArticulation.cs.meta",
+        "SHA256":  "CA61751DCAC69C55EBACB2F7AE134EA118A7F6228F9DCFC891A53F031AE7785B"
+    },
+    {
+        "Path":  "Core\\EnvironmentField.cs",
+        "SHA256":  "94377D4392A837DC838A52C116E7FE7C4BD8043F1526B4AFF5647C8C860DFAC7"
+    },
+    {
+        "Path":  "Core\\EnvironmentField.cs.meta",
+        "SHA256":  "4F39E875D2187EEC1D4C4520902177A0A45B552775CBE75CEB3CA9DA74D46C77"
+    },
+    {
+        "Path":  "Core\\FreedomCalibration.cs",
+        "SHA256":  "A2148C25928CF7CD92EF676868E94F7593C38CCB72E4B4EC1E1A81ECC68934C3"
+    },
+    {
+        "Path":  "Core\\FreedomCalibration.cs.meta",
+        "SHA256":  "2666D247965AB9FB013FD8AC0B4C38ED6320FC43DF5C9D289CA112CB7F354403"
+    },
+    {
+        "Path":  "Core\\IceCalibrationConfig.cs",
+        "SHA256":  "65B1FBAFDCFAD6DAB018068E0EE58A94DF71B1CF087B840440CECF557AE8ADC8"
+    },
+    {
+        "Path":  "Core\\IceCalibrationConfig.cs.meta",
+        "SHA256":  "A2D0C86531A9412C4A5732EB13FCE8465E1612C539B8B078798FABC4DDB02CB8"
+    },
+    {
+        "Path":  "Core\\IceCoverage.cs",
+        "SHA256":  "2BA8A19C3FFDBC505DE23FC1AF0093AF1588E142B0858CE18045E44DF3B4E2E8"
+    },
+    {
+        "Path":  "Core\\IceCoverage.cs.meta",
+        "SHA256":  "794E1E2D33D276A905988EE863C06B8E783EEDC43E489740D26974367F039387"
+    },
+    {
+        "Path":  "Core\\IceField.cs",
+        "SHA256":  "E27957C5D94164D3BEBEB5F1D1945D3F835FB6681E9B34209CB4A60C99010537"
+    },
+    {
+        "Path":  "Core\\IceField.cs.meta",
+        "SHA256":  "744670EF2D6F12292C0006255CB03B8A7E093C82D7BF0945A4B8716A0D8C30AD"
+    },
+    {
+        "Path":  "Core\\IceOverview.cs",
+        "SHA256":  "7FF510B9B72555124CFBD28212EF5D9CE1CE6B53FBD8FC8901192339139E6512"
+    },
+    {
+        "Path":  "Core\\IceOverview.cs.meta",
+        "SHA256":  "54897113BCFC879EDD3915862663ABF04FF1E62928C84071C46E433A49722B76"
+    },
+    {
+        "Path":  "Core\\IceWaterSpread.cs",
+        "SHA256":  "0F3C828AD325C1B227C72A8B459609B52ACF9039CC51E89E2EE074EB8AC3C882"
+    },
+    {
+        "Path":  "Core\\IceWaterSpread.cs.meta",
+        "SHA256":  "09D1C2D60EC41CC8676D7BC6C0DD5964BC8AD8A974114D3719AF049FBAEF8FCC"
+    },
+    {
+        "Path":  "Core\\MachineGeometryConfig.cs",
+        "SHA256":  "CEDFA9C187FB5EDDDB81AFAC70E17E1046D44B0637CD2A6E79521906990E0205"
+    },
+    {
+        "Path":  "Core\\MachineGeometryConfig.cs.meta",
+        "SHA256":  "1B8956F826BABB142C47DDACA539B2AB68257A7D047D78FFD449AD6B2EE6BC74"
+    },
+    {
+        "Path":  "Core\\MovementContact.cs",
+        "SHA256":  "9ED51987845363B8476EBC2564D0B9DACB08985613DFA0B154D1E6D6E3B5FB40"
+    },
+    {
+        "Path":  "Core\\MovementContact.cs.meta",
+        "SHA256":  "2656FDB78E50F2643FCC3BA586BB08B771A8E55DD4A2E0666A01AEE6BF5719C4"
+    },
+    {
+        "Path":  "Core\\RecordedTrackReconstruction.cs",
+        "SHA256":  "40F731E135E3AB4B39DE7062E995D6C401FC2FECD6DE4396C431F8B4FFF8A445"
+    },
+    {
+        "Path":  "Core\\RecordedTrackReconstruction.cs.meta",
+        "SHA256":  "DE23C0C3C66E8062F3EB62928DD06D8DA51A8E81733CE50DEC3F7D1D35435B93"
+    },
+    {
+        "Path":  "Core\\ResurfacingRoute.cs",
+        "SHA256":  "052C6EB1B1179677F20E81759B38D68FB795ACE8540E61D77B2C2834583142B0"
+    },
+    {
+        "Path":  "Core\\ResurfacingRoute.cs.meta",
+        "SHA256":  "1BD58C5041B31F878B580A930568B31CE065C4D37079B147ACA2C3957B40ED18"
+    },
+    {
+        "Path":  "Core\\RouteFitDiagnostics.cs",
+        "SHA256":  "FFB25DBC252197213BCD385392A8F87695E27DA5AF7362E9B06DF75F0B0BB457"
+    },
+    {
+        "Path":  "Core\\RouteFitDiagnostics.cs.meta",
+        "SHA256":  "F3B3206B821B9B75A3835593DD0A6AF68697BA348C27A465880135AC39978343"
+    },
+    {
+        "Path":  "Core\\RouteFootprints.cs",
+        "SHA256":  "EFAE38980A97CE1BD4D076DE4698E373D2EB8C7073C1161F6750E9BCFA51E5D5"
+    },
+    {
+        "Path":  "Core\\RouteFootprints.cs.meta",
+        "SHA256":  "6E1B937965BC56F0ED837E4822976743AB6954B9C6AFBB83ABB2D1B3F51F0CE4"
+    },
+    {
+        "Path":  "Core\\RouteProgress.cs",
+        "SHA256":  "B57E1309924D24795322311D7AAB986BCE8EA6698D6A3869DB228374A3F4117B"
+    },
+    {
+        "Path":  "Core\\RouteProgress.cs.meta",
+        "SHA256":  "A5ED8EF9E309E70AC843FC989D4485D712C81E6D649ABD18ADDF70271497134D"
+    },
+    {
+        "Path":  "Core\\RouteRecording.cs",
+        "SHA256":  "96244C1709EBC2E451073191D5F362DC0A0D2D92F86ADF83BD93CF72C719FB7A"
+    },
+    {
+        "Path":  "Core\\RouteRecording.cs.meta",
+        "SHA256":  "031E5FF2C34E31162477FA839F330CE862B26DDED76647CE751B4F8DC797E71C"
+    },
+    {
+        "Path":  "Core\\ServiceLayout.cs",
+        "SHA256":  "385D99CB1C0B77A389C973055A963894A499A43AE159015049B69224573B1B41"
+    },
+    {
+        "Path":  "Core\\ServiceLayout.cs.meta",
+        "SHA256":  "1342223BE3CB6A142582307D8422053907561D6D2537C0B624556B0AA853E3AF"
+    },
+    {
+        "Path":  "Core\\Simulation.cs",
+        "SHA256":  "CA21ED82434CFBDA589A9770750F47C69A03D56AE5F039AAB1A146F381EA9624"
+    },
+    {
+        "Path":  "Core\\Simulation.cs.meta",
+        "SHA256":  "2A39435D0B9D3099AC0E050981FE0CFE8321537918E26A7BE64AD9B3814F3170"
+    },
+    {
+        "Path":  "Core\\SimulatorConfig.cs",
+        "SHA256":  "3BA709683703D1B827FFE3688B99A8EFEC3355E25A87EEED46788B1361A651FC"
+    },
+    {
+        "Path":  "Core\\SimulatorConfig.cs.meta",
+        "SHA256":  "2DEF84FD9D1B02D80ECB5AB8A6EE59FAB009455EB218BD948C99C711C30224D3"
+    },
+    {
+        "Path":  "Core\\SurfaceProcessing.cs",
+        "SHA256":  "887648295772D8469734A6A9117BAD22F7406F1F0254EE09F2D5EBBA8924B59F"
+    },
+    {
+        "Path":  "Core\\SurfaceProcessing.cs.meta",
+        "SHA256":  "CD50726F779D7976A5C94B99180C47792495E89FE3D461E45CEE2A077B59D458"
+    },
+    {
+        "Path":  "Core\\TankCollision.cs",
+        "SHA256":  "66185C503C3DB86FE6E89923B3F541718D7899CC1C2986676DCE6B52460D5094"
+    },
+    {
+        "Path":  "Core\\TankCollision.cs.meta",
+        "SHA256":  "7C1A36705CA607DEA502109CFAD34E1ABDB38AF2A7EB0DCA9DB1F2FECE14B753"
+    },
+    {
+        "Path":  "Core\\TrainingRoute.cs",
+        "SHA256":  "9E11106E1599D9A78C676BFC5181244BF40C27E157D28B030B06DB88E7E5EC60"
+    },
+    {
+        "Path":  "Core\\TrainingRoute.cs.meta",
+        "SHA256":  "6677A2D49FF2D6174C94D698C648ED04A857B88D63D7085C5380CBFB7A096484"
+    },
+    {
+        "Path":  "Core\\TrainingRouteEditing.cs",
+        "SHA256":  "8398CCA55DBB5B23C5A92949141601FBF67DBACC3B953761EDDDA8B575491E4A"
+    },
+    {
+        "Path":  "Core\\TrainingRouteEditing.cs.meta",
+        "SHA256":  "551EE5657200E63A03962988CA28B893CAEAC726CEB6005784DD184994816A9F"
+    },
+    {
+        "Path":  "Core\\VehicleOutlineConfig.cs",
+        "SHA256":  "B27B499DFE73C7F078D45E6776D40409A71EBC3A0EBA0C804A73D7B6B3E44E07"
+    },
+    {
+        "Path":  "Core\\VehicleOutlineConfig.cs.meta",
+        "SHA256":  "5A9AFA174476D1F597F8A6C9BE79BB9BD8BC82704CC6D6E7044E729E12BAF138"
+    },
+    {
+        "Path":  "Core\\WaterService.cs",
+        "SHA256":  "76E7E73D08A8118DE537BAD5F5EEA3BAE688CA5C20F8088DDC8D86A4873C3A1E"
+    },
+    {
+        "Path":  "Core\\WaterService.cs.meta",
+        "SHA256":  "AFD4F56BD39A00844699A0C0ED1DCC847F6FAE9358F58CE72FE81D6613E12401"
+    },
+    {
+        "Path":  "Presentation\\IceArenaDrift.cs",
+        "SHA256":  "E6FD7DCF984D8E4D5263E4D7DAA56D5CE1C419FEB3F49A87486D29B0B54F08F4"
+    },
+    {
+        "Path":  "Presentation\\IceArenaDrift.cs.meta",
+        "SHA256":  "8169F543287C9234337F949A67027F97AEBE726BF9A7FE0663EEC071351E7BF9"
+    },
+    {
+        "Path":  "Presentation\\IceArenaPart.cs",
+        "SHA256":  "F196CB82FFABC3BE88B9F18D91887F9D562B34FDFF74FA473A30E9AB48A28407"
+    },
+    {
+        "Path":  "Presentation\\IceArenaPart.cs.meta",
+        "SHA256":  "38B6F747C6BDEF577A5C58BEAC084F4D7ADCE0A685878F515C2D68CB9CE62D6E"
+    },
+    {
+        "Path":  "Presentation\\IceArenaRig.cs",
+        "SHA256":  "6E8FDE50F472E87052DBB70E2AB5618D0881D28FEDCE749D1262CC541C5665B2"
+    },
+    {
+        "Path":  "Presentation\\IceArenaRig.cs.meta",
+        "SHA256":  "E703068E52D76DB3695524BFA356C7F23DD9A922D2CB4ECC63A27394AB3C2C6C"
+    },
+    {
+        "Path":  "Presentation\\IceAudioSpatialization.cs",
+        "SHA256":  "808A60A61BDAD2F515D4B6D0A570EF6A84A6221EB3E284A89EE0F4B44C33280D"
+    },
+    {
+        "Path":  "Presentation\\IceAudioSpatialization.cs.meta",
+        "SHA256":  "D57E44869942E412E107E84C69278BEFB1FDF4D3A6E6845E042B0834EC580379"
+    },
+    {
+        "Path":  "Presentation\\IceBoardBrushRig.cs",
+        "SHA256":  "319287C434481A87D88A146EF1B6D1F8127ED691632C792236776174C5B7AE17"
+    },
+    {
+        "Path":  "Presentation\\IceBoardBrushRig.cs.meta",
+        "SHA256":  "AA883C946565C5116634AF5AC4ED3A02BF799730336748678391DD080F966CE9"
+    },
+    {
+        "Path":  "Presentation\\IceChaseCamera.cs",
+        "SHA256":  "BF9BAECA2FD40B1E450B5AEA6C011627383C225953A8786CAF080ABFD554D303"
+    },
+    {
+        "Path":  "Presentation\\IceChaseCamera.cs.meta",
+        "SHA256":  "DC70B055073450A235107BC6E7C061917AAA3B734372BA9E741786E9F24AC64A"
+    },
+    {
+        "Path":  "Presentation\\IceCollisionOverlay.cs",
+        "SHA256":  "ED5E39CD630AB1C004B81A7B293A6571917E59E8FA17BE229480B3F4EFFC1B28"
+    },
+    {
+        "Path":  "Presentation\\IceCollisionOverlay.cs.meta",
+        "SHA256":  "A96D2EC46B09627CF6F57AC6C05D448F978C53A9FDA6447093EF84602FD08429"
+    },
+    {
+        "Path":  "Presentation\\IceConditionerLinkage.cs",
+        "SHA256":  "88D71093B24221B2CD80A68ADD1295061AE46601A47B838B0ABA10C6F3F7B1F0"
+    },
+    {
+        "Path":  "Presentation\\IceConditionerLinkage.cs.meta",
+        "SHA256":  "22CF94B967FEE5F609C55FFD401C56DB86AC5B17F6BF0DF1CB9AA3EC4B91165A"
+    },
+    {
+        "Path":  "Presentation\\IceConditionerSpan.cs",
+        "SHA256":  "6E9DEED3D466AB4310B222D4CA7E9B10A9257BE501ED059F8BF472EFC92DEF24"
+    },
+    {
+        "Path":  "Presentation\\IceConditionerSpan.cs.meta",
+        "SHA256":  "EBDB2120193005D92F712D7CF2AC4655748A95C64BBBF33C81ED310DA83A2934"
+    },
+    {
+        "Path":  "Presentation\\IceDashboard.cs",
+        "SHA256":  "4F7F84BC3B3E27FA633CC639059C6A18E3AEF760D4C9E56C82AD5972F37163EF"
+    },
+    {
+        "Path":  "Presentation\\IceDashboard.cs.meta",
+        "SHA256":  "99AA732F765F2A459731981E35C1E8EAD36D9A7829AFF803D6E6116D3D324A99"
+    },
+    {
+        "Path":  "Presentation\\IceDepositedSnowView.cs",
+        "SHA256":  "D0D34ED43BA7FE8FD409D69F6C39D80F218966173ABEC5627712A94E474A7788"
+    },
+    {
+        "Path":  "Presentation\\IceDepositedSnowView.cs.meta",
+        "SHA256":  "BFEA4069910D46585A822A0721B9315963FD3A9902EAD6E7EFAE121C6508BF99"
+    },
+    {
+        "Path":  "Presentation\\IceKeepUnbatched.cs",
+        "SHA256":  "8A59FFD4C70C20FE22B225FC2FDF1BDE44514D892349401418D5358B116CC3AF"
+    },
+    {
+        "Path":  "Presentation\\IceKeepUnbatched.cs.meta",
+        "SHA256":  "DFAEE4249A5EA1EED1037418441385A9A846FBF8BE9E3E3DEC1FC39A978B4E7B"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.Calibration.cs",
+        "SHA256":  "710E7E76E9CFE85F19F4AF7E6C90B5C14152C1BBAAC7253A869D65BD2BF898CE"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.Calibration.cs.meta",
+        "SHA256":  "868BB705D9D2D397A027CD35D9F4364AEBCEDDCD2C35526A8730F1E9A871D623"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.cs",
+        "SHA256":  "E37C4B8021DECBE39ECBCE7065F5877A9FE8FB7DED394690D55B63DFE30654FE"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.cs.meta",
+        "SHA256":  "692756B5466078EB3083367F4213124E3692888815E71CE6A411CA9104D479D9"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.Hydraulics.cs",
+        "SHA256":  "978B017575229045096D47CA7B6722592A70FD1B2EC40BF74DDA0B5A4E78313D"
+    },
+    {
+        "Path":  "Presentation\\IceLayoutPlayerProbe.Hydraulics.cs.meta",
+        "SHA256":  "C6960A940006E7C878D09877F33A5964645D79C84A1DF973AF0B4FA61AA18049"
+    },
+    {
+        "Path":  "Presentation\\IceMachineAudio.cs",
+        "SHA256":  "960D32896E3021EA8D3074BFCBB4165725B1D05C9653243676F44EF32A5B0D4A"
+    },
+    {
+        "Path":  "Presentation\\IceMachineAudio.cs.meta",
+        "SHA256":  "7E2AA3D6235BB187643AC1D41614160F7671F5F873C45F315DA3E987DCBDE4AE"
+    },
+    {
+        "Path":  "Presentation\\IceMachineRig.cs",
+        "SHA256":  "5857216706CCBAE4323F39F5D21A3B55A209E41A218C5E8D73F8DC274C8E721F"
+    },
+    {
+        "Path":  "Presentation\\IceMachineRig.cs.meta",
+        "SHA256":  "D5124259F1EF6B0F7A1B3B5DD5980E923EA59B2D16F18890F7981ECBF899F402"
+    },
+    {
+        "Path":  "Presentation\\IceOperatorPreferences.cs",
+        "SHA256":  "BEBC8FCB411528864B0EF96708F79364BA9A38E8A6C8ACD80CD29063B90BEE22"
+    },
+    {
+        "Path":  "Presentation\\IceOperatorPreferences.cs.meta",
+        "SHA256":  "27F3900E86E33B218946E278324C550A6CB8C241B872B14405426135A3F27372"
+    },
+    {
+        "Path":  "Presentation\\IcePerformanceMeter.cs",
+        "SHA256":  "0404933671A4B3DBFC9D05E8D7AA50ECCEDC98C6369EDE55CCB09D156843FFF4"
+    },
+    {
+        "Path":  "Presentation\\IcePerformanceMeter.cs.meta",
+        "SHA256":  "73013D94064AED9238A5D2D0C6AA84953D484C3617F91812EB814E7D6194658C"
+    },
+    {
+        "Path":  "Presentation\\IcePerformanceProbe.cs",
+        "SHA256":  "55ED3911C9806614C2101C30717D527E5B70EA55D1EDBA8FF9A82A413221E7D7"
+    },
+    {
+        "Path":  "Presentation\\IcePerformanceProbe.cs.meta",
+        "SHA256":  "5A82F374FAE224BB0BD58FBEFC0DC2AD692F79E7C1450B162E46E1F8A0A85A11"
+    },
+    {
+        "Path":  "Presentation\\IcePhysicalControls.cs",
+        "SHA256":  "BE87D24C0913E7DF2C3D5F12C7A03FF41ADD3D35F466D961963C4E6E1BA4AC9D"
+    },
+    {
+        "Path":  "Presentation\\IcePhysicalControls.cs.meta",
+        "SHA256":  "4A64C79C83850C208F1AC6582963A37A84D49B78FC5441C04DF06363C14DF9AD"
+    },
+    {
+        "Path":  "Presentation\\IceResurfacerGame.cs",
+        "SHA256":  "BD0C568E6262FD12DBC4FB10F72CF3CA3B97070952251CDF56DE33B1EDAA2EA1"
+    },
+    {
+        "Path":  "Presentation\\IceResurfacerGame.cs.meta",
+        "SHA256":  "649BE50AFBB1FA7A2415FE93D76CC2219FDD5FDB9C4B4A0B340F91718B5F05DF"
+    },
+    {
+        "Path":  "Presentation\\IceRinkBoards.cs",
+        "SHA256":  "6684E43FC04BC7A2E345662A1EE6F6E9575E4503962C214D62D35B092AD3CC92"
+    },
+    {
+        "Path":  "Presentation\\IceRinkBoards.cs.meta",
+        "SHA256":  "AA18D7B1EEC4EF02B96CEE44F046833C95951985D2F63CB1C29A14E4FE7DD767"
+    },
+    {
+        "Path":  "Presentation\\IceRouteGuide.cs",
+        "SHA256":  "C9D8687AF68D0F24AB7779640075618CE10807212A2BA948319237F073A133DF"
+    },
+    {
+        "Path":  "Presentation\\IceRouteGuide.cs.meta",
+        "SHA256":  "CB2A1977F30E27A959310074C7AB1A276F7F32D878466C8896579BB4A313E839"
+    },
+    {
+        "Path":  "Presentation\\IceSnowView.cs",
+        "SHA256":  "068B618548CC00E7F0687702726030F1B26992C22E32F817EB529970303E19C7"
+    },
+    {
+        "Path":  "Presentation\\IceSnowView.cs.meta",
+        "SHA256":  "B351DF9F2D51B427B7419C3DFC16576BC4DDD32738F68E64BF16E666E22C6F52"
+    },
+    {
+        "Path":  "Presentation\\IceSurfaceView.cs",
+        "SHA256":  "7C010EA9C64302DA0A744EF9419CD3B1A338B7B246ACAA6623B94B87E5BF80BC"
+    },
+    {
+        "Path":  "Presentation\\IceSurfaceView.cs.meta",
+        "SHA256":  "D0A5ABC2EC74EC1BD786588AD50610FDFEF81557EE39A7C4B9203A3CDE21D6BF"
+    },
+    {
+        "Path":  "Presentation\\IceWaterFillPort.cs",
+        "SHA256":  "2BD1781D22CFBDAEDABD0C24D6FBA2B1007268F07FC9BCED823279E7267B20F0"
+    },
+    {
+        "Path":  "Presentation\\IceWaterFillPort.cs.meta",
+        "SHA256":  "73CF91C515763FF002F56B22ECC6C2C186D94A6F441B29FE0411E2A373F77D4E"
+    },
+    {
+        "Path":  "Presentation\\IceWaterLevelGauge.cs",
+        "SHA256":  "5858C8B9AD5963F51D2BFAD70AF76633173190E30A506DE2A35FD4D1F0D9B493"
+    },
+    {
+        "Path":  "Presentation\\IceWaterLevelGauge.cs.meta",
+        "SHA256":  "819A6A64A4ADF8D941B77C880F076301A73D0D7412AC1234D317EA4FD4CBF0BD"
+    },
+    {
+        "Path":  "Presentation\\IceWaterService.cs",
+        "SHA256":  "4B08D392A467648092E0088A49784E0B7D476FDACD78381AEFB73AE4A38E0863"
+    },
+    {
+        "Path":  "Presentation\\IceWaterService.cs.meta",
+        "SHA256":  "AA7773AA9673EC28A6C939D88233E16A403CA6562F2A0DF989195E11FE057442"
+    },
+    {
+        "Path":  "Presentation\\IceWorldBuilder.cs",
+        "SHA256":  "98285F0315EE63B01B4CA61E26C66692AC619FEC55BB68B41131DB93C3A23E23"
+    },
+    {
+        "Path":  "Presentation\\IceWorldBuilder.cs.meta",
+        "SHA256":  "C58C0A541750BC0E4B2D38A48A82FE7D8A016C9FB3BBD49E7CB4B3E4ADCE7C33"
+    },
+    {
+        "Path":  "Presentation\\RouteLibraryCatalog.cs",
+        "SHA256":  "82A7BC501574F6DF4B98A9E3052EB91103CDE758377909DA986302D7643E7E8C"
+    },
+    {
+        "Path":  "Presentation\\RouteLibraryCatalog.cs.meta",
+        "SHA256":  "5699F988A1FF1031AAE0C09E2AD9CA1463E920D92F18F754C3DB35F0649875B2"
+    },
+    {
+        "Path":  "Presentation\\RouteManagerPanel.cs",
+        "SHA256":  "0FD62545A78A0A7DDDBE8E63761379962C727DD11017396E5C63E9DDFDA768B6"
+    },
+    {
+        "Path":  "Presentation\\RouteManagerPanel.cs.meta",
+        "SHA256":  "1FC2B7C12A2228713EAE4E219CE833FEB7CD622A1B2C4F3B865C436D8D241A24"
+    },
+    {
+        "Path":  "Presentation\\RouteRecordingPanel.cs",
+        "SHA256":  "E028CD0CF9280A578203935AC294D65BDABFAA5C09F5E3F278C52F2165FB8F73"
+    },
+    {
+        "Path":  "Presentation\\RouteRecordingPanel.cs.meta",
+        "SHA256":  "DE48E3AD7401B9E561EB2CFDDE481F124F22BA404A0E34D639E479275A63DC8E"
+    },
+    {
+        "Path":  "Presentation\\RouteRecordingPreview.cs",
+        "SHA256":  "28C7D6F6210801166D9DEC8EECD2CD334A7D3A01A86C5D69515CA50B158F6F19"
+    },
+    {
+        "Path":  "Presentation\\RouteRecordingPreview.cs.meta",
+        "SHA256":  "FE16A0C75217A0CA44C5BDAF4A83A8A81D96AEA3C46C1C69442331B4DE1C9F7D"
+    },
+    {
+        "Path":  "Presentation\\RouteRecordingStorage.cs",
+        "SHA256":  "25EF0E163422454F85C1B31587D4FF5B98A26616F3999635867F3C1B903DA260"
+    },
+    {
+        "Path":  "Presentation\\RouteRecordingStorage.cs.meta",
+        "SHA256":  "F6294F3C1C021B8BF8D95C5A78FD53B9296CAFDC50DA1CEBC8D4119A08AEB455"
+    },
+    {
+        "Path":  "Presentation\\RouteSilhouetteContinuation.cs",
+        "SHA256":  "DD0BC8431CE101D653DB7CF19DCCFCFF0A51AF5F10DD7820BD47CFC397CCF452"
+    },
+    {
+        "Path":  "Presentation\\RouteSilhouetteContinuation.cs.meta",
+        "SHA256":  "20C4D8106EB8DE059CB85B5D83B2B741FB2C39565A43A31C53C2633DA2E6EC1D"
+    },
+    {
+        "Path":  "Presentation\\TrainingGuidePanel.cs",
+        "SHA256":  "B15F57C5863C49EDAE4E979796B73701700E085A6A934639876DC1656CAA822B"
+    },
+    {
+        "Path":  "Presentation\\TrainingGuidePanel.cs.meta",
+        "SHA256":  "78E0EA5BFC803F35CAC924E3DB9AFF8CFF7890FE129AB3ECEFEB32A03C793073"
+    },
+    {
+        "Path":  "Presentation\\TrainingGuideStorage.cs",
+        "SHA256":  "01BAB55ECB6E991C9F0FC02D1E6C4D27A5CBEE42737ECD74DE32F6128A1E5328"
+    },
+    {
+        "Path":  "Presentation\\TrainingGuideStorage.cs.meta",
+        "SHA256":  "71D9D8AB306C57F9F79E402B93BA46F9A7AB9CDA624679D5B2DCE7A162422B46"
+    },
+    {
+        "Path":  "Presentation\\TrainingGuideView.cs",
+        "SHA256":  "2A07B80B27D2B7B171EFDE1BFB6F616DEBC8B773335D027560B3B8D610B90E67"
+    },
+    {
+        "Path":  "Presentation\\TrainingGuideView.cs.meta",
+        "SHA256":  "373B69EB218ADAD1F0FFC046F7FD84FBF90B6E776E2F23B46B207EA2684670FE"
+    },
+    {
+        "Path":  "Editor\\IceArenaBaker.cs",
+        "SHA256":  "EA640FC9E30EEBF71DD1922E295035D9756432351E060A40F19E3E1B67E9722B"
+    },
+    {
+        "Path":  "Editor\\IceArenaBaker.cs.meta",
+        "SHA256":  "5923D45A84D14E824687CA679E7A1FA536D106F3569592A716A0675B3BF8CBFB"
+    },
+    {
+        "Path":  "Editor\\IceArenaRigEditor.cs",
+        "SHA256":  "5E4C392B44AC1A376765DA640160E9999E38921EF427C64B95FBA771BECE3B75"
+    },
+    {
+        "Path":  "Editor\\IceArenaRigEditor.cs.meta",
+        "SHA256":  "F4FF7537B6238B7BCE29AEEBD59E2E06266A73DD5453E6231E276EFA169B43CC"
+    },
+    {
+        "Path":  "Editor\\IceAssetPersistence.cs",
+        "SHA256":  "E5E96654574E61AE2236BC48AE3AFFE2B547A3EB4BF4720A62BA010B436B7ED7"
+    },
+    {
+        "Path":  "Editor\\IceAssetPersistence.cs.meta",
+        "SHA256":  "A2784DA9C7ABEB65155C6995004F99C0163BEB4B790F13045E68F103C541C095"
+    },
+    {
+        "Path":  "Editor\\IceAuthenticityValidation.cs",
+        "SHA256":  "198DC4C95339965F470E528EDE585CA3DDE8E8EB0656808C438F39B88A7F3221"
+    },
+    {
+        "Path":  "Editor\\IceAuthenticityValidation.cs.meta",
+        "SHA256":  "B1387437BDB77744885197F4C08AC329D1694C8E7E8FB3E1733AA05A253343D4"
+    },
+    {
+        "Path":  "Editor\\IceAuthoredArenaValidation.cs",
+        "SHA256":  "142F9804CCA950F6032102B9A47FE74711F3D32B3C4425D41D3F01E546C8392B"
+    },
+    {
+        "Path":  "Editor\\IceAuthoredArenaValidation.cs.meta",
+        "SHA256":  "449DB17183AFA8C72FC1CAEDF7D0338D10CA0C63F8AE217A2C182EB3F44D8A50"
+    },
+    {
+        "Path":  "Editor\\IceAuthoredMachineValidation.cs",
+        "SHA256":  "5C9A294D5A0CFA3956E10F73C73520FAAD972FA98B4AE6880A01B79562BE32B8"
+    },
+    {
+        "Path":  "Editor\\IceAuthoredMachineValidation.cs.meta",
+        "SHA256":  "3C905FC542380366A415C2CA77B330EB9F2653B020FB19B2F1C825BF966BB1FD"
+    },
+    {
+        "Path":  "Editor\\IceAuthoredRecovery.cs",
+        "SHA256":  "A629E8B79CFC7243D634613A38C7D5E615E1AFB223EB69A204A0267920B4D3B1"
+    },
+    {
+        "Path":  "Editor\\IceAuthoredRecovery.cs.meta",
+        "SHA256":  "FFE926BEEB0E0B6868D3BDB62C8688EF18D743C3C71C641EED1E8FD313EB464F"
+    },
+    {
+        "Path":  "Editor\\IceBoardBrushRigEditor.cs",
+        "SHA256":  "0216347EB9D1A19FE9CDE6120CB32C3A8211E1956DEDCC2AA1483F19949FA4AB"
+    },
+    {
+        "Path":  "Editor\\IceBoardBrushRigEditor.cs.meta",
+        "SHA256":  "48991BE5A2357558417E0C5DB947CA0F61F3D7095DDE02453DB6B144C81FA5A4"
+    },
+    {
+        "Path":  "Editor\\IceBrushConditionerValidation.cs",
+        "SHA256":  "90C6EDD5D78F0051AABCCF08924110AC45044173927531FBB0A6A62D6089ABFA"
+    },
+    {
+        "Path":  "Editor\\IceBrushConditionerValidation.cs.meta",
+        "SHA256":  "41D0365D63AA2B942671FB675A058B500A21194C1B5495A1B290FE1FABB391A7"
+    },
+    {
+        "Path":  "Editor\\IceCalibrationContext.cs",
+        "SHA256":  "2A08BEFB27236D9E0C301E5E5353A5A0B83153DBDB2EECBAC14CEA7CACA408C9"
+    },
+    {
+        "Path":  "Editor\\IceCalibrationContext.cs.meta",
+        "SHA256":  "D244DA14BCC794E1BB76FDD63DB0A33ED86764BD88E8D700453F2486906B3A31"
+    },
+    {
+        "Path":  "Editor\\IceCalibrationRuntimeValidation.cs",
+        "SHA256":  "E60020CF10B88FC4642D222E74296EA38C0BB67792A61F1A6643E987A4FC8E90"
+    },
+    {
+        "Path":  "Editor\\IceCalibrationRuntimeValidation.cs.meta",
+        "SHA256":  "9BB92EBD6843F9D06418FE4E55DB038E7D49F084749DA753D455384E3C44CA69"
+    },
+    {
+        "Path":  "Editor\\IceCameraValidation.cs",
+        "SHA256":  "386E11FA05B5653216A1DD5E8BADD2EA84EB994404BE1AD271E5D6EEDEB03516"
+    },
+    {
+        "Path":  "Editor\\IceCameraValidation.cs.meta",
+        "SHA256":  "DFFE7A574643373ECD1933A5375F9D38215048168922BD1E98B575358C1CE0F3"
+    },
+    {
+        "Path":  "Editor\\IceCockpitRefinementValidation.cs",
+        "SHA256":  "9B176A247B1C8C7161FD5B66A9E4CA5FAC324761D6D95F73AA31B6B401B7C002"
+    },
+    {
+        "Path":  "Editor\\IceCockpitRefinementValidation.cs.meta",
+        "SHA256":  "699E9666D59B9D330ED1971ABD0BE9CCD7DDCAEA8178829212C82588DAF03EEA"
+    },
+    {
+        "Path":  "Editor\\IceCollisionOutlineFit.cs",
+        "SHA256":  "A8A3F35D6E7DDA69C713A32C266241546F0A8A384DD938035B5D7DD3037E0FCC"
+    },
+    {
+        "Path":  "Editor\\IceCollisionOutlineFit.cs.meta",
+        "SHA256":  "52E3089A57D1994E78E136D0EA7BEF4365F833948F119B418691CEDC19A9BCEF"
+    },
+    {
+        "Path":  "Editor\\IceConditionerAlignment.cs",
+        "SHA256":  "78DE594BBE66573E753A2B51DB5E44C71BE5025EDE7EA7EC1E3D91BC7B62FB51"
+    },
+    {
+        "Path":  "Editor\\IceConditionerAlignment.cs.meta",
+        "SHA256":  "C6AA4B65A80527104819D9854E1028126C2C723122591CA1B1842258F3DC7D2A"
+    },
+    {
+        "Path":  "Editor\\IceControlsBrushRollerValidation.cs",
+        "SHA256":  "E9FBAFF3D736F622A786B8B8F5C59CD45690FB6A7BECFFEE0C324CA4948E0F9F"
+    },
+    {
+        "Path":  "Editor\\IceControlsBrushRollerValidation.cs.meta",
+        "SHA256":  "677BF58FFC1B2DF24BFE71545DE87EA7D12D553F5304A1D804CACE57E81560EF"
+    },
+    {
+        "Path":  "Editor\\IceControlsSurvey.cs",
+        "SHA256":  "32B339491E7740C51712645D33F3BCA89FFBFDC37023956509ED0A2B8DB67435"
+    },
+    {
+        "Path":  "Editor\\IceControlsSurvey.cs.meta",
+        "SHA256":  "64235E171C676A04919ADF6D1E7769B90AAF2A55DAA8127FDBA99A92CCEF9A48"
+    },
+    {
+        "Path":  "Editor\\IceHUDVideoSpeedValidation.cs",
+        "SHA256":  "B5D145BD3918FD292EF4F7D1BF3B094B7B4107B3374538CEF1D85D619EB7F90B"
+    },
+    {
+        "Path":  "Editor\\IceHUDVideoSpeedValidation.cs.meta",
+        "SHA256":  "948EB53E6E62662B477242F297EFACF8FEFB32A257FE20E3FE5636500DE2494C"
+    },
+    {
+        "Path":  "Editor\\IceLayoutValidation.cs",
+        "SHA256":  "FF028BCA483FBFB486260D8CD1ED6F405DE31A89483C2C8ADB4D9D06C0610442"
+    },
+    {
+        "Path":  "Editor\\IceLayoutValidation.cs.meta",
+        "SHA256":  "36B9ECE756A89AEA63209F5FA75B26E202B92B0D4B319C691A097F09E9AD8004"
+    },
+    {
+        "Path":  "Editor\\IceMachineBaker.cs",
+        "SHA256":  "B31E641117C8829B9140FA910628A7FE41F8119F654A112B6554B6E339BAAA89"
+    },
+    {
+        "Path":  "Editor\\IceMachineBaker.cs.meta",
+        "SHA256":  "FCE45689A9AD12A6F84564E17EB40B1CC2A1A0CA78F91097A5D4D3F3F38D8D7E"
+    },
+    {
+        "Path":  "Editor\\IceMachineGeometryEditor.cs",
+        "SHA256":  "C0849B7822598D6690466EE1383AB67CACEE9792EC1584FD856816C00D611C84"
+    },
+    {
+        "Path":  "Editor\\IceMachineGeometryEditor.cs.meta",
+        "SHA256":  "C671EF4DA39C41C175C82D10320409AA86C240EA1FBC82C33E8586D1E0DBEC09"
+    },
+    {
+        "Path":  "Editor\\IceMachineProportionPass.cs",
+        "SHA256":  "C6519FD72755940AA40C513033A3F940A945E87B2D7027ADA1548881F2351708"
+    },
+    {
+        "Path":  "Editor\\IceMachineProportionPass.cs.meta",
+        "SHA256":  "8AAE99C47290D6D52A2CB5C9C52DB71B018DFD58F33B1323374E87A6D2DA6AA2"
+    },
+    {
+        "Path":  "Editor\\IceMachineProportionsValidation.cs",
+        "SHA256":  "BB85615D5451C590E0C4C4F39B05939F140E8A1AFB8F672FDE5D3FE359A546EB"
+    },
+    {
+        "Path":  "Editor\\IceMachineProportionsValidation.cs.meta",
+        "SHA256":  "2C4C05CC31C23D05E373CB9A595A546242ED732144F90EF201B9D5C7842A9082"
+    },
+    {
+        "Path":  "Editor\\IceMachineRigEditor.cs",
+        "SHA256":  "09811425E078DE85756D6508D281B71461A03F919D6B31CBF7E02E823A328F3C"
+    },
+    {
+        "Path":  "Editor\\IceMachineRigEditor.cs.meta",
+        "SHA256":  "E0BDB280A998313E0BA428A3C7B75E32B1E9B4D5537EA81AA2260A663C7EA99A"
+    },
+    {
+        "Path":  "Editor\\IceMechanicalAlignment.cs",
+        "SHA256":  "77538C300DEE7EB8AE104400F19847DE46DF4FF922F367C8171A28C00FEF17E7"
+    },
+    {
+        "Path":  "Editor\\IceMechanicalAlignment.cs.meta",
+        "SHA256":  "A68E19D89100A73804756CBD5EAEBFADBA60566653FF832BC03F4B4FB0D62764"
+    },
+    {
+        "Path":  "Editor\\IceMechanicalReconciliationValidation.cs",
+        "SHA256":  "0A8C2AB7C0B2B7953C470962FC6F1A79760BFE0C1E461A2B4A6EA224E01A551E"
+    },
+    {
+        "Path":  "Editor\\IceMechanicalReconciliationValidation.cs.meta",
+        "SHA256":  "47D76F5BAB11CD0FF2742BDDDBBE1834F305DDA516A9BBF65A763B032F9DC94C"
+    },
+    {
+        "Path":  "Editor\\IceMechanicalSurvey.cs",
+        "SHA256":  "761B577C876E93024162B8EB0743C62CE27FABB8788E22EA91331741DD7F9428"
+    },
+    {
+        "Path":  "Editor\\IceMechanicalSurvey.cs.meta",
+        "SHA256":  "3BE5582A7C46F00B86B3666DD023F083C927A50432514549D4D009E8B3BBB1D6"
+    },
+    {
+        "Path":  "Editor\\IceOperationValidation.cs",
+        "SHA256":  "6B7B38B42E30F8AE3424D394C4EFF7E2DD9706F8AB10C8A8077841C02AC0A7C3"
+    },
+    {
+        "Path":  "Editor\\IceOperationValidation.cs.meta",
+        "SHA256":  "597B2450929280D7EC3EBF3B4958D3476332D5BF39580B9F53829CB9AC3B659A"
+    },
+    {
+        "Path":  "Editor\\IcePerformanceBuild.cs",
+        "SHA256":  "713A7906AA9A889CD297C90EC2DC377C4BDEF8FF644C36A137BF100AB8C0F192"
+    },
+    {
+        "Path":  "Editor\\IcePerformanceBuild.cs.meta",
+        "SHA256":  "00CCFAFF6D28D8A4359A556639A15F4CC4F4F5E8E674B1C34EB8A34722DDB42B"
+    },
+    {
+        "Path":  "Editor\\IcePhysicalValidation.cs",
+        "SHA256":  "D2E760C5101AF529B957FA2F3B85B4E342371E644309D45D835EB23D218D88F8"
+    },
+    {
+        "Path":  "Editor\\IcePhysicalValidation.cs.meta",
+        "SHA256":  "C244DECF0363009EAB62848B595A5BC67974B9DAEB67C9E61C1486F4BA8B1FA1"
+    },
+    {
+        "Path":  "Editor\\IceRecoveryWindow.cs",
+        "SHA256":  "67FEDA69C2BF543B7B9C1A2554DA4ADDE1BF02102961AC41B16D00B5DE140D9C"
+    },
+    {
+        "Path":  "Editor\\IceRecoveryWindow.cs.meta",
+        "SHA256":  "91F7BD0DC06F50DBC742469A77865CFF5E3C022651D2AA8BBC3622BE8CAD12DA"
+    },
+    {
+        "Path":  "Editor\\IceResurfacer.Editor.asmdef",
+        "SHA256":  "4B7784CDDAAF672C35F258B18E948DF52203F0CAB0DC37AAAE22718B615A5905"
+    },
+    {
+        "Path":  "Editor\\IceResurfacer.Editor.asmdef.meta",
+        "SHA256":  "D6F495F05B541ED0B62C5818EB867DA88A111A683663AA567C5F9AC50DF2E601"
+    },
+    {
+        "Path":  "Editor\\IceResurfacerEditor.cs",
+        "SHA256":  "83EFC797122CF8AD253EB4C948D8FDA57E508A8699647D2C28EE9692DFB99EF7"
+    },
+    {
+        "Path":  "Editor\\IceResurfacerEditor.cs.meta",
+        "SHA256":  "2F00D406AF6105BB736B5813CEC463752DCEB0BF2B1FB924F9105AA4D79727D7"
+    },
+    {
+        "Path":  "Editor\\IceRinkFillPortValidation.cs",
+        "SHA256":  "623EE3C74C9F670B838D202B9A923116DA2C1F2CF9E1BFAEEB3874F074F631E5"
+    },
+    {
+        "Path":  "Editor\\IceRinkFillPortValidation.cs.meta",
+        "SHA256":  "9694C963BFCF0AC4104365BE8D9F114F6BC213BC50808563DABD0FE94B9E5BBE"
+    },
+    {
+        "Path":  "Editor\\IceRinkRefinement.cs",
+        "SHA256":  "65A94021ED09627F46998B9EC8F9B5D47187677BFE03E35E9B78E844D29B5E0F"
+    },
+    {
+        "Path":  "Editor\\IceRinkRefinement.cs.meta",
+        "SHA256":  "D5A8F8FF48D1574990858A8A8E52C2BF7578A666951EDE69F5FE5D9EE4DF6F49"
+    },
+    {
+        "Path":  "Editor\\IceRinkSurvey.cs",
+        "SHA256":  "8519DFC73CCE2C1AD1AA210736ACBF9F814E96487A1CE00FC608510B0B6C66FC"
+    },
+    {
+        "Path":  "Editor\\IceRinkSurvey.cs.meta",
+        "SHA256":  "3743E9E09F3ED032FEF3C91FEA7D106DC8BD0BF8EB0A40E225F58F9B2299A6D9"
+    },
+    {
+        "Path":  "Editor\\IceRouteCalibrationValidation.cs",
+        "SHA256":  "ADF3A6FE5604F212300D2F342C9129F7E651D59D21744AEE6396CC473468ADFF"
+    },
+    {
+        "Path":  "Editor\\IceRouteCalibrationValidation.cs.meta",
+        "SHA256":  "4DFE9C63CC3202A81D217B3DD31CB97D738AEE499D8218A46A703627B34C6099"
+    },
+    {
+        "Path":  "Editor\\IceRouteRecordingsWindow.cs",
+        "SHA256":  "C4B943EB762E52221CA1C1D496DACFD912033627A769995270BD6BC843B05FD2"
+    },
+    {
+        "Path":  "Editor\\IceRouteRecordingsWindow.cs.meta",
+        "SHA256":  "B813BFBD5576BA7A82511482C295CB08EC7EB7663BFCF3DEBBCB3AE0BC754DB8"
+    },
+    {
+        "Path":  "Editor\\IceRouteRecordingValidation.cs",
+        "SHA256":  "C0CABDA202582BB2D1DE48521FE5047D737E910A6D8785FB09AC581F6522F63B"
+    },
+    {
+        "Path":  "Editor\\IceRouteRecordingValidation.cs.meta",
+        "SHA256":  "4D04C536DF2C21EE68325284BFEFA6A73CD5AD25BB1B62FD85786CB14688AB10"
+    },
+    {
+        "Path":  "Editor\\IceRouteRepairValidation.cs",
+        "SHA256":  "C437102AFB1A76F4EF04F27D5AB1CEBE41EF7BEF2199D27897A086B9F005E0A8"
+    },
+    {
+        "Path":  "Editor\\IceRouteRepairValidation.cs.meta",
+        "SHA256":  "31EC287B62FC6548962D9E78945F9EDBD8C12B389ED2DA0001E2996701F07C28"
+    },
+    {
+        "Path":  "Editor\\IceRouteUXValidation.cs",
+        "SHA256":  "83912A5C35A054F1BDFB46A4D369412362BA8521D5A8F98606C21A1FC00BA92B"
+    },
+    {
+        "Path":  "Editor\\IceRouteUXValidation.cs.meta",
+        "SHA256":  "A19526EFFB5C85AF4CBA40AA55FCBF976E374137A31EDA4BA4836432849FB5E6"
+    },
+    {
+        "Path":  "Editor\\IceServiceGeometryValidation.cs",
+        "SHA256":  "8FD2E14EC7690A69DFED0D92A7468DFBE8CD7CCA6B06A771754C2A8E3B36CF19"
+    },
+    {
+        "Path":  "Editor\\IceServiceGeometryValidation.cs.meta",
+        "SHA256":  "6A06CAF96DC5FBDFE1F505D9E87B783685D1FCD4CA446BC2C3B335CFA276BBBA"
+    },
+    {
+        "Path":  "Editor\\IceServiceValidation.cs",
+        "SHA256":  "BC9CF3B0E719C9C9A3D85BC90E57C3FBE61D125DBC1349552D7CB9D490E475C0"
+    },
+    {
+        "Path":  "Editor\\IceServiceValidation.cs.meta",
+        "SHA256":  "E1A5BB6C64FA79F28A332C2C70362F200D2CEE8355D944B108C5B502B29ADEAA"
+    },
+    {
+        "Path":  "Editor\\IceSpatialAudioValidation.cs",
+        "SHA256":  "FEBCA61EE899E99A61D7E15F0B8ED3183B43BC8D032655A60E720874878AF903"
+    },
+    {
+        "Path":  "Editor\\IceSpatialAudioValidation.cs.meta",
+        "SHA256":  "B620AD182C94BCA4A996E428E043D8F7412797B7B877BAE1ACC9E63DC2663671"
+    },
+    {
+        "Path":  "Editor\\IceTrainingGuideValidation.cs",
+        "SHA256":  "96501539A034AED663C9C365DD2AF26E305B650E65CBD46E8B688D234013C3D1"
+    },
+    {
+        "Path":  "Editor\\IceTrainingGuideValidation.cs.meta",
+        "SHA256":  "C3A392BCFBEEEDF49D19F795B91ECF282B22B909BEC06D316B752B92C9AC5E42"
+    },
+    {
+        "Path":  "Editor\\IceWaterFillPortEditor.cs",
+        "SHA256":  "C305F94ED48659434B76AE8DF682D35C6C384B2B6D43081F7C2463ECDBD9845A"
+    },
+    {
+        "Path":  "Editor\\IceWaterFillPortEditor.cs.meta",
+        "SHA256":  "07583C561DC1D7995F56086F4CEC1A3B55A72CC0F2FB2C8A964D323294490F94"
+    },
+    {
+        "Path":  "Editor\\RecordedRouteFixture.cs",
+        "SHA256":  "FF9B9C81BDEED53E1A955EA5334E671AE398493F1EDBD2461E90A494454AE4F7"
+    },
+    {
+        "Path":  "Editor\\RecordedRouteFixture.cs.meta",
+        "SHA256":  "5BE787529030D358BE9DAAC670AABB5110AF71F70CF588BC8DDF08D3532A5604"
+    },
+    {
+        "Path":  "Editor\\RouteManagerEditorBridge.cs",
+        "SHA256":  "1388E19E292B40628A2FAB26D49229B7B36406AE071F89045C18DB96BA73FA11"
+    },
+    {
+        "Path":  "Editor\\RouteManagerEditorBridge.cs.meta",
+        "SHA256":  "73617FE889B97C7474EC0E822B8A0145C788831BDAB7F4983F5E39E0FCD2EAF9"
+    },
+    {
+        "Path":  "Editor\\TrainingRouteEditorWindow.cs",
+        "SHA256":  "05EAF07914D46D7A8F47BF3F2B7C441CA087DF5817C59AE872B49973D48DC5C2"
+    },
+    {
+        "Path":  "Editor\\TrainingRouteEditorWindow.cs.meta",
+        "SHA256":  "1AF6FDAC1EECE7D4491804A88BB6FC49CBA36C220915FB580043C19CC02E8B11"
+    },
+    {
+        "Path":  "Scenes\\IceResurfacer.unity",
+        "SHA256":  "8C64357436C8FBDB6FE94F4E5E0C931604E57E0841277A7F96B735B6252DC305"
+    },
+    {
+        "Path":  "Scenes\\IceResurfacer.unity.meta",
+        "SHA256":  "584BC1FA5103590F166237A030107BC5BB94BED43EC6A9C02500FC16A63999D8"
+    },
+    {
+        "Path":  "Scenes\\IceResurfacer_AuthoredMachine.unity",
+        "SHA256":  "CB6E8EEFF82469256BD7C0B429609C40E5DB79AA7A178CB607D2840376BC5AA1"
+    },
+    {
+        "Path":  "Scenes\\IceResurfacer_AuthoredMachine.unity.meta",
+        "SHA256":  "E11C8DA3BA68A5C885E11367D66E166153DD6FB39D0886927071098E7231149F"
+    },
+    {
+        "Path":  "Machine\\AuroraR54.Meshes.asset",
+        "SHA256":  "F2A2BF1B3A9F7B520DE22EC9DCFA61ADC88FC906EB3696728EF39089F9A4CE8D"
+    },
+    {
+        "Path":  "Machine\\AuroraR54.Meshes.asset.meta",
+        "SHA256":  "6A2D18A67CE6F332F5BF4CB0B7EB430BDA1086B1353E2DCE206420532DF50314"
+    },
+    {
+        "Path":  "Machine\\AuroraR54.prefab",
+        "SHA256":  "8BFAB6E684218F735805FDFA3E1B78B36FD19719A5FC4AC8290ADCF725AE4667"
+    },
+    {
+        "Path":  "Machine\\AuroraR54.prefab.meta",
+        "SHA256":  "BB1D980BC6BA1D2520546D87DA4A356844C5C088B45D1D2B6FC66B07FF0387E2"
+    },
+    {
+        "Path":  "Machine\\Materials.meta",
+        "SHA256":  "2A428937B77A28723AEC056FFD2C7F252848AAD65016FFD2614DCD1FA888B189"
+    },
+    {
+        "Path":  "Machine\\Materials\\Amber safety enamel.mat",
+        "SHA256":  "64B091081E193278A6229A48348D4FCD288921FC87084D089F143E1B78695C3A"
+    },
+    {
+        "Path":  "Machine\\Materials\\Amber safety enamel.mat.meta",
+        "SHA256":  "DD45F7210520BD2869310520143113DF3D0E30B4A03A60F7C93304EDBBBFAA1D"
+    },
+    {
+        "Path":  "Machine\\Materials\\Aurora glacier enamel.mat",
+        "SHA256":  "CE74B20A1FDFBECCB8C1A805C9DD86AC22745B6AD181341FDBC644346F67F6A1"
+    },
+    {
+        "Path":  "Machine\\Materials\\Aurora glacier enamel.mat.meta",
+        "SHA256":  "144B8FDD20E44884B397F5CF613642BA7872208C7EAB63BA423D69350CD02D07"
+    },
+    {
+        "Path":  "Machine\\Materials\\Aurora midnight blue.mat",
+        "SHA256":  "7CD1B53A9FD4F4E151940AC2B46E8A2289AFF2BAFDA38B402064FAEF6473E185"
+    },
+    {
+        "Path":  "Machine\\Materials\\Aurora midnight blue.mat.meta",
+        "SHA256":  "FC897A6DC4185DF12FBAECEE1A86795EE652C12AAF87806CFFFFEF18A5EC8A14"
+    },
+    {
+        "Path":  "Machine\\Materials\\BoardRoller_White.mat",
+        "SHA256":  "0321DD653ABCE62858A240C27D5D8699B3258EFE98A01F47F1B894C2979452F9"
+    },
+    {
+        "Path":  "Machine\\Materials\\BoardRoller_White.mat.meta",
+        "SHA256":  "A5793E497F335D2EB274D3093B5C1A1BF9FEEBE96535F74303C2388C9BDF4B59"
+    },
+    {
+        "Path":  "Machine\\Materials\\Brushed stainless steel.mat",
+        "SHA256":  "517F5080A33775C3CED8A52D0399CFFA03A79E593DF8D771A1200342616547DC"
+    },
+    {
+        "Path":  "Machine\\Materials\\Brushed stainless steel.mat.meta",
+        "SHA256":  "8750F1297651C88DC6E6AE98D73D5A51495D4CE50963C49AE664C41B3A27095A"
+    },
+    {
+        "Path":  "Machine\\Materials\\Collected snow.mat",
+        "SHA256":  "02A5C1B074A90D17BA61D303C70E108A655DA50DD143D9A3E0CCCE7213BE9C0D"
+    },
+    {
+        "Path":  "Machine\\Materials\\Collected snow.mat.meta",
+        "SHA256":  "558A19BA6EBB9DC9B583D61C456E803D9A7A910AE9C97ED5D13B5549B6468171"
+    },
+    {
+        "Path":  "Machine\\Materials\\Fixture luminous diffuser.mat",
+        "SHA256":  "4F21675A139DBDDEC6FD5B77B5E440690A4C5B05C236FA06DA1F995F17ED754B"
+    },
+    {
+        "Path":  "Machine\\Materials\\Fixture luminous diffuser.mat.meta",
+        "SHA256":  "63C4CE0E9E1B383E4EBD8B59CD8B9F1F89B551A3624BAA478B005B23F6B7AC92"
+    },
+    {
+        "Path":  "Machine\\Materials\\Flood distribution towel.mat",
+        "SHA256":  "CAEA77182DBEA07E4F711A04B40AFA7E2534E54EF7D734AE97F1E8791C30B79A"
+    },
+    {
+        "Path":  "Machine\\Materials\\Flood distribution towel.mat.meta",
+        "SHA256":  "CF7E5BEDE6714D01324F23246D8D72156E4802F46BDB2C6009D2212D02FD8A83"
+    },
+    {
+        "Path":  "Machine\\Materials\\Flood water inlet - blue.mat",
+        "SHA256":  "A4E7CB60E881706F6794EB674A7FD6421B86DAC3B669B19569C6A1200AB88686"
+    },
+    {
+        "Path":  "Machine\\Materials\\Flood water inlet - blue.mat.meta",
+        "SHA256":  "A168EF8003953E4CF3D0E620CFAFF881A97B5B0495D4CD314936C138FE56772D"
+    },
+    {
+        "Path":  "Machine\\Materials\\Grandstand blue.mat",
+        "SHA256":  "25952E27407B18F94F49D3382D269BEC940F9D0B8D093CE68037F01C902A156F"
+    },
+    {
+        "Path":  "Machine\\Materials\\Grandstand blue.mat.meta",
+        "SHA256":  "5456A97CD81B5D2455A98F20714BA389C8D0F012A3F64CB7489E5124EBFF6231"
+    },
+    {
+        "Path":  "Machine\\Materials\\Instrument graphite.mat",
+        "SHA256":  "C7B23AC5A695BEFE33A8C2E8454F94F3F186DE407480C309A17FA92F7471541D"
+    },
+    {
+        "Path":  "Machine\\Materials\\Instrument graphite.mat.meta",
+        "SHA256":  "2A482DDD7A7B6498F2D4DDCAE8681B056BB8070700939248FC04C34ACB097369"
+    },
+    {
+        "Path":  "Machine\\Materials\\Porcelain enamel.mat",
+        "SHA256":  "D80C1269B9FEBF32A217D6FE956888EB989C767065B97AC5D420409D2DF36D34"
+    },
+    {
+        "Path":  "Machine\\Materials\\Porcelain enamel.mat.meta",
+        "SHA256":  "C585CAE67B66C49FED6F1C8249E9220707C92F95FBD2CC5BB6A4C16BDF1235E5"
+    },
+    {
+        "Path":  "Machine\\Materials\\Signal vermilion.mat",
+        "SHA256":  "B4C214CC9C2C4EF85CEB47979F8D292849E33FE169197693401F260E060A9240"
+    },
+    {
+        "Path":  "Machine\\Materials\\Signal vermilion.mat.meta",
+        "SHA256":  "0A071ACBB84BF477198EE8A391DDDD710B4770B3094ED2F6BB0FC161326E971F"
+    },
+    {
+        "Path":  "Machine\\Materials\\Tire and hydraulic rubber.mat",
+        "SHA256":  "51F82059BAE899A828AA80766018C812F1013DFBE518EA0C7E95BA5F6A5824B4"
+    },
+    {
+        "Path":  "Machine\\Materials\\Tire and hydraulic rubber.mat.meta",
+        "SHA256":  "5FBBA245B36A45C3F2F68B80F52BA975D2E70CB7885CDE7D920800F63CA43416"
+    },
+    {
+        "Path":  "Machine\\Materials\\Wash inlet - teal.mat",
+        "SHA256":  "63B913297DE50AF3648F8869368BCFFE226AA0EC475375671E7A436FBA8AE4D8"
+    },
+    {
+        "Path":  "Machine\\Materials\\Wash inlet - teal.mat.meta",
+        "SHA256":  "D5F44D857084C9BD249AA5E5F33B6C53F5FB214D6BBF4FE78C43B76C2E2E7750"
+    },
+    {
+        "Path":  "Arena\\Materials.meta",
+        "SHA256":  "4F63B510253BCBC565504F7BB15D6BAE5322B2147E8F0D63ED7716379A8BF8BE"
+    },
+    {
+        "Path":  "Arena\\NorthlineArena.prefab",
+        "SHA256":  "9DCE112A586F3BF0E2365709E75A40A1C5CDDA7F0123CA88D06371519DA9269C"
+    },
+    {
+        "Path":  "Arena\\NorthlineArena.prefab.meta",
+        "SHA256":  "B47A47F4AD9E63BB8407E6AC3DA14F007519FE32E6D3015D6252576943A4AB67"
+    },
+    {
+        "Path":  "Arena\\Sections.meta",
+        "SHA256":  "537CA69087F4E0BA138650F48C717BE0F44F7F271EF7537325FD9380ACDD6653"
+    },
+    {
+        "Path":  "Arena\\Materials\\Amber safety enamel.mat",
+        "SHA256":  "61974FE3A0834B76FDF592A051A596E37EE5B35784A39F8D62756FB3B0BBA8D6"
+    },
+    {
+        "Path":  "Arena\\Materials\\Amber safety enamel.mat.meta",
+        "SHA256":  "C5420578B5A282E72DD1AAEE9D08404A5018222DA27EDFE715DCC03AA43C6BD2"
+    },
+    {
+        "Path":  "Arena\\Materials\\Arena acoustic panels.mat",
+        "SHA256":  "0933F0EA5EF2580D46B5C3C43528F86C97D36109AACCCFDA2985C6778A20B7DB"
+    },
+    {
+        "Path":  "Arena\\Materials\\Arena acoustic panels.mat.meta",
+        "SHA256":  "EC7DDEFCC5C1C60381578A6243B0A68049728CFDDE408CDF62B6CE5C7935CB5F"
+    },
+    {
+        "Path":  "Arena\\Materials\\Arena safety glass.mat",
+        "SHA256":  "A9E9D3E8D58370DB7AAB5C9BF097A5176AEED79E4A2830E115880782D0A1335E"
+    },
+    {
+        "Path":  "Arena\\Materials\\Arena safety glass.mat.meta",
+        "SHA256":  "ED933B53F456265753DE876845633B3F851C65C79E870426CA3524AA6058A4A0"
+    },
+    {
+        "Path":  "Arena\\Materials\\Aurora glacier enamel.mat",
+        "SHA256":  "A7150DE424D284FFB866E8D8C4563CEC7538B3787CD575A22EFBFDAA31308913"
+    },
+    {
+        "Path":  "Arena\\Materials\\Aurora glacier enamel.mat.meta",
+        "SHA256":  "9905B4AC94F99A69D0A5444FB91FDFDB770B1CEED104404DBF97C47C9328D569"
+    },
+    {
+        "Path":  "Arena\\Materials\\Aurora midnight blue.mat",
+        "SHA256":  "E8E8AF0E45D40CCCE45A7A0D00A29358D25195A482958FF400F7612F814CAFD9"
+    },
+    {
+        "Path":  "Arena\\Materials\\Aurora midnight blue.mat.meta",
+        "SHA256":  "29EA7DA3CC643B6157E77A132E0621B0552F257BDDE207E3324F00ACA38B3DB3"
+    },
+    {
+        "Path":  "Arena\\Materials\\Brushed stainless steel.mat",
+        "SHA256":  "507C8E1E5143BE24990798B6A7E8F059E2BA43A33D6D602D98F07151B1F719B4"
+    },
+    {
+        "Path":  "Arena\\Materials\\Brushed stainless steel.mat.meta",
+        "SHA256":  "E8263670FA54125B355B002ECBD6EC1109D66C75E2C9E56C3B320A74EEC14D17"
+    },
+    {
+        "Path":  "Arena\\Materials\\Collected snow.mat",
+        "SHA256":  "1B722769672D3D6D1CBBF5A475376E8F62399F799F495EAC791ACDA0CCB04F0A"
+    },
+    {
+        "Path":  "Arena\\Materials\\Collected snow.mat.meta",
+        "SHA256":  "CE4D0EB61AA988604F9FB1E72AC6AB9BB322F06CE8FB6F74EB98D1A14F228129"
+    },
+    {
+        "Path":  "Arena\\Materials\\Dasher kickplate.mat",
+        "SHA256":  "0A5CB662A2DCA6E9ADDF9A5B334A1DEB83A7A626B5E2257E6AB22509D44CB4E4"
+    },
+    {
+        "Path":  "Arena\\Materials\\Dasher kickplate.mat.meta",
+        "SHA256":  "3902CB23B91E3132CBFD53E787D21E8B26A7CF16970E694265405EC12AAE95CB"
+    },
+    {
+        "Path":  "Arena\\Materials\\Fixture luminous diffuser.mat",
+        "SHA256":  "CA5C88C65BDD26643614490223EF4E17C8EF496353822C194C72AFA7D3B6196E"
+    },
+    {
+        "Path":  "Arena\\Materials\\Fixture luminous diffuser.mat.meta",
+        "SHA256":  "5308C41C8542CACEF406B897E666753E3367A8C74954D5498457959A15A5ED82"
+    },
+    {
+        "Path":  "Arena\\Materials\\Flood water inlet - blue.mat",
+        "SHA256":  "DBB17A3EF8E6E4B578AB60B04CD317870D6536707466024AF7D20092F092F99E"
+    },
+    {
+        "Path":  "Arena\\Materials\\Flood water inlet - blue.mat.meta",
+        "SHA256":  "6A4AD947369114BDDAC0BC9FECE20F9B78EF405ED4430DE4DED205FA1888D47B"
+    },
+    {
+        "Path":  "Arena\\Materials\\Grandstand blue.mat",
+        "SHA256":  "0C958961552D905D564051D5D64FD4E8A33D79C1E7EC9A3A136F71925DFEB137"
+    },
+    {
+        "Path":  "Arena\\Materials\\Grandstand blue.mat.meta",
+        "SHA256":  "D515F9BECBDA2919B0DDFC9256C334A2488F1E6E36B20904509BBBA348AC81D8"
+    },
+    {
+        "Path":  "Arena\\Materials\\Instrument graphite.mat",
+        "SHA256":  "3773343A1CCEA32749D78EC9F1AE8AC11DCEF61A7A54CCDC378E48C6B7C7F2BD"
+    },
+    {
+        "Path":  "Arena\\Materials\\Instrument graphite.mat.meta",
+        "SHA256":  "807B76AEFC101F77C1064F5FFAEEF7343FA82E6AE8877F9C8B523084774A5152"
+    },
+    {
+        "Path":  "Arena\\Materials\\Nozzle return highlight.mat",
+        "SHA256":  "CC367A80B463C64845AA2847A63C449800AA1926D819DB33011C386FFEB2EA37"
+    },
+    {
+        "Path":  "Arena\\Materials\\Nozzle return highlight.mat.meta",
+        "SHA256":  "C538775C2D7FDAED700FC77C42AB6750261F9233E80BEA7B081BAE86198872AB"
+    },
+    {
+        "Path":  "Arena\\Materials\\Porcelain enamel.mat",
+        "SHA256":  "AA1838C1A5AD15F62B5A69C464EB1882C7643B3F99712EBDA6F19A0CC2682230"
+    },
+    {
+        "Path":  "Arena\\Materials\\Porcelain enamel.mat.meta",
+        "SHA256":  "737A7EA763673AD7593E7420ECF9563AE69FE24EB13F6F0BD81BEA0F5D765A8A"
+    },
+    {
+        "Path":  "Arena\\Materials\\Roof charcoal.mat",
+        "SHA256":  "1C5B76BF84C26F4CFE562F201CB57E97485FF00BBB1D00B7A7360109AF1EF4B8"
+    },
+    {
+        "Path":  "Arena\\Materials\\Roof charcoal.mat.meta",
+        "SHA256":  "EB271F7F8883462BDDFE17DB4D18EAD5A38DDB15B9606CB926621E3F629C88D4"
+    },
+    {
+        "Path":  "Arena\\Materials\\Service concrete.mat",
+        "SHA256":  "3319F3C5F4427ADD0237F54DEE20518EBEE244F6A5AAE2BFF8BCEA2C2F0667E8"
+    },
+    {
+        "Path":  "Arena\\Materials\\Service concrete.mat.meta",
+        "SHA256":  "ADA817A5B8432B1D250202B4DC3F4863A29E2FBE8D8BB8C8D0EFAA08D35F3B5B"
+    },
+    {
+        "Path":  "Arena\\Materials\\Signal vermilion.mat",
+        "SHA256":  "AEB6D05F89A68A78A0A897584F52D8D69ECABD6CECEE3D84E8787A324BB14675"
+    },
+    {
+        "Path":  "Arena\\Materials\\Signal vermilion.mat.meta",
+        "SHA256":  "5C61407072F7FAF07E85AEA09F43A774925A64100C8C1EE40513F3CFD1B6C1B0"
+    },
+    {
+        "Path":  "Arena\\Materials\\Tire and hydraulic rubber.mat",
+        "SHA256":  "2D8DDA34531921BA67CF04EFD0A6E6725483E55D73126356EE6F12BCFDF63F70"
+    },
+    {
+        "Path":  "Arena\\Materials\\Tire and hydraulic rubber.mat.meta",
+        "SHA256":  "75072BFEC8E92DAEDA29EA25E94F000EA5865FF66172B868641C2F389194B663"
+    },
+    {
+        "Path":  "Arena\\Materials\\Water station - brushed steel.mat",
+        "SHA256":  "D09C99D03E8D7160C084DB0079D96AFAB644D8716B914F9429E59C50E0E37083"
+    },
+    {
+        "Path":  "Arena\\Materials\\Water station - brushed steel.mat.meta",
+        "SHA256":  "716C4024B2401585EF9EB56DDC93122E02C36FC3222552C6924EAC7D04E4DA07"
+    },
+    {
+        "Path":  "Arena\\Materials\\Water station - cream enamel.mat",
+        "SHA256":  "2C941D44033A4D23D0D6473DABF59E798410BA1E7B9AD0AD251638283456939C"
+    },
+    {
+        "Path":  "Arena\\Materials\\Water station - cream enamel.mat.meta",
+        "SHA256":  "AC5D4A031508D57E6FD34D8AC832041B545B3B2B71E5A971B35E110B7A5BD593"
+    },
+    {
+        "Path":  "Arena\\Materials\\Water station - reinforced hose.mat",
+        "SHA256":  "AA10FDCE373B04A44288812FB04EA7F8DD8F72BE6B695FFCA291EB24C43194EE"
+    },
+    {
+        "Path":  "Arena\\Materials\\Water station - reinforced hose.mat.meta",
+        "SHA256":  "FABC6EF1FC7C8C9BFEAA7A34BA689085A22637D6BB10E73E4CE05EED46A32B8F"
+    },
+    {
+        "Path":  "Arena\\Sections\\Banners and signage.prefab",
+        "SHA256":  "A4D7E6600C937B69439A749820F6A7AAC4A05A98FF1D5B5C85CF245FEE211023"
+    },
+    {
+        "Path":  "Arena\\Sections\\Banners and signage.prefab.meta",
+        "SHA256":  "58EC243C73D75A027703DF37B759B4373360772B062E3CA6DDD7D4520C4C342B"
+    },
+    {
+        "Path":  "Arena\\Sections\\Building shell.prefab",
+        "SHA256":  "A4CCBA6F7C91EEBBCC61D084118E80DCC454B688285D46D6C0087830394E4083"
+    },
+    {
+        "Path":  "Arena\\Sections\\Building shell.prefab.meta",
+        "SHA256":  "0C05985BEE30BF77C7CA982E5E7870206D2E8F560C53C2742F4655C68584C9B3"
+    },
+    {
+        "Path":  "Arena\\Sections\\Centre suspended scoreboard.prefab",
+        "SHA256":  "A5CC4BF3274DD633C10B35126BF4497C7AAAC0303F8A85DD7FEBE8242DF6145C"
+    },
+    {
+        "Path":  "Arena\\Sections\\Centre suspended scoreboard.prefab.meta",
+        "SHA256":  "7749EC49D00FF2319EE18A8B0F905BC8C00DFE9B9306E85EAA33CB280CFB5A4C"
+    },
+    {
+        "Path":  "Arena\\Sections\\Parked goals.prefab",
+        "SHA256":  "460814DF27A5EE604DAA8E63758678B9941EE957A3978A5C28E0913A526DE245"
+    },
+    {
+        "Path":  "Arena\\Sections\\Parked goals.prefab.meta",
+        "SHA256":  "74A8CC749005E353D34EEA65B9CCEE25DAC21E8E486112BA9A817F38EC3D675A"
+    },
+    {
+        "Path":  "Arena\\Sections\\Rink boards and ice sheet.Meshes.asset",
+        "SHA256":  "7BF057D8F7D2466EE45E4FFA5EF5E4B2A9F4CF3F6E872813D40A4E4B72A68B39"
+    },
+    {
+        "Path":  "Arena\\Sections\\Rink boards and ice sheet.Meshes.asset.meta",
+        "SHA256":  "65AC7F8B67FA884CFA0EFE8881E61F7CB551FE19FDD7748CE154DE8B57FDE5B3"
+    },
+    {
+        "Path":  "Arena\\Sections\\Rink boards and ice sheet.prefab",
+        "SHA256":  "4591B045E79186F462E2091748E5914F27DA8B5552D04F64BA61BD49104A337A"
+    },
+    {
+        "Path":  "Arena\\Sections\\Rink boards and ice sheet.prefab.meta",
+        "SHA256":  "204154B7E4E2B29AC773BAA816F9DADAC94538010D5D9C9DF05B1241CDEEA796"
+    },
+    {
+        "Path":  "Arena\\Sections\\Southeast diagonal portal - backstage maintenance room.Meshes.asset",
+        "SHA256":  "492A5E2E68023A06FEC52C5E07147454A328DF660E868CF35CAE3F08651161F5"
+    },
+    {
+        "Path":  "Arena\\Sections\\Southeast diagonal portal - backstage maintenance room.Meshes.asset.meta",
+        "SHA256":  "C13D2DC5AA527AD19F1F17C938FC2EA3C2F7D2E67A79C0C4E865C9227F29C146"
+    },
+    {
+        "Path":  "Arena\\Sections\\Southeast diagonal portal - backstage maintenance room.prefab",
+        "SHA256":  "E55D6C73D54FE1EB52B8FF1BC84FDE91B697C239C91001E59C97B48A9CADE28F"
+    },
+    {
+        "Path":  "Arena\\Sections\\Southeast diagonal portal - backstage maintenance room.prefab.meta",
+        "SHA256":  "E94A4FD151281BCFEA7511CC08A4BB137B94C24F1A57BAF121DDE1C2C2B1C4EF"
+    },
+    {
+        "Path":  "Arena\\Sections\\Southeast service wall - right of nose-in parked machine.prefab",
+        "SHA256":  "94FFA6598BAB91738F78FC8C4BBB33B93038DDEBD93797628768CE7E736013E9"
+    },
+    {
+        "Path":  "Arena\\Sections\\Southeast service wall - right of nose-in parked machine.prefab.meta",
+        "SHA256":  "F79B1BB7B22BA50AEFBEC1C3396647DCAF24398CC795C0AE6B1EA45D316CB81B"
+    },
+    {
+        "Path":  "Arena\\Sections\\Steel trusses and arena lighting.prefab",
+        "SHA256":  "C621250EBB758FDB868550C39D5DDC939F58906025299181BCEDE9F149FF2EF7"
+    },
+    {
+        "Path":  "Arena\\Sections\\Steel trusses and arena lighting.prefab.meta",
+        "SHA256":  "A4DF73217DBA1FFD26C7514DE883F4F04B7081CA2FCF9099F3805E705967D132"
+    },
+    {
+        "Path":  "Arena\\Sections\\Tiered spectator seating.prefab",
+        "SHA256":  "EBC562B1189C98726B5AB63BBF6D082F2AB7721CF8826511D14C9D4BC963FA0D"
+    },
+    {
+        "Path":  "Arena\\Sections\\Tiered spectator seating.prefab.meta",
+        "SHA256":  "052F2E8E021672F66B22F92880DD9790C3DD62C34E2545F841A8CAF64124558A"
+    },
+    {
+        "Path":  "Shaders\\SpatialIce.shader",
+        "SHA256":  "42210C3E1B8BB9BB3A98FFB8C90489486C2158396C778F8AF774C66DC4E43E5D"
+    },
+    {
+        "Path":  "Shaders\\SpatialIce.shader.meta",
+        "SHA256":  "E5A8F7DCD3CA09F87B4BB6BC64F700B7BB780AA570DAD84452EAAF603155A593"
+    },
+    {
+        "Path":  "Resources\\AuroraLit.mat",
+        "SHA256":  "B007FFB0696F90C102249F46C9D3A62B61BE251B60841065AE1073B5B0A8A64F"
+    },
+    {
+        "Path":  "Resources\\AuroraLit.mat.meta",
+        "SHA256":  "68DAF87F63D033082532FA47DE0CF4ABA0D321883710A282A12D07CA85C9E018"
+    },
+    {
+        "Path":  "Resources\\CollisionOverlay.shader",
+        "SHA256":  "630DEFC236214E009D66D0DDAE691305AF2982512137DB7D892466E4769870C3"
+    },
+    {
+        "Path":  "Resources\\CollisionOverlay.shader.meta",
+        "SHA256":  "48C7FD3AA2E7FB340507BF7DA8BAB9B03D113132569E10B49C7EBA62066E50C0"
+    },
+    {
+        "Path":  "Resources\\NorthlineIce.mat",
+        "SHA256":  "7E31544482B97370017202B6D9DCC7C2FF56E7CB857B33553EEF3D1A1E09A9B5"
+    },
+    {
+        "Path":  "Resources\\NorthlineIce.mat.meta",
+        "SHA256":  "86BE2F54468B5E9FC87B416A9BDDD5EFCACEAD397497D6147BD354F5DAC79671"
+    },
+    {
+        "Path":  "Resources\\TrainingRoute.shader",
+        "SHA256":  "82F53DCC93BC8B17D305F817685193400853B92ED671705E60D3AA9A480C0B0B"
+    },
+    {
+        "Path":  "Resources\\TrainingRoute.shader.meta",
+        "SHA256":  "B8F2411BA6F9ABAD8A6CE9A1B1E3F1A633D44D20C5F889C12E01F1ED0B6040E8"
+    },
+    {
+        "Path":  "Resources\\TrainingTestGuide.json",
+        "SHA256":  "543F89DFE0DACBB664E580A451501F96ECA8012BA293CCE497D843CC250A948C"
+    },
+    {
+        "Path":  "Resources\\TrainingTestGuide.json.meta",
+        "SHA256":  "55438FDD565A36DB4ED5B0C972C1DAD8B3069C62169B30F18B812793E1284877"
+    },
+    {
+        "Path":  "Resources\\WetFloor.shader",
+        "SHA256":  "D849CECABD00BB842647C715CE6E1AFDE272C14DCA2BEB6305996AF38DFFE897"
+    },
+    {
+        "Path":  "Resources\\WetFloor.shader.meta",
+        "SHA256":  "152396AB0206447C8816D2BDF4B82BD114976B869A502492A401F0744EB0B6B0"
+    },
+    {
+        "Path":  "Resources\\WorldText.shader",
+        "SHA256":  "9CCBF5BFAF5ABF31C9100A40FD36FCD581CF94CC21A4C714D91B990F59EDC716"
+    },
+    {
+        "Path":  "Resources\\WorldText.shader.meta",
+        "SHA256":  "6E3586362B546173831698CE314DABC77536E5FD4F4D1104C491D3410CBF34D1"
+    },
+    {
+        "Path":  "Documentation\\526 Operating Instructions English.pdf",
+        "SHA256":  "352F032E6ED86D67D13D3AB17512E650320E2889ED557D8098A2319C689148C0"
+    },
+    {
+        "Path":  "Documentation\\526 Operating Instructions English.pdf.meta",
+        "SHA256":  "E66D0137264AF3DE2FBDF3187B7681521ED6CBE3D41A44BCD6412CC8B7D06A53"
+    },
+    {
+        "Path":  "Documentation\\526 Operating Instructions English.txt",
+        "SHA256":  "9051C412D73F2305A5151A7FBD3E0C3B5F845246193D46C031E6E94FFE76017F"
+    },
+    {
+        "Path":  "Documentation\\526 Operating Instructions English.txt.meta",
+        "SHA256":  "C5B502FEF6616B9200C6E07A297303846B40F13B478F2AB152E9B8C04C6D9E80"
+    },
+    {
+        "Path":  "Documentation\\Authenticity.txt",
+        "SHA256":  "D1730E64A0F5AC0582CFA09C9F5896A6C962E87E603A4A42BEAC137C67A35DD4"
+    },
+    {
+        "Path":  "Documentation\\Authenticity.txt.meta",
+        "SHA256":  "9A85275EEF85D0BF749467D3A7DFF553A089235142685406ABE7EDC403F82476"
+    },
+    {
+        "Path":  "Documentation\\AuthoredArena.txt",
+        "SHA256":  "0DBA84D1B4598299532E89E321BA3208933CC700DAB3D8B91860167A78C4BA1E"
+    },
+    {
+        "Path":  "Documentation\\AuthoredArena.txt.meta",
+        "SHA256":  "2D6C44D3A5D10CCF00BAA2DF14DBCB6DE5BB5AAE7933C89DB60A08D899891BC8"
+    },
+    {
+        "Path":  "Documentation\\AuthoredMachine.txt",
+        "SHA256":  "3E8E7B854240CF39009CC0A191F844A9FA91B5A249C128FB89695BF93EB5B394"
+    },
+    {
+        "Path":  "Documentation\\AuthoredMachine.txt.meta",
+        "SHA256":  "08323EC7F35F76B573F2A23C315F81B5582962D04885FDBDE5581AA92665A687"
+    },
+    {
+        "Path":  "Documentation\\BoardBrushAndConditioner.txt",
+        "SHA256":  "697CAC806CDB3CCEA666D10EE65C521F724C866B157B13ED84072F4B630AD5D2"
+    },
+    {
+        "Path":  "Documentation\\BoardBrushAndConditioner.txt.meta",
+        "SHA256":  "1E27174883FB45B64D57FCB2BE08621A15CD113893C7F687F4453D7546FC5627"
+    },
+    {
+        "Path":  "Documentation\\CockpitRefinement.txt",
+        "SHA256":  "2A8E7AED74F10715993E251D6BB0D6F3AFA78F4B5BFCD371A71F9BBF55FFD1D4"
+    },
+    {
+        "Path":  "Documentation\\CockpitRefinement.txt.meta",
+        "SHA256":  "F13A66B7B2FEDC6A3BD9CB46A80858755253B7A7B1BC546D05354DCAF079DC03"
+    },
+    {
+        "Path":  "Documentation\\ControlsBrushRoller.txt",
+        "SHA256":  "13E90E5A72D0BDC6C4788102D0AB0E0AD4764D622EE0A88B7E722C130A104C56"
+    },
+    {
+        "Path":  "Documentation\\ControlsBrushRoller.txt.meta",
+        "SHA256":  "707529F0F963174AFE71A77084E30B8E1758069644B4DBD2D4317B5C556CE5EF"
+    },
+    {
+        "Path":  "Documentation\\HUDVideoSpeed.txt",
+        "SHA256":  "87530B012A9DE302CD8832808F7D9ECA70A0790637AC18D6F5F1C7DD69C513D8"
+    },
+    {
+        "Path":  "Documentation\\HUDVideoSpeed.txt.meta",
+        "SHA256":  "EF986B59FE7DE6B359868D59A89181AC1DAD5621BFB19C1DF556611F52B90B7B"
+    },
+    {
+        "Path":  "Documentation\\HydraulicDirections.txt",
+        "SHA256":  "8766F05164C6939561357E41A7B4E48A16FC8B34D74D954DA0E0081D5767D950"
+    },
+    {
+        "Path":  "Documentation\\HydraulicDirections.txt.meta",
+        "SHA256":  "AE0C836DBDC8807E7B66D877364850E64A81B540DE4002E340669A9759970308"
+    },
+    {
+        "Path":  "Documentation\\IceCalibration.txt",
+        "SHA256":  "C5F0C49BB82722CF8F1473140519A31E670320B90C3C8A5845D18F58F6FD2F31"
+    },
+    {
+        "Path":  "Documentation\\IceCalibration.txt.meta",
+        "SHA256":  "677234C44F9EAC754012E506BE29CC7EAEEF1D4ECC22ECA861EF8EF0A46E454E"
+    },
+    {
+        "Path":  "Documentation\\LayoutCorrection.txt",
+        "SHA256":  "4DA6F04583D1A0F9DC6C7E9235FB5BAC77C19734A67F05F07D4BD7FA9AA4D1E1"
+    },
+    {
+        "Path":  "Documentation\\LayoutCorrection.txt.meta",
+        "SHA256":  "B1DED5D2F5A56004ECFBE6B310E93F5BDDD7814A7F84AAC959A2D9813C288E13"
+    },
+    {
+        "Path":  "Documentation\\MachineryErgonomics.txt",
+        "SHA256":  "2BF94402C7C8C28451B9D1F08F75D2C6AB774060FE244166C259B7FB0571E698"
+    },
+    {
+        "Path":  "Documentation\\MachineryErgonomics.txt.meta",
+        "SHA256":  "56905ECDC6851F0E833D5C37E84151749135DF31EA503EE369D92870DEE89BDD"
+    },
+    {
+        "Path":  "Documentation\\MechanicalReconciliation.txt",
+        "SHA256":  "BF9CC4A11F8157B8441052699960567D24E0C9FB421B0E1317F1FF8B1F3962AF"
+    },
+    {
+        "Path":  "Documentation\\MechanicalReconciliation.txt.meta",
+        "SHA256":  "7CFB826877E8ECA795E4AEDA768836B01C430FCD16A9C8F08987995C95E8E5A3"
+    },
+    {
+        "Path":  "Documentation\\MotionContacts.txt",
+        "SHA256":  "AEAD381999E3249B7AABC26AB4A281F247D6F3791B80BF26142A919869E99536"
+    },
+    {
+        "Path":  "Documentation\\MotionContacts.txt.meta",
+        "SHA256":  "7E45451B79ADF4721332D8C15A3EA90EE0F8509A683E1B0F426973DCAA1BA4AE"
+    },
+    {
+        "Path":  "Documentation\\OperatorAuthenticity.txt",
+        "SHA256":  "BF1602E7F8B6EAB86CBA68C5263D1D4C7D674A6EEF546049BBD9B47B7DB5E984"
+    },
+    {
+        "Path":  "Documentation\\OperatorAuthenticity.txt.meta",
+        "SHA256":  "3C2285609A8F6EB5928C12C685A5162142D85DA6105A534D04C81F73DC81F640"
+    },
+    {
+        "Path":  "Documentation\\OperatorCamera.txt",
+        "SHA256":  "0B47110ACD5B74280F1C4361498A4BDE6CE2CA5B6D40C6727F8072324DCEDABD"
+    },
+    {
+        "Path":  "Documentation\\OperatorCamera.txt.meta",
+        "SHA256":  "0D5F6399AFD62A539E3E054723B8F70ADFF098884FD80958A8EDCECD397C9A37"
+    },
+    {
+        "Path":  "Documentation\\OperatorErgonomics.txt",
+        "SHA256":  "FF18B749879B153A999D3A0838FC8741AAF44C5DA291F915ED3195676E3AFA65"
+    },
+    {
+        "Path":  "Documentation\\OperatorErgonomics.txt.meta",
+        "SHA256":  "D3CFA1C6484E1088384CDAEFD0280BA32DB94172AC854DA31CE66FA35A94A783"
+    },
+    {
+        "Path":  "Documentation\\OperatorFreedom.txt",
+        "SHA256":  "A0A3710ABEDAB1BC4E1F2D05350F04C4D28D072DA26141E0EDC88BE28B13A25D"
+    },
+    {
+        "Path":  "Documentation\\OperatorFreedom.txt.meta",
+        "SHA256":  "E99104D4B8E80517F5ED79925F93BB2AAD3ED2995AC93E74827F5BF64030CBF7"
+    },
+    {
+        "Path":  "Documentation\\OperatorRealism.txt",
+        "SHA256":  "65C4158D40E69D2BB65EA98C8C7F7182B501891C6678FBDED4C713D4E95FA8BD"
+    },
+    {
+        "Path":  "Documentation\\OperatorRealism.txt.meta",
+        "SHA256":  "26EF14C42B2D9337F794968874DAB3BFEAA62BCDCB30E69D053E3DF45A3A030C"
+    },
+    {
+        "Path":  "Documentation\\Performance.txt",
+        "SHA256":  "C774343BBC7ED0E303BA9847C5335899D5AD9C38548391785CFEE9F08C116B0F"
+    },
+    {
+        "Path":  "Documentation\\Performance.txt.meta",
+        "SHA256":  "8091A0E73CD94598C775FD7BA454B1AB714D6C6A55A875CC224EF8DE5C3AA20C"
+    },
+    {
+        "Path":  "Documentation\\PitServiceCollision.txt",
+        "SHA256":  "B1CF8D2F73B97A1FB399D57C07CE5A0FA4AF5E15AAA6FD0C9EB25A15E9F3DCBC"
+    },
+    {
+        "Path":  "Documentation\\PitServiceCollision.txt.meta",
+        "SHA256":  "D9DF9AA518366E9F5FFE52E89B10B3147D067963A84F335C3AEAE5ECF7FA72FE"
+    },
+    {
+        "Path":  "Documentation\\Research.txt",
+        "SHA256":  "E4083C167724B660A01ADB14918A917EDD58866160C818038D3AD864ED34A33B"
+    },
+    {
+        "Path":  "Documentation\\Research.txt.meta",
+        "SHA256":  "BB005ED0969591791F41E803DA1F36CA8CE014940BC6CBC2D5CA540FD99DEB97"
+    },
+    {
+        "Path":  "Documentation\\RinkAndFillPorts.txt",
+        "SHA256":  "D15C41944530783FF9468BAF9E1EC971D037BA692D72FE6EEF58430C93A1924C"
+    },
+    {
+        "Path":  "Documentation\\RinkAndFillPorts.txt.meta",
+        "SHA256":  "7C7F0FE7ADA55E9D2E2460304D8B81B58C0213AB1A72782C3DFC02E5E29DF89A"
+    },
+    {
+        "Path":  "Documentation\\RouteCalibrationCompatibility.txt",
+        "SHA256":  "C76CF07AC0536D8AFA32A25535C603D1E1A07C485C1054BAD6CDBF87DD24FBC7"
+    },
+    {
+        "Path":  "Documentation\\RouteCalibrationCompatibility.txt.meta",
+        "SHA256":  "774B81F94C80685218AA9344063447AB84CAACE30E18C572419B82E64807A580"
+    },
+    {
+        "Path":  "Documentation\\RouteOperator.txt",
+        "SHA256":  "AE0AAF7A06255A456FD394A651B69E5FBDD1EB61C85835147B4B79FE2BC86DDB"
+    },
+    {
+        "Path":  "Documentation\\RouteOperator.txt.meta",
+        "SHA256":  "35177C56B502BA99FD5B5843CF0B273A12FEBBB13E79DB01783172FF1DF1805F"
+    },
+    {
+        "Path":  "Documentation\\RouteRecording.txt",
+        "SHA256":  "8A4028B987DB7207EAF1F078171C8CE3D4340887FB8756E05FD1FC0AC08B5E6C"
+    },
+    {
+        "Path":  "Documentation\\RouteRecording.txt.meta",
+        "SHA256":  "8890431A77B0A12F82C53C111C7A187123D74ECA20290F9A646769B9A7AAAF77"
+    },
+    {
+        "Path":  "Documentation\\RouteRepair.txt",
+        "SHA256":  "2496F9BF7D1919A236264DD63FDD2AA94B8B6A58883EF2949A84E92E1B7E20F9"
+    },
+    {
+        "Path":  "Documentation\\RouteRepair.txt.meta",
+        "SHA256":  "E40A3DE10B5611970FF510BADA9250F7890BCDF79D518C6A33CC5F1A86A73E17"
+    },
+    {
+        "Path":  "Documentation\\SnowCalibration.txt",
+        "SHA256":  "7C8E62575BBA1638B212051D5B4E25C86E97BC9C7B8708E5E9C47107C99A641A"
+    },
+    {
+        "Path":  "Documentation\\SnowCalibration.txt.meta",
+        "SHA256":  "420511744EF9CA71F2ADF67F5FC9931B02CEBF2BAAAE21FFCB414C28CC5CD203"
+    },
+    {
+        "Path":  "Documentation\\SpatialAudio.txt",
+        "SHA256":  "34ADDEA70462D97C16E73EEEAE8C95BB714F65A0484E43CC91AA13DEF01D6FEB"
+    },
+    {
+        "Path":  "Documentation\\SpatialAudio.txt.meta",
+        "SHA256":  "F9BCB6092345ABC048CC2C37B3DFEA13090D0C3F3C1221AA0AB627D9601C4BDC"
+    },
+    {
+        "Path":  "Documentation\\SurfaceConsistency.txt",
+        "SHA256":  "839C05E7DB074078D36491DC71967BA9CEA429988246AA93B5775124F4ECBAED"
+    },
+    {
+        "Path":  "Documentation\\SurfaceConsistency.txt.meta",
+        "SHA256":  "6B07061AB575C8A0918B1DF1CAB3540E2500C84D0EC853C2D37D6791FB633AF5"
+    },
+    {
+        "Path":  "Documentation\\SurfaceServiceRefinement.txt",
+        "SHA256":  "BDCBC5A015E30E7BE59C6FC5E549D6F6D0117CFCFA3C5972B74048ED84D0711F"
+    },
+    {
+        "Path":  "Documentation\\SurfaceServiceRefinement.txt.meta",
+        "SHA256":  "3957CBF4E58FC4061ADD502F42E2F5AA7F9F761C071B2B7EFF451BD66A4B7B76"
+    },
+    {
+        "Path":  "Documentation\\TrainingGuide.txt",
+        "SHA256":  "466667A8A8B680B9512522E64E2246E4B74C1583B84610C9F1642087D7475558"
+    },
+    {
+        "Path":  "Documentation\\TrainingGuide.txt.meta",
+        "SHA256":  "93A011FED3A7DAA4E2287D4686EF9377C85CF8051090EE5A4AD1ED382250CC98"
+    },
+    {
+        "Path":  "Documentation\\Validation.txt",
+        "SHA256":  "A67A22978F79183486F9C91DCE901B542863F9606F50E85DD87FFC9E73A567CE"
+    },
+    {
+        "Path":  "Documentation\\Validation.txt.meta",
+        "SHA256":  "BE7F87EDA60962B8FB3E16A39E7D14288E60B8D3C33C5524E306CFBED7DFB1C6"
+    },
+    {
+        "Path":  "Documentation\\VisualIceRefinement.txt",
+        "SHA256":  "7E9B9BD8B1B0CF540C050592C2B4F09CC6B0EA7ED48144F8372553218046F80A"
+    },
+    {
+        "Path":  "Documentation\\VisualIceRefinement.txt.meta",
+        "SHA256":  "02B4B6C69F1463FFAC3CDD3B93E83CA68FFB507193441974F0D058CECF3F7EDC"
+    },
+    {
+        "Path":  "Documentation\\WaterService.txt",
+        "SHA256":  "A9170F67EAD21D83A21AE2BEF04285350B49CBC5089E414C3BB89AC7BF6249AA"
+    },
+    {
+        "Path":  "Documentation\\WaterService.txt.meta",
+        "SHA256":  "D127E9630312EF22C1576A010F04A067CFA37E13D00DE429B34145D8B0F0DB7D"
+    },
+    {
+        "Path":  "Validation~\\526-decoded-reference.txt",
+        "SHA256":  "EE1BC748A5CC2E26B8A731CE9425DBD0185B1674D81C88FEFD061DB9AF842933"
+    },
+    {
+        "Path":  "Validation~\\526-paged-reference.txt",
+        "SHA256":  "7EFDB646684208FFDA2329CFD36C6872DBDAA2BD2B77EF24F31AD6E0133C8DBE"
+    },
+    {
+        "Path":  "Validation~\\Arena-baseline.log",
+        "SHA256":  "2116B926AED62C487ACB21D15A0CFB1EE8F078C40E184F257ADF65EF37550475"
+    },
+    {
+        "Path":  "Validation~\\Arena-equivalence-2.log",
+        "SHA256":  "911B062F0FEA97F6931F4D2324881FB558897570642DBC6DC0FEA2483015EDB9"
+    },
+    {
+        "Path":  "Validation~\\Arena-equivalence.log",
+        "SHA256":  "DBCD9937A7C76946AE8716DCC020928370FFFB56AC4778F62BCADECE3ECDEC31"
+    },
+    {
+        "Path":  "Validation~\\Arena-overview.png",
+        "SHA256":  "F70DFDFDCB21882A71F290632BB4A58F510B9446E13D786AC1EC02FF4511270F"
+    },
+    {
+        "Path":  "Validation~\\Arena-setup.log",
+        "SHA256":  "18EBBD685CA4C35B5394DE79942A454B51754602749F45E65E710C1EBFEF6DCC"
+    },
+    {
+        "Path":  "Validation~\\Arena-verify.log",
+        "SHA256":  "62D07DD60CEE70BC660EA96BCE1C0B52330A494F26B8E85F618A99195C206F3F"
+    },
+    {
+        "Path":  "Validation~\\ArenaBaseline.log",
+        "SHA256":  "56BADCD59FD32CA5B4EE39087020BFDC10C267F16FAAAF9F9D2629416A7EACFE"
+    },
+    {
+        "Path":  "Validation~\\ArenaRecovery.log",
+        "SHA256":  "9DF5E10AC9BE9AAA3F75C319D537D02AFD3D461285A8F435263855C310E2F54C"
+    },
+    {
+        "Path":  "Validation~\\ArenaSetUp.log",
+        "SHA256":  "5A69AFDABA42E23A73B953274FBF410FAE9AC928136998B9925E3679DECA0B1F"
+    },
+    {
+        "Path":  "Validation~\\ArenaVerify.log",
+        "SHA256":  "9050425D1259AE76CF853DDB8FDDC03629C73A34A930F598D634104AD7EEE301"
+    },
+    {
+        "Path":  "Validation~\\ArenaVerifyEdits.log",
+        "SHA256":  "E43766A4C930F95C270B68565BB64C67EB9CECC3AF4C0A3562BC00AFF2653DCD"
+    },
+    {
+        "Path":  "Validation~\\ArenaWriteEdits.log",
+        "SHA256":  "71A9C8EC9D7913471D3604E5E2C03645C8A6ABD8A6B1C0084181EFE584A78766"
+    },
+    {
+        "Path":  "Validation~\\AuditCockpitPreservation.py",
+        "SHA256":  "0783BFD631B178E9D5E27FF994C1B2C5792FCCEC5D6E8B63A5D3D038DE0DB0A2"
+    },
+    {
+        "Path":  "Validation~\\AuditErgonomicPreservation.py",
+        "SHA256":  "641962E4A99E9CB1C46CBFCD1AAF8CE4C50072825CBC95D2030687CF856EF4A1"
+    },
+    {
+        "Path":  "Validation~\\AuditRouteRecordingPreservation.py",
+        "SHA256":  "27B935949BC812CBE6BF0B33BF66F8E5C567BAE36EE9C7E4C6BB7A60D7FFEC67"
+    },
+    {
+        "Path":  "Validation~\\AuditSpatialAudioPreservation.py",
+        "SHA256":  "A9DD15D4B97151C96C79876EEFF93717605E0AFD8401272DA7F53E1A5E34C33F"
+    },
+    {
+        "Path":  "Validation~\\Authenticity-build.log",
+        "SHA256":  "060411F75901B5188B91905E99D72A0FAEAEABDDEA2AE585FC2C238349FA6FD7"
+    },
+    {
+        "Path":  "Validation~\\Authenticity-dump-shakeout.png",
+        "SHA256":  "2823951523D13291843F3E04BA315AA8AE0C5529D656521D050C5C94F8694167"
+    },
+    {
+        "Path":  "Validation~\\Authenticity-results.txt",
+        "SHA256":  "4D0715CA3A73CD80F17BDB6DDEF319C703CDB22FFB46732B481F6FCA77E73C9F"
+    },
+    {
+        "Path":  "Validation~\\Authenticity-unity.log",
+        "SHA256":  "3659C53B506CEF952C42823620AC8EC603C4245110277E35F69D0A4FB78DE3CE"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-bake-1.log",
+        "SHA256":  "A86B1CFF761CAD9F8DF3BE3A86E46AA19DDB6BFD99608CECAF9BA253720D8E08"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-bake-2.log",
+        "SHA256":  "C230A48F0BE9534C00B75244C9319510D24E83B466871E68E57C74172C193049"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-bake-3.log",
+        "SHA256":  "4DF7C39C835069CFFAFF21230782B9CDA991F970C6EB4013202AACDD342E46FF"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-bake-4.log",
+        "SHA256":  "78ECED5D9C28F06C0CF002C84E75C31900CC7336555E233E262D57A68827519B"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-bake-5.log",
+        "SHA256":  "D4D0128CD5C353E89457E502DAC97B2507185559877AF7EABDCC4AC1BA09325F"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-perf-build-authored.log",
+        "SHA256":  "E42AD43E91410C0E9F1A28E1932CB1A42001A22A03246CA59E44B5AACC7E541E"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-perf-build-launch.log",
+        "SHA256":  "5F1D333FFA00503B0086B3F01EE1AC2F14F53C785610AE06FE621828D88E1567"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-rearrange-verify-1.log",
+        "SHA256":  "D1CE6240C49BE3CBBFB96E3FDF85EF459FE7D1DA6500149E698556472FE5F67B"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-rearrange-verify-2.log",
+        "SHA256":  "F4A13702CAE241962CE35C3EFD04BA3DFF67E12F57BFC805837B81348B703594"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-rearrange-verify-3.log",
+        "SHA256":  "B47595735C14B2016649B1714E397B631257A2CF84D47746D2FE15BC04B49E0F"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-rearrange-write-1.log",
+        "SHA256":  "7D4ACA9CC63EFC6B19CDE2B61009D7852325694C14671E1A686B07405509AAD7"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-runbatch-1.log",
+        "SHA256":  "3F88E02962A1D8DB388D30E300D1F4A486BFCAF7918D8FF505EB849CCF1A426D"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-runbatch-2.log",
+        "SHA256":  "99F721EE974BF6644E63B378547871044B7569B087AD7BF0A55920E230DF8502"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-runbatch-launch-baseline.log",
+        "SHA256":  "4216E84637F7FAC13B97389784CC24FC27E60471D3D6C3749565B379C9028435"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-1.log",
+        "SHA256":  "ED995F5183B3EC4983BF792651ACE14269B49C4C1FEF60A3B69E86995C3AD9CC"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-2.log",
+        "SHA256":  "235D6E519164F5741DA41BE815E1A6EA9D4DD4BD21F400591E9344363B9F325F"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-3.log",
+        "SHA256":  "B15586F84317B36B096FBDED21F2A4E011432E577B209FFEC4ECAAD359CD234A"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-4.log",
+        "SHA256":  "FBEE3CA07D9510BF4CBA9C2FA23B18B0F1D489AE020952BF43369A218F428317"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-5.log",
+        "SHA256":  "8AC857FF535548A18364943A2E00391F60801B4448979BBE639D222C644931F6"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-6.log",
+        "SHA256":  "15307C12CB1F4B2A5CD22D895AA7A0FF99BBA797358A4BE893A1C228E6012FB0"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-7.log",
+        "SHA256":  "1D117B45D97BD03F09EA79EA1A65FBF20B7074E55B3CCE41A47DEE1C53FA0E22"
+    },
+    {
+        "Path":  "Validation~\\AuthoredMachine-verify-8.log",
+        "SHA256":  "968686FDC7D5F3E5080E6A4A52DC61E49973BC76337591A375AE2EF25E08AB90"
+    },
+    {
+        "Path":  "Validation~\\Brush-RunBatch-Baseline.log",
+        "SHA256":  "DF3ECE9B003EC2CF01CA8DAB247444A2E5272DD231E45B13E87C9CB52012A121"
+    },
+    {
+        "Path":  "Validation~\\Brush-RunBatch-Launch.log",
+        "SHA256":  "27D84798F817EE62BA7054E5FE183FB27E58C345D06265239B506F44D2B994FA"
+    },
+    {
+        "Path":  "Validation~\\Brush-RunBatch-Rig.log",
+        "SHA256":  "3DBFEB888732E7A4D324D1C0EAE8B813E13742812370D34629507EAAC363D48D"
+    },
+    {
+        "Path":  "Validation~\\Brush-RunBatch-UserState.log",
+        "SHA256":  "09999413351F4CE70CF335421D5497EFB0A311585789705557EBDC82C1AD55EC"
+    },
+    {
+        "Path":  "Validation~\\Brush-RunBatch-Variant.log",
+        "SHA256":  "BDCC3D1554553D6C06982994C39DE1DCFC2A5F3F611AE410661983C7328BE8E1"
+    },
+    {
+        "Path":  "Validation~\\Brush-SpatialAudio-Baseline.log",
+        "SHA256":  "EE3ACD24E43B59AC47710D48CF5B22CFED1546DB9C76AE826DBFE5B8F520D24B"
+    },
+    {
+        "Path":  "Validation~\\Brush-SpatialAudio-Variant.log",
+        "SHA256":  "F969D0A3963721A69AF945C66FE002736A62B221FF890BEA2C4E5F1A8FB7B5E0"
+    },
+    {
+        "Path":  "Validation~\\BrushSetUp-baseline.log",
+        "SHA256":  "9F98F26BB9E967FA30CE34F89820BD9DF0812C8FBCDE5A089DE3240C3A444905"
+    },
+    {
+        "Path":  "Validation~\\BrushSetUp-variant.log",
+        "SHA256":  "8EBABA505A625D4BC0C63EB0ECF7FE6045B97F9E5E3E492982970EFE45A018BC"
+    },
+    {
+        "Path":  "Validation~\\BrushSetUp.log",
+        "SHA256":  "AEABF9C68A2C1AE693CED37B8D8189101157D238F0688AC706B8491AA27F57B1"
+    },
+    {
+        "Path":  "Validation~\\BrushVerify-baseline.log",
+        "SHA256":  "6E518A6F6BAF6CCAD1AF38BF6610CDB2E394ABA34972DBA303D67B6F55AF706D"
+    },
+    {
+        "Path":  "Validation~\\BrushVerify.log",
+        "SHA256":  "4E6EC8F0B5313B6AB12A8AB5772EC4A4A6C1C0743B2F6E338B1D5C69457F9E21"
+    },
+    {
+        "Path":  "Validation~\\Calibration-authored-passing.log",
+        "SHA256":  "DA5E10644916C48382C2FD4AEC0B44AB8EE0F8AC088F7AA0034327DAE849DF03"
+    },
+    {
+        "Path":  "Validation~\\Calibration-editor-gui.log",
+        "SHA256":  "09DD14AD0118EB84545AB5E74D68F207AAB67670650DF43A3FA90F146D25181C"
+    },
+    {
+        "Path":  "Validation~\\Calibration-native-authored-build.log",
+        "SHA256":  "3D2116D37CDCA3CE3BC5F19A939AC1147E50E0133252DA1A019E195B4A232650"
+    },
+    {
+        "Path":  "Validation~\\Calibration-native-authored-player.log",
+        "SHA256":  "7DBB9C749B032F24EBB6A7E2D1F1C2068200CA435F76BF1A4D3C99EE949986CD"
+    },
+    {
+        "Path":  "Validation~\\Calibration-native-original-build.log",
+        "SHA256":  "61F81C19D76B0C67DB0D89789C826E77D36AE8F44FBCD29038852D1AD36D35D6"
+    },
+    {
+        "Path":  "Validation~\\Calibration-native-original-player.log",
+        "SHA256":  "92161AD2D4FD0B27909D9AB3DADCF4ABA383096F85A306AB36963E1B3533BA25"
+    },
+    {
+        "Path":  "Validation~\\Calibration-original-acceptance.log",
+        "SHA256":  "96B8E67D3DB2650AEAFA19D48F1D16B8DBF1DC67D3863233138D84EC660D512A"
+    },
+    {
+        "Path":  "Validation~\\Calibration-original-passing.log",
+        "SHA256":  "152CB16B15B0A735302EE54CA08555E938C892DABAB1F8544E267A7A13B7492D"
+    },
+    {
+        "Path":  "Validation~\\Calibration-original-unity-final.log",
+        "SHA256":  "1ECE14E850C896BB92D83928987966616E7031A02F1DD06452C06F64F1341BAD"
+    },
+    {
+        "Path":  "Validation~\\Calibration-original-unity-verified.log",
+        "SHA256":  "F38313A1981DB31020649163142B708A6657DD59BCD00F6D4C3F9F12A9406AA9"
+    },
+    {
+        "Path":  "Validation~\\Calibration-original-unity.log",
+        "SHA256":  "4D8C4A013D73BFE6B1F2329463F86F16AEE154C13DD5FD8D9D58C796E6425BA2"
+    },
+    {
+        "Path":  "Validation~\\Calibration-regression.log",
+        "SHA256":  "4EB39D32D5AD933E7A306DE2672FACECCD3F59DC7D466C46A9CB9611E7B47679"
+    },
+    {
+        "Path":  "Validation~\\Camera-preset-C.png",
+        "SHA256":  "4395177D9C20888EE9BAD08A1E8577557A25C7F666E35362FB3340ACB968AF0B"
+    },
+    {
+        "Path":  "Validation~\\Camera-preset-E.png",
+        "SHA256":  "CB015F9F21B416A5D3C7970F57E2AF8EDD7537771D47A23802F1FEC80C8FCCB0"
+    },
+    {
+        "Path":  "Validation~\\Camera-preset-LeftShift.png",
+        "SHA256":  "C415EE930B9767859EA11E5289F7CF3A63360184E3D433724B558FEF26D6FCCF"
+    },
+    {
+        "Path":  "Validation~\\Camera-preset-Q.png",
+        "SHA256":  "6A1A3F8A3F7072E12BC7DBB914F76D6D9C98DBEF5E160D83527388CACE2FA331"
+    },
+    {
+        "Path":  "Validation~\\Camera-preset-X.png",
+        "SHA256":  "8D72642DDDC61F9532AF930FEEB4DDE40AB8DC7FBA6B718CB156919327CF17DE"
+    },
+    {
+        "Path":  "Validation~\\Camera-results.txt",
+        "SHA256":  "73D56FB6158DE4F1DE27BA94E5142DA23B0598F597CA7D21BDFA94455C521A40"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-before-unity-licensed-2.log",
+        "SHA256":  "918808572C6F4156ADFB6D47FE63728B707DC8BEA02ABAC4E6974814C21219DD"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-before-unity-licensed.log",
+        "SHA256":  "D7CA6C1B7B25CEC1CFCE5EF5D1C8418281A673650E90CD2FC488D3B00DFCFEDE"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-before-unity.log",
+        "SHA256":  "48F74C057C23B33E3E4DEE203F17CAC5F5CCADFB1816478F22CF8693473D0652"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-comparisons.html",
+        "SHA256":  "43B608C27D9557DE5C6E923F889DACA0251EF26711A5D41E0B82CE7D945199B6"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-hydraulic-controls.png",
+        "SHA256":  "D9D127914CF4C659436ABD9EDFF46CF59D869EAA8F1701BC7637E8E26F62433F"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-core.txt",
+        "SHA256":  "EDA4653895B788725EB2E9AC2A9161F76CEEDDF43DD7C546CC752E8E6C97A744"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-files.txt",
+        "SHA256":  "98BA4FEBE0C112AC8C71A210240D7E27688E0E9A5B3BE832E498CE509EFA4274"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-layout-build-complete.log",
+        "SHA256":  "76CE80814A7DE8EA40C28F5467C1317999656AA49FF3164D71FEAE4E10FD3790"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-layout-build-final.log",
+        "SHA256":  "2A691F250ABBBDD773CEBF1D2AFAF8EFC8B90DED0AF20AB33247F880E2F683BF"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-layout-build.log",
+        "SHA256":  "79461EE099F89191CBA077521D684F345C4A82D667BC9D42B7E07F4918C89F84"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-preservation.txt",
+        "SHA256":  "AACEB58A420274B507722CC2F5ECB160EA543A8F8F745B04D796F3C4DBB9F111"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-source-sha256.txt",
+        "SHA256":  "412ECE4FB61307B4C44792FA9C652105B98101900B1901C720770112FCEDF93C"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-1.log",
+        "SHA256":  "CDC49F5AEB73954C09D04058C384537093AB1BF787A1274202BF50EC89546BA4"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-2.log",
+        "SHA256":  "55C1FC3E50AD1E1B220459BCF82A1C36878E9874796A79E64E3A282662AE81E9"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-3.log",
+        "SHA256":  "925EBE9629039B9C95665A569EAD7B5D51A68D74BD6E1FAE5C23D8E738C57B2A"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-4.log",
+        "SHA256":  "FFBF545BB6FF1347B8D33D418E7503169B655D526993EFCE57EB8749308CB47A"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-5.log",
+        "SHA256":  "5802F26DFDAC3EA56253999D127E5ADC784E4A78D4F7FE8ADA3936374E6D23E6"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-complete.log",
+        "SHA256":  "8A00440F9BBF4B8D8165201DC8324DEEA41BBD8980F36D32DD66CF37B7BD3901"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-final-mount.log",
+        "SHA256":  "55525B8EB3F452F88840231BF25674891AD1398FFB203CC041C25838A1EAA6BB"
+    },
+    {
+        "Path":  "Validation~\\Cockpit-refinement-unity-final.log",
+        "SHA256":  "7843C7348182D6F106704FB04FE63A23D4DA08E57389BE9764EB2303C80365C3"
+    },
+    {
+        "Path":  "Validation~\\Conditioner-curved.png",
+        "SHA256":  "DF72110D51B6114A9C9B3D5139DCABF6046E8BBA43A7FC1834574B6556770C8F"
+    },
+    {
+        "Path":  "Validation~\\Conditioner-straight.png",
+        "SHA256":  "00FFD7AA0C7DD7FEE12EEC80D773E2C2F508036CE5D9EEDBBBF3E14D76950450"
+    },
+    {
+        "Path":  "Validation~\\Conditioner-trail.png",
+        "SHA256":  "1560A29E9E1CD6586545C1011E676BE0DB4B5AD4E76596BB2915AC5BFCC9EF30"
+    },
+    {
+        "Path":  "Validation~\\Contact-fast-glance.png",
+        "SHA256":  "AB2587D8884E34B805DB8D2E3E89C070A1F5E5849739BC273DCE689100FC8C2D"
+    },
+    {
+        "Path":  "Validation~\\Contact-hard-direct.png",
+        "SHA256":  "BDC05A7E543B222027561B89F474138FBE818A840DD1D5EA2EF49A7889561996"
+    },
+    {
+        "Path":  "Validation~\\Contact-service-wall.png",
+        "SHA256":  "62D461C23299B0859AADBD4783762262054DD56B005708A97D634BB06464280F"
+    },
+    {
+        "Path":  "Validation~\\Contact-slow-direct.png",
+        "SHA256":  "44EA587E3935516DDD08E3DC81576B257C5525574CDA71BAF0009DD43ABC6814"
+    },
+    {
+        "Path":  "Validation~\\ContactDrivingValidation.cs",
+        "SHA256":  "C99C5FC2901ECCC855EBACEF36E0765392CCA88D8DD9AA5DBB31DB992B081C7A"
+    },
+    {
+        "Path":  "Validation~\\Controls-survey-after.log",
+        "SHA256":  "9DD2BA87BB24664A6A9038CD60F45FC64CB99F372716B7C9F5A445B31FD1BE8A"
+    },
+    {
+        "Path":  "Validation~\\Controls-survey-before.log",
+        "SHA256":  "2D369A0A2110E6084BB56586F5A46E1381D283B017170AC5C91C2DB2193C1588"
+    },
+    {
+        "Path":  "Validation~\\Controls-survey-code.log",
+        "SHA256":  "85F357C44C9B571E96DA0E07B9EF50B0437CFBDC6A9CB019241845367C388A43"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-apply.log",
+        "SHA256":  "9B13EF50C711D6987B1532AE658340834BC4A51EEBE8EF2EACCE8FC4E57E4532"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-runbatch-authored-BASELINE.log",
+        "SHA256":  "15DBC247B3D036750D93A06DA7339DF0029DB2751B722DB456004D84A58E4911"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-runbatch-authored.log",
+        "SHA256":  "1732FC0192E96CE8541995F75E49454EF41D137EDA0DAE7F26A35CC0C2CE331F"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-runbatch-launch.log",
+        "SHA256":  "C1E6374BE46C78101F9122E26D432F4EBE16E68CFA3BC04C5ED1691312BC5E0A"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-survey-after.log",
+        "SHA256":  "DE6D70DE4E0B9C36AEFE896C23DFD1B38FB8C55323CACE59D4D77388F79FA47B"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-survey-before.log",
+        "SHA256":  "FB95110F13C6089050D47556BB034C5C772CF01D4CFED1C4C07553BA5B44AD87"
+    },
+    {
+        "Path":  "Validation~\\ControlsBrushRoller-verify.log",
+        "SHA256":  "5ABD445EC629417CF546924EE7C95240124A2F9E77692A62FDE46828AB4B98F0"
+    },
+    {
+        "Path":  "Validation~\\Driver-running.png",
+        "SHA256":  "A415E7FFFCB5CA40A7BB1A9168B6EC1B05949DAE3EACFDACA250B7773FE874E1"
+    },
+    {
+        "Path":  "Validation~\\Driver-start.png",
+        "SHA256":  "774652A0924FB64FF15644A141FE67A91DC4C4E8D45D8EAD04FE6E515CB97A0A"
+    },
+    {
+        "Path":  "Validation~\\Final-results.txt",
+        "SHA256":  "5B167A41712413F4212FA187F25947104E26DD743C783B0D9CD7BB5AA2402829"
+    },
+    {
+        "Path":  "Validation~\\Final-verify.log",
+        "SHA256":  "C5FD9554CC5FA986BDC015E781F438FB09618C1F104F0000C43016E5EA82CFB7"
+    },
+    {
+        "Path":  "Validation~\\Free-simulation-on-foot.png",
+        "SHA256":  "C4C6E025000DF60989B1B07564F2F04AC99EBC0D57E126F32C20385E29CBEDFC"
+    },
+    {
+        "Path":  "Validation~\\Freedom-layout-build.log",
+        "SHA256":  "29EED1CCEE9B8470286B228207E25ABAECFCA492689AB9F3A863E2C039919E9E"
+    },
+    {
+        "Path":  "Validation~\\Freedom-results.txt",
+        "SHA256":  "DDA88EC04FA3667D45A057B2C66F789408B6369355C83C6CF635153F4B4EA52B"
+    },
+    {
+        "Path":  "Validation~\\Freedom-unity.log",
+        "SHA256":  "4E6F8844E00276F7A4F5AA49791EFE4293FD0C425F5B3BC223E2633065ECFA22"
+    },
+    {
+        "Path":  "Validation~\\FreedomProbe.cs",
+        "SHA256":  "F30A5D622510973268AFC79EBCE64DEC5DF65EE3F7A9814D0DC409BEC57A02EC"
+    },
+    {
+        "Path":  "Validation~\\FreedomProbe.csproj",
+        "SHA256":  "D097FF54771ECEB7ACF6BC14EC596DED4E434D3CF4891773CBB56556E8356D75"
+    },
+    {
+        "Path":  "Validation~\\FreedomValidation.cs",
+        "SHA256":  "B0FF5F732BA63922BAC2B9212FC0303CFA350F7A853212592C81979C3C31916A"
+    },
+    {
+        "Path":  "Validation~\\Grate-traversal-0deg.png",
+        "SHA256":  "65AB622D8FD3C55AC2FE6C51FC6276B749F3EC7DFDCF1C7AFD6C4B950AE8A59D"
+    },
+    {
+        "Path":  "Validation~\\Grate-traversal-30deg.png",
+        "SHA256":  "AD9F433F9FE40C14D6B64FE996817B716AACECE01A87294D93A4CEAD01796145"
+    },
+    {
+        "Path":  "Validation~\\Grate-traversal-90deg.png",
+        "SHA256":  "15D72D38CDDA6A810CD1ACC17ECC519835363A3F23E6A20AACC022263E851BF1"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-compact.png",
+        "SHA256":  "81B667E39D07287091DA32BC29156665474B13A742F61822CA1BB544BB846FA7"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-conditioner-down.png",
+        "SHA256":  "1D5C234C6546E7CDD42AB0802C2B9417D1DBB676382808943D015A46434A21E2"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-conditioner-partial.png",
+        "SHA256":  "680350D07A9AC2D86E2D8320E30FC42C32FAFBF7EFBA2D0A3089BA26D807763B"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-console.png",
+        "SHA256":  "E97A3D2E9B314B831BFF5FE53A479389B6EACE8BE455D6FADF5DAC2C601C2081"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-diagnostics.png",
+        "SHA256":  "7D01E2CB9557F4103FE0FDD64CAAD628D3D40DBE3A1EF64D82F459F4FA2A8650"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-guide.png",
+        "SHA256":  "439A89C35F867F8CEAD62757F43BA53B344A5564AD3B459BBFCA887B5C82AFC5"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-look-C.png",
+        "SHA256":  "22D3D72AAA07546A19BC85D0AA037E6ABD7985D182DD6D56B0354867345A27D0"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-look-E.png",
+        "SHA256":  "467C47F4C85D3F807127D231E08590EAC659F9737897CBC90A1180082BBA219A"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-look-LeftShift.png",
+        "SHA256":  "F137AAD2EA245FA1B35D1FDF7B7CA1E7E7B8FA5CC03D878171AB39BE8B8624A4"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-look-Q.png",
+        "SHA256":  "65D7E4CE22A095B728A8B8FA7A9C8EC2E81AF9DFB90CBA872A55D4C47DFD8025"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-messages.png",
+        "SHA256":  "54A93DE18564585F8214FF38E29CFF96B8805601AB1A52B925A728D406838224"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-operator.png",
+        "SHA256":  "81F5CADC501F3833C5C4DA1466FEE02AE14A249C6BEF54F824CDA4BD1D9D69D3"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-pause.png",
+        "SHA256":  "035EC1FBC11CE05CB121410DA585B3D8EADE91B36E00B96C32EF1416ECC304F2"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-pit-contact.png",
+        "SHA256":  "53FE7D1192ACB7774D62A139D08BE3BAF4D9EB61DD5F3F368F78BBFFB686FEB1"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-pit-overlay.png",
+        "SHA256":  "45BE5F3CC878EF3C944158E32A57F186DED1CC2700F4430B17BE1D653787B0B6"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-results.png",
+        "SHA256":  "38FDC09CEB5A145E7C98EDD716C93BCBD8631B35A322A170E386BE0C74512F8A"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-route.png",
+        "SHA256":  "1DB9699179FB4218ADB396B0CE807104C2FD431C3E2FA159D57EE86EF3D6E2BB"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-service.png",
+        "SHA256":  "E9DD02D500407467DBF623BB7518F0B06DF9FB1852DAF2F1460C6BDD3BC478F0"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-survey.png",
+        "SHA256":  "3F7F2DC270C86B00FA77C04E8785A933E22604587A7D7CD626568ED321E685B2"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768-welcome.png",
+        "SHA256":  "A1BE748CE5B0F31305225C9951B99779A242AFBD416C1A9B10291397702476FB"
+    },
+    {
+        "Path":  "Validation~\\HUD-1366x768.png",
+        "SHA256":  "038C8B066916F9F8ED0184D81B41A11C2BD8A51FA76BAFB328A63B526FA6D23A"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-compact.png",
+        "SHA256":  "FCF88329FA8A5E500B037C938CB2E10B784D8C96FE9C54B43921056816C2B659"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-conditioner-down.png",
+        "SHA256":  "076B305A6A241C05339B372C20CB39DB3FF92C5BDF9F7318BBB6F6F3A32E08A7"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-conditioner-partial.png",
+        "SHA256":  "31798A85FA3A6B5CA324CAA6FFF66F071A0FE0FF5C6FBA6C8D5FCD3E0FA70096"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-console.png",
+        "SHA256":  "5C789F392877D123CF862BDD948DD4DD225747D12F5A87A106B3BEC108F220FB"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-diagnostics.png",
+        "SHA256":  "BDFA486BEB1B3DCDF07F8914E860A47B55537965326EDA6088D277EEFE13C6E3"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-guide.png",
+        "SHA256":  "1F813E87CC761B09974046AE4C20C289734A0F48A0AA1CAB8F9706D6980F3AA3"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-look-C.png",
+        "SHA256":  "A40389512CBC90047D500B3A60DD3098C64706FD7CFEB0AF2B8D6C955F2CBF90"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-look-E.png",
+        "SHA256":  "1881735AACBDC7FDE416858E2F240F44D4529F71B31C4DA3999B221BC5A678BA"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-look-LeftShift.png",
+        "SHA256":  "7F438E57791785C74061A64EFC101E757ACE71642E1EA0070A0470E4D91750A7"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-look-Q.png",
+        "SHA256":  "DFDA4CA117AD5C29849CDE54535F68BA37AFA385E92259910645F54C3DE5C580"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-messages.png",
+        "SHA256":  "E397E8E3642D1CE9DB21B40F4EF2405F789C43E598A65BD1AADE99076E9CF6C0"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-operator.png",
+        "SHA256":  "88ABDB4DAE26BA10368865DD40E7F355451486EF1C1F9DE70B8F0266A8D1651D"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-pause.png",
+        "SHA256":  "5C123C369FE0BDEFDE0F6EE95F0712A5170A4CABBA7A2A5B51F87BA879AC7A62"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-pit-contact.png",
+        "SHA256":  "9D339152F7C52F05333A8A37DC4363701EFF95F2BD265B49BF107152835E5D70"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-pit-overlay.png",
+        "SHA256":  "4CD9EDB543E60EEF7AFE89B8DC4AFA29DE016407F06AE5FC9DE72DA3E09EF894"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-results.png",
+        "SHA256":  "10543147D4D690F00B865FFEEB6845E6425F68FA309AE862AC90EF6C29157A74"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-route.png",
+        "SHA256":  "75951E17B013F4456D9334CC576FE338A8B1395DDA82932F1F350DE74F941380"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-service.png",
+        "SHA256":  "8F521FB0D8F264B14D0DE56CEAA46DD343402052D10649CC7CA8707B02E2F998"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-survey.png",
+        "SHA256":  "A082CAB7132E11C514685A5E92DC479A2EE5AB59351E2D2079349BA04034D39A"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080-welcome.png",
+        "SHA256":  "A009CF586F11ACFDB87DB0FCE3BEDB7857B40916DC5C91E3738AF661735395AF"
+    },
+    {
+        "Path":  "Validation~\\HUD-1920x1080.png",
+        "SHA256":  "1984790168DE92930999F238132D6D19F8975B3112C0615928B2E426EAF49CAC"
+    },
+    {
+        "Path":  "Validation~\\HUD-layout-issues-1366x768.txt",
+        "SHA256":  "A286D0027E86FD8AD7C5EBC537C831D42F9D41B9C4E6E7EA17BF06BFD0EA08DE"
+    },
+    {
+        "Path":  "Validation~\\HUD-layout-issues-1920x1080.txt",
+        "SHA256":  "A286D0027E86FD8AD7C5EBC537C831D42F9D41B9C4E6E7EA17BF06BFD0EA08DE"
+    },
+    {
+        "Path":  "Validation~\\HUD-layout-issues.txt",
+        "SHA256":  "50A4BF4D4563D20C43CECA4D1C28553BC56049AA2716B234DAE4CA9AAE95C233"
+    },
+    {
+        "Path":  "Validation~\\HUD-player-results-1366x768.txt",
+        "SHA256":  "7BFC57F5315D3619CDDDC6AC3C33E1FECE469896820BF64C5465ACAA38BD80B4"
+    },
+    {
+        "Path":  "Validation~\\HUD-player-results-1920x1080.txt",
+        "SHA256":  "CAB75A9EAB74180563681B219EF6C55FD3AEB7852DA09B0142140843B18B667A"
+    },
+    {
+        "Path":  "Validation~\\HUD-player-results.txt",
+        "SHA256":  "0A6845253D9625B0A1B6E623B5E4267BCC2D2D7D27569577ABB4877174978B73"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-build-2.log",
+        "SHA256":  "CEA71143054796C95588DD7454A7401061D05D0790F7DB61490C10C756BF4656"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-build-final.log",
+        "SHA256":  "4AC782D6B7B0572FF43CA7280BC88A3C949B5EBFF9B0C54358448B2FB25BE4A2"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-build.log",
+        "SHA256":  "FD7C1C5D5B43666D808446EF25F54EE551520541FE7520C8D9EF567FE0772E3C"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-compile-1.log",
+        "SHA256":  "DBFC691B72A8A50242005472691ADF71346919ECE27838395DE75A76E72C0312"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-core-1.log",
+        "SHA256":  "7529919744F0E2119C0D8C67584B0DC4BD136863092971CA46AF473D6B8E702A"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-core-2.log",
+        "SHA256":  "0C679DB489DF56511702A7896616F9C80B7C2ECA76B55464657EC919E5BCED3F"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-prefs-read.log",
+        "SHA256":  "2A7C1CD0E7D002B2273B4B8BE99C80CF6DB607A635988F92D9B0EB1A010A745F"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-prefs-write.log",
+        "SHA256":  "0B394DC2D7D0B058721C24BAF67A4ABEC63EA33351C7674A3AB1516C3B721DA2"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-unity-2.log",
+        "SHA256":  "647E079A41B80828F1864522A9E274AB76E79608B12A9FE31402BCCBE5B3BE19"
+    },
+    {
+        "Path":  "Validation~\\HUDVideoSpeed-unity-final.log",
+        "SHA256":  "950DE0C0279FEB8BFAC363F47DC05C11D084B0F1A41C962C997CD1DD9C5C267B"
+    },
+    {
+        "Path":  "Validation~\\HydraulicDirections-build-final.log",
+        "SHA256":  "48B6C9490CD2B02DABC9B08EC4A57025AEE790D8058402915A8E63EF541AA196"
+    },
+    {
+        "Path":  "Validation~\\HydraulicDirections-build.log",
+        "SHA256":  "96A19E7357223F9F346C97ABB3BD71697D7875DB3C3786449AD94774D2F2F130"
+    },
+    {
+        "Path":  "Validation~\\HydraulicDirections-regression-final.log",
+        "SHA256":  "438BB674278C7FFEA91318AF94A921B41C4CC8367B56F1780AFBB94813825C42"
+    },
+    {
+        "Path":  "Validation~\\HydraulicDirections-regression.log",
+        "SHA256":  "B55468B3E62068FCD51818804FA508ED78BA7B38E9F9870EEE1C54BE750D57D6"
+    },
+    {
+        "Path":  "Validation~\\Ice-affected-cells-debug.png",
+        "SHA256":  "179CC07B4A88AF130132138EA77CAEE73BD02B0881E6B3BFC8E5EE4B108BB7AF"
+    },
+    {
+        "Path":  "Validation~\\Ice-calibration-results.txt",
+        "SHA256":  "6E32E9DD97CA90522F9E47AD6CCB96A739790800CE51B2EBE76252CD3FAAB605"
+    },
+    {
+        "Path":  "Validation~\\Ice-calibration-runtime-results.txt",
+        "SHA256":  "5595A6BC0F56916E32C7DAB20D242A1BC8EF9891DA1A91CD9275D8275C4128BD"
+    },
+    {
+        "Path":  "Validation~\\Ice-reflection-after.png",
+        "SHA256":  "973298DC207E4E9A9C93D8BCD8900F9E42592239174303A9C5B4354AD10B39EE"
+    },
+    {
+        "Path":  "Validation~\\Ice-reflection-before.png",
+        "SHA256":  "FCFAF5E6BFAA8A2602955A09CC5ECD276C655CB46949F9D5F291ADB858BA2632"
+    },
+    {
+        "Path":  "Validation~\\Ice-shaving-mask-debug.png",
+        "SHA256":  "E973CAD9A7711CEC75DD71513B7C56B0173021DD887F1A4E71D68C42B49BB0A6"
+    },
+    {
+        "Path":  "Validation~\\Ice-single-pass-operator-Q.png",
+        "SHA256":  "3EBF95FB6F960AE4883B02E22575374E82A4FC178ACC5356BD4AED4C675AA3EC"
+    },
+    {
+        "Path":  "Validation~\\Ice-stationary-flood-00s.png",
+        "SHA256":  "B7158C036B6C31F907D9722C1388A0B7F8A3DD119945C069AEB1875785C598D6"
+    },
+    {
+        "Path":  "Validation~\\Ice-stationary-flood-05s.png",
+        "SHA256":  "4E0F8357564E748781FF091D785238C02667CF2822107709F0F462ED6488C416"
+    },
+    {
+        "Path":  "Validation~\\Ice-stationary-flood-15s.png",
+        "SHA256":  "41E827EF9B0BFD4642938C74DD6B87263C5C381AF81A361E9271C496F2D82024"
+    },
+    {
+        "Path":  "Validation~\\Ice-stationary-flood-30s.png",
+        "SHA256":  "BFCF86F4376E42A9E5735B057859113876F58C560C84FC1B2678BC1316941B21"
+    },
+    {
+        "Path":  "Validation~\\Ice-visual-refinement-results.txt",
+        "SHA256":  "63FEA71CE9AE61E8F86DBFF0BBB14CE2946ADF2D0169B0AAB9FEE22221A975DE"
+    },
+    {
+        "Path":  "Validation~\\Ice-water-response-top.png",
+        "SHA256":  "8F4CD7C61B0652E4488B6B995D0D7936B875E2C1B3774D5EA2E3414616FEC437"
+    },
+    {
+        "Path":  "Validation~\\Ice-wear-after-oblique.png",
+        "SHA256":  "918BCD2EA683CB19140736B8F687BC2D07F2135341CEFD6FF831CC33C14CAFDE"
+    },
+    {
+        "Path":  "Validation~\\Ice-wear-after-top.png",
+        "SHA256":  "3DFE5C73B8762EA9E98F20DE6481C8FF22421333519A37BEFBE0B1F821F2FB56"
+    },
+    {
+        "Path":  "Validation~\\Ice-wear-before-oblique.png",
+        "SHA256":  "F70A34C17B195E3F12BF972346C69DADB84FAA7D0EAC9CCFB6E03A95E141F86E"
+    },
+    {
+        "Path":  "Validation~\\Ice-wear-before-top.png",
+        "SHA256":  "5649515AF1BBD88D3CC098558718CF7660FC95EBC507FE905CA0B1A2E9E5490E"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-00min.png",
+        "SHA256":  "DBECC5BEF25AC6A3DEE05C7EEF941D9AC3B8DCEDB700D5499616592E5CD35466"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-05min.png",
+        "SHA256":  "A5225032CEC3412046D506DEDC8B6A1EA6B1DA527DE322827D10630E96E3C7AD"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-10min.png",
+        "SHA256":  "27F4F85A84EB59E66B04454D49CE28822EFB48453FFEC7A8719336E36545473B"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-15min.png",
+        "SHA256":  "0F25B924D088693E60B1CE90DB260BC9D7B83D08078F8B45761EB70AFDDCEDBC"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-20min.png",
+        "SHA256":  "01CFAC50C2FB23A3D48D8E3EA9B33F44FE793C73CB925F24BB027A26E175C004"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-25min.png",
+        "SHA256":  "5A929B24FD69108CA3FDCC6542B582B02C2039F816D2E0B04F9C4B8D62CDC9CB"
+    },
+    {
+        "Path":  "Validation~\\Ice-wet-age-30min.png",
+        "SHA256":  "7C8C0B5008FF47DA85CF3605ADC1BFEED4BEEFB4DF926891B9E83DEABB193F7E"
+    },
+    {
+        "Path":  "Validation~\\Ice-width-before-results.txt",
+        "SHA256":  "43772EBB3FE215EB486CFD3F4DF968F72A4D81C2571756B98750A03E78AA87CA"
+    },
+    {
+        "Path":  "Validation~\\IceCalibrationProbe.cs",
+        "SHA256":  "41AF42700723E52AAF17F946221F422B363C54F26902C4A0274FA300A557C43B"
+    },
+    {
+        "Path":  "Validation~\\IceCalibrationProbe.csproj",
+        "SHA256":  "26AF5F3DFB237AD5DF9808B79F42D88CC84DC3DB622AD05B7ED9D8726B141913"
+    },
+    {
+        "Path":  "Validation~\\IceCalibrationValidation.cs",
+        "SHA256":  "488A9B97D0A3D4C7FF1924873099FA4BC5A2C65E28303F3E33A227FDF439965C"
+    },
+    {
+        "Path":  "Validation~\\IceResurfacer.Validation.csproj",
+        "SHA256":  "D21EF5A43C07250BD23ADFBAEC02F0A9B4BC2EC17FD8456BB36E0C04FE4331F0"
+    },
+    {
+        "Path":  "Validation~\\IceWidthBeforeProbe.cs",
+        "SHA256":  "F6A6C4EDA77F3C89D9B611D3BD5D5ABD892A42FF30D1C308B817A3770B440166"
+    },
+    {
+        "Path":  "Validation~\\IceWidthBeforeProbe.csproj",
+        "SHA256":  "1883285CDD7908CFAC50A95D65258E1CC81F97EABECD8BC898127ECF1C2AB601"
+    },
+    {
+        "Path":  "Validation~\\Layout-build.log",
+        "SHA256":  "116EC73E38205D658C2CA7B5B826D9564356EBB14B94174CAE9D5C260A227F6C"
+    },
+    {
+        "Path":  "Validation~\\Layout-player-1366x768.log",
+        "SHA256":  "7DBB9C749B032F24EBB6A7E2D1F1C2068200CA435F76BF1A4D3C99EE949986CD"
+    },
+    {
+        "Path":  "Validation~\\Layout-player-1920x1080.log",
+        "SHA256":  "FA59E758AAADE2EC3FD5E705DE7C571E813D82C6EE53DB241428CDA027206477"
+    },
+    {
+        "Path":  "Validation~\\Layout-player-960x600.log",
+        "SHA256":  "CBCE36823E3BF2AC6665E8AA7F4AFD133371812A3575EA17CBEE52CAABD73A86"
+    },
+    {
+        "Path":  "Validation~\\Layout-player.log",
+        "SHA256":  "F2CA8F7F883664BAFC96CD9B118D258593BFC19503BE868AF3A58F977668B6AC"
+    },
+    {
+        "Path":  "Validation~\\Layout-results.txt",
+        "SHA256":  "70271CE6EED767DA07FE13F16BC2544E99F3A2F3A01053AD382FCA539CB71007"
+    },
+    {
+        "Path":  "Validation~\\Layout-Unity.log",
+        "SHA256":  "D6DFF981418142436CF3DA1EF8B418DDB14F534476AB385CCE93996C4A36144E"
+    },
+    {
+        "Path":  "Validation~\\Minimap-area-overview.png",
+        "SHA256":  "CD60AAF0BC36F0E97920CA45FD2D88C36918805D71A2E17C59359730CE0FE749"
+    },
+    {
+        "Path":  "Validation~\\Minimap-initial-overview.png",
+        "SHA256":  "018C38597134BA7E1F3B413420DE69B36EE9A029B7EA1A3A322B19087D82B95C"
+    },
+    {
+        "Path":  "Validation~\\Minimap-results.txt",
+        "SHA256":  "6EDA747A78A3890F216532275DCB813C6CE944402EF2EB7888CCF081840F195E"
+    },
+    {
+        "Path":  "Validation~\\Minimap-seam-rendered-liquid.png",
+        "SHA256":  "5DA1F7B299D6FD380975FD7092F15AC333C5A04141709FB55CD6CDA7265FEFCE"
+    },
+    {
+        "Path":  "Validation~\\Minimap-treatment-map.png",
+        "SHA256":  "E89DE82FC83CE3CC999B7F98AF3BDA1784CB5C4BE61E426D179026F6D5FB21C1"
+    },
+    {
+        "Path":  "Validation~\\Minimap-wet-uncut-seam-actual.png",
+        "SHA256":  "0889E8405852D34EB11F2D0E1901BF731FBBCF7C7117839128FA7860BE42596C"
+    },
+    {
+        "Path":  "Validation~\\Minimap-wet-uncut-seam-normal.png",
+        "SHA256":  "BF674091BB67BBB641771ECF7267D0209D0D8110351A1822C37E80740BE0DC0A"
+    },
+    {
+        "Path":  "Validation~\\MinimapValidation.cs",
+        "SHA256":  "34045815128E15EAD9F18056178694B3B596AC19733535F6FCD6568D025E1699"
+    },
+    {
+        "Path":  "Validation~\\Motion-contact-focused.txt",
+        "SHA256":  "3D6C1D07C62A216D763AB2BA0A7130FD794EE51B6B32C028118ABA7BD59D9414"
+    },
+    {
+        "Path":  "Validation~\\Movement-before.txt",
+        "SHA256":  "0099169A8CE3074AA2DB2E39967853B86C0C881DD2C3FB8240B547F65D59849F"
+    },
+    {
+        "Path":  "Validation~\\Operations-results.txt",
+        "SHA256":  "7B8938B59E7DBDC48CD61F4FD97589F633FD402E37EAB4B51B151EF224F721B2"
+    },
+    {
+        "Path":  "Validation~\\Operator-auger-discharge.png",
+        "SHA256":  "D786AD3944A53EDD2D32E3284CB5A0341DB4989F4445DED90195782C21B313FF"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-layout-build.log",
+        "SHA256":  "AD83B871C624AA19279186804ED225FE07331B56CF984B5A62C1AFC4694AA172"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-layout-final-build.log",
+        "SHA256":  "455ADE06CE300C36A4162AF12D3A0891AD415EA6CC559D28A38D1FAEDB3A4083"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-performance-build.log",
+        "SHA256":  "2911B221154AD8E8AF91B952F359E3BEB98F23D86D9520844259ADB0FB609D55"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-performance-final-build.log",
+        "SHA256":  "5374EB3BF42BB444428587AA3C36600FFF3A35C8A950DC276718B32F20D5C7BD"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity-2.log",
+        "SHA256":  "11C0D217BCA19F8F2D5392A5F46625CF5030917D33A4C7D8E373B6251DF98BF1"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity-3.log",
+        "SHA256":  "EBF9DBBF5790F986914AB517B570FE5F921F16C8FE3429ABDF65265B547287F8"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity-4.log",
+        "SHA256":  "852968BF8FAADF5B0A09389A5CE6B15204DA6A1911AF9DD3887AAFE1F8ED9BF8"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity-5.log",
+        "SHA256":  "E0D9A2749C3ECA98E4E1963E3636961BFEE5180E436E5A3D34EBF4EE33B67ABE"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity-6.log",
+        "SHA256":  "A3B63DA92F1A4430D3CAA66A056ADCC39A266AFA4534F44E1B67FEB62C8475EE"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity-7.log",
+        "SHA256":  "7E56CDE8F9A4D140614BFDA3C68F635F97D982642BCE3059C93E0A8EB4CE4B4D"
+    },
+    {
+        "Path":  "Validation~\\Operator-authenticity-unity.log",
+        "SHA256":  "6802E186525B685F038F6C7574A3B4889889BD1998B31ECBF708C3E4529499B1"
+    },
+    {
+        "Path":  "Validation~\\Operator-board-side-edge.png",
+        "SHA256":  "DDEB88E4139C776A798A9C444782FC07099CD6F911BB8CABE5D5A80861C79BB8"
+    },
+    {
+        "Path":  "Validation~\\Operator-build.log",
+        "SHA256":  "CDED1458277BD0908BA50E95CCA3C42825E844F46A308136984E4C5DD8122CD7"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-core.txt",
+        "SHA256":  "947BF8F6835BBB51462E2741257D94FA7B8852C885D3EDEE0B326259B1A89EA3"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-layout-build-2.log",
+        "SHA256":  "8DDE66EF550A61BCAF9D2DA93FECF5F452DDE5016A65EEA59723D7153571002D"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-layout-build.log",
+        "SHA256":  "DF9A971742625841F430451032009BF97F567B3D0BBE63022176FEA09F15BC46"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-performance-build-2.log",
+        "SHA256":  "A02332C2D0D673BAA5E6DF8189B74FB7DCC00B515D94AF6DD3EA589645F2E5E3"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-performance-build.log",
+        "SHA256":  "A5D2593D44B07B2A90ADCEC8BA048C9D9FBBA73410665C79E038F0D2E9C3CE6F"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-1.log",
+        "SHA256":  "558702E689052DA6F5DD5B32FC14D23110F3D1F130280BD5284E3922D10E68D2"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-2.log",
+        "SHA256":  "B6A9C7CB992523F76E4144708A11DB42CAC85C2E9D5AE385D0489FC2C106DB42"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-3.log",
+        "SHA256":  "18843F7A2F089C80A7202062B7D08A11875D8E3D42B89F87DB4099A55C40E96C"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-4.log",
+        "SHA256":  "318AC0B17F85B6D1749AD44BC56B9C071B66DE04FDE6FC94A4F48639AFBC4A6E"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-5.log",
+        "SHA256":  "5FC004C6CF67D008CE07D5700260C65A7A4D19E2A6B33DD44F3E4073B5C46959"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-6.log",
+        "SHA256":  "62F698C4F7264865CFEC08E417E96C1EE71DF6D61FA943EFE20161C9162EC531"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-7.log",
+        "SHA256":  "344F4C7AAAA8CE1964701087EC8C62C61074F51661A3D330BA68A5B90086DC91"
+    },
+    {
+        "Path":  "Validation~\\Operator-ergonomics-unity-8.log",
+        "SHA256":  "FF9C5397D7ACD2E3E8A4843094C16E6771D7060B77B8D74F356DC634278078BA"
+    },
+    {
+        "Path":  "Validation~\\Operator-external-left-rear.png",
+        "SHA256":  "5C4743A99B0EED05A68143A4AAFBD9B708E7EBE4A62C5FD00E9D18934E2593A2"
+    },
+    {
+        "Path":  "Validation~\\Operator-external-top.png",
+        "SHA256":  "019CA44143DD9214E2ABE3500CD2322D25B870AD9F0776EA26786866B7261F51"
+    },
+    {
+        "Path":  "Validation~\\Operator-full-tank-window.png",
+        "SHA256":  "2B462DDA606E87DE1DA8CE072E6A0F528BEFC38B50099BB7AA6AE6DA631CEDF7"
+    },
+    {
+        "Path":  "Validation~\\Operator-left-seat-forward.png",
+        "SHA256":  "9871AF79E339D4B7ECC58A37ACF7EC6F994EB3206AEA869B14835AD873BDA0D8"
+    },
+    {
+        "Path":  "Validation~\\Operator-right-down.png",
+        "SHA256":  "9C90719480023EE40FD128BD71D87BC60756C50A70510B4517FB4FAD522B06AC"
+    },
+    {
+        "Path":  "Validation~\\Operator-seated.png",
+        "SHA256":  "A6ABB72280497C9ED8FA5C7B0429237C0D4C7C6C7BEA9FA5CB2A60DB0DECA112"
+    },
+    {
+        "Path":  "Validation~\\Operator-standing-window.png",
+        "SHA256":  "46D6FF294154E3C374CF55FFA8176066300BFA51741527444BC984736CA785BA"
+    },
+    {
+        "Path":  "Validation~\\Operator-steering-center-inspection.png",
+        "SHA256":  "D2BEAE45791CCE8FFF34CC359D66E40B6A2A8C1A226A94B8B4E774C51C34A9F5"
+    },
+    {
+        "Path":  "Validation~\\Operator-steering-center.png",
+        "SHA256":  "C032EA52DAB9BB7E2DF940DC90FA78FE7D68BC077FA9C583BB5A6C634B11963D"
+    },
+    {
+        "Path":  "Validation~\\Operator-steering-left-inspection.png",
+        "SHA256":  "41747F2395C2AFD39C4B0C9CEABF01B12985C7C86DF2B4C8EDBFD24865A97884"
+    },
+    {
+        "Path":  "Validation~\\Operator-steering-left.png",
+        "SHA256":  "4F6B1EBFFA4C10EE67A400BDB5000E07C2F19DA3BC7D069EB7E10EEB891F52DD"
+    },
+    {
+        "Path":  "Validation~\\Operator-steering-right-inspection.png",
+        "SHA256":  "B901193F0948D7991F509410BCDEED308D74C51E377C3E1FA51105F5E9342CA2"
+    },
+    {
+        "Path":  "Validation~\\Operator-steering-right.png",
+        "SHA256":  "9A558D3CC5082FD5FAF7DAACA9EFD0AC5E0A8F6A1770C60F76A0EC4FA51D7BB0"
+    },
+    {
+        "Path":  "Validation~\\Operator-Unity.log",
+        "SHA256":  "BDB83615373D8C050D697FCF0F779B3F7446E4A8D5313D4479E5568967121B69"
+    },
+    {
+        "Path":  "Validation~\\OperatorSpeedValidation.cs",
+        "SHA256":  "7A89DDCB87A037290A6C97E6F2E09391F5286ACA9619343F825B9DDB5CCCFB05"
+    },
+    {
+        "Path":  "Validation~\\Overwater-after-pickup-normal.png",
+        "SHA256":  "4ABFDA01EA0973F854830A01C1BEEF2AFFF67516897A108C61928B2FFD31682B"
+    },
+    {
+        "Path":  "Validation~\\Overwater-after-pickup.png",
+        "SHA256":  "5071BDCA86A4E3CDB36C296725CC0AF504285B4FDD38A06EBDB0520A3ADD6904"
+    },
+    {
+        "Path":  "Validation~\\Overwater-before-pickup-normal.png",
+        "SHA256":  "0200F087AFF73C55334CE230AE9DA44ACFBA304885C5ADD78ABA27C01606F1F5"
+    },
+    {
+        "Path":  "Validation~\\Overwater-before-pickup.png",
+        "SHA256":  "39A2AFCE151039D09D4B65EB590419ACEFEED9C3AA3F3BD2690A92D26E7E4C9B"
+    },
+    {
+        "Path":  "Validation~\\PerfBuild-AuthoredArena.log",
+        "SHA256":  "4F57F55028DF054FEA0A4845002D92E290504FF41FA2F0D41357CE9F6CE928EC"
+    },
+    {
+        "Path":  "Validation~\\PerfBuild-Launch.log",
+        "SHA256":  "2E293351BF4C052FF6C9257E0BE155A2FFD407D63E1C2AD42138451599A7E5BA"
+    },
+    {
+        "Path":  "Validation~\\Performance-after-build.log",
+        "SHA256":  "71AB6EA2799BCECCA3CF4A3D0FB0A46994EB6134D41917BAD0E4C2A5D7975234"
+    },
+    {
+        "Path":  "Validation~\\Performance-before-build.log",
+        "SHA256":  "DB7A7E133FA9819288B013DC70122433D9138DA64DBE1E43834145838242A2C5"
+    },
+    {
+        "Path":  "Validation~\\Performance-player-1366x768.log",
+        "SHA256":  "B43E46CD29FF6F29EE00A0B7E53444434A226133B43B10042869D33241180CE6"
+    },
+    {
+        "Path":  "Validation~\\Performance-player-1920x1080.log",
+        "SHA256":  "16D812EC549112B11FAB9AA23F453425D116F7DAFF4352527C9E2BBBF9A040B8"
+    },
+    {
+        "Path":  "Validation~\\Physical-controls-results.txt",
+        "SHA256":  "3D635049AD8730A0DA950C1D1E3A4E43CDE4A1A9445FE88757D26ED0F07B6B26"
+    },
+    {
+        "Path":  "Validation~\\Pit-contact-0deg.png",
+        "SHA256":  "2EC7EF5F74BFDD64577B1FE3AFDD8B6F675724022BDA57292DD32629BAADF89F"
+    },
+    {
+        "Path":  "Validation~\\Pit-contact-30deg.png",
+        "SHA256":  "F345FBB02AB4AD777CE2DC06B1B9196387906F016BABA2B99E360771D4F35E83"
+    },
+    {
+        "Path":  "Validation~\\Pit-contact-90deg.png",
+        "SHA256":  "3FAEFE0BE767F5714516AE0C92A79B903A4EE577A0F9B75E588155A6833CA8AF"
+    },
+    {
+        "Path":  "Validation~\\Ports-apply.log",
+        "SHA256":  "3C95BEFBB81391FE97D6E9C2B6D89D48DA1E373E4C01BF466B005ADDD10E66E2"
+    },
+    {
+        "Path":  "Validation~\\Ports-before.log",
+        "SHA256":  "8B80CCC0EF2B7C01792F354DBDAFE085241CACE04DB267BE4D8918D6BCC5C599"
+    },
+    {
+        "Path":  "Validation~\\Ports-move.log",
+        "SHA256":  "D44E44CE0B38A2B9FBF3342C591F1E4B85B820D624A28354DE46FB00E05E2D1F"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-2.log",
+        "SHA256":  "8281411F99D887D5D7F3245B85D4B539841C524F5E176305C11D89C0980A17BD"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-3.log",
+        "SHA256":  "2AFDBE255C34C46E4BE449878D3EA27868EFEEDBA876074FEDDFE0678974E6FB"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-4.log",
+        "SHA256":  "FF34E11DE53DDE783FDE0E0E1754C597D089BC1BFCBD45388EBA1F8085CD7F94"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-5.log",
+        "SHA256":  "793809E252486DBEB39CB4299DA0CF97E6315E279337338B000E7FAA85730D3B"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-6.log",
+        "SHA256":  "DCF1FA5E2A7062D9CB8E9344902B6AD4DA5B1F7B4150772B5C9A2CADAE942E23"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-7.log",
+        "SHA256":  "3376E43C9C4211C0324C3CD9BBF7F715A89DE321FA83894271C19E067A225162"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify-moved.log",
+        "SHA256":  "FEA4ADE1FBDC4CDE002042BBC156921EA82040DA63B20100C553EA76D34E149E"
+    },
+    {
+        "Path":  "Validation~\\Ports-verify.log",
+        "SHA256":  "4602262DA2E5DD4027B1F29D41E3CF19F6EC3F1C31D2B0ACCD99EF2CC9E26A4A"
+    },
+    {
+        "Path":  "Validation~\\Preservation-results.txt",
+        "SHA256":  "9201E1F3B020363609D6591A798C34B544B6A9255BDF9F8522661BB39E850FF5"
+    },
+    {
+        "Path":  "Validation~\\Program.cs",
+        "SHA256":  "90B526A851178CFC851630D46207A808B707C993353AC7D1B4803949F0BC09A4"
+    },
+    {
+        "Path":  "Validation~\\Proportions-apply.log",
+        "SHA256":  "585F03D16300F6423CA9251DBDBA32865EEDBB3525764CABB5C70C319D57AFF4"
+    },
+    {
+        "Path":  "Validation~\\Proportions-RunBatch-launch.log",
+        "SHA256":  "B80FA919714EE60CD1621687AA48A9FC58094E5C743FF2C9E082CFC325D06E6C"
+    },
+    {
+        "Path":  "Validation~\\Proportions-RunBatch.log",
+        "SHA256":  "977FD173F1FD8E6ED4AF218EE0A807EDA0327FF47CDC44144C6AAB8EA1C92CA1"
+    },
+    {
+        "Path":  "Validation~\\Proportions-SpatialAudio.log",
+        "SHA256":  "892DF5FF6BB88F5F5F69FF06DE47797C215F422778725C80EF118B83349CF002"
+    },
+    {
+        "Path":  "Validation~\\Proportions-survey.log",
+        "SHA256":  "C678981DD0043AF75EBDED701F121F65DDCE0619C577C2F20508CFD32EFC0E43"
+    },
+    {
+        "Path":  "Validation~\\Proportions-verify.log",
+        "SHA256":  "315167FA81B26B971853C29BFC4F1E18282F1B24424C322D56A5F8F5BC68CAB6"
+    },
+    {
+        "Path":  "Validation~\\Raised-tank-glass-contact.png",
+        "SHA256":  "C634813DB1716D0D48007AFDDD304720FB3D332FC48DF7E9B774D06AE0F0EFB1"
+    },
+    {
+        "Path":  "Validation~\\README.txt",
+        "SHA256":  "8769BEE2A445AFAABA5EEAE57216A3CF7F1311FCFA09259766E777608FD4F7CC"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-2.log",
+        "SHA256":  "EDD3E8FA5E3B08D13259591AEE02274DC4039790335AF8DDBD384BA1AD029AC3"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-3.log",
+        "SHA256":  "6BB429D5EA13F627F6AEDE31AEC07D68533FC559A72CF4F99D7B9B59510824CB"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-4.log",
+        "SHA256":  "33E0421B55657A7A6FB3E3775EE76A271584A95DF7ECD189B72562A0F03F7692"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-5.log",
+        "SHA256":  "5031F8902C7747BF3EB98E79ECB2BEDEC83BEBC02EFC30DA3EBDC363DDDAA8C7"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-6.log",
+        "SHA256":  "1B7A8CD5CABFAB979BE3BB11B80450D8DC4DEF5155B2E20A7D0B28F8ABA4CA42"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-7.log",
+        "SHA256":  "ECF808B870DC6750EBA79C8B5ACE665A698984C4D25B0D1CB5FA5E845E3380FA"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored-8.log",
+        "SHA256":  "21B8762ACB7AB55B1E8A73C53A599F4DFBF39840C0EAE2EFB36B97012B4D734A"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-authored.log",
+        "SHA256":  "BEDB9FC54D85BBC31ECEFF86420B28D4203D2416449020E7629DFCB171D0EE63"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-after-runbatch-launch.log",
+        "SHA256":  "2479D10A3298BD2A9DBE89F44A5EC1B124D1539EB8B81BFA6BB9DC353C54846A"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-apply-1.log",
+        "SHA256":  "45714F2A0A673B571CE5FEF43CC465B0436E68232B664CC4C2F5D147AFF45ED9"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-apply-2.log",
+        "SHA256":  "18991C2C4BC943A40A66798D14B953E3BBA2EA75BA2F6CF5D7231BA83D048577"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-apply-3.log",
+        "SHA256":  "578EAB89CBF9E49A3BB5F09EC0A1A82097AD762EF651751F29563CF33B92ECC8"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-apply-4.log",
+        "SHA256":  "06F4F72D1EB43CAACDA46113437479FD1159FF9DA4EF3BA640F5064FBA065AC4"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-before-runbatch-authored.log",
+        "SHA256":  "AB522D70D477388552DFD2D8FED1ED02AB84D2DB083641B46E049357267E72EB"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-capture-before.log",
+        "SHA256":  "650873659A5BBA079B96094AEDD7A6301A30D06B3CEF97AA7DA45F21624696B3"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-clearance-after.log",
+        "SHA256":  "D1AF051A2474C865F762CD96DAAF3AF1413CE2DC144254A0AD754051312EAEFE"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-clearance-before.log",
+        "SHA256":  "62DE2AE3B8A494965018F4FFB521121905C0EEFB3CA99250150EA71EE6E9FC75"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-controls-2.log",
+        "SHA256":  "2F2CC0CE130233A87456F9CF9EB8228FC2B064D97E6B4013ECE97F7378D8F5EA"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-controls-3.log",
+        "SHA256":  "DF296234E3E05994E8F67B1A5EA4B9A31A791182437F8EAD842653512BB089F8"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-controls-4.log",
+        "SHA256":  "2BB0A4FD49FD23E55CE2434D10135F94CABC2348FB66D2210117DDC715E02CC6"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-controls.log",
+        "SHA256":  "3558DED61CDEF2986A61FD8646C3DB419EC7430565EA2670E6D44E23FDCA685C"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-determinism-apply.log",
+        "SHA256":  "F35F81AA73347FCF5B61C92EC9207E185F7F1C19AA90F0986E8CD537B095C764"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-apply.log",
+        "SHA256":  "595760CC9EF4E70C26C65DB898DF8CA04FC6159089FE6A947AE468B01FD3522C"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-capture-after-1.log",
+        "SHA256":  "E487426D58FAD7F33E82DA26489E1D60987E8C45DC82AA537F57EB89508A9945"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-capture-after-2.log",
+        "SHA256":  "8FA3271CF2DBB0B390A0E0D5A63A37F1FB2AD1B7286B37099DF5273250D88D10"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-capture-before.log",
+        "SHA256":  "2F5C31E629F5C5BE170A33AAD44D37973F64DAFA237E7056E5E2BF0100487CF2"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-clearance.log",
+        "SHA256":  "6880CD746CFCABCA3097196D64AE0CA40F7B0CE0E4743AC36801369F28AF2CE1"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-runbatch-authored.log",
+        "SHA256":  "8552C3E1C74C51DB52E2A7299CF6710A05E82B274933CC0F564CC1DD3B02541B"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final-verify.log",
+        "SHA256":  "7964C3794438D8A218608F41774E5603EBEC94BD3E065A4F5B6E1D42AF854134"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final2-apply.log",
+        "SHA256":  "1695F397D2E4673934B1E7D07326CA3F5DBB0F08B9393C8F05BE6D3C157201A0"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final2-capture-after.log",
+        "SHA256":  "B85528845C3D1928C3A9EDDB137484AE4ACCD81ABF59AA112EC7F6BD97FA24BA"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final2-capture-before.log",
+        "SHA256":  "CC09E557D00AFA1277273835E339CB62DB50B545666E98A2BCAD8409C6B560A7"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final2-clearance.log",
+        "SHA256":  "A9937E7232C0B047E4D4B5D6A160C73B683FEBE41691CC14366E984D63567CF6"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final2-launch.log",
+        "SHA256":  "A4BBCDB2D2D2D591A4EDAAF24932DB29577AD7F1792498F38F5AF7FB2D577F19"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final2-verify.log",
+        "SHA256":  "C167049D7CF74409A9A147343350CF2AEEE3A79107A4B11F6F882995EB75FBF1"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-apply.log",
+        "SHA256":  "4D155740E2F70B4F02D10019839DA283C162B066B083A74429DA3B1604A04283"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-capture-after.log",
+        "SHA256":  "BA1B8A815C3F361E6400AF810536AB07EC33F878FFCFFA60F064B090E938CF66"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-capture-before.log",
+        "SHA256":  "E9C36F3FBDCCD8C8AC5B42F73F859A201B7C5021156B615C6A98B6D44F9A3F21"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-clearance.log",
+        "SHA256":  "2B11DBAF77679C700350F7A7C61A17C54777FB06E91A496C5119EE63F17F34C4"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-launch.log",
+        "SHA256":  "C97AF12CFE783525DE1756093DF0C2480EE8BA6BB42A9798AF0EE10A226BD891"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-runbatch-authored.log",
+        "SHA256":  "4A75715187BC5B0C2373FDA88F1922A22B21F1E34E9409DE1F1EE04C67DCE9B4"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final3-verify.log",
+        "SHA256":  "D8593C4AF73E18B1AE3E2898DEDBEA152AA0EBC478F8378F34D81FE8B8721EE2"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-apply.log",
+        "SHA256":  "0134116064574B2F56EC4676DE79CBD234B6DCB390B04F4B5C17C46ECE1A0042"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-capture-after.log",
+        "SHA256":  "9BC53C89606FCDB7538E1DBBD04D471B2C7F22F156DB3043D46332DB00BB3681"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-capture-before.log",
+        "SHA256":  "9EA8F72709F67625ACC975964754490874840EA8BBD3953B410755090FB6B731"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-clearance.log",
+        "SHA256":  "F49AAC296D543ABB3648C6D2FFE6299A0B05A5A681353649E4F83A7E0A94DE85"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-launch.log",
+        "SHA256":  "81F9E528E7B986EF9A97FB8C785AD572D1646DBB1485246B3B4AAD4071E99204"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-runbatch-authored.log",
+        "SHA256":  "1DC5ED63E28AC1B783015222807501CF84122EAAC85A42C09AA0579B5CD35D72"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-final4-verify.log",
+        "SHA256":  "667D8AFEC2796C38C3321D3341CC4F919B07460A81CA20ADBD32A5CC798B43FE"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-focus-1.log",
+        "SHA256":  "CB3E23E74FBFC07D82B64D2A80CE0BDD0BCA6BA9B42825C11B3CD7A187EA09F6"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-focus-2.log",
+        "SHA256":  "9F8B50B476A7511C680B16FF9E6961DD296FD079951E150ECCC1637A4F9393EB"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-launchcompat.log",
+        "SHA256":  "D5837D3053A8D47094E0F409AE99A205406B9EB8E2FD806998D5AFB6C9395074"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-p1-apply.log",
+        "SHA256":  "8CE238A0C2DFC5917CF9871681F1A507439ABACF0C1872B147AC64CAD677F092"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-p1-clearance.log",
+        "SHA256":  "66A03BC16A38509CA1688E2901F1BEAF9C6E7A9A7527DDD8EAD686772F3CC137"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-p1-verify.log",
+        "SHA256":  "A2BBB007B723F7584161FB0A464B3E53C6BD10D444AC5D09C052EF357D552C18"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-runner-test.log",
+        "SHA256":  "11BEB581A77F3B3E2B861D7825DCFF5DC551D4080AEF54F3D368555025959113"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-survey-1.log",
+        "SHA256":  "6DF102B27E105C5EEE210D5EC031881CCFF43CC3BEC68B9FC2F1970A01AFFDC5"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-survey-2.log",
+        "SHA256":  "7177BD2E16B398976F3A079A76943A40B6E61A03E0F311CD53B95D0984ECCEDE"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-survey-3.log",
+        "SHA256":  "860795CBA5E3BB6F7EDFFB04D42F15041C0EB6BABF83D9649B073DDE6818C3AF"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-1.log",
+        "SHA256":  "84B8332B9C58353530562938D334835476E1CD552AE200523C69815BCA4A569F"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-2.log",
+        "SHA256":  "25326178F2C0559C2BCD751C6EA891653C073B79A777D9ABE5AE0B00831BE387"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-3.log",
+        "SHA256":  "D411651FBB709F93460B9EA1248B161B5B53B910A744C719FC28EE8A083A0F4A"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-4.log",
+        "SHA256":  "D3CAC9FE4999B8347AE6B972A10862FDCBAB5D8DEC8E0650C505A5549109DF1B"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-5.log",
+        "SHA256":  "567D59573CFCAFCACCFF1C7D221168D7852DA16CFB9B36E6930B53151E976277"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-6.log",
+        "SHA256":  "F115B9B701103810CF66335F1501DE23C144282DAF32EDFB057421800F4F12DB"
+    },
+    {
+        "Path":  "Validation~\\Reconcile-verify-7.log",
+        "SHA256":  "A13C1F02C932A258A49DA7086C35DEF0DA819274BEB5C0C8DDAF4910701A86B0"
+    },
+    {
+        "Path":  "Validation~\\Results.txt",
+        "SHA256":  "947BF8F6835BBB51462E2741257D94FA7B8852C885D3EDEE0B326259B1A89EA3"
+    },
+    {
+        "Path":  "Validation~\\Rink-after-final.log",
+        "SHA256":  "820C373925AED32CB16FA19AC5A8759C97D1C5C6F7E6FE0227CFCAD457FF65FB"
+    },
+    {
+        "Path":  "Validation~\\Rink-apply-1.log",
+        "SHA256":  "8AAC9E17D9B3C3C4697E3CC15F934710ABC6EC00CC3241D18D24DCEA48EA98BD"
+    },
+    {
+        "Path":  "Validation~\\Rink-before-2.log",
+        "SHA256":  "D2036DA3CFF23ECE7C35DFF2410B181A4336C65620B761DC44AFF8E4C9306E7A"
+    },
+    {
+        "Path":  "Validation~\\Rink-survey-before.log",
+        "SHA256":  "906D7AF363A67D9E6822E652B65361CB40AC68F76F503EA5CA4EF05EA8132F08"
+    },
+    {
+        "Path":  "Validation~\\RinkPorts-runbatch-authored.log",
+        "SHA256":  "721CACF374BBE47003F25D3FE7CB48F3E9B81DD2CF52254E9BA270F2E6277E4B"
+    },
+    {
+        "Path":  "Validation~\\RinkPorts-runbatch-launch.log",
+        "SHA256":  "379DC95D174AB6DBBDD42310C46CDCA652826AC4EEC9BA5886BA421B39362C3E"
+    },
+    {
+        "Path":  "Validation~\\roller-apply.log",
+        "SHA256":  "BA4E5853798BA36A50CC2F14CD77D79D8D7D8D1223FF52F550D474E6690A0BD0"
+    },
+    {
+        "Path":  "Validation~\\roller-experiment.log",
+        "SHA256":  "F14F8B60FF4204B386ECDCB407970DFAAF836A5C1455446283E0AE1D85EB6778"
+    },
+    {
+        "Path":  "Validation~\\roller-verify.log",
+        "SHA256":  "5AD061AD3AD98B9D9EAE2F64750B3014333CAAE323B38AC7D4494DCBAD417368"
+    },
+    {
+        "Path":  "Validation~\\Route-guide-fullrun.txt",
+        "SHA256":  "B23B55EDAF315711BD045A263FDA754DF6A9B376399CF83BDF7C9C4FE3D0797A"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1366x768-driven-segment.png",
+        "SHA256":  "9B3E5188816CEE41FCEC66D7B45CE0A5C42141C26296164FFB45D998719A21F5"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1366x768-full-preview.png",
+        "SHA256":  "AF9A991123852E7B2B072AA08E26C6EA48FDA348833057CAAD781633C0AA03C2"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1366x768-point-inspection.png",
+        "SHA256":  "9BF82A8C87F6B8494A7BB3851790EAC04BC6584C31679438BCDE3F14EB20E04E"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1366x768-ready.png",
+        "SHA256":  "A02308DF4DC174193510637F380EB91087EE992E086F49324B462B65C80B2719"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1366x768-recording.png",
+        "SHA256":  "4738D6C2D03524D7CC3DC17889B3FDB290CAF51C87DD8082D0E8A43E0B3CC32A"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1920x1080-driven-segment.png",
+        "SHA256":  "3C4307079FC2FB78A14BACFADA855D5F9AA92745AA66C7A8A6AD902BFC725037"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1920x1080-full-preview.png",
+        "SHA256":  "348077A20DDD6D6CEB80DA6524E3DD375401CBDD537E6AC642BC618F6DD193C7"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1920x1080-point-inspection.png",
+        "SHA256":  "87B8DC9B4D16C40C82468CD300268AC544D162115849AC1F1E99C73BD258E526"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1920x1080-ready.png",
+        "SHA256":  "A09912CE4D1ACE7205A9C039AE309C0D6A7E2F0E8635FD6487C85946045C34B3"
+    },
+    {
+        "Path":  "Validation~\\Route-recorder-1920x1080-recording.png",
+        "SHA256":  "A043734209116ACB33A73171B1B4DBBF9004FCED23A8149FEEA375B69F3F7A9C"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-player-build-final.log",
+        "SHA256":  "55CF159FA70931E0895A72AA2491256A5E0D309ED9F16551CF5FD5BF59F5C759"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-player-build-input.log",
+        "SHA256":  "B670081FB33386DFC2D50141074A5BEDC9A4423A83808FB018CA4284CF6CD6A5"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-player-build-preview-final.log",
+        "SHA256":  "DAE2DF91FE5659FF75333886FE51F0253ABE566AC72E650CCFFF6C7C5F2E20DC"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-player-build.log",
+        "SHA256":  "EF66A60CD40490EE0CA88905BCBA3B7DCE38D43EDE8E0B6213C14312520CD8A8"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-reload-1.log",
+        "SHA256":  "9A378A06B6CF401DE20E048879F8A6D9680E5B45F7919D651B67E0ED9A526E2E"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-reload-final.log",
+        "SHA256":  "979F78F3AC63DE88500E982D34CCD1D1C6AC3A00C272E1ECF28CDD07962CA67E"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-unity-1.log",
+        "SHA256":  "25EC36A937104A4335A67DC8B11046B803D1744DD17268551F9AE86165A7B0FD"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-unity-2.log",
+        "SHA256":  "50570BF35F86AF5508484166149B5FAC144E47BE28986823219A2EE7A9491218"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-unity-3.log",
+        "SHA256":  "78B71AF335EAD614A9C19BE5D8FA411A55A1D7513D6AD9376011D705347C909E"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-unity-4.log",
+        "SHA256":  "2325D3E6798346C0B5BA772BE2553523FE8F1EE95F822966117C5AC7615811A4"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-unity-5.log",
+        "SHA256":  "547610C93131A65CB1B84B4C867018621B7AFE12895B36748A150E28D4463CC0"
+    },
+    {
+        "Path":  "Validation~\\Route-recording-unity-final.log",
+        "SHA256":  "BDF667FD010734DE5CA9695D071D2994E0957647FFCB418C73F29EA3F9984CDC"
+    },
+    {
+        "Path":  "Validation~\\RouteGuideProbe.cs",
+        "SHA256":  "E320505A6223D180896110219DA61C5E79552B9A96C5D2CD09F349CFA9F00783"
+    },
+    {
+        "Path":  "Validation~\\RouteGuideProbe.csproj",
+        "SHA256":  "5992E2FDD70A0265AEDE9532BEA9644728A0E6DF2E62461D18B871AF14999D77"
+    },
+    {
+        "Path":  "Validation~\\RouteGuideValidation.cs",
+        "SHA256":  "E31D67768D148B38D7D31CF349CEE7324B3519C7F46910AD5D933EC62869F1CB"
+    },
+    {
+        "Path":  "Validation~\\RouteRecordingCoreValidation.cs",
+        "SHA256":  "326BB0DCBBC2D37FBE7DE3010C25CA8301D3545203D704B393B2A854EDF31D71"
+    },
+    {
+        "Path":  "Validation~\\RouteRecordingProbe.cs",
+        "SHA256":  "1534357A69FCC48374A89804B0A72B5F0FE3C35BD9D9D85210A93771D6DF2E46"
+    },
+    {
+        "Path":  "Validation~\\RouteRecordingProbe.csproj",
+        "SHA256":  "F38F7DF86594609B8D2D8B45036E2B4EBAA2FFE4750595D21A9766609CBB441E"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-core-1.log",
+        "SHA256":  "875C98EBC312661DB698D21496095D0DF20C083CF69DFBAABF4C273739AF35E2"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-core-final.log",
+        "SHA256":  "CCEC9EF20F70D10A2A4AAC75E462D6B082B3E66F0860D0E06C1E89D548E037E0"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-1.log",
+        "SHA256":  "6B3DE008FA2685EE92C91D2FFDE242F41B56AB310C64543E25487D56E3819E18"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-2.log",
+        "SHA256":  "2AA35D649CBC86BE85169520CFA57AC803D3BF3937212145F0C95D188DB8AAA3"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-4.log",
+        "SHA256":  "73AA5CCA59229A3666F0D3CA0D0262A5B22508B0F552D843955697BE25174F06"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-5.log",
+        "SHA256":  "64F233420C7B01C60830178ACACAD15A65E64595FF321D6C13A7CDA3F8136778"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-6.log",
+        "SHA256":  "1239CF6001D9D85B5D06E14574E49CC3C468563C5C8FCA9245A709E203DD0775"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-7.log",
+        "SHA256":  "68C9B0CC138EFF0C145954221FFDA59F716372D9CFD45E8E8D8FF933772016D9"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-final.log",
+        "SHA256":  "02D1D3F579AA72C7EC60A0F012C3BA2374EF56A2D26A0ACFB58A957E6A010017"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-editor-gui-verified.log",
+        "SHA256":  "28E2B93824979EB41E249A9C3B804BB398CC61127145A3643C5B5FF085383773"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-fresh-guide.log",
+        "SHA256":  "F8C81F20BE118FB42C8CCDAF9EEDA5135D4BF7294242ABD12F08BC1D46D134F1"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-native-build.log",
+        "SHA256":  "1D4024EE600D1E4254236CFE58492054638A15BA40E5EBA1BC1D4ED111554B19"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-real-route-1.log",
+        "SHA256":  "33B1863FA75EEC613582B7DACC44362D2EF9EDF3F26268F96ABBFAADFE2E4843"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-real-route-final.log",
+        "SHA256":  "72F2B5B3C88DA9428E8A3D8CC10B058FC96CBDAA85A7D55F206ABCBD804ADC6C"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-real-route-verified.log",
+        "SHA256":  "90E4BF4DDBDA16958607DD5A5A38ACE8BDA4BDC51EEBD8D57BC02F00873C3A87"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-regression-final.log",
+        "SHA256":  "635D37CD667A9F5A7674E0AB638A9A592D52E91F94689FFD230DBBAF65459E8D"
+    },
+    {
+        "Path":  "Validation~\\RouteRepair-unity-1.log",
+        "SHA256":  "89655930E099A91EAF84B7070E878E20DB4C979E8B680BFEF41901CFA5183E91"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-build-performance.log",
+        "SHA256":  "C1B5B2B23C01DEC9C2C026F9A400E623BB0152B2378305A6CF4BCF27EB34B286"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-build-player-1.log",
+        "SHA256":  "633802AEC13C5827E51FAAC6F6EF2AE2465CBB5365F9FEF2EB1EC94A16DA03FD"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-build-player-2.log",
+        "SHA256":  "37AAE84FA5D417C385620C98B3DEE0B18866615AD16EC898524E11DA0B437EA9"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-build-player-final.log",
+        "SHA256":  "BD85369601A4FB70DBFD246AD764064144E382CD6AE46AC8A0A432E604529EEB"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-build-scaled-overlay.log",
+        "SHA256":  "D5BF5DD12690F33BE8F37F35B751D003007F492917D305A6EF9366BF7F162D95"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-compile-smoke.log",
+        "SHA256":  "B8273CF963CAFB763FFC193B3533EBFE7EC9805341AC173D77BC90D9A6395EC6"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-core-final.log",
+        "SHA256":  "8BA948DFC81DB7741364A112996A716D5290BBE458462959470C757B539061F2"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-core.log",
+        "SHA256":  "93FC8CC4FC8C7F645CEAD98A83D3E32FC72E5CCF6DE7A447EFE602DED8119C06"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-fresh-play-1.log",
+        "SHA256":  "7ACA3FB32DFD0602B734080098FC1EF4DF12CBFE2748B28CE8B0606645A880F2"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-fresh-play-2.log",
+        "SHA256":  "B2B60F4151CFEEFD55846F9C460085C172534C2BB9CC6DC54CE8FDA4D20A7ECC"
+    },
+    {
+        "Path":  "Validation~\\RouteUX-workflow-1.log",
+        "SHA256":  "BFA2DA75DAE9377936F993CE88CF4CDF3E5C85D16D7742E9CC5DBB7133BADCC7"
+    },
+    {
+        "Path":  "Validation~\\RouteUXCoreValidation.cs",
+        "SHA256":  "D72227B1D5A9855A3E75FF3459AFB068602156C05F8DBB5EF0D00FF3529F6929"
+    },
+    {
+        "Path":  "Validation~\\RunBatch-authored.log",
+        "SHA256":  "60BD6BB2B42C048B268224DE9758876012BCFE675B17CFDB706438FAC2948718"
+    },
+    {
+        "Path":  "Validation~\\RunBatch-launch.log",
+        "SHA256":  "62504C1629CE957A9C43E97113DD319A261E9AA32418BA9A71C80B056A0904C1"
+    },
+    {
+        "Path":  "Validation~\\RunIsolatedUnity.ps1",
+        "SHA256":  "F4E46FF4267AF49D9E152DBBAEC157F44AD83A22BFEF65AE5E52F28F2E599A67"
+    },
+    {
+        "Path":  "Validation~\\RunLayoutPlayer.ps1",
+        "SHA256":  "72451EA378097B5ABFF7090ECA1688766473C5E9FED5E2D6292017CF09FB9560"
+    },
+    {
+        "Path":  "Validation~\\RunPerformancePlayer.ps1",
+        "SHA256":  "DA6D451FDA99207527BB610108E5089F45389DC87812DD3F749ABA1BD6359E02"
+    },
+    {
+        "Path":  "Validation~\\Service-bay.png",
+        "SHA256":  "1596AFD1A6A2FFE0477666FC38B9FAB5E0FF11421315AA35AAD37FB5791C15C0"
+    },
+    {
+        "Path":  "Validation~\\Service-collision-focused.txt",
+        "SHA256":  "3BF12343F3F92A3D50C8A7D5BC4C8487C08CBB3C992EBF03E38008B44FE2DCAF"
+    },
+    {
+        "Path":  "Validation~\\Service-filling.png",
+        "SHA256":  "1F979FC934C7BC886F3A44DB3FE4E577146323F4CA53C0AA92819DEA771E0273"
+    },
+    {
+        "Path":  "Validation~\\Service-floor-drained.png",
+        "SHA256":  "C9EE8EE371FFDEED34ABAC4A9D913CE27B12BD0E87B0E4507AB3B11114CC71EA"
+    },
+    {
+        "Path":  "Validation~\\Service-floor-snow.png",
+        "SHA256":  "02B314098A17A13BE00900EF538C78C2DA42676AD3E9B6FB96290FBF214AB9F9"
+    },
+    {
+        "Path":  "Validation~\\Service-floor-source.png",
+        "SHA256":  "4B8A462979197183EDCA900EAC283DC4ED102DCFB43454CCE5D847EEE7CFC35D"
+    },
+    {
+        "Path":  "Validation~\\Service-geometry-results.txt",
+        "SHA256":  "CAA678A4A877A25B1112C5A043F5279E6D5C5EC8E09A46745C144CE5DB8300E1"
+    },
+    {
+        "Path":  "Validation~\\Service-hose-breakaway.png",
+        "SHA256":  "EF4085ACC7EFA1400CE46476F7FDCE1631845103BA4D7537FD3F95BCECC6A7AB"
+    },
+    {
+        "Path":  "Validation~\\Service-hose-connected.png",
+        "SHA256":  "DEEFCB9CDD75F782FAC5E4F64149195A2AD16E08F43AC47B66AD936E675963EE"
+    },
+    {
+        "Path":  "Validation~\\Service-overflow.png",
+        "SHA256":  "582C65855C34132701537A4B9D5300AC44E0A67B689B260E62D54E213D18D806"
+    },
+    {
+        "Path":  "Validation~\\Service-results.txt",
+        "SHA256":  "6BD4EA5FCC52C3F9CBAB1C245B653EC14C6284FAF7B07C2551359A87F093B73A"
+    },
+    {
+        "Path":  "Validation~\\ServiceCollisionProbe.cs",
+        "SHA256":  "6E1682AF85AB5DE346409C81F0FA0B69F32BDF7293888903E72FED849D95AF66"
+    },
+    {
+        "Path":  "Validation~\\ServiceCollisionProbe.csproj",
+        "SHA256":  "44287678AC2B7F9934603497F7F5AF581B387330E812858ABFAB9F90C3101637"
+    },
+    {
+        "Path":  "Validation~\\ServiceCollisionValidation.cs",
+        "SHA256":  "BEA21A9D7CC96551D894418066833DFD893411509E4A14CAB1E8699945FC0D7F"
+    },
+    {
+        "Path":  "Validation~\\ServiceFreedomValidation.cs",
+        "SHA256":  "A0753A3C1886E82F651924E647AFC9F3F03208927BD152CA534836429C01842B"
+    },
+    {
+        "Path":  "Validation~\\ServiceValidation.cs",
+        "SHA256":  "62AFA1D068A535184C702CF59D41339969B632FC2BF6BDFA36143F274D49D7A8"
+    },
+    {
+        "Path":  "Validation~\\Snow-calibration-after.txt",
+        "SHA256":  "8AD6F0C89DA399B232FFE1A1AA47E181736106F25E84346CAD827FCBEB6E0B16"
+    },
+    {
+        "Path":  "Validation~\\Snow-calibration-before.csv",
+        "SHA256":  "9C4DAF2834A88D413191ACAA2AED5560A7989BCBBABA0ABD6362E72FB07A347F"
+    },
+    {
+        "Path":  "Validation~\\Snow-calibration-focused.txt",
+        "SHA256":  "8A345D6A070E216BE280B6DAAA481CC5DDAFA4238377F338A0396F87C79901A0"
+    },
+    {
+        "Path":  "Validation~\\Snow-disabled-augers-both-sides.png",
+        "SHA256":  "F6343074F25573ACCEE63AD5EC072255BF57F406BA7BE57EC5F7246E889A72D6"
+    },
+    {
+        "Path":  "Validation~\\Snow-dumped-pit.png",
+        "SHA256":  "5433807E38B23F1D7C193139D8158AADCBE0F8FD846C1B3D8F4DBA38447BD309"
+    },
+    {
+        "Path":  "Validation~\\Snow-dumping.png",
+        "SHA256":  "FE902102F158A7D316D3DD1A4CC88454B62364206D5E1F14095FD8F6A6437E69"
+    },
+    {
+        "Path":  "Validation~\\Snow-overflow.png",
+        "SHA256":  "6FC78E77EEFB216EAFCB31BEA247339E1A15F8F737527E8D9B50D133249403B7"
+    },
+    {
+        "Path":  "Validation~\\Snow-windrows-after-recovery.png",
+        "SHA256":  "73A11DC28695D2AF0778719C5BC278B67103EC14E39DE64D0D456C58DED0CAC5"
+    },
+    {
+        "Path":  "Validation~\\Snow-windrows-before-recovery.png",
+        "SHA256":  "9F86BD528F16F3F546187C147C0273D1755050D985E61877FF84EF0423E7F1AD"
+    },
+    {
+        "Path":  "Validation~\\SnowCalibrationProbe.cs",
+        "SHA256":  "6B72890255E649E65D73AB310CAD51B758FB78FE2EB747A963C05363B446288F"
+    },
+    {
+        "Path":  "Validation~\\SnowCalibrationProbe.csproj",
+        "SHA256":  "07048324BCB525E7B1902993D68A024A7DFE4349CF60CAC0327484C91227BF99"
+    },
+    {
+        "Path":  "Validation~\\SnowCalibrationValidation.cs",
+        "SHA256":  "2A134172D54CF08B73A4E0328204756D77C75A88BE483654502CE6AB14ECBD19"
+    },
+    {
+        "Path":  "Validation~\\Southeast-entrance.png",
+        "SHA256":  "BD97F0E563AC3924BEAB1493EFF484C459FB7D29BFB8D729803AD45CE034C6F4"
+    },
+    {
+        "Path":  "Validation~\\Southeast-full-run.txt",
+        "SHA256":  "FEE1B321F93016901BECB023661F5722A8F1B5C42FDF3CD3952A9A4BA7E225BD"
+    },
+    {
+        "Path":  "Validation~\\Southeast-service-room.png",
+        "SHA256":  "1596AFD1A6A2FFE0477666FC38B9FAB5E0FF11421315AA35AAD37FB5791C15C0"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-regression-final.log",
+        "SHA256":  "3082D0CBBF78AC76772AF7A55A5A2E7D2E29E2C89A90537CF3A0B78C4F960A3F"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-regression-unity.log",
+        "SHA256":  "5958E54516A8D5A7E6455F861A71FEB6C82D2049E5595A3285711FB1C7E2AB7A"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-1.log",
+        "SHA256":  "FE0114853609A5229BEC3C926C195DC5DC6243A3E0AEAC67848AED0310029267"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-2.log",
+        "SHA256":  "0CE5B6CE8060E083668B4BE110115BC57F310AED6A92FD0AF6EA2977DBEEAB5B"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-3.log",
+        "SHA256":  "D57460293CA541C149628C8BAD086C8D778F22DB52FC18F25FC9361F67B961ED"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-4.log",
+        "SHA256":  "557835646E545906D227D6B4B3FEF2ABCCB85B48980F28A7791BA607331897D2"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-5.log",
+        "SHA256":  "152700D8B0C1D1EABE08EFC3BB70426083A57A9EBCC8533686DB29757D8A22F7"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-final.log",
+        "SHA256":  "6C7D886CBB7F6AD5F9657015B3B448ACB6E275FBDE9424BDF9F96EB41A93F02E"
+    },
+    {
+        "Path":  "Validation~\\Spatial-audio-unity-mix-final.log",
+        "SHA256":  "65CF6F5EA853C7EC7141EF0929B1F682C2FD3A76088ED6618BDDD1241498C2F9"
+    },
+    {
+        "Path":  "Validation~\\SpatialAudio-authored.log",
+        "SHA256":  "CB64523752DE69FE4FE895B6C092A1796D5DBCB47C08F1C74B43A5F996A4D3A1"
+    },
+    {
+        "Path":  "Validation~\\StageUnityValidation.ps1",
+        "SHA256":  "74907CA61CB9DEC9E401416B67C679F220909BB65BF00F4F375BD32414473EAD"
+    },
+    {
+        "Path":  "Validation~\\SummarizeErgonomicPerformance.py",
+        "SHA256":  "A6EA87313C29E172EF8BF2D37B080AC48622B200A70D764E6DB496829692E57E"
+    },
+    {
+        "Path":  "Validation~\\Surface-consistency-results.txt",
+        "SHA256":  "B3735B7C3EDAB0E4B7DB0BCA511C1528BA47CF9E58510F2196239AB31712B4AB"
+    },
+    {
+        "Path":  "Validation~\\Surface-service-layout-build.log",
+        "SHA256":  "F9B7B85901F1E00511135B9F31EDD6C52D5673A73472B4B7BEE2C241F3D4064C"
+    },
+    {
+        "Path":  "Validation~\\Surface-service-performance-build.log",
+        "SHA256":  "A8711CCC8BCF73E6C268925622F7CB8B3A9CF36CB1EF0CB3AAACF764EDC20407"
+    },
+    {
+        "Path":  "Validation~\\Surface-service-unity.log",
+        "SHA256":  "487AD55E2E08954A64F360E0B0EA8B2C4FA1A36FC62EE76F2A8621631EB0559C"
+    },
+    {
+        "Path":  "Validation~\\SurfaceConsistencyProbe.cs",
+        "SHA256":  "6F1DB69224D17D58C82A7C061FC16AEAD1608F68E327977C87A2E6E5D35495E3"
+    },
+    {
+        "Path":  "Validation~\\SurfaceConsistencyProbe.csproj",
+        "SHA256":  "169F9730D5C12E5D4B0F641B29A48CB9C5F02CB71032599893FD6F0719644BB5"
+    },
+    {
+        "Path":  "Validation~\\SurfaceConsistencyValidation.cs",
+        "SHA256":  "75978D7A91BD8506D637D29160028F9C691163A5D544069CC020116197CC9703"
+    },
+    {
+        "Path":  "Validation~\\Tank-glass.log",
+        "SHA256":  "EED82109ECD3AA5BAF61E703B59B4A3CA02BEA8092540CC913ED921B75F2C4BA"
+    },
+    {
+        "Path":  "Validation~\\Tire-overlap-operator-Q.png",
+        "SHA256":  "EAD686FA6819E46C483CD5187468BDBBF6E3D816C454ACC0DFB70C4491DF8D2D"
+    },
+    {
+        "Path":  "Validation~\\Tire-overlap-top.png",
+        "SHA256":  "3F0E7AC59217D12228233ACDEB721FA308C2EBAE72F9741EC9C1523B48C56A00"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-acceptance.log",
+        "SHA256":  "D582F347848DBAF5458026416C4FEE8FEE42E437632D64463F8E764F07A684EF"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-build-acceptance-performance.log",
+        "SHA256":  "D93523C445EE028448AE2EDAB9946BAAC1E2F8E0A644CA91B3679A3E20E9D87E"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-build-acceptance-player.log",
+        "SHA256":  "0F89ECECF2F91C5B2DFB6C7666CE9F4DA38B357939DFB8F781B2ADD22EA2A618"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-build-depth-check.log",
+        "SHA256":  "D14537BD5E11C6241B5BE4AFEAB13B9CC9B10134E60AE5FA69AC63860309B3FF"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-build-layout-final.log",
+        "SHA256":  "57A5382DE4360D6F77602317A9D4C6DC2E1D78F98933D7A0E9DF6C3C9DB2E050"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-build-layout.log",
+        "SHA256":  "A8DE267AB0B7D69B18AD13A72FB4EAFF64CC410BB954C56EEA9570ABEF208596"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-build-performance.log",
+        "SHA256":  "6D7FE12FDB8EC34F76B9F8A92B4A3EA2878C5C2F18CA9B1F29CA9AFF4168D004"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-core-final.log",
+        "SHA256":  "F622EF47B27770E288F52C7CE1BCBEF115F3B2D9774396C32F41A18369137290"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-core-status.log",
+        "SHA256":  "BF18C9BB9BCA7D1BDDBF72273023466D21411A8996E71D6C63BAAB84583EB028"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-core.log",
+        "SHA256":  "F77637D50231D113E1AC28B2720346264F32B6233A7A02E833A01929E90B845B"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-final-consistency.log",
+        "SHA256":  "0263497C59DD66AD1DA9CEB65CEFE4E7BDC8331FB07E27A1927EC8FACCF3A3D5"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-fresh-process.log",
+        "SHA256":  "E21FFC0F1123B5198EC44810FD53A0BBC2E530EE35F48C4B4C71168EBBAF6390"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-persistence-acceptance.log",
+        "SHA256":  "BDACABD2F46412E7C661F330F5262769941B3607344D52A680E1C817CB694E2A"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-recorder-fresh-regression.log",
+        "SHA256":  "08EC499AFDE8626F5D97311BB6EE7544967916233AD56D41B0E151476D0D22CA"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-unity-1.log",
+        "SHA256":  "28E49CA213E182EC1EB0856F5EC6E3256E92D1DFD3C205095FB039A7D6E0CA03"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-unity-2.log",
+        "SHA256":  "FCC48287B344C18ED09B32F173A0FB260E86A7836AEF9F74893FF0977F607DBA"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-unity-3.log",
+        "SHA256":  "1123BB86A7CE7EFBECFF173433B94DEE0288E6E4EC060944027AA5D3D7E996B5"
+    },
+    {
+        "Path":  "Validation~\\Training-guide-unity-final.log",
+        "SHA256":  "E868A2062B71B55BBC9E88B0E453132CEC8E3184BC3A84FED9F363711D3DE45E"
+    },
+    {
+        "Path":  "Validation~\\TrainingGuideValidation.cs",
+        "SHA256":  "B699220F66C9ED67B1254277EE4EFA2D0CF46BF9D77E59099B6606855C0FAD9A"
+    },
+    {
+        "Path":  "Validation~\\Unity-results.txt",
+        "SHA256":  "D93B92E4119877C7C60EFAB4AEEC498140623862B7339DA724E410BD02195809"
+    },
+    {
+        "Path":  "Validation~\\Unity-smoke.log",
+        "SHA256":  "C95DB06367D74411FB1719284D3EE17708CDF183FD5B77063B861232337D80E8"
+    },
+    {
+        "Path":  "Validation~\\Water-performance-after.txt",
+        "SHA256":  "15F69A5D1A709F2EF6F3F9909C918CB9F5D17418536D7B6E87EA001B57BE2267"
+    },
+    {
+        "Path":  "Validation~\\Water-performance-before.txt",
+        "SHA256":  "E5F80604A949DF5FD45941B67D3104D1029C388C766607C30BD1343CF549DAC6"
+    },
+    {
+        "Path":  "Validation~\\Water-performance-comparison.txt",
+        "SHA256":  "CEEB5CA8C4E1336870B2D2570ED1E877574F20C4ED28E6C03507D6377BF41EF2"
+    },
+    {
+        "Path":  "Validation~\\Water-valves-closed.png",
+        "SHA256":  "7C802389D055B0BBD25C0C006C692AA094C24EB8DE52C9BB1D33439E5C9D6340"
+    },
+    {
+        "Path":  "Validation~\\Water-valves-open.png",
+        "SHA256":  "A629523B64403765F99A382A5DC65D311ABA86E3E257D93372050145271684BE"
+    },
+    {
+        "Path":  "Validation~\\Water-valves-partial.png",
+        "SHA256":  "2B60F9F47D089727A030D51F32CAEC0718978CD374BA0F547D7E022A390590F1"
+    },
+    {
+        "Path":  "Validation~\\WaterPerformanceProbe.cs",
+        "SHA256":  "4253CAE2D3F4DDB3D588DEC29852C2F5A67EF4F4EBE0A839C1515D73F20A2F64"
+    },
+    {
+        "Path":  "Validation~\\WaterPerformanceProbe.csproj",
+        "SHA256":  "A89D7FB0E5612ED4AB78841B85C5AA51CA2A70EE8FB061644E531669177F644B"
+    },
+    {
+        "Path":  "Validation~\\zzgrate.log",
+        "SHA256":  "6140A01E94FF7317844530B07A23089C60A97A8F713CF44C625CDEDA11D3AE6F"
+    }
+]

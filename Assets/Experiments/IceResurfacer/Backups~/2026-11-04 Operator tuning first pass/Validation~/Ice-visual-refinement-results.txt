@@ -1,0 +1,12 @@
+  aging 1min: liquid/wet fraction=86.69%, freeze time constant=420s
+  aging 5min: liquid/wet fraction=48.95%, freeze time constant=420s
+  aging 15min: liquid/wet fraction=11.73%, freeze time constant=420s
+  aging 20min: liquid/wet fraction=5.74%, freeze time constant=420s
+  fractional stamp: 1 partial longitudinal boundary rows; deposited 0.007200L equals emitted supply
+  wear: seeded groove depth=0.037..0.145mm; shallow/deep remaining mean=0.0251/0.0006mm across 11480 cut cells
+  overlap: tire exterior=0.835m; blade edges=-1.000..1.000m; strong wet band=2.300m; all-liquid band=2.400m; second center=1.985m; measured-boundary nominal towel overlap=0.115m; ideal continuous towel-edge alignment overlap=0.215m; dry/scored cell gaps=0/0; coverage=3.66%
+  perimeter: physical wet gap=0.000m; shavable=589736/599224 cells; excluded=9488; no non-ice cells wetted
+  pickup: 3.900L recovered in 5s; ice loss and wash gain agree; overwater summed depth 8109.14 -> 6622.36mm
+  portal pickup: 0.0001001L within 0.0001001L tank room; runoff remains conserved
+  core 5000 active ticks: 0.1818ms/tick, 0 managed bytes (CPU only; no Unity/render/UI)
+  Ice calibration PASS: tire-aligned contiguous passes, physical fringe, shaving mask, real liquid pickup, frozen balance, brush contact

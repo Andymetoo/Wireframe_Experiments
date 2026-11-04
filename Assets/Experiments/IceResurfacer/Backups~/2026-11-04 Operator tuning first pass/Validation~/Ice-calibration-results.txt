@@ -1,0 +1,6 @@
+  overlap: tire exterior=0.835m; blade edges=-1.000..1.000m; strong wet band=2.200m; all-liquid band=2.400m; second center=1.935m; measured-boundary nominal towel overlap=0.165m; ideal continuous towel-edge alignment overlap=0.215m; dry/scored cell gaps=0/0; coverage=3.64%
+  perimeter: physical wet gap=0.000m; shavable=146888/149804 cells; excluded=2916; no non-ice cells wetted
+  pickup: 3.757L recovered in 5s; ice loss and wash gain agree; overwater summed depth 2012.32 -> 1674.13mm
+  portal pickup: 0.0001001L within 0.0001001L tank room; runoff remains conserved
+  core 5000 active ticks: 0.0444ms/tick, 0 managed bytes (CPU only; no Unity/render/UI)
+  Ice calibration PASS: tire-aligned contiguous passes, physical fringe, shaving mask, real liquid pickup, frozen balance, brush contact

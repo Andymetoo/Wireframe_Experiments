@@ -108,7 +108,7 @@ namespace IceResurfacer.Core
             if(sim==null||sim.GuidedTraining||sim.Finished)throw new InvalidOperationException("Record in an unfinished Free Simulation / Practice session.");
             if(string.IsNullOrWhiteSpace(name)||name.Trim().Length>80)throw new ArgumentException("Give the route a name of 1 to 80 characters.");
             var snapshot=new SimulatorConfig();
-            foreach(var field in typeof(SimulatorConfig).GetFields(BindingFlags.Public|BindingFlags.Instance))field.SetValue(snapshot,field.GetValue(sim.Config));
+            foreach(var field in typeof(SimulatorConfig).GetFields(BindingFlags.Public|BindingFlags.Instance)){var value=field.GetValue(sim.Config);field.SetValue(snapshot,value is float[] array?(float[])array.Clone():value);}
             Data=new RecordedRouteData{schemaVersion=RecordedRouteData.CurrentVersion,id=Guid.NewGuid().ToString("N"),
                 name=name.Trim(),createdUtc=DateTimeOffset.UtcNow.ToString("O"),provenance=provenance,coordinates=RecordedRouteData.Coordinates,
                 configuration=snapshot,startSimulationSeconds=sim.Time,distanceThresholdMeters=.20f,headingThresholdDegrees=2,
