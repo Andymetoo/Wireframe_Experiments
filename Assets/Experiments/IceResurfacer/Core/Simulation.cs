@@ -42,7 +42,7 @@ namespace IceResurfacer.Core
         public float VerticalSpillRate { get; private set; }
         public float ConditionerLeftEscapeRate { get; private set; }
         public float ConditionerRightEscapeRate { get; private set; }
-        public float ConditionerSnowFill { get { return Clamp(HorizontalSnowM3/Config.ConditionerSnowCapacityM3,0,1); } }
+        public float ConditionerSnowFill { get { return Clamp(HorizontalSnowM3/Config.ConditionerUsableSnowCapacityM3,0,1); } }
         public SnowTransportCondition SnowCondition { get; private set; }
         public float ConditionerLeftExitX { get; private set; }
         public float ConditionerLeftExitZ { get; private set; }
@@ -92,6 +92,9 @@ namespace IceResurfacer.Core
         public float GuideRollerTravel { get; private set; }
         public float ActualBladeDepthMm { get { return Config.EffectiveBladeDepth(Controls.BladeDepthMm); } }
         public float WashPrimeSeconds { get; private set; }
+        public float SurfacePickupPrimeSeconds { get; private set; }
+        // The switch engages the clutch; the horizontal conveyor supplies its drive.
+        public bool WashPumpRunning => Controls.WashPump && Controls.HorizontalAuger && !ConveyorJammed;
         public float PumpDamage { get; private set; }
         public int Mistakes { get; private set; }
         public int TankDumps { get; private set; }
@@ -122,6 +125,7 @@ namespace IceResurfacer.Core
         readonly int[] footprint;
         int footprintCount;
         float remainder, jamTime;
+        bool sideSnowShedding;
         bool exitUnsafe, dumping;
         float shakePeak, shakeLow;
         bool shakeArmed;
@@ -193,7 +197,7 @@ namespace IceResurfacer.Core
             float excessBite=Math.Max(0,Controls.BladeDepthMm/Config.RecommendedBladeDepthMm-1);
             float deeperBite=Math.Max(0,ActualBladeDepthMm-Controls.BladeDepthMm*Config.BladeBiteFraction);
             LoadCutting = Conditioner.Lift < .15f ? Math.Abs(Vehicle.Speed)*(Controls.BladeDepthMm*.14f+excessBite*excessBite*.22f+deeperBite*1.5f) : 0;
-            LoadConveyors = HorizontalSnowM3/Config.ConditionerSnowCapacityM3*.75f+VerticalSnowM3/Config.VerticalSnowCapacityM3*.55f+(Controls.HorizontalAuger?.08f:0)+(Controls.VerticalAuger?.09f:0);
+            LoadConveyors = HorizontalSnowM3/Config.ConditionerUsableSnowCapacityM3*.75f+VerticalSnowM3/Config.VerticalSnowCapacityM3*.55f+(Controls.HorizontalAuger?.08f:0)+(Controls.VerticalAuger?.09f:0);
             LoadCongestion = ConveyorCongestion*.35f+(ConveyorJammed?.5f:0);
             MachineLoad = Clamp(.13f+LoadCutting+LoadConveyors+LoadCongestion,0,1.8f);
         }
@@ -393,16 +397,25 @@ namespace IceResurfacer.Core
             // Only material rejected by the connected/full bin builds backpressure.
             jamTime=rejected>0&&TankLift<.08f?Math.Min(Config.ConveyorJamSeconds,jamTime+dt):Math.Max(0,jamTime-dt*.15f);
             if(jamTime>=Config.ConveyorJamSeconds-.0001f)ConveyorJammed=true;
-            float spill = Math.Max(0, HorizontalSnowM3 - Config.ConditionerSnowCapacityM3);
+            float capacity=Config.ConditionerUsableSnowCapacityM3;
+            // Snow reaching the lip slumps until the bank falls below its repose
+            // level. This finite stock makes short uneven discharges rather than
+            // perfectly uniform ribbons. No time/distance trigger or new source.
+            if(HorizontalSnowM3>capacity)sideSnowShedding=true;
+            if(HorizontalSnowM3<=capacity*.85f)sideSnowShedding=false;
+            float slump=sideSnowShedding?Math.Max(0,HorizontalSnowM3-capacity*.75f)*(1-(float)Math.Exp(-dt/.18f)):0;
+            float spill = Math.Max(Math.Max(0,HorizontalSnowM3-capacity),slump);
             float verticalExcess=Math.Max(0, VerticalSnowM3-Config.VerticalSnowCapacityM3);
-            HorizontalSnowM3 = Math.Min(HorizontalSnowM3, Config.ConditionerSnowCapacityM3);
+            HorizontalSnowM3 -= spill;
             VerticalSnowM3 = Math.Min(VerticalSnowM3, Config.VerticalSnowCapacityM3);
             if (spill > 0)
             {
                 SpilledSnowM3+=spill;
-                ConditionerLeftEscapeRate=ConditionerRightEscapeRate=spill*.5f/dt;
-                DepositEscapedSnow(ConditionerLeftLandingX,ConditionerLeftLandingZ,spill*.5f,.16f);
-                DepositEscapedSnow(ConditionerRightLandingX,ConditionerRightLandingZ,spill*.5f,.16f);
+                float split=.5f+.13f*(float)Math.Sin(Conditioner.X*4.7f+Conditioner.Z*3.1f);
+                float left=spill*split,right=spill-left;
+                ConditionerLeftEscapeRate=left/dt;ConditionerRightEscapeRate=right/dt;
+                DepositSideSnow(ConditionerLeftLandingX,ConditionerLeftLandingZ,left,-1);
+                DepositSideSnow(ConditionerRightLandingX,ConditionerRightLandingZ,right,1);
             }
             if(verticalExcess>0){SpillAtDischarge(verticalExcess);VerticalSpillRate+=verticalExcess/dt;}
             EscapingSnowRate=(spill+rejected+verticalExcess)/dt;
@@ -448,6 +461,21 @@ namespace IceResurfacer.Core
             float deposited=Ice.DepositSnow(x,z,volume,radius);
             OffIceSnowM3+=volume-deposited;
             if(volume>deposited)Environment.Deposit(x,z,volume-deposited,0);
+        }
+
+        void DepositSideSnow(float x,float z,float volume,float side)
+        {
+            float grain=.5f+.5f*(float)Math.Sin(x*11.3f+z*7.9f+side*2.1f);
+            float radius=.10f+.10f*grain;
+            float sn=(float)Math.Sin(Conditioner.Heading),cs=(float)Math.Cos(Conditioner.Heading);
+            // Most snow forms a rough bank; a smaller finite fraction lands as
+            // compact broken pieces. Both lobes normalize over real ice cells.
+            float core=volume*.72f;
+            DepositEscapedSnow(x,z,core,radius);
+            float fragmentX=x+cs*side*.055f+sn*(grain-.5f)*.18f;
+            float fragmentZ=z-sn*side*.055f+cs*(grain-.5f)*.18f;
+            ConstrainSnowAtBoards(ref fragmentX,ref fragmentZ);
+            DepositEscapedSnow(fragmentX,fragmentZ,volume-core,.065f+.025f*grain);
         }
 
         void SpillAtDischarge(float volume)
@@ -599,7 +627,7 @@ namespace IceResurfacer.Core
         {
             if (!InServiceBay || !EquipmentSafe || Math.Abs(Vehicle.Speed) > .035f || TankRaised)
             { LastMessage = "Service requires a stop in the bay with all equipment stowed and tank lowered."; return false; }
-            FloodWaterLiters = Config.FloodCapacityLiters; WashWaterLiters = Config.WashCapacityLiters; PumpDamage = 0; WashPrimeSeconds = 0;
+            FloodWaterLiters = Config.FloodCapacityLiters; WashWaterLiters = Config.WashCapacityLiters; PumpDamage = 0; WashPrimeSeconds = SurfacePickupPrimeSeconds = 0;
             LastMessage = "Water tanks refilled; wash pickup inspected. Ready for another pass.";
             return true;
         }

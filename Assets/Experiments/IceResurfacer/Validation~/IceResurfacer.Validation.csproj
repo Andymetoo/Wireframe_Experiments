@@ -25,5 +25,8 @@
     <Compile Include="OperatorSpeedValidation.cs" />
     <Compile Include="ContactDrivingValidation.cs" />
     <Compile Include="../Editor/RecordedRouteFixture.cs" />
+    <Compile Include="../Editor/OperatorMaterialValidation.cs" />
+    <Compile Include="../Editor/OperatorWaterRealismValidation.cs" />
+    <Compile Include="../Editor/OperatorSnowRealismValidation.cs" />
   </ItemGroup>
 </Project>

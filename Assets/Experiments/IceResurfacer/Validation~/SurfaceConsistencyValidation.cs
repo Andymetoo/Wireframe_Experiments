@@ -58,7 +58,7 @@ internal static class SurfaceConsistencyValidation
             if(seconds==30)
             {
                 s.Controls.FloodFlow=0;
-                s.Controls.WashValve=.2f;Tick(s,11);s.Controls.WashValve=0;s.Controls.WashPump=true;
+                s.Controls.WashValve=.2f;Tick(s,11);s.Controls.WashValve=0;s.Controls.HorizontalAuger=true;s.Controls.WashPump=true;
                 s.Controls.Brake=false;s.Controls.Throttle=-.25f;Tick(s,8);
                 Check(s.TotalRecoveredSurfaceLiters>.1,"primed pickup recovers pooled still-liquid water");
                 report.AppendLine("30s pool recovery through actual squeegee="+s.TotalRecoveredSurfaceLiters.ToString("F4")+"L.");

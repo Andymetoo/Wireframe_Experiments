@@ -104,7 +104,7 @@ namespace IceResurfacer.Editor
                 game.Surface.SetDebugMode(2);game.Surface.Refresh(s);
                 CaptureExposedIce(camera,"Overwater-before-pickup.png");
                 double before=WaterMass(s),tank=s.WashWaterLiters;float overBefore=Overwater(s);
-                s.Controls.WashPump=true;s.Controls.Throttle=-.2f;Tick(5);Refresh();
+                s.Controls.HorizontalAuger=true;s.Controls.WashPump=true;s.Controls.Throttle=-.2f;Tick(5);Refresh();
                 double recovered=s.TotalRecoveredSurfaceLiters;
                 Check(recovered>.3,"primed physical squeegee collects existing standing water over time");
                 Check(Math.Abs(before-WaterMass(s)-recovered)<.003,"surface-water removal equals metered pickup");

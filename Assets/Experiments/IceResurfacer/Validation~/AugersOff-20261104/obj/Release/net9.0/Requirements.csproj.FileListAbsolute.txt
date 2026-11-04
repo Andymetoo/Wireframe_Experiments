@@ -1,0 +1,15 @@
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\Requirements.exe
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\Requirements.deps.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\Requirements.runtimeconfig.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\Requirements.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\Requirements.pdb
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.GeneratedMSBuildEditorConfig.editorconfig
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.AssemblyInfoInputs.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.AssemblyInfo.cs
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.csproj.CoreCompileInputs.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.sourcelink.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\refint\Requirements.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.pdb
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\Requirements.genruntimeconfig.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\ref\Requirements.dll

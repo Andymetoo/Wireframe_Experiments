@@ -144,7 +144,7 @@ namespace IceResurfacer.Presentation
             Target(Layer.TankLeft,tankMoving?cylinder:0);Target(Layer.TankRight,tankMoving?cylinder:0);
             Target(Layer.Flood,sim.FloodWaterLiters>0?c.FloodFlow*.12f:0);
             Target(Layer.Wash,sim.WashWaterLiters>0?c.WashValve*.09f:0);
-            Target(Layer.Pickup,c.WashPump?.06f:0);
+            Target(Layer.Pickup,sim.WashPumpRunning?.06f:0);
             Target(Layer.Arena,.10f);
             Target(Layer.Vertical,(c.VerticalAuger?.15f:0)*(1+congestion*.6f));
             Target(Layer.Drive,Mathf.Clamp01(speed/3)*.14f+Mathf.Abs(c.Throttle)*Mathf.Clamp01(sim.MachineLoad)*.08f+deceleration*.08f);

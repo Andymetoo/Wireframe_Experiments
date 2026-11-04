@@ -62,7 +62,7 @@ namespace IceResurfacer.Editor
             double water=WaterStock(s);float min=s.WashWaterLiters;
             var returnMeter=typeof(Simulation).GetProperty("TotalWashRecirculatedLiters");
             Func<double> returns=()=>returnMeter!=null?(double)returnMeter.GetValue(s)+s.TotalRecoveredSurfaceLiters:0;
-            s.Controls.WashValve=valve;s.Controls.FloodFlow=flood?1:0;
+            s.Controls.HorizontalAuger=true;s.Controls.WashValve=valve;s.Controls.FloodFlow=flood?1:0;
             for(int i=0;i<6000;i++)
             {
                 // Prime for the first ten seconds before enabling the pickup pump.
@@ -94,10 +94,13 @@ namespace IceResurfacer.Editor
             a.Drain();double snowError=SnowStock(s)-snow-s.TotalExpandedShavingsM3;
             double waterError=WaterStock(s)-water;
             Near(snowError,0,.00015,"full sheet snow conservation m3");Near(waterError,0,.25,"full sheet water conservation L");
+            double ground=0;foreach(var cell in s.Environment.Cells)ground+=cell.SnowM3;
             log("full_sheet augers="+augers+" seconds="+s.Time.ToString("F1")+" flood_L="+s.TotalFloodUsedLiters.ToString("F3")+
                 " shaved_solid_m3="+s.TotalShavedIceM3.ToString("F6")+" expanded_m3="+s.TotalExpandedShavingsM3.ToString("F6")+
                 " tank_m3="+s.SnowTankM3.ToString("F6")+" tank_pct="+(100*s.SnowTankM3/config.SnowCapacityM3).ToString("F3")+
                 " overflow_transfer_m3="+s.SpilledSnowM3.ToString("F6")+" surface_m3="+SurfaceSnow(s).ToString("F6")+
+                " initial_loose_m3="+snow.ToString("F6")+" trough_m3="+s.HorizontalSnowM3.ToString("F6")+
+                " throat_m3="+s.VerticalSnowM3.ToString("F6")+" ground_m3="+ground.ToString("F6")+" pit_m3="+s.PitSnowM3.ToString("F6")+
                 " snow_error_m3="+snowError.ToString("F8")+" water_error_L="+waterError.ToString("F6"));
         }
         public static void OrdinaryStreak(SimulatorConfig config,Action<string> log,bool expectClear)

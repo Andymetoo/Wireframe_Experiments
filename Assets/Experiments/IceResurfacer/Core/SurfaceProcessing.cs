@@ -107,21 +107,29 @@ namespace IceResurfacer.Core
             TotalWashSuppliedLiters+=wash;
             FloodWaterLiters-=flood;TotalFloodUsedLiters+=flood;WashWaterLiters-=wash;
             float availableLiquid=0;
-            if(Controls.WashPump&&pressure>.8f)
+            // Standing water can wet the chamber before the pump switch is on.
+            // 526 §7-11: lowered conditioner, blade retracted, drive forward for
+            // five seconds. Ordinary wash-valve priming still takes ten seconds.
+            bool surfacePriming=Vehicle.Speed>.02f&&Controls.BladeDepthMm<=.001f;
+            if((WashPumpRunning||surfacePriming)&&pressure>.8f)
                 for(int n=0;n<footprintCount;n++)
                     if(InPickup(n))
                         availableLiquid+=Math.Max(0,Ice.LiquidDepth(Ice.Cells[footprint[n]],Time)-Config.WashPickupResidualMm)*area;
             if(wash>.00001f&&pressure>.8f&&footprintCount>0)
                 WashPrimeSeconds=Math.Min(30,WashPrimeSeconds+dt);
-            else if(!(Controls.WashPump&&availableLiquid>.0001f))
+            else if(!(WashPumpRunning&&availableLiquid>.0001f))
                 WashPrimeSeconds=Math.Max(0,WashPrimeSeconds-dt*2);
-            bool pumpReady=WashPrimeSeconds>=10&&pressure>.8f&&footprintCount>0;
-            if(Controls.WashPump&&!pumpReady)
+            if(surfacePriming&&availableLiquid>.0001f)
+                SurfacePickupPrimeSeconds=Math.Min(5,SurfacePickupPrimeSeconds+dt);
+            else if(!(WashPumpRunning&&availableLiquid>.0001f))
+                SurfacePickupPrimeSeconds=Math.Max(0,SurfacePickupPrimeSeconds-dt*2);
+            bool pumpReady=(WashPrimeSeconds>=10||SurfacePickupPrimeSeconds>=5)&&pressure>.8f&&footprintCount>0;
+            if(WashPumpRunning&&!pumpReady)
             {
                 PumpDamage=Math.Min(1,PumpDamage+dt*.007f);
-                Fault(7,"Wash pickup pump is dry. Prime with the wash valve for 10 seconds before starting it.");
+                Fault(7,"Wash pickup pump is dry. Prime with wash for 10 seconds, or drive over standing water for 5 seconds with the blade retracted, before starting it.");
             }
-            float pumpCapacity=Controls.WashPump&&pumpReady?
+            float pumpCapacity=WashPumpRunning&&pumpReady?
                 Config.WashPickupLitersPerSecond*dt*(1-PumpDamage*.75f):0;
             float recovery=Math.Min(pumpCapacity,wash*Config.WashRecoveryFraction);
             recovery=Math.Min(recovery,Math.Max(0,Config.WashCapacityLiters-WashWaterLiters));
@@ -156,6 +164,13 @@ namespace IceResurfacer.Core
                 }
                 float waterDepth=(totalFloodWeight>0?flood*footprintWaterWeight[n]/totalFloodWeight/area:0)+(cutting?washDepth:0);
                 float snowRemoved=cutting?Math.Min(cell.SnowMm,pressure*advance*Config.LooseSnowPickupDepthMm):0;
+                // A loose layer within the blade's intake reach is swept into
+                // the trough on contact, rather than shaved a little each tick.
+                // The old traversal quota left ordinary streaks behind at the
+                // footprint edge. Deep banks retain a finite plowing rate, and
+                // every recovered litre still faces trough/conveyor backpressure.
+                if(cutting&&pressure>=.999f&&advance>0&&cell.SnowMm<=Config.LooseSnowIntakeHeightMm)
+                    snowRemoved=cell.SnowMm;
                 float bite=cutting?blade:0;
                 bool washContact=cutting&&washPerCell>0&&pressure>.7f;
                 if(waterDepth<=0&&bite<=0&&snowRemoved<=0&&cellPickup<=0&&!washContact)continue;

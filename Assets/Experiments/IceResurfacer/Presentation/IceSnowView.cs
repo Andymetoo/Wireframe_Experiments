@@ -12,6 +12,7 @@ namespace IceResurfacer.Presentation
         readonly Surface tank, pit, trough;
         readonly ParticleSystem discharge, overflow, leftEscape, rightEscape, dump;
         readonly ParticleSystem[] pools;
+        readonly Mesh clumpMesh;
         float tankValue=-1,pitValue=-1,tankTilt=-1,troughValue=-1,visualMultiplier=-1;
 
         sealed class Surface
@@ -95,6 +96,7 @@ namespace IceResurfacer.Presentation
         public IceSnowView(IceWorld world,Transform root,Material template)
         {
             this.world=world;
+            clumpMesh=ClumpMesh();world.Meshes.Add(clumpMesh);
             tank=new Surface(world.TankSnow,world,1.488f,2.026f,false);
             pit=new Surface(world.PitSnow,world,3.5f,1.6f,true);
             var troughObject=new GameObject("Snow bunching in the finite conditioner trough");
@@ -120,13 +122,29 @@ namespace IceResurfacer.Presentation
             var shape=ps.shape;shape.enabled=false;
             var emission=ps.emission;emission.rateOverTime=0;
             var renderer=ps.GetComponent<ParticleSystemRenderer>();renderer.shadowCastingMode=ShadowCastingMode.Off;
-            var clump=GameObject.CreatePrimitive(PrimitiveType.Sphere);clump.SetActive(false);
-            renderer.renderMode=ParticleSystemRenderMode.Mesh;renderer.mesh=clump.GetComponent<MeshFilter>().sharedMesh;
+            renderer.renderMode=ParticleSystemRenderMode.Mesh;renderer.mesh=clumpMesh;
             renderer.enableGPUInstancing=true;
-            if(Application.isPlaying)Object.Destroy(clump);else Object.DestroyImmediate(clump);
             var material=new Material(template) { name=name+" / snow material" };
             material.SetColor("_BaseColor",new Color(.91f,.96f,1));world.Materials.Add(material);
             renderer.sharedMaterial=material;ps.Play();return ps;
+        }
+        static Mesh ClumpMesh()
+        {
+            // One shared, flat-shaded broken granule, instanced by the existing
+            // bounded pools. Size variation mixes fine chips and larger pieces.
+            var points=new[]{new Vector3(-.48f,0,-.27f),new Vector3(.33f,-.08f,-.41f),
+                new Vector3(.47f,.04f,.24f),new Vector3(-.24f,.06f,.43f),
+                new Vector3(.06f,.46f,-.07f),new Vector3(-.08f,-.31f,.04f)};
+            var vertices=new Vector3[24];var indices=new int[24];
+            for(int i=0;i<4;i++)
+            {
+                int k=i*6,j=(i+1)%4;
+                vertices[k]=points[i];vertices[k+1]=points[4];vertices[k+2]=points[j];
+                vertices[k+3]=points[j];vertices[k+4]=points[5];vertices[k+5]=points[i];
+            }
+            for(int i=0;i<indices.Length;i++)indices[i]=i;
+            var mesh=new Mesh{name="Shared angular shaved-ice fragment"};mesh.vertices=vertices;mesh.triangles=indices;
+            mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
         }
         static void Rate(ParticleSystem ps,float rate,Vector3 position,Vector3 velocity,bool side=false)
         {
@@ -184,7 +202,7 @@ namespace IceResurfacer.Presentation
             Rate(rightEscape,active?sim.ConditionerRightEscapeRate*density:0,rightOrigin,new Vector3((sim.ConditionerRightLandingX-rightOrigin.x)/flight,.30f,(sim.ConditionerRightLandingZ-rightOrigin.z)/flight),true);
             var leftMain=leftEscape.main;leftMain.startLifetime=flight;
             var rightMain=rightEscape.main;rightMain.startLifetime=flight;
-            leftMain.startSize=rightMain.startSize=new ParticleSystem.MinMaxCurve(.045f*.55f*size,.045f*1.35f*size);
+            leftMain.startSize=rightMain.startSize=new ParticleSystem.MinMaxCurve(.045f*.30f*size,.045f*1.65f*size);
             upperMain.startSize=new ParticleSystem.MinMaxCurve(.06f*.55f*size,.06f*1.35f*size);
             // Render the same ballistic discharge as Core. Never steer particles
             // toward the pit: off-centre and on-ice dumps must visibly miss it.

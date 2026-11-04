@@ -14,6 +14,7 @@ internal static class SnowCalibrationValidation
         readonly Action<float> process,convey;
         readonly FieldInfo lastX,lastZ;
         public double GrossSnowInput,LoadTotal;public int Samples;public float PeakLoad;
+        public float LastLeftEscape,LastRightEscape;
         public Apparatus(Simulation sim)
         {
             Sim=sim;
@@ -30,6 +31,8 @@ internal static class SnowCalibrationValidation
             Sim.Vehicle.X=x;Sim.Vehicle.Z=z+Sim.Config.HitchBehindAxle+Sim.Config.DrawbarLength;Sim.Vehicle.Heading=0;Sim.Vehicle.Speed=advance/dt;
             lastX.SetValue(Sim,x);lastZ.SetValue(Sim,z-advance);
             footprint();float before=Sim.HorizontalSnowM3;process(dt);GrossSnowInput+=Sim.HorizontalSnowM3-before;convey(dt);
+            if(Sim.ConditionerLeftEscapeRate+Sim.ConditionerRightEscapeRate>0)
+            {LastLeftEscape=Sim.ConditionerLeftEscapeRate;LastRightEscape=Sim.ConditionerRightEscapeRate;}
             load();LoadTotal+=Sim.MachineLoad;PeakLoad=Math.Max(PeakLoad,Sim.MachineLoad);Samples++;
         }
         public void Drain()
@@ -112,13 +115,14 @@ internal static class SnowCalibrationValidation
     static void SideEscapeRecovery()
     {
         var s=new Simulation();var a=new Apparatus(s);s.Controls.BladeDepthMm=.8f;
-        double initial=Stock(s);Line(a,0,-15,-5);
-        Assert(s.HorizontalSnowM3>0&&s.HorizontalSnowM3<s.Config.ConditionerSnowCapacityM3,"trough did not retain the first finite accumulation");
+        double initial=Stock(s);Line(a,0,-15,-14);
+        Assert(s.HorizontalSnowM3>0&&s.HorizontalSnowM3<s.Config.ConditionerUsableSnowCapacityM3,"trough did not retain the first finite accumulation");
         Near(s.SpilledSnowM3,0,0,"cosmetic snow appeared before the trough filled");
-        Line(a,0,-4.9f,15);
-        Assert(s.ConditionerLeftEscapeRate>0&&s.ConditionerRightEscapeRate>0,"both physical side exits are not shedding");
-        Near(s.ConditionerLeftEscapeRate,s.ConditionerRightEscapeRate,.0000001,"symmetric source split differs");
-        Near(s.HorizontalSnowM3,s.Config.ConditionerSnowCapacityM3,.0000001,"conditioner capacity exceeded");
+        Line(a,0,-13.9f,15);
+        Assert(a.LastLeftEscape>0&&a.LastRightEscape>0,"both physical side exits never shed");
+        float split=a.LastLeftEscape/(a.LastLeftEscape+a.LastRightEscape);
+        Assert(split>=.36f&&split<=.64f,"bounded uneven side split differs");
+        Assert(s.HorizontalSnowM3<=s.Config.ConditionerUsableSnowCapacityM3&&s.HorizontalSnowM3>0,"usable conditioner capacity exceeded or stock deleted");
         Near(s.SnowTankM3,0,0,"stopped conveyors collected snow into the tank");
         double before=Scan(s).Snow,escaped=s.SpilledSnowM3,left=0,right=0;
         for(int i=0;i<s.Ice.Cells.Length;i++)

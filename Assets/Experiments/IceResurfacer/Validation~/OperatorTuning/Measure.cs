@@ -58,7 +58,7 @@ static class Measure
     static void SettingsTests(SimulatorConfig basis,OperatorTuningSettings settings,Func<SimulatorConfig> copy)
     {
         foreach(var field in typeof(OperatorTuningSettings).GetFields())
-        foreach(float value in new[]{float.NaN,float.PositiveInfinity,float.NegativeInfinity,-1,100})
+        foreach(float value in new[]{float.NaN,float.PositiveInfinity,float.NegativeInfinity,-1,float.MaxValue})
         {
             var bad=OperatorTuningSettings.From(basis);field.SetValue(bad,value);bool rejected=false;
             try{bad.Validate();}catch(ArgumentException){rejected=true;}

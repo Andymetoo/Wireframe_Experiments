@@ -25,6 +25,7 @@ internal static class Program
         Test("separate augers, overflow, load and finite tank", Snow);
         Test("manual snow breaker conserves material and respects interlocks", SnowBreaker);
         Test("wash valve gravity feed and pickup priming", Wash);
+        Test("horizontal pump drive and standing-water-only pickup", () => IceResurfacer.Editor.OperatorWaterRealismValidation.Run(Console.WriteLine));
         Test("stationary flood pooling and finite water", Flood);
         Test("left brush cleans board contact", Brush);
         Test("exit and tank interlocks prevent instant finish", Exit);
@@ -39,6 +40,7 @@ internal static class Program
         Test("southeast hose freedom, breakaway and recovery", ServiceFreedomValidation.Run);
         Test("tire overlap, liquid recovery, perimeter mask and finite spread", IceCalibrationValidation.Run);
         Test("snow production, side escape and recoverable deposits", SnowCalibrationValidation.Run);
+        Test("ordinary augers-off mess, complete recollection and conserved faceted geometry", () => IceResurfacer.Editor.OperatorSnowRealismValidation.Run(Console.WriteLine));
         Test("truthful minimap states and measured wet-but-uncut slivers", MinimapValidation.Run);
         Test("traversable grate, impact severity, aligned conditioner and finite drainage", () => ServiceCollisionValidation.Run());
         Test("complete scored southeast route, return and angled unload", FreedomValidation.FullRun);
@@ -448,7 +450,7 @@ internal static class Program
     {
         var s = new Simulation(); Place(s, 0, -5); s.Conditioner.Lift = 0; s.Controls.ConditionerTarget = 0; s.Controls.WashValve = .5f;
         float initial = s.WashWaterLiters; Tick(s, 5); Assert(s.WashWaterLiters < initial - 2, "gravity valve does not flow");
-        s.Controls.WashPump = true; Tick(s, 1); Assert(s.PumpDamage > 0 && s.Mistakes > 0, "dry pump not penalized");
+        s.Controls.HorizontalAuger = true; s.Controls.WashPump = true; Tick(s, 1); Assert(s.PumpDamage > 0 && s.Mistakes > 0, "dry pump not penalized");
         s.Controls.WashPump = false; Tick(s, 5); Assert(s.WashPrimeSeconds >= 10, "prime timer failed");
         float before = s.WashWaterLiters; s.Controls.WashPump = true; Tick(s, 2);
         Assert(before - s.WashWaterLiters < .4f, "primed recovery pump not recirculating");

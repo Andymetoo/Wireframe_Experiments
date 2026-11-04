@@ -178,7 +178,7 @@ namespace IceResurfacer.Presentation
             Started=start; Paused=false; HelpVisible=false; Looking=false;
             accumulator=0; surveyTimer=0; yaw=0; pitch=5; Notice=""; observedMistakes=0; breakerAnimation=0;
             recenterTime=RecenterSeconds; stance=0; controlLean=sideLean=0; Standing=false; CameraView="Forward";
-            Report=Sim.GetReport(); Surface.Refresh(Sim); UpdateMachine(0);
+            Report=Sim.GetReport(); Surface.Refresh(Sim,operatorTuning!=null?operatorTuning.WindrowRoughness:.7f); UpdateMachine(0);
             observedMessage=Sim.LastMessage;
             DriverCamera.transform.localPosition=Vector3.zero;
             DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
@@ -270,7 +270,7 @@ namespace IceResurfacer.Presentation
                 if(Sim.LastMessage!=observedMessage||Sim.Mistakes>observedMistakes)
                 { Notice=Sim.LastMessage; observedMessage=Sim.LastMessage; observedMistakes=Sim.Mistakes; }
                 surveyTimer-=Time.deltaTime;
-                if(surveyTimer<=0) { Surface.Refresh(Sim); Report=Sim.GetReport(); surveyTimer=.16f; }
+                if(surveyTimer<=0) { Surface.Refresh(Sim,operatorTuning!=null?operatorTuning.WindrowRoughness:.7f); Report=Sim.GetReport(); surveyTimer=.16f; }
             }
             UpdateMachine(running?Time.deltaTime:0);
             WaterService.UpdateViewAndEffects(running,Time.deltaTime);

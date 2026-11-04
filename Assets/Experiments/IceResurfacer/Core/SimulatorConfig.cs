@@ -45,12 +45,21 @@ namespace IceResurfacer.Core
         public float HorizontalCapacityM3PerSecond = 0.012f;
         public float VerticalCapacityM3PerSecond = 0.010f;
         public float ConditionerSnowCapacityM3 = 0.08f;
+        // The nominal housing volume is not all usable below the open side lips.
+        // Preserve saved capacity settings; calibrate the usable fraction from
+        // operator experience (13.6 L at the existing 80 L nominal setting).
+        public float ConditionerSpillFillFraction = .17f;
+        public float ConditionerUsableSnowCapacityM3 => ConditionerSnowCapacityM3*ConditionerSpillFillFraction;
         public float VerticalSnowCapacityM3 = 0.055f;
         public float SnowBreakerStrokeM3 = 0.004f;
         public float SnowExpansionRatio = 3.1f;
-        // Plowing loose material is distinct from shaving solid ice. Removed
-        // windrows still pass through the finite trough and conveyor capacities.
+        // Deep banks are plowed at this depth per footprint traversal. Ordinary
+        // banks fitting the intake below are swept whole. All pickup still
+        // passes through the finite trough and conveyors.
         public float LooseSnowPickupDepthMm = 6f;
+        // Low banks fit the intake and are swept whole. The older pickup quota
+        // now governs plowing banks taller than this opening, not ordinary dust.
+        public float LooseSnowIntakeHeightMm = 50f;
         public float DumpM3PerSecond = 0.35f;
         public float MaxBladeDepthMm = .8f;
         // Normal operating range retains its established response. Above the
@@ -85,8 +94,8 @@ namespace IceResurfacer.Core
                 Acceleration, HydrostaticDeceleration, ServiceBrakeDeceleration, ConditionerLiftSeconds,
                 TankLiftSeconds, FloodCapacityLiters, WashCapacityLiters, SnowCapacityM3, FloodMaxLitersPerSecond,
                 WashMaxLitersPerSecond, WashRecoveryFraction, HorizontalCapacityM3PerSecond,
-                VerticalCapacityM3PerSecond, ConditionerSnowCapacityM3, VerticalSnowCapacityM3, SnowBreakerStrokeM3,
-                SnowExpansionRatio, LooseSnowPickupDepthMm, DumpM3PerSecond, MaxBladeDepthMm, RecommendedBladeDepthMm,
+                VerticalCapacityM3PerSecond, ConditionerSnowCapacityM3, ConditionerSpillFillFraction, VerticalSnowCapacityM3, SnowBreakerStrokeM3,
+                SnowExpansionRatio, LooseSnowPickupDepthMm, LooseSnowIntakeHeightMm, DumpM3PerSecond, MaxBladeDepthMm, RecommendedBladeDepthMm,
                 CumulativeSafeCutMm, SensitiveCumulativeSafeCutMm, GoodFloodDepthMm, ExcessFloodDepthMm,
                 FreezeSeconds, MinimumScoredCoverage };
             foreach (float value in values)
@@ -104,11 +113,12 @@ namespace IceResurfacer.Core
                 MaxSteeringRadians <= 0 || MaxSteeringRadians >= 1.2f || SteeringRate <= 0 ||
                 ForwardSpeed <= 0 || ReverseSpeed <= 0 || Acceleration <= 0 || HydrostaticDeceleration <= 0 ||
                 ServiceBrakeDeceleration <= 0 || MaxBladeDepthMm <= 0 || RecommendedBladeDepthMm <= 0 ||
-                ConditionerSnowCapacityM3 <= 0 || VerticalSnowCapacityM3 <= 0 || SnowBreakerStrokeM3 <= 0 ||
+                ConditionerSnowCapacityM3 <= 0 || ConditionerSpillFillFraction < .05f || ConditionerSpillFillFraction > 1 || VerticalSnowCapacityM3 <= 0 || SnowBreakerStrokeM3 <= 0 ||
                 VehicleHalfWidth <= 0 || BodyFront <= 0 || BodyRear <= 0 || HitchBehindAxle < 0 ||
                 FloodMaxLitersPerSecond <= 0 || WashMaxLitersPerSecond <= 0 || WashRecoveryFraction < 0 || WashRecoveryFraction > 1 ||
                 HorizontalCapacityM3PerSecond <= 0 || VerticalCapacityM3PerSecond <= 0 || SnowExpansionRatio < 1 || DumpM3PerSecond <= 0 ||
                 LooseSnowPickupDepthMm <= 0 || LooseSnowPickupDepthMm > 50 ||
+                LooseSnowIntakeHeightMm < 10 || LooseSnowIntakeHeightMm > 100 ||
                 RecommendedBladeDepthMm < 0 || RecommendedBladeDepthMm > MaxBladeDepthMm ||
                 CumulativeSafeCutMm <= 0 || SensitiveCumulativeSafeCutMm <= 0 ||
                 GoodFloodDepthMm <= 0 || ExcessFloodDepthMm < GoodFloodDepthMm ||

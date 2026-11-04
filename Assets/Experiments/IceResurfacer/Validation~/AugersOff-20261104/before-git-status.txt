@@ -1,0 +1,17 @@
+ M Assets/Experiments/IceResurfacer/Core/Simulation.cs
+ M Assets/Experiments/IceResurfacer/Core/SurfaceProcessing.cs
+ M Assets/Experiments/IceResurfacer/Editor/IceCalibrationRuntimeValidation.cs
+ M Assets/Experiments/IceResurfacer/Editor/OperatorMaterialValidation.cs
+ M Assets/Experiments/IceResurfacer/Presentation/IceMachineAudio.cs
+ M Assets/Experiments/IceResurfacer/Validation~/IceCalibrationValidation.cs
+ M Assets/Experiments/IceResurfacer/Validation~/IceResurfacer.Validation.csproj
+ M Assets/Experiments/IceResurfacer/Validation~/Program.cs
+ M Assets/Experiments/IceResurfacer/Validation~/Surface-consistency-results.txt
+ M Assets/Experiments/IceResurfacer/Validation~/SurfaceConsistencyValidation.cs
+?? Assets/Experiments/IceResurfacer/Documentation/Aurora-Operator-Realism-Audit.md
+?? Assets/Experiments/IceResurfacer/Documentation/Aurora-Operator-Realism-Audit.md.meta
+?? Assets/Experiments/IceResurfacer/Editor/OperatorWaterRealismValidation.cs
+?? Assets/Experiments/IceResurfacer/Editor/OperatorWaterRealismValidation.cs.meta
+?? Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/
+?? Assets/Experiments/IceResurfacer/Validation~/OperatorRealismAudit-20261104/
+?? Documentation/Aurora-Operator-Realism-Audit.md

@@ -1,3 +1,25 @@
+CURRENT AUGERS-OFF PASS / 2026-11-04
+
+See Documentation/AugersOffSnowRealism.txt for current behavior and evidence.
+Measured ordinary-cut substantial overflow: 111.3 m before, 18.4 m now;
+actual driven authored onset 17.9133 m (19.5902 yd). No distance timer.
+
+Existing serialized settings remain intact. New usable-fill fraction .17 turns
+saved nominal .080 m3 retention into 13.6 L below the side lips. Normal banks
+within the new 50 mm intake height are swept whole into the finite conveyors.
+The existing pickup setting now governs deeper-bank plowing per traversal.
+Windrow facets (.7 default) change volume-normalized angular crests only.
+Particle density 3x, clump size 1.25x, flood .4x, wash .644 and bin 1x remain.
+The procedural scene acquires the new code defaults without a scene rewrite.
+
+Physical controls: Usable fill before spill, Loose intake height, Deep-bank
+plowing, existing H/V throughput. Presentation: Windrow facets, existing
+particle density/size. Inspector now shows actual usable retention litres.
+43/43 deterministic groups and Unity-reference compilation pass. Fresh Unity
+rendering/Inspector checks remain unavailable due to licensing initialization.
+
+HISTORICAL FIRST-PASS RECORD (new behavior above supersedes older descriptions)
+
 AURORA R-54 / OPERATOR TUNING FIRST PASS / 2026-11-04
 
 The authored scene now has an Operator Tuning component on its existing

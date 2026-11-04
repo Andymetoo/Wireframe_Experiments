@@ -1,0 +1,20 @@
+PASS: 385 of 396 captured original files byte-identical.
+Expected edited originals: 11
+Core\OperatorTuningSettings.cs
+Core\Simulation.cs
+Core\SimulatorConfig.cs
+Core\SurfaceProcessing.cs
+Presentation\IceDepositedSnowView.cs
+Presentation\IceOperatorTuning.cs
+Presentation\IceResurfacerGame.cs
+Presentation\IceSnowView.cs
+Presentation\IceSurfaceView.cs
+Editor\IceOperatorTuningEditor.cs
+Editor\OperatorMaterialValidation.cs
+Authored/procedural scenes, machine, arena, all mesh/material assets, shader sources and route recordings: byte-identical.
+Existing saved flood, wash, snow, bin and particle values in both scenes: byte-identical.
+Existing water-drive corrections are preserved and pass regression tests.
+Prior OperatorTuning.txt preserved in Before/Documentation before adding current notes.
+Generated OperatorTuning/bin and obj files restored only where starting status proved them clean.
+Validation changes are limited to test integration, physical snow assertions, tuning bound checks and logged ledgers.
+No bake, scene save, branch, commit or push.

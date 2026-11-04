@@ -111,7 +111,7 @@ internal static class IceCalibrationValidation
         s.Controls.FloodFlow=0;s.Controls.WashValve=0;
         double before=WaterMass(s),waterTank=s.WashWaterLiters;float overBefore=0;
         foreach(var c in s.Ice.Cells)overBefore+=c.OverwaterMm;
-        s.Controls.WashPump=true;s.Controls.Throttle=-.2f;Tick(s,5);
+        s.Controls.HorizontalAuger=true;s.Controls.WashPump=true;s.Controls.Throttle=-.2f;Tick(s,5);
         double recovered=s.TotalRecoveredSurfaceLiters,after=WaterMass(s);
         float overAfter=0;foreach(var c in s.Ice.Cells)overAfter+=c.OverwaterMm;
         Assert(recovered>.3,"pickup did not collect existing standing water");
@@ -210,7 +210,7 @@ internal static class IceCalibrationValidation
             if(dx*dx+dz*dz>3.24f)continue;
             s.Ice.AddWater(ref c,.036f,s.Time);s.Ice.Cells[i]=c;s.Ice.MarkCellChanged(i);
         }
-        s.Ice.MarkChanged();s.Controls.FloodFlow=1;s.Controls.WashPump=true;
+        s.Ice.MarkChanged();s.Controls.FloodFlow=1;s.Controls.HorizontalAuger=true;s.Controls.WashPump=true;
         float beforeTank=s.WashWaterLiters,room=s.Config.WashCapacityLiters-beforeTank;
         double beforeRecovery=s.TotalRecoveredSurfaceLiters,total=TotalWater(s);
         s.Step(.02f);double recovered=s.TotalRecoveredSurfaceLiters-beforeRecovery;
@@ -250,7 +250,7 @@ internal static class IceCalibrationValidation
     {
         var s=new Simulation();Place(s,-5,-12);s.Conditioner.Lift=0;s.Controls.ConditionerTarget=0;
         s.Controls.WashValve=.2f;Tick(s,30);s.Controls.WashValve=0;
-        Place(s,0,-12);s.Controls.FloodFlow=.43f;s.Controls.WashPump=true;s.Controls.Throttle=.5f;Tick(s,8);
+        Place(s,0,-12);s.Controls.FloodFlow=.43f;s.Controls.HorizontalAuger=true;s.Controls.WashPump=true;s.Controls.Throttle=.5f;Tick(s,8);
         Assert(s.WashPrimeSeconds>=10,"fresh flood test lost pump prime before checking contact geometry");
         Near(s.TotalRecoveredSurfaceLiters,0,.0001,"pickup recaptured fresh water behind its own squeegee on a forward pass");
         Assert(s.TotalFloodUsedLiters>5,"fresh flood isolation did not exercise water delivery");

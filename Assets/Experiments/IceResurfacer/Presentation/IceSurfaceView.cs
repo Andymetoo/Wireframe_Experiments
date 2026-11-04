@@ -75,7 +75,7 @@ namespace IceResurfacer.Presentation
             renderer.sharedMaterial = material;
             depositedSnow=new IceDepositedSnowView(field,renderer.transform.parent);
         }
-        public void Refresh(Simulation sim)
+        public void Refresh(Simulation sim,float windrowRoughness=.7f)
         {
             long started=System.Diagnostics.Stopwatch.GetTimestamp();
             var field = sim.Ice;
@@ -173,7 +173,7 @@ namespace IceResurfacer.Presentation
             }
             overviewDirtyCount=0;
             if(overviewChanged){OverviewTexture.SetPixels32(overviewPixels);OverviewTexture.Apply(false,false);LastTextureUploads++;}
-            depositedSnow.Refresh(field,all);
+            depositedSnow.Refresh(field,all,windrowRoughness);
             // Clear only this refresh's dirty markers; wet aging never scans or
             // clears the full grid during ordinary operation.
             for(int n=0;n<count;n++)dirtyWetStates[all?n:field.DirtyCellIndex(n)]=0;
@@ -203,6 +203,9 @@ namespace IceResurfacer.Presentation
             color.a=s.IceFraction;return color;
         }
         public int DepositedSnowChunks {get{return depositedSnow.ActiveChunks;}}
+        public int DepositedSnowVertices => depositedSnow.LastVertices;
+        public int DepositedSnowChunksRebuilt => depositedSnow.LastChunksRebuilt;
+        public double DepositedSnowVisibleVolumeM3 => depositedSnow.VisibleVolumeM3;
         public float DepositedSnowMaximumHeight {get{return depositedSnow.MaximumHeight;}}
         public void SetDebugMode(int mode)
         {

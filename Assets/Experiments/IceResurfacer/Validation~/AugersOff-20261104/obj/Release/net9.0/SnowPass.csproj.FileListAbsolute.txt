@@ -1,0 +1,15 @@
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\SnowPass.exe
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\SnowPass.deps.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\SnowPass.runtimeconfig.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\SnowPass.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\bin\Release\net9.0\SnowPass.pdb
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.GeneratedMSBuildEditorConfig.editorconfig
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.AssemblyInfoInputs.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.AssemblyInfo.cs
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.csproj.CoreCompileInputs.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.sourcelink.json
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\refint\SnowPass.dll
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.pdb
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\SnowPass.genruntimeconfig.cache
+G:\UnityProjects\Wireframe_Experiments\Assets\Experiments\IceResurfacer\Validation~\AugersOff-20261104\obj\Release\net9.0\ref\SnowPass.dll

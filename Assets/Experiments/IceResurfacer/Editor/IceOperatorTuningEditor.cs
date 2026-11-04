@@ -16,7 +16,9 @@ namespace IceResurfacer.Editor
                 case "FloodFlowMultiplier":min=.1f;max=2;break;
                 case "ShavingsExpansionMultiplier":min=1;max=4;break;
                 case "LooseSnowPickupDepthMm":min=1;max=50;break;
+                case "LooseSnowIntakeHeightMm":min=10;max=100;break;
                 case "ConditionerRetentionM3":min=.005f;max=.2f;break;
+                case "ConditionerSpillFillFraction":min=.05f;max=1;break;
                 case "WashRecoveryFraction":min=0;max=1;break;
                 default:min=.1f;max=4;break;
             }
@@ -36,16 +38,19 @@ namespace IceResurfacer.Editor
             EditorGUILayout.LabelField("SIMULATION / conserved transfers",EditorStyles.boldLabel);
             Field(p,"FloodFlowMultiplier","Flood flow multiplier (x)","0.4 gives 2.5 times the tank duration. Valve position still sets a fraction of this maximum; capacity is fixed. Range 0.1–2.");
             Field(p,"ShavingsExpansionMultiplier","New shavings expansion (x)","Multiplies loose bulk volume made from newly shaved solid ice. Existing loose snow and tank stock are never multiplied. Experimental bulk density calibration, range 1–4.");
-            Field(p,"LooseSnowPickupDepthMm","Loose snow pickup (mm/pass)","Maximum loose depth removed over a full footprint traversal, scaled by contact pressure and advance. Deep deposits can still require more passes. Range 1–50 mm; all pickup enters the finite trough.");
+            Field(p,"LooseSnowPickupDepthMm","Deep-bank plowing (mm/pass)","Saved pickup quota. Governs banks taller than the intake; normal banks are swept whole. All pickup enters the finite trough; excessive input can spill again. Range 1–50 mm.");
+            Field(p,"LooseSnowIntakeHeightMm","Loose intake height (mm)","Physical height of an ordinary bank swept up on fully lowered moving contact. Default 50 mm. Taller banks use the deep-bank quota. Throughput and retention still limit transport. Range 10–100 mm.");
             Field(p,"HorizontalConveyorMultiplier","Horizontal throughput (x)","Scales the authored conveyor m³/s limit. Existing stopped, jam and throat backpressure behavior remains. Range 0.1–4.");
             Field(p,"VerticalConveyorMultiplier","Vertical throughput (x)","Scales tank delivery capacity; crowding, full/raised bin rejection and losses still apply. Range 0.1–4.");
-            Field(p,"ConditionerRetentionM3","Trough overflow threshold (m³)","Finite retained loose volume before side overflow. Lowering this spills the excess through the real exits on the next simulation tick. Experimental range 0.005–0.2 m³.");
+            Field(p,"ConditionerRetentionM3","Nominal trough volume (m³)","Saved retention calibration, before the usable-fill fraction. Existing values are preserved. Range 0.005–0.2 m³.");
+            Field(p,"ConditionerSpillFillFraction","Usable fill before spill (0–1)","Physical fraction below the side lips. Default 0.17 × 0.08 m³ = 13.6 L. Higher delays overflow; lower starts it sooner. Snow slumps from finite stock after reaching the lip. 1 restores the old nominal threshold.");
             Field(p,"WashRecoveryFraction","Wash recovery efficiency (0–1)","Fraction of fresh wash eligible for direct return; also limits old surface pickup using remaining pump capacity. No artificial drain. The net result depends on flow, priming, surface water and travel.");
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("PRESENTATION / no material created",EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("tankVisualFullness"),new GUIContent("Bin visual fullness (x)"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("overflowParticleDensity"),new GUIContent("Overflow particle density (x)"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("overflowClumpSize"),new GUIContent("Overflow clump size (x)"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("windrowRoughness"),new GUIContent("Windrow facets (0–1)"));
             serializedObject.ApplyModifiedProperties();
             if(!string.IsNullOrEmpty(t.lastError))EditorGUILayout.HelpBox(t.lastError,MessageType.Error);
             SimulatorConfig c;
@@ -58,6 +63,7 @@ namespace IceResurfacer.Editor
             Meter("New snow / shaved solid ice",c.SnowExpansionRatio,"m³ loose / m³ solid");
             Meter("Horizontal capacity",c.HorizontalCapacityM3PerSecond,"m³/s","F4");
             Meter("Vertical capacity",c.VerticalCapacityM3PerSecond,"m³/s","F4");
+            Meter("Usable snow retention",c.ConditionerUsableSnowCapacityM3*1000,"L");
             EditorGUILayout.LabelField("Fixed tank capacities",c.FloodCapacityLiters+" L flood / "+c.WashCapacityLiters+" L wash / "+c.SnowCapacityM3+" m³ snow");
             if(game.Sim!=null)
             {
@@ -85,7 +91,7 @@ namespace IceResurfacer.Editor
             Preset(t,"Flood: 2.5 times longer (0.4x)",()=>t.simulation.FloodFlowMultiplier=.4f);
             Preset(t,"New shavings: 2.5x loose volume",()=>t.simulation.ShavingsExpansionMultiplier=2.5f);
             Preset(t,"Bin appearance only: 2.5x fullness",()=>t.tankVisualFullness=2.5f);
-            Preset(t,"Restore scene calibration and 1x presentation",()=>{t.simulation=OperatorTuningSettings.From(game.calibration);t.tankVisualFullness=t.overflowParticleDensity=t.overflowClumpSize=1;});
+            Preset(t,"Restore scene calibration and 1x presentation",()=>{t.simulation=OperatorTuningSettings.From(game.calibration);t.tankVisualFullness=t.overflowParticleDensity=t.overflowClumpSize=1;t.windrowRoughness=.7f;});
         }
     }
 }
