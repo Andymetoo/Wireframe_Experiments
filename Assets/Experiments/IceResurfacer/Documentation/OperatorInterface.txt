@@ -1,16 +1,21 @@
 AURORA R-54 / OPERATOR INTERFACE
-4 November 2026
+5 November 2026
 
 The interface uses painted instrument panels and printed operating sheets.
 IceUITheme.cs is the shared source for panel paint, lettering, buttons, text
 fields and sliders. Keep future panels on these styles.
 
-Instrument panels: warm graphite, ivory lettering, subdued sage for engaged
-states, amber for attention and clay red for faults. Readings are mostly ivory.
-Buttons have a small raised edge, a pressed state and a visible focus state.
-The welcome screen, settings, operating guide and results use paper and ink.
-Copy names the task or equipment directly. Instrument labels remain compact;
-button labels use sentence case.
+Instrument panels use plain light gray paint and dark lettering. Readings are
+numeric; the load, tank and conditioner fill bars have been removed. Green,
+ochre and red are reserved for equipment states. Buttons have a small raised
+edge, a pressed state and a visible focus state. Selected buttons use a small
+square mark instead of an accent stripe.
+
+Menus use near-black text on an opaque light sheet. Body copy is the same dark
+ink as the headings. An open menu owns the display, with no HUD, console or
+second menu underneath it. The route tools use the same light panels; their
+plots retain dark backgrounds so diagnostic path colors remain distinguishable.
+Copy names the task or equipment directly. Button labels use sentence case.
 
 Use IceUITheme.Lettering when overriding GUIStyle.textColor. It compensates
 for IMGUI's text conversion in a linear-color project; do not apply it to
@@ -22,6 +27,9 @@ diagnostic path colors and selectable GPS colors retain their meanings.
 There are no new font, image or package dependencies. Small button textures are
 created once and released with the dashboard.
 
-The pass changes presentation only. Snow, machine rigs, camera anchors,
-physical controls, authored scenes, prefabs and simulation calibration are
-outside this change. Validation evidence is in Validation~/UIWorkshop-20261104.
+The dashboard restores GUI color, content color, background color, enabled
+state, depth and matrix after drawing. This prevents another IMGUI component
+from tinting menu lettering or inheriting this interface's appearance.
+
+Original UI evidence: Validation~/UIWorkshop-20261104.
+Contrast/readout revision: Validation~/OperatorFeedback-20261105.

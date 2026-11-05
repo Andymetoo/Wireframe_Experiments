@@ -31,7 +31,11 @@ namespace IceResurfacer.Core
         public float Time { get; private set; }
         public float FloodWaterLiters { get; private set; }
         public float WashWaterLiters { get; private set; }
-        public float SnowTankM3 { get; private set; }
+        // Thousands of small conveyor deliveries must still balance a full bin.
+        // Keep the reservoir sum in double precision; the public SI reading
+        // and existing inspection/fixture setter remain single precision.
+        double snowTankStock;
+        public float SnowTankM3 { get { return (float)snowTankStock; } private set { snowTankStock=value; } }
         public float TankLift { get; private set; }
         public bool TankRaised { get { return TankLift > .001f; } }
         public float HorizontalSnowM3 { get; private set; }
@@ -199,7 +203,7 @@ namespace IceResurfacer.Core
             LoadCutting = Conditioner.Lift < .15f ? Math.Abs(Vehicle.Speed)*(Controls.BladeDepthMm*.14f+excessBite*excessBite*.22f+deeperBite*1.5f) : 0;
             LoadConveyors = HorizontalSnowM3/Config.ConditionerUsableSnowCapacityM3*.75f+VerticalSnowM3/Config.VerticalSnowCapacityM3*.55f+(Controls.HorizontalAuger?.08f:0)+(Controls.VerticalAuger?.09f:0);
             LoadCongestion = ConveyorCongestion*.35f+(ConveyorJammed?.5f:0);
-            MachineLoad = Clamp(.13f+LoadCutting+LoadConveyors+LoadCongestion,0,1.8f);
+            MachineLoad = Clamp(.13f+LoadCutting+LoadConveyors+LoadCongestion+LoadSnow,0,1.8f);
         }
 
         void ClampControls()
@@ -246,6 +250,8 @@ namespace IceResurfacer.Core
             EffectiveDriveDemand = command;
             float target = command * (command >= 0 ? MaximumForwardSpeedTarget : Config.ReverseSpeed);
             float speed = Vehicle.Speed;
+            float snowSpeedLimit=UpdateSnowContact(command,dt);
+            target=Clamp(target,-snowSpeedLimit,snowSpeedLimit);
             float massFactor = 1f / (1f + SnowTankM3 * .09f);
             float rate;
             if (Controls.Brake || trainingBrake) { target = 0; rate = Config.ServiceBrakeDeceleration; }
@@ -253,6 +259,8 @@ namespace IceResurfacer.Core
             else if (speed * command < -.005f) { target = 0; rate = Config.ServiceBrakeDeceleration; }
             else if (forwardSpeedOverride>0&&command>0&&speed>MaximumForwardSpeedTarget) { rate=Config.HydrostaticDeceleration+Math.Abs(speed)*.12f; }
             else rate = Config.Acceleration * massFactor * Math.Max(.20f, 1f - MachineLoad * .35f);
+            if(SnowContact&&Math.Abs(speed)>snowSpeedLimit)
+                rate=Math.Max(rate,Config.ServiceBrakeDeceleration+SnowContactDepthMeters*2);
             float lateralDemand=speed*speed*Math.Abs((float)Math.Tan(Vehicle.SteeringAngle))/Config.Wheelbase;
             bool onIce=Ice.IsInside(Vehicle.X,Vehicle.Z);
             float availableGrip=Config.IceLateralGrip*(1-TankLift*Config.RaisedTankGripPenalty);
@@ -384,7 +392,7 @@ namespace IceResurfacer.Core
                 // The elevated bin inlet no longer meets the fixed conveyor chute.
                 // Keep the motor running; existing snow misses the bin physically.
                 float transported = TankLift<.08f?Math.Min(delivered,Math.Max(0, Config.SnowCapacityM3 - SnowTankM3)):0;
-                VerticalSnowM3 -= delivered; SnowTankM3 += transported; TotalSnowCollectedM3 += transported;
+                VerticalSnowM3 -= delivered; snowTankStock += transported; TotalSnowCollectedM3 += transported;
                 DischargeSnowRate=transported/dt;
                 rejected=delivered-transported;
                 if(rejected>0)
@@ -563,7 +571,7 @@ namespace IceResurfacer.Core
                     shakePeak = shakeLow = TankLift; shakeArmed = false;
                 }
                 float amount = Math.Min(Math.Max(0, SnowTankM3 - ResidualSnowM3), Config.DumpM3PerSecond * dt);
-                SnowTankM3 -= amount; DumpedSnowM3 += amount;
+                snowTankStock -= amount; DumpedSnowM3 += amount;
                 DumpSnowRate=amount/dt;
                 if(amount>0)DepositDump(amount);
                 LastMessage = amount > 0 ? (Layout.ContainsPit(DumpLandingX,DumpLandingZ)?"Snow falling into the pit under the actual outlet.":"Snow dumping onto the ground under the outlet. It remains in the environment.")
@@ -588,16 +596,27 @@ namespace IceResurfacer.Core
         void DepositDump(float amount)
         {
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
+            float iceVolume=0,iceX=0,iceZ=0;
             for(int sample=0;sample<9;sample++)
             {
                 float lateral=(sample-4)*.15f;
                 float x=DumpLandingX+cs*lateral,z=DumpLandingZ-sn*lateral,volume=amount/9f;
                 if(Layout.ContainsPit(x,z)){PitSnowM3+=volume;continue;}
-                float onIce=Ice.IsInside(x,z)?Ice.DepositSnow(x,z,volume,.22f):0;
-                DumpSnowOnIceM3+=onIce;
+                float onIce=Ice.IsInside(x,z)?volume:0;
+                iceVolume+=onIce;iceX+=x*onIce;iceZ+=z*onIce;
                 float ground=volume-onIce;
                 OffIceSnowM3+=ground;
                 if(ground>0)Environment.Deposit(x,z,ground,0);
+            }
+            // The outlet is broad, but repeated discharge must also spread at
+            // its angle of repose. Fixed-radius kernels made a full bin into
+            // a narrow several-metre wall that the intake could barely shave.
+            if(iceVolume>0)
+            {
+                float deposited=Ice.DepositSnowPile(iceX/iceVolume,iceZ/iceVolume,iceVolume,Vehicle.Heading,.6f);
+                DumpSnowOnIceM3+=deposited;
+                float remainder=iceVolume-deposited;
+                if(remainder>0){OffIceSnowM3+=remainder;Environment.Deposit(DumpLandingX,DumpLandingZ,remainder,0);}
             }
             if(!Layout.ContainsPit(DumpLandingX,DumpLandingZ))Fault(17,"Snow deposited outside the pit. The material remains on the ice or floor and may be recollected.");
         }

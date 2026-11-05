@@ -53,12 +53,13 @@ namespace IceResurfacer.Core
         public float VerticalSnowCapacityM3 = 0.055f;
         public float SnowBreakerStrokeM3 = 0.004f;
         public float SnowExpansionRatio = 3.1f;
-        // Deep banks are plowed at this depth per footprint traversal. Ordinary
-        // banks fitting the intake below are swept whole. All pickup still
-        // passes through the finite trough and conveyors.
+        // Unpowered deep banks are plowed at this depth per footprint traversal.
+        // Powered deep-bank feeding is limited by actual conveyor throughput
+        // and available trough space. Ordinary banks fitting the intake below
+        // are swept whole. All pickup passes through the same finite reservoirs.
         public float LooseSnowPickupDepthMm = 6f;
         // Low banks fit the intake and are swept whole. The older pickup quota
-        // now governs plowing banks taller than this opening, not ordinary dust.
+        // governs unpowered plowing above this opening, not ordinary dust.
         public float LooseSnowIntakeHeightMm = 50f;
         public float DumpM3PerSecond = 0.35f;
         public float MaxBladeDepthMm = .8f;

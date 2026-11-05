@@ -295,6 +295,97 @@ namespace IceResurfacer.Core
             return length+Math.Min(Math.Max(qx,qz),0)-config.CornerRadius;
         }
 
+        /// <summary>Continuous mean-depth contact with the authoritative loose snow stock.</summary>
+        public float SnowDepthMeters(float x,float z)
+        {
+            float gx=(x-MinX)/CellSize-.5f,gz=(z-MinZ)/CellSize-.5f;
+            int col=(int)Math.Floor(gx),row=(int)Math.Floor(gz);
+            float fx=gx-col,fz=gz-row,depth=0;
+            for(int dz=0;dz<=1;dz++)for(int dx=0;dx<=1;dx++)
+            {
+                int c=col+dx,r=row+dz;
+                if(c<0||c>=Columns||r<0||r>=Rows)continue;
+                var cell=Cells[Index(c,r)];if(!cell.IsIce)continue;
+                depth+=Math.Max(0,cell.SnowMm)*(dx==0?1-fx:fx)*(dz==0?1-fz:fz)*.001f;
+            }
+            return depth;
+        }
+
+        /// <summary>Conserved dump stock settles into a broad pile at a finite angle of repose.</summary>
+        public float DepositSnowPile(float x,float z,float volume,float heading,float outletHalfWidth)
+        {
+            if(volume<=0)return 0;
+            const float slope=.65f;
+            float sn=(float)Math.Sin(heading),cs=(float)Math.Cos(heading);
+            float radius=2f,high=0;
+            int x0=0,x1=0,z0=0,z1=0;
+            double capacity=0;
+            // Expand only when an existing mound needs more support. A whole
+            // full-bin dump is normally confined to the first few metres.
+            for(int expand=0;expand<7;expand++)
+            {
+                high=slope*radius;
+                float reach=radius+Math.Max(0,outletHalfWidth);
+                x0=Math.Max(0,(int)Math.Floor((x-reach-MinX)/CellSize));
+                x1=Math.Min(Columns-1,(int)Math.Floor((x+reach-MinX)/CellSize));
+                z0=Math.Max(0,(int)Math.Floor((z-reach-MinZ)/CellSize));
+                z1=Math.Min(Rows-1,(int)Math.Floor((z+reach-MinZ)/CellSize));
+                PreparePileFloor(x,z,sn,cs,outletHalfWidth,slope,x0,x1,z0,z1);
+                capacity=PileCapacity(high);
+                if(capacity>=volume)break;
+                radius*=2;
+            }
+            if(capacity<=0)return 0;
+            float low=0;
+            for(int search=0;search<15;search++)
+            {
+                float middle=(low+high)*.5f;
+                if(PileCapacity(middle)<volume)low=middle;
+                else high=middle;
+            }
+            capacity=PileCapacity(high);
+            if(capacity<=0)return 0;
+            double normalization=volume/capacity;
+            for(int n=0;n<pileCellCount;n++)
+            {
+                int index=pileCells[n];var cell=Cells[index];
+                float space=Math.Max(0,high-pileFloor[n]);
+                if(space<=0)continue;
+                float mm=(float)(space*normalization*1000);
+                cell.SnowMm+=mm;cell.Quality=Math.Max(0,cell.Quality-mm*.5f);
+                cell.Covered=cell.Covered&&cell.SnowMm<.25f;Cells[index]=cell;MarkCellChanged(index);
+            }
+            CommitChanges();return volume;
+        }
+
+        int[] pileCells;
+        float[] pileFloor;
+        int pileCellCount;
+        void PreparePileFloor(float x,float z,float sn,float cs,float halfWidth,float slope,int x0,int x1,int z0,int z1)
+        {
+            int required=Math.Max(0,x1-x0+1)*Math.Max(0,z1-z0+1);
+            if(pileCells==null||pileCells.Length<required)
+            {
+                int capacity=Math.Max(required,pileCells==null?1024:pileCells.Length*2);
+                pileCells=new int[capacity];pileFloor=new float[capacity];
+            }
+            pileCellCount=0;
+            for(int row=z0;row<=z1;row++)for(int col=x0;col<=x1;col++)
+            {
+                int index=Index(col,row);var cell=Cells[index];if(!cell.IsIce)continue;
+                float dx=CellX(col)-x,dz=CellZ(row)-z;
+                float side=Math.Max(0,Math.Abs(dx*cs-dz*sn)-halfWidth),fore=dx*sn+dz*cs;
+                pileCells[pileCellCount]=index;
+                pileFloor[pileCellCount++]=slope*(float)Math.Sqrt(side*side+fore*fore)+cell.SnowMm*.001f;
+            }
+        }
+        double PileCapacity(float height)
+        {
+            double total=0;
+            for(int n=0;n<pileCellCount;n++)total+=Math.Max(0,height-pileFloor[n]);
+            return total*CellSize*CellSize;
+        }
+
         // Deposits only existing snow into nearby ice cells, including rounded
         // boundaries. Two passes normalize the kernel without temporary arrays.
         public float DepositSnow(float x,float z,float volume,float radius=.3f)

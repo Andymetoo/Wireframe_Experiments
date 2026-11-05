@@ -144,24 +144,32 @@ namespace IceResurfacer.Presentation
             Initialize();
             Matrix4x4 oldMatrix = GUI.matrix;
             Color oldColor = GUI.color;
+            Color oldContent = GUI.contentColor, oldBackground = GUI.backgroundColor;
             bool oldEnabled = GUI.enabled;
             int oldDepth = GUI.depth;
             try
             {
                 float scale = Mathf.Min(width / LayoutWidth, height / LayoutHeight);
                 GUI.matrix = Matrix4x4.TRS(new Vector3((width - LayoutWidth * scale) * .5f, (height - LayoutHeight * scale) * .5f), Quaternion.identity, new Vector3(scale, scale, 1));
-                GUI.color = Color.white; GUI.depth = -10; GUI.enabled = game.RouteGuide==null||!game.RouteGuide.PanelOpen;
+                GUI.color = GUI.contentColor = GUI.backgroundColor = Color.white; GUI.depth = -10; GUI.enabled = true;
                 if(releaseCapture) { GUIUtility.hotControl=0;releaseCapture=false; }
                 hoverHint = game.PhysicalControls!=null?game.PhysicalControls.Hint:"";
                 LayoutIssues.Clear();
-                if(game.HudHidden)
+                bool routes=game.RouteGuide!=null&&game.RouteGuide.PanelOpen;
+                bool sessionSheet=!game.HudHidden&&(!game.Started||game.Sim.Finished);
+                if(routes||game.HelpVisible||game.Paused||sessionSheet)
                 {
-                    GUI.enabled=true;
-                    if(game.RouteGuide!=null&&game.RouteGuide.PanelOpen)game.RouteGuide.DrawRecordingPanel();
+                    // A menu owns the screen: no live HUD labels, console or
+                    // second menu underneath it, and no click-through controls.
+                    IceUITheme.Fill(new Rect(0,0,LayoutWidth,LayoutHeight),new Color32(40,42,38,235));
+                    if(routes)game.RouteGuide.DrawRecordingPanel();
                     else if(game.HelpVisible)Help(game);
+                    else if(game.Sim.Finished)Results(game);
+                    else if(!game.Started)Welcome(game);
                     else if(game.Paused)Pause(game);
                     return;
                 }
+                if(game.HudHidden)return;
                 if(Event.current.type==EventType.Repaint)game.RouteGuide?.DrawSilhouette(width,height);
                 Header(game);
                 if(!game.Sim.OnFoot&&!Inspecting(game))Survey(game);
@@ -178,10 +186,6 @@ namespace IceResurfacer.Presentation
                     {Box(new Rect(398,258,620,48),IceUITheme.AlertFace);Label(new Rect(414,264,588,36),"Recording    /    Numpad 9 stops and saves",text,White);}
                 }
                 if(!game.Sim.OnFoot)StatusStrip(game);
-                if (game.Sim.Finished && !game.HelpVisible) Results(game);
-                else if (!game.Started && !game.HelpVisible) Welcome(game);
-                else if (game.Paused && !game.HelpVisible) Pause(game);
-                if (game.HelpVisible) Help(game);
                 if (!string.IsNullOrEmpty(hoverHint) && !game.HelpVisible && game.Started && !game.Paused && !game.Sim.Finished)
                 {
                     Box(new Rect(398,764,806,76), PanelPaint);
@@ -192,11 +196,11 @@ namespace IceResurfacer.Presentation
                     Box(new Rect(28,865,340,27),PanelPaint);
                     Label(new Rect(38,868,320,23),game.Performance.Summary,small,Muted);
                 }
-                GUI.enabled=true;game.RouteGuide?.DrawRecordingPanel();
             }
             finally
             {
-                GUI.matrix = oldMatrix; GUI.color = oldColor; GUI.enabled = oldEnabled; GUI.depth = oldDepth;
+                GUI.matrix = oldMatrix; GUI.color = oldColor; GUI.contentColor=oldContent;GUI.backgroundColor=oldBackground;
+                GUI.enabled = oldEnabled; GUI.depth = oldDepth;
             }
         }
 
@@ -229,7 +233,7 @@ namespace IceResurfacer.Presentation
             Meter(new Rect(1360,36,188,49),"SNOW TANK",snow,(snow*100).ToString("0")+"% / "+s.SnowTankM3.ToString("0.00")+" m3",snow>.85f?Amber:Sage);
             string status=ConditionerStatus(s);
             Label(new Rect(428,106,432,23),status,heading,s.Conditioner.Lift<.005f?Sage:Amber);
-            Box(new Rect(870,112,102,8),Slate);Box(new Rect(870,112,102*(1-s.Conditioner.Lift),8),Sage);
+            Label(new Rect(870,105,110,24),(s.Conditioner.Lift*100).ToString("0")+"% raised",small,Muted);
             float contactBite=BladeContactMm(s);
             Label(new Rect(1000,105,550,24),"BLADE "+s.Controls.BladeDepthMm.ToString("0.00")+" mm SET  /  "+contactBite.ToString("0.000")+" mm CONTACT",small,White);
         }
@@ -428,7 +432,7 @@ namespace IceResurfacer.Presentation
             }
             Box(new Rect(545,228,755,390),PanelPaint);
             Label(new Rect(565,241,715,26),"MACHINE DIAGNOSTICS  [F3]  /  SURFACE MASK [F2]",heading,Sage);
-            Label(new Rect(565,278,715,52),"Machine Load estimates mechanical demand, not engine power. Cutting, augers and packed snow add demand; higher load slows acceleration and changes the drive sound.",small,Muted);
+            Label(new Rect(565,278,715,52),"Machine load includes cutting, conveyors and contact with snow banks. Deep snow limits travel; a lowered conditioner and running augers feed it back into the tank.",small,Muted);
             string reason=!game.Started?"Start a run":game.Paused?"Paused":game.HelpVisible?"Guide open":s.Finished?"Run finished":s.DriveInhibitReason;
             string body="Keyboard W/S: "+game.RawThrottle.ToString("0.00")+"   Pedal: "+c.Throttle.ToString("0.00")+"   Accepted: "+s.EffectiveDriveDemand.ToString("0.00")+
                 "\nDirection: "+(c.Throttle>0?"forward":c.Throttle<0?"reverse":"neutral")+"   Velocity: "+s.Vehicle.Speed.ToString("0.000")+" m/s   Brake: "+(c.Brake?"CTRL held":"released")+
@@ -436,8 +440,8 @@ namespace IceResurfacer.Presentation
                 "\nBoard/wall contact: "+s.BoardContact+"   Roller: "+s.GuideRollerContact+"   Normal "+s.ContactNormalSpeed.ToString("0.00")+" m/s / severity "+s.ContactSeverity.ToString("0.00")+
                 "\nFocus: "+game.HasFocus+"   RMB: "+game.Looking+"   HUD capture: "+(springControl!=0)+
                 "\nGrip: "+s.TractionGrip.ToString("0.00")+"   Slip: "+s.TractionSlip.ToString("0.00")+"   Lateral: "+s.LateralVelocity.ToString("0.00")+" m/s"+
-                "\nDemand: idle 13% + cutting "+(s.LoadCutting*100).ToString("0")+"% + augers/snow "+(s.LoadConveyors*100).ToString("0")+"% + congestion "+(s.LoadCongestion*100).ToString("0")+"%"+
-                "\nLoad response: "+(Mathf.Max(.2f,1-s.MachineLoad*.35f)*100).ToString("0")+"% acceleration; above 100% demand warns of overload."+
+                "\nDemand: idle 13% / cut "+(s.LoadCutting*100).ToString("0")+"% / augers "+(s.LoadConveyors*100).ToString("0")+"% / congestion "+(s.LoadCongestion*100).ToString("0")+"% / bank "+(s.LoadSnow*100).ToString("0")+"%"+
+                "\nSnow contact: "+s.SnowContactDepthMeters.ToString("0.00")+" m / acceleration "+(Mathf.Max(.2f,1-s.MachineLoad*.35f)*100).ToString("0")+"% / overload above 100% demand."+
                 "\n"+game.Performance.Details+
                 "\nTravel: "+(string.IsNullOrEmpty(reason)?"permitted":reason);
             Label(new Rect(565,337,715,269),body,small,White);
@@ -462,10 +466,12 @@ namespace IceResurfacer.Presentation
                 if(messageHistory.Count==32)messageHistory.RemoveAt(0);
                 messageHistory.Add(Duration(s.Time)+"  "+lastNotice);
             }
-            bool serious=s.ConveyorJammed||s.SnowTankM3>=s.Config.SnowCapacityM3*.995f||s.PumpDamage>.05f;
+            bool bank=s.SnowContact&&s.SnowContactDepthMeters>.08f;
+            bool serious=s.ConveyorJammed||s.SnowTankM3>=s.Config.SnowCapacityM3*.995f||s.PumpDamage>.05f||bank;
             string alert=s.ConveyorJammed?"AUGER JAM — retract blade; stop conveyors, clear and reset [J]":
                 s.SnowTankM3>=s.Config.SnowCapacityM3*.995f?"SNOW TANK FULL — retract blade and unload":
-                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":"";
+                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":
+                bank?"Deep snow: crawl with the conditioner down and both augers running. Make another pass for the edges of the pile.":"";
             float age=Time.unscaledTime-noticeAt;
             if(serious||MessagesVisible&&!string.IsNullOrEmpty(game.Notice)&&age<8)
             {
@@ -785,9 +791,6 @@ namespace IceResurfacer.Presentation
         {
             Label(new Rect(rect.x, rect.y, rect.width, 19), caption, small, Muted);
             Label(new Rect(rect.x, rect.y + 20, rect.width, 21), reading, heading, color==Amber?Amber:White);
-            Box(new Rect(rect.x, rect.y + 47, rect.width, 5), Inset);
-            Box(new Rect(rect.x, rect.y + 47, rect.width * Mathf.Clamp01(value), 5), color);
-            for(int i=1;i<4;i++)Box(new Rect(rect.x+rect.width*i/4f,rect.y+46,1,7),PanelPaint);
         }
         bool Button(Rect rect, string caption, Color color)
         {

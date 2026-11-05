@@ -1,0 +1,98 @@
+Operator feedback native validation — 2026-11-05
+
+Result: PASS for the checks below. These are actual Unity 6000.4.1f1 Mono
+player framebuffer captures using D3D11 on the NVIDIA RTX 3050 Laptop GPU.
+They are not generated mockups. No production assets were changed by this
+validation runner; the original packaged player and previous UI evidence remain.
+
+Source provenance
+- Before: archived Core/Presentation sources in this folder's Before directory.
+  Hashes are recorded in native-source-manifest-Before.json.
+- After: current Core/Presentation sources. All 70 recorded source hashes match
+  the live production source at final verification, including the final GPS
+  route endpoint rejection fix, snow contact/dump logic, snow geometry/cache,
+  and the light-panel UI pass. See native-source-manifest-After.json.
+- The copied player uses scene/assets from the earlier packaged validation
+  build. A staged DLL-only SimulatorConfig serialization shim ignores 22 new
+  serialized fields and restores the old serialized field order. Its exact
+  changes are in native-schema-compatibility.txt. Runtime methods are compiled
+  from the named source snapshot, and production source is not rewritten.
+- The shared probe labels in UI-results.txt were clarified after capture to
+  name Before/After explicitly. No metrics or image pixels were altered.
+
+Capture index (paths relative to this directory)
+- Before/Player-1920x1080: four snow comparisons, numbered 20–23.
+- After/Player-1366x768 and After/Player-1920x1080: 15 captures each.
+  01 welcome; 02 HUD; 03 console; 04 pause; 05 help; 06 diagnostics;
+  07 route manager; 08 empty raw-route preview; 09 training guide; 10 results;
+  11 forward driver GPS alignment; 20 full-bin dump wide; 21 dump ground view;
+  22 identical-stock mound; 23 identical-stock mound top view.
+- Each capture directory contains UI-results.txt with the measured assertions.
+- native-evidence-manifest.json records artifact SHA256 hashes.
+
+UI / GPS
+- Both final player runs exited 0. Their layout audits reported zero text-bound
+  issues and their managed error listeners reported zero runtime errors.
+- Visual review: dark text is legible on light panels; modal menus suppress
+  underlying HUD labels; the empty raw-route chart label is legible; compact
+  training buttons and pause slider grips fit their control bounds. Diagnostic
+  overlays remain overlays over the live console rather than modal screens.
+- Forward driver camera shows the yellow machine alignment continuously over
+  the machine silhouette with GPS enabled on a forward working route sample.
+  Both resolutions report 48 visible segments and 49 ray queries (budget 65).
+
+Actual full-bin hydraulic dump
+- Both snapshots start with a cleared field, identical parked vehicle pose,
+  and a seeded 3.54 m³ tank. The probe runs the real SetTankHydraulic(1) and
+  2,000 simulation steps of 0.02 seconds, then neutralizes the tank control.
+  It syncs visual machine pose, refreshes snow chunks, and uses the same two
+  detached camera poses. Machine/conditioner renderers are hidden for a clear
+  view of the pile. This is actual physical deposition, not a replacement mesh.
+- Before: retained 0.0885 m³; deposited physical stock 3.451512391 m³;
+  visible mesh stock 3.451512391 m³; maximum rendered height 10.52805 m.
+- After: retained 0.0885 m³; deposited physical stock 3.451499974 m³;
+  visible mesh stock 3.451499974 m³; maximum rendered height 0.9098961 m.
+- Both deposit more than 95% of seeded stock and balance tank + field mass
+  within 0.1 L. The previous narrow column is replaced by a broad low mound.
+
+Identical physical stock / geometry comparison
+- Both snapshots use a cleared field and DepositSnow(0,0,1.5f,1.25f), with
+  exactly the same cameras and lighting. Physical cell stock is byte-identical:
+  SHA256 48BC96C178A51F801D637517F62ADF126DB1D224AD779C29AEFAEB6634AE22A5.
+- Both: physical stock 1.500002271 m³; represented mesh stock 1.499992493 m³;
+  15,744 vertices. Rendered maxima: before 0.6142331 m, after 0.6116093 m.
+- The old repeated cell ridges are visible in Before/22 and Before/23; After
+  shows a continuous broad slope with the same physical stock and vertex count.
+
+Native mesh integrity
+- Occupied patch sides 10,6,12,4,2,0,1,10,2,0 exercise shrink/grow/empty/reuse.
+  Vertex count, normal count, finite normals, index bounds and represented
+  physical volume pass after every refresh.
+- Occupancy spans a 40-cell chunk boundary. A physical cell changed two cells
+  into the neighbor exercises the new dependency halo. All uploaded cached
+  patches match a fresh uncached geometry build; 27 duplicated shared-corner
+  pairs agree in height and normals.
+
+Limits / process cleanup
+- This verifies current code rendering against older packaged scene/assets.
+  It does not verify a fresh licensed Editor import/build, current authored
+  scene serialization, Inspector persistence, or the user's live play session.
+- Menus are activated programmatically through their actual code paths. No
+  claim of physical mouse/keyboard click/drag interaction testing is made.
+- The full-bin fixture seeds tank stock and advances real hydraulics; ordinary
+  driving recollection and resistance are covered by separate deterministic
+  physics checks, not by these static screenshots.
+- The probe uses its own hidden, transparent, nonactivating native window.
+  Native D3D presentation warnings remain in logs; focused-window input latency
+  is not measured. Zero managed errors does not mean warning-free native logs.
+- All known helper players exited; final Get-Process checks found no remaining
+  validation PID or AuroraLayout process. Existing user Unity sessions were
+  not stopped or modified. A broad CIM process query was access-denied, so
+  cleanup was checked by the known child PIDs and player process name instead.
+
+Reproduce (PowerShell, repository root)
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/OperatorFeedback-20261105/StageNativePlayer.ps1 -Baseline
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/OperatorFeedback-20261105/RunUIPlayer.ps1 -Width 1920 -Height 1080 -Suite Before
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/OperatorFeedback-20261105/StageNativePlayer.ps1
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/OperatorFeedback-20261105/RunUIPlayer.ps1 -Width 1366 -Height 768 -Suite After
+  powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/OperatorFeedback-20261105/RunUIPlayer.ps1 -Width 1920 -Height 1080 -Suite After

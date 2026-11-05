@@ -1,0 +1,62 @@
+[
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/bin/Release/net9.0/SnowPass.dll",
+    "bytes": 167424,
+    "sha256": "152335a25de0831e9a8bcd9c9f9ed6b3b51e948334945f03939ffa774c9aeca8"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/bin/Release/net9.0/SnowPass.exe",
+    "bytes": 156160,
+    "sha256": "130414a95a500d393215e98abe6c90ea778be2596dafd6e12830cdeaa82fbd8e"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/SnowPass.AssemblyInfo.cs",
+    "bytes": 978,
+    "sha256": "976165c0f3fb4b20297ea3492e925846988b3a5723c6db751206c992c5b7039d"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/SnowPass.AssemblyInfoInputs.cache",
+    "bytes": 65,
+    "sha256": "e2fa0d220c56d097e02dc95e4c01a5d7dd49884c9fc6e1c51b8b6341df86155b"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/SnowPass.csproj.CoreCompileInputs.cache",
+    "bytes": 65,
+    "sha256": "a8d2571344482377835f687f70933503c649f388f32e82a2f0e26e4cd7b02691"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/SnowPass.dll",
+    "bytes": 167424,
+    "sha256": "152335a25de0831e9a8bcd9c9f9ed6b3b51e948334945f03939ffa774c9aeca8"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/SnowPass.sourcelink.json",
+    "bytes": 172,
+    "sha256": "952dcefb865e0e94d11cc32bca18f00b268f5683167604dd4a1f050198457d09"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/apphost.exe",
+    "bytes": 156160,
+    "sha256": "c0668b01462866b4c0d6af3f87108b8ad28b127e6b9b64151c37536b9c922751"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/ref/SnowPass.dll",
+    "bytes": 34304,
+    "sha256": "ea722cbdf9857f2f05b6c86f04e2fc0667ae1a7e9c43a1ed9db2071fa3e1681a"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/refint/SnowPass.dll",
+    "bytes": 34304,
+    "sha256": "ea722cbdf9857f2f05b6c86f04e2fc0667ae1a7e9c43a1ed9db2071fa3e1681a"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/project.assets.json",
+    "bytes": 2088,
+    "sha256": "1a3516fcd773a8a7952733056781c4bacb20c600598b62aea94ccfb78c71118b"
+  },
+  {
+    "path": "Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/project.nuget.cache",
+    "bytes": 268,
+    "sha256": "886d35db2e239285cdca03c49c4ebbcc15db224b4f84d576926f381f0d3ae955"
+  }
+]

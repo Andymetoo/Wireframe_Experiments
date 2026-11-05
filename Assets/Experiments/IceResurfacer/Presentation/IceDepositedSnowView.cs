@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace IceResurfacer.Presentation
 {
-    /// <summary>Sparse, smoothly shaded broad caps over the conserved snow heightfield.</summary>
+    /// <summary>Sparse, continuous sloped patches over the conserved snow heightfield.</summary>
     public sealed class IceDepositedSnowView : IDisposable
     {
         const int CellsPerChunk=40,RebuildBudget=8;
@@ -32,6 +32,7 @@ namespace IceResurfacer.Presentation
             public double Volume;
             public int Count;
             public int IndexCount;
+            readonly float[] corners=new float[(CellsPerChunk+1)*(CellsPerChunk+1)];
             public Chunk(Transform parent,Material material,int x,int z)
             {
                 var node=new GameObject("Deposited snow / "+x+","+z);node.transform.SetParent(parent,false);
@@ -39,6 +40,17 @@ namespace IceResurfacer.Presentation
                 node.AddComponent<MeshFilter>().sharedMesh=Mesh;
                 Renderer=node.AddComponent<MeshRenderer>();Renderer.sharedMaterial=material;
                 Renderer.shadowCastingMode=ShadowCastingMode.Off;
+            }
+            public void Begin()
+            {
+                Count=IndexCount=0;Maximum=0;Volume=0;
+                for(int i=0;i<corners.Length;i++)corners[i]=float.NaN;
+            }
+            public float Corner(IceField field,int x,int z,int x0,int z0)
+            {
+                int index=(z-z0)*(CellsPerChunk+1)+x-x0;
+                if(float.IsNaN(corners[index]))corners[index]=SnowSurfaceGeometry.CornerHeight(field,x,z);
+                return corners[index];
             }
             static Vector3 Vector(SnowSurfacePoint p)=>new Vector3(p.X,p.Y,p.Z);
             public void Patch(IceField field,int x,int z,SnowSurfacePatch p)
@@ -52,12 +64,12 @@ namespace IceResurfacer.Presentation
                     Array.Resize(ref Indices,Mathf.Min(CellsPerChunk*CellsPerChunk*SnowSurfaceGeometry.IndicesPerPatch,Indices.Length*2));
                 Vector3 a=Vector(SnowSurfaceGeometry.Normal(field,x,z)),b=Vector(SnowSurfaceGeometry.Normal(field,x,z+1));
                 Vector3 c=Vector(SnowSurfaceGeometry.Normal(field,x+1,z+1)),d=Vector(SnowSurfaceGeometry.Normal(field,x+1,z));
-                Vector3 middle=(a+b+c+d).normalized;
                 for(int i=0;i<SnowSurfaceGeometry.VerticesPerPatch;i++)
                 {
                     var point=p.Point(i);Vertices[Count+i]=Vector(point)+Vector3.up*.0002f;
                     Vector3 normal=i%4==0?a:i%4==1?b:i%4==2?c:d;
-                    Normals[Count+i]=i<4?normal:Vector3.Lerp(normal,middle,.3f).normalized;
+                    float u=Mathf.InverseLerp(p.A.X,p.D.X,point.X),v=Mathf.InverseLerp(p.A.Z,p.B.Z,point.Z);
+                    Normals[Count+i]=i<4?normal:Vector3.Lerp(Vector3.Lerp(a,d,u),Vector3.Lerp(b,c,u),v).normalized;
                     Maximum=Mathf.Max(Maximum,point.Y);
                 }
                 for(int i=0;i<SnowSurfaceGeometry.IndicesPerPatch;i++)Indices[IndexCount+i]=Count+SnowSurfaceGeometry.TriangleVertex(i);
@@ -75,10 +87,10 @@ namespace IceResurfacer.Presentation
         public void MarkSnowChanged(IceField field,int i)
         {
             int x=i%field.Columns,z=i/field.Columns;
-            // Corner depths consume immediate neighbours. Removal has priority
+            // Shared reconstruction consumes a two-cell halo. Removal has priority
             // so clean cells never wait behind the bounded additions queue.
-            for(int cz=Mathf.Max(0,(z-1)/CellsPerChunk);cz<=Mathf.Min(rows-1,(z+1)/CellsPerChunk);cz++)
-            for(int cx=Mathf.Max(0,(x-1)/CellsPerChunk);cx<=Mathf.Min(columns-1,(x+1)/CellsPerChunk);cx++)
+            for(int cz=Mathf.Max(0,(z-2)/CellsPerChunk);cz<=Mathf.Min(rows-1,(z+2)/CellsPerChunk);cz++)
+            for(int cx=Mathf.Max(0,(x-2)/CellsPerChunk);cx<=Mathf.Min(columns-1,(x+2)/CellsPerChunk);cx++)
             {
                 int k=cz*columns+cx;dirty[k]=true;
                 if(field.Cells[i].SnowMm<=SnowSurfaceGeometry.MeshThresholdMm)urgent[k]=true;
@@ -106,13 +118,14 @@ namespace IceResurfacer.Presentation
             int x0=index%columns*CellsPerChunk,z0=index/columns*CellsPerChunk;
             int x1=Mathf.Min(field.Columns,x0+CellsPerChunk),z1=Mathf.Min(field.Rows,z0+CellsPerChunk);
             var chunk=chunks[index];
-            if(chunk!=null){chunk.Count=chunk.IndexCount=0;chunk.Maximum=0;chunk.Volume=0;}
+            if(chunk!=null)chunk.Begin();
             for(int z=z0;z<z1;z++)for(int x=x0;x<x1;x++)
             {
                 var cell=field.Cells[field.Index(x,z)];
                 if(!cell.IsIce||cell.SnowMm<=SnowSurfaceGeometry.MeshThresholdMm)continue;
-                if(!SnowSurfaceGeometry.Build(field,x,z,roughness,out var p))continue;
-                if(chunk==null)chunk=chunks[index]=new Chunk(root,snow,index%columns,index/columns);
+                if(chunk==null){chunk=chunks[index]=new Chunk(root,snow,index%columns,index/columns);chunk.Begin();}
+                if(!SnowSurfaceGeometry.Build(field,x,z,roughness,chunk.Corner(field,x,z,x0,z0),chunk.Corner(field,x,z+1,x0,z0),
+                    chunk.Corner(field,x+1,z+1,x0,z0),chunk.Corner(field,x+1,z,x0,z0),out var p))continue;
                 chunk.Patch(field,x,z,p);chunk.Volume+=p.Volume;
             }
             if(chunk==null)return;

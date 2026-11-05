@@ -5,20 +5,23 @@ namespace IceResurfacer.Presentation
     /// <summary>Shared paint, lettering and hardware for the operator interface.</summary>
     public static class IceUITheme
     {
-        public static readonly Color PanelColor=new Color32(48,53,47,255);
-        public static readonly Color Inset=new Color32(32,36,32,255);
-        public static readonly Color ButtonFace=new Color32(80,86,74,255);
-        public static readonly Color Text=new Color32(235,231,213,255);
-        public static readonly Color Muted=new Color32(180,185,169,255);
-        public static readonly Color Accent=new Color32(173,190,133,255);
-        public static readonly Color Warning=new Color32(225,180,100,255);
-        public static readonly Color Danger=new Color32(224,142,120,255);
-        public static readonly Color Paper=new Color32(221,216,195,255);
-        public static readonly Color Ink=new Color32(43,48,41,255);
-        public static readonly Color PaperMuted=new Color32(91,96,81,255);
-        public static readonly Color Edge=new Color32(119,127,108,255);
-        public static readonly Color ActiveFace=new Color32(69,83,56,255);
-        public static readonly Color AlertFace=new Color32(92,58,45,255);
+        public static readonly Color PanelColor=new Color32(211,211,199,255);
+        public static readonly Color Inset=new Color32(179,182,169,255);
+        public static readonly Color ButtonFace=new Color32(236,233,218,255);
+        public static readonly Color Text=new Color32(24,26,22,255);
+        public static readonly Color Muted=new Color32(55,57,50,255);
+        public static readonly Color Accent=new Color32(56,78,32,255);
+        public static readonly Color Warning=new Color32(126,68,9,255);
+        public static readonly Color Danger=new Color32(146,36,24,255);
+        public static readonly Color Paper=new Color32(235,232,217,255);
+        public static readonly Color Ink=new Color32(20,22,18,255);
+        public static readonly Color PaperMuted=Ink;
+        public static readonly Color Edge=new Color32(98,101,88,255);
+        public static readonly Color ActiveFace=new Color32(206,196,153,255);
+        public static readonly Color AlertFace=new Color32(239,213,165,255);
+        public static readonly Color PlotBackground=new Color32(32,36,32,255);
+        public static readonly Color PlotGrid=new Color32(48,53,47,255);
+        public static readonly Color PlotText=new Color32(235,231,213,255);
         static Texture2D raised,hover,pressed,selected,focused,field,thumb;
         static GUIStyle slider,sliderThumb;
 
@@ -61,7 +64,7 @@ namespace IceResurfacer.Presentation
             style.normal.background=style.onNormal.background;style.hover.background=style.onHover.background;
             bool clicked=GUI.Button(rect,caption,style);
             style.normal.background=normal;style.hover.background=over;
-            Fill(new Rect(rect.x+5,rect.y+6,3,Mathf.Max(0,rect.height-12)),Accent);
+            Fill(new Rect(rect.x+6,rect.center.y-2,4,4),Text);
             return clicked;
         }
         public static float HorizontalSlider(Rect rect,float value,float minimum,float maximum)
@@ -82,14 +85,11 @@ namespace IceResurfacer.Presentation
         }
         public static void Panel(Rect rect)
         {
-            Fill(rect,Inset);Fill(new Rect(rect.x+1,rect.y+1,rect.width-2,rect.height-2),PanelColor);
-            Fill(new Rect(rect.x+1,rect.y+1,rect.width-2,1),Edge);
-            Fill(new Rect(rect.x+1,rect.y+2,1,rect.height-3),Color.Lerp(PanelColor,Edge,.5f));
+            Fill(rect,Edge);Fill(new Rect(rect.x+1,rect.y+1,rect.width-2,rect.height-2),PanelColor);
         }
         public static void PaperPanel(Rect rect)
         {
             Fill(rect,Ink);Fill(new Rect(rect.x+1,rect.y+1,rect.width-2,rect.height-2),Paper);
-            Fill(new Rect(rect.x+5,rect.y+5,rect.width-10,1),Color.Lerp(Paper,Color.white,.45f));
         }
         public static void Rule(Rect rect){Fill(rect,Edge);}
         public static void Fill(Rect rect,Color color)
@@ -111,13 +111,13 @@ namespace IceResurfacer.Presentation
         static void EnsureTextures()
         {
             if(raised!=null)return;
-            raised=Swatch("painted button",ButtonFace,Edge,Inset);
-            hover=Swatch("button hover",Color.Lerp(ButtonFace,Edge,.28f),Text,Inset);
-            pressed=Swatch("button pressed",Inset,Color.black,Edge);
-            selected=Swatch("engaged switch",ActiveFace,Accent,Inset);
-            focused=Swatch("keyboard focus",ButtonFace,Accent,Accent);
-            field=Swatch("recessed field",Inset,Color.black,Edge);
-            thumb=Swatch("slider handle",Muted,Text,Inset);
+            raised=Swatch("painted button",ButtonFace,Color.white,Edge);
+            hover=Swatch("button hover",Color.white,Edge,Text);
+            pressed=Swatch("button pressed",Inset,Text,Color.white);
+            selected=Swatch("engaged switch",ActiveFace,Edge,Text);
+            focused=Swatch("keyboard focus",ButtonFace,Text,Text);
+            field=Swatch("recessed field",Paper,Text,Color.white);
+            thumb=Swatch("slider handle",ButtonFace,Color.white,Text);
         }
         public static void Dispose()
         {

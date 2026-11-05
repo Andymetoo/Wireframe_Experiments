@@ -23,12 +23,15 @@ namespace IceResurfacer.Presentation
         public static System.Action<string> EditRouteRequested;
         string savedTake="";int savedRevision=-1;
         RouteSilhouetteContinuation continuation;
+        readonly GpsMachineAlignment machineAlignment=new GpsMachineAlignment();
         public int SilhouetteSegments=>continuation==null?0:continuation.LastVisibleSegments;
         public RouteSilhouetteContinuation Continuation=>continuation;
+        public GpsMachineAlignment MachineAlignment=>machineAlignment;
         public void DrawSilhouette(float width,float height)
         {
             if(GuidanceDisplayed&&continuation==null)continuation=new RouteSilhouetteContinuation(game);
             continuation?.Draw(game,width,height);
+            machineAlignment.Draw(game,continuation,width,height);
         }
         public bool HasUnsavedRecording=>recorder.Data!=null&&!recorder.Recording&&(savedTake!=recorder.Data.id||savedRevision!=recorder.Revision);
         public RouteManagerPanel Manager=>panel.Manager;

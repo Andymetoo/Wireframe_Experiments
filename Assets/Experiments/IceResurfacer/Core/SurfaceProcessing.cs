@@ -153,6 +153,26 @@ namespace IceResurfacer.Core
             float washDepth=iceCutCells>0?washOnIce/(iceCutCells*area):0;
             float washPerCell=allCutCells>0?wash/allCutCells:0;
             float blade=ActualBladeDepthMm*pressure*advance,newSnow=0;bool anyChanged=false;
+            double deepStock=0;
+            float deepBudget=0;
+            bool feedingDeep=pressure>=.999f&&advance>0&&Vehicle.Speed>0&&Controls.HorizontalAuger&&!ConveyorJammed;
+            if(feedingDeep)
+            {
+                float maximum=0;
+                for(int n=0;n<footprintCount;n++)
+                    if(Math.Abs(footprintSide[n])<=Config.ConditionerWidth*.5f&&Math.Abs(footprintFore[n])<=Config.ConditionerLength*.5f)
+                    {
+                        float snow=Ice.Cells[footprint[n]].SnowMm;deepStock+=snow*area*.001;
+                        maximum=Math.Max(maximum,snow);
+                    }
+                // Finish the layer already engaged by a deep bank instead of
+                // suddenly swallowing an entire 50 mm footprint as it clears.
+                deepSnowFeeding=maximum>Config.LooseSnowIntakeHeightMm||(deepSnowFeeding&&maximum>1);
+                float outgoing=Math.Min(Config.HorizontalCapacityM3PerSecond*dt,Math.Max(0,Config.VerticalSnowCapacityM3-VerticalSnowM3));
+                deepBudget=Math.Min(Config.HorizontalCapacityM3PerSecond*dt,Math.Max(0,Config.ConditionerUsableSnowCapacityM3-HorizontalSnowM3+outgoing));
+            }
+            else if(pressure<.999f)deepSnowFeeding=false;
+            feedingDeep&=deepSnowFeeding;
             double shaved=0,loosePickup=0;
             for(int n=0;n<footprintCount;n++)
             {
@@ -174,6 +194,12 @@ namespace IceResurfacer.Core
                 // every recovered litre still faces trough/conveyor backpressure.
                 if(cutting&&pressure>=.999f&&advance>0&&cell.SnowMm<=Config.LooseSnowIntakeHeightMm)
                     snowRemoved=cell.SnowMm;
+                // Deep dump piles are fed as finite chunks at the horizontal
+                // conveyor rate while the machine creeps into the bank. The
+                // former millimetres-per-traversal quota barely marked a full
+                // dumped tank, especially once ground speed was reduced.
+                if(cutting&&feedingDeep&&deepStock>0)
+                    snowRemoved=Math.Min(cell.SnowMm,(float)(cell.SnowMm*Math.Min(1,deepBudget/deepStock)));
                 float bite=cutting?blade:0;
                 bool washContact=cutting&&washPerCell>0&&pressure>.7f;
                 if(waterDepth<=0&&bite<=0&&snowRemoved<=0&&cellPickup<=0&&!washContact)continue;

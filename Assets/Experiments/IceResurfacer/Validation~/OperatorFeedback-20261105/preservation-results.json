@@ -1,0 +1,20 @@
+{
+  "baseline_files": 412,
+  "modified": [
+    "Core\\IceField.cs",
+    "Core\\RouteProgress.cs",
+    "Core\\Simulation.cs",
+    "Core\\SimulatorConfig.cs",
+    "Core\\SnowSurfaceGeometry.cs",
+    "Core\\SurfaceProcessing.cs",
+    "Presentation\\IceDashboard.cs",
+    "Presentation\\IceDepositedSnowView.cs",
+    "Presentation\\IceRouteGuide.cs",
+    "Presentation\\IceUITheme.cs",
+    "Presentation\\RouteRecordingPreview.cs",
+    "Presentation\\TrainingGuideView.cs"
+  ],
+  "missing": [],
+  "protected_changes": [],
+  "passed": true
+}

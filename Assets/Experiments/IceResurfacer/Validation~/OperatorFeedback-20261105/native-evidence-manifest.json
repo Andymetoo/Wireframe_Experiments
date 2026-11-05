@@ -1,0 +1,237 @@
+﻿[
+    {
+        "Path":  "After\\Player-1366x768\\01-welcome.png",
+        "SHA256":  "DBB7156397D8DAC6D945BF704B9053A7987C2200A33A71BD6A5F97777F413D8F",
+        "Bytes":  162601
+    },
+    {
+        "Path":  "After\\Player-1366x768\\02-hud.png",
+        "SHA256":  "00D2B15515E71FC6C52F05874D821B404AB6964404E68C69BBD1B43C3B6C3503",
+        "Bytes":  410211
+    },
+    {
+        "Path":  "After\\Player-1366x768\\03-console.png",
+        "SHA256":  "406640328A049A906EF94EB15607624B79FA4CE53B6D6E255584BE5BA392A7ED",
+        "Bytes":  390669
+    },
+    {
+        "Path":  "After\\Player-1366x768\\04-pause.png",
+        "SHA256":  "03592FFC06D8E12961B01C0CBB390C18DEE6A398A8F78FBF51EAA07E3F607533",
+        "Bytes":  135103
+    },
+    {
+        "Path":  "After\\Player-1366x768\\05-help.png",
+        "SHA256":  "DBBB0F7A8C210EAE07536B520704E70710EA95ED9D692C196CBF2098790E48BF",
+        "Bytes":  257197
+    },
+    {
+        "Path":  "After\\Player-1366x768\\06-diagnostics.png",
+        "SHA256":  "160A982DAE2E54C5FFC0425B64870C3F8C257211B19620AE6BF63AF0182ABB2D",
+        "Bytes":  376220
+    },
+    {
+        "Path":  "After\\Player-1366x768\\07-routes.png",
+        "SHA256":  "84A09E3DF9CB3029F26247D19073E34105D0077A8C69E610AD252A29963DEBC0",
+        "Bytes":  159389
+    },
+    {
+        "Path":  "After\\Player-1366x768\\08-route-recording.png",
+        "SHA256":  "ADB31C2183F2D008D06C6312B6718847E1D2644459CC4A3530B0B53969C7B690",
+        "Bytes":  133212
+    },
+    {
+        "Path":  "After\\Player-1366x768\\09-training-guide.png",
+        "SHA256":  "53BAE9EE04CC38E4AD219BB5E81FB7E57984CD35F2E3AD0A39A99832888FF204",
+        "Bytes":  219079
+    },
+    {
+        "Path":  "After\\Player-1366x768\\10-results.png",
+        "SHA256":  "103D9F9342CCABEB286D59984C7A5CEAB2ACE8794A16791954FFB0859DAD2789",
+        "Bytes":  183434
+    },
+    {
+        "Path":  "After\\Player-1366x768\\11-driver-gps-alignment.png",
+        "SHA256":  "41E0555BFF029F8F183C87DEB8B9F501B622BD4F2BAE13D5199DDFD2CBAB7C9A",
+        "Bytes":  580479
+    },
+    {
+        "Path":  "After\\Player-1366x768\\20-full-bin-dump-wide.png",
+        "SHA256":  "9AD0694545245585A2C0E46FE2A2342A9F7DF4ECBC0AB8E409A2C31833A563D2",
+        "Bytes":  790454
+    },
+    {
+        "Path":  "After\\Player-1366x768\\21-full-bin-dump-ground.png",
+        "SHA256":  "5F1DBAD32E92705A2992DB0DD80D900F5357F33C7AEB6F8CB4CA60FA34FF9D50",
+        "Bytes":  523586
+    },
+    {
+        "Path":  "After\\Player-1366x768\\22-identical-stock-mound.png",
+        "SHA256":  "61D61E3A5231D8F9DC849F828811F4E539717C20CDA74370406D7C59AFB662FF",
+        "Bytes":  466650
+    },
+    {
+        "Path":  "After\\Player-1366x768\\23-identical-stock-mound-top.png",
+        "SHA256":  "148BB4F387FFF487F95D4D0F29EA5645DF7BBE553A69EF746678305FD57CCD68",
+        "Bytes":  450237
+    },
+    {
+        "Path":  "After\\Player-1366x768\\slider-metrics.txt",
+        "SHA256":  "F13CB5AB2B2F61B6B82D5E8BFDF93ED7578D523E132E64269E36CF32260AC5F6",
+        "Bytes":  1050
+    },
+    {
+        "Path":  "After\\Player-1366x768\\UI-results.txt",
+        "SHA256":  "3828B99E385BA35E5BBEC65372627B7B761F165C9881F09E12F30765740497A1",
+        "Bytes":  3209
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\01-welcome.png",
+        "SHA256":  "24329BE057D085233364A5AFEC8C762EF1BC025C41FDC5DD28905402634E5765",
+        "Bytes":  265016
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\02-hud.png",
+        "SHA256":  "D65CEE3052B5160E071A21669565F358BED78B21AFC1D70CE6F0A67EF7C1A287",
+        "Bytes":  694008
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\03-console.png",
+        "SHA256":  "4407784C84B784DA86C02E6DD31EBAEAB7A3A12739DDC4D3E04DD0652AC21EDD",
+        "Bytes":  643832
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\04-pause.png",
+        "SHA256":  "AFFA86A3FD1FDBD083E2219D2E491562E619B6BE1A91CCC8A5639FCB8769363A",
+        "Bytes":  221055
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\05-help.png",
+        "SHA256":  "E583CD42D9DEE0450B2CE8A9B0E7F2F46A838BD92FE21CB0C8570FD84886BA83",
+        "Bytes":  401770
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\06-diagnostics.png",
+        "SHA256":  "1A8052DFA6EF8C27F6540581086C51AAE0D1738D02FECFFFEC30765F38D1A6CF",
+        "Bytes":  604853
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\07-routes.png",
+        "SHA256":  "C31DBA1D1DBBB5B46FED9E7B95CEDC9049A7507FFA58338C5855F3E9D5CC4D1A",
+        "Bytes":  251708
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\08-route-recording.png",
+        "SHA256":  "CDB62715EE49814DBEDD9B5C77D70A230260305A0DF16CA6E6B47CA33986F741",
+        "Bytes":  211733
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\09-training-guide.png",
+        "SHA256":  "1ECC0AA9D3B11FAEBCCE1F39BB7DE7CF9006EDC5266B8851D3D48CAA63E399F1",
+        "Bytes":  365213
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\10-results.png",
+        "SHA256":  "9A433BB512F3076DF75E0FB31D4AB95FC5B41F902AE463179413408A8CB690EB",
+        "Bytes":  294992
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\11-driver-gps-alignment.png",
+        "SHA256":  "43B031B699DDA6762928C929349D6B8B85C585D91C433725055687D68FCC8353",
+        "Bytes":  986334
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\20-full-bin-dump-wide.png",
+        "SHA256":  "8BDE7FF42A1E01369AD0EB49A9CF5A9AC8925C947361306D890EA456D8D27497",
+        "Bytes":  1368878
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\21-full-bin-dump-ground.png",
+        "SHA256":  "2A16BB0C0507CE9C9EAC13D9F500FC777A5B6FE8A7D8A245A51E6D2A9DB3247D",
+        "Bytes":  891993
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\22-identical-stock-mound.png",
+        "SHA256":  "195110F23C70A9232F18EB962FB97D19B8204A5A8BA2320AB90AF04E4844C197",
+        "Bytes":  778936
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\23-identical-stock-mound-top.png",
+        "SHA256":  "D7A14C78504003ACD94EDBBDC10DFE645BB868279CECD59E02DCBF3CD998351C",
+        "Bytes":  736520
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\slider-metrics.txt",
+        "SHA256":  "F13CB5AB2B2F61B6B82D5E8BFDF93ED7578D523E132E64269E36CF32260AC5F6",
+        "Bytes":  1050
+    },
+    {
+        "Path":  "After\\Player-1920x1080\\UI-results.txt",
+        "SHA256":  "0432FFF87C079E2C1BC32045625088DDC29438C09C1AE0EB29B0C58C9EA6B608",
+        "Bytes":  3210
+    },
+    {
+        "Path":  "Before\\Player-1920x1080\\20-full-bin-dump-wide.png",
+        "SHA256":  "2A5EB33FF168164CAC8BB90B82D370EE99AE75816E5F230AD56B1752440B1A8C",
+        "Bytes":  1376419
+    },
+    {
+        "Path":  "Before\\Player-1920x1080\\21-full-bin-dump-ground.png",
+        "SHA256":  "28802855E2D1B1B431DA202D7EB036D03D8078DBE9A552E7B5780185709157C8",
+        "Bytes":  929675
+    },
+    {
+        "Path":  "Before\\Player-1920x1080\\22-identical-stock-mound.png",
+        "SHA256":  "3ECA2E527BE04C5ADD057ABF4734EEF10C09FCBEB633EC0C1124D785D4A8B6FC",
+        "Bytes":  912794
+    },
+    {
+        "Path":  "Before\\Player-1920x1080\\23-identical-stock-mound-top.png",
+        "SHA256":  "0B2E0B28068B9252908F2B18CD3C9DE8DE540386EBA4DFA1BA4A92BF8B0FFB8F",
+        "Bytes":  1116687
+    },
+    {
+        "Path":  "Before\\Player-1920x1080\\UI-results.txt",
+        "SHA256":  "B54E9F13B097AD09C7E29DB2D1A1B04EDE9FDDDA6127700525E583FB489A1BC6",
+        "Bytes":  1344
+    },
+    {
+        "Path":  "NativePlayer\\AuroraLayout_Data\\Managed\\IceResurfacer.Runtime.dll",
+        "SHA256":  "1D25ACA590F0FE3279228ED65883201013993527CF2A05F4EAB5A352A37BAA68",
+        "Bytes":  527360
+    },
+    {
+        "Path":  "native-schema-compatibility.txt",
+        "SHA256":  "FB1C70A5F56AB5FA2B751E51A6C1586DD2ED64170A25D4944F6E34656690C19B",
+        "Bytes":  2366
+    },
+    {
+        "Path":  "native-source-manifest-After.json",
+        "SHA256":  "BF8DD17CEFE00ADB73F608FC2E9EBF06FAD0617A50B1DE366FA982CF5CD00F83",
+        "Bytes":  19487
+    },
+    {
+        "Path":  "native-source-manifest-Before.json",
+        "SHA256":  "1947C30221F93EA775BC33CC5F74527F987A7710C48A15242A69A6785F715239",
+        "Bytes":  18935
+    },
+    {
+        "Path":  "NativeValidation.txt",
+        "SHA256":  "35031009224B927659B8610165E51B485DCBE381570707B1A5A74442C145D9AC",
+        "Bytes":  6734
+    },
+    {
+        "Path":  "RunUIPlayer.ps1",
+        "SHA256":  "F3FAAD4F0731FC95AA0E1AA5370DB47569538425CFB2A59197B122F3BC0DD39D",
+        "Bytes":  8738
+    },
+    {
+        "Path":  "StageNativePlayer.ps1",
+        "SHA256":  "3A70E886E1E18B860E847CF5C634DA0D4F2F14372A77EE1E0878BFA4E70A5F33",
+        "Bytes":  2976
+    },
+    {
+        "Path":  "UIWorkshopPlayerProbe.cs",
+        "SHA256":  "BE272D096222CCB324F8A9478C1853944565F472249979B4763F9B24FB6E2E30",
+        "Bytes":  19900
+    }
+]

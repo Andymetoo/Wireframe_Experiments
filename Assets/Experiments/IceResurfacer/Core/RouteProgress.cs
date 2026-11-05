@@ -2,12 +2,12 @@ using System;
 
 namespace IceResurfacer.Core
 {
-    /// <summary>Sequential, travel-budgeted progress. Has no controls or writable simulation reference.</summary>
+    /// <summary>Sequential progress with a bounded local reacquisition window. Never writes simulation state.</summary>
     public sealed class RouteProgress
     {
         readonly RouteFit route;
         float lastX,lastZ;
-        bool synchronized,explicitJoin;
+        bool synchronized,explicitJoin,discontinuous;
         double detourTravel;
         int statusLeg=-1,statusOffset=-1;
         public double Distance {get;private set;}
@@ -17,21 +17,26 @@ namespace IceResurfacer.Core
         public string Status {get;private set;}="Join the start of the selected leg";
         public double TotalObservedTravel {get;private set;}
         public int LastSearchSamples {get;private set;}
-        public RouteProgress(RouteFit fit){route=fit;RejoinLeg(0);}
+        // Fifty feet measured ALONG the route, not a radius through adjacent passes.
+        public const double ReacquireMeters=15.24;
+        public const float ReacquireLateralMeters=.60f;
+        public RouteProgress(RouteFit fit){route=fit;RejoinLeg(0);explicitJoin=false;Status="Join the nearby start of the route";}
         public void Synchronize(float x,float z){lastX=x;lastZ=z;synchronized=true;}
         public void RejoinLeg(int index)
         {
             Leg=Math.Max(0,Math.Min(route.legs.Count-1,index));Distance=route.legs[Leg].start;
-            detourTravel=0;explicitJoin=true;synchronized=false;OffRoute=true;Status="Explicit join / leg "+(Leg+1);
+            detourTravel=0;explicitJoin=true;discontinuous=false;synchronized=false;OffRoute=true;Status="Explicit join / leg "+(Leg+1);
             statusLeg=statusOffset=-1;
         }
         public void Observe(float x,float z,float heading,float speed)
         {
-            if(!synchronized){Synchronize(x,z);}
+            bool firstObservation=!synchronized;
+            if(firstObservation){Synchronize(x,z);}
             float step=TrainingRouteDefinition.Distance(x,z,lastX,lastZ);lastX=x;lastZ=z;
-            if(step>1){OffRoute=true;statusLeg=-1;Status="Position changed discontinuously; select a leg to rejoin";return;}
+            LastSearchSamples=0;
+            if(step>1||discontinuous){discontinuous=true;OffRoute=true;statusLeg=-1;Status="Position changed discontinuously; select a leg to rejoin";return;}
             TotalObservedTravel+=step;
-            if(Math.Abs(speed)<.02f||step<.000001f&&!explicitJoin)return;
+            if(Math.Abs(speed)<.02f||step<.000001f&&!explicitJoin&&!firstObservation)return;
             int direction=speed<0?-1:1;
             var context=route.legs[Leg];
             // A driver can stop/reverse slightly before the mathematical cusp.
@@ -48,30 +53,31 @@ namespace IceResurfacer.Core
             else
             {
                 detourTravel+=step;
-                horizon=Math.Min(Distance+Math.Max(2,detourTravel*1.25+1),context.end);
+                horizon=Math.Min(Distance+Math.Min(ReacquireMeters,Math.Max(2,detourTravel*1.25+1)),context.end);
                 // Ordinary turn transitions can enter the immediately adjacent leg.
                 // No scan ever searches a later loop or skips a significant context.
                 if(context.end-Distance<1.5&&Leg+1<route.legs.Count&&route.legs[Leg+1].direction==direction)
-                    horizon=Math.Min(Distance+Math.Max(2,detourTravel*1.25+1),Math.Min(route.legs[Leg+1].end,context.end+3));
+                    horizon=Math.Min(Distance+Math.Min(ReacquireMeters,Math.Max(2,detourTravel*1.25+1)),Math.Min(route.legs[Leg+1].end,context.end+3));
             }
-            int first=route.IndexAt(Math.Max(context.start,Distance-1)),last=route.IndexAt(horizon);
-            float best=float.PositiveInfinity;double bestDistance=Distance;LastSearchSamples=0;
-            for(int i=first;i<=last&&i<route.samples.Count-1;i++)
+            bool found=Project(x,z,heading,direction,context.start,horizon,.96f,out double bestDistance,out float lateral,!explicitJoin);
+            bool acquired=false;
+            // Prefer the current sequential projection at crossings. Only search
+            // farther when it no longer describes the machine's actual track.
+            // Pass markers can be crossed; a required reversal cannot be skipped.
+            if(!explicitJoin&&(!found||lateral>.75f))
             {
-                LastSearchSamples++;var a=route.samples[i];var b=route.samples[i+1];if(a.direction!=direction)continue;
-                float angle=TrainingRouteDefinition.Angle(heading-a.heading);if(Math.Abs(angle)>.96f)continue;
-                float dx=b.x-a.x,dz=b.z-a.z,len=dx*dx+dz*dz;
-                float t=len<.000001f?0:Simulation.Clamp(((x-a.x)*dx+(z-a.z)*dz)/len,0,1);
-                double s=a.distance+(b.distance-a.distance)*t;if(s<Distance-.5||s>horizon+.001)continue;
-                float ex=x-(a.x+dx*t),ez=z-(a.z+dz*t),error=ex*ex+ez*ez;
-                float score=error+angle*angle*.5f+(float)Math.Max(0,s-Distance)*.0005f;
-                if(score<best){best=score;bestDistance=s;LateralError=(float)Math.Sqrt(error);}
+                double joinEnd=Math.Min(Distance+ReacquireMeters,context.end);
+                for(int next=Leg+1;joinEnd<Distance+ReacquireMeters&&next<route.legs.Count&&route.legs[next].direction==direction;next++)
+                    joinEnd=Math.Min(Distance+ReacquireMeters,route.legs[next].end);
+                if(Project(x,z,heading,direction,context.start,joinEnd,.65f,out double joinDistance,out float joinLateral,true)&&joinLateral<=ReacquireLateralMeters)
+                {found=true;acquired=true;bestDistance=joinDistance;lateral=joinLateral;}
             }
-            if(float.IsPositiveInfinity(best)||LateralError>2.25f)
-            {OffRoute=true;statusLeg=-1;Status="Off route / keep current leg, or explicitly rejoin another";return;}
-            // Only a deliberate leg selection can acquire a distant part of that leg.
-            // Normal progress is constrained by distance physically traveled while away.
-            double budget=explicitJoin?horizon-Distance:Math.Max(.08,detourTravel*1.5+.08);
+            if(!found||lateral>2.25f)
+            {OffRoute=true;statusLeg=-1;Status="Off route / meet the next 50 ft of track, or select a leg";return;}
+            LateralError=lateral;
+            // A close, direction-aligned crossing may recover up to fifty feet of
+            // omitted progress. An explicit leg selection remains the distant join.
+            double budget=explicitJoin?horizon-Distance:acquired?ReacquireMeters:Math.Max(.08,detourTravel*1.5+.08);
             Distance=Math.Max(Distance,Math.Min(bestDistance,Distance+budget));
             int sample=route.IndexAt(Distance);Leg=route.samples[sample].leg;
             OffRoute=LateralError>.75f;explicitJoin=false;detourTravel=0;
@@ -86,6 +92,27 @@ namespace IceResurfacer.Core
                 if(TrainingRouteDefinition.Distance(x,z,end.x,end.z)<.8f&&route.legs[Leg+1].direction!=direction)
                 {Leg++;Distance=route.legs[Leg].start;explicitJoin=false;detourTravel=0;statusLeg=-1;Status="Direction change / leg "+(Leg+1);}
             }
+        }
+        bool Project(float x,float z,float heading,int direction,double contextStart,double horizon,float headingTolerance,out double distance,out float lateral,bool strictSegment=false)
+        {
+            int first=route.IndexAt(Math.Max(contextStart,Distance-1)),last=route.IndexAt(horizon);
+            float best=float.PositiveInfinity;distance=Distance;lateral=float.PositiveInfinity;
+            for(int i=first;i<=last&&i<route.samples.Count-1;i++)
+            {
+                LastSearchSamples++;var a=route.samples[i];var b=route.samples[i+1];if(a.direction!=direction)continue;
+                float angle=TrainingRouteDefinition.Angle(heading-a.heading);if(Math.Abs(angle)>headingTolerance)continue;
+                float dx=b.x-a.x,dz=b.z-a.z,len=dx*dx+dz*dz;
+                float rawT=len<.000001f?0:((x-a.x)*dx+(z-a.z)*dz)/len;
+                // Do not use a clamped endpoint to acquire a point just beyond
+                // the fifty-foot window or round the end of the current leg.
+                if(strictSegment&&(rawT<0||rawT>1))continue;
+                float t=Simulation.Clamp(rawT,0,1);
+                double s=a.distance+(b.distance-a.distance)*t;if(s<Distance-.5||s>horizon+.00001)continue;
+                float ex=x-(a.x+dx*t),ez=z-(a.z+dz*t),error=ex*ex+ez*ez;
+                float score=error+angle*angle*.5f+(float)Math.Max(0,s-Distance)*.0005f;
+                if(score<best){best=score;distance=s;lateral=(float)Math.Sqrt(error);}
+            }
+            return !float.IsPositiveInfinity(best);
         }
         public int UpcomingTurn(double lookAhead=28)
         {
