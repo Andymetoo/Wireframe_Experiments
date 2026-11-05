@@ -1,0 +1,68 @@
+Front guide roller integration evidence (2026-11-04)
+
+Inventory: Current authored prefab exactly retained the prior 174 mm outboard extension.
+The pre-package backup (2026-11-03 082350 Before controls brush roller package) retains
+the earlier compact position. No intervening manual compact correction was found.
+
+Root applied minimal, backed-up asset changes:
+  Group transform 5722889660757518116 local X: -1.0009999 -> -0.827 m.
+  Group Y=0.53 m and Z=2.444 m unchanged; all wheel/cap geometry unchanged.
+  Bracket transform 5818297522479415069 local centre X: 0.18449986 -> 0.09749997 m.
+  Bracket local Y scale (half-length): 0.18450001 -> 0.097500004 m.
+  Scene simulated GuideRollerX: -1.0009999 -> -0.827 m; Z=2.444, radius=0.09 unchanged.
+  Bracket length: 369 -> 195 mm, inboard attachment stays machine X=-0.632 m.
+  Roller rim: |X|=1.091 -> 0.917 m; conditioner side plates |X|=1.066 m.
+  Result: roller 149 mm inset from conditioner, 103 mm inset from widest body outline.
+  Roller front edge Z=2.534 m, 16 mm behind the fitted nose Z=2.550 m.
+
+No collision algorithm, default procedural machine, snow quantities, water quantities,
+or GPS data changed for the roller. Existing glancing solver already supports the inset geometry.
+The misleading Move Guide Roller Outboard Inspector action and corresponding automated Apply
+step were removed. Alignment diagnostics explain corner contact without treating inset placement
+as a defect. Straightaway tests now assert zero authored roller contact and rotation at neutral steer.
+
+Deterministic tests actually run (RollerProbe.csproj; roller-validation.txt):
+  Authored straight at 2.65 m/s: 13.25 m over 5 seconds, 0/250 roller contact, 0 m roller travel.
+  Authored straight at 1.59 m/s: 7.95 m over 5 seconds, 0/250 roller contact, 0 m roller travel.
+  Conditioner clearance on both straight runs: 25 mm.
+  NW corner: 419/450 roller-contact steps, 21.41 m roller travel, final heading 77.8 degrees,
+    final speed 2.19 m/s, minimum full-machine board clearance 20.24 mm.
+  2, 5, 10, 15 degree glances, three steer settings, full/resurfacing speeds: no dead stops or penetration.
+  25/45 degree impacts resisted; 90 degree head-on stop; reverse recovery; service gate exit/return pass.
+  Procedural rectangle retains original behavior and passes same driving scenarios.
+
+Hardware clearance needed a more faithful test, not a speculative model move:
+  The old single-cylinder wheel hull combines the hub's 165 mm half width with the tread's
+  411.1 mm radius, falsely reporting 18.72 mm overlap for the compact guide. A separate
+  whole-cylinder hull per tread also loses the radial/axial correlation of the angled tread.
+  The read-only serialized geometry probe retains that correlation using conservative
+  1 mm axial strips. At 401 steering positions spanning full +/-0.412 rad lock, and with
+  every wheel roll angle covered by the swept profile, sampled guide surfaces have >=6.70 mm
+  clearance. The dense primitive sampler uses 1-degree cylinder-rim increments. Actual static
+  primitive surfaces at the authored roll have a minimum separation indicator of 8.54 mm.
+  No forward shift, scale change, or invisible roller enlargement was justified.
+  The Unity editor hardware test now derives the same axial profile from actual mesh triangles.
+  That Unity test still requires licensed Editor execution; offline measurements
+  are serialized geometry/deterministic evidence, not rendered inspection.
+
+Saved guide revalidation (SavedGuideProbe.csproj; saved-guides-validation.txt):
+  All eight saved guide files read without writes; all source byte hashes preserved.
+  Four are Ready under the compact current envelope: three AndyRoute versions and the latest
+  Andy_Try_1 outline-calibration (repaired 15 mm). Zero boundary, curvature, source errors.
+  Latest lengths unchanged: AndyRoute 131.581 m; Andy_Try_1 1003.196 m.
+  Four older Andy_Try_1 versions already failed the pre-integration fitted outline (31 boundary
+  samples); compact roller reduces that to 23. They remain historical guides, not newly broken.
+  Existing strict GuideRollerX compatibility correctly requires Revalidate for active scene and
+  Save new copy in the route editor. No recording, guide, selection, or compatibility rule changed.
+
+Scripts modified for roller/integration:
+  Editor/IceMechanicalAlignment.cs: accurate inset advisory, active brush-endpoint diagnostics.
+  Editor/IceMachineRigEditor.cs: remove mistaken extension action (endpoint Snap guard shared).
+  Editor/IceControlsBrushRollerValidation.cs: preserve compact geometry during Apply; replace
+    straightaway/roller-only corner requirements; actual swept tyre profile instead of broad hull.
+  Validation~/ContactDrivingValidation.cs: compact authored fixture, straight non-contact,
+    real corner contact, full glancing/head-on/recovery and service-gate tests.
+
+Remaining visual acceptance: inspect restored compact assembly and tight tyre gap during driving,
+guide rotation during actual corner contact, bumper and conditioner contact around curved boards.
+These were not rendered or claimed visually passed without a licensed Unity session.

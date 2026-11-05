@@ -13,7 +13,7 @@ namespace IceResurfacer.Editor
     public static class IceSnowRealismValidation
     {
         const string Root="Assets/Experiments/IceResurfacer/",Stage="Aurora.SnowRealism.Stage";
-        const string Out=Root+"Validation~/AugersOff-20261104/";
+        const string Out=Root+"Validation~/SnowPresentation-20261104/";
         static int frames;
         static IceSnowRealismValidation(){EditorApplication.update+=Tick;EditorApplication.playModeStateChanged+=State;}
         static void Log(string text){Directory.CreateDirectory(Out);File.AppendAllText(Out+"unity-results.txt",text+"\n");Debug.Log(text);}
@@ -24,6 +24,7 @@ namespace IceResurfacer.Editor
             {
                 Check(Application.dataPath.Replace('\\','/').Contains("/Validation~/UnityProject/Assets"),"isolated project guard");
                 File.WriteAllText(Out+"unity-results.txt","");
+                IceSnowMeshValidation.RunChecks(Log);
                 EditorSceneManager.OpenScene(Root+"Scenes/IceResurfacer_AuthoredMachine.unity");
                 SessionState.SetInt(Stage,1);frames=0;EditorApplication.EnterPlaymode();
             }
@@ -58,7 +59,7 @@ namespace IceResurfacer.Editor
             double initial=OperatorMaterialValidation.SnowStock(s);s.Controls.BladeDepthMm=.35f;
             a.Line(0,-24,24);Refresh(game);
             Check(s.SpilledSnowM3>.018f,"substantial finite overflow "+label);
-            Check(game.Surface.DepositedSnowChunks>0,"sparse faceted deposits visible "+label);
+            Check(game.Surface.DepositedSnowChunks>0,"sparse mounded deposits visible "+label);
             var camera=game.DriverCamera;
             camera.transform.SetPositionAndRotation(new Vector3(0,5,10),Quaternion.Euler(90,0,0));camera.orthographic=true;camera.orthographicSize=3;
             Capture(camera,label+"-overflow.png");
@@ -82,6 +83,30 @@ namespace IceResurfacer.Editor
             for(int i=0;i<200;i++)game.Surface.Refresh(s);
             bytes=GC.GetAllocatedBytesForCurrentThread()-bytes;watch.Stop();
             Log($"Unity surface scene={label} refreshes=200 ms={watch.Elapsed.TotalMilliseconds:F3} managed_bytes={bytes} vertices={game.Surface.DepositedSnowVertices}");
+            VerifySpout(game,label);
+        }
+        static void VerifySpout(IceResurfacerGame game,string label)
+        {
+            game.NewSession(true);var s=game.Sim;var a=new OperatorMaterialValidation.Apparatus(s);
+            var view=(IceSnowView)typeof(IceResurfacerGame).GetField("snowView",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(game);
+            var pool=Array.Find(game.World.Machine.GetComponentsInChildren<ParticleSystem>(),p=>p.name=="Snow conveyed into inspection bin");
+            Check(pool!=null&&pool.main.maxParticles==360&&pool.main.simulationSpace==ParticleSystemSimulationSpace.Local,"bounded machine-local bin spout "+label);
+            view.Update(s,.1f);Check(view.LastSpoutSamples==0,"no material delivered: no spout "+label);
+            s.Controls.BladeDepthMm=.35f;s.Controls.HorizontalAuger=s.Controls.VerticalAuger=true;int samples=0;
+            for(int i=0;i<100;i++)
+            {a.Sample(0,-10+i*.1f);view.Update(s,.1f);samples+=view.LastSpoutSamples;pool.Simulate(.1f,true,false);}
+            Check(s.TotalSnowCollectedM3>0&&samples>0&&pool.particleCount>0,"actual delivered snow emits native particles "+label);
+            Check(pool.particleCount<=360&&pool.emission.rateOverTime.constant==0,"spout has no persistent automatic emission "+label);
+            // Existing standing inspection posture; camera changes are temporary,
+            // in the isolated project only, for this validation capture.
+            var camera=game.DriverCamera;camera.orthographic=false;
+            camera.transform.position=game.World.CameraMount.TransformPoint(0,.48f+game.operatorEyeHeight,.10f);
+            camera.transform.LookAt(game.World.TankInspection.position+game.World.Machine.TransformVector(0,-.30f,.16f));
+            Capture(camera,label+"-inspection-spout.png");
+            s.Controls.VerticalAuger=false;a.Sample(0,1);view.Update(s,.1f);
+            Check(view.LastSpoutSamples==0,"stopped vertical delivery emits no new particles "+label);
+            view.Update(s,0);Check(view.LastSpoutSamples==0,"paused delivery emits no particles "+label);
+            view.Reset();Check(pool.particleCount==0,"reset clears bin spout particles "+label);
         }
         static void CheckCell(Simulation s,IceSurfaceView view,int index)
         {

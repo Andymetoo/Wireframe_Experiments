@@ -12,6 +12,9 @@ namespace IceResurfacer.Presentation
         readonly AudioClip[] clips=new AudioClip[10];
         AudioSource mechanism,breakerMechanism;
         AudioClip spoolClick,breakerStroke;
+        AudioSource horn;
+        AudioClip hornClip;
+        bool hornPressed;
         readonly AudioSource[] impacts=new AudioSource[3];
         AudioClip rollerImpact,boardImpact,wallImpact;
         int observedContact,nextImpact;
@@ -54,11 +57,24 @@ namespace IceResurfacer.Presentation
             rollerImpact=CreateImpact("Guide roller / rubber rattle",0);
             boardImpact=CreateImpact("Board / dull polyethylene and body vibration",1);
             wallImpact=CreateImpact("Service wall / dull chassis clunk",2);
+            // The project has no horn recording. One bounded synthesized voice uses the
+            // same physical falloff and lifecycle as the existing machine audio.
+            hornClip=CreateHorn();
+            horn=IceAudioSpatialization.Create("Machine audio / Horn",world.Chassis,new Vector3(0,.35f,.8f),hornClip,false);
+            horn.loop=true;
             for(int i=0;i<impacts.Length;i++)
             {
                 impacts[i]=IceAudioSpatialization.Create("Physical contact voice "+i,transform,Vector3.zero,null,false);
                 impacts[i].volume=1;
             }
+        }
+        public void SetHorn(bool pressed)
+        {
+            hornPressed=pressed;
+            if(horn==null)return;
+            // Focus loss can suspend the game before SetState runs again.
+            if(!pressed){horn.volume=0;horn.Stop();}
+            else if(!horn.isPlaying)horn.Play();
         }
         void Loop(Layer layer,int clip,Transform parent,Vector3 position=default,bool physical=true)
         {layers[(int)layer]=IceAudioSpatialization.Create("Machine audio / "+layer,parent,position,clips[clip],true,physical);}
@@ -98,6 +114,12 @@ namespace IceResurfacer.Presentation
         public void SetState(Simulation sim,bool running,bool hydraulic)
         {
             var c=sim.Controls;float speed=Mathf.Abs(sim.Vehicle.Speed),factor=running?1:0;
+            float hornTarget=running&&hornPressed?.42f:0;
+            if(horn!=null)
+            {
+                horn.volume=Mathf.MoveTowards(horn.volume,hornTarget,Time.unscaledDeltaTime*(hornTarget>0?12:20));
+                if(hornTarget==0&&horn.volume<=0)horn.Stop();
+            }
             if(previousSimulation!=sim)
             {
                 previousSimulation=sim;observedHorizontal=c.HorizontalAuger;observedVertical=c.VerticalAuger;
@@ -184,6 +206,16 @@ namespace IceResurfacer.Presentation
             }
             var clip=AudioClip.Create(name,count,1,rate,false);clip.SetData(data,0);return clip;
         }
+        static AudioClip CreateHorn()
+        {
+            const int rate=22050;var samples=new float[rate];
+            for(int i=0;i<samples.Length;i++)
+            {
+                float phase=(float)i/rate*2*Mathf.PI;
+                samples[i]=.30f*Mathf.Sin(phase*350)+.25f*Mathf.Sin(phase*440)+.10f*Mathf.Sin(phase*700)+.07f*Mathf.Sin(phase*880);
+            }
+            var clip=AudioClip.Create("Aurora electric two-tone horn",samples.Length,1,rate,false);clip.SetData(samples,0);return clip;
+        }
         static AudioClip CreateImpact(string name,int kind)
         {
             const int rate=22050;int count=(int)(rate*(kind==0?.22f:.46f));var data=new float[count];
@@ -203,6 +235,7 @@ namespace IceResurfacer.Presentation
             foreach(var clip in clips)if(clip!=null)Destroy(clip);
             if(spoolClick!=null)Destroy(spoolClick);if(breakerStroke!=null)Destroy(breakerStroke);
             if(rollerImpact!=null)Destroy(rollerImpact);if(boardImpact!=null)Destroy(boardImpact);if(wallImpact!=null)Destroy(wallImpact);
+            if(hornClip!=null)Destroy(hornClip);
         }
     }
 }

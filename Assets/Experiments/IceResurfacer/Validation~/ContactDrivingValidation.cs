@@ -4,15 +4,15 @@ using IceResurfacer.Core;
 /// <summary>
 /// Board contact while driving: glancing contact slides along the boards, square impacts stop, the
 /// authored outline (chassis polygon, conditioner collider, guide roller) never passes the driving margin,
-/// the guide roller (moved outboard to lead the conditioner side plates by 25 mm) is the part that rides the
-/// boards in a straight run, and the original rectangle still behaves. Deterministic; the controls are the only input.
+/// the compact authored guide roller remains clear on parallel straightaways and can engage around corners,
+/// and the original rectangle still behaves. Deterministic; the controls are the only input.
 /// </summary>
 internal static class ContactDrivingValidation
 {
     // The authored Aurora's fitted envelope (Scenes/IceResurfacer_AuthoredMachine.unity calibration).
     static readonly float[] AuthoredOutline={-0.96f,-1.25f,-0.96f,-1.125f,-0.94f,-1.075f,-1.02f,-1.025f,-1.02f,-0.775f,-0.927f,-0.725f,-0.94f,-0.675f,-0.94f,-0.575f,-0.784f,-0.525f,-0.792f,-0.425f,-0.792f,-0.325f,-0.836f,-0.225f,-0.836f,-0.175f,-0.85f,-0.125f,-0.85f,0.125f,-0.836f,0.175f,-0.836f,0.225f,-0.813f,0.275f,-0.81f,0.425f,-0.75f,0.475f,-0.75f,0.525f,-0.745f,0.675f,-0.74f,0.825f,-0.748f,0.875f,-0.748f,0.975f,-0.732f,1.025f,-0.71f,1.075f,-0.712f,1.125f,-0.712f,1.175f,-0.738f,1.225f,-0.738f,1.325f,-0.796f,1.425f,-0.796f,1.625f,-0.836f,1.725f,-0.836f,1.775f,-0.85f,1.825f,-0.85f,2.125f,-0.836f,2.175f,-0.792f,2.275f,-0.792f,2.425f,-0.769f,2.475f,-0.769f,2.55f,0.769f,2.55f,0.769f,2.475f,0.792f,2.425f,0.792f,2.275f,0.836f,2.175f,0.85f,2.125f,0.85f,1.825f,0.836f,1.775f,0.836f,1.725f,0.796f,1.625f,0.796f,1.425f,0.738f,1.325f,0.738f,1.225f,0.712f,1.175f,0.712f,1.125f,0.71f,1.075f,0.731f,1.025f,0.744f,0.975f,0.744f,0.875f,0.74f,0.825f,0.75f,0.725f,0.751f,0.525f,0.785f,0.475f,0.81f,0.425f,0.813f,0.275f,0.836f,0.225f,0.836f,0.175f,0.85f,0.125f,0.884f,0.075f,0.888f,0.025f,0.888f,-0.175f,0.836f,-0.225f,0.833f,-0.375f,0.9f,-0.425f,0.903f,-0.475f,0.903f,-0.625f,0.9f,-0.675f,0.814f,-0.725f,1.02f,-0.775f,1.02f,-1.025f,0.153f,-1.075f,0.18f,-1.125f,0.18f,-1.25f};
 
-    static SimulatorConfig Authored()
+    internal static SimulatorConfig Authored()
     {
         return new SimulatorConfig
         {
@@ -20,7 +20,7 @@ internal static class ContactDrivingValidation
             ConveyorDischargeX=-.021f,ConveyorDischargeHeight=1.6392096f,ConveyorDischargeZ=.023590684f,
             BrushPivotX=-.548f,BrushPivotZ=1.3f,BrushArmLength=.38849553f,BrushRadius=.192f,BrushRetractedDegrees=86.32715f,
             CollisionOutline=(float[])AuthoredOutline.Clone(),ConditionerCollisionHalfWidth=1.066f,ConditionerCollisionFront=.365f,ConditionerCollisionRear=.575f,
-            GuideRollerX=-1.001f,GuideRollerZ=2.444f,GuideRollerRadius=.09f,
+            GuideRollerX=-.827f,GuideRollerZ=2.444f,GuideRollerRadius=.09f,
         };
     }
 
@@ -50,7 +50,8 @@ internal static class ContactDrivingValidation
             Parallel(config,label);
             Corner(config,label);
             Recover(config,label);
-            Console.WriteLine("  "+label+": glancing contacts slide, the roller rides straight runs, impacts stop, corner and recovery pass");
+            ServiceGate(config,label);
+            Console.WriteLine("  "+label+": straight clearance, glancing contacts, impacts, corner engagement, service gate and recovery pass");
         }
         Escape();
     }
@@ -108,13 +109,12 @@ internal static class ContactDrivingValidation
     }
 
     /// <summary>
-    /// Straight along the boards, steered lightly in or steering neutral on the board face: the guide roller is
-    /// the only part on the boards, bears nearly all the way and turns with the run, and the conditioner side
-    /// plates (when a collider) stay off them by most of the roller's lead.
+    /// A parallel, neutral-steering run follows the actual widest envelope. An inset roller must remain
+    /// clear and stationary; it has no obligation to bear continuously on a straightaway.
     /// </summary>
     static void Parallel(SimulatorConfig config,string label)
     {
-        foreach(var (steer,throttle,gap) in new[]{(-.06f,1f,.025f),(-.04f,.6f,.025f),(0f,1f,.0205f)})
+        foreach(var (steer,throttle,gap) in new[]{(0f,1f,.025f),(0f,.6f,.025f)})
         {
             var s=new Simulation(config,true);
             float x=PlaceX(s,-6,0,gap);Place(s,x,-6,0,throttle*config.ForwardSpeed,1);
@@ -131,8 +131,11 @@ internal static class ContactDrivingValidation
             float progress=s.Vehicle.Z-z0,rolled=s.GuideRollerTravel-rolled0;
             string run=label+": parallel run (steer "+steer+", throttle "+throttle+"): roller bearing "+bearing+"/"+touched+" steps, rolled "+rolled.ToString("F2")+" of "+progress.ToString("F2")+
                 " m, conditioner "+(conditioner==float.MaxValue?"not a collider":(conditioner*1000).ToString("F0")+" mm off the boards");
-            Check(!other&&touched>0&&bearing>=.9f*touched&&rolled>=.95f*progress,run+" - the roller alone rides the boards");
-            Check(conditioner>.04f,run+" - the conditioner stays clear");
+            bool inset=Math.Abs(config.GuideRollerX)+config.GuideRollerRadius<config.CollisionHalfWidth;
+            Check(!other&&progress>.99f*throttle*config.ForwardSpeed*5,run+" - straight travel remains clear");
+            if(inset)Check(bearing==0&&Math.Abs(rolled)<.00001f,run+" - the tucked roller does not contact or spin on a straightaway");
+            Check(conditioner>.0195f,run+" - the conditioner remains within the driving margin");
+            Console.WriteLine("  "+run);
         }
     }
 
@@ -156,13 +159,27 @@ internal static class ContactDrivingValidation
     {
         var s=new Simulation(config,true);
         float x=PlaceX(s,10,0,.03f);Place(s,x,10,0,config.ForwardSpeed,1);
-        s.Controls.Throttle=1;s.Controls.Steer=-.15f;int deadStops=0;float worst=float.MinValue;
+        s.Controls.Throttle=1;s.Controls.Steer=-.15f;int deadStops=0,rollerSteps=0;float worst=float.MinValue;
         for(int i=0;i<450;i++)
         {
             float before=s.Vehicle.Speed;s.Step(.02f);worst=Math.Max(worst,Clearance(s,s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading));
             if(s.BoardContact&&Math.Abs(before)>.2f&&s.Vehicle.Speed==0)deadStops++;
+            if(s.GuideRollerContact)rollerSteps++;
         }
         Check(deadStops==0&&s.Vehicle.Heading>1.2f&&s.Vehicle.Speed>1.5f&&worst<=-.0195f,label+": the rounded corner carries the machine round without a dead stop ("+(s.Vehicle.Heading*180/Math.PI).ToString("F1")+" deg, "+s.Vehicle.Speed.ToString("F2")+" m/s)");
+        Check(rollerSteps>0&&s.GuideRollerTravel>.1f,label+": the guide roller engages and rolls during the corner");
+        Console.WriteLine("  "+label+": corner roller "+rollerSteps+"/450 steps, "+s.GuideRollerTravel.ToString("F2")+" m, heading "+(s.Vehicle.Heading*180/Math.PI).ToString("F1")+" deg, speed "+s.Vehicle.Speed.ToString("F2")+" m/s, minimum board clearance "+(-worst*1000).ToString("F2")+" mm");
+    }
+
+    static void ServiceGate(SimulatorConfig config,string label)
+    {
+        var s=new Simulation(config,true);s.Layout.ParkingPose(out float x,out float z,out float heading);
+        Place(s,x,z,heading,0,1);s.Controls.Throttle=-1;
+        for(int i=0;i<700;i++){s.Step(.02f);Check(s.ProbeVehiclePose(s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading,out _),label+": service exit remains clear");}
+        Check(s.Ice.IsInside(s.Vehicle.X,s.Vehicle.Z),label+": reverse through the gate reaches the ice");
+        s.Controls.Throttle=.5f;
+        for(int i=0;i<900;i++){s.Step(.02f);Check(s.ProbeVehiclePose(s.Vehicle.X,s.Vehicle.Z,s.Vehicle.Heading,out _),label+": service return remains clear");}
+        Check(s.InServiceBay,label+": forward through the gate returns to the service bay");
     }
 
     static void Recover(SimulatorConfig config,string label)

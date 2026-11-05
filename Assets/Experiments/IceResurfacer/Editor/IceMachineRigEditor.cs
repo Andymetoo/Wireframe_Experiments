@@ -113,7 +113,6 @@ namespace IceResurfacer.Editor
         }
 
         static bool ShowOverlay { get { return EditorPrefs.GetBool("IceMachineRig.AlignmentOverlay",true); } set { EditorPrefs.SetBool("IceMachineRig.AlignmentOverlay",value); } }
-        static float RollerLead { get { return EditorPrefs.GetFloat("IceMachineRig.RollerLead",.025f); } set { EditorPrefs.SetFloat("IceMachineRig.RollerLead",value); } }
 
         /// <summary>Unified mechanical alignment: every simulation-critical assembly, its millimetre
         /// difference, Edit Mode lift/tilt preview, and the explicit transfer into the calibration.</summary>
@@ -170,23 +169,7 @@ namespace IceResurfacer.Editor
                         GUIUtility.ExitGUI();
                     }
             }
-            // Guide roller: an explicit move of your part (never part of Transfer); Transfer then makes it physical.
-            using(new EditorGUI.DisabledScope(game==null||Application.isPlaying))
-            using(new EditorGUILayout.HorizontalScope())
-            {
-                RollerLead=Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Roller lead (mm)","How far the roller's outer edge leads the widest part on its side."),RollerLead*1000,GUILayout.Width(220))/1000,.005f,.10f);
-                float move=IceMechanicalAlignment.GuideRollerShortfall(w,config,RollerLead,out float widest,out string part);
-                using(new EditorGUI.DisabledScope(move<.0005f))
-                    if(GUILayout.Button(move<.0005f?"Guide roller leads the "+part:"Move Guide Roller Outboard "+(move*1000).ToString("F0")+" mm (moves your part)...")&&
-                       EditorUtility.DisplayDialog("Move guide roller outboard","Move the guide roller assembly "+(move*1000).ToString("F0")+" mm outboard so its outer edge leads the "+part+" ("+
-                           widest.ToString("F3")+" m) by "+(RollerLead*1000).ToString("F0")+" mm? The bracket is lengthened to keep meeting the body; nothing else moves. "+
-                           "This edits the prefab (Undo is available). Then use Transfer Authored Geometry so the simulation follows.","Move roller","Cancel"))
-                    {
-                        if(IceMechanicalAlignment.MoveGuideRollerOutboard(w,config,RollerLead,out string summary))Debug.Log("Guide roller: "+summary);
-                        else EditorUtility.DisplayDialog("Guide roller not moved",summary,"OK");
-                        GUIUtility.ExitGUI();
-                    }
-            }
+            EditorGUILayout.HelpBox("The front guide roller is a compact corner guide. Keep its authored inset position; straight driving does not require roller contact. Transfer Authored Geometry aligns simulation to the visible roller.",MessageType.Info);
             if(ShowOverlay)
             {
                 lastOverlay=w;lastItems=items;
@@ -267,7 +250,7 @@ namespace IceResurfacer.Editor
             var brushRig=w.BrushArm!=null?w.BrushArm.GetComponent<IceBoardBrushRig>():null;
             if(brushRig!=null)parts.Add(brushRig);
             Undo.RecordObjects(parts.ToArray(),"Apply Aurora config anchors");
-            if(brushRig!=null)brushRig.mechanism=IceBoardBrushRig.Mechanism.From(config);
+            if(brushRig!=null&&!brushRig.useAuthoredEndpoints)brushRig.mechanism=IceBoardBrushRig.Mechanism.From(config);
             foreach(var anchor in anchors)anchor.Part.position=anchor.Frame.TransformPoint(anchor.Expected);
             if(brushRig!=null)IceBoardBrushRigEditor.Repose(brushRig);
         }

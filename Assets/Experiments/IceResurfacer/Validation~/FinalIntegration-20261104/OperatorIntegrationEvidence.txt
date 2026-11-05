@@ -1,0 +1,81 @@
+AURORA OPERATOR INTEGRATION - HANDOFF
+
+Already present: seat-attached CameraMount, geometric picking/hover, eight mechanical controls,
+keyboard/HUD BoardBrush and WashPump booleans, spatial synthesized machine audio. No horn
+implementation/recording or separate editable E anchor was found in current presentation code.
+
+Implemented:
+- IceOperatorStation component holds persistent driver/E anchor references, independent switch
+  moving-part references, enter/return seconds, switch throw and horn travel.
+- Driver anchor is the actual camera origin and orientation. The old extra 0.06m seated offset
+  and 5-degree pitch apply only to legacy machines lacking the component. Standing adds 0.48m.
+- E uses the full authored pose with finite smoothstep and adjustable duration. RMB adds temporary
+  offsets to that pose. Existing Q/rear/C overlap snapshot and dismount restoration remain active.
+- Three maintained/momentary controls share the existing physical picking/highlight path. Brush
+  and pump use the same Core booleans as keyboard/HUD. Horn uses one bounded synthesized spatial
+  voice in the existing audio architecture. Release, pause/focus and dismount silence it immediately.
+- New control animation preserves each authored rest pose. Unbatched markers/exclusions preserve
+  independently movable grips. Picking rays now use inverse scale as well as rotation, fixing
+  nonuniform authored mount scale (existing valves and new controls).
+- Original generated scene creates equivalent anchors/controls/support rail. Generated E rotation
+  is seeded once from measured grips/rim (61-degree lens, 16:10 minimum framing); authored anchors
+  are never automatically fitted. Source-dimension projection gives yaw79/pitch52 and positive
+  8.35% viewport edge margin for default generated grips/rim. This is not a Unity test.
+- NewSession uses a cloned runtime config for the brush agent's approved endpoints/compliance;
+  visual brush pose uses Sim.Config. Mechanical anchor comparison respects approved endpoints;
+  explicit snap-to-calibration no longer overwrites the active endpoint draft.
+
+Authored measurements (root owns actual asset application):
+- Seat station-local (0,1.23,-.296), steering column (.041,1.475,.351).
+- Old eye seat-local(-.21,.67,.09) plus runtime .06m. New eye(0,.73,.14): centered +210mm X,
+  unchanged physical seated Y, +50mm forward. Root changes this Transform only, not the seat.
+- Floor upper Y=.893995275, foot lower Y=.91749996: 23.504685mm gap. Root extends only the foot
+  downward to close this, preserving its top and the column/wheel.
+- New switch grip seated reach .836m/.935m/1.014m, inside existing 1.7m interaction reach.
+- Recommended E seat-local(.18,.86,-.05), Euler(44,69,0), quaternion
+  (.308723104064533,.525162718002636,-.212179510903938,.764116496215996).
+  It is +180mm right/+130mm up/-190mm rearward from the new seated eye, above the seat back.
+  Earlier proposed E(.18,.86,.15) had valve occlusion of the handwheel; measured camera correction
+  resolves it without moving controls.
+
+ACTUALLY RUN static validation:
+- CameraControlsAudit.py against isolated ControlsViewReview.prefab, final E above:
+  51/51 sample points framed and fully unobstructed by full authored machine mesh triangles at
+  conditioner lift 0/0.5/1. Includes all eight legacy grips, eight rim points, crank and hub.
+  All 51 rays clear seat geometry; 24/24 rim rays clear other hardware. Built-in primitives use
+  conservative AABBs. Output camera-controls-audit.json. Root should rerun on final saved prefab.
+- Read-only source/default-dimension framing check for generated E as described above.
+
+NOT RUN HERE:
+- Licensed Unity rendered/input/audio acceptance or CPU/GPU measurements. Static mesh evidence
+  does not establish final appearance, audio quality, collision physics or Input System behavior.
+- IceOperatorIntegrationValidation.Run(game) is a real Unity/Input System validation hook/menu:
+  Experiments > Ice Resurfacer > Validation > Operator anchors and cockpit controls (Play Mode).
+  Run with normal visible HUD and seated view in each scene. It covers exact E settle/restoration,
+  overlapping E/Q/C, legacy picking at three lifts, shared state, new grip renderer retention,
+  moved/nonuniformly scaled control picking, actual horn AudioSource release without another frame.
+- Existing camera suites were updated only for obsolete fixed pitch/eye offset/screen-order
+  expectations and E anchor binding. Existing 8-control lift/frame/picking coverage is retained.
+
+Authoring:
+Open AuroraR54 prefab. Adjust Driver Eye Anchor or Controls View Anchor Transform position/rotation.
+On Left-hand operator station / IceOperatorStation adjust Controls Enter/Return Seconds.
+Move each whole Board brush switch, Horn button, Wash pickup pump switch assembly to rearrange it;
+its moving child remains the animation reference. Existing control directions remain unchanged.
+Normal RMB look down/left reaches these left-hand switches; E deliberately frames right controls.
+
+Source files owned/modified by camera-controls agent:
+Presentation/IceOperatorStation.cs (+ meta, new)
+Presentation/IceWorldBuilder.cs
+Presentation/IceMachineRig.cs
+Presentation/IcePhysicalControls.cs
+Presentation/IceResurfacerGame.cs
+Presentation/IceMachineAudio.cs
+Editor/IceOperatorIntegrationValidation.cs (+ meta, new)
+Editor/IceCameraValidation.cs
+Editor/IceControlsBrushRollerValidation.cs (Aim, EView, E picking assertions only)
+Editor/IceMachineRigEditor.cs (one endpoint-protection conditional only)
+Validation~/FinalIntegration-20261104/CameraControlsAudit.py
+Validation~/FinalIntegration-20261104/CameraGeometry.py
+Validation~/FinalIntegration-20261104/FindControlsView.py
+No IceChaseCamera changes. No prefab/scene files edited by this agent. Root applies guarded deltas.

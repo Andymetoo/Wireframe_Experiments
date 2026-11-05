@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace IceResurfacer.Presentation
 {
-    /// <summary>Sparse chunks; four flat facets per occupied simulation cell.</summary>
+    /// <summary>Sparse, smoothly shaded broad caps over the conserved snow heightfield.</summary>
     public sealed class IceDepositedSnowView : IDisposable
     {
         const int CellsPerChunk=40,RebuildBudget=8;
@@ -31,6 +31,7 @@ namespace IceResurfacer.Presentation
             public float Maximum;
             public double Volume;
             public int Count;
+            public int IndexCount;
             public Chunk(Transform parent,Material material,int x,int z)
             {
                 var node=new GameObject("Deposited snow / "+x+","+z);node.transform.SetParent(parent,false);
@@ -38,26 +39,34 @@ namespace IceResurfacer.Presentation
                 node.AddComponent<MeshFilter>().sharedMesh=Mesh;
                 Renderer=node.AddComponent<MeshRenderer>();Renderer.sharedMaterial=material;
                 Renderer.shadowCastingMode=ShadowCastingMode.Off;
-                for(int i=0;i<Indices.Length;i++)Indices[i]=i;
             }
-            public void Triangle(SnowSurfacePoint a,SnowSurfacePoint b,SnowSurfacePoint c)
+            static Vector3 Vector(SnowSurfacePoint p)=>new Vector3(p.X,p.Y,p.Z);
+            public void Patch(IceField field,int x,int z,SnowSurfacePatch p)
             {
-                if(Count+3>Vertices.Length)
+                if(Count+SnowSurfaceGeometry.VerticesPerPatch>Vertices.Length)
                 {
-                    int previous=Vertices.Length,size=Mathf.Min(CellsPerChunk*CellsPerChunk*12,previous*2);
-                    Array.Resize(ref Vertices,size);Array.Resize(ref Normals,size);Array.Resize(ref Indices,size);
-                    for(int i=previous;i<size;i++)Indices[i]=i;
+                    int size=Mathf.Min(CellsPerChunk*CellsPerChunk*SnowSurfaceGeometry.VerticesPerPatch,Vertices.Length*2);
+                    Array.Resize(ref Vertices,size);Array.Resize(ref Normals,size);
                 }
-                var va=new Vector3(a.X,a.Y+.0002f,a.Z);var vb=new Vector3(b.X,b.Y+.0002f,b.Z);var vc=new Vector3(c.X,c.Y+.0002f,c.Z);
-                Vector3 normal=Vector3.Cross(vb-va,vc-va).normalized;
-                Vertices[Count]=va;Vertices[Count+1]=vb;Vertices[Count+2]=vc;
-                Normals[Count]=Normals[Count+1]=Normals[Count+2]=normal;
-                Maximum=Mathf.Max(Maximum,Mathf.Max(a.Y,Mathf.Max(b.Y,c.Y)));Count+=3;
+                if(IndexCount+SnowSurfaceGeometry.IndicesPerPatch>Indices.Length)
+                    Array.Resize(ref Indices,Mathf.Min(CellsPerChunk*CellsPerChunk*SnowSurfaceGeometry.IndicesPerPatch,Indices.Length*2));
+                Vector3 a=Vector(SnowSurfaceGeometry.Normal(field,x,z)),b=Vector(SnowSurfaceGeometry.Normal(field,x,z+1));
+                Vector3 c=Vector(SnowSurfaceGeometry.Normal(field,x+1,z+1)),d=Vector(SnowSurfaceGeometry.Normal(field,x+1,z));
+                Vector3 middle=(a+b+c+d).normalized;
+                for(int i=0;i<SnowSurfaceGeometry.VerticesPerPatch;i++)
+                {
+                    var point=p.Point(i);Vertices[Count+i]=Vector(point)+Vector3.up*.0002f;
+                    Vector3 normal=i%4==0?a:i%4==1?b:i%4==2?c:d;
+                    Normals[Count+i]=i<4?normal:Vector3.Lerp(normal,middle,.3f).normalized;
+                    Maximum=Mathf.Max(Maximum,point.Y);
+                }
+                for(int i=0;i<SnowSurfaceGeometry.IndicesPerPatch;i++)Indices[IndexCount+i]=Count+SnowSurfaceGeometry.TriangleVertex(i);
+                Count+=SnowSurfaceGeometry.VerticesPerPatch;IndexCount+=SnowSurfaceGeometry.IndicesPerPatch;
             }
         }
         public IceDepositedSnowView(IceField field,Transform parent)
         {
-            root=new GameObject("Conserved loose snow / sparse faceted meshes").transform;root.SetParent(parent,false);
+            root=new GameObject("Conserved loose snow / sparse mounded heightfield").transform;root.SetParent(parent,false);
             columns=Mathf.CeilToInt(field.Columns/(float)CellsPerChunk);rows=Mathf.CeilToInt(field.Rows/(float)CellsPerChunk);
             chunks=new Chunk[columns*rows];dirty=new bool[chunks.Length];urgent=new bool[chunks.Length];
             snow=new Material(Shader.Find("Universal Render Pipeline/Lit")){name="Deposited snow / opaque granular surface"};
@@ -97,27 +106,36 @@ namespace IceResurfacer.Presentation
             int x0=index%columns*CellsPerChunk,z0=index/columns*CellsPerChunk;
             int x1=Mathf.Min(field.Columns,x0+CellsPerChunk),z1=Mathf.Min(field.Rows,z0+CellsPerChunk);
             var chunk=chunks[index];
-            if(chunk!=null){chunk.Count=0;chunk.Maximum=0;chunk.Volume=0;}
+            if(chunk!=null){chunk.Count=chunk.IndexCount=0;chunk.Maximum=0;chunk.Volume=0;}
             for(int z=z0;z<z1;z++)for(int x=x0;x<x1;x++)
             {
+                var cell=field.Cells[field.Index(x,z)];
+                if(!cell.IsIce||cell.SnowMm<=SnowSurfaceGeometry.MeshThresholdMm)continue;
                 if(!SnowSurfaceGeometry.Build(field,x,z,roughness,out var p))continue;
                 if(chunk==null)chunk=chunks[index]=new Chunk(root,snow,index%columns,index/columns);
-                chunk.Triangle(p.A,p.B,p.Center);chunk.Triangle(p.B,p.C,p.Center);
-                chunk.Triangle(p.C,p.D,p.Center);chunk.Triangle(p.D,p.A,p.Center);chunk.Volume+=p.Volume;
+                chunk.Patch(field,x,z,p);chunk.Volume+=p.Volume;
             }
             if(chunk==null)return;
             chunk.Renderer.enabled=chunk.Count>0;
-            if(chunk.Count==0){chunk.Mesh.Clear();return;}
+            // Pickup can shrink a nonempty chunk. Remove its old triangle
+            // references before uploading the smaller vertex/normal buffers.
+            chunk.Mesh.Clear();
+            if(chunk.Count==0)return;
             chunk.Mesh.SetVertices(chunk.Vertices,0,chunk.Count);
             chunk.Mesh.SetNormals(chunk.Normals,0,chunk.Count);
-            chunk.Mesh.SetIndices(chunk.Indices,0,chunk.Count,MeshTopology.Triangles,0,false);
+            chunk.Mesh.SetIndices(chunk.Indices,0,chunk.IndexCount,MeshTopology.Triangles,0,false);
             chunk.Mesh.RecalculateBounds();
         }
         public void Dispose()
         {
             root.gameObject.SetActive(false);
-            foreach(var chunk in chunks)if(chunk!=null)UnityEngine.Object.Destroy(chunk.Mesh);
-            UnityEngine.Object.Destroy(snow);UnityEngine.Object.Destroy(root.gameObject);
+            foreach(var chunk in chunks)if(chunk!=null)DestroyOwned(chunk.Mesh);
+            DestroyOwned(snow);DestroyOwned(root.gameObject);
+        }
+        static void DestroyOwned(UnityEngine.Object value)
+        {
+            if(Application.isPlaying)UnityEngine.Object.Destroy(value);
+            else UnityEngine.Object.DestroyImmediate(value);
         }
     }
 }

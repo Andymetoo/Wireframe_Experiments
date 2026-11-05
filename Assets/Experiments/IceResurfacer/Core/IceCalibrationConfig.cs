@@ -30,6 +30,12 @@ namespace IceResurfacer.Core
         // Working arm angle (0 = straight out to the left). Deployment interpolates between
         // this and BrushRetractedDegrees; see BoardBrushArticulation.
         public float BrushDeployedDegrees = 0f;
+        // Bounded carriage compliance, spring return angular frequency, damping ratio.
+        // The original procedural arm has a longer outboard envelope. Its fallback
+        // retains that existing contact range; an authored rig supplies its own travel.
+        public float BrushComplianceTravel = .45f;
+        public float BrushSpringReturn = 12f;
+        public float BrushSpringDamping = 1f;
 
         void ValidateIceCalibration()
         {
@@ -37,7 +43,8 @@ namespace IceResurfacer.Core
                 WaterFilmSpreadMeters,WaterFilmFringeFraction,WashPickupLitersPerSecond,
                 WashPickupContactLength,WashPickupContactFore,WashPickupResidualMm,FloodContactLength,FloodContactFore,
                 MinimumGougeDepthMm,TypicalGougeDepthMm,DeepGougeDepthMm,GougeRoughnessDepthMm,BrushPivotX,BrushPivotZ,
-                BrushArmLength,BrushRadius,BrushRetractedDegrees,BrushDeployedDegrees};
+                BrushArmLength,BrushRadius,BrushRetractedDegrees,BrushDeployedDegrees,
+                BrushComplianceTravel,BrushSpringReturn,BrushSpringDamping};
             foreach(float value in values)
                 if(float.IsNaN(value)||float.IsInfinity(value))
                     throw new ArgumentException("Ice calibration requires finite numbers.");
@@ -51,7 +58,9 @@ namespace IceResurfacer.Core
                 WashPickupResidualMm<0||WashPickupResidualMm>GoodFloodDepthMm||
                 MinimumGougeDepthMm<0||TypicalGougeDepthMm<=MinimumGougeDepthMm||DeepGougeDepthMm<TypicalGougeDepthMm||GougeRoughnessDepthMm<=0||
                 BrushArmLength<=0||BrushRadius<=0||BrushRetractedDegrees<0||BrushRetractedDegrees>100||
-                BrushDeployedDegrees< -45||BrushDeployedDegrees>BrushRetractedDegrees)
+                BrushDeployedDegrees< -45||BrushDeployedDegrees>BrushRetractedDegrees||
+                BrushComplianceTravel<0||BrushComplianceTravel>.6f||BrushSpringReturn<1||BrushSpringReturn>40||
+                BrushSpringDamping<.5f||BrushSpringDamping>3)
                 throw new ArgumentException("Invalid tire, film, pickup, perimeter or brush calibration.");
         }
     }

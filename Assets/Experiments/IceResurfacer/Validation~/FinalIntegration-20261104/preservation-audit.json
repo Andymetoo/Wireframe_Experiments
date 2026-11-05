@@ -1,0 +1,49 @@
+{
+  "baseline_files": 502,
+  "unchanged_files": 486,
+  "protected_assets": 154,
+  "protected_assets_unchanged": 152,
+  "modified_existing_files": [
+    "Core/BoardBrushArticulation.cs",
+    "Core/IceCalibrationConfig.cs",
+    "Core/SurfaceProcessing.cs",
+    "Editor/IceBoardBrushRigEditor.cs",
+    "Editor/IceCameraValidation.cs",
+    "Editor/IceControlsBrushRollerValidation.cs",
+    "Editor/IceMachineRigEditor.cs",
+    "Editor/IceMechanicalAlignment.cs",
+    "Machine/AuroraR54.prefab",
+    "Presentation/IceBoardBrushRig.cs",
+    "Presentation/IceMachineAudio.cs",
+    "Presentation/IceMachineRig.cs",
+    "Presentation/IcePhysicalControls.cs",
+    "Presentation/IceResurfacerGame.cs",
+    "Presentation/IceWorldBuilder.cs",
+    "Scenes/IceResurfacer_AuthoredMachine.unity"
+  ],
+  "new_files": [
+    "Documentation/Aurora-Final-Integration-Pass.md",
+    "Documentation/Aurora-Final-Integration-Pass.md.meta",
+    "Editor/IceOperatorIntegrationValidation.cs",
+    "Editor/IceOperatorIntegrationValidation.cs.meta",
+    "Presentation/IceOperatorStation.cs",
+    "Presentation/IceOperatorStation.cs.meta"
+  ],
+  "removed_files": [],
+  "unexpected_asset_changes": [],
+  "scene_difference": "GuideRollerX only; Operator Tuning, water, GPS and all other calibration unchanged",
+  "prefab_original_document_count": 2354,
+  "prefab_added_document_count": 52,
+  "prefab_changed_existing_document_ids": [
+    1744389026995812225,
+    8967681873041302745,
+    8650661190179171924,
+    5722889660757518116,
+    542850353373282033,
+    5818297522479415069,
+    5974730870780272426,
+    5811553960694032392,
+    6304435167471711745
+  ],
+  "prefab_reference_integrity": "All new internal references resolve; no original mesh, renderer, collider or object removed"
+}

@@ -1,0 +1,16 @@
+{
+  "original_files": 404,
+  "protected_assets_identical": 154,
+  "physical_core_files_identical": 53,
+  "changed_original_sources": [
+    "Core\\SnowSurfaceGeometry.cs",
+    "Presentation\\IceDepositedSnowView.cs",
+    "Presentation\\IceOperatorTuning.cs",
+    "Presentation\\IceSnowView.cs",
+    "Editor\\IceOperatorTuningEditor.cs",
+    "Editor\\IceSnowMeshValidation.cs",
+    "Editor\\IceSnowRealismValidation.cs",
+    "Editor\\OperatorSnowRealismValidation.cs"
+  ],
+  "notes": "New sampler and evidence files not present in before manifest. Existing prior-turn edits retained."
+}

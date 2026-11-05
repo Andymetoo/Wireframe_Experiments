@@ -252,7 +252,7 @@ MonoBehaviour:
     BodyRear: 0.45
     ConditionerWidth: 1.956
     WaterDistributionWidth: 2.1
-    GuideRollerX: -1.0009999
+    GuideRollerX: -0.827
     GuideRollerZ: 2.444
     GuideRollerRadius: 0.09
     ConditionerLength: 0.8

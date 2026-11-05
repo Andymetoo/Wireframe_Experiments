@@ -14,8 +14,8 @@ namespace IceResurfacer.Presentation
     /// </summary>
     public sealed class IcePhysicalControls
     {
-        enum Control { None, Conditioner, Horizontal, Vertical, Dump, Flood, Wash, Blade, Breaker }
-        public const int ControlCount=8;
+        enum Control { None, Conditioner, Horizontal, Vertical, Dump, Flood, Wash, Blade, Breaker, BoardBrush, Horn, WashPump }
+        public const int ControlCount=11;
 
         /// <summary>Where a control is grabbed, in the control's own (possibly scaled) frame.</summary>
         public struct Grip
@@ -40,12 +40,13 @@ namespace IceResurfacer.Presentation
         // Edge-on turning: where the hand is relative to the grip's path, kept between frames, and the way
         // the control was last turning (0 after a stop).
         Vector2 pathOffset; float lastTurn;
-        readonly Renderer[][] highlightRenderers=new Renderer[9][];
-        readonly MaterialPropertyBlock[][] savedBlocks=new MaterialPropertyBlock[9][];
+        readonly Renderer[][] highlightRenderers=new Renderer[ControlCount+1][];
+        readonly MaterialPropertyBlock[][] savedBlocks=new MaterialPropertyBlock[ControlCount+1][];
         readonly MaterialPropertyBlock tintBlock=new MaterialPropertyBlock();
         static readonly int BaseColor=Shader.PropertyToID("_BaseColor");
         // Authored rest orientation of each moving control; animation is applied on top of it.
-        readonly Quaternion[] restRotations=new Quaternion[9];
+        readonly Quaternion[] restRotations=new Quaternion[ControlCount+1];
+        readonly Vector3[] restPositions=new Vector3[ControlCount+1];
         Control highlighted;
         bool highlightedDrag;
         public string Hint { get; private set; } = "";
@@ -59,14 +60,16 @@ namespace IceResurfacer.Presentation
         {
             game=owner;world=owner.World;
             grips=world.ControlGrips??MeasureGrips(world,owner.calibration);
-            for(int i=1;i<=8;i++)
+            for(int i=1;i<=ControlCount;i++)
             {
+                var part=TransformFor((Control)i);
+                if(part==null)continue;
                 // Runtime batches are confined to each moving part. Fixed plates,
                 // neighbors and disabled source meshes never join its highlight.
-                highlightRenderers[i]=System.Array.FindAll(TransformFor((Control)i).GetComponentsInChildren<Renderer>(),r=>r.enabled);
+                highlightRenderers[i]=System.Array.FindAll(part.GetComponentsInChildren<Renderer>(),r=>r.enabled);
                 savedBlocks[i]=new MaterialPropertyBlock[highlightRenderers[i].Length];
                 for(int j=0;j<savedBlocks[i].Length;j++)savedBlocks[i][j]=new MaterialPropertyBlock();
-                restRotations[i]=TransformFor((Control)i).localRotation;
+                restRotations[i]=part.localRotation;restPositions[i]=part.localPosition;
             }
         }
 
@@ -98,6 +101,7 @@ namespace IceResurfacer.Presentation
 
         public void Release()
         {
+            game.SetHorn(false);
             if(game.Sim!=null)
             {
                 if(active==Control.Conditioner)game.Sim.Controls.ConditionerHydraulic=0;
@@ -138,6 +142,9 @@ namespace IceResurfacer.Presentation
                     case Control.Horizontal: game.Sim.Controls.HorizontalAuger=!game.Sim.Controls.HorizontalAuger;break;
                     case Control.Vertical: game.Sim.Controls.VerticalAuger=!game.Sim.Controls.VerticalAuger;break;
                     case Control.Breaker: game.OperateSnowBreaker();break;
+                    case Control.BoardBrush: game.Sim.Controls.BoardBrush=!game.Sim.Controls.BoardBrush;break;
+                    case Control.WashPump: game.Sim.Controls.WashPump=!game.Sim.Controls.WashPump;break;
+                    case Control.Horn: game.SetHorn(true);break;
                 }
             }
             var c=game.Sim.Controls;
@@ -275,7 +282,7 @@ namespace IceResurfacer.Presentation
         Control Pick(Ray ray,bool tolerant)
         {
             Control best=Control.None;float nearest=1.7f;
-            for(int i=1;i<=(int)Control.Breaker;i++)
+            for(int i=1;i<=ControlCount;i++)
             {
                 var kind=(Control)i;
                 float hit=HitDistance(kind,ray,tolerant);
@@ -288,13 +295,14 @@ namespace IceResurfacer.Presentation
         float HitDistance(Control kind,Ray ray,bool tolerant)
         {
             Transform t=TransformFor(kind);var g=grips[(int)kind];
+            if(t==null)return float.PositiveInfinity;
             if(!tolerant)
             {
                 g.Size-=g.Tolerance;
                 if(kind==Control.Blade){g.Radius-=g.Tolerance.x;g.KnobRadius-=g.Tolerance.y;}
                 else g.Radius-=g.Tolerance.x;
             }
-            Ray local=new Ray(t.InverseTransformPoint(ray.origin),t.InverseTransformDirection(ray.direction));
+            Ray local=new Ray(t.InverseTransformPoint(ray.origin),t.InverseTransformVector(ray.direction).normalized);
             float World(float along){ return Vector3.Distance(ray.origin,t.TransformPoint(local.GetPoint(along))); }
             float best=float.PositiveInfinity;
             if(kind==Control.Conditioner||kind==Control.Horizontal||kind==Control.Vertical||kind==Control.Dump)
@@ -337,7 +345,7 @@ namespace IceResurfacer.Presentation
             foreach(var o in world.ControlOccluders)
             {
                 if(o.Part==null||!o.Part.gameObject.activeInHierarchy)continue;
-                Ray local=new Ray(o.Part.InverseTransformPoint(ray.origin),o.Part.InverseTransformDirection(ray.direction));
+                Ray local=new Ray(o.Part.InverseTransformPoint(ray.origin),o.Part.InverseTransformVector(ray.direction).normalized);
                 if(o.Local.Contains(local.origin)||!o.Local.IntersectRay(local,out float along))continue;
                 if(Vector3.Distance(ray.origin,o.Part.TransformPoint(local.GetPoint(along)))<distance-.01f)return true;
             }
@@ -345,7 +353,7 @@ namespace IceResurfacer.Presentation
         }
 
         Transform TransformFor(Control control) { return TransformFor(world,(int)control); }
-        static Transform TransformFor(IceWorld w,int control)
+        public static Transform TransformFor(IceWorld w,int control)
         {
             switch((Control)control)
             {
@@ -356,13 +364,14 @@ namespace IceResurfacer.Presentation
                 case Control.Flood:return w.FloodLever;
                 case Control.Wash:return w.WashValve;
                 case Control.Blade:return w.BladeWheel;
+                case Control.BoardBrush:case Control.Horn:case Control.WashPump:return w.OperatorControls!=null?w.OperatorControls.Control(control):null;
                 default:return w.SnowBreakerPlunger;
             }
         }
 
         // ---- Grip geometry, measured once from the unbatched parts --------------------------------
 
-        static readonly string[] GripParts={"","Black phenolic hydraulic grip","Black phenolic hydraulic grip","Black phenolic hydraulic grip","Black phenolic hydraulic grip","Valve grip","Valve grip","Blade handwheel rim","Snow breaker T handle"};
+        static readonly string[] GripParts={"","Black phenolic hydraulic grip","Black phenolic hydraulic grip","Black phenolic hydraulic grip","Black phenolic hydraulic grip","Valve grip","Valve grip","Blade handwheel rim","Snow breaker T handle","Cockpit switch grip","Horn button cap","Cockpit switch grip"};
 
         /// <summary>
         /// Each control's grip in its own frame, from the named grip part when present (so lengthened
@@ -371,11 +380,12 @@ namespace IceResurfacer.Presentation
         /// </summary>
         public static Grip[] MeasureGrips(IceWorld w,SimulatorConfig config)
         {
-            var grips=new Grip[9];
+            var grips=new Grip[ControlCount+1];
             float stem=config!=null?config.WaterValveStemHeight:.24f;
-            for(int i=1;i<=8;i++)
+            for(int i=1;i<=ControlCount;i++)
             {
                 Transform t=TransformFor(w,i);
+                if(t==null)continue;
                 bool found=PartBounds(t,GripParts[i],out Bounds b);
                 switch((Control)i)
                 {
@@ -393,6 +403,11 @@ namespace IceResurfacer.Presentation
                         grips[i]=found?new Grip{Center=b.center,Size=b.size+new Vector3(.05f,.057f,.057f),Tolerance=new Vector3(.05f,.057f,.057f),Measured=true}
                             :new Grip{Center=new Vector3(0,.22f,0),Size=new Vector3(.26f,.095f,.095f),Tolerance=new Vector3(.05f,.057f,.057f)};
                         break;
+                    case Control.BoardBrush:case Control.Horn:case Control.WashPump:
+                        // Actual moving grip geometry; the small margin scales with the authored mount.
+                        grips[i]=found?new Grip{Center=b.center,Size=b.size+Vector3.one*.008f,Tolerance=Vector3.one*.008f,Measured=true}
+                            :new Grip{Center=new Vector3(0,.025f,0),Size=new Vector3(.04f,.05f,.04f)};
+                        break;
                     default:
                         grips[i]=found?new Grip{Center=b.center,Radius=Mathf.Max(b.extents.x,b.extents.y,b.extents.z)+.005f,Tolerance=new Vector3(.005f,0,0),Measured=true}
                             :new Grip{Center=new Vector3(0,.225f,0),Radius=.040f,Tolerance=new Vector3(.005f,0,0)};
@@ -402,12 +417,13 @@ namespace IceResurfacer.Presentation
             return grips;
         }
 
-        /// <summary>World position of each control's grip (index 1..8), as picking targets it.</summary>
+        /// <summary>World position of each control's grip (index 1..ControlCount), as picking targets it.</summary>
         public static Vector3[] GripPositions(IceWorld w,SimulatorConfig config)
         {
             var grips=w.ControlGrips??MeasureGrips(w,config);
-            var points=new Vector3[9];
-            for(int i=1;i<=8;i++)points[i]=TransformFor(w,i).TransformPoint(i==7?grips[i].Knob:grips[i].Center);
+            var points=new Vector3[ControlCount+1];
+            for(int i=1;i<=ControlCount;i++)
+            {var part=TransformFor(w,i);if(part!=null)points[i]=part.TransformPoint(i==7?grips[i].Knob:grips[i].Center);}
             return points;
         }
         /// <summary>The handwheel rim radius in the wheel's frame (for framing the whole wheel).</summary>
@@ -463,6 +479,9 @@ namespace IceResurfacer.Presentation
                 case Control.Wash:return "Wash water valve";
                 case Control.Blade:return "Blade handwheel";
                 case Control.Breaker:return "Snow-breaker plunger";
+                case Control.BoardBrush:return "Board brush switch";
+                case Control.Horn:return "Horn button";
+                case Control.WashPump:return "Wash pickup pump switch";
                 default:return "";
             }
         }
@@ -477,6 +496,8 @@ namespace IceResurfacer.Presentation
                 case Control.Flood:case Control.Wash:return Name(control)+" / drag handle: 9 o'clock CLOSED to 6 o'clock OPEN.";
                 case Control.Blade:return "Blade handwheel / rotate or scroll for fine adjustment; 3.5 turns stop to stop.";
                 case Control.Breaker:return "Snow-breaker plunger / click for one complete down-and-return stroke.";
+                case Control.BoardBrush:case Control.WashPump:return Name(control)+" / click to latch ON or OFF; keyboard and panel stay synchronized.";
+                case Control.Horn:return "Horn button / hold LMB to sound; release to stop.";
                 default:return "";
             }
         }
@@ -491,6 +512,13 @@ namespace IceResurfacer.Presentation
             world.VerticalAugerLever.localRotation=restRotations[(int)Control.Vertical]*Quaternion.Euler(c.VerticalAuger?24:0,0,0);
             world.WashValve.localRotation=restRotations[(int)Control.Wash]*Quaternion.Euler(0,-90*c.WashValve,0);
             world.FloodLever.localRotation=restRotations[(int)Control.Flood]*Quaternion.Euler(0,-90*c.FloodFlow,0);
+            var station=world.OperatorControls;
+            if(station!=null)
+            {
+                if(station.boardBrushSwitch!=null)station.boardBrushSwitch.localRotation=restRotations[(int)Control.BoardBrush]*Quaternion.Euler(c.BoardBrush?station.switchOnDegrees:0,0,0);
+                if(station.washPumpSwitch!=null)station.washPumpSwitch.localRotation=restRotations[(int)Control.WashPump]*Quaternion.Euler(c.WashPump?station.switchOnDegrees:0,0,0);
+                if(station.hornButton!=null)station.hornButton.localPosition=restPositions[(int)Control.Horn]-restRotations[(int)Control.Horn]*Vector3.up*(game.HornPressed?station.hornTravel:0);
+            }
             PoseCylinders(world);
         }
 

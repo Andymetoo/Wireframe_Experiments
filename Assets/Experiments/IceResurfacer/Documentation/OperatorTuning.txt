@@ -1,3 +1,16 @@
+CURRENT SNOW PRESENTATION / 2026-11-04
+
+See Documentation/SnowPresentationAndSpout.txt for the current mound/spout pass.
+Physical calibration, saved Operator Tuning and authored scene bytes preserved.
+Mound roughness is the existing windrowRoughness value, relabelled; default .7.
+New Bin spout visibility (x), default 1, range 0..3, changes only the density
+of fragments sampled from actual tank delivery. Zero hides it. No delivery,
+no spout. Restore resets it to 1. Overflow density/size remain independent.
+R toggles standing; Space temporarily stands. Look down through the existing
+top inspection opening with RMB to inspect the incoming stream.
+
+EARLIER AUGERS-OFF RECORD (presentation descriptions superseded above)
+
 CURRENT AUGERS-OFF PASS / 2026-11-04
 
 See Documentation/AugersOffSnowRealism.txt for current behavior and evidence.

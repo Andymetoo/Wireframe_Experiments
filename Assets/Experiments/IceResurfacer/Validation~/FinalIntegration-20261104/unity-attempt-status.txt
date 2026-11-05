@@ -1,0 +1,1 @@
+Isolated Unity stopped after licensing initialization failed to progress. No native validator ran.

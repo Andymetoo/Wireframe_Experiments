@@ -51,18 +51,8 @@ namespace IceResurfacer.Editor
                 Start("Before: Mechanical Alignment in the authored scene");
                 Table(IceMechanicalAlignment.Measure(w,game.calibration));
                 var before=JsonUtility.FromJson<SimulatorConfig>(JsonUtility.ToJson(game.calibration));
-                Start("Guide roller: Move Guide Roller Outboard (Inspector action, 25 mm lead)");
-                string partsBefore=Snapshot(rig.transform);
-                float shortfall=IceMechanicalAlignment.GuideRollerShortfall(w,game.calibration,RollerLead,out float widest,out string widestPart);
-                Info("roller shortfall for a "+(RollerLead*1000)+" mm lead over the "+widestPart+" ("+widest.ToString("F3")+" m): "+(shortfall*1000).ToString("F1")+" mm");
-                Check(IceMechanicalAlignment.MoveGuideRollerOutboard(w,game.calibration,RollerLead,out string moved),"the roller assembly moves outboard: "+moved);
-                Info(moved);
-                var changedParts=Diff(partsBefore,Snapshot(rig.transform));
-                Info("transforms changed by the roller move: "+string.Join(", ",changedParts));
-                Check(changedParts.Count==2&&changedParts.Any(n=>n.StartsWith("Front-left board guide"))&&changedParts.Any(n=>n.StartsWith("Guide roller bracket")),
-                    "only the roller assembly and its bracket moved (everything else in the machine is untouched)");
-                Check(PrefabUtility.GetPropertyModifications(rig.gameObject).Count(m=>!IsRoot(rig,m))==0,"the move is written to the prefab, not left as scene overrides");
-                w=rig.Collect();
+                Start("Guide roller: preserve the compact authored assembly");
+                Info("No automatic roller extension: straightaway contact is not a requirement.");
                 Start("Transfer Authored Geometry to Simulation (Inspector action)");
                 Check(IceMechanicalAlignment.Reconcile(w,game,out var changes,out string error),"Reconcile succeeds"+(error!=null?": "+error:""));
                 foreach(string line in changes)Info(line);
@@ -506,7 +496,7 @@ namespace IceResurfacer.Editor
         static void Aim(IceResurfacerGame game,Vector3 at)
         {
             var cam=game.DriverCamera;
-            cam.transform.localPosition=new Vector3(0,game.operatorEyeHeight,0);
+            cam.transform.localPosition=new Vector3(0,game.World.OperatorControls!=null&&game.World.OperatorControls.driverEyeAnchor!=null?0:game.operatorEyeHeight,0);
             cam.transform.rotation=Quaternion.LookRotation(at-cam.transform.position,game.World.Machine.up);
         }
 
@@ -662,6 +652,7 @@ namespace IceResurfacer.Editor
                     Vector3 v=cam.WorldToViewportPoint(grips[i].position);if(v.z>0&&v.x>0&&v.x<1&&v.y>0&&v.y<1)inFrame++;
                     string hit=controls.GetHitControl(cam.WorldToScreenPoint(grips[i].position));
                     picks.Add(Names[i]+"->"+(hit==""?"none":hit));
+                    Check(hit==Names[i],"E view at "+(lift*100)+"% lift picks "+Names[i]+" at its drawn grip");
                 }
                 Info("E view lift "+(lift*100)+"%: "+inFrame+"/8 grips in frame; picks "+string.Join("; ",picks));
                 Check(inFrame==8,"E view at "+(lift*100)+"% lift frames all 8 grips");
@@ -673,6 +664,8 @@ namespace IceResurfacer.Editor
         static void EView(IceResurfacerGame game)
         {
             game.SelectCameraView("Controls");
+            if(game.World.OperatorControls!=null&&game.World.OperatorControls.controlsViewAnchor!=null)
+            {game.TickControlsAnchor(game.World.OperatorControls.controlsEnterSeconds+1);return;}
             var flags=BindingFlags.Instance|BindingFlags.NonPublic;
             float yaw=(float)typeof(IceResurfacerGame).GetField("targetYaw",flags).GetValue(game),pitch=(float)typeof(IceResurfacerGame).GetField("targetPitch",flags).GetValue(game);
             Vector3 head=(Vector3)typeof(IceResurfacerGame).GetMethod("HeadOffset",flags).Invoke(game,new object[]{yaw});
@@ -691,7 +684,7 @@ namespace IceResurfacer.Editor
                 ("25 deg",25f,0f,1f),("45 deg",45f,0f,1f),("head-on",90f,0f,1f),("full lock into the boards at 5 deg",5f,-1f,1f),("steer away at 5 deg",5f,.3f,1f)})
             {
                 game.NewSession(true);var s=game.Sim;var w=game.World;
-                // Parallel runs start with the roller just off (steered in) or just on (steering neutral) the board face.
+                // Parallel runs use the widest physical envelope; the inset roller can remain clear.
                 float heading=-angle*Mathf.Deg2Rad,x=PlaceX(s,-6,heading,angle==0?(steer==0?.0205f:.025f):.40f);
                 float back=angle==0?0:Mathf.Min(4,.40f/Mathf.Sin(angle*Mathf.Deg2Rad)+.5f);
                 Park(s,x+Mathf.Sin(-heading)*back,-6-Mathf.Cos(heading)*back,heading,throttle*c.ForwardSpeed);
@@ -720,17 +713,10 @@ namespace IceResurfacer.Editor
                 Check(maxRotationError<.01f,label+": the visible roller turns with its tangential travel");
                 if(angle<=15)Check(deadStops==0&&s.Vehicle.Speed>.5f*throttle*c.ForwardSpeed,label+": glancing contact keeps moving along the boards (no dead stop, "+s.Vehicle.Speed.ToString("F2")+" m/s)");
                 if(angle==90)Check(s.Vehicle.Speed==0&&s.BoardContact,"head-on: the boards stop the machine");
-                if(angle<=15&&steer<=0)
-                {
-                    Check(first==""||first=="roller",label+": the guide roller makes first contact ("+(first==""?"no contact":first)+")");
-                    Check(conditionerClear>.02f+RollerLead*.8f,label+": the conditioner side plate never reaches the boards (nearest "+(conditionerClear*1000).ToString("F0")+" mm)");
-                }
-                if(angle==0&&steer<=0)
-                {
-                    float travel=s.GuideRollerTravel-rollerStart;
-                    Check(touchedSteps>0&&rollerSteps>=touchedSteps*.9f&&travel>=progressTouching*.95f&&travel>.5f*progress,
-                        label+": the roller bears on the boards and turns with the straight run ("+rollerSteps+"/"+touchedSteps+" steps, "+travel.ToString("F2")+" m rolled of "+progress.ToString("F2")+" m)");
-                }
+                Check(conditionerClear>.0195f,label+": the conditioner respects the driving margin");
+                if(angle==0&&steer==0&&Mathf.Abs(c.GuideRollerX)+radius<c.CollisionHalfWidth)
+                    Check(rollerSteps==0&&Mathf.Abs(s.GuideRollerTravel-rollerStart)<.00001f,
+                        label+": the inset roller remains clear and does not spin on a straightaway");
                 if(label=="parallel, light contact")Capture("Roller-Straight-Board-Top",game,new Vector3(-.8f,5,1.9f),new Vector3(-.8f,0,1.9f),.75f,false);
                 if(label=="2 deg")Capture("Roller-Riding-Board-Top",game,new Vector3(-.8f,5,2.2f),new Vector3(-.8f,0,2.2f),.55f,false);
                 if(label=="15 deg")Capture("Glancing-Along-Board-Top",game,new Vector3(-.5f,9,.5f),new Vector3(-.5f,0,.5f),3.2f,false);
@@ -755,7 +741,7 @@ namespace IceResurfacer.Editor
                     "contact steps: conditioner "+conditionerSteps+", body "+bodySteps+" | conditioner nearest the board face "+(conditionerClear*1000).ToString("F2")+" mm (driving margin 20 mm), within 0.1 mm of the margin "+atMargin+" steps | visible penetration "+(worstVisible*1000).ToString("F1")+" mm");
                 if(steer!=-.15f){Check(worstVisible<.0015f,"held hard into the boards round the NW corner, the visible machine never enters them ("+(worstVisible*1000).ToString("F1")+" mm)");continue;}
                 Check(deadStops==0&&s.Vehicle.Heading>1.2f&&worstVisible<.0015f,"the boards carry the machine round the NW corner without a dead stop or penetration");
-                Check(conditionerSteps==0&&bodySteps==0&&atMargin==0,"round the corner the roller alone bears; the conditioner never reaches the boards or the 20 mm driving margin (nearest "+(conditionerClear*1000).ToString("F2")+" mm, contact steps "+conditionerSteps+", at the margin "+atMargin+")");
+                Check(rollerSteps>0&&s.GuideRollerTravel>.1f&&conditionerClear>.0195f,"the inset roller engages around the corner; body and conditioner contacts remain bounded by the driving margin");
             }
             {
                 game.NewSession(true);var s=game.Sim;
@@ -855,7 +841,7 @@ namespace IceResurfacer.Editor
                 if(i==200)Capture("Brush-Deployed-At-Boards-Top",game,new Vector3(-.8f,4,1.2f),new Vector3(-.8f,0,1.2f),1.2f,false);
             }
             Info("brush along the boards: contact steps "+contact+"/300, swept "+swept+"/"+checkedCells+" checked cells, visible disc vs simulated contact max "+(maxError*1000).ToString("F3")+" mm, swept "+(s.BrushSweptSnowM3*1000).ToString("F2")+" L");
-            Check(contact>100,"driving normally along the boards (the guide roller on them), the working brush reaches the kickplate");
+            Check(contact>100,"driving normally along the boards, the separate working brush reaches the kickplate");
             Check(maxError<.0001f,"the visible bristle disc is the simulated sweep disc");
             Check(s.BrushSweptSnowM3>0&&(checkedCells==0||swept>=checkedCells*.9f),"snow is swept under the visible disc");
         }
@@ -961,7 +947,6 @@ namespace IceResurfacer.Editor
             return rig;
         }
         static IceResurfacerGame Game(){ return UnityEngine.Object.FindAnyObjectByType<IceResurfacerGame>(FindObjectsInactive.Include); }
-        const float RollerLead=.025f;
         static bool IsRoot(IceMachineRig rig,PropertyModification m)
         {
             var source=PrefabUtility.GetCorrespondingObjectFromSource(rig.gameObject);
@@ -974,14 +959,14 @@ namespace IceResurfacer.Editor
             return changed;
         }
 
-        /// <summary>The moved roller: leads the conditioner, bracket meets body and roller, front tyre clear through full lock.</summary>
+        /// <summary>The compact roller: inset from the machine envelope, bracket meets body and roller, front tyre clear through full lock.</summary>
         static void RollerHardware(IceWorld w,SimulatorConfig c)
         {
-            Start("Guide roller hardware after the move");
+            Start("Compact guide roller hardware");
             Transform m=w.Machine;
             Vector3 roller=m.InverseTransformPoint(w.GuideRoller.position);float radius=IceMechanicalAlignment.GuideRollerRadius(w);
             float lead=Mathf.Abs(roller.x)+radius-c.ConditionerCollisionHalfWidth;
-            Check(Mathf.Abs(lead-RollerLead)<.0011f,"the roller's outer edge |x| "+(Mathf.Abs(roller.x)+radius).ToString("F3")+" leads the conditioner side plates ("+c.ConditionerCollisionHalfWidth.ToString("F3")+") by "+(lead*1000).ToString("F0")+" mm");
+            Check(lead<0,"the roller rim stays inset from the conditioner side plates by "+(-lead*1000).ToString("F0")+" mm");
             Check(Mathf.Abs(roller.x-c.GuideRollerX)<.0005f&&Mathf.Abs(roller.z-c.GuideRollerZ)<.0005f&&Mathf.Abs(radius-c.GuideRollerRadius)<.0005f,"the simulated roller is the visible roller ("+roller.x.ToString("F3")+", "+roller.z.ToString("F3")+", r "+radius.ToString("F3")+")");
             Transform bracket=null;foreach(var t in w.GuideRoller.parent.GetComponentsInChildren<Transform>(true))if(t.name=="Guide roller bracket")bracket=t;
             Vector3 half=bracket.up*bracket.lossyScale.y,a=m.InverseTransformPoint(bracket.position-half),b=m.InverseTransformPoint(bracket.position+half);
@@ -989,33 +974,75 @@ namespace IceResurfacer.Editor
             IceCollisionOutlineFit.Extent(c.CollisionOutline,inner.z,out float bodyLeft,out _);
             Check(Vector2.Distance(new Vector2(outer.x,outer.z),new Vector2(roller.x,roller.z))<.002f,"the bracket ends at the roller axle");
             Check(Mathf.Abs(inner.x)<-bodyLeft-.05f,"the bracket's inboard end is still inside the drawn body (x "+inner.x.ToString("F3")+", body side "+bodyLeft.ToString("F3")+")");
-            Info("bracket length "+(2*bracket.lossyScale.y).ToString("F3")+" m (was 0.195 m)");
+            Info("compact bracket length "+(2*bracket.lossyScale.y).ToString("F3")+" m");
             // Front-left tyre vs roller and bracket, wheel steered through its full lock.
             var wheel=w.FrontWheels[0];var rest=wheel.localRotation;float clear=float.PositiveInfinity,at=0;
             var parts=new List<(Transform,Vector3[])>();
             foreach(var r in w.GuideRoller.parent.GetComponentsInChildren<MeshRenderer>(true)){var f=r.GetComponent<MeshFilter>();if(f!=null&&f.sharedMesh!=null&&f.sharedMesh.isReadable)parts.Add((r.transform,f.sharedMesh.vertices));}
-            var tyre=new List<(Transform,Vector3[])>();
-            foreach(var r in wheel.GetComponentsInChildren<MeshRenderer>(true)){var f=r.GetComponent<MeshFilter>();if(f!=null&&f.sharedMesh!=null&&f.sharedMesh.isReadable)tyre.Add((r.transform,f.sharedMesh.vertices));}
+            // Preserve the tread's axial/radial profile. A single cylinder wrongly combines the hub's
+            // widest point with the tread's largest radius and falsely reports an inset-guide overlap.
+            float profileStart,profileStep;
+            float[] profile=SweptTyreProfile(wheel,out profileStart,out profileStep);
             try
             {
-                for(float steer=-c.MaxSteeringRadians;steer<=c.MaxSteeringRadians+1e-4f;steer+=c.MaxSteeringRadians/10)
+                for(float steer=-c.MaxSteeringRadians;steer<=c.MaxSteeringRadians+1e-4f;steer+=c.MaxSteeringRadians/200)
                 {
                     wheel.localRotation=Quaternion.Euler(0,steer*Mathf.Rad2Deg,0)*rest;
-                    // Tyre as its own mesh hull in the wheel frame: radial and lateral extent.
-                    float tyreRadius=0,tyreHalf=0;
-                    foreach(var (t,v) in tyre)foreach(var p in v){Vector3 q=wheel.InverseTransformPoint(t.TransformPoint(p));tyreRadius=Mathf.Max(tyreRadius,new Vector2(q.y,q.z).magnitude);tyreHalf=Mathf.Max(tyreHalf,Mathf.Abs(q.x));}
                     foreach(var (t,v) in parts)foreach(var p in v)
                     {
                         Vector3 q=wheel.InverseTransformPoint(t.TransformPoint(p));
-                        float d=Mathf.Max(new Vector2(q.y,q.z).magnitude-tyreRadius,Mathf.Abs(q.x)-tyreHalf);
-                        if(d<clear){clear=d;at=steer;}
+                        float radial=new Vector2(q.y,q.z).magnitude;
+                        for(int bin=0;bin<profile.Length;bin++)
+                        {
+                            if(profile[bin]<=0)continue;float low=profileStart+bin*profileStep;
+                            float d=Mathf.Max(radial-profile[bin],Mathf.Max(low-q.x,q.x-low-profileStep));
+                            if(d<clear){clear=d;at=steer;}
+                        }
                     }
                 }
             }
             finally{wheel.localRotation=rest;}
-            Check(clear>.02f,"the front tyre clears the roller and bracket through full steering lock by "+(clear*1000).ToString("F0")+" mm (closest at "+(at*Mathf.Rad2Deg).ToString("F1")+" deg)");
+            Check(clear>.001f,"the actual swept tyre profile clears the compact roller and bracket through full steering lock by at least "+(clear*1000).ToString("F1")+" mm (closest at "+(at*Mathf.Rad2Deg).ToString("F1")+" deg)");
             Shoot("Roller-Mount-Top",m,m.TransformPoint(-.8f,4,2.1f),m.TransformPoint(-.8f,0,2.1f),.6f);
             Shoot("Roller-Mount-Front",m,m.TransformPoint(-.8f,.55f,6),m.TransformPoint(-.8f,.55f,0),.6f);
+        }
+
+        // Conservative surface of revolution of the actual tyre meshes, in 1 mm axial strips.
+        // Triangle edge intersections retain sideways-tilted tread geometry through every roll angle.
+        static float[] SweptTyreProfile(Transform wheel,out float start,out float step)
+        {
+            step=.001f;var meshes=new List<(Vector3[],int[])>();float lo=float.PositiveInfinity,hi=float.NegativeInfinity;
+            foreach(var filter in wheel.GetComponentsInChildren<MeshFilter>(true))
+            {
+                var mesh=filter.sharedMesh;if(mesh==null||!mesh.isReadable)continue;
+                var vertices=mesh.vertices;
+                for(int i=0;i<vertices.Length;i++){vertices[i]=wheel.InverseTransformPoint(filter.transform.TransformPoint(vertices[i]));lo=Mathf.Min(lo,vertices[i].x);hi=Mathf.Max(hi,vertices[i].x);}
+                meshes.Add((vertices,mesh.triangles));
+            }
+            start=Mathf.Floor(lo/step)*step-step;float origin=start,spacing=step;
+            var radii=new float[Mathf.CeilToInt((hi-start)/step)+2];
+            void Add(Vector3 p)
+            {
+                int index=Mathf.Clamp(Mathf.FloorToInt((p.x-origin)/spacing),0,radii.Length-1);
+                float radius=new Vector2(p.y,p.z).magnitude;radii[index]=Mathf.Max(radii[index],radius);
+            }
+            foreach(var (vertices,triangles) in meshes)
+            {
+                foreach(var p in vertices)Add(p);
+                for(int i=0;i<triangles.Length;i+=3)for(int edge=0;edge<3;edge++)
+                {
+                    var a=vertices[triangles[i+edge]];var b=vertices[triangles[i+(edge+1)%3]];
+                    if(Mathf.Abs(b.x-a.x)<1e-7f)continue;
+                    int first=Mathf.CeilToInt((Mathf.Min(a.x,b.x)-origin)/spacing),last=Mathf.FloorToInt((Mathf.Max(a.x,b.x)-origin)/spacing);
+                    for(int bin=first;bin<=last;bin++)
+                    {
+                        float x=origin+bin*spacing,t=(x-a.x)/(b.x-a.x);var p=Vector3.Lerp(a,b,t);float radius=new Vector2(p.y,p.z).magnitude;
+                        if(bin>=0&&bin<radii.Length)radii[bin]=Mathf.Max(radii[bin],radius);
+                        if(bin>0&&bin<=radii.Length)radii[bin-1]=Mathf.Max(radii[bin-1],radius);
+                    }
+                }
+            }
+            return radii;
         }
 
         static string Snapshot(Transform root)

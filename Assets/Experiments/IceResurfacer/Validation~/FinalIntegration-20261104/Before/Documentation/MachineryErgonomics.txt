@@ -1,0 +1,160 @@
+AURORA R-54 / MACHINERY ERGONOMICS AND VISUAL AUTHORING
+29 October 2026
+
+This report covers the physical-model, camera, lighting and editing portions
+of the Operator Ergonomics brief and its six annotated reference images.
+The addendum supersedes the earlier request for conspicuous trailer articulation.
+The associated collision, surface and final validation reports cover those systems.
+
+Actual controls
+The old hydraulic bank used four Z coordinates, .255/.085/-.085/-.255 m.
+Its earlier tests checked that ordering, which did not establish a transverse
+bank. The new mounting plate is .70 m wide and .25 m deep. Four real pivots
+share exactly the same fore/aft coordinate and are spaced .17 m across X:
+VERTICAL AUGER / CONDITIONER / HORIZONTAL AUGER / DUMP TANK.
+The metal cross pivots, fore/aft lever travel, plates, hoses, moving hit bounds
+and animations follow these actual mounts. Spring-return lift/dump and maintained
+independent auger state retain the existing simulation controls.
+
+Flood and wash handles now share one transverse manifold, .26 m between their
+fixed bearings. Both retain L handles, independent analog flow, physical stops
+and the same closed-to-open 90-degree sweep. The blade handwheel remains a
+separate 3.5-turn control. Its hub has moved clear of the water handles. Labels
+call the resurfacing supply FLOOD rather than ICE WATER.
+The E view is solved from the actual extent of the bank, valve grips, blade rim
+and breaker handle. It uses the seated camera, with no separate inspection camera.
+The regression captures include Camera-preset-E.png and Cockpit-hydraulic-controls.png.
+
+Tank and conveyor
+The previous shell center was +.20 m from the chassis center. It is now centered.
+The main crown is .875 m above the .780 m hinge, versus 1.025 m previously:
+the authored crown is 150 mm lower. Its floor remains at the same physical height
+above the front tires. The walls, upper shoulders, crown, window and door are
+reauthored using shared dimensions; the tank parent does not receive a Y scale.
+The moving door and cylinder clevises use those same dimensions. Raised-shell
+collision samples use the same geometric mapping before hinge rotation.
+
+The long over-tank pipe, elbow and downspout are removed. A compact blue upright
+stands against the rear tank wall and sends snow through a short horizontal
+throat to machine-local (0.450, 1.480, 0.470) m. The rear wall has a real opening,
+bounded by tapered panels, at the same location. Its fixed outlet separates from
+the tank when the tank lifts. Vertical discharge/missed-bin material therefore
+continues to use a physically connected production path, not a hidden pipe or a
+decorative replacement. The inspection opening remains an actual hole.
+
+Lowering the shell reduces its available storage envelope. The snow renderer
+integrates a tapered interior cross-section instead of letting a full rectangular
+snow surface protrude through the smaller roof. Simulated stock remains 3.54 m3
+of loose-snow equivalent. Its visual compaction is explicitly the ratio of that
+quantity to the revised geometric envelope; it is not a claim of manufacturer
+compaction. No stock is deleted, generated, or collected a second time by this
+mapping. The final conservative interior envelope is 1.930747 m3, with a 1.833:1
+loose-equivalent/physical-volume ratio. Its base narrows from 1.488 m at the rear
+to 1.400 m at the front; its 1.960 m length is centered at tank-local Z -1.010 m.
+The front clears the closed dump door, and the snow width follows the actual
+local surface height when the bin tilts. Layout-results.txt and Operations-results.txt
+record the geometry and rendered fit checks.
+
+Wheel spacing and operator placement
+The supplied 526 manual's specification table gives 1.37 m wheel track and
+2.13 m overall width; its LT215/85R16 tire specification supports the retained
+.215 m tire section. The suggested .137 m outward movement per side would create
+a 1.644 m track, unsupported by that reference. The visual tires have therefore
+not been detached from their actual steering or alignment coordinates.
+The centered shell changes the left tire sightline. The actual operator station
+has moved .06 m outboard, keeping its platform/rail inside the body envelope and
+leaving the seated eye height unchanged. The model still uses .39 m tire radius,
+the same steering angle and rolling distance, and the same vehicle turning model.
+The centered tank exposed another real obstruction: its former rectangular floor
+overhung the tapered side skins and hid the tire crown. The steel floor now follows
+the actual .763-to-.720 m side taper, retaining its height and thickness. This
+removes the overhang rather than changing track or moving the camera vertically.
+The body fold is formed by the adjoining skins; the previous extra 12 mm round
+steel rail at that crease has been removed. The colored stripe is a thin panel
+following the actual taper, instead of a protruding block across the tire view.
+The lower between-axle casing also has real tapered front wheel-well panels:
+it retains .925 m half-width at Z .90, then narrows to .720 m at Z 1.45.
+The old full-width box blocked the inward-steered tire from the seated sightline.
+This changes bodywork, not steering pivots, tire width, or the camera's height.
+The brush mount moves forward .20 m through the shared BrushPivotZ parameter;
+the simulated contact disc and visible arm use that one position.
+
+Camera and lighting
+Hold LEFT SHIFT for a seated rear shoulder glance at -160 degrees yaw and
+22 degrees downward pitch. Release restores the exact saved head rotation and
+eye offset. It works with W at full demand. Overlapping quicklooks use
+C > E > Q > LEFT SHIFT; their single saved normal viewpoint survives overlaps.
+Q/E/C, persistent RMB look, R standing, held Space and X recenter remain.
+RIGHT SHIFT is now the precision and equipment modifier:
+  RIGHT SHIFT + W/S  precision pedal
+  RIGHT SHIFT + 1    raise conditioner
+  RIGHT SHIFT + 7    lower dump tank
+  RIGHT SHIFT + [/]  wash-water valve
+Unmodified 1 lowers, 7 raises and brackets adjust flood. Left Shift no longer
+changes those machinery commands, preventing the new glance from altering them.
+
+The scene's flat Environment Ambient Color is RGB (214,228,245)/255. This is
+the same sRGB value entered into Unity's color picker; RenderSettings/Unity
+performs the render-color-space conversion. It is not manually converted twice.
+Awake saves prior ambient/fog state and OnDestroy restores it, so loading another
+experiment does not retain this experiment's runtime lighting.
+
+Visual authoring workflow
+Open Scenes/IceResurfacer.unity, then use:
+  Experiments > Ice Resurfacer > Machine Geometry Editor
+The window edits the launch component's shared calibration through Unity's
+serialized properties and undo system. Available parameters include tank roof,
+tank lateral offset, conveyor height, wheel track, brush mount/extension and
+operator station positioning. Save the launch scene normally to keep those edits.
+Validation rejects incompatible dimensions, including a conveyor outlet that
+would intersect the roof or leave the tank side.
+
+Rebuild selectable machine preview calls the same IceWorldBuilder as runtime
+with arena creation and batching disabled. Major assemblies and their individual
+meshes remain selectable in the Scene view. The window can select the snow tank
+or hydraulic bank directly and frame the whole model. Cylinder endpoints are
+initialized for the preview's real stance.
+
+The preview is disposable and excluded from scene/build serialization. It is
+removed before Play Mode, when the window closes, or when Remove preview is used.
+It never opens a different scene or stops Play Mode automatically. Freeform
+preview-transform changes are inspection experiments and are discarded on rebuild;
+persistent design changes use the shared parameters. A separately maintained
+prefab was deliberately avoided because its transforms could drift from collision,
+material transport and runtime batching. This is the lower-risk editing workflow
+requested by the brief, rather than a full asset-pipeline replacement.
+
+Validation status
+The final integrated Unity run (Operator-ergonomics-unity-8.log) passes all suites
+with zero managed errors. This includes 138 camera checks, 41 physical-control
+checks and 92 input/drive-recovery checks. The real Input System exercises the
+transverse hydraulic bank, independent quarter-turn valves, handwheel, exact
+Left Shift return and Right Shift precision/machinery bindings.
+
+Actual seated upper-tread visibility is 16/39 rays at full left steering, 10/39
+straight and 9/39 full right. All three retain the existing six-ray minimum.
+Track, tire section and eye height were preserved; the improvement came from
+the real floor, trim and wheel-well corrections described above. Both front
+tire swept volumes clear the machine at all three steering angles, and wheels
+roll using actual travel. The standing inspection opening exposes snow on 12/25
+sampled rays. E exposes the blade hub, all 8 sampled rim points and all four
+hydraulic grips without obstruction. Q includes the conditioner outer edge and
+the forward brush in the same seated frame.
+
+The unbatched authoring preview successfully generates over 100 individually
+selectable meshes, preserves the four shell skins and separate tapered floor,
+and responds to changed roof, wheel-track and brush parameters. These are checks
+against the actual shared builder, not a second preview implementation.
+Executed outcomes are in Layout-results.txt, Camera-results.txt,
+Physical-controls-results.txt, Authenticity-results.txt and Operations-results.txt.
+All screenshots listed above are captured from Unity's actual cameras. Native HUD
+and performance measurements are separate from these machinery checks; consult
+the final experiment report for their completed outcomes and measurement limits.
+Subjective reach, lever comfort, seat clearance and the compact conveyor silhouette
+still benefit from an experienced operator's review.
+
+Reference basis
+Documentation/526 Operating Instructions English.pdf, DM-20077 revision 3/10/25:
+specifications/dimensions and operator platform Figure 5.3. The supplied exterior,
+control placement and annotated sightline images determine placement and silhouette;
+their perspective is not treated as a precision dimensional measurement.

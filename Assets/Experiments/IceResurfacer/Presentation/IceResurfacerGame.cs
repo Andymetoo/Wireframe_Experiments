@@ -52,6 +52,8 @@ namespace IceResurfacer.Presentation
         public bool PerformanceVisible { get; private set; } = true;
         public int SurfaceDebugMode { get; private set; }
         public bool Standing { get; private set; }
+        public bool HornPressed { get; private set; }
+        public void SetHorn(bool pressed) { HornPressed=pressed;machineAudio?.SetHorn(pressed); }
         [Range(-.08f,.12f)] public float operatorEyeHeight = .06f;
         public string CameraView { get; private set; } = "Forward";
         public bool ChaseActive { get { return chaseCamera!=null&&chaseCamera.Active; } }
@@ -76,6 +78,13 @@ namespace IceResurfacer.Presentation
         float savedYaw, savedPitch, savedControlLean, sideLean, savedSideLean, savedStance, restoreTime;
         Vector3 savedHeadPosition, restorePosition;
         Quaternion savedHeadRotation, restoreRotation;
+        bool controlsAnchorView;
+        float controlsElapsed, controlsLookYaw, controlsLookPitch;
+        Vector3 controlsEnterPosition;
+        Quaternion controlsEnterRotation;
+        bool HasDriverAnchor { get { return World?.OperatorControls!=null&&World.OperatorControls.driverEyeAnchor!=null; } }
+        float ForwardPitch { get { return HasDriverAnchor?0:5; } }
+        float ReturnSeconds { get { return World?.OperatorControls!=null?Mathf.Max(.02f,World.OperatorControls.controlsReturnSeconds):RecenterSeconds; } }
         Vector2 instrumentCursor;
         Mouse lookMouse;
         int lookWarmup;
@@ -128,7 +137,7 @@ namespace IceResurfacer.Presentation
             breakerRest=World.SnowBreakerPlunger.localPosition; cuttingBladeRest=World.CuttingBlade.localPosition;
             brushRig=World.BrushArm!=null?World.BrushArm.GetComponent<IceBoardBrushRig>():null;
             if(brushRig!=null&&!brushRig.IsComplete) { Debug.LogWarning("Board brush rig is missing parts; using the default brush articulation.",brushRig); brushRig=null; }
-            if(brushRig!=null&&!brushRig.mechanism.Matches(IceBoardBrushRig.Mechanism.From(calibration)))
+            if(brushRig!=null&&!brushRig.useAuthoredEndpoints&&!brushRig.mechanism.Matches(IceBoardBrushRig.Mechanism.From(calibration)))
                 Debug.LogWarning("Board brush rig geometry has not been applied to the simulation. Play poses the brush from the scene calibration; use Apply Brush Geometry to Simulation in the rig Inspector.",brushRig);
             acceleratorRest=World.AcceleratorPedal.localRotation; brakeRest=World.BrakePedal.localRotation;
             frontRest=Capture(World.FrontWheels); rearRest=Capture(World.RearWheels);
@@ -169,19 +178,21 @@ namespace IceResurfacer.Presentation
             chaseCamera?.Leave();quicklook="";savedHead=restoringHead=suppressQuicklook=preservedOffset=false;
             snowView?.Reset();
             Surface?.Dispose();
-            Sim=new Simulation(operatorTuning!=null?operatorTuning.CreateRuntimeConfig(calibration):calibration,practice,546,mode);
+            var runtimeConfig=JsonUtility.FromJson<SimulatorConfig>(JsonUtility.ToJson(operatorTuning!=null?operatorTuning.CreateRuntimeConfig(calibration):calibration));
+            if(brushRig!=null&&!brushRig.ApplyAuthoredConfiguration(runtimeConfig,out string brushError))Debug.LogWarning(brushError,brushRig);
+            Sim=new Simulation(runtimeConfig,practice,546,mode);
             if(PlayerPrefs.HasKey(IceOperatorPreferences.SpeedKey))Sim.SetMaximumForwardSpeed(IceOperatorPreferences.LoadMph(OriginalForwardSpeedMph)*IceOperatorPreferences.MetersPerSecondPerMph);
             Sim.Controls.HydraulicHoldControls=true;
             WaterService?.ResetSession();
             Surface=new IceSurfaceView(Sim.Ice,World.IceMesh,iceTemplate,Sim.Config);
             Surface.SetDebugMode(HudHidden?0:SurfaceDebugMode);
             Started=start; Paused=false; HelpVisible=false; Looking=false;
-            accumulator=0; surveyTimer=0; yaw=0; pitch=5; Notice=""; observedMistakes=0; breakerAnimation=0;
+            accumulator=0; surveyTimer=0; yaw=0; pitch=ForwardPitch; Notice=""; observedMistakes=0; breakerAnimation=0;controlsAnchorView=false;
             recenterTime=RecenterSeconds; stance=0; controlLean=sideLean=0; Standing=false; CameraView="Forward";
             Report=Sim.GetReport(); Surface.Refresh(Sim,operatorTuning!=null?operatorTuning.WindrowRoughness:.7f); UpdateMachine(0);
             observedMessage=Sim.LastMessage;
             DriverCamera.transform.localPosition=Vector3.zero;
-            DriverCamera.transform.localRotation=Quaternion.Euler(5,0,0);
+            DriverCamera.transform.localRotation=Quaternion.Euler(ForwardPitch,0,0);
             Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
         }
         public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); } }
@@ -284,10 +295,18 @@ namespace IceResurfacer.Presentation
             PhysicalControls?.Release();
             chaseCamera.Leave();
             CameraView=view;
+            controlsAnchorView=false;
+            if(view=="Controls"&&World.OperatorControls!=null&&World.OperatorControls.controlsViewAnchor!=null)
+            {
+                controlsAnchorView=true;controlsElapsed=0;controlsLookYaw=controlsLookPitch=0;
+                controlsEnterPosition=DriverCamera.transform.localPosition;controlsEnterRotation=DriverCamera.transform.localRotation;
+                controlLean=sideLean=0;preservedOffset=false;recenterTime=RecenterSeconds;
+                return;
+            }
             controlLean=view=="Controls"?-.18f:0;
             sideLean=view=="Conditioner"?-.28f:0;
             preservedOffset=false;
-            if(view=="Forward") { targetYaw=0; targetPitch=5; }
+            if(view=="Forward") { targetYaw=0; targetPitch=ForwardPitch; }
             // Keep both the forward brush and trailing conditioner in the same
             // downward inspection without moving the operator's seated origin.
             else if(view=="Conditioner") { targetYaw=-65;targetPitch=75;FitConditionerQuicklook(); }
@@ -301,7 +320,7 @@ namespace IceResurfacer.Presentation
                     // The grips as drawn now (a conditioner-mounted control rides with its lift).
                     var grips=IcePhysicalControls.GripPositions(World,calibration);
                     var controls=new Bounds(grips[1],Vector3.zero);
-                    for(int i=2;i<=IcePhysicalControls.ControlCount;i++)controls.Encapsulate(i==7?World.BladeWheel.position:grips[i]);
+                    for(int i=2;i<=8;i++)controls.Encapsulate(i==7?World.BladeWheel.position:grips[i]);
                     target=controls.center;
                 }
                 else if(view=="Conditioner")
@@ -370,6 +389,7 @@ namespace IceResurfacer.Presentation
             yaw=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.y);
             pitch=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.x);
             quicklook=next;restoringHead=false;
+            controlsAnchorView=false;
             if(next!="")SelectCameraView(next);
             else if(savedHead)
             {
@@ -388,7 +408,7 @@ namespace IceResurfacer.Presentation
                 yaw=savedYaw;pitch=savedPitch;controlLean=savedControlLean;sideLean=savedSideLean;CameraView=savedCameraView;
                 DriverCamera.transform.localPosition=savedHeadPosition;DriverCamera.transform.localRotation=savedHeadRotation;preservedOffset=true;
             }
-            quicklook="";savedHead=restoringHead=false;suppressQuicklook=true;recenterTime=RecenterSeconds;
+            quicklook="";savedHead=restoringHead=controlsAnchorView=false;suppressQuicklook=true;recenterTime=RecenterSeconds;
         }
         // Explicit validation/benchmark entry uses the same presentation update
         // as held C, without manufacturing keyboard events or changing physics.
@@ -398,7 +418,7 @@ namespace IceResurfacer.Presentation
             float minimum=180,maximum=-180;
             var grips=World.ControlGrips??IcePhysicalControls.MeasureGrips(World,calibration);
             // Lever balls and the far ends of the valve grips and breaker T handle, where they are drawn.
-            for(int i=1;i<=IcePhysicalControls.ControlCount;i++)
+            for(int i=1;i<=8;i++)
             {
                 if(i==7)continue;
                 Transform control=i==1?World.ConditionerLever:i==2?World.HorizontalAugerLever:i==3?World.VerticalAugerLever:i==4?World.DumpLever:
@@ -465,6 +485,11 @@ namespace IceResurfacer.Presentation
                 if(!preset&&delta.sqrMagnitude>0)
                 {
                     if(ChaseActive)chaseCamera.Orbit(delta);
+                    else if(controlsAnchorView)
+                    {
+                        controlsLookYaw=Mathf.Clamp(controlsLookYaw+delta.x*.11f,-100,100);
+                        controlsLookPitch=Mathf.Clamp(controlsLookPitch-delta.y*.11f,-65,65);
+                    }
                     else
                     {
                         // A deliberate look interrupts the return at the currently
@@ -487,11 +512,12 @@ namespace IceResurfacer.Presentation
             if(ChaseActive) { if(running)TickInspectionCamera(dt);return; }
             if(restoringHead)
             {
-                if(running)restoreTime=Mathf.Min(RecenterSeconds,restoreTime+dt);
-                float t=Mathf.SmoothStep(0,1,restoreTime/RecenterSeconds);
+                float duration=ReturnSeconds;
+                if(running)restoreTime=Mathf.Min(duration,restoreTime+dt);
+                float t=Mathf.SmoothStep(0,1,restoreTime/duration);
                 DriverCamera.transform.localPosition=ConstrainHeadOffset(Vector3.Lerp(restorePosition,savedHeadPosition,t));
                 DriverCamera.transform.localRotation=Quaternion.Slerp(restoreRotation,savedHeadRotation,t);
-                if(restoreTime>=RecenterSeconds)
+                if(restoreTime>=duration)
                 {
                     yaw=savedYaw;pitch=savedPitch;restoringHead=savedHead=false;
                     // Restore the saved view exactly, but do not permanently pin
@@ -513,6 +539,11 @@ namespace IceResurfacer.Presentation
                 if(newStance!=stance)preservedOffset=false;
                 stance=newStance;
             }
+            if(controlsAnchorView)
+            {
+                TickControlsAnchor(running?dt:0);
+                return;
+            }
             Vector3 lean=HeadOffset(yaw);
             if(running&&!preservedOffset)
                 DriverCamera.transform.localPosition=Vector3.Lerp(DriverCamera.transform.localPosition,lean,1-Mathf.Exp(-10*dt));
@@ -525,8 +556,24 @@ namespace IceResurfacer.Presentation
         {
             float shoulder=Mathf.SmoothStep(0,1,Mathf.InverseLerp(90,135,Mathf.Abs(angle)));
             float rise=Mathf.SmoothStep(0,1,stance);
-            Vector3 offset=new Vector3((angle>0?.52f:-.40f)*shoulder+sideLean,.03f*shoulder+.48f*rise+operatorEyeHeight,.10f*rise+controlLean);
+            Vector3 offset=new Vector3((angle>0?.52f:-.40f)*shoulder+sideLean,.03f*shoulder+.48f*rise+(HasDriverAnchor?0:operatorEyeHeight),.10f*rise+controlLean);
             return ConstrainHeadOffset(offset);
+        }
+        // The authored E anchor is authoritative. The finite smoothstep settles exactly,
+        // and a moving/repositioned anchor is evaluated in the current seat frame.
+        public void TickControlsAnchor(float dt)
+        {
+            if(!controlsAnchorView||World.OperatorControls==null||World.OperatorControls.controlsViewAnchor==null)return;
+            var station=World.OperatorControls;var anchor=station.controlsViewAnchor;
+            float duration=Mathf.Max(.02f,station.controlsEnterSeconds);
+            controlsElapsed=Mathf.Min(duration,controlsElapsed+Mathf.Max(0,dt));
+            float blend=Mathf.SmoothStep(0,1,controlsElapsed/duration);
+            Vector3 destination=World.CameraMount.InverseTransformPoint(anchor.position);
+            Quaternion rotation=Quaternion.Inverse(World.CameraMount.rotation)*anchor.rotation*Quaternion.Euler(controlsLookPitch,controlsLookYaw,0);
+            DriverCamera.transform.localPosition=ConstrainHeadOffset(Vector3.Lerp(controlsEnterPosition,destination,blend));
+            DriverCamera.transform.localRotation=Quaternion.Slerp(controlsEnterRotation,rotation,blend);
+            yaw=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.y);
+            pitch=Mathf.DeltaAngle(0,DriverCamera.transform.localEulerAngles.x);
         }
         Vector3 ConstrainHeadOffset(Vector3 offset)
         {
@@ -585,7 +632,7 @@ namespace IceResurfacer.Presentation
             if(c.HorizontalAuger&&!Sim.ConveyorJammed)World.HorizontalAuger.Rotate(Vector3.right,dt*390*(1-Sim.ConveyorCongestion*.35f),Space.Self);
             if(c.VerticalAuger&&!Sim.ConveyorJammed)World.VerticalAuger.Rotate(Vector3.up,dt*540*(1-Sim.ConveyorCongestion*.5f),Space.Self);
             if(brushRig!=null)
-                brushRig.Pose(IceBoardBrushRig.Mechanism.From(calibration),Sim.BrushDeployment,new Vector3(Sim.BrushWorldX,0,Sim.BrushWorldZ),c.BoardBrush?dt*540:0);
+                brushRig.Pose(IceBoardBrushRig.Mechanism.From(Sim.Config),Sim.BrushDeployment,new Vector3(Sim.BrushWorldX,0,Sim.BrushWorldZ),c.BoardBrush?dt*540:0);
             else if(World.BrushArm!=null)
             {
                 World.BrushArm.localRotation=Quaternion.Euler(0,-BoardBrushArticulation.ArmDegrees(calibration,Sim.BrushDeployment),0);

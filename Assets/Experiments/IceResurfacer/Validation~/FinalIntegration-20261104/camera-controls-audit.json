@@ -1,0 +1,669 @@
+{
+  "proof": "Static text-asset mesh intersections and 61-degree 16:9 projection; primitive AABBs are conservative. Not rendered proof or a Unity input test.",
+  "source": "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Machine\\AuroraR54.prefab",
+  "samples": [
+    {
+      "lift": 0,
+      "control": "ConditionerLever",
+      "sample": 0,
+      "viewport": [
+        0.39541102371883774,
+        0.35891602478202456,
+        0.7792608375883361
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "HorizontalAugerLever",
+      "sample": 0,
+      "viewport": [
+        0.4217301793677254,
+        0.4292790826113181,
+        0.8408392849684789
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "VerticalAugerLever",
+      "sample": 0,
+      "viewport": [
+        0.36457540573695435,
+        0.2764784116531641,
+        0.7176823902081934
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "DumpLever",
+      "sample": 0,
+      "viewport": [
+        0.44445744473538634,
+        0.49003938619780546,
+        0.9024177323486218
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "FloodLever",
+      "sample": 0,
+      "viewport": [
+        0.5582688438491755,
+        0.08230780818118782,
+        0.4682297372017056
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "WashValve",
+      "sample": 0,
+      "viewport": [
+        0.6206624375954334,
+        0.4666299077154161,
+        0.6791734079044488
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 0,
+      "viewport": [
+        0.694319993703102,
+        0.3319290387403391,
+        0.7267339627688247
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 1,
+      "viewport": [
+        0.6906030923633973,
+        0.32883713545372606,
+        0.7547341873929626
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 2,
+      "viewport": [
+        0.6424121763324375,
+        0.32693904120627826,
+        0.7532911951629313
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 3,
+      "viewport": [
+        0.6150858996980764,
+        0.27128719835446946,
+        0.7133052670269635
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 4,
+      "viewport": [
+        0.6261762758203737,
+        0.18351160755378648,
+        0.6581996173830332
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 5,
+      "viewport": [
+        0.6766858398880295,
+        0.11400271049742994,
+        0.6202543884291747
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 6,
+      "viewport": [
+        0.7351095623454579,
+        0.11680121366677287,
+        0.621697380659206
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 7,
+      "viewport": [
+        0.7589659689166919,
+        0.18949355463601503,
+        0.6616833087951738
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 8,
+      "viewport": [
+        0.737720823011268,
+        0.27638266114520804,
+        0.7167889584391041
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "BladeWheel",
+      "sample": 9,
+      "viewport": [
+        0.6875358029386409,
+        0.24256732884085275,
+        0.6757238714418377
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0,
+      "control": "SnowBreakerPlunger",
+      "sample": 0,
+      "viewport": [
+        0.4953079794908863,
+        0.6217708808159154,
+        0.9118685456118104
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "ConditionerLever",
+      "sample": 0,
+      "viewport": [
+        0.39541102371883774,
+        0.35891602478202456,
+        0.7792608375883361
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "HorizontalAugerLever",
+      "sample": 0,
+      "viewport": [
+        0.4217301793677254,
+        0.4292790826113181,
+        0.8408392849684789
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "VerticalAugerLever",
+      "sample": 0,
+      "viewport": [
+        0.36457540573695435,
+        0.2764784116531641,
+        0.7176823902081934
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "DumpLever",
+      "sample": 0,
+      "viewport": [
+        0.44445744473538634,
+        0.49003938619780546,
+        0.9024177323486218
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "FloodLever",
+      "sample": 0,
+      "viewport": [
+        0.5779213336161136,
+        0.23789123509055055,
+        0.3501378142069521
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "WashValve",
+      "sample": 0,
+      "viewport": [
+        0.6460584979930825,
+        0.6446093625611269,
+        0.5610814849096953
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 0,
+      "viewport": [
+        0.7320229787468823,
+        0.46986543924445484,
+        0.6086420397740713
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 1,
+      "viewport": [
+        0.7259584040581162,
+        0.460133419146266,
+        0.6366422643982089
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 2,
+      "viewport": [
+        0.6688884783178762,
+        0.4581807119859481,
+        0.6351992721681776
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 3,
+      "viewport": [
+        0.6379192506823611,
+        0.40030409857479515,
+        0.5952133440322098
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 4,
+      "viewport": [
+        0.6537641054192661,
+        0.3065000281916209,
+        0.5401076943882795
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 5,
+      "viewport": [
+        0.7182364774295275,
+        0.22993840262081927,
+        0.502162465434421
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 6,
+      "viewport": [
+        0.7902410941808801,
+        0.23306094182943404,
+        0.5036054576644523
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 7,
+      "viewport": [
+        0.815224750877394,
+        0.3129933261463715,
+        0.5435913858004201
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 8,
+      "viewport": [
+        0.7846108315685185,
+        0.405653910265182,
+        0.5986970354443504
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "BladeWheel",
+      "sample": 9,
+      "viewport": [
+        0.7272510015583643,
+        0.37419715421617183,
+        0.5576319484470842
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 0.5,
+      "control": "SnowBreakerPlunger",
+      "sample": 0,
+      "viewport": [
+        0.4953079794908863,
+        0.6217708808159154,
+        0.9118685456118104
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "ConditionerLever",
+      "sample": 0,
+      "viewport": [
+        0.39541102371883774,
+        0.35891602478202456,
+        0.7792608375883361
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "HorizontalAugerLever",
+      "sample": 0,
+      "viewport": [
+        0.4217301793677254,
+        0.4292790826113181,
+        0.8408392849684789
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "VerticalAugerLever",
+      "sample": 0,
+      "viewport": [
+        0.36457540573695435,
+        0.2764784116531641,
+        0.7176823902081934
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "DumpLever",
+      "sample": 0,
+      "viewport": [
+        0.44445744473538634,
+        0.49003938619780546,
+        0.9024177323486218
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "FloodLever",
+      "sample": 0,
+      "viewport": [
+        0.6175767658707528,
+        0.5518325279708204,
+        0.2320458912121982
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "WashValve",
+      "sample": 0,
+      "viewport": [
+        0.684994695074246,
+        0.9174801551865911,
+        0.4429895619149417
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 0,
+      "viewport": [
+        0.7878787186434986,
+        0.674213707687575,
+        0.4905501167793174
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 1,
+      "viewport": [
+        0.7774169806154447,
+        0.6512311507805912,
+        0.5185503414034552
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 2,
+      "viewport": [
+        0.7074575785211245,
+        0.6493657632037013,
+        0.5171073491734239
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 3,
+      "viewport": [
+        0.6720555287927646,
+        0.5931867284566047,
+        0.47712142103745614
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 4,
+      "viewport": [
+        0.6967916416330413,
+        0.49831971099413974,
+        0.42201577139352586
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 5,
+      "viewport": [
+        0.785338643384347,
+        0.4171686477688241,
+        0.3840705424396673
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 6,
+      "viewport": [
+        0.8791488129803716,
+        0.4205468845390845,
+        0.3855135346696986
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 7,
+      "viewport": [
+        0.9027113407571685,
+        0.5050446554467397,
+        0.42549946280566636
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 8,
+      "viewport": [
+        0.8545440044048297,
+        0.5984529496689628,
+        0.48060511244959664
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "BladeWheel",
+      "sample": 9,
+      "viewport": [
+        0.7883068922904624,
+        0.5765573718284134,
+        0.43954002545233056
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    },
+    {
+      "lift": 1,
+      "control": "SnowBreakerPlunger",
+      "sample": 0,
+      "viewport": [
+        0.4953079794908863,
+        0.6217708808159154,
+        0.9118685456118104
+      ],
+      "framed": true,
+      "seat_blockers": [],
+      "other_mesh_blockers": []
+    }
+  ]
+}

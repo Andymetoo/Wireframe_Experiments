@@ -9,13 +9,24 @@ namespace IceResurfacer.Core
     }
     public struct SnowSurfacePatch
     {
-        public SnowSurfacePoint A,B,C,D,Center;
+        public SnowSurfacePoint A,B,C,D,InnerA,InnerB,InnerC,InnerD,Center;
         public double Volume;
+        public SnowSurfacePoint Point(int index)
+        {
+            switch(index)
+            {
+                case 0:return A;case 1:return B;case 2:return C;case 3:return D;
+                case 4:return InnerA;case 5:return InnerB;case 6:return InnerC;default:return InnerD;
+            }
+        }
     }
-    /// <summary>Allocation-free, cell-local faceted reconstruction of real loose volume.</summary>
+    /// <summary>Broad, bevelled heightfield caps with exact cell-local volume.</summary>
     public static class SnowSurfaceGeometry
     {
         public const float MeshThresholdMm=.55f;
+        public const int VerticesPerPatch=8,IndicesPerPatch=30;
+        static readonly int[] triangles={0,1,4,1,5,4,1,2,5,2,6,5,2,3,6,3,7,6,3,0,7,0,4,7,4,5,7,7,5,6};
+        public static int TriangleVertex(int index)=>triangles[index];
         public static float Grain(int x,int z)
         {
             unchecked
@@ -36,7 +47,21 @@ namespace IceResurfacer.Core
                 if(!c.IsIce)return 0;
                 depth=Math.Min(depth,c.SnowMm);
             }
-            return depth*.001f*(1-roughness*(.3f+.4f*Grain(x,z)));
+            return depth*.001f*(1-roughness*.04f);
+        }
+        static float Depth(IceField field,int x,int z)
+        {return x>=0&&z>=0&&x<field.Columns&&z<field.Rows&&field.Cells[field.Index(x,z)].IsIce?field.Cells[field.Index(x,z)].SnowMm*.001f:0;}
+        public static SnowSurfacePoint Normal(IceField field,int x,int z)
+        {
+            float a=Depth(field,x-1,z-1),b=Depth(field,x-1,z),c=Depth(field,x,z),d=Depth(field,x,z-1);
+            float nx=(a+b-c-d)*.5f/field.CellSize,nz=(a+d-b-c)*.5f/field.CellSize;
+            float inverse=1/(float)Math.Sqrt(nx*nx+nz*nz+1);
+            return new SnowSurfacePoint(nx*inverse,inverse,nz*inverse);
+        }
+        static SnowSurfacePoint Blend(SnowSurfacePatch p,float u,float v)
+        {
+            return new SnowSurfacePoint((p.A.X*(1-u)+p.D.X*u)*(1-v)+(p.B.X*(1-u)+p.C.X*u)*v,1,
+                (p.A.Z*(1-u)+p.D.Z*u)*(1-v)+(p.B.Z*(1-u)+p.C.Z*u)*v);
         }
         static SnowSurfacePoint Point(IceField field,float x,float y,float z,bool boundary)
         {
@@ -61,20 +86,45 @@ namespace IceResurfacer.Core
             patch.B=Point(field,x,Corner(field,col,row+1,roughness),z+size,boundary);
             patch.C=Point(field,x+size,Corner(field,col+1,row+1,roughness),z+size,boundary);
             patch.D=Point(field,x+size,Corner(field,col+1,row,roughness),z,boundary);
-            float u=.5f+(Grain(col,row)-.5f)*roughness*.35f;
-            float v=.5f+(Grain(row,col+71)-.5f)*roughness*.35f;
-            patch.Center=new SnowSurfacePoint(
-                (patch.A.X*(1-u)+patch.D.X*u)*(1-v)+(patch.B.X*(1-u)+patch.C.X*u)*v,0,
-                (patch.A.Z*(1-u)+patch.D.Z*u)*(1-v)+(patch.B.Z*(1-u)+patch.C.Z*u)*v);
-            double ab=Area(patch.A,patch.B,patch.Center),bc=Area(patch.B,patch.C,patch.Center);
-            double cd=Area(patch.C,patch.D,patch.Center),da=Area(patch.D,patch.A,patch.Center);
-            double area=ab+bc+cd+da;
-            if(area<1e-10)return false;
+            // Broad tops cover about 58% or more of a cell, rather than a single
+            // needle tip. Low-frequency shape variation avoids a noisy grid.
+            float grain=.5f+.5f*(float)Math.Sin(col*.31f+Math.Sin(row*.27f));
+            float inset=.08f+.04f*roughness*grain;
             patch.Volume=(double)size*size*cell.SnowMm*.001;
-            // Exact triangle integral: crests occupy less area. No stock gain
-            // and no reconstructed geometry spreading into a cleared cell.
-            patch.Center.Y=(float)((3*patch.Volume-ab*(patch.A.Y+patch.B.Y)-bc*(patch.B.Y+patch.C.Y)-
-                cd*(patch.C.Y+patch.D.Y)-da*(patch.D.Y+patch.A.Y))/area);
+            double outer=0,inner=0;
+            if(!boundary)
+            {
+                float width=patch.D.X-patch.A.X,depth=patch.B.Z-patch.A.Z;
+                float left=x+width*inset,right=x+width*(1-inset),bottom=z+depth*inset,top=z+depth*(1-inset);
+                patch.InnerA=new SnowSurfacePoint(left,0,bottom);patch.InnerB=new SnowSurfacePoint(left,0,top);
+                patch.InnerC=new SnowSurfacePoint(right,0,top);patch.InnerD=new SnowSurfacePoint(right,0,bottom);
+                // Exact integral for the ordinary rectangular cap, using its
+                // actual float coordinates. Avoid ten triangle/point lookups
+                // per occupied cell; clipped board cells use the general path.
+                double ab=depth*(double)(left-x)*.5,bc=width*(double)(patch.B.Z-top)*.5;
+                double cd=depth*(double)(patch.D.X-right)*.5,da=width*(double)(bottom-z)*.5;
+                double ia=(top-bottom)*(double)(left-x)*.5,ib=(right-left)*(double)(patch.B.Z-top)*.5;
+                double ic=(top-bottom)*(double)(patch.D.X-right)*.5,id=(right-left)*(double)(bottom-z)*.5;
+                double wa=ab+da+id,wb=ab+ia+bc,wc=bc+ib+cd,wd=cd+ic+da;
+                outer=wa*patch.A.Y+wb*patch.B.Y+wc*patch.C.Y+wd*patch.D.Y;
+                inner=3*(double)width*depth-wa-wb-wc-wd;
+            }
+            else
+            {
+                patch.InnerA=Blend(patch,inset,inset);patch.InnerB=Blend(patch,inset,1-inset);
+                patch.InnerC=Blend(patch,1-inset,1-inset);patch.InnerD=Blend(patch,1-inset,inset);
+                for(int i=0;i<IndicesPerPatch;i+=3)
+                {
+                    int ai=triangles[i],bi=triangles[i+1],ci=triangles[i+2];
+                    var a=patch.Point(ai);var b=patch.Point(bi);var c=patch.Point(ci);double area=Area(a,b,c);
+                    outer+=area*((ai<4?a.Y:0)+(bi<4?b.Y:0)+(ci<4?c.Y:0));
+                    inner+=area*((ai>=4?1:0)+(bi>=4?1:0)+(ci>=4?1:0));
+                }
+            }
+            if(inner<1e-10)return false;
+            float level=(float)((3*patch.Volume-outer)/inner);
+            patch.InnerA.Y=patch.InnerB.Y=patch.InnerC.Y=patch.InnerD.Y=level;
+            patch.Center=Blend(patch,.5f,.5f);patch.Center.Y=level;
             return true;
         }
     }

@@ -1,0 +1,106 @@
+{
+  "proof": "Read-only static authored-mesh intersection, not rendered proof; built-in primitive AABBs are conservative. Empty/lowered bin; dynamic snow stock not modelled.",
+  "triangles": 9120,
+  "standing_eye_m": [
+    -0.61,
+    2.778,
+    -0.696
+  ],
+  "outlet_m": [
+    -0.021,
+    1.6392096999999999,
+    0.07859067999999997
+  ],
+  "opening_m": [
+    -0.363256,
+    1.8848635,
+    0.4868386841000001
+  ],
+  "velocity_mps": [
+    -1.1408533333333335,
+    1.05,
+    1.8941600136666674
+  ],
+  "samples": [
+    {
+      "time_s": 0.16,
+      "stream_point_m": [
+        -0.20353653333333335,
+        1.6816416999999997,
+        0.38165628218666675
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.2,
+      "stream_point_m": [
+        -0.2491706666666667,
+        1.6530096999999997,
+        0.4574226827333335
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.24,
+      "stream_point_m": [
+        -0.29480480000000003,
+        1.6086817,
+        0.5331890832800001
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.28,
+      "stream_point_m": [
+        -0.3404389333333334,
+        1.5486577,
+        0.6089554838266669
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.3,
+      "stream_point_m": [
+        -0.3632560000000001,
+        1.5127596999999997,
+        0.6468386841000002
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.32,
+      "stream_point_m": [
+        -0.38607306666666674,
+        1.4729377,
+        0.6847218843733336
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.36,
+      "stream_point_m": [
+        -0.43170720000000007,
+        1.3815217,
+        0.7604882849200003
+      ],
+      "blockers": [],
+      "clear": true
+    },
+    {
+      "time_s": 0.4,
+      "stream_point_m": [
+        -0.47734133333333345,
+        1.2744096999999996,
+        0.836254685466667
+      ],
+      "blockers": [],
+      "clear": true
+    }
+  ]
+}

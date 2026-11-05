@@ -1,0 +1,50 @@
+Board brush implementation handoff (2026-11-04)
+
+Scripts changed:
+  Core/BoardBrushArticulation.cs
+  Core/IceCalibrationConfig.cs (brush fields/validation only)
+  Core/SurfaceProcessing.cs (brush state/update only)
+  Presentation/IceBoardBrushRig.cs
+  Editor/IceBoardBrushRigEditor.cs
+
+No prefab, scene, mesh, material, route or tuning asset edited by this subtask.
+All existing authored mechanical/cosmetic values remain unchanged until endpoint authoring is explicitly enabled.
+
+Authoring:
+  Select Board brush articulated arm / left side; Edit STOWED or Edit WORKING.
+  Scene position and rotation handles move the actual head; coordinates are editable in the Inspector.
+  Save each endpoint; then enable Use saved endpoints in Play.
+  Deployment slider and 0/25/50/75/100% buttons preview the resulting existing arm articulation.
+  The initial endpoints come from the current authored mechanism, head tilt and heights, never defaults.
+  Endpoint data is serialized on the existing rig and all edits use Undo.
+  The single arm requires equal horizontal endpoint distance to the pivot (2 mm tolerance).
+  A mismatch displays both length errors. Correct the pivot/arm length or use Project both endpoints onto arm circle; save both again.
+  Height and head rotation can differ at each endpoint; intermediate heights/rotations interpolate.
+  Existing legacy Apply Brush Geometry to Simulation remains available when saved endpoints are disabled.
+  Preview state remains transient and saving returns the mechanism to stowed.
+
+Spring:
+  Rig Inspector controls Compliance travel (m), Spring return (rad/s), Damping ratio.
+  Aurora defaults: .12 m, 12 rad/s, 1.0 respectively.
+  Minimal prefab serialization can add complianceTravel: 0.12, springReturn: 12, springDamping: 1.
+  Leave useAuthoredEndpoints: 0 (or absent) to retain current approved geometry/calibration.
+  Core fallback travel is .45 m only for the longer original procedural brush envelope; authored rig overrides it.
+  BrushCompression and BrushTravelLimited expose actual compression and exhaustion of finite travel.
+  Contact projection tracks the rounded-board normal; a bounded implicit damped spring restores the head on release.
+  The runtime visible disc consumes BrushWorldX/Z, exactly the point used for snow sweeping.
+  Overtravel is a real geometric limit: if the authored brush projects into boards farther than its permitted travel, it cannot fully clear the kickplate. No invisible extra travel is supplied. The Inspector diagnoses straight-board reach beyond travel and the runtime telemetry reports the limit.
+
+Required Game integration (camera agent owns):
+  NewSession: clone/create runtime config, call brushRig.ApplyAuthoredConfiguration(config,out error), then Simulation(config).
+  Log any failed endpoint application; scene geometry is retained on failure.
+  Runtime rig Pose must use Mechanism.From(Sim.Config), not the unchanged serialized calibration.
+  Legacy geometry mismatch warning only applies when useAuthoredEndpoints is false.
+
+Measured authored geometry before/after unchanged:
+  pivot X/Z -0.548 / 1.3 m; arm .38849553 m; radius .192 m; working 0 deg, stowed 86.32715 deg.
+  working head X -0.93649553 m; outer bristle X -1.12849553 m.
+  Given conditioner halfwidth 1.066 m, maximum parallel-board overlap is approximately .0625 m, within .12 m travel.
+
+Evidence: Brush.csproj / BrushChecks.cs / results.txt.
+The focused harness uses actual Core simulation and authored mechanical values. The corner fixture prescribes actual brush/vehicle poses at 2.65 m/s to isolate compliance; normal-driving scenarios separately run public Simulation.Step.
+Unity Scene handle drag, Undo/Redo, save/reopen, rotation appearance, animated motor/guard and visual spring acceptance still require an available Editor license.

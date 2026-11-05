@@ -140,14 +140,20 @@ namespace IceResurfacer.Editor
             else
             {
                 var sim=IceBoardBrushRig.Mechanism.From(c);
-                var brush=Add(items,"Board brush mechanism",new Vector3(brushRig.mechanism.PivotX,brushRig.pivotHeight,brushRig.mechanism.PivotZ),new Vector3(sim.PivotX,brushRig.pivotHeight,sim.PivotZ),null,null);
-                bool same=brushRig.mechanism.Matches(sim);
+                bool endpoints=brushRig.useAuthoredEndpoints&&brushRig.stowedEndpointSaved&&brushRig.workingEndpointSaved;
+                string endpointError=null;
+                if(endpoints&&brushRig.TryEndpointMechanism(out var authored,out endpointError))sim=authored;
+                var visualMechanism=endpoints&&endpointError==null?sim:brushRig.mechanism;
+                var brush=Add(items,"Board brush mechanism",new Vector3(visualMechanism.PivotX,brushRig.pivotHeight,visualMechanism.PivotZ),new Vector3(sim.PivotX,brushRig.pivotHeight,sim.PivotZ),null,null);
+                bool same=visualMechanism.Matches(sim)&&endpointError==null;
                 brush.Kind=same?Kind.Matches:Kind.Mechanical;
-                if(!same){brush.ErrorMm=Mathf.Max(brush.ErrorMm,.5f);brush.Detail="Rig draft not applied: "+string.Join(", ",IceBoardBrushRigEditor.Differences(brushRig.mechanism,sim))+". Use the rig's Apply.";}
+                if(endpoints&&same)brush.Detail="Saved STOWED / WORKING endpoints define the runtime mechanism.";
+                if(!same){brush.ErrorMm=Mathf.Max(brush.ErrorMm,.5f);brush.Detail=endpointError??("Rig draft not applied: "+string.Join(", ",IceBoardBrushRigEditor.Differences(brushRig.mechanism,sim))+". Use the rig's Apply.");}
+                if(brushRig.useAuthoredEndpoints&&!endpoints){brush.Kind=Kind.Mechanical;brush.Detail="Save both STOWED and WORKING endpoints before using them in Play.";}
                 float visual=IceBoardBrushRigEditor.VisualRadius(brushRig);
-                var radius=Add(items,"Board brush radius (visible vs contact, mm)",new Vector3(visual*1000,0,0),new Vector3(c.BrushRadius*1000,0,0),null,null);
-                radius.ErrorMm=Mathf.Abs(visual-c.BrushRadius)*1000;radius.Kind=radius.ErrorMm<=5?Kind.Matches:Kind.Mechanical;
-                if(radius.Kind!=Kind.Matches)radius.Detail="Snow is cleared over a "+(c.BrushRadius*1000).ToString("F0")+" mm disc but the bristles show "+(visual*1000).ToString("F0")+" mm.";
+                var radius=Add(items,"Board brush radius (visible vs contact, mm)",new Vector3(visual*1000,0,0),new Vector3(sim.Radius*1000,0,0),null,null);
+                radius.ErrorMm=Mathf.Abs(visual-sim.Radius)*1000;radius.Kind=radius.ErrorMm<=5?Kind.Matches:Kind.Mechanical;
+                if(radius.Kind!=Kind.Matches)radius.Detail="Snow is cleared over a "+(sim.Radius*1000).ToString("F0")+" mm disc but the bristles show "+(visual*1000).ToString("F0")+" mm.";
             }
 
             // Collision outline: the plan view the simulation collides with, against the machine as drawn.
@@ -175,7 +181,8 @@ namespace IceResurfacer.Editor
             }
             items.Add(outline);
 
-            // Board guide roller: its contact only happens if it reaches past the body beside it.
+            // The guide roller protects the front corner. Inset placement is intentional and does not
+            // require continuous board contact along a straightaway.
             Vector3 roller=M(w,w.GuideRoller);
             float rollerRadius=GuideRollerRadius(w);
             var guide=Add(items,"Board guide roller",roller,new Vector3(c.GuideRollerX,roller.y,c.GuideRollerZ),cfg=>
@@ -191,14 +198,14 @@ namespace IceResurfacer.Editor
             if(guide.Kind!=Kind.Matches)
             {
                 guide.Detail="Simulated roller contact is "+guide.ErrorMm.ToString("F0")+" mm from the visible roller.";
-                if(reach<=0)Block(guide,"its outer edge is "+(-reach*1000).ToString("F0")+" mm inside the drawn body beside it (z "+roller.z.ToString("F2")+"), so the body would always reach the boards first. Extend the roller bracket outboard.");
+                if(reach<=0)guide.Detail+=" Its outer edge is "+(-reach*1000).ToString("F0")+" mm inside the local body profile; that profile can contact before the roller. Transfer preserves the authored placement.";
             }
             float widest=Mathf.Max(fit.MaxHalfWidth,fit.ConditionerHalfWidth);
             if(Mathf.Abs(roller.x)+rollerRadius<widest-.001f)
                 items.Add(new Item{Label="Guide roller vs widest part",Kind=Kind.Info,Detail="The roller reaches "+(Mathf.Abs(roller.x)+rollerRadius).ToString("F3")+" m from the centreline, "+
                     ((widest-Mathf.Abs(roller.x)-rollerRadius)*1000).ToString("F0")+" mm short of the "+(fit.ConditionerHalfWidth>=fit.MaxHalfWidth?"conditioner side plates":"widest body part")+" ("+widest.ToString("F3")+" m). "+
                     "Running parallel to the boards that part touches first; the roller leads only with the nose angled toward the boards (about "+
-                    (Mathf.Atan2(widest-Mathf.Abs(roller.x)-rollerRadius,roller.z+(c.HitchBehindAxle+c.DrawbarLength-fit.ConditionerFront))*Mathf.Rad2Deg).ToString("F1")+" deg or more). \"Move Guide Roller Outboard...\" moves its assembly (a visual change to your part); Transfer then makes it physical."});
+                    (Mathf.Atan2(widest-Mathf.Abs(roller.x)-rollerRadius,roller.z+(c.HitchBehindAxle+c.DrawbarLength-fit.ConditionerFront))*Mathf.Rad2Deg).ToString("F1")+" deg or more). This is intentional for a compact corner guide. Transfer follows its authored position without extending it."});
             return items;
         }
 

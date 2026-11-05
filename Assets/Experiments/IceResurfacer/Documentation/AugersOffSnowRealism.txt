@@ -1,4 +1,38 @@
+CURRENT SNOW PRESENTATION / 2026-11-04
+See Documentation/SnowPresentationAndSpout.txt. Broad volume-conserving mounds
+replace the earlier sharp facets, and actual bin delivery drives an inspection
+spout. Physical behavior below is preserved; matched onset remains 18.4 m.
+
 AURORA R-54 / AUGERS-OFF SNOW AND RECOLLECTION / 2026-11-04
+
+PARTIAL PICKUP MESH CORRECTION / 2026-11-04
+An operator return pass exposed a native mesh upload bug: nonempty chunks lost
+vertices during pickup while old triangle references were still attached. Unity
+rejected the smaller vertex upload, then rejected the shorter normals buffer.
+IceDepositedSnowView now clears old mesh data before every rebuild upload.
+Managed geometry buffers remain reused; simulation stocks/pickup/water are unchanged.
+Edit-mode disposal also releases the validator's temporary meshes immediately.
+
+New native regression: Experiments > Ice Resurfacer > Validate Snow Mesh Rebuilds
+(outside Play Mode). It checks partial shrink, growth, emptying and regrowth;
+vertex/normal/index agreement and represented volume; then collects real spilled
+snow incrementally with both augers and flood water running. The full isolated
+snow validator runs these checks too. No scene, route or calibration is saved.
+
+Separate runtime/Editor compilation passes: zero errors, 45 existing warnings.
+Evidence: Validation~/MeshResize-20261104/compile.log and validation-notes.txt.
+The isolated native attempt timed out after 60 s during licensing initialization;
+the new native assertions are compiled, but are NOT reported as executed/passed.
+
+ASSEMBLY CHECK CORRECTION / 2026-11-04
+The original offline check combined runtime and Editor sources, hiding an
+internal-access error in the deep-bank validation fixture. That fixture now
+uses the public IceField.MarkChanged API. CompileUnity.csproj now builds separate
+IceResurfacer.Runtime and IceResurfacer.Editor assemblies, matching the asmdefs.
+assembly-boundary-before.log reproduces CS1061; assembly-boundary-after.log
+passes a clean rebuild with zero errors and 45 existing warnings. The complete
+snow/scene/water Requirements runner also passes again (assembly-fix-requirements.log).
+Runtime snow behavior and saved assets/settings are unchanged by this correction.
 
 Implemented against the current local authored assets and Operator Tuning.
 No scene, prefab, arena, mesh asset, material asset, camera, collision, brush,

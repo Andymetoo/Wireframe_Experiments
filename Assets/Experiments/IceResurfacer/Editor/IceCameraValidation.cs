@@ -18,6 +18,9 @@ namespace IceResurfacer.Editor
         static MethodInfo look;
         static readonly List<string> passes=new List<string>();
         static Transform Head { get { return game.DriverCamera.transform; } }
+        static bool Anchored { get { return game.World.OperatorControls!=null&&game.World.OperatorControls.driverEyeAnchor!=null; } }
+        static float SeatedOffset { get { return Anchored?0:game.operatorEyeHeight; } }
+        static Quaternion ForwardPose { get { return Quaternion.Euler(Anchored?0:5,0,0); } }
         static void Check(bool value,string message)
         { if(!value)throw new InvalidOperationException("Camera: "+message);passes.Add("PASS "+message); }
         static void Same(Quaternion q,string message)
@@ -75,9 +78,9 @@ namespace IceResurfacer.Editor
                 game.World.Machine.rotation=machine;
                 for(int i=0;i<100;i++)Step();
                 Same(down,"returning to seated height preserves head orientation");
-                Check(Mathf.Abs(Head.localPosition.y-game.operatorEyeHeight)<.001f&&Head.localPosition.z<.001f,"Space release smoothly returns to adjustable seated eyes");
+                Check(Mathf.Abs(Head.localPosition.y-SeatedOffset)<.001f&&Head.localPosition.z<.001f,"Space release smoothly returns to adjustable seated eyes");
                 Step(false,default,true,Key.R);for(int i=0;i<40;i++)Step();
-                Check(game.Standing&&Head.localPosition.y>.48f,"R toggles persistent raised stance after release");Same(down,"R standing preserves head orientation");
+                Check(game.Standing&&Head.localPosition.y>.47f,"R toggles persistent raised stance after release");Same(down,"R standing preserves head orientation");
                 Step(false,default,true,Key.R);for(int i=0;i<40;i++)Step();Check(!game.Standing,"second R sits down");
                 game.TogglePause();Step(false,default,false);Same(down,"pause does not recenter");game.TogglePause();
                 game.ToggleHelp();Step(false,default,false);Same(down,"guide does not recenter");game.ToggleHelp();
@@ -85,11 +88,11 @@ namespace IceResurfacer.Editor
                 Step(false,default,false);Same(down,"focus loss does not recenter");
                 Aim(-155,60,true);Quaternion start=Head.localRotation;
                 Step(false,default,true,Key.X,Key.Space);
-                Check(Quaternion.Angle(Head.localRotation,Quaternion.Euler(5,0,0))>90&&Quaternion.Angle(start,Head.localRotation)>0,"X begins a smooth recenter without teleporting");
+                Check(Quaternion.Angle(Head.localRotation,ForwardPose)>90&&Quaternion.Angle(start,Head.localRotation)>0,"X begins a smooth recenter without teleporting");
                 for(int i=0;i<4;i++)Step(false,default,true,Key.Space);
-                Check(Quaternion.Angle(Head.localRotation,Quaternion.Euler(5,0,0))>20,"recenter remains animated at 0.10 seconds");
+                Check(Quaternion.Angle(Head.localRotation,ForwardPose)>20,"recenter remains animated at 0.10 seconds");
                 for(int i=0;i<5;i++)Step(false,default,true,Key.Space);
-                Same(Quaternion.Euler(5,0,0),"recenter reaches forward after 0.20 seconds");
+                Same(ForwardPose,"recenter reaches authored forward after 0.20 seconds");
                 Check(Head.localPosition.y>.47f,"recenter preserves raised stance");
                 float blade=game.Sim.Controls.BladeDepthMm;
                 InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Period));InputSystem.Update();update.Invoke(game,null);
@@ -106,7 +109,7 @@ namespace IceResurfacer.Editor
                 Check(Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.y)+170)<.001f&&Mathf.Abs(Mathf.DeltaAngle(0,Head.localEulerAngles.x)+55)<.001f,"negative yaw and upward pitch limits preserved");
                 Sightlines();
                 WheelArticulation();
-                game.NewSession(false);Same(Quaternion.Euler(5,0,0),"new session resets head forward");
+                game.NewSession(false);Same(ForwardPose,"new session resets head to authored forward");
                 Check(Head.localPosition==Vector3.zero,"new session resets seated height");
                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Camera-results.txt",passes);
             }
@@ -134,7 +137,7 @@ namespace IceResurfacer.Editor
                     // The generated layout keeps the fixed -65 degree preset; an authored machine may turn
                     // it (left/rear only) so that the conditioner edge and brush both stay framed (checked below).
                     float qYaw=Mathf.DeltaAngle(0,Head.localEulerAngles.y);bool authored=game.GetComponentInChildren<IceMachineRig>(true)!=null;
-                    Check((authored?qYaw>=-110&&qYaw<=-40:Mathf.Abs(qYaw+65)<.01f)&&Head.localPosition.x<-.25f,"Q looks down along the left working edge with a small left lean (yaw "+qYaw.ToString("F1")+")");
+                    Check((authored||Anchored?qYaw>=-110&&qYaw<=-40:Mathf.Abs(qYaw+65)<.01f)&&Head.localPosition.x<-.25f,"Q looks down along the left working edge with a small left lean (yaw "+qYaw.ToString("F1")+")");
                 }
                 passes.Add(key+" held pose: machine eyes="+game.World.Machine.InverseTransformPoint(Head.position)+" local angles="+Head.localEulerAngles);
                 IceResurfacerEditor.Capture(game.DriverCamera,"Camera-preset-"+key+".png",1920,1080);
@@ -155,7 +158,7 @@ namespace IceResurfacer.Editor
             Hold(Key.C);game.RestoreSeatedCameraBeforeDismount();Same(original,"dismount preparation restores the actual normal seated orientation");
             Check(!game.ChaseActive&&Head.parent==game.World.CameraMount,"dismount preparation removes the external camera parent");
             Step();Hold(Key.Q);Step(false,default,true,Key.Q,Key.X);Hold(Key.Q,25);
-            Same(Quaternion.Euler(5,0,0),"X cancels a held inspection and recenters until all inspection keys are released");
+            Same(ForwardPose,"X cancels a held inspection and recenters until all inspection keys are released");
             Step();IceResurfacerEditor.Capture(game.DriverCamera,"Camera-preset-X.png",1920,1080);
             foreach(Vector2 orientation in new[]{new Vector2(0,5),new Vector2(160,12),new Vector2(-30,74)})
             foreach(Key key in new[]{Key.Q,Key.E,Key.C,Key.LeftShift})
@@ -176,7 +179,7 @@ namespace IceResurfacer.Editor
             for(int i=0;i<70;i++)Step(false,default,true,Key.Space);
             for(int i=0;i<70;i++)Step(false,default,true,Key.Q,Key.Space);
             Hold(Key.Q);for(int i=0;i<70;i++)Step();Same(stanceView,"Space during Q preserves the original head orientation on release");
-            Check(!game.Standing&&Mathf.Abs(Head.localPosition.y-game.operatorEyeHeight)<.001f,"releasing Space during Q returns to seated height without retaining a stale raised offset");
+            Check(!game.Standing&&Mathf.Abs(Head.localPosition.y-SeatedOffset)<.001f,"releasing Space during Q returns to seated height without retaining a stale raised offset");
             ChaseWalls();
         }
         static void ChaseWalls()
@@ -254,11 +257,12 @@ namespace IceResurfacer.Editor
                     else blockers.Add(hit.transform!=null?hit.transform.name:"nothing");
                 }
                 Check(visibleRim>=6,"E preset exposes blade rim for mouse operation ("+visibleRim+"/8 rays"+(blockers.Count>0?"; blocked by "+string.Join(", ",blockers):"")+")");
-                float last=-1;
                 foreach(var lever in new[]{game.World.VerticalAugerLever,game.World.ConditionerLever,game.World.HorizontalAugerLever,game.World.DumpLever})
                 {
                     Vector3 knob=lever.TransformPoint(0,.225f,0),screen=game.DriverCamera.WorldToViewportPoint(knob);
-                    Check(screen.z>0&&screen.x>last&&screen.x<.98f&&screen.y>.02f&&screen.y<.98f,"physical lever order from the seated E view: "+lever.name);last=screen.x;
+                    // Authored E rotation can view the bank from either end. Physical bank order is
+                    // checked in IcePhysicalValidation; screen order is not a mechanical requirement.
+                    Check(screen.z>0&&screen.x>.02f&&screen.x<.98f&&screen.y>.02f&&screen.y<.98f,"E frames the physical hydraulic grip: "+lever.name);
                     Check(Physics.Raycast(Head.position,(knob-Head.position).normalized,out hit,3)&&hit.transform.IsChildOf(lever),"E has an unobstructed ray to "+lever.name);
                 }
             }

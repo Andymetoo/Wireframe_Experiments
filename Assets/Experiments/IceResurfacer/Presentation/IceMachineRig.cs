@@ -95,6 +95,9 @@ namespace IceResurfacer.Presentation
             world.CuttingBladeMesh=SharedMesh(world.CuttingBlade);
             world.DistributionTowelMesh=SharedMesh(world.DistributionTowel);
             world.ConditionerHousingMesh=SharedMesh(world.ConditionerHousing);
+            world.OperatorControls=GetComponentInChildren<IceOperatorStation>(true);
+            if(world.OperatorControls!=null&&world.OperatorControls.driverEyeAnchor!=null)
+                world.CameraMount=world.OperatorControls.driverEyeAnchor;
         }
         static Mesh SharedMesh(Transform part)
         {
@@ -130,7 +133,9 @@ namespace IceResurfacer.Presentation
             list.Add(new MechanicalAnchor("Conveyor discharge into tank",w.TankDischarge,w.Machine,new Vector3(c.ConveyorOutletX,c.ConveyorOutletY,c.ConveyorOutletZ)));
             // An IceBoardBrushRig owns the (cosmetic) pivot height; X/Z stay calibration-bound.
             var brushRig=w.BrushArm!=null?w.BrushArm.GetComponent<IceBoardBrushRig>():null;
-            list.Add(new MechanicalAnchor("Board brush pivot",w.BrushArm,w.Machine,new Vector3(c.BrushPivotX,brushRig!=null?brushRig.pivotHeight:.38f,c.BrushPivotZ)));
+            var brushMechanism=IceBoardBrushRig.Mechanism.From(c);
+            if(brushRig!=null&&brushRig.useAuthoredEndpoints&&brushRig.stowedEndpointSaved&&brushRig.workingEndpointSaved&&brushRig.TryEndpointMechanism(out var authoredBrush,out _))brushMechanism=authoredBrush;
+            list.Add(new MechanicalAnchor("Board brush pivot",w.BrushArm,w.Machine,new Vector3(brushMechanism.PivotX,brushRig!=null?brushRig.pivotHeight:.38f,brushMechanism.PivotZ)));
             list.Add(new MechanicalAnchor("Board guide roller",w.GuideRoller,w.Machine,new Vector3(c.GuideRollerX,.53f,c.GuideRollerZ)));
             return list;
         }

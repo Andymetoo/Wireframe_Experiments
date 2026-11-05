@@ -84,7 +84,7 @@ namespace IceResurfacer.Editor
                     var c=s.Ice.Cells[i];c.SnowMm+=120;s.Ice.Cells[i]=c;s.Ice.MarkCellChanged(i);
                     injected+=120*s.Ice.CellSize*s.Ice.CellSize*.001;
                 }
-                s.Ice.CommitChanges();double initial=Stock(s);int passes=0;
+                s.Ice.MarkChanged();double initial=Stock(s);int passes=0;
                 s.Controls.BladeDepthMm=.35f;s.Controls.HorizontalAuger=s.Controls.VerticalAuger=true;
                 double remaining=Band(s,0,.075f,-1,1),first=0;
                 while(remaining>1e-10&&passes<30)
@@ -98,10 +98,13 @@ namespace IceResurfacer.Editor
         }
         static double Integral(SnowSurfacePatch p)
         {
-            return (SnowSurfaceGeometry.Area(p.A,p.B,p.Center)*(p.A.Y+p.B.Y+p.Center.Y)+
-                SnowSurfaceGeometry.Area(p.B,p.C,p.Center)*(p.B.Y+p.C.Y+p.Center.Y)+
-                SnowSurfaceGeometry.Area(p.C,p.D,p.Center)*(p.C.Y+p.D.Y+p.Center.Y)+
-                SnowSurfaceGeometry.Area(p.D,p.A,p.Center)*(p.D.Y+p.A.Y+p.Center.Y))/3;
+            double volume=0;
+            for(int i=0;i<SnowSurfaceGeometry.IndicesPerPatch;i+=3)
+            {
+                var a=p.Point(SnowSurfaceGeometry.TriangleVertex(i));var b=p.Point(SnowSurfaceGeometry.TriangleVertex(i+1));var c=p.Point(SnowSurfaceGeometry.TriangleVertex(i+2));
+                volume+=SnowSurfaceGeometry.Area(a,b,c)*(a.Y+b.Y+c.Y)/3;
+            }
+            return volume;
         }
         static void BoardAndGeometry(Action<string> log)
         {
@@ -121,7 +124,7 @@ namespace IceResurfacer.Editor
                     {
                         if(!SnowSurfaceGeometry.Build(s.Ice,col,row,roughness,out var p))continue;
                         Require(p.Center.Y>=0,"negative snow crest");
-                        foreach(var point in new[]{p.A,p.B,p.C,p.D,p.Center})
+                        foreach(var point in new[]{p.A,p.B,p.C,p.D,p.InnerA,p.InnerB,p.InnerC,p.InnerD})
                             Require(s.Ice.IsInside(point.X,point.Z,-.00002f),"snow facet crossed rounded boards");
                         double error=Math.Abs(Integral(p)-p.Volume);maximumError=Math.Max(maximumError,error);
                         Near(Integral(p),p.Volume,1e-10,"facet volume differs from cell snow");represented+=Integral(p);patches++;

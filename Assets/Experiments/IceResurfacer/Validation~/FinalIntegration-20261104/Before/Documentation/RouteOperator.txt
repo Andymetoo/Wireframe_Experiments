@@ -1,0 +1,46 @@
+AURORA R-54 / RECORD, SAVE, LOAD & FOLLOW
+
+1. RECORD
+Choose Free Simulation / Practice. Press NUMPAD 8 for Route Manager, type a
+name and click RECORD NEW ROUTE. The manager closes so you can drive normally.
+Or press NUMPAD 9 while driving to begin. A red RECORDING banner stays visible.
+
+2. SAVE
+Press NUMPAD 9 again to stop and automatically save a uniquely named recording.
+Or open Route Manager and click STOP & SAVE. The Saved message confirms success.
+SAVE RECORDING also saves a stopped take; SAVE AS NEW COPY preserves earlier
+files. You never need to choose a filesystem filename for these actions.
+
+3. LOAD / FOLLOW
+In this or a later Play session, press NUMPAD 8, choose LOAD SAVED ROUTE and
+select your route by its name/date/length. Inspect the preview, then USE AS GPS.
+The simulator fits an editable copy automatically and reports GPS Ready.
+Press NUMPAD 7 (or SHOW GPS) to show/hide it. CLOSE & DRIVE to resume driving.
+The bright magenta line and Surface Survey show the next approximately 40 feet.
+Ordinary turns and direction changes advance automatically. The GPS is advisory.
+
+Use actual keypad keys, not the number row. Number-row machinery controls keep
+their original behavior. F5/F6/F7 remain secondary GPS/manager/record aliases.
+While a route-name text field has focus, route shortcuts are suppressed so typing
+cannot start a recording. Click a button or saved route to leave text editing.
+
+Recordings live in Assets/Experiments/IceResurfacer/RouteRecordings~ in the Editor.
+Builds use Application.persistentDataPath/IceResurfacer/Routes. OPEN ROUTES FOLDER
+opens the current library. Dates use local time; filenames include UTC timestamps.
+Raw recordings are unchanged by loading, fitting or library renaming. Names are
+stored in a separate checksummed RouteNames.json. Delete always asks which saved
+file to delete; Cancel preserves it. Recovery drafts remain separate.
+
+EDIT ROUTE opens the existing Training Route Editor in Unity; builds prepare an
+editable copy for that workflow. Advanced diagnostics retain footprint layers,
+sequential leg recovery, raw inspection and GPS color/opacity controls. Automatic
+fits are stored separately under Guides/AutoFit. Invalid/too-short takes show a
+clear preparation error and leave the selected GPS intact.
+
+The built-in reference and labeled demo are explicit choices in the saved-route
+list. They never silently replace a loaded operator route. A new Play instance
+starts with the reference; Load / Follow restores your saved route.
+
+The Editor raw inspector's EXPORT TO LOCATION action intentionally opens a file
+picker for exporting elsewhere. Ordinary Route Manager Save always writes a new
+copy directly into the library and displays a confirmation.

@@ -1,0 +1,36 @@
+2026-11-04 / partial snow mesh pickup correction
+
+User evidence: Mesh.SetVertices rejects a smaller vertex buffer because old
+triangles reference removed vertices. Mesh.SetNormals then reports a mismatched
+count because the vertex upload failed. Both occur in IceDepositedSnowView.Rebuild.
+Water/pickup triggered the shrinking chunk; no physical flow parameter was at fault.
+
+Fix: clear native mesh data before installing replacement vertices, normals and
+indices, including partial removals. Empty meshes still disable their renderer.
+Reuse the same managed buffers, Mesh, material and chunk GameObjects. Dispose
+temporary meshes immediately in Edit Mode, normally defer destruction in Play.
+
+Validation:
+- PASS separate runtime/Editor compile against Unity 6000.4.1f1: 0 errors,
+  45 existing warnings (compile.log).
+- New native Editor checks compile. Occupied-cell sequence:
+  100 -> 36 -> 144 -> 16 -> 4 -> 0 -> 1 -> 100 -> 4 -> 0.
+  Check mesh vertex counts, matching normals, valid indices, volume and regrowth.
+- Additional native check: generate actual 48 m off-auger banks, then return
+  with both augers and flood water, refreshing after every 0.1 m of pickup.
+  Require nonempty partial shrink events, eventual empty meshes and a conserved
+  snow balance. Capture native error logs, which do not throw C# exceptions.
+- NOT EXECUTED: the isolated Editor remained in licensing initialization until
+  its 60-second timeout (unity.log). No native pass or screenshot is claimed.
+
+To run in the user's licensed Editor, outside Play Mode:
+Experiments > Ice Resurfacer > Validate Snow Mesh Rebuilds
+It creates/disposes temporary fixtures without changing the current scene's
+objects, authored assets, current settings or operator route files.
+
+For isolated batch mode, stage the current sources with StageUnityValidation.ps1
+-UpdateOnly and execute IceResurfacer.Editor.IceSnowMeshValidation.RunBatch.
+No -quit is required; the batch entry exits after writing native-results.txt.
+
+Core/Simulation.cs, Core/SurfaceProcessing.cs, both saved scenes and authored
+machine prefab are verified unchanged from this correction's starting hashes.

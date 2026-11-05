@@ -13,6 +13,11 @@ namespace IceResurfacer.Presentation
         readonly ParticleSystem discharge, overflow, leftEscape, rightEscape, dump;
         readonly ParticleSystem[] pools;
         readonly Mesh clumpMesh;
+        readonly SnowSpoutPresentation spout=new SnowSpoutPresentation();
+        Simulation observed;
+        double delivered;
+        int spoutSequence;
+        public int LastSpoutSamples {get;private set;}
         float tankValue=-1,pitValue=-1,tankTilt=-1,troughValue=-1,visualMultiplier=-1;
 
         sealed class Surface
@@ -105,6 +110,12 @@ namespace IceResurfacer.Presentation
             troughObject.AddComponent<MeshRenderer>().sharedMaterial=world.TankSnow.GetComponent<MeshRenderer>().sharedMaterial;
             trough=new Surface(troughObject.transform,world,1.80f,.50f,false);
             discharge=Pool("Snow conveyed into inspection bin",root,template,.035f,.55f);
+            // The actual inlet stays fixed to the chassis. Local simulation
+            // keeps its in-bin stream with the moving machine, including turns.
+            discharge.transform.SetParent(world.Machine,false);
+            var inletMain=discharge.main;inletMain.simulationSpace=ParticleSystemSimulationSpace.Local;
+            var inletMaterial=discharge.GetComponent<ParticleSystemRenderer>().sharedMaterial;
+            inletMaterial.EnableKeyword("_EMISSION");inletMaterial.SetColor("_EmissionColor",new Color(.16f,.19f,.21f));
             overflow=Pool("Congested vertical discharge spilling sideways",root,template,.06f,1.8f);
             leftEscape=Pool("Conditioner LEFT side escape / actual snow",root,template,.045f,.6f,720);
             rightEscape=Pool("Conditioner RIGHT side escape / actual snow",root,template,.045f,.6f,720);
@@ -160,6 +171,32 @@ namespace IceResurfacer.Presentation
         {
             foreach(var ps in pools)ps.Clear();
             tankValue=-1;pitValue=-1;tankTilt=-1;troughValue=-1;
+            observed=null;spout.Reset();spoutSequence=0;LastSpoutSamples=0;
+        }
+        void UpdateSpout(Simulation sim,float dt,float visibility)
+        {
+            if(observed!=sim){observed=sim;delivered=sim.TotalSnowCollectedM3;spout.Reset();}
+            double volume=System.Math.Max(0,sim.TotalSnowCollectedM3-delivered);delivered=sim.TotalSnowCollectedM3;
+            LastSpoutSamples=spout.Sample(volume,dt,visibility);
+            Vector3 outlet=world.Machine.InverseTransformPoint(world.TankDischarge.position)+Vector3.forward*.055f;
+            Vector3 opening=world.Machine.InverseTransformPoint(world.TankInspection.position);
+            var velocity=SnowSpoutPresentation.Velocity(new SnowSurfacePoint(outlet.x,outlet.y,outlet.z),new SnowSurfacePoint(opening.x,opening.y,opening.z));
+            discharge.transform.localPosition=outlet;discharge.transform.localRotation=Quaternion.identity;
+            float strength=Mathf.Sqrt(Mathf.Clamp01(spout.DeliveryRate/sim.Config.VerticalCapacityM3PerSecond));
+            float size=Mathf.Lerp(.012f,.030f,strength);
+            // Explicit volume-metered samples, not a latched rateOverTime.
+            // A no-transfer frame emits none; paused sessions cannot accumulate
+            // an old burst to display when they resume.
+            for(int i=0;i<LastSpoutSamples;i++)
+            {
+                float grain=SnowSurfaceGeometry.Grain(spoutSequence++,71),side=(grain-.5f)*.025f;
+                var emit=new ParticleSystem.EmitParams
+                {
+                    position=new Vector3(side,0,0),velocity=new Vector3(velocity.X+side,velocity.Y,velocity.Z),
+                    startLifetime=.42f,startSize=size*Mathf.Lerp(.55f,1.35f,grain),rotation=grain*360
+                };
+                discharge.Emit(emit,1);
+            }
         }
         public void Update(Simulation sim,float dt,IceOperatorTuning tuning=null)
         {
@@ -183,7 +220,7 @@ namespace IceResurfacer.Presentation
             bool active=dt>0;
             float density=tuning!=null?tuning.OverflowDensityMultiplier:1;
             float size=tuning!=null?tuning.OverflowSizeMultiplier:1;
-            Rate(discharge,active?sim.DischargeSnowRate:0,world.TankDischarge.position,world.Machine.forward*.45f+Vector3.down*.25f);
+            UpdateSpout(sim,active?dt:0,tuning!=null?tuning.BinSpoutVisibility:1);
             // Upper rejection/missed raised bin originates at the fixed chute,
             // separate from low conditioner-side overflow. Core supplies the
             // same trajectory used to place its finite persistent deposit.

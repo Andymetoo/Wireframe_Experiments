@@ -42,5 +42,28 @@ namespace IceResurfacer.Core
         {
             Contact(c.BrushPivotX,c.BrushPivotZ,c.BrushArmLength,ArmRadians(c,deployment),out x,out z);
         }
+
+        /// <summary>Implicit damped spring toward zero. Stable at every fixed-step cadence;
+        /// contact projection is applied separately so a moving wall cannot be penetrated.</summary>
+        public static void SpringReturn(ref float offset,ref float velocity,float dt,float frequency,float damping)
+        {
+            if(dt<=0)return;
+            float previous=offset,k=frequency*frequency;
+            velocity=(velocity-dt*k*offset)/(1+2*damping*frequency*dt+k*dt*dt);
+            offset+=velocity*dt;
+            // The compliance carriage has its rest position as a hard end stop.
+            if(offset*previous<0){offset=0;velocity=0;}
+        }
+
+        /// <summary>Resolve an authored endpoint against the existing horizontal arm circle.
+        /// Heights and head tilt are independent cosmetic coordinates.</summary>
+        public static bool Endpoint(float pivotX,float pivotZ,float armLength,float x,float z,out float degrees,out float lengthError)
+        {
+            float dx=pivotX-x,dz=pivotZ-z;
+            float length=(float)Math.Sqrt(dx*dx+dz*dz);
+            lengthError=length-armLength;
+            degrees=(float)Math.Atan2(dz,dx)*180/(float)Math.PI;
+            return length>.001f&&Math.Abs(lengthError)<=.002f;
+        }
     }
 }

@@ -1,0 +1,68 @@
+AURORA R-54 / REAL RECORDED TRACKS AND TRAINING EDITOR
+
+Use a saved recording directly
+Open NUMPAD 8 Route Manager, select the .route.json recording, and USE AS GPS.
+NUMPAD 7 shows/hides the existing advisory 40-foot guide. The original generated
+reference remains available; a recording never permanently replaces it.
+
+New imports use bounded interpolation of the actual recorded vehicle position,
+body heading, travel direction and conditioner trajectory. The raw file remains
+read-only. A separately saved .guide.json contains the original source plus the
+derived reconstruction settings. Existing version-1 raw recordings and Bezier
+guides remain supported. Recorded-track guides use derived-guide version 2 so
+older builds reject the new representation rather than silently treating it as
+a cubic spline. No changes to the raw recording schema.
+
+Recorded-track GPS READY means the interpolated observations passed the current
+production vehicle-pose checks and the explicit conditioner footprint clearance
+check. It is not a claim that a piecewise observed trajectory is an ideal smooth
+spline. Exceptional observed maneuvers get amber diagnostics; derived Bezier
+curvature failures stay blocking. Actual clearance failures and discontinuous
+raw tracks stay blocked. The vehicle turning limit has not been relaxed.
+
+Repair an existing derived draft
+Open Experiments > Ice Resurfacer > Training Route Editor. Open the existing
+corrected/draft .guide.json, including a draft that cannot yet load as GPS.
+Next Error / Previous Error selects a grouped problem region. Zoom to Error
+frames that section. Clicking a colored failure location also opens its details:
+source sequence, controls, raw and derived poses, radius, deviation and contact.
+Restore faithful recorded track restores source anchors and all observed spans
+together, preserving pass/turn labels. It is undoable. It does not push one curve
+into its neighbor or repeatedly accumulate offsets from the original recording.
+Save corrected COPY writes a separate guide. Load that copy through Route Manager.
+
+Viewport
+Mouse wheel zooms about the cursor (1x to 80x).
+Middle mouse drag pans. Fit Whole Route restores the overview.
+Zoom to Selected Point centers the current control with space for its handles.
+At overview scale, fewer markers are displayed. Zoom in for detailed controls;
+the selected point remains available. All layers and hitboxes use one transform.
+Drags outside the active map do not edit geometry. Mouse release cancels capture.
+
+Editing
+Selecting a point alone leaves the recorded track unchanged. Moving its square
+or handles converts only its adjacent derived spans to editable Bezier curves.
+Those curves must pass the same clearance and radius checks. Shift-click the
+guide or Insert after adds an anchor. Recorded spans split at an actual source
+observation; deleting an intermediate raw anchor preserves the source trajectory.
+Endpoints are protected. Ctrl+Z / Ctrl+Shift+Z or Undo / Redo restores edits.
+Numeric point/heading/handle fields remain available. Turn/pass markers create
+explicit sequential rejoin contexts. The raw samples are never edited.
+
+Colors
+Gray: recorded vehicle path. Cyan: derived GPS trajectory. Gold: conditioner
+(actual observed track on recorded spans, modeled on edited Bezier spans).
+Magenta: excessive derived curvature. Red: exact failed clearance samples.
+Amber: an observed maneuver that is not certified as an ideal bicycle curve.
+Hover the legend or an error entry for explanations. Live GPS still displays
+only the current/upcoming portion; full-route views belong to this editor.
+
+Limits
+Recording interpolation is bounded by its observations, not a C2 spline.
+It cannot recover unrecorded physical detail between observations. Sampled
+clearance checks subdivide the recorded motion at no more than 2.5 cm / .23 deg.
+The conditioner clearance is an explicit floor-envelope check; production
+vehicle collision and separate conditioner certification are clearly distinguished.
+Moving points can create an invalid derived curve; the guide never silently
+accepts it. Restore recorded track is a faithful recovery option, not an editor
+that guesses a different operator pattern. Manual changes can be undone.

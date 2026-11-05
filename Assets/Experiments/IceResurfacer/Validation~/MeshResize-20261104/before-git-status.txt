@@ -1,0 +1,13 @@
+ M Assets/Experiments/IceResurfacer/Documentation/AugersOffSnowRealism.txt
+ M Assets/Experiments/IceResurfacer/Editor/OperatorSnowRealismValidation.cs
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/bin/Release/net9.0/CompileUnity.deps.json
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/CompileUnity.csproj.nuget.dgspec.json
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/CompileUnity.AssemblyInfo.cs
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/CompileUnity.AssemblyInfoInputs.cache
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/CompileUnity.csproj.CoreCompileInputs.cache
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/CompileUnity.csproj.FileListAbsolute.txt
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/Requirements.AssemblyInfo.cs
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/Release/net9.0/Requirements.AssemblyInfoInputs.cache
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/project.assets.json
+ M Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/obj/project.nuget.cache
+?? Assets/Experiments/IceResurfacer/Validation~/MeshResize-20261104/

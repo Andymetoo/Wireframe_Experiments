@@ -16,8 +16,10 @@ namespace IceResurfacer.Presentation
         [Range(.25f,5)] public float overflowParticleDensity=1;
         [Tooltip("Presentation only. Size of transient overflow clumps; persistent ground snow still uses actual cell depth.")]
         [Range(.5f,2)] public float overflowClumpSize=1;
-        [Tooltip("Presentation only. Redistributes each cell's existing snow volume into angular facets; zero is a gentler surface. Does not alter deposits or pickup.")]
+        [Tooltip("Presentation only. Gentle irregularity of broad snow mounds; each cell keeps its actual volume. Does not alter deposits or pickup.")]
         [Range(0,1)] public float windrowRoughness=.7f;
+        [Tooltip("Presentation only. Sample density of snow actually delivered into the bin. Zero hides the cue; no delivery means no spout at any setting.")]
+        [Range(0,3)] public float binSpoutVisibility=1;
 
         [NonSerialized] public string lastError;
         [NonSerialized] public float measuredFloodLps,measuredWashSupplyLps,measuredWashReturnLps;
@@ -29,6 +31,7 @@ namespace IceResurfacer.Presentation
         public float OverflowDensityMultiplier=>isActiveAndEnabled?overflowParticleDensity:1;
         public float OverflowSizeMultiplier=>isActiveAndEnabled?overflowClumpSize:1;
         public float WindrowRoughness=>isActiveAndEnabled?windrowRoughness:.7f;
+        public float BinSpoutVisibility=>isActiveAndEnabled?binSpoutVisibility:1;
 
         public SimulatorConfig CreateRuntimeConfig(SimulatorConfig authored)
         {

@@ -1,0 +1,133 @@
+AURORA R-54 / MOUNDED SNOW AND BIN SPOUT / 2026-11-04
+
+Current implementation and evidence for the snow presentation pass. Physical
+calibration is unchanged. No scene, prefab, authored mesh, arena, material asset,
+route/GPS, camera, controls, brush, roller, tank capacity or water setting edited.
+No branch, commit or push. Existing local changes from preceding passes retained.
+
+DEPOSITED SNOW
+
+The old mesh gave each cell one center tip, with four flat-shaded triangles.
+An isolated 30 mm cell became an approximately 90 mm needle to represent the
+cell's volume. Low perimeter heights and disconnected lighting amplified this.
+
+SnowSurfaceGeometry now builds a broad, bevelled cap: four shared perimeter
+corners and four inner corners, joined by ten triangles. The top spans about
+58% or more of an ordinary cell footprint. Neighbor cells share corner heights and
+gradient normals, producing a connected, smoothly shaded heightfield. Gentle
+low-frequency inset variation keeps the mounds uneven. Angular shaved-ice
+particles, pale snow material and low smoothness remain.
+
+Cap height is solved from its triangle integral to represent the cell's actual
+snow volume. Interior cells use an equivalent fast rectangular integral; board
+cells retain the general clipped-triangle calculation. No snow stock is moved,
+spread, created or deleted by the presentation. Cleared cells own no triangles.
+The existing .55 mm mesh threshold and .2 mm anti-z-fighting offset remain.
+
+Measured isolated mean depth 30 mm, roughness .7:
+  Before: 89.8109 mm tip. After: 36.2589 mm broad cap (66.48% top area).
+  Roughness 0..1: peak 35.33..36.67 mm in the tested cell.
+  Board/corner integral error: at most 1.15e-11 m3 in the fixtures.
+
+Actual fixed-radius deposits, rather than an invented cosmetic stock:
+  0.1 L: visible width .35 m, peak 1.35 mm, 37 occupied mesh cells.
+  1.0 L: visible width .45 m, peak 13.50 mm, 61 occupied mesh cells.
+  5.0 L: visible width .45 m, peak 67.51 mm, 61 occupied mesh cells.
+More snow increases body and thickness; extent follows the existing deposited
+field. At very low quantities some volume stays below the mesh threshold and
+is represented by the existing ice shader instead. Extremely board-clipped
+cells can be taller to conserve the volume within their smaller visible area.
+
+Sparse 40x40-cell chunks and the eight-addition rebuild budget remain. Removing
+snow still takes rebuild priority. Mesh.Clear before smaller uploads preserves
+the prior wet-recollection error correction. The new mesh uses eight vertices
+per occupied cell instead of twelve, with shared normals and reusable buffers.
+
+BIN SPOUT
+
+IceSnowView meters the positive change in TotalSnowCollectedM3: actual accepted
+delivery into the tank, after conveyor limits, jams, crowding and rejection.
+Particle count scales with delivered volume; fragment size scales with measured
+delivery rate relative to vertical capacity. A frame without delivery emits no
+new fragments. Fractional sampling supports low/intermittent flow. Pause/reset
+cannot accumulate a deferred burst. Existing stock in a running vertical auger
+can correctly finish delivering after the horizontal auger is stopped.
+
+The existing discharge pool is reused: at most 360 live fragments and 64 new
+samples per presentation update. Whole excess samples are dropped, not queued.
+There are still five pools and 2,520 maximum particles in total, with one shared
+granule mesh. No per-clump GameObjects, collision simulation or snow transfers.
+The spout stays in machine-local space through travel and turns. Existing side
+overflow, rejected upper discharge and dumping remain separate cues.
+
+The actual TankDischarge anchor supplies the origin, offset forward by 55 mm to
+clear its lip. Its arc aims left/forward below the existing TankInspection
+opening, away from the roof and central guard. This corrects the old stream's
+position beside the aperture. Its runtime material is slightly emissive so
+white fragments remain legible inside the dark bin. Authored assets unchanged.
+
+Use the existing R standing toggle or hold Space, then look down through the
+top inspection opening with RMB. No new camera mode or control binding added.
+Read-only intersections against 9,024 authored triangles/conservative built-in
+bounds found clear standing-eye rays to seven of eight stream samples, from
+0.16 through 0.36 seconds of flight. This is static empty/lowered-bin geometry
+evidence, not a rendered capture. A full snow surface can obscure the stream.
+
+OPERATOR TUNING
+
+The existing serialized windrowRoughness value is preserved, now labelled
+"Mound roughness (0-1)". Only one new control: "Bin spout visibility (x)",
+default 1, range 0..3. It changes cosmetic sample density; zero hides the cue.
+No delivery still means no spout at every setting. Restore resets it to 1.
+All saved simulation and previous presentation values are retained.
+
+VALIDATION AND LIMITS
+
+Evidence: Validation~/SnowPresentation-20261104/
+
+  onset.log: prescribed-lane ordinary .35 setting, both augers off, substantial
+  overflow 18.4 m / 20.12 yd in both authored and procedural configurations.
+  Previous matched result 18.4 m; change 0.0 m. No physical source/config change.
+  Authored actual driven result remains 17.9133 m / 19.5902 yd.
+  Procedural actual driven result remains 17.8491 m / 19.5200 yd.
+
+  checks.log: cap area/height/integrals, quantity scaling, exact ordinary
+  recollection with both 6 and 50 mm saved pickup settings, deep repeated
+  pickup, boards/corners, actual auger flow states, paused/no-backlog sampling.
+  Empty, jammed, full, raised and vertical-off transport emit zero new samples.
+  At .05/.7355/10 L/s, sampler gives 17/264/3599 samples over two seconds.
+  Native pool limits are separate from these requested-sample totals.
+  Thirty-minute active CPU soak: zero managed bytes, balance residual -0.029508 L
+  over approximately 2,039 L of initial plus newly produced loose snow.
+
+  aggregate.log: all 43 deterministic simulation groups pass, including
+  conservation, recollection, water, controls, collision and route/GPS checks.
+  compile.log: separate Runtime and Editor assemblies compile against installed
+  Unity 6000.4.1f1 references: zero errors, 45 pre-existing warnings.
+
+  geometry-before/after.log: zero managed bytes in both. Eight actual sparse
+  chunks: approximately .1744 ms before / .0604 ms after for geometry-only
+  work, averaged over 200 rebuild batches. Empty cells are now skipped before
+  constructing patches. Artificial full-rink scans are slower (202/340 ms for
+  40 scans); production rebuilds sparse chunks instead. Sampler: zero managed
+  bytes over 100,000 updates. These are offline CPU measurements, not Unity FPS.
+  Mesh triangles increase from four to ten per occupied cell; vertices decrease
+  twelve to eight. Native normals/upload/draw cost and GPU impact are unmeasured.
+
+  preservation-audit.json: all 154 protected saved assets and all 53 physical
+  Core files in the before manifest are byte-identical. Only the presentation
+  geometry helper changes in Core; the new sampler is also purely cosmetic.
+  Existing physical calibration, capacities and authored tuning remain intact.
+
+Unity's isolated native attempt was stopped after 60 seconds at "Licensing is
+not yet initialized" (unity-editor.log). No new Play Mode or rendered success
+is claimed. IceSnowRealismValidation compiles native mesh, wet cleanup, spout
+emission/pause/reset and standing inspection capture checks for both scenes,
+but these checks could not execute in this attempt. Existing menu Experiments >
+Ice Resurfacer > Validate Snow Mesh Rebuilds remains available outside Play Mode
+for native shrink/grow/cleanup checks in the operator's working Editor.
+
+Visual judgment of the final snow shape/brightness, inspection screenshots,
+native allocation/frame-time profiling and GPU behavior still need the licensed
+Editor. The broad caps remain a 5 cm cell approximation, rather than physical
+granules or an unconstrained smooth surface spanning cleared cells.

@@ -17,6 +17,9 @@ namespace IceResurfacer.Core
         public float BrushWorldX { get; private set; }
         public float BrushWorldZ { get; private set; }
         public bool BrushContact { get; private set; }
+        public float BrushCompression { get; private set; }
+        public bool BrushTravelLimited { get; private set; }
+        float brushOffsetX,brushOffsetZ,brushVelocityX,brushVelocityZ;
         public float BrushSweptSnowM3 { get; private set; }
         // Cumulative source/transfer meters. Loose pickup includes subsequent
         // recovery of deposited snow; it is not a second material source.
@@ -212,18 +215,33 @@ namespace IceResurfacer.Core
             BrushDeployment=MoveTowards(BrushDeployment,Controls.BoardBrush?1:0,dt*1.6f);
             BoardBrushArticulation.Contact(Config,BrushDeployment,out float localX,out float localZ);
             float sn=(float)Math.Sin(Vehicle.Heading),cs=(float)Math.Cos(Vehicle.Heading);
-            BrushWorldX=Vehicle.X+localX*cs+localZ*sn;BrushWorldZ=Vehicle.Z-localX*sn+localZ*cs;
+            BoardBrushArticulation.SpringReturn(ref brushOffsetX,ref brushVelocityX,dt,Config.BrushSpringReturn,Config.BrushSpringDamping);
+            BoardBrushArticulation.SpringReturn(ref brushOffsetZ,ref brushVelocityZ,dt,Config.BrushSpringReturn,Config.BrushSpringDamping);
+            float restX=Vehicle.X+localX*cs+localZ*sn,restZ=Vehicle.Z-localX*sn+localZ*cs;
+            BrushWorldX=restX+brushOffsetX*cs+brushOffsetZ*sn;BrushWorldZ=restZ-brushOffsetX*sn+brushOffsetZ*cs;
             float boardDistance=Ice.BoardDistance(BrushWorldX,BrushWorldZ,out float nx,out float nz);
             bool onIce=Ice.IsInside(Vehicle.X,Vehicle.Z);
-            BrushContact=BrushDeployment>.5f&&onIce&&boardDistance>=-Config.BrushRadius-.025f;
-            // The disc never passes through the kickplate at any deployment, so the arm swings
-            // into contact without a snap. Above half deployment this is exactly the previous
-            // contact compression; sweeping still requires BrushContact.
+            // A unilateral board constraint compresses the spring; only its release is free.
+            // Keep displacement in machine coordinates as the vehicle turns around the rink.
             if(onIce&&boardDistance>-Config.BrushRadius)
             {
                 float compression=boardDistance+Config.BrushRadius;
-                BrushWorldX+=nx*compression;BrushWorldZ+=nz*compression;
+                float lx=nx*cs-nz*sn,lz=nx*sn+nz*cs;
+                brushOffsetX+=lx*compression;brushOffsetZ+=lz*compression;
+                float normalVelocity=brushVelocityX*lx+brushVelocityZ*lz;
+                if(normalVelocity<0){brushVelocityX-=lx*normalVelocity;brushVelocityZ-=lz*normalVelocity;}
             }
+            float length=(float)Math.Sqrt(brushOffsetX*brushOffsetX+brushOffsetZ*brushOffsetZ);
+            BrushTravelLimited=length>Config.BrushComplianceTravel+.0001f;
+            if(length>Config.BrushComplianceTravel&&length>0)
+            {
+                float scale=Config.BrushComplianceTravel/length;brushOffsetX*=scale;brushOffsetZ*=scale;
+                brushVelocityX=0;brushVelocityZ=0;
+            }
+            BrushCompression=Math.Min(length,Config.BrushComplianceTravel);
+            BrushWorldX=restX+brushOffsetX*cs+brushOffsetZ*sn;BrushWorldZ=restZ-brushOffsetX*sn+brushOffsetZ*cs;
+            boardDistance=Ice.BoardDistance(BrushWorldX,BrushWorldZ,out nx,out nz);
+            BrushContact=BrushDeployment>.5f&&onIce&&boardDistance>=-Config.BrushRadius-.025f;
             if(!Controls.BoardBrush||BrushDeployment<.5f||distance<=0)return;
             BrushEdge(distance);
         }

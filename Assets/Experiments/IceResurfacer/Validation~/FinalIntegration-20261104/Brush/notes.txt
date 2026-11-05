@@ -1,0 +1,27 @@
+Brush subtask complete. No authored assets modified.
+
+Implementation files: Core/BoardBrushArticulation.cs, Core/IceCalibrationConfig.cs, Core/SurfaceProcessing.cs, Presentation/IceBoardBrushRig.cs, Editor/IceBoardBrushRigEditor.cs.
+
+Current rig geometry preserved: pivot (-.548,1.3), arm .38849553 m, radius .192 m, deployed 0 deg, stowed 86.32715 deg. Working edge |X|=1.12849553 m; conditioner |X|=1.066 m; closest parallel overlap about 62.5 mm, within new 120 mm authored compliance travel.
+
+Select brush rig > Edit STOWED / Edit WORKING > move/rotate the head with Scene handles or machine-space numeric fields > Save each > Use saved endpoints in Play. Preview with existing deployment slider/buttons. Saves use current rig poses as seeds, have Undo, and serialize on existing component. Incompatible arm radii display both errors; adjust pivot/length or project endpoints onto arm circle. Defaults remain unchanged until explicit endpoint activation. Advanced legacy geometry workflow remains available.
+
+Spring controls: complianceTravel .12 m, springReturn 12 rad/s, springDamping 1. Procedural-only Core fallback .45 m preserves its existing longer brush reach. Contact projection and implicit spring run in deterministic Core; one BrushWorldX/Z drives both visible disc and snow clearing. BrushCompression and BrushTravelLimited report finite-travel state. Exhausted travel is a real mechanical limitation and can leave residual board overlap; Inspector warns when straight-board reach exceeds travel. No claim of board clearance for invalid or exhausted geometry. Removed obsolete arbitrary stowed X=-.800 advisory.
+
+Actual run:
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/FinalIntegration-20261104/Brush/Brush.csproj -c Release
+  11/11 passed; full output results.txt.
+  80 mm release => 77.003 mm after first 20 ms, then 1.89e-14 m after 3 s, monotonic.
+  Prescribed 2.65 m/s curved-board fixture max numerical penetration .00152 mm; max head step 52.75 mm / 20 ms.
+  48 compressed-disc cells swept, snow volume difference 2.35e-12 m3.
+  Actual public Simulation.Step driving at 1.59 and 2.65 m/s: 449/449 measured post-deployment steps in contact each.
+  100000 brush-only updates: .000258 ms/step and zero managed bytes (CPU sample, not total frame/GPU).
+  Insufficient reach, stable 25 mm compression, full 120 mm compression, overtravel report, endpoint feasibility, render-cadence identity and original procedural clearance also passed.
+
+Native hook provided as UnityEndpointAcceptance.cs (outside Unity import). Copy to isolated validation Editor folder and execute IceResurfacer.Editor.UnityEndpointAcceptance.RunBatch with -iceBrushEndpointAcceptance. Exercises actual authored prefab initialization, editor StoreEndpoint path, Undo/Redo, runtime config isolation, intermediate previews, scene-save preview reset, scene reload and prefab serialization; writes/deletes only explicit scratch assets inside isolated project. NOT RUN due current Unity licensing limitation. Do not count as passed. Visual handle usability, head tilt/spin, motor/guard behavior and Play Mode spring appearance remain acceptance checks.
+
+Minimal prefab serialization: complianceTravel: 0.12; springReturn: 12; springDamping: 1; useAuthoredEndpoints: 0. No endpoint payload needed until user authors it. Game runtime hook coordinated with camera agent: ApplyAuthoredConfiguration to runtime copy and Pose from Sim.Config.
+
+Final review correction: endpoint preview now captures/restores the original head local rotation on return to legacy posing. Leaving Edit STOWED restores its transient preview even though deployment is zero. Assembly reload stows previews before transient state is lost. Pending unsaved endpoint edits cannot masquerade as approved active endpoints. Native acceptance now exercises actual custom Inspector OnDisable with changed stowed height/tilt; updated hook compilation passed 0 warnings/errors. Native execution remains unverified.
+
+Independent final review (read-only): actual Aurora prefab has 2406 unique documents, 52 additions, 9 changed originals, no removals. Every internal reference and all transform parent/child links resolve. All four added script bindings map exactly to three IceKeepUnbatched components and one IceOperatorStation component. Scene differs solely by GuideRollerX -1.0009999 -> -.827. Batching excludes new moving controls and their authored mounts; local measured picking follows assembly movement/scale. Found horn audio release depended on a later frame even though runInBackground=0; reported to camera/audio owner for immediate Stop-on-release correction.

@@ -50,7 +50,8 @@ namespace IceResurfacer.Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("tankVisualFullness"),new GUIContent("Bin visual fullness (x)"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("overflowParticleDensity"),new GUIContent("Overflow particle density (x)"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("overflowClumpSize"),new GUIContent("Overflow clump size (x)"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("windrowRoughness"),new GUIContent("Windrow facets (0–1)"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("windrowRoughness"),new GUIContent("Mound roughness (0–1)"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("binSpoutVisibility"),new GUIContent("Bin spout visibility (x)"));
             serializedObject.ApplyModifiedProperties();
             if(!string.IsNullOrEmpty(t.lastError))EditorGUILayout.HelpBox(t.lastError,MessageType.Error);
             SimulatorConfig c;
@@ -91,7 +92,7 @@ namespace IceResurfacer.Editor
             Preset(t,"Flood: 2.5 times longer (0.4x)",()=>t.simulation.FloodFlowMultiplier=.4f);
             Preset(t,"New shavings: 2.5x loose volume",()=>t.simulation.ShavingsExpansionMultiplier=2.5f);
             Preset(t,"Bin appearance only: 2.5x fullness",()=>t.tankVisualFullness=2.5f);
-            Preset(t,"Restore scene calibration and 1x presentation",()=>{t.simulation=OperatorTuningSettings.From(game.calibration);t.tankVisualFullness=t.overflowParticleDensity=t.overflowClumpSize=1;t.windrowRoughness=.7f;});
+            Preset(t,"Restore scene calibration and 1x presentation",()=>{t.simulation=OperatorTuningSettings.From(game.calibration);t.tankVisualFullness=t.overflowParticleDensity=t.overflowClumpSize=t.binSpoutVisibility=1;t.windrowRoughness=.7f;});
         }
     }
 }

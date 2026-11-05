@@ -22,6 +22,7 @@ namespace IceResurfacer.Presentation
         public Transform[] TankCylinderBase, TankCylinderClevis, ConditionerCylinderBase, ConditionerCylinderClevis;
         // Physical audio anchors, explicit so a replaced or renamed part can be rebound.
         public Transform EngineCover, Chassis, WashManifold, WashPickup;
+        public IceOperatorStation OperatorControls;
         // Runtime-owned depth-tested lettering; never a persistent asset (its atlas texture changes).
         public Material Lettering;
         public float WorkingWidth;
@@ -106,6 +107,9 @@ namespace IceResurfacer.Presentation
             // renderers. Spans exist only on an authored machine (the generated one is unchanged).
             void Measure(bool authored)
             {
+                world.OperatorControls=world.Machine.GetComponentInChildren<IceOperatorStation>(true);
+                if(world.OperatorControls!=null&&world.OperatorControls.driverEyeAnchor!=null)
+                    world.CameraMount=world.OperatorControls.driverEyeAnchor;
                 world.ControlGrips=IcePhysicalControls.MeasureGrips(world,config);
                 world.ControlOccluders=IcePhysicalControls.MeasureOccluders(world);
                 world.ConditionerSpans=authored?IceConditionerLinkage.Capture(world):new List<IceConditionerLinkage.Span>();
@@ -449,6 +453,8 @@ namespace IceResurfacer.Presentation
                     world.HorizontalAugerLever,world.VerticalAugerLever,world.SnowBreakerPlunger,
                     world.AcceleratorPedal,world.BrakePedal,world.GuideRoller,world.DumpLever
                 };
+                if(world.OperatorControls!=null)
+                    for(int i=9;i<=11;i++)if(world.OperatorControls.Control(i)!=null)moving.Add(world.OperatorControls.Control(i));
                 foreach(var cylinder in world.TankCylinderBarrels)moving.Add(cylinder);
                 foreach(var cylinder in world.TankCylinderRods)moving.Add(cylinder);
                 foreach(var cylinder in world.ConditionerCylinderBarrels)moving.Add(cylinder);
@@ -918,7 +924,7 @@ namespace IceResurfacer.Presentation
                 // exposed. Long rails here previously crossed the actual controls.
                 Beam("Seat left rear arm pad",seat,new Vector3(-.32f,.17f,-.22f),new Vector3(-.32f,.17f,-.03f),.060f,rubber);
                 Beam("Seat right rear arm pad",seat,new Vector3(.32f,.17f,-.22f),new Vector3(.32f,.17f,-.03f),.060f,rubber);
-                world.CameraMount=Group("Seated eyes / attached to driver seat",seat,new Vector3(-.21f,.67f,.09f));
+                world.CameraMount=Group("Driver Eye Anchor",seat,new Vector3(0,.73f,.14f));
                 world.SteeringColumn=Group("Complete steering column",deck,new Vector3(0,config.SteeringWheelHeight,config.SteeringWheelZ));
                 var steeringTilt=Quaternion.Euler(-config.SteeringWheelTilt,0,0);
                 Vector3 upperShaft=-(steeringTilt*Vector3.up)*.24f;
@@ -1034,6 +1040,60 @@ namespace IceResurfacer.Presentation
                 Box("Boarding upper step",access,new Vector3(.035f,.58f,0),new Vector3(.21f,.06f,.44f),steel);
                 for(int i=0;i<5;i++)Box("Step non-slip tread",access,new Vector3(0,.335f,-.16f+i*.08f),new Vector3(.23f,.012f,.025f),black);
                 Label("R-54",deck,new Vector3(0,1.13f,-.33f),.07f,Color.white,Quaternion.Euler(0,180,0));
+                var controls=world.OperatorControls=deck.gameObject.AddComponent<IceOperatorStation>();
+                controls.driverEyeAnchor=world.CameraMount;
+                controls.controlsViewAnchor=Group("Controls View Anchor",seat,new Vector3(.18f,.86f,.15f));
+                Vector3 controlsTarget=(world.FloodLever.position+world.WashValve.position+world.BladeWheel.position+world.ConditionerLever.position)*.25f;
+                controls.controlsViewAnchor.rotation=Quaternion.LookRotation(controlsTarget-controls.controlsViewAnchor.position,machine.up);
+                var switchRail=Group("Left cockpit switch support",deck,new Vector3(-.29f,config.SteeringWheelHeight-.118f,config.SteeringWheelZ));
+                Box("Switch support rail",switchRail,Vector3.zero,new Vector3(.10f,.018f,.36f),navy);
+                Box("Switch rail column bracket",switchRail,new Vector3(.15f,-.022f,0),new Vector3(.30f,.026f,.045f),steel);
+                controls.boardBrushSwitch=CockpitSwitch(deck,"Board brush switch assembly","BRUSH",-.12f,false,cyan);
+                controls.hornButton=CockpitSwitch(deck,"Horn button assembly","HORN",0,true,orange);
+                controls.washPumpSwitch=CockpitSwitch(deck,"Wash pickup pump switch assembly","PUMP",.12f,false,blue);
+                FrameGeneratedControlsAnchor(controls);
+            }
+
+            // Only seeds a newly generated station. Authored anchors are never fitted or
+            // rewritten, and the runtime camera simply follows their saved pose.
+            void FrameGeneratedControlsAnchor(IceOperatorStation station)
+            {
+                var grips=IcePhysicalControls.GripPositions(world,config);var points=new Vector3[16];
+                Vector3 eye=station.controlsViewAnchor.position;
+                for(int i=0;i<8;i++)points[i]=world.Machine.InverseTransformDirection(grips[i+1]-eye);
+                float radius=IcePhysicalControls.BladeRimRadius(world,config);
+                for(int i=0;i<8;i++)
+                {
+                    float angle=i*Mathf.PI/4;
+                    points[i+8]=world.Machine.InverseTransformDirection(world.BladeWheel.TransformPoint(Mathf.Cos(angle)*radius,.012f,Mathf.Sin(angle)*radius)-eye);
+                }
+                float vertical=Mathf.Tan(30.5f*Mathf.Deg2Rad),best=float.NegativeInfinity;
+                Quaternion chosen=Quaternion.identity;
+                for(int yaw=35;yaw<=145;yaw+=2)for(int pitch=20;pitch<=76;pitch+=2)
+                {
+                    Quaternion pose=Quaternion.Euler(pitch,yaw,0),inverse=Quaternion.Inverse(pose);
+                    float margin=float.PositiveInfinity;
+                    foreach(var point in points)
+                    {
+                        Vector3 view=inverse*point;
+                        if(view.z<=0){margin=float.NegativeInfinity;break;}
+                        margin=Mathf.Min(margin,Mathf.Min(1-Mathf.Abs(view.x/(view.z*vertical*1.6f)),1-Mathf.Abs(view.y/(view.z*vertical))));
+                    }
+                    if(margin>best){best=margin;chosen=pose;}
+                }
+                station.controlsViewAnchor.rotation=world.Machine.rotation*chosen;
+            }
+
+            Transform CockpitSwitch(Transform deck,string name,string label,float forward,bool momentary,Material accent)
+            {
+                var mount=Group(name,deck,new Vector3(-.29f,config.SteeringWheelHeight-.10f,config.SteeringWheelZ+forward));
+                mount.gameObject.AddComponent<IceKeepUnbatched>();
+                Box("Control mounting plate",mount,Vector3.zero,new Vector3(.085f,.018f,.095f),black);
+                var moving=Group(momentary?"Horn pushbutton travel":"Maintained switch pivot",mount,new Vector3(0,.014f,0));
+                if(momentary)Cylinder("Horn button cap",moving,new Vector3(0,.012f,0),.055f,.022f,accent,Vector3.up);
+                else Box("Cockpit switch grip",moving,new Vector3(0,.035f,0),new Vector3(.034f,.055f,.028f),accent);
+                Label(label,mount,new Vector3(0,.012f,-.036f),.009f,Color.white,Quaternion.Euler(270,180,0));
+                return moving;
             }
 
             Transform Lever(string name,Transform parent,Vector3 position,string label,Material accent)

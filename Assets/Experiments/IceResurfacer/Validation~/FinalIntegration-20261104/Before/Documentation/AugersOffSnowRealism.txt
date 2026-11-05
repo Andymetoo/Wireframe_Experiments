@@ -1,0 +1,281 @@
+CURRENT SNOW PRESENTATION / 2026-11-04
+See Documentation/SnowPresentationAndSpout.txt. Broad volume-conserving mounds
+replace the earlier sharp facets, and actual bin delivery drives an inspection
+spout. Physical behavior below is preserved; matched onset remains 18.4 m.
+
+AURORA R-54 / AUGERS-OFF SNOW AND RECOLLECTION / 2026-11-04
+
+PARTIAL PICKUP MESH CORRECTION / 2026-11-04
+An operator return pass exposed a native mesh upload bug: nonempty chunks lost
+vertices during pickup while old triangle references were still attached. Unity
+rejected the smaller vertex upload, then rejected the shorter normals buffer.
+IceDepositedSnowView now clears old mesh data before every rebuild upload.
+Managed geometry buffers remain reused; simulation stocks/pickup/water are unchanged.
+Edit-mode disposal also releases the validator's temporary meshes immediately.
+
+New native regression: Experiments > Ice Resurfacer > Validate Snow Mesh Rebuilds
+(outside Play Mode). It checks partial shrink, growth, emptying and regrowth;
+vertex/normal/index agreement and represented volume; then collects real spilled
+snow incrementally with both augers and flood water running. The full isolated
+snow validator runs these checks too. No scene, route or calibration is saved.
+
+Separate runtime/Editor compilation passes: zero errors, 45 existing warnings.
+Evidence: Validation~/MeshResize-20261104/compile.log and validation-notes.txt.
+The isolated native attempt timed out after 60 s during licensing initialization;
+the new native assertions are compiled, but are NOT reported as executed/passed.
+
+ASSEMBLY CHECK CORRECTION / 2026-11-04
+The original offline check combined runtime and Editor sources, hiding an
+internal-access error in the deep-bank validation fixture. That fixture now
+uses the public IceField.MarkChanged API. CompileUnity.csproj now builds separate
+IceResurfacer.Runtime and IceResurfacer.Editor assemblies, matching the asmdefs.
+assembly-boundary-before.log reproduces CS1061; assembly-boundary-after.log
+passes a clean rebuild with zero errors and 45 existing warnings. The complete
+snow/scene/water Requirements runner also passes again (assembly-fix-requirements.log).
+Runtime snow behavior and saved assets/settings are unchanged by this correction.
+
+Implemented against the current local authored assets and Operator Tuning.
+No scene, prefab, arena, mesh asset, material asset, camera, collision, brush,
+GPS recording, tank capacity, blade mapping, flood or wash setting was changed.
+No baking, branch, commit or push. Existing uncommitted water-drive work remains.
+
+MEASURED ONSET
+
+Matched before/after apparatus: seed 546, actual 5 cm field, fresh prescribed
+50 m lanes from x=-11.4, 1.9 m lane pitch, 1 m/s, lowered conditioner. This
+duplicates the Astra probe's rounded starting lane. Distances count cutting
+travel; lane changes are apparatus resets, not a drivable route. Substantial
+means at least 0.5 L cumulative escape and at least 0.25 L/s current escape.
+No such criterion or distance counter is used by gameplay.
+
+  Blade setting / actual bite      BEFORE substantial     AFTER substantial
+  .15 / .024 mm, both off          154.1 m                 25.3 m (27.7 yd)
+  .35 / .056 mm, both off          111.3 m                 18.4 m (20.1 yd)
+  .80 / .600 mm, both off           19.6 m                  3.3 m ( 3.6 yd)
+
+For the ordinary .35 setting, the first measurable escape was 110.6 m before
+and 18.4 m after. These agree with the audit's approximately 111 m finding.
+
+  Ordinary .35 setting            BEFORE substantial     AFTER substantial
+  H off / V off                   111.3 m                 18.4 m
+  H off / V on                    111.3 m                 18.4 m
+  H on / V off                    188.6 m                 94.9 m
+  H on / V on                     No spill in 200 m       No spill in 200 m
+
+The V-off case legitimately lasts longer: its separate 55 L throat fills before
+the trough backs up. Full-bin rejection still exits the upper chute and can jam;
+a jam stops powered transport and then sends new stock to the low side exits.
+An elevated bin still misses its chute without pretending to be a blockage.
+
+Actual fixed-step driven straight passes (not apparatus poses), .35 setting,
+.4 throttle, integrated real vehicle travel, initially seeded ice:
+  Latest authored scene config: 17.9133 m / 19.5902 yd to substantial escape.
+  Original procedural config:   17.8491 m / 19.5200 yd.
+These are separate measurements from the matched apparatus comparison above.
+
+The target assumes the current seeded rink's real pre-existing hockey snow.
+On a deliberately snow-free sheet, ordinary shaving alone takes 39.2 m to
+substantial escape. That difference is intentional: lower available snow must
+take longer. Newly shaved solid volume and its 3.1 expansion remain unchanged.
+
+PHYSICAL CHANGES
+
+The existing saved 0.080 m3 retention number remains intact as nominal housing
+volume. A new usable-fill fraction of .17 makes 13.6 L available below the side
+lips. Both the authored tuning and procedural calibration acquire this default
+without rewriting their serialized values. This is an operator calibration,
+not a manufacturer specification or a new measured housing dimension.
+
+Conveyors get first opportunity to remove actual stock. Stock reaching the lip
+starts a finite slump, relaxing toward 75% fill with a .18 s time constant and
+stopping below 85% fill. Any volume beyond usable capacity also escapes. This
+produces intermittent banks from retained material; it is not a timed snow
+effect. Restarting the augers drains the remaining real trough/throat stock.
+
+Each side gets a bounded uneven share (37-63%). Its real landing point receives
+72% through a varying .10-.20 m kernel and 28% as a smaller .065-.090 m fragment
+kernel. Every kernel normalizes over real ice cells. Board-constrained landings
+and the off-ice environment ledger remain authoritative. No new snow multiplier.
+
+Normal banks within the new 50 mm intake height are swept whole on moving,
+fully lowered contact. Previously they were rationed over footprint traversal,
+leaving residue even when transport had capacity. Existing saved pickup values
+(authored 50 mm, procedural 6 mm) now govern plowing banks taller than the intake.
+All recovered snow enters HorizontalSnowM3, then the finite conveyors and tank;
+it can still spill if input overwhelms those stages. Stationary/raised passes
+cannot receive this whole-layer pickup. No snow-hiding or material deletion.
+
+PRESENTATION
+
+Sparse chunks reconstruct occupied 5 cm cells with four flat-shaded facets each.
+Crests are irregular, but each patch's triangle integral equals that cell's
+actual loose volume. A crest's increased height occupies less horizontal area.
+Corners clip inside straight and rounded boards. A zero-snow cell owns no snow
+triangles, including beside an uncleared bank. Dust <=.55 mm uses the existing
+ice shader; its actual snow texture channel is still updated from SnowMm.
+
+Chunks use reusable buffers that grow only as needed, with eight addition
+rebuilds per refresh. Removals have immediate priority and can exceed that budget
+to clear stale geometry. There are no persistent per-clump objects. Existing
+2,520-particle total pool limits remain; a shared angular fragment mesh replaces
+the sphere. Particle size/density are presentation-only samples of actual escape.
+
+INSPECTOR
+
+Select the authored scene root "AURORA R-54 / nose-in service and 5 cm ice", then
+Operator Tuning. Save persistent edits outside Play Mode.
+
+  SIMULATION / conserved transfers
+  Nominal trough volume: existing 0.080 m3 retained.
+  Usable fill before spill: NEW, .17 default, .05-1 range. Increase to delay
+    overflow; decrease to shed earlier. Inspector shows effective usable litres.
+    1 restores the old nominal threshold; the new slump/deposit model remains.
+  Loose intake height: NEW, 50 mm default, 10-100 mm range. Defines normal banks
+    swept whole. It never expands reservoir or conveyor capacity.
+  Deep-bank plowing: existing pickup value, relabeled to describe its new role.
+  H/V throughput: existing finite transport controls, still 1x / 1x locally.
+
+  PRESENTATION / no material created
+  Windrow facets: NEW, .7 default, 0-1 range. Changes volume-normalized crests.
+  Overflow particle density / clump size: existing 3x / 1.25x values preserved.
+  Bin visual fullness: existing 1x value preserved.
+
+The existing flood .4x, expansion 1x and wash recovery .644 are preserved.
+Disabling/restoring tuning still restores the saved calibration without changing
+existing stocks. New fields absent from old scene YAML use the new code defaults;
+disabling tuning is consequently not a rollback of this implementation.
+No gameplay HUD diagnostics were added.
+
+MATERIAL BALANCE
+
+Snow litres mean loose-equivalent volume, not liquid water or a kg inventory.
+Current stock = ice snow + trough + vertical throat + tank + pit + environment.
+Expected stock = initial loose snow + actual solid shavings * actual expansion.
+SpilledSnowM3, loose pickup and delivered throughput are transfers; adding them
+again would double-count snow that has spilled and been recollected.
+
+Matched authored 200 m ordinary fixture, litres:
+  Source: initial loose 297.1107 + newly expanded shavings 69.4263.
+  Solid shaved: 22.3956 L, unchanged from before (expanded at 3.1).
+
+  State              Trough    Throat    Tank      Ice snow    Balance residual
+  H off / V off      11.6708    0         0         354.8660    -.000301 L
+  H off / V on       11.6708    0         0         354.8660    -.000301 L
+  H on / V off       12.8220   55         0         298.7147    -.000323 L
+  H on / V on         0         0       143.6167    222.9201    -.000281 L
+  Pit/environment were zero. Off/off cumulative spill transfers were 199.0392 L;
+  current deposited stock is smaller because repeated transfers are counted.
+
+Current-scene full-sheet apparatus, .35 setting, 855.3 s, real 5 cm cells:
+  Initial loose .297111 m3 + expanded new .260064 m3 (solid shaved .083892 m3).
+
+  Scene / augers      Tank m3   Trough m3  Ice m3    Ground m3  Residual m3
+  Authored / on       .557173   0          0         0          -.00000158
+  Authored / off      0         .011661    .530976   .014536    -.00000101
+  Procedural / on     .557173   0          0         0          -.00000158
+  Procedural / off    0         .011696    .531684   .013794    -.00000102
+  Vertical and pit were zero. Ground stock is explicitly retained. These broad
+  apparatus sweeps include off-ice/straddling poses beyond the rounded boundary;
+  they are not vehicle clearance tests. Separate inside-board fixtures produced
+  exactly zero ground snow at straight boards and rounded corners.
+
+30-minute active CPU soak, prescribed repeated lanes with real production Step,
+90,000 measured 20 ms ticks; first ordinary then deep cutting; augers periodically
+off/on. Source initial loose 297.110573 L + new bulk 1741.705360 L. Final tank
+1544.645996 L + ice snow 494.140399 L. Trough/throat/ground/pit zero. Residual
+-.029508 L (~29.5 mL across about 2,039 L); spill throughput 891.919800 L.
+Float stores/accumulation explain the reported residuals; they are not exact zero.
+The underlying shaved slab remains the existing metered, unlimited source.
+
+RECOLLECTION AND REGRESSIONS
+
+  PASS: Actual 48 m off-auger cut escaped 23.327829 L. Restarting both augers
+    delivered 13.214458 L retained stock into the tank. One aligned cutting pass
+    over EACH of the two side banks left exactly zero snow in both measured
+    bands, with either saved 6 mm or 50 mm deep-bank setting. Tank ended at
+    97.802437 L, including further actual shaving/pickup. Residual -.000162 L.
+  PASS: Finite 10 L narrow streak: zero snow, zero white-threshold cells after
+    one aligned pass; tank .019054 m3. Both settings now clear it. The original
+    procedural 6 mm behavior left .71703 L and 396 white-threshold cells.
+  PASS: 120 mm-deep, 48 L fixture bank: after one pass 45.677364 L remains at
+    6 mm plowing, 28.077364 L at 50 mm. Clears after 12 / 2 passes respectively.
+  PASS: Full-bin rejection, latched jams, separate H/V failure states and raised
+    open chute remain distinct in the existing snow failure-state regression.
+  PASS: Straight/corner snow stays on ice; cell-local facets stay inside boards.
+    Maximum measured per-patch volume-integral error 7.172e-12 m3, at roughness
+    0/.7/1. A cleared cell produces no patch even beside a retained bank.
+  PASS: All 43 deterministic aggregate scenario groups, including scored full
+    route, actual recorded-route fixtures, contacts, service, water and GPS.
+  PASS: Actual authored and procedural scene scalars/outline extracted read-only
+    from their current YAML; both driven onset and full-sheet material checks.
+  PASS: Authored ten-minute full-flood wash remains 248.1882 L; procedural
+    309.9945 L. Existing H-off/jammed drive returns zero; H-on returns 4.304999 L
+    per 5 s; standing-water-only priming returns 11.890001 L per 10 s, no damage.
+  PASS: All Core/Presentation/Editor source compiles against installed Unity
+    6000.4.1f1 assemblies: zero errors, 45 existing warnings.
+
+PERFORMANCE AND RENDERED VALIDATION BOUNDARY
+
+  Active 30-minute core soak: 90,000 ticks in 5,266.973 ms CPU, ZERO measured
+    managed allocations after warm-up (~.0585 ms/tick; not rendered FPS).
+  Pure geometry: 40 full-field candidate scans / 46,400 built patches in
+    477.130 ms under concurrent validation, ZERO managed allocations.
+  90,000 steady conveyor calls: 9.558 ms, ZERO managed allocations.
+  Mesh buffers allocate/grow when new chunks gain snow, then reuse storage.
+    Worst-case whole-sheet thick snow has much more geometry than normal banks;
+    no rendered GPU/memory/FPS measurement is claimed. Clear removals intentionally
+    bypass the additions budget; a simultaneous whole-sheet clear can be costly.
+
+  NOT RUN: Fresh rendered buildup/recollection, native Inspector interaction,
+    particle evaluation and live GPU/frame allocations in either scene. The
+    isolated Editor repeatedly refused LicenseClient-agaug, reported licensing
+    initialization failure and did not reach the validation entry point. A fresh
+    staged attempt timed out after 60 s while licensing was still uninitialized.
+    Only our owned isolated Editor processes were stopped. No fresh screenshots
+    are available, and old screenshots are not presented as current evidence.
+
+  Code-level clearing is verified: actual SnowMm becomes zero; zero cells have
+    no geometry; IceSurfaceView still dirties/updates the texture snow channel.
+    The supplied Unity validator additionally checks actual texture pixels,
+    disabled meshes, shader errors, captures both scenes and logs surface costs
+    once the Editor licensing connection works. Those Unity assertions have NOT
+    been reported as passed.
+
+KNOWN LIMITS
+
+  Exact subjective appearance still needs a licensed operator drive. Side-slump
+    relaxation, intake height and usable fraction are experiential calibrations.
+  Snow remains loose-equivalent volume with fixed expansion/compaction, not a
+    temperature/density/kg solver. Existing floor snow has no new cleanup action.
+  Tall banks, partial footprint coverage, restricted conveyors, full tanks and
+    jams can require repeat passes or spill again. This is conserved behavior.
+
+EVIDENCE AND REPEAT COMMANDS
+
+  Evidence: Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/
+  before.log / after.log: matched initial/final onset and source ledgers.
+  requirements.log: restart, actual-bank and finite-streak cleanup, deep banks,
+    board/facet integrals, allocation soak, both current-scene material/wash runs.
+  ledger.log: full stock breakdown including environment and pit.
+  core.log: 43/43 aggregate groups. compile.log: Unity-reference compilation.
+  unity-first-attempt.log / unity.log: licensing failures/timeouts, no render proof.
+  Before/: frozen initial source, including existing local water fixes.
+  before-sha256.csv / changed-sha256.csv / preservation.txt: original-file audit.
+  scene-config.json / procedural-config.json: current serialized scene settings.
+  ExtractScenes.py: read-only scene extraction; asserts previous values agree.
+
+  From project root:
+    dotnet run --project Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/SnowPass.csproj -c Release -- --after
+    dotnet run --project Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/Requirements.csproj -c Release
+    dotnet build Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/CompileUnity.csproj -c Release
+
+  Aggregate suite: use Validation~/UnityProject as working directory because old
+  tests write relative result files; pass the absolute path to the production
+  Validation~/IceResurfacer.Validation.csproj. Do not overwrite the user's result
+  file in the main project. For the frozen baseline probe add
+  -p:CoreRoot=Before/Core to SnowPass.csproj and omit --after.
+
+  Unity (isolated project only, no scene saves or baking):
+    powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/StageUnityValidation.ps1 -UpdateOnly
+    G:/UnityInstalls/6000.4.1f1/Editor/Unity.exe -batchmode -force-d3d11 -projectPath <absolute Validation~/UnityProject> -executeMethod IceResurfacer.Editor.IceSnowRealismValidation.Run -logFile <absolute log path>
+  The validator enters both scenes and exits itself; omit -quit.
