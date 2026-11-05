@@ -1,0 +1,6 @@
+﻿Presentation/RouteRecordingPreview.cs
+Presentation/TrainingGuideView.cs
+Presentation/TrainingGuidePanel.cs
+Presentation/RouteRecordingPanel.cs
+Presentation/IceDashboard.cs
+Presentation/RouteManagerPanel.cs

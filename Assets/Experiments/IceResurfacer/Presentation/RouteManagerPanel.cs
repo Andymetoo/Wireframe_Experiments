@@ -59,70 +59,73 @@ namespace IceResurfacer.Presentation
         void Styles()
         {
             if(title!=null)return;
-            title=new GUIStyle(GUI.skin.label){fontSize=34,fontStyle=FontStyle.Bold};title.normal.textColor=Color.white;
-            text=new GUIStyle(GUI.skin.label){fontSize=27,wordWrap=true};text.normal.textColor=new Color(.91f,.95f,1);
-            small=new GUIStyle(text){fontSize=23};button=new GUIStyle(GUI.skin.button){fontSize=26,wordWrap=true};
-            input=new GUIStyle(GUI.skin.textField){fontSize=27};
-            row=new GUIStyle(GUI.skin.button){fontSize=25,alignment=TextAnchor.MiddleLeft,wordWrap=true,padding=new RectOffset(16,12,7,7)};
+            title=IceUITheme.LabelStyle(32,true);
+            text=IceUITheme.LabelStyle(27);
+            small=IceUITheme.LabelStyle(23);small.normal.textColor=IceUITheme.Lettering(IceUITheme.Muted);
+            button=IceUITheme.ButtonStyle(26);
+            input=IceUITheme.FieldStyle(27);
+            row=IceUITheme.ButtonStyle(25,true,TextAnchor.MiddleLeft);row.padding=new RectOffset(16,12,7,7);
         }
         void Measure(Rect rect,string content,GUIStyle style)
         {if(Event.current.type==EventType.Repaint&&style.CalcHeight(new GUIContent(content),rect.width)>rect.height+1)LayoutIssues.Add("Route Manager: "+content+" requires "+style.CalcHeight(new GUIContent(content),rect.width)+" px; has "+rect.height);}
-        bool Button(string key,string label){Rect rect=ControlRect(key);Measure(rect,label,button);bool old=GUI.enabled;GUI.enabled=old&&confirmation.Length==0;bool clicked=GUI.Button(rect,label,button);GUI.enabled=old;if(clicked)GUI.FocusControl(null);return clicked;}
+        bool Button(string key,string label){Rect rect=ControlRect(key);Measure(rect,label,button);bool old=GUI.enabled;GUI.enabled=old&&confirmation.Length==0;bool clicked=IceUITheme.DrawButton(rect,label,button);GUI.enabled=old;if(clicked)GUI.FocusControl(null);return clicked;}
         public void Draw(Action advanced)
         {
-            Styles();var tint=GUI.color;GUI.color=new Color(.025f,.045f,.065f,.99f);GUI.DrawTexture(new Rect(76,48,1448,840),Texture2D.whiteTexture);GUI.color=tint;
+            Styles();IceUITheme.Panel(new Rect(76,48,1448,840));
             if(Event.current.type==EventType.Repaint)LayoutIssues.Clear();
             GUI.enabled=confirmation.Length==0;
-            GUI.Label(new Rect(110,67,1170,52),"ROUTE MANAGER  /  NUMPAD 8",title);
-            if(Button("Close","CLOSE")){owner.ToggleRecordingPanel();return;}
-            GUI.Label(new Rect(110,128,1370,45),"GPS: "+owner.ActiveRouteName+"  /  "+(owner.Visible?"SHOWN":"HIDDEN"),text);
+            GUI.Label(new Rect(110,67,1170,52),"Route manager  /  Numpad 8",title);
+            if(Button("Close","Close")){owner.ToggleRecordingPanel();return;}
+            IceUITheme.Rule(new Rect(110,121,1370,1));
+            GUI.Label(new Rect(110,128,1370,45),"GPS: "+owner.ActiveRouteName+"  /  "+(owner.Visible?"Shown":"Hidden"),text);
             GUI.SetNextControlName("RouteManagerName");owner.RecordingName=GUI.TextField(ControlRect("Name"),owner.RecordingName,80,input);
             GUI.enabled=owner.CanRecord&&!owner.Recorder.Recording&&confirmation.Length==0;
-            if(Button("Record","RECORD NEW ROUTE")){bool started=owner.StartRecording();status=owner.RecordingStatus;if(started)owner.ToggleRecordingPanel();}
+            if(Button("Record","Record new route")){bool started=owner.StartRecording();status=owner.RecordingStatus;if(started)owner.ToggleRecordingPanel();}
             GUI.enabled=owner.Recorder.Recording&&confirmation.Length==0;
-            if(Button("StopSave","STOP & SAVE")){owner.StopAndSaveRecording();Refresh();status=owner.RecordingStatus;}
+            if(Button("StopSave","Stop & save")){owner.StopAndSaveRecording();Refresh();status=owner.RecordingStatus;}
             GUI.enabled=(owner.Recorder.Data!=null||selected?.Valid==true)&&!owner.Recorder.Recording&&confirmation.Length==0;
-            if(Button("SaveCopy",owner.HasUnsavedRecording?"SAVE RECORDING":"SAVE AS NEW COPY"))
+            if(Button("SaveCopy",owner.HasUnsavedRecording?"Save recording":"Save as new copy"))
             {
                 try{if(owner.HasUnsavedRecording||selected==null){bool saved=owner.SaveRecording();status=owner.RecordingStatus;if(!saved)return;}else{string path=RouteLibraryCatalog.SaveCopy(selected,owner.Library,owner.GuideDirectory);Refresh();Select(path);status="Saved a new copy. Existing routes remain unchanged.";}Refresh();}
                 catch(Exception e){status="Save failed: "+e.Message;}
             }
             GUI.enabled=confirmation.Length==0;
-            if(Button("Load","LOAD SAVED ROUTE")){Refresh();scroll=Vector2.zero;status="Select a route below, then Use as GPS.";}
-            if(Button("Refresh","REFRESH"))Refresh();
+            if(Button("Load","Load saved route")){Refresh();scroll=Vector2.zero;status="Select a route below, then Use as GPS.";}
+            if(Button("Refresh","Refresh"))Refresh();
             scroll=GUI.BeginScrollView(new Rect(110,460,680,265),scroll,new Rect(0,0,650,Mathf.Max(250,catalog.entries.Count*92+130)));
             for(int i=0;i<catalog.entries.Count;i++)
             {
-                var e=catalog.entries[i];GUI.backgroundColor=e==selected?new Color(1,.25f,.75f):Color.white;
+                var e=catalog.entries[i];
                 string name=e.name.Length>39?e.name.Substring(0,37)+"…":e.name;
                 string caption=(e==selected?"●  ":"")+name+"\n"+e.date+"  /  about "+e.Length.ToString("F0")+" m";Measure(new Rect(0,i*92,645,84),caption,row);
-                if(GUI.Button(new Rect(0,i*92,645,84),caption,row)){GUI.FocusControl(null);Select(e.path);}
+                if(IceUITheme.DrawButton(new Rect(0,i*92,645,84),caption,row,e==selected)){GUI.FocusControl(null);Select(e.path);}
             }
-            GUI.backgroundColor=Color.white;float builtin=catalog.entries.Count*92;
-            if(GUI.Button(new Rect(0,builtin,645,56),"Original reference  /  built in",row)){GUI.FocusControl(null);owner.UseOriginalReference();selected=null;previewDirty=true;}
-            if(GUI.Button(new Rect(0,builtin+64,645,56),"Labeled test route  /  demo",row)){GUI.FocusControl(null);owner.SelectTestFixture();selected=null;previewDirty=true;}
+            float builtin=catalog.entries.Count*92;
+            if(IceUITheme.DrawButton(new Rect(0,builtin,645,56),"Original reference  /  built in",row)){GUI.FocusControl(null);owner.UseOriginalReference();selected=null;previewDirty=true;}
+            if(IceUITheme.DrawButton(new Rect(0,builtin+64,645,56),"Labeled test route  /  demo",row)){GUI.FocusControl(null);owner.SelectTestFixture();selected=null;previewDirty=true;}
             GUI.EndScrollView();
             if(catalog.entries.Count==0)GUI.Label(new Rect(130,635,620,72),"No saved routes yet. Record, then Stop & Save.",small);
             DrawPreview();
             GUI.enabled=selected!=null&&selected.Valid&&!owner.Recorder.Recording&&confirmation.Length==0;
-            if(Button("UseGps","USE AS GPS")){owner.UseSavedRouteAsGps(selected.path);status=owner.TrainingStatus;}
+            if(Button("UseGps","Use as GPS")){owner.UseSavedRouteAsGps(selected.path);status=owner.TrainingStatus;}
             GUI.enabled=confirmation.Length==0;
-            if(Button("ToggleGps",(owner.Visible?"HIDE":"SHOW")+" GPS  [NUM 7]")){owner.Toggle();status=owner.TrainingStatus;}
+            if(Button("ToggleGps",(owner.Visible?"Hide":"Show")+" GPS  [Num 7]")){owner.Toggle();status=owner.TrainingStatus;}
             GUI.enabled=selected!=null&&selected.Valid&&confirmation.Length==0;
-            if(Button("Edit","EDIT ROUTE"))status=owner.EditSavedRoute(selected.path);
-            if(Button("Rename","RENAME")){confirmation="rename";rename=selected.name;}
-            if(Button("Delete","DELETE"))confirmation="delete";
+            if(Button("Edit","Edit route"))status=owner.EditSavedRoute(selected.path);
+            if(Button("Rename","Rename")){confirmation="rename";rename=selected.name;}
+            if(Button("Delete","Delete"))confirmation="delete";
             GUI.enabled=confirmation.Length==0;
-            string message=owner.Recorder.Recording?"● RECORDING  /  Numpad 9 stops and saves":owner.HasUnsavedRecording?"RECORDING STOPPED — press Save Recording above":status;
+            string message=owner.Recorder.Recording?"● Recording  /  Numpad 9 stops and saves":owner.HasUnsavedRecording?"Recording stopped — press Save recording above":status;
             if(message!=displayedStatus){statusScroll=Vector2.zero;displayedStatus=message;}
             // Calibration reports can contain several fields. Keep every value
             // readable without covering the recording and driving controls.
             float messageHeight=Mathf.Max(69,small.CalcHeight(new GUIContent(message),1340));
             statusScroll=GUI.BeginScrollView(new Rect(110,746,1370,69),statusScroll,new Rect(0,0,1340,messageHeight));
             GUI.Label(new Rect(0,0,1340,messageHeight),message,small);GUI.EndScrollView();
-            if(Button("Advanced","DIAGNOSTICS / ADVANCED"))advanced();
-            if(Button("Folder","OPEN ROUTES FOLDER")){try{owner.OpenRecordingsFolder();}catch(Exception e){status="Couldn't open folder: "+e.Message;}}
-            if(Button("Drive","CLOSE & DRIVE"))owner.ToggleRecordingPanel();
+            IceUITheme.Rule(new Rect(110,733,1370,1));
+            if(Button("Advanced","Diagnostics / advanced"))advanced();
+            if(Button("Folder","Open routes folder")){try{owner.OpenRecordingsFolder();}catch(Exception e){status="Couldn't open folder: "+e.Message;}}
+            if(Button("Drive","Close & drive"))owner.ToggleRecordingPanel();
             if(confirmation.Length>0){GUI.enabled=true;DrawConfirmation();}
             string focus=GUI.GetNameOfFocusedControl();textEditing=focus=="RouteManagerName"||focus=="RouteManagerRename";
         }
@@ -139,21 +142,21 @@ namespace IceResurfacer.Presentation
         }
         void DrawConfirmation()
         {
-            var old=GUI.color;GUI.color=new Color(.05f,.07f,.10f,1);GUI.DrawTexture(new Rect(280,270,1040,390),Texture2D.whiteTexture);GUI.color=old;
+            IceUITheme.Panel(new Rect(280,270,1040,390));
             if(confirmation=="rename")
             {
                 GUI.Label(new Rect(320,292,960,90),"Rename this route in the library. Its recorded trajectory and file stay unchanged.",text);
                 GUI.SetNextControlName("RouteManagerRename");rename=GUI.TextField(new Rect(320,390,960,52),rename,80,input);
-                if(GUI.Button(new Rect(320,535,460,66),"SAVE NAME",button))
+                if(IceUITheme.DrawButton(new Rect(320,535,460,66),"Save name",button))
                 {try{string path=selected.path;RouteLibraryCatalog.Rename(selected,rename);owner.RenameActive(path,rename);confirmation="";Refresh();Select(path);status="Route renamed. Recording unchanged.";GUI.FocusControl(null);}catch(Exception e){status=e.Message;confirmation="";}}
             }
             else
             {
                 GUI.Label(new Rect(320,292,960,190),"Delete this saved file?\n"+selected.name+"\n"+Path.GetFileName(selected.path)+"\nOther saved routes and recovery drafts will remain.",text);
-                if(GUI.Button(new Rect(320,535,460,66),"CONFIRM DELETE",button))
+                if(IceUITheme.DrawButton(new Rect(320,535,460,66),"Confirm delete",button))
                 {try{RouteLibraryCatalog.DeleteConfirmed(selected,owner.Library,owner.GuideDirectory);selected=null;confirmation="";Refresh();status="Saved file deleted. The active GPS, if selected, remains in memory.";}catch(Exception e){status=e.Message;confirmation="";}}
             }
-            if(GUI.Button(new Rect(820,535,460,66),"CANCEL",button)){confirmation="";GUI.FocusControl(null);}
+            if(IceUITheme.DrawButton(new Rect(820,535,460,66),"Cancel",button)){confirmation="";GUI.FocusControl(null);}
         }
         public void Dispose(){rawPreview.Dispose();guidePreview.Dispose();}
     }

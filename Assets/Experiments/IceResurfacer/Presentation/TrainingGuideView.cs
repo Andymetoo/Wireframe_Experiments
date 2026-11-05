@@ -33,9 +33,9 @@ namespace IceResurfacer.Presentation
                 scale=Mathf.Min((Width-64)/(maxX-minX),(Height-64)/(maxZ-minZ));
                 centerX=(minX+maxX)*.5f;centerZ=(minZ+maxZ)*.5f;
             }
-            if(pixels==null)pixels=new Color32[Width*Height];for(int i=0;i<pixels.Length;i++)pixels[i]=new Color32(12,26,35,255);
-            for(float x=(float)Math.Ceiling(minX/5)*5;x<=maxX;x+=5)Line(Point(x,minZ),Point(x,maxZ),new Color32(27,47,58,255),0);
-            for(float z=(float)Math.Ceiling(minZ/5)*5;z<=maxZ;z+=5)Line(Point(minX,z),Point(maxX,z),new Color32(27,47,58,255),0);
+            if(pixels==null)pixels=new Color32[Width*Height];for(int i=0;i<pixels.Length;i++)pixels[i]=IceUITheme.Inset;
+            for(float x=(float)Math.Ceiling(minX/5)*5;x<=maxX;x+=5)Line(Point(x,minZ),Point(x,maxZ),IceUITheme.PanelColor,0);
+            for(float z=(float)Math.Ceiling(minZ/5)*5;z<=maxZ;z+=5)Line(Point(minX,z),Point(maxX,z),IceUITheme.PanelColor,0);
             var layout=new ServiceLayout(fit.configuration);
             float hw=fit.configuration.RinkWidth*.5f,hl=fit.configuration.RinkLength*.5f,r=fit.configuration.CornerRadius;
             Vector2 last=default,first=default;
@@ -118,9 +118,9 @@ namespace IceResurfacer.Presentation
         public Rect Draw(Rect bounds,RouteFit fit)
         {
             Rect rect=RouteRecordingPreview.Fit(bounds);
-            if(texture==null){GUI.Label(bounds,"Load a recording or a saved fitted guide.");return rect;}
+            if(text==null)text=IceUITheme.LabelStyle(15,true);
+            if(texture==null){GUI.Label(bounds,"Load a recording or a saved fitted guide.",text);return rect;}
             GUI.DrawTexture(rect,texture,ScaleMode.StretchToFill);
-            if(text==null){text=new GUIStyle(GUI.skin.label){fontSize=15,fontStyle=FontStyle.Bold};text.normal.textColor=Color.white;}
             GUI.Label(new Rect(rect.x+8,rect.y+6,250,24),"+Z / NORTH    5 m grid",text);
             if(fit!=null&&fit.samples.Count>0)
             {

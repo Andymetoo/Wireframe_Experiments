@@ -1,0 +1,11 @@
+Inherited slider fixedHeight=12 fixedWidth=0 alignment=UpperLeft
+  padding=RectOffset (l:-1 r:-1 t:0 b:0) margin=RectOffset (l:4 r:4 t:4 b:4) overflow=RectOffset (l:0 r:0 t:-2 b:-3) border=RectOffset (l:3 r:3 t:0 b:0)
+Inherited thumb fixedHeight=12 fixedWidth=0 alignment=UpperLeft
+  padding=RectOffset (l:7 r:7 t:0 b:0) margin=RectOffset (l:0 r:0 t:0 b:0) overflow=RectOffset (l:-1 r:-1 t:0 b:0) border=RectOffset (l:4 r:4 t:0 b:0)
+Theme slider fixedHeight=0 fixedWidth=0 alignment=UpperLeft
+  padding=RectOffset (l:0 r:0 t:3 b:3) margin=RectOffset (l:0 r:0 t:0 b:0) overflow=RectOffset (l:0 r:0 t:0 b:0) border=RectOffset (l:0 r:0 t:0 b:0)
+Theme thumb fixedHeight=20 fixedWidth=15 alignment=UpperLeft
+  padding=RectOffset (l:0 r:0 t:0 b:0) margin=RectOffset (l:0 r:0 t:0 b:0) overflow=RectOffset (l:0 r:0 t:0 b:0) border=RectOffset (l:2 r:2 t:2 b:2)
+Eye-height slider control=(x:400.00, y:350.00, width:800.00, height:22.00) native thumb y=353 height=20
+Track style overflow extents=(x:400.00, y:350.00, width:800.00, height:22.00)
+Interpretation note: the shared style padding snapshot is from the last-drawn SPEED slider (400,500,800,26), giving its thumb y503,h20. The earlier eye-height estimate above applies that padding to the wrong caller rectangle. Actual eye slider alignment is independently confirmed by framebuffer pixels: track y431-436, grip y421-444 at 1920x1080. The probe source now labels the last-drawn speed control correctly.

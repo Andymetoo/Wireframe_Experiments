@@ -1,0 +1,4 @@
+﻿Native hidden-window D3D presentation warnings: 9 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 14 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 5 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.
+Native hidden-window D3D presentation warnings: 3 (see player log). These bypass the managed error callback; this harness does not establish focused-window latency.

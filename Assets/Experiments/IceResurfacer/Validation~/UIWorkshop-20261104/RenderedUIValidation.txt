@@ -1,0 +1,45 @@
+AURORA R-54 / UI restyle rendered validation / 2026-11-04
+
+PASS: 20 actual Unity 6000.4.1f1 player framebuffer captures, ten UI states at
+1366x768 and 1920x1080. Both player runs exited 0. No measured clipping in the
+Dashboard and Route Manager audits, and no managed runtime errors. Visually
+reviewed the welcome, console, settings, guide, route manager, training guide,
+and results screens. The compact Magenta/Amber controls fit at 1366x768.
+
+Final captures: Player-1366x768/ and Player-1920x1080/.
+01 welcome; 02 HUD; 03 console; 04 pause/settings; 05 help;
+06 diagnostics; 07 routes; 08 raw recording; 09 training; 10 results.
+
+The native renders exposed and verified two corrections during this pass:
+- Linear-color-space text compensation: measured final text strokes agree
+  with the intended palette within one 8-bit level. Muted = 180,184,169;
+  cream = 235,230,213; sage = 173,190,132. Panel paint remains 48,53,47.
+- Slider alignment: the final 1920x1080 eye-height track occupies y431-436
+  and its grip y421-444, centered within one rendered pixel. Native slider
+  margins and overflow are zero. Slider control rectangles and ranges remain.
+
+No current Core/Presentation source differs from its final captured source
+snapshot. native-source-manifest.json records SHA-256 hashes. The runtime was
+compiled against this player's own Unity managed assemblies, not a mock UI.
+
+Scope and limits:
+The standalone Mono player and its packaged scene/assets are from the earlier
+Nov 1 validation build. Current runtime source was rebuilt into a copied player.
+A validation-only assembly shim preserves the older SimulatorConfig serialized
+field schema (22 newer fields excluded from that old scene stream). Production
+source and the original player were never modified by this validation harness.
+Thus these captures establish current UI appearance and measured layout in real
+Unity, not fidelity of the latest physical scene, a fresh Editor import, or
+full machinery behavior. This focused probe selects states programmatically;
+it does not claim native click/drag or keyboard-interaction coverage.
+
+The helper uses a hidden, non-activating transparent player window. Unity emits
+native D3D presentation warnings in the saved logs; its development-console
+overlay is suppressed for capture. No focused-window latency claim is made.
+All helper player processes launched for the final runs exited; existing user
+Unity processes were untouched.
+
+Reproduce in PowerShell from the repository root:
+powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/UIWorkshop-20261104/StageNativePlayer.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/UIWorkshop-20261104/RunUIPlayer.ps1 -Width 1366 -Height 768 -Suite UIWorkshop
+powershell -NoProfile -ExecutionPolicy Bypass -File Assets/Experiments/IceResurfacer/Validation~/UIWorkshop-20261104/RunUIPlayer.ps1 -Width 1920 -Height 1080 -Suite UIWorkshop

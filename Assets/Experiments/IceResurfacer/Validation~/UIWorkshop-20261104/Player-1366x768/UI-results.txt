@@ -1,0 +1,7 @@
+Actual Unity 6000.4.1f1 Mono player framebuffer / 1366x768
+Current runtime source rebuilt against the existing player's own Managed assemblies.
+Validation-only configuration serialization shim preserves the old packaged scene schema; UI source is unchanged.
+The packaged scene/assets are from an earlier validation build. Evidence covers current UI styling/layout only.
+No full Editor import, current scene fidelity, new interactions, or focused-window latency verified by this probe.
+Measured layout issues: 0
+Runtime errors: 0

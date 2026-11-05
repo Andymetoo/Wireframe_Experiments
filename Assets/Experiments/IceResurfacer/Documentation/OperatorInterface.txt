@@ -1,0 +1,27 @@
+AURORA R-54 / OPERATOR INTERFACE
+4 November 2026
+
+The interface uses painted instrument panels and printed operating sheets.
+IceUITheme.cs is the shared source for panel paint, lettering, buttons, text
+fields and sliders. Keep future panels on these styles.
+
+Instrument panels: warm graphite, ivory lettering, subdued sage for engaged
+states, amber for attention and clay red for faults. Readings are mostly ivory.
+Buttons have a small raised edge, a pressed state and a visible focus state.
+The welcome screen, settings, operating guide and results use paper and ink.
+Copy names the task or equipment directly. Instrument labels remain compact;
+button labels use sentence case.
+
+Use IceUITheme.Lettering when overriding GUIStyle.textColor. It compensates
+for IMGUI's text conversion in a linear-color project; do not apply it to
+panel fills or textures. This was checked against actual rendered pixels.
+
+The 1600 x 900 reference canvas, control bounds, shortcuts, equipment actions,
+slider ranges, scoring and route storage are unchanged. Surface classifications,
+diagnostic path colors and selectable GPS colors retain their meanings.
+There are no new font, image or package dependencies. Small button textures are
+created once and released with the dashboard.
+
+The pass changes presentation only. Snow, machine rigs, camera anchors,
+physical controls, authored scenes, prefabs and simulation calibration are
+outside this change. Validation evidence is in Validation~/UIWorkshop-20261104.

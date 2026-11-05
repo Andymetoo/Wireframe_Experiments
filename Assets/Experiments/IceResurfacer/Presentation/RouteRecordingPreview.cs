@@ -8,7 +8,7 @@ namespace IceResurfacer.Presentation
     public sealed class RouteRecordingPreview:IDisposable
     {
         const int Width=900,Height=760,Margin=32;
-        static readonly Color32 Background=new Color32(12,26,35,255),Grid=new Color32(27,47,58,255);
+        static readonly Color32 Background=IceUITheme.Inset,Grid=IceUITheme.PanelColor;
         static readonly Color32[] Palette={new Color32(64,219,190,255),new Color32(255,184,78,255),new Color32(135,161,255,255),new Color32(246,117,170,255),new Color32(181,228,108,255)};
         Texture2D texture;
         GUIStyle annotation;
@@ -71,9 +71,9 @@ namespace IceResurfacer.Presentation
         public Rect Draw(Rect bounds,RecordedRouteData data,int selected=-1,bool rebuild=true)
         {
             if(rebuild)Rebuild(data);
-            if(annotation==null){annotation=new GUIStyle(GUI.skin.label){fontSize=16,fontStyle=FontStyle.Bold};annotation.normal.textColor=Color.white;}
+            if(annotation==null)annotation=IceUITheme.LabelStyle(16,true);
             Rect rect=Fit(bounds);
-            if(texture==null){GUI.Label(bounds,"Record a driven route or load a saved file to preview it.");return rect;}
+            if(texture==null){GUI.Label(bounds,"Record a driven route or load a saved file to preview it.",annotation);return rect;}
             GUI.DrawTexture(rect,texture,ScaleMode.StretchToFill);
             GUI.Label(new Rect(rect.x+8,rect.y+7,250,26),"+Z / NORTH     5 m grid",annotation);
             if(data!=null&&data.samples.Count>0)

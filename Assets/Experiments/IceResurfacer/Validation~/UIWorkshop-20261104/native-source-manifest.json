@@ -1,0 +1,274 @@
+﻿[
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\BoardBrushArticulation.cs",
+        "Hash":  "8339E370A800D03A24545EF32D807D1E21DECEF9CAAF910968F3A51DB9C8A5F7"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\EnvironmentField.cs",
+        "Hash":  "94377D4392A837DC838A52C116E7FE7C4BD8043F1526B4AFF5647C8C860DFAC7"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\FreedomCalibration.cs",
+        "Hash":  "A2148C25928CF7CD92EF676868E94F7593C38CCB72E4B4EC1E1A81ECC68934C3"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\IceCalibrationConfig.cs",
+        "Hash":  "03A2926B54522395E215F9BACB838BA4EE18E26897B54B4E583A6C84DDA94CF6"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\IceCoverage.cs",
+        "Hash":  "2BA8A19C3FFDBC505DE23FC1AF0093AF1588E142B0858CE18045E44DF3B4E2E8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\IceField.cs",
+        "Hash":  "E27957C5D94164D3BEBEB5F1D1945D3F835FB6681E9B34209CB4A60C99010537"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\IceOverview.cs",
+        "Hash":  "7FF510B9B72555124CFBD28212EF5D9CE1CE6B53FBD8FC8901192339139E6512"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\IceWaterSpread.cs",
+        "Hash":  "0F3C828AD325C1B227C72A8B459609B52ACF9039CC51E89E2EE074EB8AC3C882"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\MachineGeometryConfig.cs",
+        "Hash":  "CEDFA9C187FB5EDDDB81AFAC70E17E1046D44B0637CD2A6E79521906990E0205"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\MovementContact.cs",
+        "Hash":  "9ED51987845363B8476EBC2564D0B9DACB08985613DFA0B154D1E6D6E3B5FB40"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\OperatorTuningSettings.cs",
+        "Hash":  "3C18476CF6D5C102083FF8DC321B6D464F64DF6B8628B6FE8A2D1CCC9C888883"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\RecordedTrackReconstruction.cs",
+        "Hash":  "40F731E135E3AB4B39DE7062E995D6C401FC2FECD6DE4396C431F8B4FFF8A445"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\ResurfacingRoute.cs",
+        "Hash":  "052C6EB1B1179677F20E81759B38D68FB795ACE8540E61D77B2C2834583142B0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\RouteFitDiagnostics.cs",
+        "Hash":  "FFB25DBC252197213BCD385392A8F87695E27DA5AF7362E9B06DF75F0B0BB457"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\RouteFootprints.cs",
+        "Hash":  "EFAE38980A97CE1BD4D076DE4698E373D2EB8C7073C1161F6750E9BCFA51E5D5"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\RouteProgress.cs",
+        "Hash":  "B57E1309924D24795322311D7AAB986BCE8EA6698D6A3869DB228374A3F4117B"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\RouteRecording.cs",
+        "Hash":  "96244C1709EBC2E451073191D5F362DC0A0D2D92F86ADF83BD93CF72C719FB7A"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\ServiceLayout.cs",
+        "Hash":  "385D99CB1C0B77A389C973055A963894A499A43AE159015049B69224573B1B41"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\Simulation.cs",
+        "Hash":  "7D75BB81EB97E63C42C060FA56F018CCA3B919A40A05EE4275EC9380FD1324C1"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\SimulatorConfig.cs",
+        "Hash":  "917B9733217C6777DCD638C684F8ABB1493409FC03B959C52E5B0ABAEE4371AE"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\SnowSpoutPresentation.cs",
+        "Hash":  "B34C79FE3B4FD8C12334948A9D4A4FA72DEDFAE01915E7E47A3D83D666DE5639"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\SnowSurfaceGeometry.cs",
+        "Hash":  "1AF7162C795AAA2232205308B7E791E4291D8BDDD56CDA518B995AF522AB015C"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\SurfaceProcessing.cs",
+        "Hash":  "D29B0B912042FF7777DC436B8629B6D7D9B31F95AF85703540F358B802ADD675"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\TankCollision.cs",
+        "Hash":  "66185C503C3DB86FE6E89923B3F541718D7899CC1C2986676DCE6B52460D5094"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\TrainingRoute.cs",
+        "Hash":  "9E11106E1599D9A78C676BFC5181244BF40C27E157D28B030B06DB88E7E5EC60"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\TrainingRouteEditing.cs",
+        "Hash":  "8398CCA55DBB5B23C5A92949141601FBF67DBACC3B953761EDDDA8B575491E4A"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\VehicleOutlineConfig.cs",
+        "Hash":  "B27B499DFE73C7F078D45E6776D40409A71EBC3A0EBA0C804A73D7B6B3E44E07"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Core\\WaterService.cs",
+        "Hash":  "76E7E73D08A8118DE537BAD5F5EEA3BAE688CA5C20F8088DDC8D86A4873C3A1E"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\GpsGuidanceGeometry.cs",
+        "Hash":  "1E0FF7C7E7660351103BA076BB0C12F4D3979C164BE597B520351ABB5F486339"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceArenaDrift.cs",
+        "Hash":  "E6FD7DCF984D8E4D5263E4D7DAA56D5CE1C419FEB3F49A87486D29B0B54F08F4"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceArenaPart.cs",
+        "Hash":  "F196CB82FFABC3BE88B9F18D91887F9D562B34FDFF74FA473A30E9AB48A28407"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceArenaRig.cs",
+        "Hash":  "6E8FDE50F472E87052DBB70E2AB5618D0881D28FEDCE749D1262CC541C5665B2"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceAudioSpatialization.cs",
+        "Hash":  "808A60A61BDAD2F515D4B6D0A570EF6A84A6221EB3E284A89EE0F4B44C33280D"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceBoardBrushRig.cs",
+        "Hash":  "E9E7377E6AE72DF6737FA99DCBCF2770842F00E85676AEF565235A82CB40C826"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceChaseCamera.cs",
+        "Hash":  "BF9BAECA2FD40B1E450B5AEA6C011627383C225953A8786CAF080ABFD554D303"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceCollisionOverlay.cs",
+        "Hash":  "ED5E39CD630AB1C004B81A7B293A6571917E59E8FA17BE229480B3F4EFFC1B28"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceConditionerLinkage.cs",
+        "Hash":  "88D71093B24221B2CD80A68ADD1295061AE46601A47B838B0ABA10C6F3F7B1F0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceConditionerSpan.cs",
+        "Hash":  "6E9DEED3D466AB4310B222D4CA7E9B10A9257BE501ED059F8BF472EFC92DEF24"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceDashboard.cs",
+        "Hash":  "09507ED9D9CAA1FB573F9E5590163E3D19EE85A13EE9ACD1CE90792D01D59BA0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceDepositedSnowView.cs",
+        "Hash":  "515EFDB632C7D7B9A7278FB4112FB680EF26D17BC71374326E6A1DB046E58AEA"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceKeepUnbatched.cs",
+        "Hash":  "8A59FFD4C70C20FE22B225FC2FDF1BDE44514D892349401418D5358B116CC3AF"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceMachineAudio.cs",
+        "Hash":  "DAE5DA3C51B07495689BFA1F7D347196DB821D064A9636201866ADE341E8652C"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceMachineRig.cs",
+        "Hash":  "6F57B592BF286B085A3C3200B3EB07314A066BDDDA52E90C4CE3EA550ADADF23"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceOperatorPreferences.cs",
+        "Hash":  "BEBC8FCB411528864B0EF96708F79364BA9A38E8A6C8ACD80CD29063B90BEE22"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceOperatorStation.cs",
+        "Hash":  "E0F388FC5AC793F374484FEF4FBBEFAFBC2BA015A4912DEFFACAC875D1A8C01A"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceOperatorTuning.cs",
+        "Hash":  "3B7097D20537A2FA4D35E496269963232C3493873CDB79CD18FC429A8F901C13"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IcePerformanceMeter.cs",
+        "Hash":  "0404933671A4B3DBFC9D05E8D7AA50ECCEDC98C6369EDE55CCB09D156843FFF4"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IcePerformanceProbe.cs",
+        "Hash":  "55ED3911C9806614C2101C30717D527E5B70EA55D1EDBA8FF9A82A413221E7D7"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IcePhysicalControls.cs",
+        "Hash":  "30802F0F2DA865DFCAE213BC7CFF848DB09FCF07066C5B082E13C76311CFE035"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceResurfacerGame.cs",
+        "Hash":  "A3C946FC4AAB2B92B0BE98BB8179947F30FB8001A3AC87B76D14FE31DFC23623"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceRinkBoards.cs",
+        "Hash":  "6684E43FC04BC7A2E345662A1EE6F6E9575E4503962C214D62D35B092AD3CC92"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceRouteGuide.cs",
+        "Hash":  "5F7F96C90DDBB00D900CA034A27529CB352F865489BBD8D85CF00E0DE72AF6A3"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceSnowView.cs",
+        "Hash":  "492ACE233DC0A4B3D80A0736BC1DC5973635AB26686754193079EDC577B2FBE8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceSurfaceView.cs",
+        "Hash":  "91162314CB96E050AFF585A7BC95A51D238CCA9F06AA82EB0D90866C16ED460D"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceUITheme.cs",
+        "Hash":  "9F3982CDFCDAF7BEE353C04311D8DB80732339FCD9A00D151BF5A81FC04F2906"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceWaterFillPort.cs",
+        "Hash":  "2BD1781D22CFBDAEDABD0C24D6FBA2B1007268F07FC9BCED823279E7267B20F0"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceWaterLevelGauge.cs",
+        "Hash":  "5858C8B9AD5963F51D2BFAD70AF76633173190E30A506DE2A35FD4D1F0D9B493"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceWaterService.cs",
+        "Hash":  "4B08D392A467648092E0088A49784E0B7D476FDACD78381AEFB73AE4A38E0863"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\IceWorldBuilder.cs",
+        "Hash":  "47CF2355015BE12045A3882C521BF33386052E787BE5B6B608B140BE3613E756"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\RouteLibraryCatalog.cs",
+        "Hash":  "82A7BC501574F6DF4B98A9E3052EB91103CDE758377909DA986302D7643E7E8C"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\RouteManagerPanel.cs",
+        "Hash":  "99722F54ACF539D8ED4AD10A3263785B8744721EC713DE8442E907D641B48359"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\RouteRecordingPanel.cs",
+        "Hash":  "6493C24ED469228F583678F79A40A63F18E27D383880EE38560FCB59CFCB062D"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\RouteRecordingPreview.cs",
+        "Hash":  "481B0D16DCE57800269E59DDBCDA99C2B52EF44E8C7ECB68ECBC49AA817913D5"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\RouteRecordingStorage.cs",
+        "Hash":  "25EF0E163422454F85C1B31587D4FF5B98A26616F3999635867F3C1B903DA260"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\RouteSilhouetteContinuation.cs",
+        "Hash":  "11478DA60AB1943E25C3D10630A4511202F088C8CA43227F567526E3B93E53A8"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\TrainingGuidePanel.cs",
+        "Hash":  "7FD868A65265AD56AC951958043799E762392DB922D9A593A07BBF0038CB3CBF"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\TrainingGuideStorage.cs",
+        "Hash":  "01BAB55ECB6E991C9F0FC02D1E6C4D27A5CBEE42737ECD74DE32F6128A1E5328"
+    },
+    {
+        "Path":  "G:\\UnityProjects\\Wireframe_Experiments\\Assets\\Experiments\\IceResurfacer\\Validation~\\UIWorkshop-20261104\\Source\\Presentation\\TrainingGuideView.cs",
+        "Hash":  "2EEBDE3446E35A7F05CF1663DF5667C606EB86D048BB8B47C75BC47344B60025"
+    }
+]

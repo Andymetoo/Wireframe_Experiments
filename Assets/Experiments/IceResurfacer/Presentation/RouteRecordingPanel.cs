@@ -16,7 +16,7 @@ namespace IceResurfacer.Presentation
         public bool TextEditing=>Advanced?advancedEditing:manager.TextEditing;
         public RouteManagerPanel Manager=>manager;
         public bool TrainingTab {get;set;}
-        GUIStyle label,small,heading,button;
+        GUIStyle label,small,heading,button,input,fileRow;
         string[] files=Array.Empty<string>();
         Vector2 scroll;
         int selected=-1;
@@ -43,21 +43,24 @@ namespace IceResurfacer.Presentation
         void Styles()
         {
             if(label!=null)return;
-            label=new GUIStyle(GUI.skin.label){fontSize=18,wordWrap=true};label.normal.textColor=new Color(.90f,.95f,.97f);
-            small=new GUIStyle(label){fontSize=16};heading=new GUIStyle(label){fontSize=25,fontStyle=FontStyle.Bold};
-            button=new GUIStyle(GUI.skin.button){fontSize=17,wordWrap=true};
+            label=IceUITheme.LabelStyle(18);
+            small=IceUITheme.LabelStyle(16);small.normal.textColor=IceUITheme.Lettering(IceUITheme.Muted);
+            heading=IceUITheme.LabelStyle(25,true);
+            button=IceUITheme.ButtonStyle(17);
+            input=IceUITheme.FieldStyle(18);
+            fileRow=IceUITheme.ButtonStyle(16,true,TextAnchor.MiddleLeft);
         }
-        bool Button(string control,string text) => GUI.Button(ControlRect(control),text,button);
+        bool Button(string control,string text) => IceUITheme.DrawButton(ControlRect(control),text,button);
         public void Draw()
         {
             if(!Advanced){manager.Draw(()=>{Advanced=true;TrainingTab=true;});return;}
-            Styles();Color old=GUI.color;GUI.color=new Color(.018f,.035f,.047f,1);
-            GUI.DrawTexture(new Rect(90,60,1420,830),Texture2D.whiteTexture);GUI.color=old;
-            GUI.Label(new Rect(112,80,780,36),TrainingTab?"TRAINING GUIDE / AUTHORING PREVIEW":"ROUTE RECORDING / RAW TRAJECTORY",heading);
-            if(GUI.Button(new Rect(910,82,200,36),"RAW RECORDINGS",button))TrainingTab=false;
-            if(GUI.Button(new Rect(1118,82,224,36),"TRAINING GUIDES",button)){TrainingTab=true;training.RefreshFiles();}
-            if(Button("Close","CLOSE  F6"))guide.ToggleRecordingPanel();
-            if(TrainingTab){advancedEditing=false;training.Draw();if(GUI.Button(new Rect(112,840,300,36),"BACK TO ROUTES",button)){Advanced=false;GUI.FocusControl(null);}return;}
+            Styles();IceUITheme.Panel(new Rect(90,60,1420,830));
+            GUI.Label(new Rect(112,80,780,36),TrainingTab?"Training guide / authoring preview":"Route recording / raw trajectory",heading);
+            if(IceUITheme.DrawButton(new Rect(910,82,200,36),"Raw recordings",button,!TrainingTab))TrainingTab=false;
+            if(IceUITheme.DrawButton(new Rect(1118,82,224,36),"Training guides",button,TrainingTab)){TrainingTab=true;training.RefreshFiles();}
+            if(Button("Close","Close  F6"))guide.ToggleRecordingPanel();
+            IceUITheme.Rule(new Rect(112,125,1368,1));
+            if(TrainingTab){advancedEditing=false;training.Draw();if(IceUITheme.DrawButton(new Rect(112,840,300,36),"Back to routes",button)){Advanced=false;GUI.FocusControl(null);}return;}
             var data=guide.Recorder.Data;
             // Repaint the route at two Hz while driving; inspection never rebuilds raw data.
             bool finalChanged=!guide.Recorder.Recording&&data!=null&&preview.SampleCount!=data.samples.Count;
@@ -69,21 +72,21 @@ namespace IceResurfacer.Presentation
             if(data!=null&&data.samples.Count>0)
             {
                 selected=Mathf.Clamp(selected<0?data.samples.Count-1:selected,0,data.samples.Count-1);
-                selected=Mathf.RoundToInt(GUI.HorizontalSlider(new Rect(128,804,726,20),selected,0,data.samples.Count-1));
+                selected=Mathf.RoundToInt(IceUITheme.HorizontalSlider(new Rect(128,804,726,20),selected,0,data.samples.Count-1));
             }
             GUI.Label(new Rect(910,138,570,28),"Name for the next recording",label);
-            GUI.SetNextControlName("RouteRecordingName");guide.RecordingName=GUI.TextField(ControlRect("Name"),guide.RecordingName,80,button);
+            GUI.SetNextControlName("RouteRecordingName");guide.RecordingName=GUI.TextField(ControlRect("Name"),guide.RecordingName,80,input);
             GUI.enabled=guide.CanRecord&&!guide.Recorder.Recording;
-            if(Button("Start","START NEW  [F7]")){if(guide.StartRecording())selected=-1;}
+            if(Button("Start","Start new  [F7]")){if(guide.StartRecording())selected=-1;}
             GUI.enabled=guide.Recorder.Recording;
-            if(Button("Stop","STOP RECORDING  [F7]"))guide.StopRecording();
+            if(Button("Stop","Stop recording  [F7]"))guide.StopRecording();
             GUI.enabled=data!=null&&!guide.Recorder.Recording&&data.complete;
-            if(Button("Save","SAVE NAMED COPY"))guide.SaveRecording();
-            GUI.enabled=true;if(Button("Drive","CLOSE AND DRIVE"))guide.ToggleRecordingPanel();
-            Color saved=GUI.color;GUI.color=guide.Recorder.Recording?new Color(.5f,1,.75f):new Color(1,.82f,.55f);
+            if(Button("Save","Save named copy"))guide.SaveRecording();
+            GUI.enabled=true;if(Button("Drive","Close and drive"))guide.ToggleRecordingPanel();
+            Color saved=GUI.color;GUI.color=guide.Recorder.Recording?IceUITheme.Accent:IceUITheme.Warning;
             GUI.Label(new Rect(910,327,570,62),guide.RecordingStatus,label);GUI.color=saved;
-            GUI.Label(new Rect(910,401,400,30),"SAVED ROUTES / RECOVERY DRAFTS",small);
-            if(Button("Refresh","REFRESH"))RefreshFiles();
+            GUI.Label(new Rect(910,401,400,30),"Saved routes / recovery drafts",small);
+            if(Button("Refresh","Refresh"))RefreshFiles();
             scroll=GUI.BeginScrollView(new Rect(910,441,570,166),scroll,new Rect(0,0,543,Mathf.Max(152,files.Length*44)));
             GUI.enabled=!guide.Recorder.Recording;
             for(int i=0;i<files.Length;i++)
@@ -91,7 +94,7 @@ namespace IceResurfacer.Presentation
                 string path=files[i];bool draft=Path.GetFileName(Path.GetDirectoryName(path))=="Drafts";
                 string fileName=Path.GetFileName(path);
                 if(fileName.Length>59)fileName=fileName.Substring(0,32)+"…"+fileName.Substring(fileName.Length-22);
-                if(GUI.Button(new Rect(0,i*44,538,40),(draft?"DRAFT / ":"LOAD / ")+fileName,small))
+                if(IceUITheme.DrawButton(new Rect(0,i*44,538,40),(draft?"Draft / ":"Load / ")+fileName,fileRow))
                 {if(guide.LoadRecording(path))selected=-1;}
             }
             GUI.enabled=true;GUI.EndScrollView();
@@ -101,7 +104,7 @@ namespace IceResurfacer.Presentation
                 string title=data.name.Length>48?data.name.Substring(0,45)+"…":data.name;
                 GUI.Label(new Rect(910,615,570,27),title,label);
                 GUI.Label(new Rect(910,646,570,25),data.samples.Count+" points  /  "+data.distanceMeters.ToString("F2")+" m  /  "+data.durationSeconds.ToString("F2")+" s",small);
-                GUI.Label(new Rect(910,678,570,41),data.provenance+(data.complete?"":" / PARTIAL RECOVERY"),small);
+                GUI.Label(new Rect(910,678,570,41),data.provenance+(data.complete?"":" / Partial recovery"),small);
                 if(selected>=0&&selected<data.samples.Count)
                 {
                     var p=data.samples[selected];
@@ -111,8 +114,8 @@ namespace IceResurfacer.Presentation
                 }
             }
             GUI.Label(new Rect(910,809,570,26),"Park first; machine runs. F5 reference unchanged.",small);
-            GUI.Label(new Rect(430,840,1050,43),"FILES  /  "+guide.Library.DirectoryPath,small);
-            if(GUI.Button(new Rect(112,840,300,36),"BACK TO ROUTES",button)){Advanced=false;GUI.FocusControl(null);}
+            GUI.Label(new Rect(430,840,1050,43),"Files  /  "+guide.Library.DirectoryPath,small);
+            if(IceUITheme.DrawButton(new Rect(112,840,300,36),"Back to routes",button)){Advanced=false;GUI.FocusControl(null);}
             advancedEditing=GUI.GetNameOfFocusedControl()=="RouteRecordingName";
         }
         public void Dispose(){preview.Dispose();training.Dispose();manager.Dispose();}
