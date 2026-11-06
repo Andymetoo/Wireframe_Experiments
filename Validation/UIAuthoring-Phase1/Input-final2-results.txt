@@ -1,0 +1,21 @@
+PASS Camera ray reaches the actual conditioner lever at the test screen position.
+PASS Physical lever test position is clear of authored and legacy HUD regions.
+PASS Projected cockpit grip maps into the authored UI parent.
+PASS Relocated machine-load widget raycasts directly over the physical lever.
+PASS UI press over a real hydraulic grip cannot acquire or command the physical lever.
+PASS Injected UI press/release over the real cockpit grip invokes diagnostics.
+PASS The overlapping UI click leaves hydraulic, valve, blade and auger commands unchanged.
+PASS Moving the UI away immediately releases the physical cockpit screen position.
+PASS Mouse press in open space acquires the real hydraulic grip.
+PASS Physical backward lever drag still commands lowering with authored UI enabled.
+PASS An authored panel can be placed across an already active cockpit drag.
+PASS A physical drag acquired in open space keeps ownership when it crosses an authored panel.
+PASS Releasing the physical drag neutralizes hydraulic demand.
+PASS The real flood-water valve is reachable through open screen space.
+PASS Physical valve turning still changes the authoritative flood command with authored UI enabled.
+PASS Releasing the physical valve clears its drag.
+PASS Injected Numpad 1 hides authored drawing and pointer capture through game.Update.
+PASS A second injected Numpad 1 restores the live authored HUD.
+FAIL System.InvalidOperationException: UI input acceptance: RMB over a UI widget acquires mouse look and disables authored UI interaction.
+  at IceResurfacer.UI.Editor.IceUIInputValidation.<Run>g__Check|0_0 (System.Boolean pass, System.String message, IceResurfacer.UI.Editor.IceUIInputValidation+<>c__DisplayClass0_0& ) [0x0002a] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIInputValidation.cs:40 
+  at IceResurfacer.UI.Editor.IceUIInputValidation.Run (IceResurfacer.Presentation.IceAuthoredHud hud) [0x00a35] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIInputValidation.cs:185 

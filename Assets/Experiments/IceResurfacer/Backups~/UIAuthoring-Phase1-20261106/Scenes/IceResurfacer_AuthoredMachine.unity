@@ -1,0 +1,608 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!29 &1
+OcclusionCullingSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
+--- !u!104 &2
+RenderSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 10
+  m_Fog: 1
+  m_FogColor: {r: 0.1, g: 0.15, b: 0.2, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.0035
+  m_LinearFogStart: 0
+  m_LinearFogEnd: 300
+  m_AmbientSkyColor: {r: 0.8392157, g: 0.89411765, b: 0.9607843, a: 1}
+  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientIntensity: 1
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_HaloStrength: 0.5
+  m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
+  m_HaloTexture: {fileID: 0}
+  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_DefaultReflectionMode: 0
+  m_DefaultReflectionResolution: 128
+  m_ReflectionBounces: 1
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 0}
+  m_Sun: {fileID: 0}
+  m_UseRadianceAmbientProbe: 0
+--- !u!157 &3
+LightmapSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
+  m_GISettings:
+    serializedVersion: 2
+    m_BounceScale: 1
+    m_IndirectOutputScale: 1
+    m_AlbedoBoost: 1
+    m_EnvironmentLightingMode: 0
+    m_EnableBakedLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
+  m_LightmapEditorSettings:
+    serializedVersion: 12
+    m_Resolution: 2
+    m_BakeResolution: 40
+    m_AtlasSize: 1024
+    m_AO: 0
+    m_AOMaxDistance: 1
+    m_CompAOExponent: 1
+    m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
+    m_Padding: 2
+    m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
+    m_TextureCompression: 1
+    m_ReflectionCompression: 2
+    m_MixedBakeMode: 2
+    m_BakeBackend: 2
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 512
+    m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 1
+    m_PVRDenoiserTypeDirect: 1
+    m_PVRDenoiserTypeIndirect: 1
+    m_PVRDenoiserTypeAO: 1
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 1
+    m_PVRFilteringGaussRadiusAO: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
+  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingSettings: {fileID: 0}
+--- !u!196 &4
+NavMeshSettings:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_BuildSettings:
+    serializedVersion: 3
+    agentTypeID: 0
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.4
+    ledgeDropHeight: 0
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!1 &1000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001}
+  - component: {fileID: 1002}
+  - component: {fileID: 1003}
+  m_Layer: 0
+  m_Name: AURORA R-54 / nose-in service and 5 cm ice
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5994fadf2446b99c4a0bcd53f20fe3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  simulation:
+    FloodFlowMultiplier: 0.4
+    ShavingsExpansionMultiplier: 1
+    LooseSnowPickupDepthMm: 50
+    HorizontalConveyorMultiplier: 1
+    VerticalConveyorMultiplier: 1
+    ConditionerRetentionM3: 0.08
+    WashRecoveryFraction: 0.644
+  tankVisualFullness: 1
+  overflowParticleDensity: 3
+  overflowClumpSize: 1.25
+--- !u!4 &1001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1440189820}
+  - {fileID: 313410077}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb9f8799fb94cc5b156c89da0052532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  litTemplate: {fileID: 2100000, guid: 9687812929e5450f9025d47534f820cb, type: 2}
+  iceTemplate: {fileID: 2100000, guid: a282cbfbb1844c0a8ccbc98b8b3ad322, type: 2}
+  calibration:
+    IceLateralGrip: 1.35
+    TireSlipRecovery: 1.5
+    MaximumLateralSlip: 0.22
+    RaisedTankGripPenalty: 0.22
+    DumpExitSpeed: 0.65
+    WheelTrack: 1.37
+    TireWidth: 0.215
+    ShavingPerimeterExclusion: 0.1524
+    WaterFilmSpreadMeters: 0.12
+    WaterFilmFringeFraction: 0.05
+    WashPickupLitersPerSecond: 1.45
+    WashPickupContactLength: 0.32
+    WashPickupContactFore: -0.12
+    WashPickupResidualMm: 0.035
+    FloodContactLength: 0.27
+    FloodContactFore: -0.44
+    MinimumGougeDepthMm: 0.024
+    TypicalGougeDepthMm: 0.06
+    DeepGougeDepthMm: 0.145
+    GougeRoughnessDepthMm: 0.08
+    BrushPivotX: -0.548
+    BrushPivotZ: 1.3
+    BrushArmLength: 0.38849553
+    BrushRadius: 0.192
+    BrushRetractedDegrees: 86.32715
+    BrushDeployedDegrees: 0
+    TankRoofHeight: 0.875
+    TankLateralOffset: 0
+    ConveyorHeightOffset: 0
+    CockpitOffsetX: -0.06
+    CockpitOffsetZ: 0
+    SteeringWheelZ: 0.53
+    SteeringWheelHeight: 1.46
+    SteeringWheelTilt: 68
+    BladeWheelX: 0.65
+    BladeWheelZ: -0.2
+    BladeWheelHeight: 1.56
+    WaterValveStemHeight: 0.24
+    SnowBreakerX: 1.01
+    SnowBreakerZ: 0.34
+    TankHingeHeight: 0.78
+    TankHingeZ: 2.411
+    TankScaleX: 1.0684
+    TankScaleY: 1.2685
+    TankScaleZ: 1.1841
+    ConveyorDischargeX: -0.021
+    ConveyorDischargeHeight: 1.6392096
+    ConveyorDischargeZ: 0.023590684
+    RinkWidth: 26
+    RinkLength: 60
+    CornerRadius: 8.5
+    CellSize: 0.05
+    GateHalfWidth: 2.7
+    BayLength: 14
+    Wheelbase: 1.96
+    VehicleHalfWidth: 1.065
+    BodyFront: 2.5
+    BodyRear: 0.45
+    ConditionerWidth: 1.956
+    WaterDistributionWidth: 2.1
+    GuideRollerX: -0.827
+    GuideRollerZ: 2.444
+    GuideRollerRadius: 0.09
+    ConditionerLength: 0.8
+    HitchBehindAxle: 0.45
+    DrawbarLength: 0.435
+    ConditionerYawLimitRadians: 0
+    MaxSteeringRadians: 0.412
+    SteeringRate: 0.55
+    ForwardSpeed: 2.65
+    ReverseSpeed: 1
+    Acceleration: 0.48
+    HydrostaticDeceleration: 0.35
+    ServiceBrakeDeceleration: 1.45
+    ConditionerLiftSeconds: 2.1
+    TankLiftSeconds: 5.5
+    FloodCapacityLiters: 738
+    WashCapacityLiters: 310
+    SnowCapacityM3: 3.54
+    FloodMaxLitersPerSecond: 1.8
+    WashMaxLitersPerSecond: 1.05
+    WashRecoveryFraction: 0.82
+    HorizontalCapacityM3PerSecond: 0.012
+    VerticalCapacityM3PerSecond: 0.01
+    ConditionerSnowCapacityM3: 0.08
+    VerticalSnowCapacityM3: 0.055
+    SnowBreakerStrokeM3: 0.004
+    SnowExpansionRatio: 3.1
+    LooseSnowPickupDepthMm: 6
+    DumpM3PerSecond: 0.35
+    MaxBladeDepthMm: 0.8
+    BladeBiteFraction: 0.16
+    MaximumEffectiveBladeDepthMm: 0.6
+    BladeWheelTurns: 3.5
+    ConveyorJamSeconds: 6
+    RecommendedBladeDepthMm: 0.35
+    CumulativeSafeCutMm: 0.8
+    SensitiveCumulativeSafeCutMm: 0.65
+    GoodFloodDepthMm: 0.3
+    ExcessFloodDepthMm: 0.85
+    FreezeSeconds: 420
+    MinimumScoredCoverage: 0.95
+    CollisionOutline:
+    - -0.96
+    - -1.25
+    - -0.96
+    - -1.125
+    - -0.94
+    - -1.075
+    - -1.02
+    - -1.025
+    - -1.02
+    - -0.775
+    - -0.927
+    - -0.725
+    - -0.94
+    - -0.675
+    - -0.94
+    - -0.575
+    - -0.784
+    - -0.525
+    - -0.792
+    - -0.425
+    - -0.792
+    - -0.325
+    - -0.836
+    - -0.225
+    - -0.836
+    - -0.175
+    - -0.85
+    - -0.125
+    - -0.85
+    - 0.125
+    - -0.836
+    - 0.175
+    - -0.836
+    - 0.225
+    - -0.813
+    - 0.275
+    - -0.81
+    - 0.425
+    - -0.75
+    - 0.475
+    - -0.75
+    - 0.525
+    - -0.745
+    - 0.675
+    - -0.74
+    - 0.825
+    - -0.748
+    - 0.875
+    - -0.748
+    - 0.975
+    - -0.732
+    - 1.025
+    - -0.71
+    - 1.075
+    - -0.712
+    - 1.125
+    - -0.712
+    - 1.175
+    - -0.738
+    - 1.225
+    - -0.738
+    - 1.325
+    - -0.796
+    - 1.425
+    - -0.796
+    - 1.625
+    - -0.836
+    - 1.725
+    - -0.836
+    - 1.775
+    - -0.85
+    - 1.825
+    - -0.85
+    - 2.125
+    - -0.836
+    - 2.175
+    - -0.792
+    - 2.275
+    - -0.792
+    - 2.425
+    - -0.769
+    - 2.475
+    - -0.769
+    - 2.55
+    - 0.769
+    - 2.55
+    - 0.769
+    - 2.475
+    - 0.792
+    - 2.425
+    - 0.792
+    - 2.275
+    - 0.836
+    - 2.175
+    - 0.85
+    - 2.125
+    - 0.85
+    - 1.825
+    - 0.836
+    - 1.775
+    - 0.836
+    - 1.725
+    - 0.796
+    - 1.625
+    - 0.796
+    - 1.425
+    - 0.738
+    - 1.325
+    - 0.738
+    - 1.225
+    - 0.712
+    - 1.175
+    - 0.712
+    - 1.125
+    - 0.71
+    - 1.075
+    - 0.731
+    - 1.025
+    - 0.744
+    - 0.975
+    - 0.744
+    - 0.875
+    - 0.74
+    - 0.825
+    - 0.75
+    - 0.725
+    - 0.751
+    - 0.525
+    - 0.785
+    - 0.475
+    - 0.81
+    - 0.425
+    - 0.813
+    - 0.275
+    - 0.836
+    - 0.225
+    - 0.836
+    - 0.175
+    - 0.85
+    - 0.125
+    - 0.884
+    - 0.075
+    - 0.888
+    - 0.025
+    - 0.888
+    - -0.175
+    - 0.836
+    - -0.225
+    - 0.833
+    - -0.375
+    - 0.9
+    - -0.425
+    - 0.903
+    - -0.475
+    - 0.903
+    - -0.625
+    - 0.9
+    - -0.675
+    - 0.814
+    - -0.725
+    - 1.02
+    - -0.775
+    - 1.02
+    - -1.025
+    - 0.153
+    - -1.075
+    - 0.18
+    - -1.125
+    - 0.18
+    - -1.25
+    ConditionerCollisionHalfWidth: 1.066
+    ConditionerCollisionFront: 0.365
+    ConditionerCollisionRear: 0.575
+    ContactPivotRate: 0.35
+    ContactScrubSpeed: 0.45
+    GuideRollerFriction: 0.03
+    BodyContactFriction: 0.25
+  operatorEyeHeight: 0.06
+--- !u!1001 &313410076
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1001}
+    m_Modifications:
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2609415197165657979, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_Text
+      value: NORTHLINE  /  ASS WORKS
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289172619396261899, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+      propertyPath: m_Name
+      value: NorthlineArena
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+--- !u!4 &313410077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 928708351486658656, guid: 6361f6e4cf12f634eae37f4f3d8a3698, type: 3}
+  m_PrefabInstance: {fileID: 313410076}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1440189819
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1001}
+    m_Modifications:
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9037333439814847190, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+      propertyPath: m_Name
+      value: AuroraR54
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+--- !u!4 &1440189820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
+  m_PrefabInstance: {fileID: 1440189819}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 1001}

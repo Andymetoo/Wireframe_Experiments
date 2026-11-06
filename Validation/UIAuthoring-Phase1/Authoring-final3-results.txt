@@ -1,0 +1,73 @@
+Aurora Phase 1 isolated Unity authoring acceptance
+Checks below use Unity APIs and programmatic input actions. Native mouse, visual review, and full frame profiling require separate evidence.
+PASS Authored scene has persistent Canvas, HUD, simulator and raycaster references.
+PASS Eight modular indicators are serialized.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Canvas uses the 1600 x 900 authoring reference.
+PASS Flood widget exposes an editable background Image.
+PASS Moved, resized and reskinned flood widget saved.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+PASS Local flood background color remains authored.
+PASS Background shared-color channel remains opted out for the local override.
+PASS Reopened Edit Mode restores the design-only flood preview value.
+PASS Reopened Edit Mode identifies values as design previews.
+PASS Play binds the persistent HUD to the authoritative live simulator.
+PASS Started driving state displays and enables the authored HUD.
+PASS Design preview badge is hidden during Play.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+PASS Local flood background color remains authored.
+PASS Background shared-color channel remains opted out for the local override.
+PASS Flood numeric value equals live simulation water.
+PASS Flood fill uses actual simulation tank capacity.
+PASS Changing water through the simulation updates the meter without replacing authored layout.
+PASS uGUI raycasting follows the relocated flood panel.
+PASS Machinery pointer guard uses the relocated uGUI panel.
+PASS Original flood location has no migrated uGUI target after the move.
+PASS Legacy header rectangle no longer blocks the original empty flood location.
+PASS Programmatic Button.onClick invokes existing diagnostics command.
+PASS Input System UI module is active.
+PASS Injected Input System mouse press/release routes through uGUI to diagnostics.
+PASS Injected UI press establishes pointer ownership.
+PASS Injected UI press cannot start a physical machinery drag.
+PASS UI press retains pointer ownership while dragged outside the panel.
+PASS Releasing outside UI clears pointer ownership.
+PASS Video/HUD hide command removes drawing and pointer blocking.
+PASS Pause hides migrated HUD raycasts.
+PASS Help hides migrated HUD raycasts.
+PASS Returning to driving restores the authored HUD.
+PASS Refresh microbenchmark: 0.018 ms/call; 0 managed bytes/call. Includes data formatting; excludes full frame rendering. Screen=640x480.
+PASS Authored Canvas inventory: 40 graphics; 0 automatic layout groups. Full frame baseline comparison is not part of this measurement.
+PASS Rendered authored canvas camera capture: AuthoredHUD-Default-camera-1366x768.png. ScreenSpaceCamera test capture; legacy IMGUI is excluded.
+PASS Editor render counters observed after capture: drawCalls=0, setPassCalls=0. Includes scene/editor work; this is not a UI-only regression comparison.
+PASS Rendered authored canvas camera capture: AuthoredHUD-Default-camera-1600x900.png. ScreenSpaceCamera test capture; legacy IMGUI is excluded.
+PASS Editor render counters observed after capture: drawCalls=0, setPassCalls=0. Includes scene/editor work; this is not a UI-only regression comparison.
+PASS Rendered authored canvas camera capture: AuthoredHUD-Default-camera-1920x1080.png. ScreenSpaceCamera test capture; legacy IMGUI is excluded.
+PASS Editor render counters observed after capture: drawCalls=0, setPassCalls=0. Includes scene/editor work; this is not a UI-only regression comparison.
+PASS Rendered authored canvas camera capture: AuthoredHUD-Moved-camera-1366x768.png. ScreenSpaceCamera test capture; legacy IMGUI is excluded.
+PASS Editor render counters observed after capture: drawCalls=0, setPassCalls=0. Includes scene/editor work; this is not a UI-only regression comparison.
+PASS Rendered authored canvas camera capture: AuthoredHUD-Moved-camera-1600x900.png. ScreenSpaceCamera test capture; legacy IMGUI is excluded.
+PASS Editor render counters observed after capture: drawCalls=0, setPassCalls=0. Includes scene/editor work; this is not a UI-only regression comparison.
+PASS Rendered authored canvas camera capture: AuthoredHUD-Moved-camera-1920x1080.png. ScreenSpaceCamera test capture; legacy IMGUI is excluded.
+PASS Editor render counters observed after capture: drawCalls=0, setPassCalls=0. Includes scene/editor work; this is not a UI-only regression comparison.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+PASS Local flood background color remains authored.
+PASS Background shared-color channel remains opted out for the local override.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+PASS Local flood background color remains authored.
+PASS Background shared-color channel remains opted out for the local override.
+PASS Reopened Edit Mode restores the design-only flood preview value.
+PASS Reopened Edit Mode identifies values as design previews.
+PASS Edit Mode reopen after Play retained the authored transform and local background override.
+PASS Procedural launch scene has no authored HUD instance.
+PASS Procedural launch scene still initializes its simulation.
+PASS Procedural scene retains legacy HUD ownership.
+PASS Procedural scene retains its legacy header pointer region.
+PASS Procedural scene serialized bytes were unchanged by acceptance.
+PASS AUTOMATED AUTHORING ACCEPTANCE COMPLETE. Native mouse/cockpit dragging, rendered three-resolution review, and full frame/draw-call profiling remain separate checks.

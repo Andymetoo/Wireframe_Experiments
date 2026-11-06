@@ -19,6 +19,9 @@ namespace IceResurfacer.Presentation
         public bool Paused { get; private set; }
         public bool HelpVisible { get; private set; }
         public bool HudHidden {get;private set;}
+        // Registered by the persistent scene UI; procedural scenes leave this null.
+        public IceAuthoredHud AuthoredHud { get; set; }
+        public bool HasAuthoredHud => AuthoredHud != null && AuthoredHud.IsAvailable;
         public float OriginalForwardSpeedMph=>calibration.ForwardSpeed/IceOperatorPreferences.MetersPerSecondPerMph;
         public float SelectedForwardSpeedMph=>(Sim==null?calibration.ForwardSpeed:Sim.MaximumForwardSpeedTarget)/IceOperatorPreferences.MetersPerSecondPerMph;
         public void SetOperatorSpeedMph(float mph)

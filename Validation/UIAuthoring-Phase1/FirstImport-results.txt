@@ -1,0 +1,20 @@
+Aurora Phase 1 isolated Unity authoring acceptance
+Checks below use Unity APIs and programmatic input actions. Native mouse, visual review, and full frame profiling require separate evidence.
+PASS Authored scene has persistent Canvas, HUD, simulator and raycaster references.
+PASS Eight modular indicators are serialized.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Canvas uses the 1600 x 900 authoring reference.
+PASS Flood widget exposes an editable background Image.
+PASS Moved, resized and reskinned flood widget saved.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+FAIL System.InvalidOperationException: Local flood background color remains authored.
+  at IceResurfacer.UI.Editor.IceUIAuthoringValidation.Require (System.Boolean condition, System.String message) [0x00010] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIAuthoringValidation.cs:255 
+  at IceResurfacer.UI.Editor.IceUIAuthoringValidation.CheckPersistence () [0x000b7] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIAuthoringValidation.cs:212 
+  at IceResurfacer.UI.Editor.IceUIAuthoringValidation.RunBatch () [0x00203] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIAuthoringValidation.cs:71 

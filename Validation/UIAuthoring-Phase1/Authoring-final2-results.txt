@@ -1,0 +1,45 @@
+Aurora Phase 1 isolated Unity authoring acceptance
+Checks below use Unity APIs and programmatic input actions. Native mouse, visual review, and full frame profiling require separate evidence.
+PASS Authored scene has persistent Canvas, HUD, simulator and raycaster references.
+PASS Eight modular indicators are serialized.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Serialized widget binding is complete.
+PASS Canvas uses the 1600 x 900 authoring reference.
+PASS Flood widget exposes an editable background Image.
+PASS Moved, resized and reskinned flood widget saved.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+PASS Local flood background color remains authored.
+PASS Background shared-color channel remains opted out for the local override.
+PASS Reopened Edit Mode restores the design-only flood preview value.
+PASS Reopened Edit Mode identifies values as design previews.
+PASS Play binds the persistent HUD to the authoritative live simulator.
+PASS Started driving state displays and enables the authored HUD.
+PASS Design preview badge is hidden during Play.
+PASS Flood position, dimensions, anchors and pivot match saved authoring changes.
+PASS Local flood background color remains authored.
+PASS Background shared-color channel remains opted out for the local override.
+PASS Flood numeric value equals live simulation water.
+PASS Flood fill uses actual simulation tank capacity.
+PASS Changing water through the simulation updates the meter without replacing authored layout.
+PASS uGUI raycasting follows the relocated flood panel.
+PASS Machinery pointer guard uses the relocated uGUI panel.
+PASS Original flood location has no migrated uGUI target after the move.
+PASS Legacy header rectangle no longer blocks the original empty flood location.
+PASS Programmatic Button.onClick invokes existing diagnostics command.
+PASS Input System UI module is active.
+PASS Injected Input System mouse press/release routes through uGUI to diagnostics.
+PASS Injected UI press establishes pointer ownership.
+PASS Injected UI press cannot start a physical machinery drag.
+PASS UI press retains pointer ownership while dragged outside the panel.
+PASS Releasing outside UI clears pointer ownership.
+FAIL System.InvalidOperationException: UI input acceptance: RMB over a UI widget acquires mouse look and disables authored UI interaction.
+  at IceResurfacer.UI.Editor.IceUIInputValidation.<Run>g__Check|0_0 (System.Boolean pass, System.String message, IceResurfacer.UI.Editor.IceUIInputValidation+<>c__DisplayClass0_0& ) [0x0002a] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIInputValidation.cs:40 
+  at IceResurfacer.UI.Editor.IceUIInputValidation.Run (IceResurfacer.Presentation.IceAuthoredHud hud) [0x00b4d] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIInputValidation.cs:201 
+  at IceResurfacer.UI.Editor.IceUIAuthoringValidation.TestAuthoredPlay () [0x002c1] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIAuthoringValidation.cs:187 
+  at IceResurfacer.UI.Editor.IceUIAuthoringValidation.Tick () [0x00074] in G:\UnityProjects\Wireframe_Experiments\Validation\UIAuthoring-Phase1\AcceptanceProject\Assets\Experiments\IceResurfacer\UI\Editor\IceUIAuthoringValidation.cs:120 

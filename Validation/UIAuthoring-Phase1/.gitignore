@@ -1,0 +1,6 @@
+# Disposable Unity projects and compiler caches; scripts and copied evidence stay reviewable.
+/AcceptanceProject/
+/StartupProbeProject/
+/startup-probe-licensed-Project/
+/ManagedCompile/
+*.pid

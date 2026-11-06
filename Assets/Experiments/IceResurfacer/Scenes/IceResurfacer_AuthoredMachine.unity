@@ -601,8 +601,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3360474982812763204, guid: 04cbba1459665214bb2019d1185feb45, type: 3}
   m_PrefabInstance: {fileID: 1440189819}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1905400000
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 10220, guid: 8017bbc47d6454f29ab6caac8805d16e, type: 3}
+      propertyPath: game
+      value:
+      objectReference: {fileID: 1002}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8017bbc47d6454f29ab6caac8805d16e, type: 3}
+--- !u!224 &1905400001 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 10002, guid: 8017bbc47d6454f29ab6caac8805d16e, type: 3}
+  m_PrefabInstance: {fileID: 1905400000}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1001}
+  - {fileID: 1905400001}

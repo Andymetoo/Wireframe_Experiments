@@ -61,7 +61,9 @@ namespace IceResurfacer.Presentation
             if(!game.Started||game.Sim.Finished)return true;
             if(InspectedSurveyCell>=0&&new Rect(408,154,224,276).Contains(p))return true;
             if(game.RouteGuide!=null&&game.RouteGuide.Visible&&(!Inspecting(game)||game.ChaseActive)&&!game.Sim.OnFoot&&new Rect(398,145,492,104).Contains(p))return true;
-            if(new Rect(408,24,1164,108).Contains(p))return true;
+            if(game.HasAuthoredHud)
+            { if(game.AuthoredHud.ContainsPointer(screenPoint))return true; }
+            else if(new Rect(408,24,1164,108).Contains(p))return true;
             if(game.DiagnosticsVisible&&(Compact?new Rect(28,132,492,242).Contains(p):
                 new Rect(545,228,755,390).Contains(p)||new Rect(28,520,492,100).Contains(p)))return true;
             if(game.Sim.OnFoot)return p.y>700;
@@ -170,8 +172,12 @@ namespace IceResurfacer.Presentation
                     return;
                 }
                 if(game.HudHidden)return;
+                // A visually moved uGUI panel owns mouse events over legacy controls too.
+                // Keep a legacy drag that began elsewhere until its normal release.
+                if(!pointerCaptured&&(Event.current.isMouse||Event.current.type==EventType.ScrollWheel)&&game.HasAuthoredHud&&Mouse.current!=null&&
+                    game.AuthoredHud.ContainsPointer(Mouse.current.position.ReadValue()))Event.current.Use();
                 if(Event.current.type==EventType.Repaint)game.RouteGuide?.DrawSilhouette(width,height);
-                Header(game);
+                if(!game.HasAuthoredHud)Header(game);
                 if(!game.Sim.OnFoot&&!Inspecting(game))Survey(game);
                 if(game.Sim.OnFoot)ServicePanel(game);
                 else if(Compact)CompactRack(game);
