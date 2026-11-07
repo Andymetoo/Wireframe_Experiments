@@ -1,0 +1,256 @@
+{
+  "status": "PASS",
+  "successfulUnityRuns": [
+    "Unity-Acceptance-05.log",
+    "Unity-Restart-01.log",
+    "Unity-Delivered-final-02.log",
+    "Unity-Projection-render-02.log",
+    "Unity-Menus-regression-01.log",
+    "Unity-Input-regression-01.log",
+    "Unity-Routes-regression-01.log",
+    "Unity-Navigation-regression-01.log"
+  ],
+  "finalDeliveredPassRecords": 149,
+  "finalAuthoringPassRecords": 290,
+  "finalProjectionPassRecords": 15,
+  "cumulativeRecorderPassRecords": {
+    "Phase5-results.txt": 615,
+    "Phase4-results.txt": 127,
+    "Phase3-results.txt": 54,
+    "UIInput-results.txt": 22,
+    "MachineryPhysical-results.txt": 69,
+    "Service-results.txt": 53
+  },
+  "recorderCountCaveat": "Cumulative recorder includes repeated suites and pre-exit assertions from a rejected development capture. Final run slices above are separated; only clean-exit logs are accepted. Counts are not unique manual checks.",
+  "phase5Captures": [
+    {
+      "file": "Phase5-default-DrivingCompact-1366x768.png",
+      "sha256": "bf2eda5e12e8a1df03c3f86eac2de2e05f1dc41309113a73abef577780a9e2aa"
+    },
+    {
+      "file": "Phase5-default-DrivingCompact-1600x900.png",
+      "sha256": "23f6e85374075e458f75097096ab00e28225382ef93febde5fa9ce95c01a9795"
+    },
+    {
+      "file": "Phase5-default-DrivingCompact-1920x1080.png",
+      "sha256": "80211563c2e78220d681ca884a06a7949cc6e2ea64796447ab807b38e834144f"
+    },
+    {
+      "file": "Phase5-default-ExpandedWarning-1366x768.png",
+      "sha256": "6ba467aecb0aeaa006e8c7d9ac7db07a0fc104a435033c78f423f4a3f44a9c68"
+    },
+    {
+      "file": "Phase5-default-ExpandedWarning-1600x900.png",
+      "sha256": "aefa1a51b68ba3a385ca4ea221b4bf1e2e163da3079d9cae56649d667519e1eb"
+    },
+    {
+      "file": "Phase5-default-ExpandedWarning-1920x1080.png",
+      "sha256": "0f6814f966483fdbec99702484383124bc68a7d84676066b4b9adc68922cd4bf"
+    },
+    {
+      "file": "Phase5-default-History-1366x768.png",
+      "sha256": "bd5ae3edd51c822b531e566f5e1ff5dc4b30b8671d73452bf4aea06699751fd1"
+    },
+    {
+      "file": "Phase5-default-History-1600x900.png",
+      "sha256": "250213b7303558c277d17d4591356e9e9ad9c7c06836b1ea5d7e7016564b6094"
+    },
+    {
+      "file": "Phase5-default-History-1920x1080.png",
+      "sha256": "7361aeb71d9989bc623366de677db851144a7c76d801a22f7fcca3d8f7591a1a"
+    },
+    {
+      "file": "Phase5-default-OnFootOverflow-1366x768.png",
+      "sha256": "3783986767c7a59a98f73dfc96bf64ad5e3d3126c425240f8e3b17f7b6d90856"
+    },
+    {
+      "file": "Phase5-default-OnFootOverflow-1600x900.png",
+      "sha256": "ff18807fb5124300cac65b6e0c09ee1cbefa7f3a4aeead781b1fcc1a8d4afefb"
+    },
+    {
+      "file": "Phase5-default-OnFootOverflow-1920x1080.png",
+      "sha256": "ea1efeeabef7c54f5e7784c11b0ca57132ca3f47dcf7d66af0a93f1e4f81f1dc"
+    },
+    {
+      "file": "Phase5-default-Pause-1366x768.png",
+      "sha256": "7b34280a02f5d604feef5aaaf345db1494567660e680bba7c32c12990783d41e"
+    },
+    {
+      "file": "Phase5-default-Pause-1600x900.png",
+      "sha256": "6293c328a8448767af41396918c01de315e7bbf219e47c71508394552c2bce6b"
+    },
+    {
+      "file": "Phase5-default-Pause-1920x1080.png",
+      "sha256": "448d2fe0efdc77c0c1b314f56a06992d2a4c101dbe4c0ee2bcf99cfb4b49a9cc"
+    },
+    {
+      "file": "Phase5-default-ProjectedGPS-1366x768.png",
+      "sha256": "275de4fbfb0b632d5c48736da1493a30eb01d4f1ee160920f103bab67c60499d"
+    },
+    {
+      "file": "Phase5-default-ProjectedGPS-1600x900.png",
+      "sha256": "6f824c6cea58d09cc07cb9e2be79e63f029e7647a2209b718505a3658ab37034"
+    },
+    {
+      "file": "Phase5-default-ProjectedGPS-1920x1080.png",
+      "sha256": "570fec4ac5ade13b57d48c33a98225a487bf16c070023a74b906a9f2e6e2dbb2"
+    },
+    {
+      "file": "Phase5-default-Results-1366x768.png",
+      "sha256": "f74516fa6a2f4a272654b61a0cdecef81f92142ceb8211b652e7623b4ba27820"
+    },
+    {
+      "file": "Phase5-default-Results-1600x900.png",
+      "sha256": "e497866b3ac340c98803a5e73ff1d87c88e043b21ef848c189261e06aaa0abb3"
+    },
+    {
+      "file": "Phase5-default-Results-1920x1080.png",
+      "sha256": "38e15949a8e7f2b70a9861ba7453b8237bff820251e1e412534ad678d3165e7d"
+    },
+    {
+      "file": "Phase5-default-Routes-1366x768.png",
+      "sha256": "890d54f6368f22443d0ce44904f475501818a037e610d571ec88043d20d0b0ac"
+    },
+    {
+      "file": "Phase5-default-Routes-1600x900.png",
+      "sha256": "875ab0a0660bd4853839bc493a166515e4fb6b1fa008b7a20a0c46d210083e38"
+    },
+    {
+      "file": "Phase5-default-Routes-1920x1080.png",
+      "sha256": "22190e376fc10349828f51b58d84d0d4d51618989cf91add27cdeee8812f6ce2"
+    },
+    {
+      "file": "Phase5-default-SurveyGPS-1366x768.png",
+      "sha256": "bf2eda5e12e8a1df03c3f86eac2de2e05f1dc41309113a73abef577780a9e2aa"
+    },
+    {
+      "file": "Phase5-default-SurveyGPS-1600x900.png",
+      "sha256": "23f6e85374075e458f75097096ab00e28225382ef93febde5fa9ce95c01a9795"
+    },
+    {
+      "file": "Phase5-default-SurveyGPS-1920x1080.png",
+      "sha256": "80211563c2e78220d681ca884a06a7949cc6e2ea64796447ab807b38e834144f"
+    },
+    {
+      "file": "Phase5-edited-DrivingCompact-1366x768.png",
+      "sha256": "5e9d44db090150f9bda57012a96980fe7b8b48c9128f8303351166419f3c7a58"
+    },
+    {
+      "file": "Phase5-edited-DrivingCompact-1600x900.png",
+      "sha256": "21312dd31cd02797c73f752ea319c9569f1e13afb58d8123ab66845ac8cf8d02"
+    },
+    {
+      "file": "Phase5-edited-DrivingCompact-1920x1080.png",
+      "sha256": "a4558ec756c0df01efcddfcbe9bb55eb8572cad8c279e62daf61fc75e0947b32"
+    },
+    {
+      "file": "Phase5-edited-ExpandedWarning-1366x768.png",
+      "sha256": "a333babda2b1793c6e0041818678db2e54162821de52f5abf92f1f4ff9832288"
+    },
+    {
+      "file": "Phase5-edited-ExpandedWarning-1600x900.png",
+      "sha256": "d20f31b99b6d6db302f893a749bd131b549fde9a1777e3b3cebff6f73ab0ee0c"
+    },
+    {
+      "file": "Phase5-edited-ExpandedWarning-1920x1080.png",
+      "sha256": "bf87a43b4ced735a9ecfdf57f938a44e929186f37c9af194ea31fd197cfa1950"
+    },
+    {
+      "file": "Phase5-edited-History-1366x768.png",
+      "sha256": "d12a6dd8fa453af8098cd89b0b1ad6092b6f553e8d314dbf438273779552ec86"
+    },
+    {
+      "file": "Phase5-edited-History-1600x900.png",
+      "sha256": "077d723ba98d798cca72a1756f56b46a7ec77d4339bc9242032ecd85b131d79c"
+    },
+    {
+      "file": "Phase5-edited-History-1920x1080.png",
+      "sha256": "90a87191126a42d4fc28931145ba5e403ac5b1c0045bb48a651ba75673fc6d2e"
+    },
+    {
+      "file": "Phase5-edited-OnFootOverflow-1366x768.png",
+      "sha256": "eeba0547fdf85eb125b13669d8ee5137b6c33c6c6faa9efc7bb5558f06517f8c"
+    },
+    {
+      "file": "Phase5-edited-OnFootOverflow-1600x900.png",
+      "sha256": "f79423da9f51b645caf438c461dfa3e2026ac55c8480f28b2d6b6dc4fbebe2b6"
+    },
+    {
+      "file": "Phase5-edited-OnFootOverflow-1920x1080.png",
+      "sha256": "4af91050e806b9c4e7f808af5a31d827d519dbb15833950d26c699d6591bdeb4"
+    },
+    {
+      "file": "Phase5-edited-Pause-1366x768.png",
+      "sha256": "7b34280a02f5d604feef5aaaf345db1494567660e680bba7c32c12990783d41e"
+    },
+    {
+      "file": "Phase5-edited-Pause-1600x900.png",
+      "sha256": "6293c328a8448767af41396918c01de315e7bbf219e47c71508394552c2bce6b"
+    },
+    {
+      "file": "Phase5-edited-Pause-1920x1080.png",
+      "sha256": "448d2fe0efdc77c0c1b314f56a06992d2a4c101dbe4c0ee2bcf99cfb4b49a9cc"
+    },
+    {
+      "file": "Phase5-edited-Results-1366x768.png",
+      "sha256": "f74516fa6a2f4a272654b61a0cdecef81f92142ceb8211b652e7623b4ba27820"
+    },
+    {
+      "file": "Phase5-edited-Results-1600x900.png",
+      "sha256": "e497866b3ac340c98803a5e73ff1d87c88e043b21ef848c189261e06aaa0abb3"
+    },
+    {
+      "file": "Phase5-edited-Results-1920x1080.png",
+      "sha256": "38e15949a8e7f2b70a9861ba7453b8237bff820251e1e412534ad678d3165e7d"
+    },
+    {
+      "file": "Phase5-edited-Routes-1366x768.png",
+      "sha256": "a781056833aeda4939a91428ba04cb38ad341e1afbae39e2a7f7d22b89d2a58d"
+    },
+    {
+      "file": "Phase5-edited-Routes-1600x900.png",
+      "sha256": "e131d387ea2784f98806027753a8d6df675a9d8c5ea3e704d3d7cd202c9465dd"
+    },
+    {
+      "file": "Phase5-edited-Routes-1920x1080.png",
+      "sha256": "61791d2ac9a632154472b944c5f5737424490674715094a264fe2d5e3d2e6550"
+    },
+    {
+      "file": "Phase5-edited-SurveyGPS-1366x768.png",
+      "sha256": "5e9d44db090150f9bda57012a96980fe7b8b48c9128f8303351166419f3c7a58"
+    },
+    {
+      "file": "Phase5-edited-SurveyGPS-1600x900.png",
+      "sha256": "21312dd31cd02797c73f752ea319c9569f1e13afb58d8123ab66845ac8cf8d02"
+    },
+    {
+      "file": "Phase5-edited-SurveyGPS-1920x1080.png",
+      "sha256": "a4558ec756c0df01efcddfcbe9bb55eb8572cad8c279e62daf61fc75e0947b32"
+    }
+  ],
+  "coreScenarios": 43,
+  "captureDimensionsVerified": true,
+  "finalMeasurementLines": [
+    "PASS MEASUREMENT authored GPS projection: 0.31466 ms/call, existing queries plus cached segment sink.",
+    "PASS MEASUREMENT legacy GPS visibility/alignment query reference: 0.33899 ms/call; excludes drawing in both measurements.",
+    "PASS MEASUREMENT Phase5 visibility visible/compact: 0.00159 ms/call; excludes simulation/rendering.",
+    "PASS MEASUREMENT Phase5 visibility visible/expanded: 0.00158 ms/call; excludes simulation/rendering.",
+    "PASS MEASUREMENT Phase5 visibility hidden/compact: 0.00092 ms/call; excludes simulation/rendering.",
+    "PASS MEASUREMENT Phase5 visibility hidden/expanded: 0.00094 ms/call; excludes simulation/rendering.",
+    "PASS MEASUREMENT allocation counter UNAVAILABLE: retained 4096-byte calibration reported 0; no zero-allocation claim."
+  ],
+  "projectionMeasurementLines": [
+    "PASS MEASUREMENT authored GPS projection: 0.31542 ms/call, existing queries plus cached segment sink.",
+    "PASS MEASUREMENT legacy GPS visibility/alignment query reference: 0.40313 ms/call; excludes drawing in both measurements."
+  ],
+  "rejectedDevelopmentRuns": {
+    "Unity-Acceptance-01.log": "1",
+    "Unity-Acceptance-02.log": "1",
+    "Unity-Projection-render.log": "-1073741819"
+  },
+  "rejectedLogsRetained": "Validation/UIAuthoring-Phase5; excluded from accepted logs",
+  "nativeHardwareCursorAndMixedIMGUI": "NOT TESTED; manual acceptance remains",
+  "wholeFrameProfiling": "NOT TESTED; managed counter failed retained 4096-byte calibration",
+  "manualVisualAcceptance": "NOT TESTED; automated images were rendered and representative combinations inspected",
+  "editedFixtureLocation": "Validation/UIAuthoring-Phase5/AcceptanceProject/ValidationResults/Authored-persistence.unity; custom font/sprite assets remain in the isolated project"
+}

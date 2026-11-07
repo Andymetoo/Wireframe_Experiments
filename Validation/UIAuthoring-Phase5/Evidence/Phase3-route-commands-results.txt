@@ -1,0 +1,25 @@
+PASS Existing guide with different GuideRollerX remains rejected and byte-identical; no automatic revalidation.
+PASS Disposable current-geometry fixture starts through existing recorder.
+PASS Authored Use as GPS activates separate current-geometry test guide with strict compatibility: Loaded: AUTOMATED current-calibration straight fixture / recorded track — GPS Ready / recorded track; ideal spline not certified
+PASS Edit route invokes existing Editor callback for the explicit selected guide.
+PASS Rename preserves recorded bytes and stable selection; only library alias changes.
+PASS Save new copy creates exactly one separate file and leaves selected source unchanged.
+PASS Delete requires explicit per-file confirmation.
+PASS Confirmed deletion removes only the captured disposable copy.
+PASS Incomplete recovery remains inspectable but cannot activate as GPS.
+PASS Malformed saved file displays an error and cannot activate or save a copy.
+PASS Real Input System wheel events scroll the file viewport without changing route identity.
+PASS A canceled save press cannot fire after manager hide/reopen.
+PASS Physical cockpit lever remains pickable with Phase 3 installed.
+PASS Relocated survey blocks cockpit picking at its actual authored location.
+PASS Moving survey away restores cockpit pointer access without an obsolete survey rectangle.
+PASS RMB free look releases survey interaction ownership.
+PASS Phase 3 automated run complete; manual native-input, visual and full-frame profiling checks remain separate.
+PASS Three persistent Phase 3 modules exist in Edit Mode.
+PASS Explicit module-to-game references are serialized.
+PASS Exactly one existing Canvas and EventSystem; no competing input architecture.
+PASS Representative previews and badges are saved without running simulation.
+PASS Three clearly identified harmless sample route rows.
+PASS All route actions explicitly bind the saved manager.
+PASS Every inventoried route action has an authored Button.
+PASS Preview map and reusable route-row prefab assigned.

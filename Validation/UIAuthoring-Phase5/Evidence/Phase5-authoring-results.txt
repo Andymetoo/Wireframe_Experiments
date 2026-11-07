@@ -1,0 +1,291 @@
+Phase 5 isolated real Unity acceptance. Input is injected; native hardware/cursor and combined IMGUI remain separate manual checks.
+PASS Persistent Phase 5 root and explicit scene bindings exist before Play.
+PASS Seven independently editable service fields retain explicit data kinds.
+PASS Six existing status/history commands use persistent bound buttons.
+PASS One existing Canvas and EventSystem; no added input architecture.
+PASS Notification variants and bounded history use editable prefab sources.
+PASS Saved preview values and three clearly identified history samples need no simulation.
+PASS Projected GPS is a saved editable non-raycasting graphic with explicit owner.
+PASS Warnings preview is presentation only, with no simulator.
+PASS Menu preview safely restores the operator preview before taking ownership.
+PASS Operator preview safely restores the session preview before taking ownership.
+PASS Cross-phase preview Restore returns every prior group/input value exactly.
+PASS Save restores transient preview; PlayerPrefs remain unchanged.
+PASS Moved service prompt/panel, resized warning, changed font asset and replacement notification sprite saved.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS All seven authored presenters register together in real Play.
+PASS Routine notice appears once; repeated observers do not duplicate history.
+PASS History preserves newest-first display, original order and exact 32-entry limit with bounded prefab pool.
+PASS Repeated history refresh neither instantiates duplicate rows nor rebuilds object hierarchy.
+PASS Routine fade retains original last-second presentation.
+PASS Eight-second expiry removes the notice and its pointer region.
+PASS Actual dry-pump fault drives persistent critical warning even with routine messages disabled.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Existing recorder starts a disposable integration fixture.
+PASS Existing recording save writes only redirected validation storage.
+PASS Authored GPS graphic receives exactly the existing occluded route/alignment segments with a nonzero real silhouette fixture.
+PASS Projected GPS retains the original bounded visibility-query budgets.
+PASS One hundred unchanged-camera GPS projections do not dirty the Canvas mesh.
+PASS MEASUREMENT authored GPS projection: 0.32494 ms/call, existing queries plus cached segment sink.
+PASS MEASUREMENT legacy GPS visibility/alignment query reference: 0.37172 ms/call; excludes drawing in both measurements.
+PASS Real service state/target binds saved UI: actual F dismounts to grounded service camera
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: on-foot viewpoint remains grounded
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: on-foot mouse look works without RMB
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: pause releases on-foot cursor capture
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: actual E takes physical wall nozzle after walking around machine
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: carried hose has bounded route around solid machine
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: aimed distant coupling reports actual reach rather than a silent interaction failure
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: walking reaches flood inlet from outside the solid body
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: inlet approach has hose slack without requiring body penetration
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: right rear flood inlet couples independently
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: visible nozzle terminates at connected fill neck
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: service HUD persistently identifies hose reach
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: approaching visible body stops outside it and names the obstruction
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: walking reaches flood inlet from outside the solid body
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: inlet approach has hose slack without requiring body penetration
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: actual E opens wall supply
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: 12 L/s fill affects only connected flood reservoir
+PASS Flood connection readout follows authoritative hose state.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: capacity is capped and excess water overflows
+PASS Flood connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Rendered integrated OnFootOverflow at (1366, 768) / edited
+PASS Rendered integrated OnFootOverflow at (1600, 900) / edited
+PASS Rendered integrated OnFootOverflow at (1920, 1080) / edited
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: overflow uses fixed bounded 160-droplet pool
+PASS Flood connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: overflow retains rounded mesh droplets
+PASS Flood connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: walking reaches flood inlet from outside the solid body
+PASS Flood connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: inlet approach has hose slack without requiring body penetration
+PASS Flood connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: normal E disconnects flood hose
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: walking reaches wash inlet from outside the solid body
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: inlet approach has hose slack without requiring body penetration
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: same nozzle connects separate wash reservoir
+PASS Wash connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: wash reservoir fills and overflows independently
+PASS Wash connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: walking reaches wash inlet from outside the solid body
+PASS Wash connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: inlet approach has hose slack without requiring body penetration
+PASS Wash connection readout follows authoritative hose state.
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: wash nozzle disconnects normally
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: holder highlights with forgiving half-meter aim tolerance
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: E snaps nozzle home from practical two-meter approach
+PASS Actual finite-tank overflow and filling flow update independently editable fields.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: actual walking identifies the hose limit instead of an unexplained invisible wall
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: looking upward can extend held nozzle beyond the walking limit
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: an overextended hand can always walk back toward slack without a reset
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: taut-hose walking recovery returns the same nozzle to its holder
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: walking reaches flood inlet from outside the solid body
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: inlet approach has hose slack without requiring body penetration
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: actual F permits moving on-ice exit with raised tank and operating equipment
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real service state/target binds saved UI: free dismount preserves attained hydraulics, conveyors, pump and both water valves
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Real walked F/E service sequence supplied both ports, overflow and matching three-resolution UI captures.
+PASS Relocated service panel over the actual aimed holder blocks click acquisition at its authored rectangle.
+PASS Moving service panel away restores actual click-to-take without stale legacy service rectangle.
+PASS Old y>700 service hit band no longer captures unrelated space.
+PASS Keyboard E returns hose after the UI click test.
+PASS Pause hides on-foot UI and releases its pointer region.
+PASS E service interaction still works with video-mode UI hidden.
+PASS Actual Messages button opens existing nonmodal history without pausing.
+PASS Actual routine-message toggle changes the single existing message policy.
+PASS History Close uses existing dashboard state.
+PASS Canceled bottom-strip press cannot fire after help hide/reopen.
+PASS Actual Routes action yields all Phase 5 input to existing manager modal.
+PASS Actual Pause action uses Phase 4 modal and releases new UI.
+PASS Actual Help action uses existing F1/help state.
+PASS Numpad 1 policy hides all new player-facing groups and pointer regions.
+PASS Rendered integrated DrivingCompact at (1366, 768) / edited
+PASS Rendered integrated DrivingCompact at (1600, 900) / edited
+PASS Rendered integrated DrivingCompact at (1920, 1080) / edited
+PASS Rendered integrated SurveyGPS at (1366, 768) / edited
+PASS Rendered integrated SurveyGPS at (1600, 900) / edited
+PASS Rendered integrated SurveyGPS at (1920, 1080) / edited
+PASS Rendered integrated ExpandedWarning at (1366, 768) / edited
+PASS Rendered integrated ExpandedWarning at (1600, 900) / edited
+PASS Rendered integrated ExpandedWarning at (1920, 1080) / edited
+PASS Rendered integrated History at (1366, 768) / edited
+PASS Rendered integrated History at (1600, 900) / edited
+PASS Rendered integrated History at (1920, 1080) / edited
+PASS Rendered integrated Routes at (1366, 768) / edited
+PASS Rendered integrated Routes at (1600, 900) / edited
+PASS Rendered integrated Routes at (1920, 1080) / edited
+PASS Rendered integrated Pause at (1366, 768) / edited
+PASS Rendered integrated Pause at (1600, 900) / edited
+PASS Rendered integrated Pause at (1920, 1080) / edited
+PASS Rendered integrated Results at (1366, 768) / edited
+PASS Rendered integrated Results at (1600, 900) / edited
+PASS Rendered integrated Results at (1920, 1080) / edited
+PASS Hidden IceAuthoredHud synchronizes visibility/releases input without scheduling text refresh.
+PASS Hidden IceMachineryConsole synchronizes visibility/releases input without scheduling text refresh.
+PASS Hidden IceSurfaceSurvey synchronizes visibility/releases input without scheduling text refresh.
+PASS Hidden IceGpsStatus synchronizes visibility/releases input without scheduling text refresh.
+PASS Visibility polling does not instantiate objects or refresh inactive text.
+PASS MEASUREMENT Phase5 visibility visible/compact: 0.00164 ms/call; excludes simulation/rendering.
+PASS Visibility polling does not instantiate objects or refresh inactive text.
+PASS MEASUREMENT Phase5 visibility visible/expanded: 0.00178 ms/call; excludes simulation/rendering.
+PASS Visibility polling does not instantiate objects or refresh inactive text.
+PASS MEASUREMENT Phase5 visibility hidden/compact: 0.00102 ms/call; excludes simulation/rendering.
+PASS Visibility polling does not instantiate objects or refresh inactive text.
+PASS MEASUREMENT Phase5 visibility hidden/expanded: 0.00101 ms/call; excludes simulation/rendering.
+PASS MEASUREMENT allocation counter UNAVAILABLE: retained 4096-byte calibration reported 0; no zero-allocation claim.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Exiting Play restores saved sample objects without live data writes.
+PASS Procedural scene has no authored UI dependency and retains legacy presenter path.
+PASS Procedural legacy messages use the same authoritative history.
+PASS Procedural F dismount/service remains functional.
+PASS Procedural pause/help state remains functional.
+PASS Procedural scene bytes unchanged.
+PASS Phase 5 Unity acceptance complete; native cursor, full-frame profiling and manual visual sign-off remain separate.

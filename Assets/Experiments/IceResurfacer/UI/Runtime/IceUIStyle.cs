@@ -13,6 +13,9 @@ namespace IceResurfacer.Presentation
         public TMP_Text text;
         public Image image;
         public Button button;
+        [Tooltip("Optional Toggle, Slider or other Selectable. Uses Button above when unassigned.")]
+        public Selectable selectable;
+        public Selectable StateTarget => selectable != null ? selectable : button;
 
         [Header("Shared channels (disable a channel to edit it locally)")]
         public bool applyFont = true;
@@ -23,7 +26,7 @@ namespace IceResurfacer.Presentation
         public IceUIColorRole colorRole = IceUIColorRole.Text;
         public bool applySprite;
         public IceUISpriteRole spriteRole = IceUISpriteRole.Panel;
-        [Tooltip("Applies Button colors, state sprites and transition. SpriteSwap is used when the theme has state sprites; otherwise ColorTint.")]
+        [Tooltip("Applies Selectable/Button colors, state sprites and transition. SpriteSwap is used when the theme has state sprites; otherwise ColorTint.")]
         public bool applyButtonStates;
 
         void OnEnable()
@@ -53,14 +56,15 @@ namespace IceResurfacer.Presentation
                 Sprite sprite = theme.GetSprite(spriteRole);
                 if (applySprite && sprite != null) image.sprite = sprite;
             }
-            if (button != null && applyButtonStates)
+            var stateTarget = StateTarget;
+            if (stateTarget != null && applyButtonStates)
             {
-                button.colors = theme.buttonColors;
-                button.spriteState = theme.buttonSpriteState;
+                stateTarget.colors = theme.buttonColors;
+                stateTarget.spriteState = theme.buttonSpriteState;
                 var states = theme.buttonSpriteState;
                 bool hasSprites = states.highlightedSprite != null || states.pressedSprite != null ||
                     states.selectedSprite != null || states.disabledSprite != null;
-                button.transition = hasSprites ? Selectable.Transition.SpriteSwap : Selectable.Transition.ColorTint;
+                stateTarget.transition = hasSprites ? Selectable.Transition.SpriteSwap : Selectable.Transition.ColorTint;
             }
         }
     }

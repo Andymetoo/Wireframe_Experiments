@@ -18,8 +18,10 @@ namespace IceResurfacer.UI.Editor
         public static void Run(IceAuthoredHud hud)
         {
             string project = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-            if (!project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase1/") ||
-                !File.Exists(Path.Combine(project, "UIAuthoringValidationProject.txt")))
+            bool phase1 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase1/") && File.Exists(Path.Combine(project, "UIAuthoringValidationProject.txt"));
+            bool phase4 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase4/") && File.Exists(Path.Combine(project, "UIAuthoringPhase4ValidationProject.txt"));
+            bool phase5 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase5/") && File.Exists(Path.Combine(project, "UIAuthoringPhase5ValidationProject.txt"));
+            if (!phase1 && !phase4 && !phase5)
                 throw new InvalidOperationException("UI input acceptance runs only in the marked disposable UIAuthoring-Phase1 project.");
             if (hud == null || !Application.IsPlaying(hud.gameObject) || !hud.IsAvailable || !hud.Visible)
                 throw new InvalidOperationException("UI input acceptance requires the active authored HUD in a running Play session.");

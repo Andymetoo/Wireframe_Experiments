@@ -1,0 +1,134 @@
+AURORA R-54 / RINK HEIGHTS, SERVICE GATE GEOMETRY AND EDITABLE WATER FILL PORTS (2026-11-02)
+
+Two focused, in-place changes to the authored scene's assets. Nothing was regenerated: the rink
+section prefab and its mesh asset keep their GUIDs and file IDs, the machine prefab keeps every
+existing part, and the authored scene, NorthlineArena.prefab, the portal section, the launch scene,
+SimulatorConfig and every collision model are unchanged.
+
+------------------------------------------------------------------------------------------
+RINK BOARDS AND GLASS
+------------------------------------------------------------------------------------------
+References (NHL): boards 42 in / 1.07 m ideal, 40-48 in allowed; glass about 8 ft / 2.44 m above the
+boards behind the goals, at least 6 ft / 1.83 m above them along the sides.
+
+Measured (arena space, metres)            Before                       After
+Kick plate                                0.015 - 0.170                unchanged
+White dasher                              0.170 - 1.130                unchanged
+Dark top rail (= board top)               1.130 - 1.220 (48 in)        unchanged
+Glass, ends and all four corners          1.220 - 2.550 (1.33 above)   1.220 - 3.660 (2.44 above)
+Glass, straight sides                     1.220 - 2.550 (1.33 above)   1.220 - 3.050 (1.83 above)
+Glass top edge                            none                         22 mm stainless channel, follows the profile
+Glass supports (48)                       1.20 - 2.54                  1.20 - local glass top (up to 3.66)
+Board thickness kick/dasher/rail/glass    0.19 / 0.17 / 0.21 / 0.012   unchanged
+Inner faces vs simulated board line       0.0 mm                       0.0 mm (all 24 drift checks within 2 mm)
+
+The boards are 48 in, inside the 40-48 in range, so they were left alone.
+The glass is tall around both ends and the whole of each corner arc. On each straight side it steps
+down to the side height in one sloped panel between the two existing supports nearest the corner,
+so the change lands on a post, not mid-panel (Shots/After-Elevation-West-Side-To-Corner.png).
+The edge channel and supports follow that profile.
+
+Service gate (southeast corner)
+  Before: every band stopped at 2.732 m from the gate axis as an open, zero-thickness edge, with a
+  ~0.28 m gap to the jamb; you could see into the bands.
+  After: the bands are closed solids with end caps and shared smooth normals. They end at 2.91 m
+  inside a solid board post on each side (2.73 - 2.91 m, 25 mm chamfer) made of:
+    Gate post kick plate / Gate post board / Gate post top rail   (kick, enamel and rail terminations)
+    Gate post rubber edge guard                                    (vertical rubber edging, 45 mm)
+    Gate glass end stanchion                                       (stainless; the glass stops at 2.82 m)
+    Gate post glass return + Gate glass return top edge            (glass turns back to the portal upright)
+  Hierarchy: Rink boards and ice sheet > Service gate board post / southwest and / northeast.
+  Nearest new part to the opening: the edge guard at 2.728 m (opening and collision half width 2.70).
+  The machine clears the gate. Collision did not change: no simulation code changed, and Play
+  checks the simulated board line.
+
+Collision tradeoff (unchanged, measured)
+  The simulated tank-vs-glass contact (TankCollision) still treats the glass as 2.55 m high everywhere.
+  Measured in Play (RinkTankGlass): a tank raised beside the east side glass stops at 45% lift
+  (contact at y 1.68 m). In that test and at the north end, no visible tank vertex passes the board
+  line between 2.55 m and the new glass top (0 mm). Below 2.55 m the worst case is 2 mm, as before.
+
+Performance
+  Rink triangles 5,664 -> 8,372 (+2,708). The new parts reuse existing arena materials, so runtime
+  batching merges them into the existing batches. Authored scene runtime renderers 244 -> 222 (the
+  ports are now batched with the machine). Launch scene unchanged (245).
+
+------------------------------------------------------------------------------------------
+PERSISTENT WATER FILL PORTS AND TANK GAUGES (Machine/AuroraR54.prefab)
+------------------------------------------------------------------------------------------
+AURORA R-54 / rear axle origin > Water Fill Connections
+  Flood Fill Port            [IceWaterFillPort, port = Flood]
+    Visual Assembly          decorative only: collar, blue cap, aperture, lugs, labels (TextMesh)
+    FLOOD WATER hose attachment  "Hose Connection Socket"; its red +X axis is the coupled nozzle's direction
+    FLOOD WATER overflow discharge  "Overflow Discharge Socket"; overflow falls straight down from here
+  Flood Tank Level Gauge     [IceWaterLevelGauge, tank = Flood]
+    Water level indicator (full)   [IceKeepUnbatched]; its authored size means "full"
+  Wash Fill Port / Wash Tank Level Gauge   the same, teal
+
+Created at exactly the generated positions: flood socket machine (1.160, 1.220, 0.050), wash
+(1.160, 1.480, -0.550). Hose 5.79 / 6.12 m of 11 m; reach 0.27 / 0.42 m of 2.0 m.
+Materials: Machine/Materials/Flood water inlet - blue.mat and Wash inlet - teal.mat.
+
+What you can do (in the prefab, then save)
+  Move or rotate a whole port: the socket, overflow and labels go with it.
+  Move either socket on its own, for example to put the coupling on your own model.
+  Reshape, replace or delete anything under Visual Assembly, or replace it with your own mesh.
+  Recolour it through the two materials, or assign others.
+  Relabel it by editing the TextMesh text under Visual Assembly.
+  Move or resize a gauge or its indicator. The indicator scales from its own base, and its
+  authored height is full.
+
+What Play binds to (no hidden positions)
+  The hose coupling position and orientation, E/click target, reach test, hose length, routed hose
+  and breakaway, overflow spill point, coupling audio and gauge level all come from the sockets.
+  Tank capacities, flow (12 L/s), reach (2.0 m) and hose length (11 m) did not change.
+  Play makes no copies: when the prefab has exactly one complete port of each kind, nothing is generated.
+  The carried nozzle and the live hose stay runtime objects.
+
+Inspector (select a port or a gauge; Scene view gizmos while selected)
+  It checks reach from the floor beside the parked machine, and the routed hose against 11 m
+  (errors). It warns when the hand would reach through the body, the nozzle points into the
+  machine, or the nozzle is obstructed. It also reports where overflow lands.
+  Gizmos: socket and click radius, nozzle arrow, overflow arrow, reach line, hose route, the
+  machine footprint the hose routes around.
+  Gauge: "Keep the indicator unbatched" fix if that marker is removed.
+  The machine Inspector's WATER FILL PORTS section selects them.
+
+Hose obstacle review
+  The hose previously routed around a fixed generated box (1.38 x 1.88 x 2.84 m). It now uses the
+  authored machine's footprint: mesh bounds below 2.2 m plus 8 cm, never smaller than that box.
+  Walking, the exit point and the hose-crossing test use the same footprint. For the generated
+  machine the route is identical to before.
+
+The launch scene (Scenes/IceResurfacer.unity) has no authored ports. It still generates its own, as
+before, plus an overflow discharge point at the old fixed offset.
+
+Migration (one time)
+  Experiments > Ice Resurfacer > Authored Scene > Add Persistent Water Fill Ports to Machine...
+  It backs up the prefab first (Restore backup can undo it). Running it again changes nothing. It
+  adopts an existing "FLOOD WATER fill coupling" / "WASH WATER fill coupling" object if you made one
+  (none existed).
+  It adds 41 transforms under Water Fill Connections and leaves all 578 existing machine transforms
+  unchanged.
+Rink: Experiments > Ice Resurfacer > Authored Scene > Refine Rink Boards and Glass... (backup first,
+idempotent; it rebuilds only the four band meshes in place, raises only supports still at their
+generated height, and adds the edge channel and gate posts).
+
+------------------------------------------------------------------------------------------
+VALIDATION (isolated copy: Validation~/StageUnityValidation.ps1 -UpdateOnly, then RunIsolatedUnity.ps1)
+------------------------------------------------------------------------------------------
+  -Action RinkSurvey -RinkPrefix Before   measurements + views of the untouched rink (read-only)
+  -Action RinkCaptureBefore               generated ports: Edit Mode view, Play hose views
+  -Action RinkApply                       both migrations, re-run idempotence, machine unchanged
+  -Action RinkSurvey -RinkPrefix After
+  -Action RinkVerify                      fresh process: persistence, Edit Mode, Inspector analysis
+                                          and negative fixtures, drift, Play coupling/fill/gauge/
+                                          overflow/conservation for both ports, no Play mutations
+  -Action RinkMovePorts, then RinkVerifyMoved   ports deliberately moved in the prefab still work
+  -Action RinkEquivalence                 migrated arena matches the updated builder (1,499 objects)
+  -Action RinkTankGlass                   the raised-tank measurement above
+  -Action RunBatch (with and without -Scene .../IceResurfacer_AuthoredMachine.unity)
+Results 2026-11-02: Verify 73/73, VerifyMoved 55/55, equivalence pass. RunBatch launch 12/12 with
+0 errors. RunBatch authored 10/12; its two failures are the deferred cockpit items (E-preset rim
+rays, steering column foot) and are identical to the mechanical reconciliation baseline.
+Water conservation is exact to within single-precision rounding (bound reported per test).

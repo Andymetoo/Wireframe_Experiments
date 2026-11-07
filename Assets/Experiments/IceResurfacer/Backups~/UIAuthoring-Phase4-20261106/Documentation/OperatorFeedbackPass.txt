@@ -1,0 +1,77 @@
+AURORA R-54 / OPERATOR FEEDBACK PASS / 2026-11-05
+
+INTERFACE
+
+The light-painted instrument panels now use dark lettering, simple borders,
+and numeric tank/load readings in place of decorative fill bars. Paper menus
+use near-black body copy. Major menus appear individually over a dimmed scene;
+underlying HUD text is hidden. Controls retain their existing locations and
+functions. Route plots retain their dark ground for colored path visibility.
+See OperatorInterface.txt for the shared theme and GUI-state details.
+
+GPS
+
+Driving onto the next 15.24 m (50 ft) of route can acquire progress locally,
+without returning to the original start. The limit is distance ALONG the
+route, not straight-line distance across neighboring laps. Acquisition needs
+the appropriate travel direction, a compatible heading and <=.60 m lateral
+error. Current valid tracking wins at crossings; a required reversal cannot
+be skipped. Deliberate distant joins remain available through leg selection.
+Teleports do not silently rejoin, and projections outside the allowed window
+cannot advance by repeatedly clamping to its endpoint.
+
+A yellow machine-relative sight line projects the same rear-axle reference
+plane used by GPS across the visible machine silhouette. It moves with the
+machine and lines up with the route independently of eye position. It is
+shown with GPS in the driver view and hidden in chase view. The visibility
+work is bounded to 65 samples; native forward-driver capture measured 48
+visible segments and 49 ray queries.
+
+DUMP RECOVERY AND APPEARANCE
+
+Full-bin dumping previously repeatedly added snow to nine tiny fixed patches.
+The current native baseline produced a 10.528 m column. Dump placement now
+settles the same volume into a broad mound; the matching current-code native
+fixture peaks at .910 m. Deep stock resists travel and feeds through the actual
+finite conveyors back into the tank. Contact yields and allows very slow
+creep; it is deterministic heightfield resistance, not a rigid Unity collider.
+See SnowRecoveryAndContact.txt for material balances and driven recovery tests.
+
+The renderer also had a separate defect: shared low corners surrounded a
+flat cap in every occupied cell, making even smoothly varying stock look
+ribbed. Shared reconstruction and sloped inner vertices now remove those
+repeated caps while retaining per-cell triangle volume and consistent normals.
+An identical 1.5 m3 stock fixture has the same field hash before and after;
+native captures show the smoother surface without changing its physical snow.
+The discrete outer footprint can still be visible at very close range.
+
+VERIFICATION
+
+Evidence folder: Validation~/OperatorFeedback-20261105/
+
+  core-final.log: all 43 deterministic simulation scenarios pass.
+  compile-final.log: Runtime and Editor source compilation, zero errors.
+  GpsReacquisition-results.txt: 16 targeted pickup cases, existing route
+    regressions and real operator recordings pass.
+  snow-feedback.log: authored/procedural dump-return and transport gating,
+    full-bin mass balance, raised-body impact and finite delivery pass.
+  onset.log: original ordinary augers-off overflow onset remains 18.4 m.
+  snow-geometry.log: plane/curved/random/board-clipped stock, exact shared
+    seams and volume, empty-cell cleanup and zero steady allocation pass.
+  legacy-snow-checks.log: previous mound/spout/material regression checks pass.
+  preservation-results.json: no changes to saved machine, arena, scene,
+    resource, shader, route recordings or Editor files from the 412-file
+    initial manifest. Existing bin-spout visibility/delivery logic, guide
+    roller, brush articulation, camera anchors and cockpit controls retained.
+
+Native before/after screenshots are in Before/Player-1920x1080 and
+After/Player-{1366x768,1920x1080}. Each after run covers 15 states, including
+menus, route views, GPS alignment, full-bin dump and identical-stock surface.
+Both players exited normally. All 70 staged runtime source files match final
+production hashes; see native-source-manifest-After.json and the native report.
+
+Native captures use current code in the existing Nov 1 packaged scene, with
+a validation-only serialized-config compatibility shim in the copied player.
+They verify rendered UI and runtime-generated snow, not the latest authored
+scene's saved asset fidelity or a manual keyboard/mouse driving playthrough.
+No production assembly, scene or user Editor process was patched for capture.

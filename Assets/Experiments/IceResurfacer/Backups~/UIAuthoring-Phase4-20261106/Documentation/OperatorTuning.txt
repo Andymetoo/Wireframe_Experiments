@@ -1,0 +1,356 @@
+CURRENT SNOW PRESENTATION / 2026-11-04
+
+See Documentation/SnowPresentationAndSpout.txt for the current mound/spout pass.
+Physical calibration, saved Operator Tuning and authored scene bytes preserved.
+Mound roughness is the existing windrowRoughness value, relabelled; default .7.
+New Bin spout visibility (x), default 1, range 0..3, changes only the density
+of fragments sampled from actual tank delivery. Zero hides it. No delivery,
+no spout. Restore resets it to 1. Overflow density/size remain independent.
+R toggles standing; Space temporarily stands. Look down through the existing
+top inspection opening with RMB to inspect the incoming stream.
+
+EARLIER AUGERS-OFF RECORD (presentation descriptions superseded above)
+
+CURRENT AUGERS-OFF PASS / 2026-11-04
+
+See Documentation/AugersOffSnowRealism.txt for current behavior and evidence.
+Measured ordinary-cut substantial overflow: 111.3 m before, 18.4 m now;
+actual driven authored onset 17.9133 m (19.5902 yd). No distance timer.
+
+Existing serialized settings remain intact. New usable-fill fraction .17 turns
+saved nominal .080 m3 retention into 13.6 L below the side lips. Normal banks
+within the new 50 mm intake height are swept whole into the finite conveyors.
+The existing pickup setting now governs deeper-bank plowing per traversal.
+Windrow facets (.7 default) change volume-normalized angular crests only.
+Particle density 3x, clump size 1.25x, flood .4x, wash .644 and bin 1x remain.
+The procedural scene acquires the new code defaults without a scene rewrite.
+
+Physical controls: Usable fill before spill, Loose intake height, Deep-bank
+plowing, existing H/V throughput. Presentation: Windrow facets, existing
+particle density/size. Inspector now shows actual usable retention litres.
+43/43 deterministic groups and Unity-reference compilation pass. Fresh Unity
+rendering/Inspector checks remain unavailable due to licensing initialization.
+
+HISTORICAL FIRST-PASS RECORD (new behavior above supersedes older descriptions)
+
+AURORA R-54 / OPERATOR TUNING FIRST PASS / 2026-11-04
+
+The authored scene now has an Operator Tuning component on its existing
+"AURORA R-54 / nose-in service and 5 cm ice" root. Select that object in
+Scenes/IceResurfacer_AuthoredMachine.unity and expand Operator Tuning.
+
+Save changes in Edit Mode to keep them. Play Mode changes take effect live,
+but follow Unity's normal rule: they revert when Play ends. To keep a Play
+experiment, copy the component, exit Play, paste its component values, then
+save the scene. Undo works for Inspector edits and experiment buttons.
+
+These initial settings are experiments, not manufacturer specifications:
+
+  Flood flow multiplier             0.4x  = 0.72 L/s at full valve
+  New shavings expansion            1.0x  = 3.1 loose m3 / solid m3
+  Loose snow pickup                 50 mm per full footprint traversal
+  Horizontal / vertical throughput  1.0x / 1.0x = 0.012 / 0.010 m3/s
+  Conditioner retention             0.080 m3 before side overflow
+  Wash recovery efficiency          0.644 (see calibration conditions below)
+  Bin visual fullness               1.0x
+  Overflow particle density         3.0x
+  Overflow clump size               1.25x
+
+Disable the component to return to the saved scene calibration. The restore
+button also resets its values and presentation to that calibration. Neither
+operation refills a tank, deletes snow, or changes material already stored.
+Re-enabling reapplies the experiment. The authored calibration itself still
+contains the original 1.8 L/s, 0.82 recovery and 6 mm pickup values.
+
+The procedural launch scene, Scenes/IceResurfacer.unity, has no tuning component
+and retains its original behavior and file bytes. No PlayerPrefs/global tuning
+is introduced. Operator forward-speed preferences continue to work as before.
+
+HOW THE CONTROLS DIFFER
+
+Flood flow scales the actual finite supply at the existing valve position.
+The Inspector shows effective full-valve L/s, predicted full-tank minutes and
+measured consumption L/s. At 1.8 L/s, 738 L lasts 410 s (6:50); at 0.72 L/s it
+lasts 1,025 s (17:05). This does not guarantee adequate film at every speed.
+
+New shavings expansion changes only the bulk volume produced from newly
+removed solid ice. The "2.5x loose volume" button changes 3.1 to 7.75 m3/m3.
+Existing loose snow is picked up once at its existing volume. Tank inventory
+is never independently multiplied. Expansion is a density calibration, not
+extra solid ice removal. The default remains 1x until you choose an experiment.
+
+Horizontal and vertical throughput scale finite conveyor capacities. A stopped
+motor transports nothing; a full throat backs up; a crowded/full tank, raised
+bin or jam can reject material through the existing physical discharge paths.
+The trough threshold sets retained loose volume before actual overflow. A lower
+threshold makes spillage begin earlier; lowering it below current stock sends
+the excess to the existing side deposits on the next tick.
+
+Bin visual fullness is presentation only. Its 2.5x button makes partial contents
+look fuller, capped at the shell's existing fitted maximum. The physical tank
+inventory and gameplay gauge continue to report actual stock. Zero stays empty.
+Overflow density and clump size affect transient particles only; actual deposit
+depth, location and material balances remain authoritative. No particles are
+emitted at zero actual spill. Existing pool/emission limits still cap density.
+
+Wash recovery uses the existing recirculation and surface-pickup model. It is
+not a forced tank-loss setting. Pump capacity, actual available surface liquid,
+residual film, priming, damage, freeze/spread and tank headroom still limit return.
+It does not change wash supply or the treatment delivered to the ice.
+
+Simulation controls have bounded sliders and finite-number validation. Physical
+tank capacities remain 738 L flood, 310 L wash and 3.54 m3 loose-equivalent snow.
+The Inspector meters separately show solid shaving, expanded new snow, existing
+loose pickup, tank delivery, stocks, overflow and wash/flood supply and return.
+Rates average at least 0.25 simulated seconds and freeze with simulation time.
+No gameplay HUD gauges or engineering panels were added.
+
+BEFORE / AFTER MEASUREMENTS
+
+Evidence is under Validation~/OperatorTuning. All material tests use production
+processing and a fixed seed. Apparatus tests prescribe poses; they are distinct
+from the driven reference route and from Andy_Try_1.
+
+Ten-minute wash fixture: full 310 L tank; full wash valve (1.05 L/s); conditioner
+down; pump OFF for the first 10 s, then normally ON; 1 m/s straight prescribed
+50 m lanes, 1.9 m pitch; 5 cm cells; 600 s total. Full flood valve is ON unless
+otherwise stated. This is an experiential calibration, not a manufacturer spec.
+
+  Baseline local settings, 1.8 L/s flood, recovery .82: 309.995 L remaining
+  Flood-only experiment, .72 L/s flood, recovery .82: 275.321 L remaining
+  Authored profile, .72 L/s flood, recovery .644:      248.188 L remaining
+  Same authored profile, half wash valve:            279.922 L remaining
+
+The initial baseline with flood OFF ended at 236.990 L. The difference is real:
+the pump can recover available surface water, including prior flood water.
+The calibrated profile with flood OFF ends at 210.970 L. Expect different
+results for other speeds, overlap, valve settings or priming. In the calibrated
+full-flow fixture, 630 L passes through the wash circuit, about 398.96 L returns
+directly and 169.25 L returns from available surface liquid; net reservoir loss
+is 61.81 L. Repeated circulation is throughput, not newly created water.
+
+Every wash-fixture step checks that combined return stays below the existing
+1.45 L/s pump capacity. Tank bounds and whole-system water stock are checked.
+The calibrated water-stock residual is 0.061 L across 6,000 float transactions.
+With the pump OFF, the finite 310 L tank empties; no recovery is fabricated.
+Half wash flow supplies 315 L instead of 630 L in ten minutes and leaves more
+scratches. A separate paired test verifies lower resulting ice quality as well.
+
+Ordinary streak fixture: deposit a finite 10 L narrow windrow, then make one
+correct cutting pass across its full width with both augers working:
+
+  Original 6 mm pickup: 0.00071703 m3 remains; max depth 0.793298 mm;
+                         396 inspected cells exceed snow-cover onset.
+  Authored 50 mm pickup: 0 m3 remains; max depth 0 mm; 0 such cells.
+  Tank stock increases from 0.018337 to 0.019054 m3, accounting for the pickup.
+
+The residue reproduced in the actual simulation, rather than only in a stale
+texture. Pickup formerly removed at most 6 mm over a full footprint traversal;
+even ordinary narrow streak peaks exceeded that. The new scene profile raises
+the existing finite limit, and all recovered material enters the trough and
+conveyors. Very deep drifts, incomplete edge coverage, a raised conditioner or
+blocked conveyors can still require another pass or spill collected material.
+
+Mesh/texture code audit: every SnowMm change dirties its cell; IceSurfaceView
+updates the snow texture channel and marks neighbouring sparse mesh chunks;
+the chunk builder disables triangles after their sampled accumulation clears.
+The ice shader's snow response reads that state channel. Adjacent retained snow
+can still produce a small reconstruction fringe at the cut boundary. No mesh
+or shader masking was added to conceal retained material.
+
+Full-sheet apparatus: 855.3 s, 1 m/s, .35 mm blade setting (.056 mm effective),
+1.95 m lane pitch, full flood valve, no wash, true 5 cm cells:
+
+  Profile             Flood used   Solid shaved   New bulk snow   Tank / 3.54 m3
+  Original authored   738.000 L    .083892 m3     .260064 m3     .557173 /15.739%
+  Tuned authored      615.896 L    .083892 m3     .260064 m3     .557173 /15.739%
+  2.5x new expansion  615.896 L    .083892 m3     .650160 m3     .947267 /26.759%
+
+Total tank fill grows less than 2.5x because pre-existing rink snow is unchanged.
+The additional .390094 m3 in the last tank comes from the expanded new source.
+With augers OFF, the tuned profile retains .080 m3 in the trough and leaves
+.468326 m3 on the surface. Cumulative spill transfers are .931117 m3 because
+later sweeps can recollect and spill the same material again. They are not an
+additional source or a measure of current pile stock. Largest full-sheet snow
+stock residual in these profiles is 0.00000302 m3.
+
+Representative DRIVEN full cuts use the existing generated reference, production
+20 ms stepping, .34 throttle, .30 mm blade, .60 flood valve, full wash when
+working, correct priming and both augers. They return to the service bay.
+The existing stricter scored-run regression remains a separate test.
+
+  Scene/profile       Time       Combined coverage  Flood left   Snow tank
+  Procedural default  1775.97 s  89.805%            0 L          .729716 m3
+  Authored baseline   1775.97 s  89.767%            0 L          .718188 m3
+  Authored tuned      1775.97 s  95.732%            31.573 L     .718177 m3
+
+Largest driven stock residuals: 0.00006389 m3 snow and 0.616 L water (existing
+float arithmetic). Tuned water residual: 0.147 L. This longer overlapping route
+ends with about 301.2 L wash water, showing why the ten-minute fixture target
+is conditional rather than an artificial time-based drain.
+
+MECHANICAL AUDIT / NOTHING MOVED
+
+Front guide roller and board brush are separate assemblies. The saved guide is
+"Front-left board guide / distinct from board brush"; the brush uses
+"Board brush articulated arm / left side" and its own small kickplate roller.
+
+The read-only asset audit composes the actual saved transforms, reads custom
+mesh vertices and uses built-in primitive bounds. Current measurements:
+
+  Front guide centre            x -1.001, y .530, z 2.444 m; radius .090 m
+  Front guide outer reach       1.091 m left of rear-axle reference
+  Earlier backed-up centre      x -.827 m; outer reach .917 m
+  Change in previous pass       174 mm outward; bracket .195 -> .369 m
+  Conditioner side-plate outer   +/-1.064 m; z -1.325 .. -.525 m, authored lift
+  Conditioner assembly outer    +/-1.066 m; matching collider half-width 1.066 m
+  Body excluding these rigs     +/-1.020 m
+  Deployed brush centre         x -.936496, z 1.300 m; radius .192 m
+  Deployed brush outer reach    1.128496 m
+
+Thus the current guide leads the conditioner envelope by 25 mm on a straight
+board. At the earlier position it trails the conditioner by 149 mm. This is the
+functional conflict the previous pass resolved by moving the model. That move
+is not repeated here. Small plausible choices for a later decision are:
+
+  1. Restore the preferred roller placement and let the true conditioner/body
+     envelope contact first. Keep the simulation matched to the visual model;
+     review protective side skids and resulting handling. No invisible roller.
+  2. Accept a compact compromise: about x -.981 gives a 5 mm straight lead with
+     the current .09 m radius. That is 154 mm outward from the earlier pose,
+     or 20 mm inward from the present one. It cannot preserve the earlier pose.
+
+Making the small guide lead from x -.827 would require roughly .239 m radius,
+or a narrower conditioner envelope. Those are substantial mechanical redesigns,
+not a small correction; neither is proposed for this pass. Turning also matters:
+at +1 degree heading (nose away from the left boards), conditioner reach is
+1.0913 m while current roller reach is 1.0482 m. Even today's straight lead does
+not guarantee roller-first contact while turning. Full support measurements at
+-5/-1/0/+1/+5 degrees are in asset-audit.json. Collision safety is unchanged.
+Any later geometry change must retain strict route compatibility/revalidation.
+
+Board Brush Rig already exposes pivot X/Z, arm length, contact radius and working/
+stowed angles, with draft/application, previews, Scene handles, bristle-radius
+matching, Undo and previous-geometry restore. It also exposes cosmetic heights,
+head tilt/scale, link attachments and its own roller carriage. Those cosmetic
+offsets do not change the swept disc. Apply geometry in the authored scene;
+Prefab Mode resolves its calibration but does not write to a saved scene.
+
+The rig draft matches the local scene; visible bristle radius equals the .192 m
+simulation radius. The brush reaches about 37.5 mm beyond the present guide,
+versus 62.5 mm beyond the conditioner. Placement limits contact opportunity, but
+there is no spring state in the current Core/SurfaceProcessing.UpdateBoardBrush:
+it immediately projects the disc inward at the board. IceBoardBrushRig.Pose then
+puts the visible head at that same simulated centre. A renderer-only spring
+would make visible bristles and snow pickup disagree.
+
+A later spring implementation should keep compression/velocity in Core, use a
+hard board penetration limit, and integrate damped return in the fixed step.
+Both snow sweep and head/link posing must consume the resulting single centre.
+Spring travel/stiffness/damping, as distinct from pivot/reach, require code.
+The existing Inspector can tune reach and presentation, not dynamic compliance.
+
+Camera: the recent dedicated Driver Eye / Controls View anchor pass is absent.
+The existing editable Transform is "Seated eyes / attached to driver seat",
+under "Driver seat assembly / left", bound as IceMachineRig CameraMount.
+Its seat-local position is (-.21,.67,.09); machine position (-.82,2.238,-.846).
+The seat centre is (-.61,1.568,-.936). Runtime eye-height offset adds .06 m.
+The eye is indeed 210 mm left of the seat centre, but the neutral eye is not
+inside the measured backrest: seat-local backrest extends to z -.155 and
+y .525, while the eye is z .09, y .73 including the height adjustment.
+
+Recommended starting authored eye position: seat-local (0,.67,.14), identity
+local rotation, giving machine (-.61,2.238,-.796) before the runtime height
+adjustment. This centres the eye and adds 50 mm forward clearance. No seat or
+control moves are needed. The E controls view is currently calculated from
+the visible grips and a hardcoded -.18 m lean; it has no independent saved
+Controls View anchor. Independent tuning of that view needs the missing anchor
+feature. These positions are recommendations, not edits or Play-verified views.
+
+DEFERRED DESIGNS
+
+Physical cockpit switches: add optional IceCockpitSwitch components to three
+individually movable prefab children. Each carries its action, grip/pick volume,
+rest pose and feedback geometry. Extend the existing picking/occlusion system
+to discover these optional controls instead of adding required IceWorld bindings
+that would break the authored prefab. Brush and pump latch the same Controls
+booleans already used by keys 4/5 and the existing dashboard; visual detents read
+that authoritative state. Preserve current pump priming/dry-running consequences.
+
+Horn has no current action, keyboard/HUD binding or audio layer in the local
+implementation. Add one shared momentary action and spatial horn sound; mouse,
+keyboard and HUD hold sources feed it. Release on pointer/key release, focus
+loss, pause, dismount and session restart. Let the operator place each saved
+control left of the wheel. Validate picking after moving each one, occlusion,
+cross-input parity, momentary release and prefab persistence. No switches were
+created in this pass.
+
+Advanced snow: keep IceField.SnowMm as the authoritative quantity/location and
+EnvironmentField as off-ice stock. Current presentation already uses sparse
+dirty 2 m chunks (20x20 faces), a streaming state texture, reusable bin/trough/
+pit meshes and five bounded particle pools (2,520 maximum particles total).
+There are no per-cell or per-clump persistent GameObjects.
+
+Build the next presentation pass on those chunks: deterministic irregular grain
+profiles seeded by cell/chunk, faceted normals, volume-normalized clump shapes,
+distance LOD and a bounded rebuild budget. Reuse or GPU-instance transient clump
+meshes within the existing pools. Derive all occupancy from actual stock; preserve
+contact positions and ensure pickup invalidates visible facets immediately.
+Avoid multiplying persistent field height to obtain more apparent mass.
+
+Future shoveling should conservatively transfer material between cells/containers.
+Hot-water melting needs thermal energy plus water-equivalent material accounting.
+The current snow ledger stores loose-equivalent m3 and tracks shaved solid m3;
+it is not a kg/density simulation. Mixed expansion settings will require a parallel
+water-equivalent channel in snow cells and reservoirs before physically accurate
+melting is possible. No melting/shoveling or faceted-mesh work was implemented.
+
+VALIDATION, PRESERVATION AND REMAINING WORK
+
+PASS: 957 original files copied and SHA-256 verified before modifications in
+Backups~/2026-11-04 Operator tuning first pass/Manifest.json.
+PASS: existing 41-scenario deterministic suite before and after, including
+collision, finite material, scored full run and actual recorded-route checks.
+PASS: authored/default material scenarios, ten-minute calibration, per-step pump
+limit, mixed live expansion, exact settings restore, bounded/finite settings,
+unchanged strict geometry compatibility, ordinary streak pickup, full-sheet
+augers-on/off scenarios and three representative driven full cuts.
+PASS: all Core/Presentation/Editor sources compile against installed Unity 6000.4.1f1
+managed assemblies: zero errors. Existing obsolete-API/serialization warnings remain.
+PASS: read-only asset audit verifies that the authored scene only gained component
+1003 and its root reference; all original documents, calibration and overrides match.
+
+BLOCKED: real Unity Play Mode, Inspector interaction, prefab runtime binding and
+rendered mesh/shader comparisons. The isolated editor exited 198 before project
+compilation: "No valid Unity Editor license found. Please activate your license."
+No framebuffer comparison or visual fullness/particle evaluation is claimed.
+The supplied IceOperatorTuningValidation.Run entry performs those checks in the
+isolated copy once an Editor license is available.
+
+Remaining work: run those Unity checks; evaluate the experiment during operator
+driving and retune flow/recovery as needed; choose the roller geometry tradeoff;
+add shared brush spring dynamics; install independent camera anchors; implement
+the physical switches/horn; build faceted snow and its performance measurements;
+add true density/thermal inventory before melting or shoveling.
+
+Re-run standalone material checks:
+  python Validation~/OperatorTuning/AssetAudit.py
+  dotnet run --project Validation~/OperatorTuning/Measurements.csproj -c Release -- --scene Validation~/OperatorTuning/scene-config.json
+  dotnet run --project Validation~/IceResurfacer.Validation.csproj -c Release
+
+These paths are relative to Assets/Experiments/IceResurfacer. On this machine
+use C:/Users/agaug/AppData/Local/Programs/Python/Python312/python.exe if the
+Windows python alias is unavailable. Offline compile: dotnet build
+Validation~/OperatorTuning/CompileUnity.csproj -c Release (local installed references).
+
+For Unity: update the isolated copy with Validation~/StageUnityValidation.ps1
+-UpdateOnly, then run Unity against Validation~/UnityProject with -batchmode
+-force-d3d11 -executeMethod IceResurfacer.Editor.IceOperatorTuningValidation.Run
+and a log path; do not use -quit because the validator exits after Play checks.
+Do not point validation at the main project. No bake/regenerate operation is used.
+
+Source changes are limited to the new tuning settings/component/Inspector and
+validation files, three small existing-code integrations (two counters, session
+config application, snow presentation settings), and the authored scene's new
+component. The prefab, meshes, arena, materials, existing routes and procedural
+scene were not edited. No commits, pushes or branches were created.

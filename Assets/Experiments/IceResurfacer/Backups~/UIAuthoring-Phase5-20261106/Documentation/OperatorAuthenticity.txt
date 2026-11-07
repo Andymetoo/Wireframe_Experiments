@@ -1,0 +1,430 @@
+AURORA R-54 / OPERATOR AUTHENTICITY AND MATERIAL CONSEQUENCES
+28 October 2026
+
+Current pass report. README.txt is the launch and controls guide. This report
+supersedes the control views, tire width, maximum blade calibration and service
+room dimensions in SurfaceServiceRefinement.txt; that document retains the
+previous completed baseline. Final core and integrated Unity validation PASS.
+Native HUD validation also PASS at both resolutions. The 14-workload rendered
+performance runs, sustained samples and duration-matched comparison with the
+prior shorter benchmark are complete. Limits and measured regressions are below.
+
+Launch and controls
+
+Open Assets/Experiments/IceResurfacer/Scenes/IceResurfacer.unity and press Play.
+The machine starts nose-in toward the service-room pit. S backs onto the rink.
+Handling, wheelbase, steering calibration, nominal top speed and the 3.5-turn
+blade wheel are retained. The maximum blade setting now has a stronger physical
+bite and corresponding load; normal .35 operation retains its previous bite.
+
+Hold Q for a left/down board-side inspection (yaw -95, pitch 75 degrees), E for the physical control bank,
+or C for an external chase view. Release restores the saved custom head pose.
+Overlap priority is C > E > Q; the original pose is saved once for the complete
+overlap sequence. RMB remains persistent manual head look, X recenters, R
+toggles standing and Space temporarily stands. F mounts/dismounts; on-foot E
+remains interaction. Automatic cursor-driven camera steering was omitted.
+
+The physical bank runs LEFT TO RIGHT as viewed from the operator's seat:
+VERTICAL AUGER / CONDITIONER LIFT / HORIZONTAL AUGER / DUMP TANK.
+These are relocated lever assemblies and pivots, not renamed labels. Physical
+selection follows their transforms. Augers latch; hydraulic lift/dump spring to
+neutral and hold the attained equipment position. Keyboard 2 still toggles the
+horizontal auger, 3 the vertical; 1/Shift+1 lower/raise the conditioner, and
+7/Shift+7 raise/lower the bin. The independent water valves and blade handwheel
+remain inboard and reachable. The newly supplied annotated photograph agrees
+with the traditional bank order and relative valve/handwheel placement.
+
+Reference provenance and geometry
+
+Primary traditional-machine source: the user-supplied 526 Operating Instructions
+English.pdf, DM-20077, revision 3/10/25. PDF pages 10-12 (printed ix-xi) give
+components, dimensions, capacities and turning radius. PDF page 48 (printed
+5-3) shows the operator controls. PDF page 84 (printed 9-5) gives blade adjustment
+travel. The rendered PDF takes precedence over its imperfect extracted text.
+The supplied seated photograph represents an approximately 6 ft 4 in operator;
+it informs sightlines, rather than establishing dimensions by perspective alone.
+
+Manufacturer 546 comparison, checked for this pass:
+https://zamboni.com/wp-content/uploads/specs/546_specs.pdf
+https://zamboni.com/product/model-546/
+
+Dimension / capacity             526 reference     546 reference     Aurora
+Blade width                     1.956 m           1.956 m           1.956 m
+Blade fore-aft / thickness       .127 / .0127 m    not used here     .127 / .0127 m
+Wheel track                     1.370 m           1.370 m           1.370 m
+Wheelbase                       1.95 m (77 in)    1.96 m            1.960 m
+Conditioner turning radius      4.86 m (16 ft)    4.87 m            retained calibration
+Body width                      2.130 m           2.130 m           2.130 m
+Lowered envelope L / H          4.04 / 2.21 m     4.04 / 2.21 m     procedural, not CAD
+Raised envelope L / H           5.03 / 3.71 m     5.03 / 3.73 m     procedural, not CAD
+Snow actual / compacted rating  2.83 / 3.54 m3    2.83 / 3.54 m3    3.54 m3 accounting
+Flood / wash water              727 / 273 L        738 / 310 L        738 / 310 L
+Empty / water-filled mass       3143 / 4240 kg     2912 / 3910 kg    no explicit mass model
+Tire designation                LT215/85R16        not used here     .215 m nominal width
+
+The wheelbase/radius differences mostly reflect metric rounding of the quoted
+inch/foot dimensions. Aurora retains its established 546-based handling and
+capacities; it is not relabeled as a dimensionally exact 526. Driving uses an
+approximate snow-load factor, not these published mass values. The former .300 m
+tire width had no support in these references and is corrected to the nominal
+.215 m section, including rendered tires/rims/treads and overlap calculations.
+The outside tire edge is now .7925 m from the centerline. Steering angles and
+track are unchanged. Wheel-well/chassis geometry exposes the actual steered
+front tires; camera tests measure their articulation, roll and visibility.
+The instrument task lamp also blocked the actual seat-to-tire ray. Moving that
+small lamp 18 cm inboard exposes the front-left upper tread without moving the
+seat or exaggerating steering: 18/39 left, 9/39 centered and 6/39 right sampled
+upper-tread rays are visible. Both front wheels match the simulation angle,
+clear the body through their swept surfaces, and retain track/wheelbase; all
+four wheels roll. Actual left/center/right captures include the ordinary seated
+view and a modest down-glance from the same seat. Visibility remains partial,
+as other real body/hydraulic fittings still obstruct portions of each tire.
+
+Centered-wheel mesh bounds, including fittings, measure body W/H/L =
+2.336/2.176/3.550 m and conditioner W/H/L = 2.132/.708/1.347 m. The complete
+aligned length is 4.175 m, with body front exactly +2.500 m. The 2.130 m body
+reference does not include every protruding fitting in the 2.336 m mesh bound;
+the complete model is not claimed to equal the published 4.04 m envelope.
+
+The blade, simulated shaving footprint and rendered blade all use 1.956 m.
+At this 5 cm cell phase the touched raster spans 2.00 m; that is sampling, not a
+wider blade. The towel remains 2.100 m wide by .270 m fore-aft. Housing width is
+2.120 m, with side plates .014 m thick at +/-1.057 m (outer width 2.128 m).
+The blade sits .300 m ahead of the conditioner origin; the towel centers .440 m
+behind it. The .120 m finite wet fringe per side receives 5% of the SAME flood
+volume. It does not widen the blade or grant cutting credit. Strong wet raster
+width remains 2.300 m in the measured parallel fixture.
+
+Pit stopping and room water
+
+The reproduced premature stop came from ContainsVehicleFloor expanding the pit
+by .120 m, plus finite-step contact, while visible rims extended separately.
+Six slow approaches (0, +/-15, +/-30 and 90 degrees) stopped approximately
+.120-.124 m short of the visible pit rectangle. The old normal used the vehicle
+center, which could select the wrong pit face on a side approach. There was no
+automatic docking, rotation, parking or dismount mechanism behind that stop.
+
+The collision clearance is .010 m; visible .100 m rims lie inside the same
+4.0 x 2.4 m pit rectangle. Segment checks prevent a footprint edge bridging a
+pit corner. Contact records the rejected footprint point and normal. F3 draws
+accepted/rejected footprints, visible/collision pit boundaries, contact point
+and normal, and reports rejected pose, speed and reason. This remains a solid
+obstacle: reversing clear restores movement without a snap. Focused approach
+measurements now stop .0104-.0136 m from the visible rectangle. A 75-degree
+glancing contact preserves heading while sliding; no service-contact steering
+assistance is applied. The existing rink guide-roller response remains.
+TAB + F3 uses a compact left-side contact panel, leaving the world-center pit
+and footprint outlines unobscured. TAB again restores full diagnostic detail.
+
+The room narrows from 12 to 11 m; its length, gate, pit and centered parking stay
+fixed. Supply/holder move with the inward wall and retain the clear rear aisle.
+Floor water is finite stock updated at 5 Hz on a bounded 5,040-cell grid. Existing
+buffers move it between valid neighboring floor cells, toward a 1.4 L/s drain.
+The display uses localized darkened concrete, irregular shallow edges and modest
+wet reflections. It no longer draws an instant source-to-drain ribbon. A 20 L
+focused fixture retains .4716 L and drains 19.5284 L after 80 s, with no leakage.
+Environment.DrainedWaterLiters is the drain sink; TotalServiceDrainLiters is
+historical discharge and must not be added again as independent water stock.
+See PitServiceCollision.txt, Service-collision-focused.txt and
+Service-geometry-results.txt. The final runtime verifies actual rendered/core
+pivots, source geometry and conservation. Same-camera floor captures differ in
+55,290 pixels after drainage: a localized source patch becomes faint residual
+wetness, rather than merely changing invisible water quantities.
+
+Snow production and failures
+
+The observed low maximum fill was reproducible: the old .80 nominal handwheel
+setting shaved only .128 mm. In the full-sheet dry apparatus it produced
+.191752 m3 solid ice, .594432 m3 expanded shavings and .297108 m3 initial loose
+pickup: .891539 m3 in the tank, or 25.18%. Enabled conveyors drained fully; no
+spill or conveyor bottleneck explained the low fill.
+
+The .15/.35 settings retain .024/.056 mm actual bite. Above .35 a smooth
+quadratic addition reaches .600 mm at .80. This is an explicit operator-review
+calibration, not a manufacturer specification. The manual's four turns for
+approximately .08 in adjustment describes blade travel, not actual cut depth.
+Snow expansion remains 3.1, tank capacity remains 3.54 m3 and initial snow is
+unchanged. The gauge displays actual stored material.
+
+Both augers on, first / second dry full-sheet apparatus passes:
+Setting   Actual bite   Shaved solid/pass   Expanded/pass   Tank first / second
+.15       .024 mm       .035954 m3          .111456 m3       .408567 / .111447 m3
+.35       .056 mm       .083892 m3          .260064 m3       .557173 / .260078 m3
+.80       .600 mm       .898838 m3         2.786399 m3      3.083510 / 2.786396 m3
+
+Maximum fills become 87.10% / 78.71%; normal fills remain 15.74% / 7.35%.
+At 1 m/s normal estimated load remains .349; maximum rises to about 1.484.
+All 18 before/after combinations also cover both augers off and horizontal on /
+vertical off, first and second passes. Independent scans account for source
+ice, loose pickup, each conveyor, tank, ground and surface snow. Maximum new
+balance residual is below .000015 m3. Gross pickup/spill histories may revisit
+material and are not additional sources. The apparatus prescribes lane poses
+to isolate machinery; it is NOT the separately driven full-route validation.
+SnowCalibration.txt and Snow-calibration-after.txt contain all measurements,
+remaining gouge depths, quality, accumulated overcut and experiment limits.
+
+The .080 m3 trough fills before side escape. Horizontal OFF eventually produces
+two low side streams; vertical OFF first fills the .055 m3 throat and backs up.
+A full connected bin rejects upper delivery and can jam; a raised bin misses
+the upper chute without inventing a blockage. A jam stops transport. HUD states
+identify these causes and trough stock. Two additional bounded 360-particle
+pools depict actual side escape; persistent snow resides in the existing field.
+Together with accepted delivery, upper escape and dump emission there are five
+fixed pools, not per-flake objects. Trough mesh fill uses actual stored snow.
+
+Loose snow pickup allows 6 mm/pass independently of solid shaving depth, so
+windrows can be collected. Conveyor capacity still limits handling; overload
+can spill again. The focused test creates .043669 m3 of side escape, recovers
+both windrows and verifies no double collection, with .00000016 m3 residual.
+
+Minimap holidays and ice polish
+
+Two actual forward working passes 2.05 m apart leave 80 wet-but-insufficiently-cut
+cells in the inspected strip. Four also exceed the loose-snow limit in the core
+fixture (five in the Unity fixture); none are dry. The wider wet band hides the
+uncut seam optically. At tire-aligned 1.9425 m centers the measured gap is zero.
+A 5 cm cell occupies only about .225/.316 screen pixels in the 1366/1920 survey;
+point sampling can exaggerate or omit a subpixel seam. Both physical deficiency
+and overview sampling therefore matter. Turning still needs operator review.
+
+Normal map colors explicitly distinguish uncut, cut/dry, wet/uncut, loose snow,
+too wet, resurfaced and shaving-excluded perimeter. Hover magnifies the actual
+16 x 16 cells and reports cut/required depth, water, snow and remaining gouge.
+No missing cell is filled, scoring threshold reduced or coverage state changed.
+F2's mask and actual cut/wash/flood channels remain available. Classification
+gives snow/excess water precedence while hover exposes concurrent deficiencies.
+
+Wet highlights now correspond to the 18 existing arena diffusers, with subtle
+wetness-dependent blur. No extra lights, reflection probes, render passes or
+water are added. Existing grooves, dry-cut response and 420 s aging remain.
+Paired identical-camera/state images Ice-reflection-before/after.png are created
+by toggling only the highlight implementation. Final Unity measurement records
+.00022 mean normalized RGB change across the frame and 9,106 changed pixels,
+with equal water/pose.
+Dense actual snow now obscures wet sheen and grooves beneath its deposited stock.
+
+The board white face previously overlapped the kickplate by .040 m on a shared
+plane. The face now starts above the kickplate. The bumper and front lamps align
+with the configured BodyFront rather than extending beyond its collision bound.
+No global depth bias is added. A height-aware probe follows the real tank hinge,
+door skins, tapered shoulders and sloping crown. It permits overhang above the
+glass and pit rim, but blocks actual wall/glass/doorway intersections. At the
+east-board fixture lift stops at .4473; reversing physically clear allows full
+lift, and full lift over the pit remains available. The checks apply to actual
+candidate movement and lift, without a general raised-bin travel lock. All of
+these core regressions and the actual rendered-geometry agreement checks pass.
+
+Excessive cutting is a uniformity issue, not routine paint damage. Quality now
+uses actual cumulative removal, with .80/.65 mm ordinary/sensitive thresholds,
+instead of dividing the nonlinear bite by the former constant .16. Two maximum
+passes have .4073 mm mean excess above those local thresholds and lower dry
+quality. Treatment coverage rules stay fixed. No physical remaining-thickness
+field exists, so exposing rink paint is explicitly future work.
+
+Validation status and performance
+
+Final executed aggregate: 35 core scenario groups PASS in Results.txt,
+including snow recovery/material accounting, truthful minimap examples, all six
+pit approaches, reverse recovery, no automatic glancing-contact alignment,
+finite floor drainage, raised-tank contact and unobstructed pit overhang.
+The complete control-driven scored route passes: 96.67% reachable combined
+coverage, 95.14% whole-ice combined coverage, 97.04% water coverage, 77.3% finish,
+88.8 score, 677 L, .724 m3 in the pit, 1,787 simulated seconds and zero misuse.
+It reverses from the normal spawn, works the sheet, returns, dumps and finishes
+without pose resets/refills/capacity changes. Previous completed baseline was
+77.0% finish / 88.7 score at the same coverage; quality calibration changed.
+
+Final integrated Unity Play Mode: every suite PASS, zero managed errors or
+exceptions. Camera validation includes 124 checks: exact held-view restoration,
+overlap priority, RMB interruption, R/Space during inspection, mounted/on-foot
+transitions, chase-wall clearance and actual wheel geometry/sightlines. Physical
+controls pass 40 checks, including relocated picking and independent machinery.
+Operations prove finite two-sided emission and persistent recovery. Service
+tests cover real walking/hoses, six pit approaches, raised-bin geometry and
+visible floor drainage. Ice tests cover exact maps, reflections and bounded
+aging (maximum observed alpha error 1/255). The successful runtime reports and
+captures are now in Validation~/.
+
+Final native HUD runs PASS at 1366x768 and 1920x1080 with no measured text
+clipping or managed errors. Real mouse messages verify controls, exact-cell
+survey hover and full/compact F3 contact panels. The compact capture leaves the
+actual vehicle/pit outlines visible in the scene. Each hidden-window run logs
+11 native D3D presentation warnings, counted separately from managed errors;
+these captures do not establish focused-window input latency. Reports:
+HUD-player-results-1366x768.txt and HUD-player-results-1920x1080.txt.
+
+Preservation-results.txt verifies all 86 common runtime/editor/asset hashes
+match the isolated validated source. Missing imported metas, duplicate imported
+GUIDs, source mismatches and changed paths outside IceResurfacer all number zero.
+The original Editor stayed open; no branch, commit or push was performed.
+Rendered performance is measured separately below, not inferred from mechanics.
+
+The existing 5 cm grid, dirty-cell updates, incremental report totals, bounded
+65,536-entry wet-aging sweep and quantized upload skipping remain. Current data:
+../Validation~/PerformanceOperatorAuthenticity/Performance-<resolution>.csv.
+Both final 29,999-interval sustained measurements are complete. The same binary
+also completed a repeat with the prior 1,499-interval long_session duration in
+../Validation~/PerformanceOperatorAuthenticityMatched/. Both repeats have zero
+managed errors and 18 separately counted native presentation warnings each.
+
+Duration-matched comparison: mean / p95 frame milliseconds. Each ordinary row
+has 299 intervals; long_session has 1,499 in both old and repeat datasets.
+The old data is preserved in OperatorAuthenticityBefore/PerformanceSurfaceService/.
+The repeat was measured 28 October at 18:30:15 / 18:30:48 PDT. The extra two
+workloads have no previous equivalent. Maximum-cut machinery now removes more
+material; matching duration does not make every mechanical state identical.
+
+Workload                   1366 before    1366 current    1920 before    1920 current
+driving_full_hud            2.895/4.136    3.043/4.167     3.594/5.951    2.923/3.832
+resurfacing_full_hud        3.484/5.905    3.609/5.982     4.178/6.951    3.352/5.780
+resurfacing_compact         2.754/5.243    3.191/5.488     3.019/5.638    2.878/5.295
+snow_overflow              3.561/5.842    3.252/5.383     4.122/7.285    3.403/5.773
+camera_changes             4.009/6.519    3.201/5.486     3.316/5.587    3.302/5.560
+service_walking            1.957/2.847    1.792/2.503     2.185/2.412    2.393/2.691
+hose_filling               2.006/4.441    1.813/3.167     2.713/4.603    2.461/3.136
+hose_overflow              2.066/4.301    1.669/2.965     2.823/4.779    2.473/3.261
+dump_shakeout              2.573/3.675    2.733/3.894     4.029/5.936    3.545/5.221
+long_session               3.532/6.544    3.324/6.293     3.691/7.154    4.415/7.897
+on_foot_movement           2.101/3.077    1.683/2.382     2.442/2.963    2.738/3.282
+late_wet_sheet            4.819/10.502    3.814/8.995     4.076/9.474    4.122/9.910
+conditioner_side_escape          --      3.012/4.887           --      3.136/5.068
+chase_resurfacing                --      3.607/5.960           --      3.550/5.972
+
+This is not a uniform speedup. Matched full-HUD active mean changes +3.6% at
+1366 and -19.8% at 1920. The 1920 short long_session mean rises 19.6%, and
+1366 compact resurfacing rises 15.9%. The 1920 whole-wet repeat is close to its
+old baseline (+1.1% mean / +4.6% p95), while the longer-run trace below remains
+slower. Repetition narrows the duration mismatch but does not prove a cause for
+run variation or erase the observed slower trace. No test threshold is weakened.
+All measured work blocks allocate zero; active full-HUD WHOLE-frame allocation
+is still 23,063/18,623 B per frame in the repeat. CPU/GPU/GC details for all rows
+are retained in the paired CSVs. Draw-call reporting remains unavailable (-1).
+
+Environment: Windows 11, i5-11400H, RTX 3050 Laptop GPU, Unity 6000.4.1f1,
+development Mono player, Direct3D11, VSync off and unlimited target frame rate.
+The hidden/offscreen player runs one deterministic 20 ms tick per rendered
+frame. Results measure fixed-workload rendered throughput, not normal real-time
+Editor FPS or focused input latency. Builds and other native probes are not run
+concurrently. Each workload has 90 warmup frames, then 299 recorded intervals;
+the extended long_session below records 29,999 from its 30,000-frame budget,
+versus the matched repeat's 1,499 from 1,500. Setup and
+warmup are excluded. CPU work excludes IMGUI/render; GPU uses positive platform
+FrameTiming samples. CPU and GPU overlap and must not be added together.
+
+Extended-run trace: 1366x768 / 28 October, 18:22:37 PDT (29 October 01:22:37 UTC)
+Workload                 Frames  Mean ms  P95 ms  CPU ms  GPU ms  GC B/frame
+driving_full_hud             299    3.275   4.381   0.420   1.319       20244
+resurfacing_full_hud         299    3.689   6.077   1.037   1.320       20843
+resurfacing_compact          299    2.995   5.438   1.044   1.278       11536
+snow_overflow               299    4.003   6.749   1.095   1.333       21180
+camera_changes              299    3.908   7.666   1.094   1.433       20306
+service_walking             299    2.461   3.748   0.373   1.145       11546
+hose_filling                299    2.893   4.639   0.533   1.257       12359
+hose_overflow               299    2.123   3.733   0.470   1.233       12498
+dump_shakeout               299    3.116   4.089   0.609   1.189       21007
+long_session              29999    4.402   9.633   1.493   1.307       20255
+on_foot_movement            299    2.086   3.162   0.355   1.265       11546
+late_wet_sheet              299    3.860   9.147   1.433   1.357       20887
+conditioner_side_escape     299    3.115   5.184   0.816   1.345       21555
+chase_resurfacing           299    3.880   6.148   1.123   1.472       20306
+
+Extended-run trace: 1920x1080 / 28 October, 18:25:21 PDT (29 October 01:25:21 UTC)
+Workload                 Frames  Mean ms  P95 ms  CPU ms  GPU ms  GC B/frame
+driving_full_hud             299    2.980   3.872   0.433   2.561       16914
+resurfacing_full_hud         299    3.419   5.794   1.046   2.626       17513
+resurfacing_compact          299    3.836   6.737   1.307   2.508        8206
+snow_overflow               299    4.204   7.139   1.197   2.586       17850
+camera_changes              299    3.975   6.637   1.151   2.885       16976
+service_walking             299    2.517   2.921   0.344   2.414        8216
+hose_filling                299    2.669   4.165   0.559   2.538        9019
+hose_overflow               299    2.579   3.578   0.472   2.479        9168
+dump_shakeout               299    2.995   4.057   0.629   2.450       17676
+long_session              29999    5.062  10.807   1.709   2.531       16925
+on_foot_movement            299    3.257   4.706   0.458   2.835        8216
+late_wet_sheet              299    7.133  15.169   2.094   2.561       17557
+conditioner_side_escape     299    5.951   9.507   1.248   2.632       18225
+chase_resurfacing           299    6.029  11.859   1.513   2.910       16976
+
+The 1366 sustained sample advances about 600 simulated seconds in approximately
+132.06 seconds of measured render time. Of 29,999 measured intervals, 29,768
+have speed above .1 m/s and all 29,999 remove actual ice. It removes .069790 m3
+solid ice and the flood reservoir loses 345.749 L. End-of-run active wet cells:
+52,756. Five-thousand-frame window samples report 67.1-69.3 MB live managed
+heap; the scenario performs 185 collections. Mean last-1,000-frame costs rise
+from 3.599 to 4.978 ms as the active surface grows, so timing is not flat through
+the workload. These bounded heap samples do not establish indefinite stability
+or prove the absence of leaks. Whole-frame allocation remains 20,255 B/frame;
+zero allocation in the measured work blocks does not mean an allocation-free
+Unity player. All 14 measured work blocks report zero allocation; draw-call
+reporting is unavailable (-1). Runtime managed errors: zero. Native hidden-window
+D3D presentation warnings: 73, counted separately.
+
+At 1920 the same sustained simulation records 5.062/10.807 ms mean/p95 over
+29,999 intervals, approximately 151.86 seconds of measured render time. Moving,
+cutting and material quantities match 1366 exactly. Live-heap windows span
+67.08-69.39 MB with 155 collections; last-1,000-frame means range 4.506-5.684 ms.
+The player still allocates 16,925 B/frame in this scenario; measured work blocks
+allocate zero. Managed runtime errors: zero. Native presentation warnings: 84.
+
+Before/after interpretation: prior 1366 full-HUD resurfacing was 3.484/5.905 ms
+mean/p95; current is 3.689/6.077 ms (+5.9%/+2.9%). Late-wet-sheet changes from
+4.819/10.502 to 3.860/9.147 ms. The new side-escape and chase workloads have no
+prior matched rows. Previous long_session has only 1,499 intervals, so it is
+not duration matched to this 29,999-interval result. Maximum-depth workloads
+now shave more ice, tires/control layout and rendering also changed, and host
+variation remains; these are full-pass measurements, not an isolated shader A/B.
+
+1920 full-HUD active work changes from 4.178/6.951 to 3.419/5.794 ms mean/p95.
+The later whole-wet workload worsens from 4.076/9.474 to 7.133/15.169 ms after
+the much longer endurance block. Its measured CPU work rises 1.470 -> 2.094 ms,
+while GPU time is similar (2.554 -> 2.561 ms). This does not isolate the cause:
+runtime state, CPU/background/thermal variation and workload ordering may matter.
+A same-binary repeat using the prior 1,500-frame endurance budget is complete
+at both resolutions in PerformanceOperatorAuthenticityMatched/, as tabulated
+above. It does not discard the sustained result or establish its cause. Faster
+1920 active results than 1366 do not establish that higher resolution is cheaper.
+
+Fixture details: service_walking is the retained camera-sweep workload;
+on_foot_movement executes the actual collision-aware walk/camera routines.
+late_wet_sheet explicitly seeds .30 mm real film on all 599,224 ice cells in
+stripes aged 0-15 minutes; it is not a driven completed resurfacing route.
+Its Surface.Refresh cost averages .690/1.005 ms at 1366/1920 across all measured frames.
+conditioner_side_escape seeds a nearly full trough, then performs real maximum
+shaving with both augers off. chase_resurfacing ticks the actual external camera
+while steering and resurfacing. CSV flood_used_liters is signed starting-minus-
+ending reservoir volume: -71.997 L during filling means the tank gained water,
+not negative consumption. Moving counts require speed above .1 m/s; cutting
+counts require the actual shaved-ice source meter to increase during the tick.
+Core work timings and HUD capture FPS labels are not substitute benchmarks.
+
+Before/after evidence index
+
+All paths below are relative to ../Validation~/. OperatorAuthenticityBefore/
+preserves the preceding completed images, reports and PerformanceSurfaceService.
+Current-root Unity captures are from the successful final integrated run:
+- Camera-preset-Q/E/C/X.png: temporary left/controls/external chase and recenter.
+- Cockpit-hydraulic-controls.png: actual bank layout and controls.
+- Operator-seated.png / Operator-standing-window.png: operator sightlines.
+- Operator-steering-left/center/right.png: new actual front-wheel evidence.
+  The matching -inspection.png versions use a modest down-glance at the same seat.
+- Southeast-service-room.png / Service-filling.png: room and hose clearances.
+- Snow-disabled-augers-both-sides.png / Snow-windrows-before/after-recovery.png.
+- Minimap-wet-uncut-seam-normal/actual.png / Minimap-treatment-map.png.
+- Ice-reflection-before/after.png: same-state optical comparison.
+- HUD-1366x768-survey.png / HUD-1920x1080-survey.png: actual exact-cell inspection.
+- HUD-<resolution>-pit-contact.png / -pit-overlay.png: full F3 details and
+  compact TAB + F3 with the actual pit outlines visible, both resolutions passed.
+- Pit-contact-0deg/30deg/90deg.png: visible pit and retained contact diagnostics.
+- Raised-tank-glass-contact.png: actual height-aware obstruction.
+- Service-floor-source/drained.png: same-camera finite runoff comparison.
+
+Remaining operator calibration
+
+Confirm whether the extreme .600 mm bite feels sufficiently aggressive while
+the preserved .056 mm routine setting still feels useful. Assess snow bunching,
+side escape reach and clearing at working speed; Q's left/down lean; E's control
+reach; chase distance during reversing; and visibility of the steered tire from
+your tall seated viewpoint. Check wet-edge alignment through curved passes and
+whether new survey reasons explain the observed holidays. These require human
+judgment; automated checks do not establish real snow density, thermals, engine
+power, hose weight or manufacturer-certified ergonomics.

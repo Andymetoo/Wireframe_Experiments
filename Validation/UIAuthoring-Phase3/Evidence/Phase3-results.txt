@@ -1,0 +1,143 @@
+Successful final isolated runs; prior development/infrastructure attempts retained in Development-full-results.txt and root Unity logs.
+Phase 3 isolated Unity acceptance. Injected input and camera rendering; native hardware/combined IMGUI remain manual.
+PASS Three persistent Phase 3 modules exist in Edit Mode.
+PASS Explicit module-to-game references are serialized.
+PASS Exactly one existing Canvas and EventSystem; no competing input architecture.
+PASS Representative previews and badges are saved without running simulation.
+PASS Three clearly identified harmless sample route rows.
+PASS All route actions explicitly bind the saved manager.
+PASS Every inventoried route action has an authored Button.
+PASS Preview map and reusable route-row prefab assigned.
+PASS Moved/resized map, GPS and manager plus local background/TMP changes saved.
+PASS Independently moved/resized map survives scene reopening.
+PASS Authored GPS location survives reopening.
+PASS Authored Route Manager width/height survives reopening.
+PASS Local TMP appearance survives reopening.
+PASS Independently moved/resized map survives scene reopening.
+PASS Authored GPS location survives reopening.
+PASS Authored Route Manager width/height survives reopening.
+PASS Local TMP appearance survives reopening.
+PASS All five modules coexist and register in Play.
+PASS Play removes preview-only values and rows.
+PASS Survey RawImage binds the authoritative live overview texture.
+PASS Moved/resized map projects correct physical cell at (0.03, 0.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Moved/resized map projects correct physical cell at (-5.03, 10.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Moved/resized map projects correct physical cell at (5.03, -10.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Aspect-preserved map excludes letterbox bars from inspection.
+PASS Collapse hides map graphics and their actual hit regions.
+PASS Expand restores the authored body.
+PASS UI refresh never uploads or reconstructs the ice textures.
+PASS Existing F2 mode 1 uses its authoritative texture.
+PASS Existing F2 mode 2 uses its authoritative texture.
+PASS Existing F2 mode 0 uses its authoritative texture.
+PASS Live simulation changes refresh the same overview texture.
+PASS GPS labels bind live selected route and leg.
+PASS Existing 80 ft world guidance remains active.
+PASS Authored show/hide action updates existing GPS visibility.
+PASS Numpad 7 still toggles world GPS.
+PASS F5 still toggles world GPS.
+PASS Strict incompatible-guide rejection is unchanged.
+PASS Authored Record starts recording and closes manager to drive.
+PASS Authored Stop & save publishes a complete new route in disposable storage.
+PASS Repeated same-frame/repeated save callbacks cannot publish duplicate files.
+PASS Scrollable list binds 150+ disposable saved files and invalid-file status.
+PASS Ordinary refresh never recreates route rows.
+PASS Live row explicitly binds the correct path/name/selected state.
+PASS List scrolls with authored layout spacing without changing file selection.
+PASS File refresh/reordering preserves explicit selected path.
+PASS Authored load invokes existing raw-recording workflow.
+PASS Raw preview annotations are saved editable UI objects.
+PASS Raw sample scrubber drives the matching vehicle/conditioner markers and sample-number annotation.
+PASS TMP editing owns keyboard focus and binds the next recording name.
+PASS Typing focus does not route Tab into the machinery console shortcut.
+PASS Authored Guides tab preserves existing panel state.
+PASS Authored Raw/recovery tab preserves existing state.
+PASS Authored Library tab restores ordinary route manager.
+PASS Closing manager clears keyboard ownership and releases cursor capture.
+PASS Phase 1 eight-widget HUD still binds and shows live values.
+PASS Phase 2 machinery command still works through real uGUI.
+PASS Pause hides Phase 3 driving widgets.
+PASS Help hides Phase 3 driving widgets.
+PASS Numpad 1 hide-all policy includes all three modules.
+PASS Returning from hide-all restores authored widgets.
+PASS Rendered Survey/GPS at (1366, 768)
+PASS Rendered Route Manager at (1366, 768)
+PASS Rendered Survey/GPS at (1600, 900)
+PASS Rendered Route Manager at (1600, 900)
+PASS Rendered Survey/GPS at (1920, 1080)
+PASS Rendered Route Manager at (1920, 1080)
+PASS MEASUREMENT survey+GPS binding mean: 0.0111 ms / refresh (200 calls; excludes rendering).
+PASS MEASUREMENT manager binding with 160 files: 0.1872 ms / refresh (200 calls; excludes rendering and file refresh).
+PASS MEASUREMENT graphics: survey 35, GPS 18, manager incl pooled rows 912. Full-frame allocations/draw/Canvas comparison remains manual.
+PASS MEASUREMENT allocation counter UNAVAILABLE: retained 4096-byte calibration reported 0 bytes; no zero-allocation claim.
+PASS Independently moved/resized map survives scene reopening.
+PASS Authored GPS location survives reopening.
+PASS Authored Route Manager width/height survives reopening.
+PASS Local TMP appearance survives reopening.
+PASS Edit Mode preview restored after Play without copying live readings.
+PASS Procedural launch remains free of authored UI and initializes existing simulation.
+PASS Procedural keyboard machinery path remains functional.
+PASS Procedural scene bytes unchanged.
+PASS Phase 3 automated run complete; manual native-input, visual and full-frame profiling checks remain separate.
+PASS Existing guide with different GuideRollerX remains rejected and byte-identical; no automatic revalidation.
+PASS Disposable current-geometry fixture starts through existing recorder.
+PASS Authored Use as GPS activates separate current-geometry test guide with strict compatibility: Loaded: AUTOMATED current-calibration straight fixture / recorded track — GPS Ready / recorded track; ideal spline not certified
+PASS Edit route invokes existing Editor callback for the explicit selected guide.
+PASS Rename preserves recorded bytes and stable selection; only library alias changes.
+PASS Save new copy creates exactly one separate file and leaves selected source unchanged.
+PASS Delete requires explicit per-file confirmation.
+PASS Confirmed deletion removes only the captured disposable copy.
+PASS Incomplete recovery remains inspectable but cannot activate as GPS.
+PASS Malformed saved file displays an error and cannot activate or save a copy.
+PASS Real Input System wheel events scroll the file viewport without changing route identity.
+PASS A canceled save press cannot fire after manager hide/reopen.
+PASS Physical cockpit lever remains pickable with Phase 3 installed.
+PASS Relocated survey blocks cockpit picking at its actual authored location.
+PASS Moving survey away restores cockpit pointer access without an obsolete survey rectangle.
+PASS RMB free look releases survey interaction ownership.
+PASS Phase 3 automated run complete; manual native-input, visual and full-frame profiling checks remain separate.
+PASS Independently moved/resized map survives scene reopening.
+PASS Authored GPS location survives reopening.
+PASS Authored Route Manager width/height survives reopening.
+PASS Local TMP appearance survives reopening.
+PASS Fresh Editor process retained all Phase 3 authoring changes.
+PASS Three persistent Phase 3 modules exist in Edit Mode.
+PASS Explicit module-to-game references are serialized.
+PASS Exactly one existing Canvas and EventSystem; no competing input architecture.
+PASS Representative previews and badges are saved without running simulation.
+PASS Three clearly identified harmless sample route rows.
+PASS All route actions explicitly bind the saved manager.
+PASS Every inventoried route action has an authored Button.
+PASS Preview map and reusable route-row prefab assigned.
+PASS Exact delivered scene registers all five authored modules in real Play.
+PASS Moved/resized map projects correct physical cell at (0.03, 0.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Moved/resized map projects correct physical cell at (-5.03, 10.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Moved/resized map projects correct physical cell at (5.03, -10.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Aspect-preserved map excludes letterbox bars from inspection.
+PASS Collapse hides map graphics and their actual hit regions.
+PASS Expand restores the authored body.
+PASS UI refresh never uploads or reconstructs the ice textures.
+PASS Existing F2 mode 1 uses its authoritative texture.
+PASS Existing F2 mode 2 uses its authoritative texture.
+PASS Existing F2 mode 0 uses its authoritative texture.
+PASS Live simulation changes refresh the same overview texture.
+PASS GPS labels bind live selected route and leg.
+PASS Existing 80 ft world guidance remains active.
+PASS Authored show/hide action updates existing GPS visibility.
+PASS Numpad 7 still toggles world GPS.
+PASS F5 still toggles world GPS.
+PASS Strict incompatible-guide rejection is unchanged.
+PASS Rendered Survey/GPS at (1366, 768)
+PASS Rendered Route Manager at (1366, 768)
+PASS Rendered Survey/GPS at (1600, 900)
+PASS Rendered Route Manager at (1600, 900)
+PASS Rendered Survey/GPS at (1920, 1080)
+PASS Rendered Route Manager at (1920, 1080)
+PASS Exact delivered scene retained every serialized byte through Play.
+PASS Phase 3 automated run complete; manual native-input, visual and full-frame profiling checks remain separate.

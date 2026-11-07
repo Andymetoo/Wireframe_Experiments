@@ -14,9 +14,15 @@ namespace IceResurfacer.Presentation
         public bool AuditLayout { get; set; }
         public bool Compact { get; set; } = true;
         public bool SurveyCollapsed {get;private set;}
+        public void SetSurveyCollapsed(bool value) { SurveyCollapsed=value; }
         public void ClearTransientPanels(){HistoryVisible=false;InspectedSurveyCell=-1;hoverHint="";ReleaseInteractions();}
         public bool HistoryVisible { get; private set; }
         public bool MessagesVisible { get; private set; } = true;
+        public IReadOnlyList<string> MessageHistory => messageHistory;
+        public int MessageRevision { get; private set; }
+        public float NoticeAge => Time.unscaledTime-noticeAt;
+        public void ToggleHistory() { HistoryVisible=!HistoryVisible; }
+        public void ToggleRoutineMessages() { MessagesVisible=!MessagesVisible; }
         public int InspectedSurveyCell { get; private set; } = -1;
         public readonly List<string> LayoutIssues = new List<string>();
         static readonly Color PanelPaint = IceUITheme.PanelColor;
@@ -59,18 +65,17 @@ namespace IceResurfacer.Presentation
             if(game.Paused||game.HelpVisible||game.RouteGuide!=null&&game.RouteGuide.PanelOpen)return true;
             if(game.HudHidden)return false;
             if(!game.Started||game.Sim.Finished)return true;
-            if(InspectedSurveyCell>=0&&new Rect(408,154,224,276).Contains(p))return true;
-            if(game.RouteGuide!=null&&game.RouteGuide.Visible&&(!Inspecting(game)||game.ChaseActive)&&!game.Sim.OnFoot&&new Rect(398,145,492,104).Contains(p))return true;
-            if(game.HasAuthoredHud)
-            { if(game.AuthoredHud.ContainsPointer(screenPoint))return true; }
-            else if(new Rect(408,24,1164,108).Contains(p))return true;
+            if(!game.HasAuthoredSurvey&&InspectedSurveyCell>=0&&new Rect(408,154,224,276).Contains(p))return true;
+            if(!game.HasAuthoredGps&&game.RouteGuide!=null&&game.RouteGuide.Visible&&(!Inspecting(game)||game.ChaseActive)&&!game.Sim.OnFoot&&new Rect(398,145,492,104).Contains(p))return true;
+            if(game.PointerOverAuthoredInterface(screenPoint))return true;
+            if(!game.HasAuthoredHud&&new Rect(408,24,1164,108).Contains(p))return true;
             if(game.DiagnosticsVisible&&(Compact?new Rect(28,132,492,242).Contains(p):
                 new Rect(545,228,755,390).Contains(p)||new Rect(28,520,492,100).Contains(p)))return true;
-            if(game.Sim.OnFoot)return p.y>700;
-            if(HistoryVisible&&new Rect(520,160,650,570).Contains(p))return true;
-            if(new Rect(398,849,1174,43).Contains(p))return true;
-            if(!Inspecting(game)&&new Rect(28,24,362,SurveyCollapsed?48:342).Contains(p))return true;
-            return !Inspecting(game)&&(Compact?new Rect(1210,752,362,88):new Rect(1210,288,362,552)).Contains(p);
+            if(game.Sim.OnFoot)return !game.HasAuthoredOperatorUI&&p.y>700;
+            if(!game.HasAuthoredOperatorUI&&HistoryVisible&&new Rect(520,160,650,570).Contains(p))return true;
+            if(!game.HasAuthoredOperatorUI&&new Rect(398,849,1174,43).Contains(p))return true;
+            if(!game.HasAuthoredSurvey&&!Inspecting(game)&&new Rect(28,24,362,SurveyCollapsed?48:342).Contains(p))return true;
+            return !game.HasAuthoredConsole&&!Inspecting(game)&&(Compact?new Rect(1210,752,362,88):new Rect(1210,288,362,552)).Contains(p);
         }
 
         void Initialize()
@@ -143,6 +148,8 @@ namespace IceResurfacer.Presentation
 
         public void Draw(IceResurfacerGame game, float width, float height)
         {
+            if(!AuditLayout&&!game.DiagnosticsVisible&&game.HasAuthoredHud&&game.HasAuthoredConsole&&game.HasAuthoredSurvey&&game.HasAuthoredGps&&game.HasAuthoredRoutes&&game.HasAuthoredMenus&&game.HasAuthoredOperatorUI)
+            { if(releaseCapture){GUIUtility.hotControl=0;releaseCapture=false;}LayoutIssues.Clear();return; }
             Initialize();
             Matrix4x4 oldMatrix = GUI.matrix;
             Color oldColor = GUI.color;
@@ -161,10 +168,12 @@ namespace IceResurfacer.Presentation
                 bool sessionSheet=!game.HudHidden&&(!game.Started||game.Sim.Finished);
                 if(routes||game.HelpVisible||game.Paused||sessionSheet)
                 {
+                    if(!routes&&game.HasAuthoredMenus&&game.AuthoredMenus.ModalVisible)return;
                     // A menu owns the screen: no live HUD labels, console or
                     // second menu underneath it, and no click-through controls.
+                    if(routes&&game.HasAuthoredRoutes)return;
                     IceUITheme.Fill(new Rect(0,0,LayoutWidth,LayoutHeight),new Color32(40,42,38,235));
-                    if(routes)game.RouteGuide.DrawRecordingPanel();
+                    if(routes) { if(!game.HasAuthoredRoutes)game.RouteGuide.DrawRecordingPanel(); }
                     else if(game.HelpVisible)Help(game);
                     else if(game.Sim.Finished)Results(game);
                     else if(!game.Started)Welcome(game);
@@ -174,30 +183,32 @@ namespace IceResurfacer.Presentation
                 if(game.HudHidden)return;
                 // A visually moved uGUI panel owns mouse events over legacy controls too.
                 // Keep a legacy drag that began elsewhere until its normal release.
-                if(!pointerCaptured&&(Event.current.isMouse||Event.current.type==EventType.ScrollWheel)&&game.HasAuthoredHud&&Mouse.current!=null&&
-                    game.AuthoredHud.ContainsPointer(Mouse.current.position.ReadValue()))Event.current.Use();
-                if(Event.current.type==EventType.Repaint)game.RouteGuide?.DrawSilhouette(width,height);
+                if(!pointerCaptured&&(Event.current.isMouse||Event.current.type==EventType.ScrollWheel)&&Mouse.current!=null&&
+                    game.PointerOverAuthoredInterface(Mouse.current.position.ReadValue()))Event.current.Use();
+                if(!game.HasAuthoredOperatorUI&&Event.current.type==EventType.Repaint)game.RouteGuide?.DrawSilhouette(width,height);
                 if(!game.HasAuthoredHud)Header(game);
-                if(!game.Sim.OnFoot&&!Inspecting(game))Survey(game);
-                if(game.Sim.OnFoot)ServicePanel(game);
-                else if(Compact)CompactRack(game);
-                else Rack(game);
+                if(!game.HasAuthoredSurvey&&!game.Sim.OnFoot&&!Inspecting(game))Survey(game);
+                if(game.Sim.OnFoot) { if(!game.HasAuthoredOperatorUI)ServicePanel(game); }
+                else if(!game.HasAuthoredConsole)
+                {
+                    if(Compact)CompactRack(game);
+                    else Rack(game);
+                }
                 if (game.Started && !game.Sim.Finished && !game.HelpVisible && !game.Paused)
                 {
-                    if(!game.Sim.OnFoot)Guidance(game);
-                    DriveWarning(game);
+                    if(!game.HasAuthoredOperatorUI) { if(!game.Sim.OnFoot)Guidance(game); DriveWarning(game); }
                     if(game.DiagnosticsVisible)Diagnostics(game);
-                    if(!game.Sim.OnFoot&&(!Inspecting(game)||game.ChaseActive)&&game.RouteGuide!=null&&game.RouteGuide.Visible)TrainingCue(game);
-                    if(game.RouteGuide!=null&&game.RouteGuide.Recorder.Recording)
+                    if(!game.HasAuthoredGps&&!game.Sim.OnFoot&&(!Inspecting(game)||game.ChaseActive)&&game.RouteGuide!=null&&game.RouteGuide.Visible)TrainingCue(game);
+                    if(!game.HasAuthoredGps&&game.RouteGuide!=null&&game.RouteGuide.Recorder.Recording)
                     {Box(new Rect(398,258,620,48),IceUITheme.AlertFace);Label(new Rect(414,264,588,36),"Recording    /    Numpad 9 stops and saves",text,White);}
                 }
-                if(!game.Sim.OnFoot)StatusStrip(game);
-                if (!string.IsNullOrEmpty(hoverHint) && !game.HelpVisible && game.Started && !game.Paused && !game.Sim.Finished)
+                if(!game.HasAuthoredOperatorUI&&!game.Sim.OnFoot)StatusStrip(game);
+                if (!game.HasAuthoredOperatorUI&&!string.IsNullOrEmpty(hoverHint) && !game.HelpVisible && game.Started && !game.Paused && !game.Sim.Finished)
                 {
                     Box(new Rect(398,764,806,76), PanelPaint);
                     Label(new Rect(414,774,774,58), hoverHint, small, White);
                 }
-                if(game.PerformanceVisible)
+                if(!game.HasAuthoredOperatorUI&&game.PerformanceVisible)
                 {
                     Box(new Rect(28,865,340,27),PanelPaint);
                     Label(new Rect(38,868,320,23),game.Performance.Summary,small,Muted);
@@ -464,21 +475,9 @@ namespace IceResurfacer.Presentation
         void Guidance(IceResurfacerGame game)
         {
             var s=game.Sim;
-            if(messageSession!=s){messageSession=s;lastNotice="";messageHistory.Clear();HistoryVisible=false;messageScroll=Vector2.zero;}
-            if(string.IsNullOrEmpty(game.Notice))lastNotice="";
-            if(!string.IsNullOrEmpty(game.Notice)&&game.Notice!=lastNotice)
-            {
-                lastNotice=game.Notice;noticeAt=Time.unscaledTime;
-                if(messageHistory.Count==32)messageHistory.RemoveAt(0);
-                messageHistory.Add(Duration(s.Time)+"  "+lastNotice);
-            }
-            bool bank=s.SnowContact&&s.SnowContactDepthMeters>.08f;
-            bool serious=s.ConveyorJammed||s.SnowTankM3>=s.Config.SnowCapacityM3*.995f||s.PumpDamage>.05f||bank;
-            string alert=s.ConveyorJammed?"AUGER JAM — retract blade; stop conveyors, clear and reset [J]":
-                s.SnowTankM3>=s.Config.SnowCapacityM3*.995f?"SNOW TANK FULL — retract blade and unload":
-                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":
-                bank?"Deep snow: crawl with the conditioner down and both augers running. Make another pass for the edges of the pile.":"";
-            float age=Time.unscaledTime-noticeAt;
+            ObserveMessages(game);
+            string alert=CriticalMessage(s);bool serious=!string.IsNullOrEmpty(alert);
+            float age=NoticeAge;
             if(serious||MessagesVisible&&!string.IsNullOrEmpty(game.Notice)&&age<8)
             {
                 string message=serious?alert:game.Notice;
@@ -492,13 +491,38 @@ namespace IceResurfacer.Presentation
             Label(new Rect(540,179,440,28),"OPERATOR MESSAGES",heading,Sage);
             if(Button(new Rect(1050,174,100,34),"Close",Slate))HistoryVisible=false;
             if(Button(new Rect(540,220,610,35),MessagesVisible?"Routine messages: on":"Routine messages: off",Slate))MessagesVisible=!MessagesVisible;
-            Label(new Rect(540,268,610,48),s.GuidedTraining?NextAction(s):"Free simulation. Equipment consequences and scoring follow the actual surface. F1 opens the operating guide.",small,Muted);
+            Label(new Rect(540,268,610,48),HistoryAdvice(s),small,Muted);
             int count=messageHistory.Count;
             if(count==0)Label(new Rect(540,328,610,40),"No messages this session.",small,Muted);
             messageScroll=GUI.BeginScrollView(new Rect(540,328,610,380),messageScroll,new Rect(0,0,586,Mathf.Max(379,count*77)));
             for(int i=0;i<count;i++)Label(new Rect(0,i*77,584,72),messageHistory[messageHistory.Count-1-i],small,White);
             GUI.EndScrollView();
         }
+        // One message owner for both renderers. Retain the original observation
+        // gate, 32-entry ordering, eight-second expiry and same-notice deduplication.
+        public void ObserveMessages(IceResurfacerGame game)
+        {
+            if(game==null||game.Sim==null||!game.Started||game.Sim.Finished||game.Sim.OnFoot||game.HudHidden||game.Paused||game.HelpVisible||game.RouteGuide!=null&&game.RouteGuide.PanelOpen)return;
+            var s=game.Sim;
+            if(messageSession!=s){messageSession=s;lastNotice="";messageHistory.Clear();HistoryVisible=false;messageScroll=Vector2.zero;MessageRevision++;}
+            if(string.IsNullOrEmpty(game.Notice))lastNotice="";
+            if(!string.IsNullOrEmpty(game.Notice)&&game.Notice!=lastNotice)
+            {
+                lastNotice=game.Notice;noticeAt=Time.unscaledTime;
+                if(messageHistory.Count==32)messageHistory.RemoveAt(0);
+                messageHistory.Add(Duration(s.Time)+"  "+lastNotice);
+                MessageRevision++;
+            }
+        }
+        public static string CriticalMessage(Simulation s)
+        {
+            bool bank=s.SnowContact&&s.SnowContactDepthMeters>.08f;
+            return s.ConveyorJammed?"AUGER JAM — retract blade; stop conveyors, clear and reset [J]":
+                s.SnowTankM3>=s.Config.SnowCapacityM3*.995f?"SNOW TANK FULL — retract blade and unload":
+                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":
+                bank?"Deep snow: crawl with the conditioner down and both augers running. Make another pass for the edges of the pile.":"";
+        }
+        public static string HistoryAdvice(Simulation s) => s.GuidedTraining?NextAction(s):"Free simulation. Equipment consequences and scoring follow the actual surface. F1 opens the operating guide.";
 
         static string SnowStatus(Simulation s)
         {

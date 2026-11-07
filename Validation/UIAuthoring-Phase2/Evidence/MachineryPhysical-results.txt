@@ -1,0 +1,71 @@
+PASS Authored expanded console is active for physical/keyboard parity checks.
+PASS Conditioner hydraulic lever remains reachable outside UI at conditioner lift 0.
+PASS Conditioner hydraulic lever backward pull lowers at lift 0.
+PASS Conditioner hydraulic lever forward push raises at lift 0.
+PASS Conditioner hydraulic lever releases to neutral at lift 0.
+PASS Snow tank hydraulic lever remains reachable outside UI at conditioner lift 0.
+PASS Snow tank hydraulic lever backward pull lowers at lift 0.
+PASS Snow tank hydraulic lever forward push raises at lift 0.
+PASS Snow tank hydraulic lever releases to neutral at lift 0.
+PASS Flood water valve remains reachable outside UI at conditioner lift 0.
+PASS Flood water valve physical opening direction is preserved at lift 0.
+PASS Wash water valve remains reachable outside UI at conditioner lift 0.
+PASS Wash water valve physical opening direction is preserved at lift 0.
+PASS Conditioner hydraulic lever remains reachable outside UI at conditioner lift 0.5.
+PASS Conditioner hydraulic lever backward pull lowers at lift 0.5.
+PASS Conditioner hydraulic lever forward push raises at lift 0.5.
+PASS Conditioner hydraulic lever releases to neutral at lift 0.5.
+PASS Snow tank hydraulic lever remains reachable outside UI at conditioner lift 0.5.
+PASS Snow tank hydraulic lever backward pull lowers at lift 0.5.
+PASS Snow tank hydraulic lever forward push raises at lift 0.5.
+PASS Snow tank hydraulic lever releases to neutral at lift 0.5.
+PASS Flood water valve remains reachable outside UI at conditioner lift 0.5.
+PASS Flood water valve physical opening direction is preserved at lift 0.5.
+PASS Wash water valve remains reachable outside UI at conditioner lift 0.5.
+PASS Wash water valve physical opening direction is preserved at lift 0.5.
+PASS Conditioner hydraulic lever remains reachable outside UI at conditioner lift 1.
+PASS Conditioner hydraulic lever backward pull lowers at lift 1.
+PASS Conditioner hydraulic lever forward push raises at lift 1.
+PASS Conditioner hydraulic lever releases to neutral at lift 1.
+PASS Snow tank hydraulic lever remains reachable outside UI at conditioner lift 1.
+PASS Snow tank hydraulic lever backward pull lowers at lift 1.
+PASS Snow tank hydraulic lever forward push raises at lift 1.
+PASS Snow tank hydraulic lever releases to neutral at lift 1.
+PASS Flood water valve remains reachable outside UI at conditioner lift 1.
+PASS Flood water valve physical opening direction is preserved at lift 1.
+PASS Wash water valve remains reachable outside UI at conditioner lift 1.
+PASS Wash water valve physical opening direction is preserved at lift 1.
+PASS Relocated authored lever over the real cockpit grip owns the click and commands lowering without physical acquisition.
+PASS The relocated authored lever releases its own hydraulic command.
+PASS Authored lever acquires lowering before keyboard takeover.
+PASS Keyboard raising supersedes a held UI lever without UI release neutralizing the keyboard command.
+PASS Releasing all console gestures preserves the active keyboard owner.
+PASS Releasing the original UI mouse press also preserves keyboard raising.
+PASS Releasing the takeover key restores the existing keyboard neutral state.
+PASS Existing keyboard hydraulic direction is preserved for Digit1.
+PASS Keyboard hydraulic release remains neutral.
+PASS Existing keyboard hydraulic direction is preserved for Digit1+RightShift.
+PASS Keyboard hydraulic release remains neutral.
+PASS Existing keyboard hydraulic direction is preserved for Digit7.
+PASS Keyboard hydraulic release remains neutral.
+PASS Existing keyboard hydraulic direction is preserved for Digit7+RightShift.
+PASS Keyboard hydraulic release remains neutral.
+PASS Keyboard Digit2 still toggles the authoritative machinery state.
+PASS Authored maintained indicator follows keyboard changes without duplicate state.
+PASS Keyboard Digit3 still toggles the authoritative machinery state.
+PASS Authored maintained indicator follows keyboard changes without duplicate state.
+PASS Keyboard Digit4 still toggles the authoritative machinery state.
+PASS Authored maintained indicator follows keyboard changes without duplicate state.
+PASS Keyboard Digit5 still toggles the authoritative machinery state.
+PASS Authored maintained indicator follows keyboard changes without duplicate state.
+PASS Unshifted bracket keys still adjust only flood flow.
+PASS Right Shift plus bracket keys still adjust only wash flow.
+PASS Period still deepens the blade screw.
+PASS Comma still retracts the blade screw.
+PASS Numpad 1 hides the authored console through the existing keyboard path.
+PASS Numpad 1 restores the authored console.
+INFO RMB right=True; Looking=True; Cursor=None; ConsoleCanInteract=False.
+PASS RMB retains look ownership and excludes machinery UI.
+LIMITATION Native cursor lock is not granted by this background Editor; injected look behavior is tested separately.
+PASS RMB relative motion still rotates the existing operator camera.
+PASS RMB release restores console interaction.

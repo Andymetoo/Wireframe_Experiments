@@ -1,0 +1,15 @@
+PASS Authored GPS graphic receives exactly the existing occluded route/alignment segments with a nonzero real silhouette fixture.
+PASS Projected GPS retains the original bounded visibility-query budgets.
+PASS One hundred unchanged-camera GPS projections do not dirty the Canvas mesh.
+PASS MEASUREMENT authored GPS projection: 0.31542 ms/call, existing queries plus cached segment sink.
+PASS MEASUREMENT legacy GPS visibility/alignment query reference: 0.40313 ms/call; excludes drawing in both measurements.
+PASS Rendered integrated ProjectedGPS at (1366, 768) / default
+PASS Rendered integrated ProjectedGPS at (1600, 900) / default
+PASS Rendered integrated ProjectedGPS at (1920, 1080) / default
+PASS Leaving Play retains no transient GPS query colliders.
+PASS Dedicated GPS projection render retains exact delivered scene bytes.
+PASS Moved service panel and independent prompt survive save/reopen/Play.
+PASS Resized warning and local TMP font asset survive without theme reset.
+PASS Replacement warning background survives reopening and Play.
+PASS Final fresh-process reopen retains all deliberate Phase 5 authoring changes.
+PASS Phase 5 Unity acceptance complete; native cursor, full-frame profiling and manual visual sign-off remain separate.

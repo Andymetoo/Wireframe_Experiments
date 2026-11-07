@@ -1,0 +1,120 @@
+AURORA R-54 / AUTHORED MACHINE (PHASE 1, EXPERIMENTAL)
+
+UPDATE 2026-11-02 (ControlsBrushRoller.txt): controls may be mounted on the moving conditioner (they keep
+their own renderers, grips are measured from the drawn parts); the collision outline, conditioner collider
+and guide roller follow the drawn machine (Transfer Authored Geometry); the lift preview is the Play pose.
+The board guide roller assembly was moved 174 mm outboard so it, not the conditioner side plates, rides the
+boards ("Move Guide Roller Outboard..." in the machine rig Inspector; nothing else in the machine moved).
+
+Purpose
+The machine can exist as persistent, editable Scene/prefab geometry instead of being
+generated at Play. The launch scene (Scenes/IceResurfacer.unity) is unchanged and still
+uses the runtime builder. The authored machine lives in a separate experimental scene.
+
+Files
+  Scenes/IceResurfacer_AuthoredMachine.unity  copy of the launch scene + one prefab instance
+  Machine/AuroraR54.prefab                     the editable machine (527 selectable renderers)
+  Machine/AuroraR54.Meshes.asset               the 26 procedural meshes (readable sub-assets)
+  Machine/Materials/*.mat                      the 12 machine palette materials
+  Presentation/IceMachineRig.cs                binds authored parts into the IceWorld contract
+  Presentation/IceKeepUnbatched.cs             opt a part out of runtime batching
+  Editor/IceMachineBaker.cs                    machine generation (new locations only; no menus)
+  Editor/IceAuthoredRecovery.cs                Open Authored Scene, first-time setup, Advanced Recovery
+  Editor/IceMachineRigEditor.cs                ownership report and anchor tools (rig Inspector)
+  Editor/IceAuthoredMachineValidation.cs       batch proof (isolated project only)
+  Presentation/IceBoardBrushRig.cs             board brush articulation authoring (see BoardBrushAndConditioner.txt)
+  Editor/IceConditionerAlignment.cs            conditioner visual-vs-simulation measurements and window
+  The arena is documented in AuthoredArena.txt.
+
+Workflow
+1. Experiments > Ice Resurfacer > Open Authored Scene. If the scene does not exist yet it offers to
+   create it once as a copy of the launch scene; an existing scene is never replaced.
+2. First time only (when Machine/AuroraR54.prefab does not exist):
+   Experiments > Ice Resurfacer > Advanced Recovery > Set Up Machine (first time only).
+   Runs the same IceWorldBuilder machine code once, unbatched, saves meshes/materials/prefab and
+   places one instance under the game object. It is disabled once the prefab exists.
+3. Edit normally: select parts in the Scene view or Hierarchy, move/rotate/scale, change
+   materials, replace children. Prefer Prefab Mode (open AuroraR54.prefab) so edits live in the
+   prefab rather than as scene overrides. Save. Edits survive restarting Unity.
+4. Press Play. IceWorldBuilder sees the IceMachineRig under the game root, builds only the arena,
+   binds the saved parts, and batches static parts on the Play instance only. No second machine
+   is generated. Exiting Play restores the instance; saved assets are never modified or destroyed.
+
+Ownership (shown in the IceMachineRig Inspector)
+  Physics anchors / the scene calibration and the drawn part must agree:
+    wheel pivots (WheelTrack, Wheelbase), conditioner hitch (DrawbarLength), tank dump hinge and scale
+    (TankHingeHeight/Z, TankScaleX/Y/Z; never snow capacity), tank shell, conveyor discharge
+    (ConveyorDischargeX/Height/Z), board brush (its rig), guide roller, blade and towel widths.
+    The rig Inspector's MECHANICAL ALIGNMENT lists the millimetre difference of each. To keep what you
+    drew, use "Transfer Authored Geometry to Simulation..." (validated, one Undo step; refuses what cannot
+    be made physical and says why). "Snap Visual Anchors to Simulation" moves your parts instead.
+    Driving geometry and working widths are never transferred from visuals. See MechanicalReconciliation.txt.
+  Operator controls / authored freely:
+    operator deck, seat, steering column, dashboard, pedals, hydraulic lever bank, water valve
+    manifold and bearings, blade handwheel assembly, snow breaker assembly, mounting boxes.
+    Move or rotate whole mounts. Runtime only animates lever/valve rotation, handwheel turns,
+    pedal travel and plunger stroke, always relative to the authored rest pose. Picking, hover
+    highlight, drag direction (each lever's own bank), valve/handwheel turning, the E/Controls
+    view and the spool/breaker audio follow the authored controls.
+    In the experimental scene the Machine Geometry Editor disables its cockpit placement fields.
+    A non-blocking advisory reports grips beyond 0.85 m from the seated eye, grips closer than
+    6 cm to each other, and grips outside the body envelope.
+  Cosmetic / authored freely: bodywork, panels, trim, and children under any driven pivot.
+  Runtime-driven pivots (edit their children, not the pivot): machine root, conditioner root,
+    tank door, guide roller, brush arm/brush/link/roller (author them with the board brush rig),
+    cutting blade (rest-relative: its authored pose is depth zero), both augers, and the
+    hydraulic barrels/rods. Cylinders always span their clevis pins, so moving a pin moves the
+    cylinder ("Re-pose hydraulic cylinders" previews this in Edit Mode).
+
+Rebake policy
+Shape-defining calibration (tank roof height/offset, conveyor offset, conditioner and water
+widths, tire width, guide roller radius, valve stem height) is baked into
+meshes. The rig Inspector warns when it changed since the bake. The machine is never regenerated
+automatically. Advanced Recovery > Generate Fresh Machine Copy writes a new baseline under Recovery/
+and leaves the authored prefab alone. Replacing the authored machine in place is only possible in
+Advanced Recovery > Replace or Restore Authored Assets: it lists the affected prefab, meshes,
+materials and scene links, requires typing REBUILD MACHINE, makes a verified backup in Backups~,
+keeps GUIDs, and rolls back automatically on any failure (details in AuthoredArena.txt).
+
+Reference proportions pass (Editor/IceMachineProportionPass.cs)
+Experiments > Ice Resurfacer > Authored Scene > Apply Reference Proportions Pass (machine)...
+A one-time, bounded edit of Machine/AuroraR54.prefab toward the reference resurfacer (operator seated
+high at the rear, over the conditioner). No rebake: it moves or rescales existing objects only.
+  Operator station (whole deck)        +0.13 m up, 0.15 m back: seat over the front of the conditioner,
+                                       platform above its raised linkage; seat-to-steering unchanged; eye 2.03 m
+                                       (further back pushes the board brush out of the fixed Q quicklook frame)
+  Equipment-side rear and top rails    same shift, so they still frame the station
+  Right equipment deck                 +0.13 m up, 0.15 m back, 1.3x longer, under the moved right controls
+  Hydraulic lever bank (station)       0.06 m lower, angled 10 deg toward the seat, scaled 0.9 (clears the
+                                       steering rim at full lock)
+  Water valve manifold + 2 brackets    0.26 m back, 0.02 m lower: side console beside the seat, above the
+                                       blade crank's sweep
+  Blade handwheel assembly             low at the seat's front-right corner; its screw spindle shortened
+                                       to stop at the platform instead of passing into the conditioner
+Not touched: wheels, wheelbase, tank, dump hinge, conveyor/discharge, brush, guide roller, conditioner,
+cylinder pins, steering column, dashboard, pedals, snow breaker (they move only with the station).
+Each part is changed only if it is still at its generated pose (parts you moved are skipped and listed),
+so running it twice changes nothing. The prefab, its .meta and the authored scene are backed up to
+Backups~/<time> Machine proportions pass first. Undo: Advanced Recovery > Replace or Restore Authored
+Assets > Restore backup (type RESTORE BACKUP). The rig Inspector afterwards lists the station and its
+controls as rearranged; that is expected.
+Validation (isolated copy): RunIsolatedUnity.ps1 -Action ProportionsSurvey | ProportionsApply | ProportionsVerify
+Results and side/cockpit screenshots: Validation~/MachineProportions-results.txt, Validation~/MachineProportions/
+
+Known limits
+- Fill ports and level gauges are authored prefab parts (Water Fill Connections) after "Add Persistent
+  Water Fill Ports to Machine..."; see RinkAndFillPorts.txt. The carried nozzle and live hose stay runtime.
+- Labels use the font's built-in material in Edit Mode (drawn through geometry); Play swaps to
+  the runtime depth-tested lettering material.
+- The E/Controls preset keeps its fixed 61-degree vertical lens. It aims at the authored grips,
+  but a very wide rearrangement can leave the outermost grip just outside the frame.
+- Emissive materials are saved with the RealtimeEmissive GI flag; URP's import validation would
+  otherwise strip _EMISSION from the fixture material.
+
+Validation (isolated copy only: Validation~/StageUnityValidation.ps1 -UpdateOnly, then)
+  RunIsolatedUnity.ps1 -Action AuthoredBake
+  RunIsolatedUnity.ps1 -Action AuthoredVerify
+  RunIsolatedUnity.ps1 -Action AuthoredWriteRearrangement
+  RunIsolatedUnity.ps1 -Action AuthoredVerifyRearrangement
+  RunIsolatedUnity.ps1 -Action RunBatch -Scene Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity
+Results: Validation~/UnityProject/Assets/Experiments/IceResurfacer/Validation~/AuthoredMachine-results.txt

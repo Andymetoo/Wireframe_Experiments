@@ -1,0 +1,7 @@
+{
+  "name": "IceResurfacer.UI.Editor",
+  "rootNamespace": "IceResurfacer.Editor",
+  "references": ["IceResurfacer.Runtime", "Unity.TextMeshPro", "UnityEngine.UI", "Unity.InputSystem"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

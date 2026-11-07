@@ -16,11 +16,12 @@ namespace IceResurfacer.Editor
         static IceWaterService service;
         static Keyboard keyboard;
         static Mouse mouse;
+        static Action<string> observation;
         static readonly List<string> results=new List<string>();
         static readonly MethodInfo updateMachine=typeof(IceResurfacerGame).GetMethod("UpdateMachine",BindingFlags.Instance|BindingFlags.NonPublic);
         static readonly object[] tickAnimation={.02f},initialAnimation={0f};
         static void Check(bool value,string message)
-        {if(!value)throw new InvalidOperationException("Water service: "+message);results.Add("PASS "+message);}
+        {if(!value)throw new InvalidOperationException("Water service: "+message);results.Add("PASS "+message);observation?.Invoke(message);}
         static void Input(params Key[] keys)
         {
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));
@@ -90,9 +91,9 @@ namespace IceResurfacer.Editor
             camera.transform.position=position;camera.transform.LookAt(target);
             IceResurfacerEditor.Capture(camera,file,1920,1080);UnityEngine.Object.Destroy(go);
         }
-        public static void Run(IceResurfacerGame target,Keyboard keys,Mouse pointer)
+        public static void Run(IceResurfacerGame target,Keyboard keys,Mouse pointer,Action<string> observe=null,bool includeGeometry=true)
         {
-            game=target;keyboard=keys;mouse=pointer;service=game.WaterService;results.Clear();
+            game=target;keyboard=keys;mouse=pointer;service=game.WaterService;results.Clear();observation=observe;
             bool enabled=game.enabled;game.enabled=false;
             try
             {
@@ -210,11 +211,12 @@ namespace IceResurfacer.Editor
                     "free dismount preserves attained hydraulics, conveyors, pump and both water valves");
                 Capture("Free-simulation-on-foot.png",game.DriverCamera.transform.position,game.World.Machine.position+Vector3.up);
                 results.Add("Service route uses keyboard F/E/W and ordinary walk collision; Aim supplies deterministic head orientation. No operator/vehicle pose writes during the service procedure or driven departure; session-start presentation poses are synchronized before testing.");
-                IceServiceGeometryValidation.Run(game);
+                if(includeGeometry)IceServiceGeometryValidation.Run(game);
                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Service-results.txt",results);
             }
             finally
             {
+                observation=null;
                 InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.QueueStateEvent(mouse,new MouseState());InputSystem.Update();
                 game.NewSession(true,true);game.enabled=enabled;
             }

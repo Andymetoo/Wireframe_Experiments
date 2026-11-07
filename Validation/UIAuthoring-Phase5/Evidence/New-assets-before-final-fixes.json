@@ -1,0 +1,19 @@
+{
+  "UI/Prefabs/Operator/Aurora Context Hint.prefab": "bb47572d3f6b134d56ff340722ca194ce8660a6dae7634c9bc56c185840f9e83",
+  "UI/Prefabs/Operator/Aurora Context Hint.prefab.meta": "c85a65db1ba3d9d8952786bac95a06b691be03b23ece0b0ff001796215cc85f2",
+  "UI/Prefabs/Operator/Aurora Critical Notice.prefab": "c01f1c264b82d6b5c09b477822459d8f44428967cbff0d69221b67fa80fd7ef3",
+  "UI/Prefabs/Operator/Aurora Critical Notice.prefab.meta": "00416dbc42740008cbd2f050b7a7c930f5f0513b2522629dc162c2b111dc87d0",
+  "UI/Prefabs/Operator/Aurora Drive Warning.prefab": "abfd2b57fa00f99588787eb3829c7e6487f029837c87ecb74e31259abdf018be",
+  "UI/Prefabs/Operator/Aurora Drive Warning.prefab.meta": "256c4f3d090d385a1dcc5032990cd86d491640a25e99b9ccad98e374b683c153",
+  "UI/Prefabs/Operator/Aurora Message History Row.prefab": "f332b9c0e8dc20562458919fe7a969be0dad1ff9d48210f80476ffb7f2315f54",
+  "UI/Prefabs/Operator/Aurora Message History Row.prefab.meta": "e487970279e42cd8892d7024636ca82a37952d70903d3dccd4e49923ba58f248",
+  "UI/Prefabs/Operator/Aurora Operator Action.prefab": "b00a134746748d4719c842dc24f5f0def1d879916175ff6ab1e7d0862bccc1ca",
+  "UI/Prefabs/Operator/Aurora Operator Action.prefab.meta": "1da9a2e65cb25e4336e6775ce64b730d33dc469a1a216e8b4f97a31d4d7f8f02",
+  "UI/Prefabs/Operator/Aurora Operator Interface.prefab": "f19066b34f5a11ffb1abae859f4fa61358d550c340764664281c93122c85181c",
+  "UI/Prefabs/Operator/Aurora Operator Interface.prefab.meta": "7699d8a2298b0b0f2b806d4e8b7238a1660595161ec29e929a63749d4750c6df",
+  "UI/Prefabs/Operator/Aurora Operator Notice.prefab": "093c6d10a0a029579b635a646e50febf83bcc4acd968e31c2eebe7a6734beb3b",
+  "UI/Prefabs/Operator/Aurora Operator Notice.prefab.meta": "c787018daeb50aa584d89d9eca59c90fa9adaafb74c25b1b43af4b3ef9a1ab85",
+  "UI/Prefabs/Operator/Aurora Projected GPS.prefab": "6856cba319d139e0d9a13652fd1fddf2ece5ea832819b4023382d30914e25f8b",
+  "UI/Prefabs/Operator/Aurora Projected GPS.prefab.meta": "038cbe463e64a36fa4e65f39b74d7ef74c5036e33008c33a09ad0bb2be55c8dd",
+  "UI/Prefabs/Operator.meta": "b54186ce2404e8c4d50537fe0cad2836e72c3b4d943eeed37b362a5f6e6fa087"
+}

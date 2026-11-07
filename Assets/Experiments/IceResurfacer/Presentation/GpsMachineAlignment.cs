@@ -12,7 +12,9 @@ namespace IceResurfacer.Presentation
         {Visit(game,visibility,width,height,true);}
         public void Measure(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height)
         {Visit(game,visibility,width,height,false);}
-        void Visit(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height,bool draw)
+        public void Project(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height,IGpsProjectedStrokeSink sink)
+        {Visit(game,visibility,width,height,false,sink);}
+        void Visit(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height,bool draw,IGpsProjectedStrokeSink sink=null)
         {
             LastVisibleSegments=LastRayQueries=0;
             if(game==null||game.RouteGuide==null||!game.RouteGuide.GuidanceDisplayed||game.ChaseActive||visibility==null)return;
@@ -39,7 +41,7 @@ namespace IceResurfacer.Presentation
                         Stroke(last,at,4.5f,new Color(.09f,.075f,.015f,.9f));
                         Stroke(last,at,2.1f,new Color(1,.83f,.035f,1));
                     }
-                    LastVisibleSegments++;
+                    sink?.Segment(last,at,true);LastVisibleSegments++;
                 }
                 last=at;previous=visible;
             }

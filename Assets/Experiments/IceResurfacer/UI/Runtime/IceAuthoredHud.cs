@@ -67,7 +67,8 @@ namespace IceResurfacer.Presentation
 
         // On foot the service controller owns centered mouse input, even when a
         // background Editor window cannot grant its requested native cursor lock.
-        public bool CanInteract => Visible && !game.Sim.OnFoot && !game.Looking && Cursor.lockState != CursorLockMode.Locked &&
+        public bool CanInteract => Visible && !game.Sim.OnFoot && !game.Looking &&
+            (game.AuthoredConsole == null || !game.AuthoredConsole.ConfirmationOpen) && Cursor.lockState != CursorLockMode.Locked &&
             (Mouse.current == null || !Mouse.current.rightButton.isPressed);
 
         void OnEnable()
@@ -91,7 +92,7 @@ namespace IceResurfacer.Presentation
         {
             if (!Application.IsPlaying(gameObject)) return;
             RefreshVisibility();
-            if (Time.unscaledTime >= nextRefresh) RefreshNow();
+            if (Visible && Time.unscaledTime >= nextRefresh) RefreshNow();
         }
 
         public void RefreshNow()

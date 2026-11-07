@@ -165,8 +165,9 @@ namespace IceResurfacer.Presentation
             prompt=PromptFor(selected);
             if(movementStatusTime>0)prompt=movementStatus;
             bool interact=keys!=null&&keys.eKey.wasPressedThisFrame;
+            Vector2 interactionPoint=footLook?new Vector2(Screen.width*.5f,Screen.height*.5f):mouse!=null?mouse.position.ReadValue():Vector2.zero;
             if(mouse!=null&&mouse.leftButton.wasPressedThisFrame&&
-                !(game.HasAuthoredHud&&game.AuthoredHud.ContainsPointer(mouse.position.ReadValue())))interact=true;
+                !game.PointerOverAuthoredInterface(interactionPoint))interact=true;
             if(interact&&selected!=Target.None)Interact(selected);
         }
 

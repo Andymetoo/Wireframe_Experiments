@@ -1,0 +1,257 @@
+AURORA R-54 / CONDITIONER-MOUNTED CONTROLS, LIFT PREVIEW, BOARD BRUSH AND BOARD CONTACT (2026-11-02)
+
+Your authored Machine/AuroraR54.prefab is the reference. One part of it changed, on purpose and by an
+explicit Inspector action: the board guide roller assembly ("Front-left board guide / distinct from board
+brush") moved 174 mm straight outboard and its "Guide roller bracket" was lengthened from 0.195 to 0.369 m
+so it still meets the body where it did (section 4). No other transform, no mesh, no material changed;
+nothing was rebaked. The authored scene's calibration gained the collision outline, the conditioner
+collider and the guide roller at its (new) drawn position. The launch scene and every SimulatorConfig
+default are unchanged; the launch scene keeps the original collision rectangle.
+
+------------------------------------------------------------------------------------------
+0. MECHANICAL ALIGNMENT WARNINGS: WRONG CALIBRATION CONTEXT
+------------------------------------------------------------------------------------------
+The Inspector compared the machine with "the IceResurfacerGame above it". In Prefab Mode there is none,
+so it fell back to the configuration captured when the machine was first baked (procedural defaults).
+Every number in your screenshots is the prefab measured against those defaults:
+  Conditioner hitch 215 mm   = authored z -0.885 vs default -1.100 (scene calibration: 0 mm)
+  Tank dump hinge 49 mm      = 2.411 vs default 2.460                (0 mm)
+  Tank scale 333 mm (x1000)  = 1.068/1.269/1.184 vs 1/1/1            (0 mm)
+  Conveyor discharge 668 mm  = (-0.021, 1.639, 0.024) vs (0.45, 1.48, 0.47); its inlet check also
+                               raycast the wrong physics scene ("No tank wall")   (0 mm)
+  Board brush 379 mm, radius 58 mm, "draft not applied" = draft vs default pivot (-0.90, 1.16), r 0.25
+                               (the draft equals the scene calibration exactly)
+  Board guide roller 199 mm  = REAL in both contexts (now resolved, section 4)
+The scene instance had no overrides below its root; prefab, scene and runtime agreed.
+
+Fix: every machine/arena Inspector (machine rig, board brush rig, Conditioner Alignment window, water fill
+ports, arena rig) resolves its calibration through one source and shows it at the top:
+  "Authored scene calibration (IceResurfacer_AuthoredMachine)"                  scene, live, writable
+  "... (IceResurfacer_AuthoredMachine, open; Prefab Mode is read-only)"          Prefab Mode, scene loaded
+  "... (IceResurfacer_AuthoredMachine, saved file; Prefab Mode is read-only)"    Prefab Mode, read from disk
+  "Original procedural scene calibration (IceResurfacer)"                       launch scene
+  "Prefab-only fallback: ... differences listed here may be false positives."   no scene uses the prefab
+Transfer, Snap and Apply only write when the source is a live scene; the fallback never writes old
+default values onto the prefab. Prefab Mode now lists every item as "matches" (verified).
+
+------------------------------------------------------------------------------------------
+1. CONDITIONER-MOUNTED WATER VALVES AND BLADE HANDWHEEL
+------------------------------------------------------------------------------------------
+Your hierarchy is kept: the blade screw/handwheel assembly and both valve bearings stay children of the
+conditioner and rise 340 mm with it.
+Root causes (all measured before the fix, at 0/50/100% lift):
+  a. Runtime batching merged the handwheel and both valve handles into the conditioner's static mesh
+     (0 renderers left under each control). They rode with the conditioner but could never turn or
+     highlight. The machine batch excluded moving parts; the conditioner batch did not.
+  b. Picking used the generated layout's valve grip height (WaterValveStemHeight, 0.24 m in the handle
+     frame); your lengthened stems put the grips at 0.564 m. Clicks on the visible grips hit nothing; at
+     0% lift the flood grip selected the blade handwheel. The turning plane was at the same wrong height.
+  c. Drag angles were taken between two pointer positions in different frames, so a conditioner moving
+     under a held, still pointer would have turned the valve.
+  d. A control's forgiving hit margin could take a click from another control's visible part.
+Changes:
+  - Every moving control keeps its own renderers; only what is rigid on the conditioner is merged.
+  - Grips (lever balls, valve grips, handwheel rim and spinner knob, breaker T handle) are measured from
+    the authored parts before batching, in each control's own frame. Picking, hover, the turning plane,
+    the E view and the Inspector reach advisories all use them. The generated machine's numbers are
+    identical to before.
+  - Turning uses the control's rest frame; each frame's pointer delta is projected through the control
+    as drawn now, so only the hand turns it.
+  - The drawn grip under the pointer always wins; margins apply only where no drawn grip is hit.
+  - The seat (cushion, back, arm pads) hides a control behind it.
+Turning a control seen edge-on (finishing pass). From the seat the valve handles turn in a plane seen
+12 deg from edge-on at 50% lift and 1.3-2 deg at full lift. There the pointer's angle about the stem is
+ill-conditioned: one pixel of hand jitter swings it by tens of degrees. Measured with a simulated hand
+(4 deg steps, up to 2 px of jitter) following the visible grip 48 deg, the old projection turned the wash
+valve 37 deg at 50% lift, the flood valve 23.5 deg and the wash valve 66 deg at full lift (controlled
+experiment, Evidence/experiment-plane-projection-only-results-Verify.txt). Now, within 15 deg of
+edge-on, the handle follows its own visible path: it turns to the point of that path nearest the hand,
+keeps turning the way it was going round the ends of the stroke (where both sides of the ellipse lie a
+few pixels apart), and drops whatever lies past an end stop, so reversing works at once. Seen more
+openly, the exact projection is used as before.
+Measured after (Play, authored machine, virtual mouse through the real input path):
+  hover + tint + click on all 8 controls at 0/25/50/75/100% lift; no other control within 6 px of a grip;
+  45 deg drag sets 0.500 on both valves and 0.0286 mm on the handwheel at every lift; the visible handle
+  turns; holding a valve or the handwheel while the conditioner rises 0->100% changes nothing (0.000).
+  The same 45 deg in one slow frame: exact wherever the view is 6 deg or more off edge-on (at full lift,
+  1.2-1.7 deg off, a single jump round the end of the stroke is ambiguous and is reported, not checked).
+  Jittery hand, 48 deg: 44-52 deg on both valves and the handwheel at 0/50/100% lift; each valve driven to
+  its open stop and back to closed by the same hand at every lift; the handwheel turned by its knob
+  reaches the 3.5-turn stop (0.800 mm), holds it when turned further, and one turn back gives 0.571 mm,
+  at 0% and 100% lift.
+
+------------------------------------------------------------------------------------------
+2. EDIT MODE LIFT PREVIEW = PLAY
+------------------------------------------------------------------------------------------
+Causes: in Prefab Mode the preview used the bake-time DrawbarLength 0.65, so everything on the
+conditioner jumped 215 mm rearward. In both Play and preview the lift linkage bars and hydraulic hoses
+were rigid on the conditioner: attached at your raised pose, they hung up to 340 mm below their chassis
+points when lowered. The Play-only drawbar was not shown in the preview.
+Now one function (Presentation/IceConditionerLinkage.cs, IceConditionerMotion) poses the conditioner for
+both: root at the simulated hitch and lift, members spanning chassis and conditioner, cylinders on their
+clevises. "Lift linkage" and "Hydraulic flexible hose" stay pinned to the chassis part they touch at the
+authored pose (BackBloc, the operator floor) and span to the conditioner at every lift (linkage 0.564 m
+raised, 0.776 m lowered; a rigid bar cannot stay on both pins under a straight vertical lift). Add the
+IceConditionerSpan component to any other hose or rod to make it span too.
+Machine rig Inspector: Lift 0% / 25% / 50% / 75% / 100% buttons and a slider; the drawbar is drawn as a
+gizmo. The preview is never saved: saving, Play, recompiles, Undo/Redo and an Inspector edit of a posed
+part all restore the authored pose first (that edit is not applied and leaves no override).
+Measured: every grip, bearing, cylinder, linkage bar and hose is where Play puts it, 0.00 mm, at all five
+lifts; members pinned within 1 mm; saving mid-preview gives a byte-identical scene.
+
+------------------------------------------------------------------------------------------
+3. BOARD BRUSH AUTHORING
+------------------------------------------------------------------------------------------
+No unapplied configuration: in the scene the draft equals the calibration (the warning was section 0).
+Brush rig Inspector (select "Board brush articulated arm / left side"):
+  SWEEP handles (round dots; change where snow is swept; a draft until Apply):
+    white "SWEEP pivot", green "SWEEP working end", grey "SWEEP stowed end",
+    cyan "SWEEP reach (arm length)", yellow "SWEEP contact radius"
+  COSMETIC handles (orange squares; never change contact):
+    "COSMETIC pivot height", "COSMETIC head height (working / stowed)", "COSMETIC roller carriage",
+    "COSMETIC link on head", "COSMETIC link on arm"
+  Magenta ghost = what Play sweeps until you Apply. Blue dotted line = how close the boards can come on
+  that side (outermost collision point: now the guide roller).
+  Buttons: "Contact radius = bristles", "Scale bristles to contact radius",
+  "Apply Brush Geometry to Simulation..." (validated, undoable), "Revert Draft to Simulation",
+  "Restore Previous Simulation Geometry..." (the geometry before your last Apply, kept per scene).
+Applying moves the simulated sweep: tested with the pivot 0.10 m inward, the sweep followed exactly,
+and Undo restored both draft and calibration. Brush fields are not GPS fields.
+Reach with the real envelope: working disc edge at |x| 1.128 m, 37 mm past the guide roller's outer edge
+(1.091 m, the outermost point since the roller moved; 62 mm past the conditioner side plate), so with the
+roller on the boards the bristles press into the kickplate: 189 of 300 steps in contact, snow cleared
+under the visible disc in 272/272 checked cells, visible disc = simulated disc (0.000 mm). Bristles
+0.192 m = clearing radius 0.192 m. (Before the roller moved, the side plate held the machine 25 mm
+closer to the boards, so the brush pressed 25 mm deeper: 277 of 300 steps.)
+Existing advisory (unchanged): the stowed head centre is at x -0.573, inside the layout check's -0.800.
+
+------------------------------------------------------------------------------------------
+4. GUIDE ROLLER AND BOARD CONTACT
+------------------------------------------------------------------------------------------
+Causes found:
+  - Any rejected step whose inward share exceeded 45% of the step (about 27 deg), or whose slide test
+    failed, set speed to exactly 0. Held A/D reaches that angle within half a second, then every step
+    is rejected: a dead stop until reversing (25 deg with steering, 45 deg, 15 deg at full lock, corners).
+  - The simulated body was one 2.13 x 2.95 m rectangle; your drawn front is 1.70 m wide (wheels +-0.85,
+    bumper 1.47 m) and 5 cm longer, and the simulated roller sat 199 mm outboard of yours. The machine
+    stopped against invisible geometry, and head-on the drawn bumper entered the boards by 30 mm.
+  - The conditioner (side plates +-1.066 m, the widest part) was no collider at all.
+  - The roller's rotation was speed x time with the wrong turning direction for a left-side roller.
+Changes (Core/MovementContact.cs, Simulation.cs, VehicleOutlineConfig.cs):
+  - Calibration: CollisionOutline (85-vertex plan outline fitted to every drawn part except the brush,
+    roller and conditioner, sampled every 10 cm), ConditionerCollisionHalfWidth/Front/Rear
+    (1.066 / 0.365 / 0.575, about the simulated conditioner centre), guide roller at its drawn place
+    (x -1.001, z 2.444, r 0.090 after the move below). Empty outline = the original rectangle (launch scene).
+  - Response: the step is resolved, not zeroed. Contacts ahead of the rear axle (roller, nose) pivot the
+    chassis about the rear axle, as front tyres scrub (up to ContactPivotRate 0.35 rad/s); contacts at or
+    behind it (rear, conditioner) slide the rear sideways along the boards (up to ContactScrubSpeed
+    0.45 m/s). Only the inward motion is removed; what the tyres cannot absorb shortens the step, so a
+    square impact stops and a glance slides. Every accepted pose passes the full probe. Friction from the
+    normal reaction: roller 0.03 (rolling), body/conditioner 0.25 (sliding). A pose already inside the
+    driving margin may always move out of it, never deeper.
+  - Sliding along the boards no longer re-triggers impact sounds; a mistake is counted for a real bump
+    (normal speed over 0.25 m/s, 0.6 m/s on the roller), not for rolling on the roller.
+  - The roller turns from its centre's travel along the board face, anticlockwise from above (left side).
+  - F3 shows the outline actually in force.
+Guide roller moved outboard (finishing pass). As drawn, the roller's outer edge was at |x| 0.917 m and
+the conditioner side plates at 1.066 m: 149 mm short, so in a straight run along the boards the side
+plate scraped first. (The earlier note "move it to |x| >= 0.976" meant the roller CENTRE; read against the
+0.917 m outer edge it gives 59 mm, which is not enough. Matching the plates takes 149 mm; leading them by
+25 mm, 174 mm.) "Move Guide Roller Outboard..." (machine rig Inspector, under MECHANICAL ALIGNMENT, with a
+lead field, default 25 mm, a confirmation and one Undo step) moved the whole roller assembly 174 mm
+straight outboard and re-spanned "Guide roller bracket" from its unchanged inboard end (x -0.632, inside
+the body side at -0.783) to the roller axle: 0.195 -> 0.369 m. The wheel, cap and their sizes are
+unchanged; the simulated roller is the visible roller (x -1.001, z 2.444, r 0.090), not a larger collision
+radius. It is 14 mm inboard of where your saved scene already simulated a roller (x -1.015, z 2.380).
+The front tyre clears the roller and bracket by 33 mm through full steering lock (closest at -18.9 deg).
+Measured, authored machine in Play, 5 s runs on the west boards (new contact code, fitted outline, moved
+roller):
+  parallel, steered lightly in    2.65 m/s kept, roller first, roller on the boards 250/250 steps, rolled
+                                  13.25 m of 13.25 m, conditioner side plate 44 mm off the boards
+  parallel, resurfacing speed     1.59 m/s kept, roller first, 250/250, side plate 45 mm off
+  parallel, steering neutral      roller on the boards 250/250, rolled 13.25 m, side plate 45 mm off
+  2-15 deg glances                roller first, no dead stop (min 1.34-2.65 m/s), side plate 45-125 mm off
+  25 deg / 45 deg                 roller first, slides on, min 1.52 / 0.52 m/s (strongly resisted)
+  head-on                         stop, no heading change, reverses away 0.92 m
+  NW corner, steering lightly in  carried round at 2.22 m/s, roller bearing 447/450 steps, no body or
+                                  conditioner contact; nearest side plate 20.12 mm (margin 20 mm)
+  NW corner, steering hard in     roller bearing 447/450; the side plate's tail swing reaches the 20 mm
+                                  margin for one 20 ms step (20.03 mm); no contact, no visible penetration
+  visible penetration             0 mm in every run; gate and room walls solid
+Before this pass (roller at 0.917 m): straight runs touched the side plate first (2.9 deg nose-in was
+needed for the roller to lead). Before the first pass (original contact code): 15 deg at full lock, 25 and
+45 deg were dead stops, the corner slowed to 0.90 m/s and the drawn bumper entered the boards by 30 mm.
+Cost: about 0.11-0.13 ms per 20 ms simulation step (Evidence/driving-probe-new-code.txt, --bench).
+
+GPS (originals never modified; each copy has a new identity)
+  Every guide made before now is rejected in the authored scene, naming CollisionOutline,
+  ConditionerCollision*, GuideRoller*: these are new compatibility fields.
+  New, validated (Ready, 0 boundary, 0 curvature):
+    "AndyRoute / auto fit / outline calibration"
+    "Andy_Try_1 / recorded track (repaired) / outline calibration (repaired 15 mm)": with the roller
+      moved, the recorded drive put the roller (2 poses) and the conditioner plate (2 poses) inside the
+      2 cm driving margin at the west boards, deepest 12 mm (4 of 5130 poses). Control points #60, #61,
+      #68, #69, #75 and #76 moved 15 mm away from the boards; the other 392 of 398 points and the
+      embedded recording are unchanged; 1003.196 m (raw 1003.234 m), at most 33 mm from the recording.
+  The launch scene is unchanged: its guides stay compatible there.
+
+------------------------------------------------------------------------------------------
+5. CAMERA ANCHORS: NOT DONE (follow-up)
+------------------------------------------------------------------------------------------
+Not started, to keep sections 1-4 safe. Facts for it: the seated eye is the seat + (-0.21, 0.73,
+0.09) m, 0.21 m left of the seat centre. The E preset now frames the measured grips and every control
+picks from it at 0/50/100% lift, but the valves' rubber lines hide 3 of 8 handwheel rim rays from it
+(the existing Camera suite's check, failing before too). Proposed: "Driver Eye Anchor" and "Controls View Anchor"
+transforms in the prefab (one explicit migration, backed up), the game following them with smooth E
+blend, frustum gizmos, and the Camera suite re-run.
+
+------------------------------------------------------------------------------------------
+6. THE REMAINING SUITE FAILURES: TEST ASSUMPTIONS OR GAMEPLAY?
+------------------------------------------------------------------------------------------
+Authored-scene RunBatch before this pass: Camera rim rays, Physical controls (blade end stop), Cockpit
+(steering column foot) and Service (fill necks) failed; the same four fail with the original code.
+  Water fill necks - TEST ASSUMPTION. The check wanted the flood socket more than 1 m right of the machine
+    centre (the generated necks are 1.16 m out). Your moved ports put it 0.956 m out, on the right-hand
+    tank structure. Now: right of centre and more than 0.5 m out. Everything after it passes: walking to
+    the necks from outside the body, reach, coupling, filling, breakaway, boarding.
+  Handwheel end stop - TEST ASSUMPTION. The check turned the wheel at the generated knob position (0.12 m
+    out, 0.064 m up) in 90 deg jumps; your knob is elsewhere. Turned by your measured knob in 30 deg frames
+    it reaches and holds the 3.5-turn stop. It passes with the old projection too, so the handwheel had no
+    gameplay defect. The valves did (section 1, edge-on jitter), found by the new hand test.
+  Exposed once the fill-neck check passed - TEST PLACEMENT. "Moving across the grate at 90 deg" started the
+    machine sideways at a pose that leaves the generated machine (0.45 m behind the rear axle) clear of the
+    room walls. Your machine ends 1.25 m behind it (conditioner corner 1.46 m), so it began rubbing the
+    service-room wall, not the grate. The start now leaves your outline as far clear; the launch scene's
+    pose is unchanged. The grate itself creates no collision event.
+  Valve drag in the older physical test - TEST ASSUMPTION. It jumped the pointer up to 90 deg in one frame
+    along a circle 5 mm outside the grip, at full lift (seen 1.3-2 deg from edge-on). It now drags along the
+    measured grip in 3 deg frames, redrawn between them, as Play reads one pointer position a frame.
+After: authored RunBatch 13/15; the two left (E-view blade rim rays blocked by your hydraulic hoses and
+tyre; steering column foot) fail identically with the original code and were not in scope. Launch scene
+15/15.
+
+------------------------------------------------------------------------------------------
+FILES
+------------------------------------------------------------------------------------------
+Core: MovementContact.cs, Simulation.cs, SimulatorConfig.cs, ServiceLayout.cs, TrainingRoute.cs,
+  RouteRecording.cs, VehicleOutlineConfig.cs (new)
+Presentation: IcePhysicalControls.cs, IceResurfacerGame.cs, IceWorldBuilder.cs, IceCollisionOverlay.cs,
+  IceConditionerLinkage.cs (new), IceConditionerSpan.cs (new)
+Editor: IceMechanicalAlignment.cs, IceMachineRigEditor.cs, IceBoardBrushRigEditor.cs,
+  IceConditionerAlignment.cs, IceWaterFillPortEditor.cs, IceArenaRigEditor.cs, IcePhysicalValidation.cs,
+  IceServiceValidation.cs, IceServiceGeometryValidation.cs,
+  IceCalibrationContext.cs, IceCollisionOutlineFit.cs, IceControlsBrushRollerValidation.cs,
+  IceControlsSurvey.cs (new)
+Machine: AuroraR54.prefab (roller assembly and bracket transforms only)
+Scene: IceResurfacer_AuthoredMachine.unity (calibration)
+Validation~: ContactDrivingValidation.cs (new), Program.cs, IceResurfacer.Validation.csproj,
+  RunIsolatedUnity.ps1
+
+Validation (isolated copy: StageUnityValidation.ps1 -UpdateOnly, then RunIsolatedUnity.ps1)
+  -Action ControlsSurvey -SurveyPrefix Before   read-only measurements and shots
+  -Action ControlsApply                         roller move + Inspector Transfer on the authored scene,
+                                                GPS copies (48 checks)
+  -Action ControlsVerify                        fresh process: 327 checks (roller hardware, context,
+                                                preview, brush, controls by hand, driving, GPS)
+  -Action RunBatch (with and without -Scene .../IceResurfacer_AuthoredMachine.unity)
+  dotnet run --project IceResurfacer.Validation.csproj (from the repository root): 41 scenarios

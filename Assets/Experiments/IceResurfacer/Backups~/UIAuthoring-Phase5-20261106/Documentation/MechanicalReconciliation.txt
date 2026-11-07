@@ -1,0 +1,161 @@
+AURORA R-54 / MECHANICAL RECONCILIATION TO THE FINISHED AUTHORED MODEL (2026-11-02)
+
+The authored Machine/AuroraR54.prefab is the visual reference. Its moving machinery, contact areas,
+hydraulics and snow transport now follow it. The machine was not rebaked or regenerated; no mesh or
+material changed. The launch scene (Scenes/IceResurfacer.unity) and every SimulatorConfig default are
+unchanged; all calibration changes live in the authored scene's calibration only.
+
+------------------------------------------------------------------------------------------
+STATE FOUND (before)
+------------------------------------------------------------------------------------------
+Scene vs prefab: every transform of the scene instance equalled the prefab, but the saved scene still
+carried 348 redundant property overrides, 1 stale override and 8 added GameObjects that exactly
+duplicated objects already applied to the prefab (EngineBloc, BackBloc, DashControlBoard, Rear wheel
+arch mudguard (1), Tapered rear wall left of inlet (1)/(2)/(3), Tapered rear wall right of inlet (1)),
+drawn twice in the same place, plus 13 stale "removed GameObject" entries for objects no longer in the
+prefab. The prefab was taken as authoritative. Your Editor saved the scene again at 09:06 and that save
+already dropped all of these, so the reconciliation was rebuilt from the 09:06 file; its clean-up step
+found nothing left to remove. The saved scene now overrides only the instance root pose and name.
+
+------------------------------------------------------------------------------------------
+ALIGNMENT, MACHINE SPACE (x right, y up, z forward of the rear axle)
+------------------------------------------------------------------------------------------
+Assembly                       Before (visible vs simulated)                After
+Wheels / axles                 0 mm                                          0 mm (driving geometry unchanged)
+Conditioner root (hitch)       z -0.885 vs -1.100: 215 mm; Play snapped     0 mm; Play keeps -0.885 lowered and raised
+                               it back to -1.100
+Cut / flood / pickup centre    215 mm behind the visible conditioner        0.00 mm (cut band ends under the housing front)
+Blade edge, depth 0            +31.7 mm above the ice                        0.0 mm; at 0.60 mm bite: -0.60 mm
+Lift cylinders (authored root) 0.018 m when raised (collapsed on its pin)    0.402 m lowered / 0.230 m raised (original stroke)
+Lift linkage vs rear tyres     30 mm into the tyre sidewalls (0-50% lift)    clear by 10 mm
+Snow tank dump hinge           49 mm (z 2.411 vs 2.460)                      0 mm
+Snow tank scale                1.068 x 1.269 x 1.184 vs 1 (unknown to sim)   0 (collision shell and dump outlet scaled)
+Dump outlet, door hinge        hinge/scale mismatch                          0.00 mm at 0/25/50/75/100% lift; tank cylinders on
+                                                                             their pins, 417-500 mm clear of the front tyres
+Conveyor discharge             739 mm; throat ended 128 mm short of the      0 mm; throat seated in the rear-wall opening,
+                               tank wall, below the opening                  mouth 5 mm behind the wall
+Board brush pivot              381 mm; no rig; Play drew the arm stretched   0 mm; rig installed; disc on the simulated
+                               to the old pivot                              contact 0.000 mm through 0-100%
+Brush radius                   0.250 contact vs 0.192 bristles               0.192 = bristles
+Board guide roller             199 mm                                        199 mm (NOT CHANGED, see Conflicts)
+
+------------------------------------------------------------------------------------------
+CALIBRATION CHANGES (authored scene only)
+------------------------------------------------------------------------------------------
+DrawbarLength            0.650 -> 0.435   GPS COMPATIBILITY FIELD (conditioner 215 mm closer to the axle)
+TankHingeZ               2.460 -> 2.411   new field, default 2.46
+TankScaleX/Y/Z           1 -> 1.0684 / 1.2685 / 1.1841   new fields: collision shell, dump outlet; NOT capacity
+ConveyorDischargeX/Height/Z  0.45/1.48/0.47 -> -0.021/1.639/0.024   new fields (previously constants)
+BrushPivotX/Z            -0.900/1.160 -> -0.548/1.300
+BrushArmLength           0.380 -> 0.3885
+BrushRadius              0.250 -> 0.192   (smaller: less effective, not more)
+BrushRetractedDegrees    85 -> 86.33      (working angle 0 unchanged)
+Unchanged: working width (ConditionerWidth 1.956, WaterDistributionWidth 2.10), blade effectiveness,
+SnowCapacityM3 3.54, flood 738 L, wash 310 L, wheelbase/track, body envelope, steering, speeds.
+The tank fill surface is drawn inside the scaled shell, so a full 3.54 m3 load looks full in the larger
+tank; the conserved quantity and its level mapping are unchanged.
+
+------------------------------------------------------------------------------------------
+VISUAL PARTS CHANGED (10 transforms; everything else identical)
+------------------------------------------------------------------------------------------
+Conditioner lift lower clevis (x2)       z 0.300 -> 0.085 on the housing (keeps the cylinder stroke)
+Lift linkage (x2)                        x +-0.580 -> +-0.539 (clears the rear tyres)
+Cutting blade edge                       y 0.0430 -> 0.01135 (seated on the ice; runtime is rest-relative)
+Short rear-wall delivery throat          re-aimed 24 deg upward from the discharge casing into the opening
+                                         (localPos (0,1.0800,0.1175) -> (0,1.1596,0.1788), length 0.235 -> 0.391)
+Rear-wall auger discharge into tank      (empty marker) moved to the throat mouth
+Board brush link, contact roller carriage, head (0.6 mm)   posed by the brush rig exactly as Play
+                                         already drew them; the arm itself did not move
+Components added to the prefab: IceBoardBrushRig (arm), IceKeepUnbatched (brush motor housing, plate).
+
+------------------------------------------------------------------------------------------
+CONFLICTS NOT RESOLVED AUTOMATICALLY (need your decision)
+------------------------------------------------------------------------------------------
+1. Board guide roller. Your roller (x -0.827, z 2.444, r 0.09) has its outer edge at x -0.917, 148 mm
+   inside the simulated body side (VehicleHalfWidth 1.065). The body collision is one rectangle of that
+   width from z -0.45 to 2.50, so it would always meet the boards first and the roller could never touch.
+   Measured with today's calibration: at the first simulated roller contact the visible roller is 206 mm
+   from straight boards and 65 mm in the corner; it never enters boards or walls (straight, corner, gate).
+   Your narrowed front (bumper 1.97 -> 1.47 m, wheels at +-0.85) means the front of the simulated body is
+   already up to 0.33 m wider than what is drawn.
+   Smallest alternatives:
+   A. Extend the roller bracket so the visible roller returns to x -1.015 (its current simulated place).
+      Visual change only; collision, routes, brush unchanged. ~0.19 m outward move of the roller.
+   B. Narrow the front of the simulated body to the drawn front (two-zone envelope: wide rear for the
+      2.1 m conditioner, narrow front) and put the roller where you drew it. The machine could then
+      approach the boards ~0.2 m closer at the front; changes driving clearances, brush reach, and the
+      GPS compatibility fields VehicleHalfWidth/BodyFront (all routes need new copies again).
+   C. Keep as is (current state).
+2. Conditioner housing vs central chassis beam. With the conditioner where you put it, the rear 0.21 m
+   of "Central steel chassis" (ends at z -0.73) sits inside the housing front (from z -0.52); the overlap is
+   45 mm lowered and up to 210 mm during the lift. It is hidden inside the open conditioner and was
+   already present in your raised Edit Mode pose. Smallest fix if wanted: shorten that beam's rear end
+   by 0.22 m (hidden). Not done.
+3. Pre-existing, unchanged: rear bumper passes inside the raised housing (also in the procedural
+   machine); covered snow transfer throat and hose ends enter the housing/body blocks (connections);
+   the non-uniformly scaled tank shears its door by up to 7% while it opens (scale lives on the hinge).
+
+------------------------------------------------------------------------------------------
+AUTHORED COCKPIT FINDINGS (not part of this work; nothing changed)
+------------------------------------------------------------------------------------------
+- Steering column foot floats 23.5 mm above "Left operator floor" (Cockpit refinement suite fails).
+- E (Controls) preset: from its lean-back eye the operator seat back hides 3 of 8 blade handwheel rim
+  rays; the suite requires 6 (Camera suite fails there).
+
+------------------------------------------------------------------------------------------
+RUNTIME AND TEST CHANGES
+------------------------------------------------------------------------------------------
+Core: tank hinge/scale and conveyor discharge are calibration (TankPointToMachine used by the collision
+shell and dump trajectory). Defaults reproduce the previous constants exactly.
+Picking (IcePhysicalControls): reach and ordering use world distance, so a rescaled control mount is
+still selectable (your 0.539-scale lever bank made the horizontal-auger and dump levers unclickable);
+the blade handwheel hit region is its real disc and spinner knob, not a 13 cm thick box (it was stealing
+clicks aimed at the wash valve mounted above its rim). Unscaled layouts pick as before.
+Q quicklook: keeps the fixed -65/75 deg pose when it frames the conditioner edge and the brush (launch
+scene); otherwise the smallest pitch, then yaw, change that frames both (authored: yaw -47 deg).
+Tests restated physically (launch scene keeps the exact original checks):
+  tank scale must live on the hinge and equal the simulated scale; inspection opening within the roof
+  band; stowed brush on the left and clear of every tyre; water grips >= 60 mm apart through both quarter
+  turns; Q yaw within the left/rear quadrant (both targets must still be framed); a guide fixture recorded
+  with another calibration must be rejected and then used through a revalidated copy.
+
+Performance (editor batch, 600 frames of simulation step + machine presentation with every system
+working, fresh process each): before mean 0.697 ms / p95 1.050 ms, after 0.655 ms / 0.955 ms (repeat
+runs 0.605-0.696 ms); 233 enabled renderers both; allocated memory 272.0 -> 271.4 MB. No regression.
+
+------------------------------------------------------------------------------------------
+GPS / ROUTES
+------------------------------------------------------------------------------------------
+Andy_Try_1 raw route: 1003.234407 m, 5130 samples, unchanged. Only DrawbarLength differs in the authored
+scene. New calibrated copies (originals untouched, byte-identical):
+  Andy_Try_1 / recorded track (repaired) / authored Aurora calibration   (from ..._20261102_000337)
+  Andy_Try_1 / recorded track / authored Aurora calibration             (from ..._20261031_052846)
+  AndyRoute / auto fit / authored Aurora calibration  x2                 (from both AutoFit guides)
+All four: Ready, 0 boundary, 0 curvature errors, strict compatibility; Andy keeps all 398 control
+points, its embedded recording and checksum, 0 trajectory displacement; replay of all 5130 poses advances
+in order; all 5130 recorded vehicle poses fit the boards/service walls with the current body; the
+pre-reconciliation guide is rejected naming DrawbarLength. Launch scene: unchanged (the repaired Andy
+guide is still compatible there; older files keep their legacy-yaw mismatch).
+
+------------------------------------------------------------------------------------------
+AUTHORING WORKFLOW (machine root, IceMachineRig Inspector)
+------------------------------------------------------------------------------------------
+MECHANICAL ALIGNMENT lists every simulation-critical assembly with its millimetre difference.
+  Preview conditioner lift % / tank dump %, Lowered / Raised / Tank up: poses parts exactly as Play
+  (cylinders on their pins); never saved (save, Play and recompiles end it).
+  Scene overlay: orange visible anchor, cyan simulated anchor, dotted line + mm where they differ.
+  Transfer Authored Geometry to Simulation...: lists every calibration field and every prefab-side fix,
+  then (one Undo step) applies the fixes, re-measures, validates a copy of the calibration and writes it.
+  Items that cannot be made physical as authored (e.g. the guide roller) are refused with the reason.
+  Snap Visual Anchors to Simulation (moves your parts)...: the old direction, behind a confirmation.
+Board brush: select the arm (rig Inspector) for pivot/angles/radius, 0-100% preview and Apply.
+Nothing runs on entering Play or on opening an Inspector.
+
+Validation (isolated copy only; StageUnityValidation.ps1 -UpdateOnly first):
+  RunIsolatedUnity.ps1 -Action ReconcileSurvey     (baseline dump + Edit Mode shots of the untouched model; first)
+  RunIsolatedUnity.ps1 -Action ReconcileCapture -ReconcilePrefix Before   (read-only Play captures)
+  RunIsolatedUnity.ps1 -Action ReconcileApply      (clean-up + Inspector actions, saves)
+  RunIsolatedUnity.ps1 -Action ReconcileVerify     (fresh process: persistence, Play, GPS, no mutation)
+  RunIsolatedUnity.ps1 -Action ReconcileLaunch     (launch-scene calibration and routes)
+  RunIsolatedUnity.ps1 -Action ReconcileClearance  (mesh interference through every motion)
+Results and screenshots: Validation~/MechanicalReconciliation/

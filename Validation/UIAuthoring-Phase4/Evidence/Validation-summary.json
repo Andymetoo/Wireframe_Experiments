@@ -1,0 +1,54 @@
+{
+  "successfulUnityRuns": [
+    "Unity-Acceptance-04.log",
+    "Unity-Restart-01.log",
+    "Unity-Delivered-final.log",
+    "Unity-Input-regression-01.log",
+    "Unity-Routes-regression-01.log",
+    "Unity-Navigation-regression-01.log"
+  ],
+  "successfulPassRecords": {
+    "Phase4-results.txt": 387,
+    "Phase3-results.txt": 54,
+    "UIInput-results.txt": 22,
+    "MachineryPhysical-results.txt": 69
+  },
+  "menuCaptures": [
+    "Phase4-default-Help-1366x768.png",
+    "Phase4-default-Help-1600x900.png",
+    "Phase4-default-Help-1920x1080.png",
+    "Phase4-default-Pause-1366x768.png",
+    "Phase4-default-Pause-1600x900.png",
+    "Phase4-default-Pause-1920x1080.png",
+    "Phase4-default-Results-1366x768.png",
+    "Phase4-default-Results-1600x900.png",
+    "Phase4-default-Results-1920x1080.png",
+    "Phase4-default-Welcome-1366x768.png",
+    "Phase4-default-Welcome-1600x900.png",
+    "Phase4-default-Welcome-1920x1080.png",
+    "Phase4-edited-Help-1366x768.png",
+    "Phase4-edited-Help-1600x900.png",
+    "Phase4-edited-Help-1920x1080.png",
+    "Phase4-edited-Pause-1366x768.png",
+    "Phase4-edited-Pause-1600x900.png",
+    "Phase4-edited-Pause-1920x1080.png",
+    "Phase4-edited-Results-1366x768.png",
+    "Phase4-edited-Results-1600x900.png",
+    "Phase4-edited-Results-1920x1080.png",
+    "Phase4-edited-Welcome-1366x768.png",
+    "Phase4-edited-Welcome-1600x900.png",
+    "Phase4-edited-Welcome-1920x1080.png"
+  ],
+  "coreScenarios": 43,
+  "measurementLines": [
+    "PASS MEASUREMENT visible unchanged result state: 0.00254 ms/call, excludes rendering and other UI.",
+    "PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual.",
+    "PASS MEASUREMENT visible unchanged result state: 0.00245 ms/call, excludes rendering and other UI.",
+    "PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual.",
+    "PASS MEASUREMENT visible unchanged result state: 0.00239 ms/call, excludes rendering and other UI.",
+    "PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual."
+  ],
+  "nativeInputAndMixedComposition": "NOT TESTED; manual operator checklist",
+  "wholeFrameProfiling": "NOT TESTED; Unity allocation counter failed retained 4096-byte calibration",
+  "completeRunEvidence": "Existing deterministic core complete scored run; representative Complete formatter fixture; native end-to-end guided run remains manual"
+}

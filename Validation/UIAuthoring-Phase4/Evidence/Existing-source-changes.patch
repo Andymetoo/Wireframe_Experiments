@@ -1,0 +1,91 @@
+--- phase4-baseline/Presentation/IceDashboard.cs
++++ Presentation/IceDashboard.cs
+@@ -161,6 +161,7 @@
+                 bool sessionSheet=!game.HudHidden&&(!game.Started||game.Sim.Finished);
+                 if(routes||game.HelpVisible||game.Paused||sessionSheet)
+                 {
++                    if(!routes&&game.HasAuthoredMenus&&game.AuthoredMenus.ModalVisible)return;
+                     // A menu owns the screen: no live HUD labels, console or
+                     // second menu underneath it, and no click-through controls.
+                     IceUITheme.Fill(new Rect(0,0,LayoutWidth,LayoutHeight),new Color32(40,42,38,235));
+--- phase4-baseline/Presentation/IceResurfacerGame.cs
++++ Presentation/IceResurfacerGame.cs
+@@ -30,9 +30,14 @@
+         public bool HasAuthoredSurvey => AuthoredSurvey != null && AuthoredSurvey.IsAvailable;
+         public bool HasAuthoredGps => AuthoredGps != null && AuthoredGps.IsAvailable;
+         public bool HasAuthoredRoutes => AuthoredRoutes != null && AuthoredRoutes.IsAvailable;
++        public IceMenuScreens AuthoredMenus { get; set; }
++        public bool HasAuthoredMenus => AuthoredMenus != null && AuthoredMenus.IsAvailable;
++        public bool UsesAuthoredDriverEye => HasDriverAnchor;
+         readonly IceUIPointerGuard navigationPointer = new IceUIPointerGuard();
+         public bool PointerOverAuthoredInterface(Vector2 screenPoint)
+         {
++            AuthoredMenus?.RefreshState();
++            if (HasAuthoredMenus && AuthoredMenus.ModalVisible) return true;
+             // Synchronize every shared-Canvas group before any raycast, even on a modal/hide transition.
+             AuthoredSurvey?.SyncVisibility(); AuthoredGps?.SyncVisibility(); AuthoredRoutes?.SyncVisibility();
+             if (HasAuthoredRoutes && AuthoredRoutes.Visible) return true;
+@@ -63,6 +68,7 @@
+             PhysicalControls?.RefreshVisibility();WaterService?.RefreshInteractionVisibility();RouteGuide?.Refresh();
+             Surface?.SetDebugMode(HudHidden?0:SurfaceDebugMode);
+             GetComponent<IceCollisionOverlay>()?.Refresh();
++            AuthoredMenus?.RefreshState();
+         }
+         public bool Looking { get; private set; }
+         public Camera DriverCamera { get; private set; }
+@@ -218,13 +224,14 @@
+             DriverCamera.transform.localPosition=Vector3.zero;
+             DriverCamera.transform.localRotation=Quaternion.Euler(ForwardPitch,0,0);
+             Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
+-        }
+-        public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); } }
+-        public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseControls(); ReleaseLook(); }
++            AuthoredMenus?.RefreshState();
++        }
++        public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); AuthoredMenus?.RefreshState(); } }
++        public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseControls(); ReleaseLook(); AuthoredMenus?.RefreshState(); }
+         public void ToggleDiagnostics() { DiagnosticsVisible=!DiagnosticsVisible; }
+         public void Finish()
+         {
+-            if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseControls(); ReleaseLook(); }
++            if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseControls(); ReleaseLook(); AuthoredMenus?.RefreshState(); }
+             else Notice=Sim.LastMessage;
+         }
+         public void Service()
+@@ -264,7 +271,7 @@
+                 if(keys.f3Key.wasPressedThisFrame) DiagnosticsVisible=!DiagnosticsVisible;
+                 if(keys.f4Key.wasPressedThisFrame) PerformanceVisible=!PerformanceVisible;
+                 if(keys.f2Key.wasPressedThisFrame) { SurfaceDebugMode=(SurfaceDebugMode+1)%3; Surface.SetDebugMode(HudHidden?0:SurfaceDebugMode); }
+-                if(keys.tabKey.wasPressedThisFrame) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
++                if(keys.tabKey.wasPressedThisFrame&&!(HasAuthoredMenus&&AuthoredMenus.ModalVisible)) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
+             }
+             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;
+             bool wasOnFoot=Sim.OnFoot;
+--- phase4-baseline/UI/Editor/IceMachineryPhysicalValidation.cs
++++ UI/Editor/IceMachineryPhysicalValidation.cs
+@@ -18,8 +18,9 @@
+         public static void Run(IceMachineryConsole console)
+         {
+             string project = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+-            if (!project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase2/") ||
+-                !File.Exists(Path.Combine(project, "UIAuthoringPhase2ValidationProject.txt")))
++            bool phase2 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase2/") && File.Exists(Path.Combine(project, "UIAuthoringPhase2ValidationProject.txt"));
++            bool phase4 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase4/") && File.Exists(Path.Combine(project, "UIAuthoringPhase4ValidationProject.txt"));
++            if (!phase2 && !phase4)
+                 throw new InvalidOperationException("Run machinery input validation only in the marked Phase 2 disposable project.");
+             if (console == null || !Application.IsPlaying(console.gameObject) || console.game == null || console.game.Sim == null)
+                 throw new InvalidOperationException("A live authored machinery console is required.");
+--- phase4-baseline/UI/Editor/IceUIInputValidation.cs
++++ UI/Editor/IceUIInputValidation.cs
+@@ -18,8 +18,9 @@
+         public static void Run(IceAuthoredHud hud)
+         {
+             string project = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+-            if (!project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase1/") ||
+-                !File.Exists(Path.Combine(project, "UIAuthoringValidationProject.txt")))
++            bool phase1 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase1/") && File.Exists(Path.Combine(project, "UIAuthoringValidationProject.txt"));
++            bool phase4 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase4/") && File.Exists(Path.Combine(project, "UIAuthoringPhase4ValidationProject.txt"));
++            if (!phase1 && !phase4)
+                 throw new InvalidOperationException("UI input acceptance runs only in the marked disposable UIAuthoring-Phase1 project.");
+             if (hud == null || !Application.IsPlaying(hud.gameObject) || !hud.IsAvailable || !hud.Visible)
+                 throw new InvalidOperationException("UI input acceptance requires the active authored HUD in a running Play session.");

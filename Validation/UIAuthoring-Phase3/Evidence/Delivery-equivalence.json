@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "deliveredSourcesMatchUnityTestedSources": 156,
+  "deliveredNavigationAssetsMatchTestedAssets": 16,
+  "sceneSha256": "b8e81838a780adb751bb972656801c678e1a57f6589f1aa9f0dd4443837178ba",
+  "unsignedManualChecks": 148,
+  "uniqueHistoricalChecks": 94,
+  "uniquePhase3Checks": 54
+}

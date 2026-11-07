@@ -1,0 +1,87 @@
+﻿[
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Context Hint.prefab",
+        "before":  "bb47572d3f6b134d56ff340722ca194ce8660a6dae7634c9bc56c185840f9e83",
+        "after":  "bb47572d3f6b134d56ff340722ca194ce8660a6dae7634c9bc56c185840f9e83"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Context Hint.prefab.meta",
+        "before":  "c85a65db1ba3d9d8952786bac95a06b691be03b23ece0b0ff001796215cc85f2",
+        "after":  "c85a65db1ba3d9d8952786bac95a06b691be03b23ece0b0ff001796215cc85f2"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Critical Notice.prefab",
+        "before":  "c01f1c264b82d6b5c09b477822459d8f44428967cbff0d69221b67fa80fd7ef3",
+        "after":  "c01f1c264b82d6b5c09b477822459d8f44428967cbff0d69221b67fa80fd7ef3"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Critical Notice.prefab.meta",
+        "before":  "00416dbc42740008cbd2f050b7a7c930f5f0513b2522629dc162c2b111dc87d0",
+        "after":  "00416dbc42740008cbd2f050b7a7c930f5f0513b2522629dc162c2b111dc87d0"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Drive Warning.prefab",
+        "before":  "abfd2b57fa00f99588787eb3829c7e6487f029837c87ecb74e31259abdf018be",
+        "after":  "abfd2b57fa00f99588787eb3829c7e6487f029837c87ecb74e31259abdf018be"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Drive Warning.prefab.meta",
+        "before":  "256c4f3d090d385a1dcc5032990cd86d491640a25e99b9ccad98e374b683c153",
+        "after":  "256c4f3d090d385a1dcc5032990cd86d491640a25e99b9ccad98e374b683c153"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Message History Row.prefab",
+        "before":  "f332b9c0e8dc20562458919fe7a969be0dad1ff9d48210f80476ffb7f2315f54",
+        "after":  "f332b9c0e8dc20562458919fe7a969be0dad1ff9d48210f80476ffb7f2315f54"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Message History Row.prefab.meta",
+        "before":  "e487970279e42cd8892d7024636ca82a37952d70903d3dccd4e49923ba58f248",
+        "after":  "e487970279e42cd8892d7024636ca82a37952d70903d3dccd4e49923ba58f248"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Operator Action.prefab",
+        "before":  "b00a134746748d4719c842dc24f5f0def1d879916175ff6ab1e7d0862bccc1ca",
+        "after":  "b00a134746748d4719c842dc24f5f0def1d879916175ff6ab1e7d0862bccc1ca"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Operator Action.prefab.meta",
+        "before":  "1da9a2e65cb25e4336e6775ce64b730d33dc469a1a216e8b4f97a31d4d7f8f02",
+        "after":  "1da9a2e65cb25e4336e6775ce64b730d33dc469a1a216e8b4f97a31d4d7f8f02"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Operator Interface.prefab",
+        "before":  "f19066b34f5a11ffb1abae859f4fa61358d550c340764664281c93122c85181c",
+        "after":  "dc03029de71c701997b5c680b53138c4509f93584850ee4b03a60a5fef198450"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Operator Interface.prefab.meta",
+        "before":  "7699d8a2298b0b0f2b806d4e8b7238a1660595161ec29e929a63749d4750c6df",
+        "after":  "7699d8a2298b0b0f2b806d4e8b7238a1660595161ec29e929a63749d4750c6df"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Operator Notice.prefab",
+        "before":  "093c6d10a0a029579b635a646e50febf83bcc4acd968e31c2eebe7a6734beb3b",
+        "after":  "f33d2ec66d76358bac21d55ab8cf3670aa090c803440360cf96e29fc584506e0"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Operator Notice.prefab.meta",
+        "before":  "c787018daeb50aa584d89d9eca59c90fa9adaafb74c25b1b43af4b3ef9a1ab85",
+        "after":  "c787018daeb50aa584d89d9eca59c90fa9adaafb74c25b1b43af4b3ef9a1ab85"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Projected GPS.prefab",
+        "before":  "6856cba319d139e0d9a13652fd1fddf2ece5ea832819b4023382d30914e25f8b",
+        "after":  "6856cba319d139e0d9a13652fd1fddf2ece5ea832819b4023382d30914e25f8b"
+    },
+    {
+        "path":  "UI/Prefabs/Operator/Aurora Projected GPS.prefab.meta",
+        "before":  "038cbe463e64a36fa4e65f39b74d7ef74c5036e33008c33a09ad0bb2be55c8dd",
+        "after":  "038cbe463e64a36fa4e65f39b74d7ef74c5036e33008c33a09ad0bb2be55c8dd"
+    },
+    {
+        "path":  "UI/Prefabs/Operator.meta",
+        "before":  "b54186ce2404e8c4d50537fe0cad2836e72c3b4d943eeed37b362a5f6e6fa087",
+        "after":  "b54186ce2404e8c4d50537fe0cad2836e72c3b4d943eeed37b362a5f6e6fa087"
+    }
+]

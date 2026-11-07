@@ -1,0 +1,7 @@
+AcceptanceProject/
+ManagedCompile/
+CoreRegression/
+*.log
+*.log.exit
+*.log.pid
+*.log.timeout

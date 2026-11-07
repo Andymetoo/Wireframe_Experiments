@@ -165,6 +165,8 @@ namespace IceResurfacer.Editor
                     .Invoke(game, new object[] { false });
                 Check(!game.PhysicalControls.IsDragging && game.Sim.Controls.ConditionerHydraulic == 0,
                     "focus loss releases spring-centred controls even if MouseUp was lost");
+                typeof(IceResurfacerGame).GetMethod("OnApplicationFocus", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .Invoke(game, new object[] { true });
                 Input(); Resume("focus-loss control cleanup"); Stop();
                 Input(new[] { Key.S }); Advance(1);
                 Check(game.Sim.Vehicle.Speed < -.1f, "S reverses after a stopped equipment interaction");

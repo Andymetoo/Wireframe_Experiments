@@ -1,0 +1,18 @@
+{
+  "originalSceneSha256": "0d2d3377984e870c888f462a8b1e2a69ac0bd81b82b511026b10ec58a08c8a62",
+  "unityInstalledArtifactSha256": "5deb21bd145e26e87527de03380db617b5cf801ef86e3cd527174afd2b2d7aff",
+  "integratedSceneSha256": "92d8ecb950e588668bf520af5ec85675f2d21a40cbf5b22aadee51dbf09108ff",
+  "unchangedExistingRecords": 14,
+  "existingUIInstanceChange": "Only m_AddedGameObjects adds the persistent console child.",
+  "newRecordIds": [
+    "275465992",
+    "275465993",
+    "1905400100",
+    "1905400002",
+    "1905400003"
+  ],
+  "remappedReusedStrippedIds": {
+    "1905400001": "1905400100"
+  },
+  "consolePrefabGuid": "39ea768193f6f264cbd13ec3aa6763e0"
+}

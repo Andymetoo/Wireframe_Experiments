@@ -1,0 +1,69 @@
+AURORA R-54 / DUMP RECOVERY AND SNOW CONTACT / 2026-11-05
+
+The operator's failed return pass was reproduced with current saved tuning.
+A 1 m3 loaded tank dumped 975 L into nine fixed .22 m kernels, building a
+2.88 m wall. The previous driven return accepted only 29.1 L (authored) or
+9.2 L (procedural), at the ordinary 1.06 m/s travel speed. Previous narrow
+windrow tests did not cover a real dumped-bin return.
+
+Dump snow now settles against the existing field into a finite repose-shaped
+pile, across the actual outlet width. Every deposited litre is normalized back
+to actual ice cells. Pit samples and off-ice material keep their existing
+ledgers. This is a physical distribution change for dumped stock; ordinary
+side overflow and its calibrated onset are unchanged.
+
+The deterministic machine samples the real snow heightfield. Deep snow opposes
+travel and adds machine load. The reaction is yielding contact: the body can
+creep through compressible snow, and a lowered intake limits forward travel
+to its available feed rate. Reverse remains available to withdraw. This is
+not a Unity Rigidbody or rigid MeshCollider, and wheels do not delete stock.
+
+With moving forward contact and the conditioner fully lowered, deep snow is
+fed into the existing trough at finite horizontal-auger throughput and free
+capacity. It then uses the existing horizontal-to-vertical-to-tank transport.
+The final thin remainder of an engaged deep bank remains rate limited, avoiding
+a sudden whole-footprint gulp at the 50 mm threshold. Stopped/raised equipment
+does not vacuum the pile. Ordinary shallow layers retain whole-layer pickup.
+Stopped/full/jammed transport retains or spills stock through its existing
+finite reservoirs, never bypasses them. The actual-delivery bin spout and its
+visibility control are unchanged.
+
+The tank reservoir now accumulates in double precision internally. Full-bin
+recovery exposed approximately .2 L of float addition drift over thousands of
+tiny deliveries. The public float reading and controls remain compatible.
+
+EVIDENCE
+
+Validation~/OperatorFeedback-20261105/SnowFeedbackChecks.csproj reads the current
+authored and procedural scene calibration/tuning extracted without saving them.
+The loaded-tank fixture is declared, then all driving, braking, dumping,
+stowing, reversing and recovery use the real controls and fixed simulation.
+
+  1 m3 initial bin: 975 L dumped; ~544 mm peak; ~859 L accepted on one
+  centered return in 104 seconds; deepest intake travel ~.010 m/s.
+  Full 3.54 m3 bin: 3.451 m3 dumped; ~913 mm peak; ~2.41 m3 accepted on
+  one centered return in 265-267 seconds; deepest travel .006 m/s.
+  The remaining mound wings need adjacent passes. Tank residual adhesion is
+  retained. All fixtures check total ice + conveyors + tank + pit + floor stock.
+
+  Running deep intake: 120 L delivered in 12 seconds. Stopped, vertical-off,
+  full, jammed and raised cases deliver zero to tank and conserve stock.
+  Raised-machine impact: 2.65 m/s approach slows to 1.709 m/s in the first
+  .5 seconds, then .107 m/s within the pile. Neutral reaches zero. No pickup.
+
+  Cached pile placement: 500 x 7 L increments, 3.50000008 m3 retained;
+  ~.362 ms per increment offline CPU, zero steady managed allocation after
+  scratch-buffer warmup. Support heights are evaluated once and reused by the
+  fill solver; scratch buffers grow only when a larger footprint is required.
+  These are CPU measurements, not rendered Unity frame-time guarantees.
+
+  Ordinary .35 blade / augers-off onset remains 18.4 m in both saved configs.
+  Ordinary streaks still clear exactly with both 6 and 50 mm pickup settings.
+
+Commands from project root:
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/OperatorFeedback-20261105/SnowFeedbackChecks.csproj -c Release
+  dotnet run --project Assets/Experiments/IceResurfacer/Validation~/AugersOff-20261104/SnowPass.csproj -c Release -- --after
+
+Evidence logs: snow-feedback-before.log, snow-feedback.log, onset.log.
+Rendered snow reconstruction is documented separately; this note describes
+the material/contact mechanics, not a claim about current-scene appearance.

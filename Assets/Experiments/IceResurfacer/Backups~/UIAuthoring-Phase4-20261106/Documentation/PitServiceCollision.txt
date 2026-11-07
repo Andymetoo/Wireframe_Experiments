@@ -1,0 +1,109 @@
+AURORA R-54 / PIT CONTACT, ROOM AND FLOOR WATER
+28 October 2026
+
+The pit stop was a geometry mismatch, not docking assistance. The previous
+ContainsVehicleFloor expanded the 4.0 x 2.4 m pit by 0.12 m. BodyFits rejected a
+vehicle sample entering that expanded rectangle; the drawn edge was elsewhere.
+Six slow approaches (0, +/-15, +/-30 and 90 degrees) stopped 120.0-123.9 mm from
+the outline. The 90 degree approach also received a wrong normal because the
+legacy contact calculation used the vehicle centre rather than the rejected
+footprint point. Historical measurements: Validation~/OperatorAuthenticityBefore/
+Pit-collision-before.txt.
+
+The pit rim is now entirely inside that same rectangle. Its width is 0.10 m and
+height 0.12 m. Collision retains only 0.01 m numerical clearance. The six
+equivalent approaches stop 10.4-13.6 mm from the rendered outline, including
+the travel possible in one fixed simulation tick. Footprint edges are tested
+against pit corners between the existing nine chassis samples. No artificial
+park pose, approach heading, speed reset zone or forced dismount is involved.
+Collision can remove inward movement, and a glancing service contact can slide
+along the edge, but it cannot automatically rotate the machine. The existing
+guide-roller steering response at rink boards is preserved. Ordinary reverse
+clears every tested pit approach without relocation or heading adjustment.
+
+F3 displays the accepted chassis footprint (green), rejected footprint (red),
+rendered pit outline (cyan), collision outline (amber), and actual contact
+point/normal (magenta). Six LineRenderers and their materials are reused.
+The HUD reports current speed, obstacle, rejected position and heading, and the
+contact point and normal. A retained contact is labeled as the last contact.
+Use TAB + F3 for the compact left-side contact panel: it leaves the actual pit
+and footprint outlines visible in the center of the scene. TAB restores the
+full machinery/performance details. Native HUD-<resolution>-pit-overlay.png
+captures show this inspection layout in the successful final native runs.
+Pit-contact-0deg.png, Pit-contact-30deg.png and Pit-contact-90deg.png show the
+same source geometry rendered by the actual Unity scene.
+
+Raised tank and board geometry
+The white dasher used to begin at 0.13 m while the yellow kickplate continued
+to 0.17 m. Both emitted the same inner face for 4 cm of height. The white
+dasher now starts at 0.17 m; the two faces meet at one edge. No depth bias was
+added to hide this overlap.
+
+The animated tank and opening door can extend beyond the static chassis front.
+A narrow contact probe now follows the authored 58 degree tank hinge, 105
+degree opening door, sloping crown and tapered shoulders, including both door
+skins. It tests physical height: projecting above the 2.55 m safety glass is
+not the same as intersecting glass, and an elevated outlet may overhang the
+0.12 m pit rim. Actual service walls and doorway still obstruct the assembly.
+Drive and hydraulic lift both test the candidate pose. A blocked lift retains
+the attained height; reverse and safe lowering remain available. Raising is
+not a general drive lock. At the deterministic east-board fixture the tank
+reaches lift 0.4473 before contact. Reversing physically away permits the same
+held command to reach full lift. Full lift at the pit still succeeds.
+Runtime validation checks the rendered hinge positions and rotation against
+the core model; Raised-tank-glass-contact.png shows this specific obstruction.
+This remains a bounded procedural contact model, not a general-purpose rigid
+body simulation of every fastener, hose, or flexible component.
+
+Room and water
+The room width is 11 m, reduced from 12 m. Its local length remains 14 m, with
+the main floor beginning at Outward=1.6 m; the 5.4 m portal, centre parking
+pose, pit position and nose-in orientation remain unchanged. Supply and hose
+holder moved inward with the negative-Side wall to -4.95/-4.90 m. Both actual
+fill connections, walking around the machine, hose-taut recovery, pit dumping
+and reverse departure are checked by the service suite.
+
+Floor water remains finite. A fixed 5040-cell field receives water at the
+actual source centroid. Reused delta and first-moment buffers transfer small
+amounts between neighbours at 5 Hz down a mild authored drain slope. Transfer
+segments are clipped to the service floor and cannot cross pit, walls or ice.
+The physical drain removes at most 1.4 L/s. Source appearance no longer draws
+a disconnected, drain-wide water sheet or an instant line to the drain.
+An explicit 20 L test source after 80 seconds holds 0.4716 L on the floor and
+has drained 19.5284 L, distributed across 21 nonzero cells. Error is below
+0.002 L. This is local floor runoff, not an expensive fluid simulation.
+
+WetFloor.shader darkens concrete with restrained rough highlights and irregular
+soft edges. Radius and alpha follow existing liters; shader fragments also
+clip at the exact room, rink and pit boundaries so a coarse triangle cannot
+paint across a corner. Persistent meshes update only when field revision
+changes, at most 5 Hz. The renderer adds no water. Service-floor-source.png
+and Service-floor-drained.png use an identical camera and source fixture.
+The Unity render check verifies a visible source patch and 55,290 changed
+pixels after drainage at that identical camera. It caught missing material
+footprint properties during integration: clipping uniforms must be declared
+in the shader Properties block for reliable SRP material data. Those vectors
+are now explicit hidden properties. The final reviewed image shows a localized
+dark shallow patch at the source and faint remaining spots after drainage,
+with no floating sheet or wall/pit spill-through.
+
+Accounting: TotalServiceDrainLiters is the historical total discharge counter
+(overflow, dropped nozzle and runoff), not a second physical sink. For a
+whole-system balance, sum actual reservoir storage, actual ice storage, floor
+WaterLiters and Environment.DrainedWaterLiters. DepositedWaterLiters is the
+floor's cumulative input counter. Do not add both the discharge counter and
+the same stored/drained water again.
+
+Evidence and validation
+ServiceCollisionValidation.cs includes slow/angled approaches, rejected-pose
+checks, inward normals, reverse recovery, a 75 degree glancing approach with
+zero automatic heading change, finite floor flow, physical tank/glass contact,
+continued lift after reversal, and unobstructed pit overhang. Focused output:
+Validation~/Service-collision-focused.txt. This group is included in the full
+core aggregate. IceServiceGeometryValidation runs within the real Unity
+service suite; see Validation~/Service-geometry-results.txt and Service-results.txt.
+The final focused core group and actual Unity service geometry suite pass,
+including all six approaches, fixed overlay objects, rendered lift pivots,
+reverse recovery, finite water balance, visible puddle change and drain flow.
+Final-results.txt and OperatorAuthenticity.txt record
+the final integrated validation and measured runtime performance status.

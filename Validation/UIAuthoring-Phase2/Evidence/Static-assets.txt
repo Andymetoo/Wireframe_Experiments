@@ -1,0 +1,6 @@
+PASS GUID and object references: 9 UI serialized assets
+PASS 8476 serialized assertions across 9 Phase 2 prefabs. Unity rendering, interactions and persistence are separate evidence.
+
+Command: Python 3.12 verify_assets.py
+Result: exit 0 after Unity acceptance run 04 generated assets were hash-guarded back into the main workspace.
+Verified: console + eight templates, all 18 explicit console bindings, eight custom Selectable/style targets, visible blade hub state target, TMP fonts, local and external references, representative saved previews, no full-screen root Graphic, centered rotary anchors, bottom-anchored value labels, neutral art rotation baseline, no automatic Edit Mode/runtime layout resets.

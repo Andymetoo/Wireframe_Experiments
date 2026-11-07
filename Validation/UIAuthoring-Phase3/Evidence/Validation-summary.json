@@ -1,0 +1,31 @@
+{
+  "successfulUnityRuns": [
+    "Unity-acceptance-annotations.log",
+    "Unity-commands-annotations.log",
+    "Unity-persistence-annotations.log",
+    "Unity-integrated-annotations.log"
+  ],
+  "captures": [
+    "Phase3-Delivered-Routes-1366x768.png",
+    "Phase3-Delivered-Routes-1600x900.png",
+    "Phase3-Delivered-Routes-1920x1080.png",
+    "Phase3-Delivered-SurveyGPS-1366x768.png",
+    "Phase3-Delivered-SurveyGPS-1600x900.png",
+    "Phase3-Delivered-SurveyGPS-1920x1080.png",
+    "Phase3-Edited-Routes-1366x768.png",
+    "Phase3-Edited-Routes-1600x900.png",
+    "Phase3-Edited-Routes-1920x1080.png",
+    "Phase3-Edited-SurveyGPS-1366x768.png",
+    "Phase3-Edited-SurveyGPS-1600x900.png",
+    "Phase3-Edited-SurveyGPS-1920x1080.png"
+  ],
+  "successfulPassRecords": 141,
+  "measurementLines": [
+    "PASS MEASUREMENT survey+GPS binding mean: 0.0111 ms / refresh (200 calls; excludes rendering).",
+    "PASS MEASUREMENT manager binding with 160 files: 0.1872 ms / refresh (200 calls; excludes rendering and file refresh).",
+    "PASS MEASUREMENT graphics: survey 35, GPS 18, manager incl pooled rows 912. Full-frame allocations/draw/Canvas comparison remains manual.",
+    "PASS MEASUREMENT allocation counter UNAVAILABLE: retained 4096-byte calibration reported 0 bytes; no zero-allocation claim."
+  ],
+  "nativeInputAndMixedComposition": "NOT TESTED; operator checklist",
+  "wholeFrameProfiling": "NOT TESTED; allocation counter failed retained 4096-byte calibration"
+}

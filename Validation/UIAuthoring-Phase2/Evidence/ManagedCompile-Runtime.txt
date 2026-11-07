@@ -1,0 +1,12 @@
+Static C# compilation using installed Unity 6000.4.1f1 API references. IceResurfacer.Runtime sources: 80
+Assets\Experiments\IceResurfacer\Presentation\RouteSilhouetteContinuation.cs(23,77): warning CS0618: 'Object.GetInstanceID()' is obsolete: 'GetInstanceID is deprecated. Use GetEntityId instead. This will be removed in a future version.'
+Assets\Experiments\IceResurfacer\Presentation\RouteSilhouetteContinuation.cs(33,42): warning CS0618: 'Object.GetInstanceID()' is obsolete: 'GetInstanceID is deprecated. Use GetEntityId instead. This will be removed in a future version.'
+Assets\Experiments\IceResurfacer\Presentation\RouteSilhouetteContinuation.cs(60,119): warning CS0618: 'Object.GetInstanceID()' is obsolete: 'GetInstanceID is deprecated. Use GetEntityId instead. This will be removed in a future version.'
+Assets\Experiments\IceResurfacer\Presentation\RouteLibraryCatalog.cs(14,99): warning CS0649: Field 'RouteLibraryCatalog.Envelope.data' is never assigned to, and will always have its default value null
+Assets\Experiments\IceResurfacer\Presentation\RouteRecordingStorage.cs(17,24): warning CS0649: Field 'RouteRecordingStorage.FileEnvelope.version' is never assigned to, and will always have its default value 0
+Assets\Experiments\IceResurfacer\Presentation\RouteRecordingStorage.cs(16,27): warning CS0649: Field 'RouteRecordingStorage.FileEnvelope.format' is never assigned to, and will always have its default value null
+Assets\Experiments\IceResurfacer\Presentation\RouteLibraryCatalog.cs(14,57): warning CS0649: Field 'RouteLibraryCatalog.Envelope.version' is never assigned to, and will always have its default value 0
+Assets\Experiments\IceResurfacer\Presentation\RouteRecordingStorage.cs(18,27): warning CS0649: Field 'RouteRecordingStorage.FileEnvelope.sha256' is never assigned to, and will always have its default value null
+Assets\Experiments\IceResurfacer\Presentation\RouteRecordingStorage.cs(19,38): warning CS0649: Field 'RouteRecordingStorage.FileEnvelope.route' is never assigned to, and will always have its default value null
+Assets\Experiments\IceResurfacer\Presentation\RouteLibraryCatalog.cs(14,79): warning CS0649: Field 'RouteLibraryCatalog.Envelope.sha256' is never assigned to, and will always have its default value null
+Compiler exit: 0

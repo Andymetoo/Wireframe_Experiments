@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "behavior": "No automatic pause/menu on focus loss. Background simulation enabled for Aurora lifetime; gameplay input disabled while unfocused. Existing explicit pause retained.",
+  "inputRegression": "Unity-Input-focus-change-01.log",
+  "unityExit": 0,
+  "staticCompilation": "PASS",
+  "protectedRoutesUnchanged": 31,
+  "currentSourceHashes": {
+    "Presentation/IceResurfacerGame.cs": "198ce540a5e0b311af2109bb7ce510350eb0f02d84354266cc77c40296dffd30",
+    "Editor/IceAuthenticityValidation.cs": "954b524bfa2128ff99f47a4b8303e5d8bbc068abd694c28be59925bde244637d",
+    "Editor/IceCameraValidation.cs": "fc8ea74825eb6f6770d162a63669107043609f5f5995093530aa9d61ebcc6ffd"
+  },
+  "fixtureChanges": "Restore focus before continuing existing camera/drive input validation sequences; compilation checked, full camera/authenticity suites not rerun.",
+  "nativeDesktopAltTab": "NOT TESTED; verify in visible Editor after restarting Play"
+}

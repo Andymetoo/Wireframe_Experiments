@@ -1,0 +1,75 @@
+PASS persistent driver and controls anchor binding
+PASS seated camera follows the authored driver anchor
+PASS E transition is smooth rather than an immediate jump
+PASS E settles at the exact authored position and rotation
+PASS overlapping E/Q/C holds restore the original seated pose exactly
+PASS restored pose remains stable on the following frame
+PASS E frames control 1 at conditioner lift 0
+PASS E picks Conditioner hydraulic lever at conditioner lift 0
+PASS E frames control 2 at conditioner lift 0
+PASS E picks Horizontal auger lever at conditioner lift 0
+PASS E frames control 3 at conditioner lift 0
+PASS E picks Vertical auger lever at conditioner lift 0
+PASS E frames control 4 at conditioner lift 0
+PASS E picks Snow tank hydraulic lever at conditioner lift 0
+PASS E frames control 5 at conditioner lift 0
+PASS E picks Flood water valve at conditioner lift 0
+PASS E frames control 6 at conditioner lift 0
+PASS E picks Wash water valve at conditioner lift 0
+PASS E frames control 7 at conditioner lift 0
+PASS E picks Blade handwheel at conditioner lift 0
+PASS E frames control 8 at conditioner lift 0
+PASS E picks Snow-breaker plunger at conditioner lift 0
+PASS E frames control 1 at conditioner lift 0.5
+PASS E picks Conditioner hydraulic lever at conditioner lift 0.5
+PASS E frames control 2 at conditioner lift 0.5
+PASS E picks Horizontal auger lever at conditioner lift 0.5
+PASS E frames control 3 at conditioner lift 0.5
+PASS E picks Vertical auger lever at conditioner lift 0.5
+PASS E frames control 4 at conditioner lift 0.5
+PASS E picks Snow tank hydraulic lever at conditioner lift 0.5
+PASS E frames control 5 at conditioner lift 0.5
+PASS E picks Flood water valve at conditioner lift 0.5
+PASS E frames control 6 at conditioner lift 0.5
+PASS E picks Wash water valve at conditioner lift 0.5
+PASS E frames control 7 at conditioner lift 0.5
+PASS E picks Blade handwheel at conditioner lift 0.5
+PASS E frames control 8 at conditioner lift 0.5
+PASS E picks Snow-breaker plunger at conditioner lift 0.5
+PASS E frames control 1 at conditioner lift 1
+PASS E picks Conditioner hydraulic lever at conditioner lift 1
+PASS E frames control 2 at conditioner lift 1
+PASS E picks Horizontal auger lever at conditioner lift 1
+PASS E frames control 3 at conditioner lift 1
+PASS E picks Vertical auger lever at conditioner lift 1
+PASS E frames control 4 at conditioner lift 1
+PASS E picks Snow tank hydraulic lever at conditioner lift 1
+PASS E frames control 5 at conditioner lift 1
+PASS E picks Flood water valve at conditioner lift 1
+PASS E frames control 6 at conditioner lift 1
+PASS E picks Wash water valve at conditioner lift 1
+PASS E frames control 7 at conditioner lift 1
+PASS E picks Blade handwheel at conditioner lift 1
+PASS E frames control 8 at conditioner lift 1
+PASS E picks Snow-breaker plunger at conditioner lift 1
+PASS persistent physical control 9
+PASS control 9 retains live renderers after batching
+PASS control 9 provides active highlight
+PASS brush switch writes the existing simulation state
+PASS mouse release clears momentary horn
+PASS keyboard/HUD state changes animate switch 9
+PASS moved/scaled control 9 remains pickable
+PASS persistent physical control 10
+PASS control 10 retains live renderers after batching
+PASS control 10 provides active highlight
+PASS horn sounds only during the mouse hold
+PASS mouse release clears momentary horn
+PASS moved/scaled control 10 remains pickable
+PASS persistent physical control 11
+PASS control 11 retains live renderers after batching
+PASS control 11 provides active highlight
+PASS pickup switch writes the existing pump state
+PASS mouse release clears momentary horn
+PASS keyboard/HUD state changes animate switch 11
+PASS moved/scaled control 11 remains pickable
+PASS pause/focus/dismount release stops the horn without requiring another frame

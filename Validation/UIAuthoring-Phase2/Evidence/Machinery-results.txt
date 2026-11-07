@@ -1,0 +1,276 @@
+Aurora Phase 2 isolated Unity authoring acceptance
+Input checks use injected Input System events and real runtime handlers; native desktop hardware and visible Editor inspection remain separate.
+PASS Persistent console bindings complete: all references valid
+PASS All 18 compact, machinery, status and confirmation controls are persistent objects.
+PASS Exactly one existing EventSystem remains in the scene.
+PASS Console contains no automatic layout groups that could undo manual positions.
+PASS Edit Mode identifies preview values without running the simulation.
+PASS Additive console installation saved in disposable project.
+PASS Moved lever, resized valve, local TMP style and moved toggle saved as prefab overrides.
+PASS Reopened console has complete typed references.
+PASS Moved hydraulic lever position persists.
+PASS Resized valve interaction rectangle persists.
+PASS Resized valve artwork rotor remains centered on its actual interaction rectangle.
+PASS Resized valve readout remains below the resized face without overlap.
+PASS Independent maintained-toggle position persists.
+PASS Local TMP font size and bold styling persist.
+PASS Shared style preserves the explicit local font-size override.
+PASS Edit Mode retains representative design-only preview values and badge after Play.
+PASS Play registers persistent console on the existing simulator.
+INFO Hidden batch Editor did not own native window focus; injected acceptance invokes the game's focus-gained callback. Native focus acquisition remains a visible-Editor check.
+PASS Started driving enables authored console.
+PASS Design preview badge is hidden in Play.
+PASS Every custom lever, valve and blade wheel has an explicit selectable visual-state target.
+PASS Reopened console has complete typed references.
+PASS Moved hydraulic lever position persists.
+PASS Resized valve interaction rectangle persists.
+PASS Resized valve artwork rotor remains centered on its actual interaction rectangle.
+PASS Resized valve readout remains below the resized face without overlap.
+PASS Independent maintained-toggle position persists.
+PASS Local TMP font size and bold styling persist.
+PASS Shared style preserves the explicit local font-size override.
+PASS Compact mode has one visible, interactive group.
+PASS Injected Open button expands existing hierarchy.
+PASS Injected Close button returns to compact mode.
+PASS Injected Tab uses existing keyboard path to expand the console.
+PASS Mode changes preserve the authored object hierarchy.
+PASS Conditioner explicitly disabled Selectable rejects hydraulic commands.
+PASS Conditioner lower region commands -1 through actual uGUI input.
+PASS Conditioner injected pointer hold enters the native uGUI pressed visual state.
+PASS Conditioner lowering changes real lift while held.
+PASS Conditioner forward/top region commands +1 while dragging.
+PASS Conditioner raising acts on authoritative hydraulics.
+PASS Conditioner mouse release neutralizes demand and holds attained position.
+PASS Conditioner authored central dead zone stays neutral.
+PASS Conditioner pointer exit immediately releases momentary demand.
+PASS TankLift explicitly disabled Selectable rejects hydraulic commands.
+PASS TankLift lower region commands -1 through actual uGUI input.
+PASS TankLift injected pointer hold enters the native uGUI pressed visual state.
+PASS TankLift forward/top region commands +1 while dragging.
+PASS TankLift raising acts on authoritative hydraulics.
+PASS TankLift mouse release neutralizes demand and holds attained position.
+PASS TankLift authored central dead zone stays neutral.
+PASS TankLift pointer exit immediately releases momentary demand.
+PASS Counterclockwise half-quarter-turn opens flood by 50% independently of wash.
+PASS Clockwise valve motion closes by the matching amount.
+PASS Wash valve is independent and clamps at fully open.
+PASS Flood valve clamps at fully closed.
+PASS Injected one-tick wheel scrolling opens flood by the legacy 7.5% notch (actual 0.075).
+PASS Clockwise blade quarter-turn respects actual configured 3.5-turn full travel.
+PASS Injected positive scroll deepens the blade by its existing per-notch amount.
+PASS Blade millimeter readout reflects the authoritative setting.
+PASS Live value updates preserve local TMP styling.
+PASS VerticalAuger maintained button does not toggle on initial press.
+PASS VerticalAuger release clicks exactly once and latches state.
+PASS VerticalAuger visual refresh does not toggle the simulator.
+PASS VerticalAuger second click restores its maintained state.
+PASS HorizontalAuger maintained button does not toggle on initial press.
+PASS HorizontalAuger release clicks exactly once and latches state.
+PASS HorizontalAuger visual refresh does not toggle the simulator.
+PASS HorizontalAuger second click restores its maintained state.
+PASS BoardBrush maintained button does not toggle on initial press.
+PASS BoardBrush release clicks exactly once and latches state.
+PASS BoardBrush visual refresh does not toggle the simulator.
+PASS BoardBrush second click restores its maintained state.
+PASS WashPump maintained button does not toggle on initial press.
+PASS WashPump release clicks exactly once and latches state.
+PASS WashPump visual refresh does not toggle the simulator.
+PASS WashPump second click restores its maintained state.
+PASS A pending maintained-button press canceled by hide/show cannot click on stale release.
+PASS Fresh maintained click works after the canceled press.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Pause releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Help releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS HUD hide releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Compact mode releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Camera mode change releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Console focus-loss callback releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Application-pause callback releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Control component disable releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Console component disable releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Polling a mouse release before UI module processing releases UI hydraulic demand.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Session reset releases UI hydraulic demand.
+PASS Reset also neutralizes the old simulation instance.
+PASS Lifecycle fixture acquired relocated hydraulic lever.
+PASS Route recording panel releases UI hydraulic demand.
+PASS Route panel suppresses console visibility.
+PASS Injected breaker action calls the existing snow-breaker command once.
+PASS Service action preserves existing refill-help workflow.
+PASS Dragging from a valve onto New Session and releasing cannot click the destructive action.
+PASS New-session button opens explicit confirmation without discarding the run.
+PASS Confirmation blocks underlying machinery interaction.
+PASS Modal raycast shields the Phase 1 diagnostics button.
+PASS Phase 1 binding guard also rejects diagnostics while console confirmation owns input.
+PASS Modal shields empty-screen physical and legacy pointer paths.
+PASS Cancel preserves session and removes the inactive fullscreen blocker.
+PASS Confirmed new session uses existing startup flow and hides machinery.
+PASS Free Simulation Finish retains existing immediate finish/results semantics.
+PASS Guided Training Finish preserves existing completion safeguards.
+PASS Phase 1 header remains available with all eight widgets.
+PASS Phase 1 water fill still uses actual capacity.
+PASS Phase 1 diagnostics still responds to injected mouse clicks outside confirmation.
+PASS Existing simulation dismount remains available.
+PASS On-foot state hides console while retaining the read-only Phase 1 header.
+PASS Existing boarding remains available.
+PASS Boarding restores both authored UI groups.
+PASS Existing operator integration regression completed: authored camera anchors, E/Q/C restore, cockpit picking at three lift heights, moved mounts, switches and horn release.
+PASS Rendered Machinery-Default-Compact-1366x768.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Default compact 1366x768 keeps OpenConsole interaction rectangle inside capture.
+PASS Rendered Machinery-Default-Compact-1600x900.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Default compact 1600x900 keeps OpenConsole interaction rectangle inside capture.
+PASS Rendered Machinery-Default-Compact-1920x1080.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Default compact 1920x1080 keeps OpenConsole interaction rectangle inside capture.
+PASS Rendered Machinery-Default-Expanded-1366x768.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Default expanded 1366x768 keeps CloseConsole interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps VerticalAuger interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps Conditioner interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps HorizontalAuger interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps TankLift interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps FloodValve interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps WashValve interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps Blade interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps BoardBrush interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps WashPump interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps SnowBreaker interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps Service interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps Finish interaction rectangle inside capture.
+PASS Default expanded 1366x768 keeps NewSession interaction rectangle inside capture.
+PASS Rendered Machinery-Default-Expanded-1600x900.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Default expanded 1600x900 keeps CloseConsole interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps VerticalAuger interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps Conditioner interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps HorizontalAuger interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps TankLift interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps FloodValve interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps WashValve interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps Blade interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps BoardBrush interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps WashPump interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps SnowBreaker interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps Service interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps Finish interaction rectangle inside capture.
+PASS Default expanded 1600x900 keeps NewSession interaction rectangle inside capture.
+PASS Rendered Machinery-Default-Expanded-1920x1080.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Default expanded 1920x1080 keeps CloseConsole interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps VerticalAuger interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps Conditioner interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps HorizontalAuger interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps TankLift interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps FloodValve interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps WashValve interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps Blade interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps BoardBrush interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps WashPump interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps SnowBreaker interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps Service interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps Finish interaction rectangle inside capture.
+PASS Default expanded 1920x1080 keeps NewSession interaction rectangle inside capture.
+PASS Rendered Machinery-Edited-Compact-1366x768.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Edited compact 1366x768 keeps OpenConsole interaction rectangle inside capture.
+PASS Rendered Machinery-Edited-Compact-1600x900.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Edited compact 1600x900 keeps OpenConsole interaction rectangle inside capture.
+PASS Rendered Machinery-Edited-Compact-1920x1080.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Edited compact 1920x1080 keeps OpenConsole interaction rectangle inside capture.
+PASS Rendered Machinery-Edited-Expanded-1366x768.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Edited expanded 1366x768 keeps CloseConsole interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps VerticalAuger interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps Conditioner interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps HorizontalAuger interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps TankLift interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps FloodValve interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps WashValve interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps Blade interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps BoardBrush interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps WashPump interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps SnowBreaker interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps Service interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps Finish interaction rectangle inside capture.
+PASS Edited expanded 1366x768 keeps NewSession interaction rectangle inside capture.
+PASS Rendered Machinery-Edited-Expanded-1600x900.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Edited expanded 1600x900 keeps CloseConsole interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps VerticalAuger interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps Conditioner interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps HorizontalAuger interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps TankLift interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps FloodValve interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps WashValve interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps Blade interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps BoardBrush interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps WashPump interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps SnowBreaker interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps Service interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps Finish interaction rectangle inside capture.
+PASS Edited expanded 1600x900 keeps NewSession interaction rectangle inside capture.
+PASS Rendered Machinery-Edited-Expanded-1920x1080.png; temporary ScreenSpaceCamera capture of authored Canvas, legacy IMGUI excluded.
+PASS Edited expanded 1920x1080 keeps CloseConsole interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps VerticalAuger interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps Conditioner interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps HorizontalAuger interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps TankLift interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps FloodValve interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps WashValve interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps Blade interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps BoardBrush interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps WashPump interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps SnowBreaker interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps Service interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps Finish interaction rectangle inside capture.
+PASS Edited expanded 1920x1080 keeps NewSession interaction rectangle inside capture.
+INFO Refresh microbenchmark 0.042 ms/call; allocation counter unavailable: retained 4096B calibration reported 0B.
+INFO Console contains 106 Graphics and 0 layout groups. Full Canvas has 146 Graphics.
+INFO Draw-call counter unavailable in hidden batchmode (zero despite rendered captures). Visible Profiler/Frame Debugger required.
+PASS Reopened console has complete typed references.
+PASS Moved hydraulic lever position persists.
+PASS Resized valve interaction rectangle persists.
+PASS Resized valve artwork rotor remains centered on its actual interaction rectangle.
+PASS Resized valve readout remains below the resized face without overlap.
+PASS Independent maintained-toggle position persists.
+PASS Local TMP font size and bold styling persist.
+PASS Shared style preserves the explicit local font-size override.
+PASS Reopened console has complete typed references.
+PASS Moved hydraulic lever position persists.
+PASS Resized valve interaction rectangle persists.
+PASS Resized valve artwork rotor remains centered on its actual interaction rectangle.
+PASS Resized valve readout remains below the resized face without overlap.
+PASS Independent maintained-toggle position persists.
+PASS Local TMP font size and bold styling persist.
+PASS Shared style preserves the explicit local font-size override.
+PASS Edit Mode retains representative design-only preview values and badge after Play.
+PASS Exit Play and scene reopen retain all four deliberate authoring changes.
+PASS Procedural scene remains free of authored UI instances.
+PASS Procedural launch still initializes existing simulation.
+PASS Procedural launch retains legacy UI ownership.
+PASS Procedural launch retains legacy header pointer region.
+PASS Procedural launch retains legacy expanded machinery pointer region.
+PASS Procedural keyboard machinery command still functions.
+PASS Procedural scene bytes are unchanged.
+PASS AUTOMATED PHASE 2 ACCEPTANCE COMPLETE. See separate physical input evidence and manual checklist for native hardware, visible Editor, full-frame performance and training workflows.
+PASS Reopened console has complete typed references.
+PASS Moved hydraulic lever position persists.
+PASS Resized valve interaction rectangle persists.
+PASS Resized valve artwork rotor remains centered on its actual interaction rectangle.
+PASS Resized valve readout remains below the resized face without overlap.
+PASS Independent maintained-toggle position persists.
+PASS Local TMP font size and bold styling persist.
+PASS Shared style preserves the explicit local font-size override.
+PASS Edit Mode retains representative design-only preview values and badge after Play.
+PASS Fresh Unity process retained every authoring edit.
+PASS Exact integrated scene has one correctly bound persistent machinery console.
+PASS Exact integrated scene preserves one EventSystem and Phase 1 header.
+PASS Exact integrated scene binds both authored modules in actual Play Mode.
+PASS Exact integrated scene expands through injected native uGUI handlers.
+PASS Exact integrated scene's default authored lever commands real hydraulics.
+PASS Exact integrated scene's hydraulic release is neutral.
+PASS Exact integrated scene's default valve controls the existing simulation.
+PASS Exact integrated scene smoke completed; no scene, prefab or authoring data was saved by this verification.
+PASS Exact integrated scene passes Play smoke without changing any serialized bytes. SHA256=92-D8-EC-B9-50-E5-88-66-8B-F5-20-AF-5E-C8-56-75-F2-D2-1A-40-CB-F5-B2-2A-AD-EE-51-DB-F0-91-08-FF

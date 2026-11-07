@@ -1,0 +1,102 @@
+AURORA R-54 / VISIBLE ICE, STAMP RESOLUTION AND DEPTH CALIBRATION
+28 October 2026
+
+This refinement supersedes the grid, wet-aging and scratch-removal portions
+of IceCalibration.txt. The machine's blade and water towel remain 1.956 m
+and 2.100 m wide. Water still has a finite 0.120 m fringe per side supplied
+by five percent of the same emitted volume. No cosmetic wide trail or extra
+water is added. The apparent narrow band was not a mismatched default UV
+rectangle: the earlier response gave thin edge film too little visual weight.
+
+Resolution and the actual stamped area
+CellSize now defaults to 0.050 m: 520 x 1200 actual state samples over the
+60 x 26 m rink, rather than an upsampled 260 x 600 field. There are 599224
+ice cells, including 589736 inside the six-inch shaving mask. The grid remains
+configurable in SimulatorConfig; current validation permits 0.05 through
+0.50 m cells. Changing calibration starts a new session.
+
+The flood footprint uses four area samples in boundary/fringe cells and a
+constant-density shortcut in fully interior cells. Partial boundary cells
+therefore receive partial quantities instead of a full binary stamp. All
+sample weights are normalized against the one finite emitted supply; volume
+is conserved. The renderer reconstructs those real data continuously and
+gives a visible response to thin liquid film across the full towel width.
+The fixed spatial limits still apply and no non-ice cells receive flood water.
+
+The deterministic parallel-pass fixture now measures a 2.300 m strong wet
+raster and 2.400 m low-volume film raster at its particular grid phase.
+The second vehicle center is 1.985 m from the first; its tire exterior at
+1.150 m follows the preceding strong wet boundary. Nominal towel overlap
+is 2.100 - 1.985 = 0.115 m. There are no dry or unscored cells between pass
+centers. Ideal alignment to the continuous towel edge at 1.050 m would give
+0.215 m overlap; it is a different reference from the measured raster edge.
+Finite-cell extents and partial-edge coverage explain the raster/analytic
+differences; there is no claim that the physical towel became 2.400 m wide.
+
+Wet aging
+FreezeSeconds is an explicit exponential phase-change time constant, now
+420 seconds instead of 85 seconds. It is a gameplay calibration, not a
+temperature/slab/refrigeration calculation. For an initial 0.300 mm film:
+  1 minute: 86.69 percent remains liquid.
+  5 minutes: 48.95 percent remains liquid.
+ 15 minutes: 11.73 percent remains liquid.
+ 20 minutes:  5.74 percent remains liquid.
+About 95 percent has frozen after 21 minutes. This lets earlier passes remain
+visibly wet through much of a normal run while newer passes remain wetter.
+The shader's continuous optical response is derived from that real liquid;
+it is not an independent timer that silently preserves recoverable water.
+Liquid plus frozen water remains constant during aging. Pickup can remove
+only the actual liquid portion and still respects pump capacity and tank room.
+
+Wear has physical depth
+Every cell now retains InitialGougeDepthMm and remaining GougeDepthMm.
+The seeded field includes coherent heavier-traffic patches and deeper wear
+near sensitive goal areas. Its measured depth range is about 0.037-0.145 mm.
+Defaults are MinimumGougeDepthMm=.024, TypicalGougeDepthMm=.060,
+DeepGougeDepthMm=.145 and GougeRoughnessDepthMm=.080. The seed combines those
+calibrations with random and coherent wear; minimum is a lower bound.
+
+Actual effective blade bite reduces remaining groove depth. The existing
+0.16 bite fraction remains: a .35 mm screw setting cuts .056 mm effectively,
+while maximum .80 mm gives .128 mm. A shallow cut can leave a deep skate
+gouge; a deeper pass or another appropriate pass removes more. More cutting
+produces more conserved snow and retains existing load and overcut penalties.
+Reverse cutting still removes material but adds surface damage. Washing
+cannot make a physical groove disappear. Scratch is now a residual roughness
+measure derived from depth, so the renderer's groove/roughness change follows
+actual treatment rather than a color-only reset.
+
+A paired pass with .15/.65 mm screw settings left mean residual depths of
+.0251/.0006 mm over 11480 shared cut cells. Deeper cutting produced more snow.
+Untreated ice is rendered dull and visibly worn, dry shaved ice has a distinct
+appearance, and a real wet film adds the fresh sheen. Coverage and surface
+quality remain separate: a pass can cover the sheet yet leave deeper defects.
+
+Performance and evidence
+Dirty-cell updates, active-wet tracking and pooled state arrays remain in use.
+There is no full-grid physics loop each tick. Surface scoring now maintains
+exact incremental counts and double-precision quality/water totals as cells
+change. Independent full scans verify identical counts, sums and rounded
+report values. Raw fixture invalidation still rebuilds the totals explicitly.
+The compact snapshots add about 5.6 MB of fixed storage at the 5 cm setting.
+A changed report measured 0.0130 ms with no managed allocation; the full core
+suite measured 0.2494 ms per active fixed tick over 5000 ticks, also with no
+managed allocation. These CPU-only figures exclude Unity, HUD, GPU and display.
+
+Visual aging of already-wet cells processes at most 65536 cells per surface
+refresh. Newly changed cells update immediately, and explicit full invalidation
+refreshes every cell exactly. An old wet cell can therefore display an age
+about 1.6 seconds behind the nominal survey cadence on a fully wetted sheet,
+small relative to the 420-second phase constant. This bounds rendering work;
+it does not delay fluid freezing, pickup, material accounting or scoring.
+
+The 5 cm field contains four times as much data; its cost must be measured,
+not described as free higher resolution. Use the final SurfaceServiceRefinement
+player performance reports for frame-time comparisons, including the explicitly
+seeded late_wet_sheet workload, and the rendered visual validation captures for
+width, groove depth and aging. Core evidence is in Validation~/Results.txt and
+Validation~/Ice-visual-refinement-results.txt.
+
+The exact visible wet edge, groove contrast and chosen 420-second calibration
+still need operator playtesting. Neither this model nor its values certify
+the behavior of a particular resurfacer or rink refrigeration system.

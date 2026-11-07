@@ -1,0 +1,54 @@
+PASS Existing guide with different GuideRollerX remains rejected and byte-identical; no automatic revalidation.
+PASS Disposable current-geometry fixture starts through existing recorder.
+PASS Authored Use as GPS activates separate current-geometry test guide with strict compatibility: Loaded: AUTOMATED current-calibration straight fixture / recorded track — GPS Ready / recorded track; ideal spline not certified
+PASS Edit route invokes existing Editor callback for the explicit selected guide.
+PASS Rename preserves recorded bytes and stable selection; only library alias changes.
+PASS Save new copy creates exactly one separate file and leaves selected source unchanged.
+PASS Delete requires explicit per-file confirmation.
+PASS Confirmed deletion removes only the captured disposable copy.
+PASS Incomplete recovery remains inspectable but cannot activate as GPS.
+PASS Malformed saved file displays an error and cannot activate or save a copy.
+PASS Real Input System wheel events scroll the file viewport without changing route identity.
+PASS A canceled save press cannot fire after manager hide/reopen.
+PASS Physical cockpit lever remains pickable with Phase 3 installed.
+PASS Relocated survey blocks cockpit picking at its actual authored location.
+PASS Moving survey away restores cockpit pointer access without an obsolete survey rectangle.
+PASS RMB free look releases survey interaction ownership.
+PASS Phase 3 automated run complete; manual native-input, visual and full-frame profiling checks remain separate.
+PASS Three persistent Phase 3 modules exist in Edit Mode.
+PASS Explicit module-to-game references are serialized.
+PASS Exactly one existing Canvas and EventSystem; no competing input architecture.
+PASS Representative previews and badges are saved without running simulation.
+PASS Three clearly identified harmless sample route rows.
+PASS All route actions explicitly bind the saved manager.
+PASS Every inventoried route action has an authored Button.
+PASS Preview map and reusable route-row prefab assigned.
+PASS Exact delivered scene registers all five authored modules in real Play.
+PASS Moved/resized map projects correct physical cell at (0.03, 0.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Moved/resized map projects correct physical cell at (-5.03, 10.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Moved/resized map projects correct physical cell at (5.03, -10.03)
+PASS Actual UI pointer click pins the corresponding live patch detail.
+PASS Aspect-preserved map excludes letterbox bars from inspection.
+PASS Collapse hides map graphics and their actual hit regions.
+PASS Expand restores the authored body.
+PASS UI refresh never uploads or reconstructs the ice textures.
+PASS Existing F2 mode 1 uses its authoritative texture.
+PASS Existing F2 mode 2 uses its authoritative texture.
+PASS Existing F2 mode 0 uses its authoritative texture.
+PASS Live simulation changes refresh the same overview texture.
+PASS GPS labels bind live selected route and leg.
+PASS Existing 80 ft world guidance remains active.
+PASS Authored show/hide action updates existing GPS visibility.
+PASS Numpad 7 still toggles world GPS.
+PASS F5 still toggles world GPS.
+PASS Strict incompatible-guide rejection is unchanged.
+PASS Rendered Survey/GPS at (1366, 768)
+PASS Rendered Route Manager at (1366, 768)
+PASS Rendered Survey/GPS at (1600, 900)
+PASS Rendered Route Manager at (1600, 900)
+PASS Rendered Survey/GPS at (1920, 1080)
+PASS Rendered Route Manager at (1920, 1080)
+PASS Exact delivered scene retained every serialized byte through Play.
+PASS Phase 3 automated run complete; manual native-input, visual and full-frame profiling checks remain separate.

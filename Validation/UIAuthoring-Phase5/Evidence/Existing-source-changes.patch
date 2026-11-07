@@ -1,0 +1,427 @@
+--- phase5-baseline/Editor/IceServiceValidation.cs
++++ Editor/IceServiceValidation.cs
+@@ -16,11 +16,12 @@
+         static IceWaterService service;
+         static Keyboard keyboard;
+         static Mouse mouse;
++        static Action<string> observation;
+         static readonly List<string> results=new List<string>();
+         static readonly MethodInfo updateMachine=typeof(IceResurfacerGame).GetMethod("UpdateMachine",BindingFlags.Instance|BindingFlags.NonPublic);
+         static readonly object[] tickAnimation={.02f},initialAnimation={0f};
+         static void Check(bool value,string message)
+-        {if(!value)throw new InvalidOperationException("Water service: "+message);results.Add("PASS "+message);}
++        {if(!value)throw new InvalidOperationException("Water service: "+message);results.Add("PASS "+message);observation?.Invoke(message);}
+         static void Input(params Key[] keys)
+         {
+             InputSystem.QueueStateEvent(keyboard,new KeyboardState(keys));
+@@ -90,9 +91,9 @@
+             camera.transform.position=position;camera.transform.LookAt(target);
+             IceResurfacerEditor.Capture(camera,file,1920,1080);UnityEngine.Object.Destroy(go);
+         }
+-        public static void Run(IceResurfacerGame target,Keyboard keys,Mouse pointer)
+-        {
+-            game=target;keyboard=keys;mouse=pointer;service=game.WaterService;results.Clear();
++        public static void Run(IceResurfacerGame target,Keyboard keys,Mouse pointer,Action<string> observe=null,bool includeGeometry=true)
++        {
++            game=target;keyboard=keys;mouse=pointer;service=game.WaterService;results.Clear();observation=observe;
+             bool enabled=game.enabled;game.enabled=false;
+             try
+             {
+@@ -210,11 +211,12 @@
+                     "free dismount preserves attained hydraulics, conveyors, pump and both water valves");
+                 Capture("Free-simulation-on-foot.png",game.DriverCamera.transform.position,game.World.Machine.position+Vector3.up);
+                 results.Add("Service route uses keyboard F/E/W and ordinary walk collision; Aim supplies deterministic head orientation. No operator/vehicle pose writes during the service procedure or driven departure; session-start presentation poses are synchronized before testing.");
+-                IceServiceGeometryValidation.Run(game);
++                if(includeGeometry)IceServiceGeometryValidation.Run(game);
+                 File.WriteAllLines("Assets/Experiments/IceResurfacer/Validation~/Service-results.txt",results);
+             }
+             finally
+             {
++                observation=null;
+                 InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.QueueStateEvent(mouse,new MouseState());InputSystem.Update();
+                 game.NewSession(true,true);game.enabled=enabled;
+             }
+--- phase5-baseline/Presentation/GpsMachineAlignment.cs
++++ Presentation/GpsMachineAlignment.cs
+@@ -12,7 +12,9 @@
+         {Visit(game,visibility,width,height,true);}
+         public void Measure(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height)
+         {Visit(game,visibility,width,height,false);}
+-        void Visit(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height,bool draw)
++        public void Project(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height,IGpsProjectedStrokeSink sink)
++        {Visit(game,visibility,width,height,false,sink);}
++        void Visit(IceResurfacerGame game,RouteSilhouetteContinuation visibility,float width,float height,bool draw,IGpsProjectedStrokeSink sink=null)
+         {
+             LastVisibleSegments=LastRayQueries=0;
+             if(game==null||game.RouteGuide==null||!game.RouteGuide.GuidanceDisplayed||game.ChaseActive||visibility==null)return;
+@@ -39,7 +41,7 @@
+                         Stroke(last,at,4.5f,new Color(.09f,.075f,.015f,.9f));
+                         Stroke(last,at,2.1f,new Color(1,.83f,.035f,1));
+                     }
+-                    LastVisibleSegments++;
++                    sink?.Segment(last,at,true);LastVisibleSegments++;
+                 }
+                 last=at;previous=visible;
+             }
+--- phase5-baseline/Presentation/IceDashboard.cs
++++ Presentation/IceDashboard.cs
+@@ -18,6 +18,11 @@
+         public void ClearTransientPanels(){HistoryVisible=false;InspectedSurveyCell=-1;hoverHint="";ReleaseInteractions();}
+         public bool HistoryVisible { get; private set; }
+         public bool MessagesVisible { get; private set; } = true;
++        public IReadOnlyList<string> MessageHistory => messageHistory;
++        public int MessageRevision { get; private set; }
++        public float NoticeAge => Time.unscaledTime-noticeAt;
++        public void ToggleHistory() { HistoryVisible=!HistoryVisible; }
++        public void ToggleRoutineMessages() { MessagesVisible=!MessagesVisible; }
+         public int InspectedSurveyCell { get; private set; } = -1;
+         public readonly List<string> LayoutIssues = new List<string>();
+         static readonly Color PanelPaint = IceUITheme.PanelColor;
+@@ -66,9 +71,9 @@
+             if(!game.HasAuthoredHud&&new Rect(408,24,1164,108).Contains(p))return true;
+             if(game.DiagnosticsVisible&&(Compact?new Rect(28,132,492,242).Contains(p):
+                 new Rect(545,228,755,390).Contains(p)||new Rect(28,520,492,100).Contains(p)))return true;
+-            if(game.Sim.OnFoot)return p.y>700;
+-            if(HistoryVisible&&new Rect(520,160,650,570).Contains(p))return true;
+-            if(new Rect(398,849,1174,43).Contains(p))return true;
++            if(game.Sim.OnFoot)return !game.HasAuthoredOperatorUI&&p.y>700;
++            if(!game.HasAuthoredOperatorUI&&HistoryVisible&&new Rect(520,160,650,570).Contains(p))return true;
++            if(!game.HasAuthoredOperatorUI&&new Rect(398,849,1174,43).Contains(p))return true;
+             if(!game.HasAuthoredSurvey&&!Inspecting(game)&&new Rect(28,24,362,SurveyCollapsed?48:342).Contains(p))return true;
+             return !game.HasAuthoredConsole&&!Inspecting(game)&&(Compact?new Rect(1210,752,362,88):new Rect(1210,288,362,552)).Contains(p);
+         }
+@@ -143,6 +148,8 @@
+ 
+         public void Draw(IceResurfacerGame game, float width, float height)
+         {
++            if(!AuditLayout&&!game.DiagnosticsVisible&&game.HasAuthoredHud&&game.HasAuthoredConsole&&game.HasAuthoredSurvey&&game.HasAuthoredGps&&game.HasAuthoredRoutes&&game.HasAuthoredMenus&&game.HasAuthoredOperatorUI)
++            { if(releaseCapture){GUIUtility.hotControl=0;releaseCapture=false;}LayoutIssues.Clear();return; }
+             Initialize();
+             Matrix4x4 oldMatrix = GUI.matrix;
+             Color oldColor = GUI.color;
+@@ -164,6 +171,7 @@
+                     if(!routes&&game.HasAuthoredMenus&&game.AuthoredMenus.ModalVisible)return;
+                     // A menu owns the screen: no live HUD labels, console or
+                     // second menu underneath it, and no click-through controls.
++                    if(routes&&game.HasAuthoredRoutes)return;
+                     IceUITheme.Fill(new Rect(0,0,LayoutWidth,LayoutHeight),new Color32(40,42,38,235));
+                     if(routes) { if(!game.HasAuthoredRoutes)game.RouteGuide.DrawRecordingPanel(); }
+                     else if(game.HelpVisible)Help(game);
+@@ -177,10 +185,10 @@
+                 // Keep a legacy drag that began elsewhere until its normal release.
+                 if(!pointerCaptured&&(Event.current.isMouse||Event.current.type==EventType.ScrollWheel)&&Mouse.current!=null&&
+                     game.PointerOverAuthoredInterface(Mouse.current.position.ReadValue()))Event.current.Use();
+-                if(Event.current.type==EventType.Repaint)game.RouteGuide?.DrawSilhouette(width,height);
++                if(!game.HasAuthoredOperatorUI&&Event.current.type==EventType.Repaint)game.RouteGuide?.DrawSilhouette(width,height);
+                 if(!game.HasAuthoredHud)Header(game);
+                 if(!game.HasAuthoredSurvey&&!game.Sim.OnFoot&&!Inspecting(game))Survey(game);
+-                if(game.Sim.OnFoot)ServicePanel(game);
++                if(game.Sim.OnFoot) { if(!game.HasAuthoredOperatorUI)ServicePanel(game); }
+                 else if(!game.HasAuthoredConsole)
+                 {
+                     if(Compact)CompactRack(game);
+@@ -188,20 +196,19 @@
+                 }
+                 if (game.Started && !game.Sim.Finished && !game.HelpVisible && !game.Paused)
+                 {
+-                    if(!game.Sim.OnFoot)Guidance(game);
+-                    DriveWarning(game);
++                    if(!game.HasAuthoredOperatorUI) { if(!game.Sim.OnFoot)Guidance(game); DriveWarning(game); }
+                     if(game.DiagnosticsVisible)Diagnostics(game);
+                     if(!game.HasAuthoredGps&&!game.Sim.OnFoot&&(!Inspecting(game)||game.ChaseActive)&&game.RouteGuide!=null&&game.RouteGuide.Visible)TrainingCue(game);
+                     if(!game.HasAuthoredGps&&game.RouteGuide!=null&&game.RouteGuide.Recorder.Recording)
+                     {Box(new Rect(398,258,620,48),IceUITheme.AlertFace);Label(new Rect(414,264,588,36),"Recording    /    Numpad 9 stops and saves",text,White);}
+                 }
+-                if(!game.Sim.OnFoot)StatusStrip(game);
+-                if (!string.IsNullOrEmpty(hoverHint) && !game.HelpVisible && game.Started && !game.Paused && !game.Sim.Finished)
++                if(!game.HasAuthoredOperatorUI&&!game.Sim.OnFoot)StatusStrip(game);
++                if (!game.HasAuthoredOperatorUI&&!string.IsNullOrEmpty(hoverHint) && !game.HelpVisible && game.Started && !game.Paused && !game.Sim.Finished)
+                 {
+                     Box(new Rect(398,764,806,76), PanelPaint);
+                     Label(new Rect(414,774,774,58), hoverHint, small, White);
+                 }
+-                if(game.PerformanceVisible)
++                if(!game.HasAuthoredOperatorUI&&game.PerformanceVisible)
+                 {
+                     Box(new Rect(28,865,340,27),PanelPaint);
+                     Label(new Rect(38,868,320,23),game.Performance.Summary,small,Muted);
+@@ -468,21 +475,9 @@
+         void Guidance(IceResurfacerGame game)
+         {
+             var s=game.Sim;
+-            if(messageSession!=s){messageSession=s;lastNotice="";messageHistory.Clear();HistoryVisible=false;messageScroll=Vector2.zero;}
+-            if(string.IsNullOrEmpty(game.Notice))lastNotice="";
+-            if(!string.IsNullOrEmpty(game.Notice)&&game.Notice!=lastNotice)
+-            {
+-                lastNotice=game.Notice;noticeAt=Time.unscaledTime;
+-                if(messageHistory.Count==32)messageHistory.RemoveAt(0);
+-                messageHistory.Add(Duration(s.Time)+"  "+lastNotice);
+-            }
+-            bool bank=s.SnowContact&&s.SnowContactDepthMeters>.08f;
+-            bool serious=s.ConveyorJammed||s.SnowTankM3>=s.Config.SnowCapacityM3*.995f||s.PumpDamage>.05f||bank;
+-            string alert=s.ConveyorJammed?"AUGER JAM — retract blade; stop conveyors, clear and reset [J]":
+-                s.SnowTankM3>=s.Config.SnowCapacityM3*.995f?"SNOW TANK FULL — retract blade and unload":
+-                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":
+-                bank?"Deep snow: crawl with the conditioner down and both augers running. Make another pass for the edges of the pile.":"";
+-            float age=Time.unscaledTime-noticeAt;
++            ObserveMessages(game);
++            string alert=CriticalMessage(s);bool serious=!string.IsNullOrEmpty(alert);
++            float age=NoticeAge;
+             if(serious||MessagesVisible&&!string.IsNullOrEmpty(game.Notice)&&age<8)
+             {
+                 string message=serious?alert:game.Notice;
+@@ -496,13 +491,38 @@
+             Label(new Rect(540,179,440,28),"OPERATOR MESSAGES",heading,Sage);
+             if(Button(new Rect(1050,174,100,34),"Close",Slate))HistoryVisible=false;
+             if(Button(new Rect(540,220,610,35),MessagesVisible?"Routine messages: on":"Routine messages: off",Slate))MessagesVisible=!MessagesVisible;
+-            Label(new Rect(540,268,610,48),s.GuidedTraining?NextAction(s):"Free simulation. Equipment consequences and scoring follow the actual surface. F1 opens the operating guide.",small,Muted);
++            Label(new Rect(540,268,610,48),HistoryAdvice(s),small,Muted);
+             int count=messageHistory.Count;
+             if(count==0)Label(new Rect(540,328,610,40),"No messages this session.",small,Muted);
+             messageScroll=GUI.BeginScrollView(new Rect(540,328,610,380),messageScroll,new Rect(0,0,586,Mathf.Max(379,count*77)));
+             for(int i=0;i<count;i++)Label(new Rect(0,i*77,584,72),messageHistory[messageHistory.Count-1-i],small,White);
+             GUI.EndScrollView();
+         }
++        // One message owner for both renderers. Retain the original observation
++        // gate, 32-entry ordering, eight-second expiry and same-notice deduplication.
++        public void ObserveMessages(IceResurfacerGame game)
++        {
++            if(game==null||game.Sim==null||!game.Started||game.Sim.Finished||game.Sim.OnFoot||game.HudHidden||game.Paused||game.HelpVisible||game.RouteGuide!=null&&game.RouteGuide.PanelOpen)return;
++            var s=game.Sim;
++            if(messageSession!=s){messageSession=s;lastNotice="";messageHistory.Clear();HistoryVisible=false;messageScroll=Vector2.zero;MessageRevision++;}
++            if(string.IsNullOrEmpty(game.Notice))lastNotice="";
++            if(!string.IsNullOrEmpty(game.Notice)&&game.Notice!=lastNotice)
++            {
++                lastNotice=game.Notice;noticeAt=Time.unscaledTime;
++                if(messageHistory.Count==32)messageHistory.RemoveAt(0);
++                messageHistory.Add(Duration(s.Time)+"  "+lastNotice);
++                MessageRevision++;
++            }
++        }
++        public static string CriticalMessage(Simulation s)
++        {
++            bool bank=s.SnowContact&&s.SnowContactDepthMeters>.08f;
++            return s.ConveyorJammed?"AUGER JAM — retract blade; stop conveyors, clear and reset [J]":
++                s.SnowTankM3>=s.Config.SnowCapacityM3*.995f?"SNOW TANK FULL — retract blade and unload":
++                s.PumpDamage>.05f?"WASH PUMP WEAR — inspect pump status [F3]":
++                bank?"Deep snow: crawl with the conditioner down and both augers running. Make another pass for the edges of the pile.":"";
++        }
++        public static string HistoryAdvice(Simulation s) => s.GuidedTraining?NextAction(s):"Free simulation. Equipment consequences and scoring follow the actual surface. F1 opens the operating guide.";
+ 
+         static string SnowStatus(Simulation s)
+         {
+--- phase5-baseline/Presentation/IceResurfacerGame.cs
++++ Presentation/IceResurfacerGame.cs
+@@ -32,17 +32,21 @@
+         public bool HasAuthoredRoutes => AuthoredRoutes != null && AuthoredRoutes.IsAvailable;
+         public IceMenuScreens AuthoredMenus { get; set; }
+         public bool HasAuthoredMenus => AuthoredMenus != null && AuthoredMenus.IsAvailable;
++        public IceOperatorOverlay AuthoredOperatorUI { get; set; }
++        public bool HasAuthoredOperatorUI => AuthoredOperatorUI != null && AuthoredOperatorUI.IsAvailable;
+         public bool UsesAuthoredDriverEye => HasDriverAnchor;
+         readonly IceUIPointerGuard navigationPointer = new IceUIPointerGuard();
+         public bool PointerOverAuthoredInterface(Vector2 screenPoint)
+         {
+             AuthoredMenus?.RefreshState();
+             if (HasAuthoredMenus && AuthoredMenus.ModalVisible) return true;
++            AuthoredOperatorUI?.SyncVisibility();
+             // Synchronize every shared-Canvas group before any raycast, even on a modal/hide transition.
+             AuthoredSurvey?.SyncVisibility(); AuthoredGps?.SyncVisibility(); AuthoredRoutes?.SyncVisibility();
+             if (HasAuthoredRoutes && AuthoredRoutes.Visible) return true;
+             bool consolePointer = HasAuthoredConsole && AuthoredConsole.ContainsPointer(screenPoint);
+             bool hudPointer = HasAuthoredHud && AuthoredHud.ContainsPointer(screenPoint);
++            if (HasAuthoredOperatorUI && AuthoredOperatorUI.ContainsPointer(screenPoint)) return true;
+             if ((HasAuthoredSurvey && AuthoredSurvey.CanInteract || HasAuthoredGps && AuthoredGps.Visible && IceNavigationUI.Pointer(this)) &&
+                 navigationPointer.ContainsPointer(HasAuthoredSurvey ? AuthoredSurvey.raycaster : AuthoredGps.raycaster, screenPoint)) return true;
+             // Refresh console mode/modal visibility before the shared Canvas raycast.
+@@ -319,6 +323,7 @@
+             }
+             UpdateMachine(running?Time.deltaTime:0);
+             WaterService.UpdateViewAndEffects(running,Time.deltaTime);
++            dashboard.ObserveMessages(this);
+             machineAudio.SetState(Sim,running,Mathf.Abs(Sim.Conditioner.Lift-lastLift)>.0001f||Mathf.Abs(Sim.TankLift-lastTankLift)>.0001f);
+             lastLift=Sim.Conditioner.Lift;
+             lastTankLift=Sim.TankLift;
+--- phase5-baseline/Presentation/IceRouteGuide.cs
++++ Presentation/IceRouteGuide.cs
+@@ -32,6 +32,12 @@
+             if(GuidanceDisplayed&&continuation==null)continuation=new RouteSilhouetteContinuation(game);
+             continuation?.Draw(game,width,height);
+             machineAlignment.Draw(game,continuation,width,height);
++        }
++        public void ProjectSilhouette(float width,float height,IGpsProjectedStrokeSink sink)
++        {
++            if(GuidanceDisplayed&&continuation==null)continuation=new RouteSilhouetteContinuation(game);
++            continuation?.Project(game,width,height,sink);
++            machineAlignment.Project(game,continuation,width,height,sink);
+         }
+         public bool HasUnsavedRecording=>recorder.Data!=null&&!recorder.Recording&&(savedTake!=recorder.Data.id||savedRevision!=recorder.Revision);
+         public RouteManagerPanel Manager=>panel.Manager;
+@@ -353,12 +359,13 @@
+         public void FlushRecordingForShutdown(string reason)
+         {if(recorder.Recording)recorder.Stop(reason);Checkpoint();}
+         void OnApplicationPause(bool paused){if(paused)Checkpoint();}
+-        void OnApplicationQuit(){FlushRecordingForShutdown("Application closed");}
+-        void OnDisable(){if(line!=null)ShowLines(false);}
++        public void ReleaseProjectedGuidance(){continuation?.Dispose();continuation=null;}
++        void OnApplicationQuit(){FlushRecordingForShutdown("Application closed");ReleaseProjectedGuidance();}
++        void OnDisable(){if(line!=null)ShowLines(false);ReleaseProjectedGuidance();}
+         void OnDestroy()
+         {
+             if(recorder.Recording)recorder.Stop("Play Mode ended or scene unloaded");
+-            Checkpoint();panel?.Dispose();continuation?.Dispose();if(material!=null)Destroy(material);if(borderMaterial!=null)Destroy(borderMaterial);
++            Checkpoint();panel?.Dispose();ReleaseProjectedGuidance();if(material!=null)Destroy(material);if(borderMaterial!=null)Destroy(borderMaterial);
+             if(headingMaterial!=null)Destroy(headingMaterial);if(headingBorderMaterial!=null)Destroy(headingBorderMaterial);
+         }
+     }
+--- phase5-baseline/Presentation/IceWaterService.cs
++++ Presentation/IceWaterService.cs
+@@ -165,8 +165,9 @@
+             prompt=PromptFor(selected);
+             if(movementStatusTime>0)prompt=movementStatus;
+             bool interact=keys!=null&&keys.eKey.wasPressedThisFrame;
++            Vector2 interactionPoint=footLook?new Vector2(Screen.width*.5f,Screen.height*.5f):mouse!=null?mouse.position.ReadValue():Vector2.zero;
+             if(mouse!=null&&mouse.leftButton.wasPressedThisFrame&&
+-                !(game.HasAuthoredHud&&game.AuthoredHud.ContainsPointer(mouse.position.ReadValue())))interact=true;
++                !game.PointerOverAuthoredInterface(interactionPoint))interact=true;
+             if(interact&&selected!=Target.None)Interact(selected);
+         }
+ 
+--- phase5-baseline/Presentation/RouteSilhouetteContinuation.cs
++++ Presentation/RouteSilhouetteContinuation.cs
+@@ -14,6 +14,7 @@
+         readonly List<Mesh> ownedMeshes=new List<Mesh>();
+         readonly Scene scene;
+         readonly PhysicsScene physics;
++        bool disposed;
+         public int LastVisibleSegments {get;private set;}
+         public int LastSampledPoints {get;private set;}
+         public int LastRayQueries {get;private set;}
+@@ -64,10 +65,12 @@
+         // Runs the same bounded visibility work outside OnGUI for native validation.
+         public void MeasureVisibility(IceResurfacerGame game,float width,float height)
+         {Visit(game,width,height,false);}
+-        void Visit(IceResurfacerGame game,float width,float height,bool draw)
++        public void Project(IceResurfacerGame game,float width,float height,IGpsProjectedStrokeSink sink)
++        {Visit(game,width,height,false,sink);}
++        void Visit(IceResurfacerGame game,float width,float height,bool draw,IGpsProjectedStrokeSink sink=null)
+         {
+             LastVisibleSegments=LastSampledPoints=LastRayQueries=0;var guide=game.RouteGuide;
+-            if(guide==null||!guide.GuidanceDisplayed)return;
++            if(disposed||guide==null||!guide.GuidanceDisplayed)return;
+             foreach(var shape in shapes)if(shape.moving&&shape.source!=null)Copy(shape);
+             Physics.SyncTransforms();var camera=game.DriverCamera;var fit=guide.ActiveFit;
+             float scale=Mathf.Min(width/1600,height/900);Vector2 offset=new Vector2((width-1600*scale)*.5f,(height-900*scale)*.5f);
+@@ -83,6 +86,7 @@
+                 if(visible&&previous&&Vector2.Distance(last,at)<35)
+                 {
+                     if(draw){Stroke(last,at,4.8f,new Color(.06f,0,.055f,.88f));var color=guide.GpsColor;color.a*=.78f;Stroke(last,at,2.4f,color);}
++                    sink?.Segment(last,at,false);
+                     LastVisibleSegments++;
+                 }
+                 last=at;previous=visible;
+@@ -94,6 +98,24 @@
+             GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(a.x,a.y,0),Quaternion.Euler(0,0,Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg),Vector3.one);
+             GUI.DrawTexture(new Rect(0,-width*.5f,Vector2.Distance(a,b),width),Texture2D.whiteTexture);GUI.color=old;GUI.matrix=matrix;
+         }
+-        public void Dispose(){if(scene.IsValid()&&scene.isLoaded)SceneManager.UnloadSceneAsync(scene);foreach(var mesh in ownedMeshes)Object.Destroy(mesh);}
++        public void Dispose()
++        {
++            if(disposed)return;disposed=true;
++            // Detach the isolated query colliders while their PhysicsScene is
++            // alive. HideAndDontSave query objects must not survive an Editor
++            // Play transition and reach native shutdown with stale physics data.
++            foreach(var shape in shapes)if(shape.copy!=null)
++            {
++                var node=shape.copy.gameObject;node.SetActive(false);
++#if UNITY_EDITOR
++                Object.DestroyImmediate(node);
++#else
++                Object.Destroy(node);
++#endif
++            }
++            shapes.Clear();machine.Clear();LastVisibleSegments=LastSampledPoints=LastRayQueries=0;
++            if(scene.IsValid()&&scene.isLoaded)SceneManager.UnloadSceneAsync(scene);
++            foreach(var mesh in ownedMeshes)Object.Destroy(mesh);ownedMeshes.Clear();
++        }
+     }
+ }
+--- phase5-baseline/UI/Editor/IceMachineryPhysicalValidation.cs
++++ UI/Editor/IceMachineryPhysicalValidation.cs
+@@ -20,7 +20,8 @@
+             string project = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+             bool phase2 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase2/") && File.Exists(Path.Combine(project, "UIAuthoringPhase2ValidationProject.txt"));
+             bool phase4 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase4/") && File.Exists(Path.Combine(project, "UIAuthoringPhase4ValidationProject.txt"));
+-            if (!phase2 && !phase4)
++            bool phase5 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase5/") && File.Exists(Path.Combine(project, "UIAuthoringPhase5ValidationProject.txt"));
++            if (!phase2 && !phase4 && !phase5)
+                 throw new InvalidOperationException("Run machinery input validation only in the marked Phase 2 disposable project.");
+             if (console == null || !Application.IsPlaying(console.gameObject) || console.game == null || console.game.Sim == null)
+                 throw new InvalidOperationException("A live authored machinery console is required.");
+--- phase5-baseline/UI/Editor/IceMenuPreview.cs
++++ UI/Editor/IceMenuPreview.cs
+@@ -52,7 +52,7 @@
+         public static void Show(IceMenuScreens owner, IceMenuScreenKind kind)
+         {
+             if (EditorApplication.isPlayingOrWillChangePlaymode || owner == null || EditorUtility.IsPersistent(owner)) return;
+-            Restore(); var canvas = owner.GetComponentInParent<Canvas>();
++            IceOperatorPreview.Restore(); Restore(); var canvas = owner.GetComponentInParent<Canvas>();
+             var groups = kind == IceMenuScreenKind.None || canvas == null ?
+                 new[] { owner.welcome.visibility, owner.pause.visibility, owner.help.visibility, owner.results.visibility } : canvas.GetComponentsInChildren<CanvasGroup>(true);
+             foreach (var group in groups)
+--- phase5-baseline/UI/Editor/IceUIInputValidation.cs
++++ UI/Editor/IceUIInputValidation.cs
+@@ -20,7 +20,8 @@
+             string project = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+             bool phase1 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase1/") && File.Exists(Path.Combine(project, "UIAuthoringValidationProject.txt"));
+             bool phase4 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase4/") && File.Exists(Path.Combine(project, "UIAuthoringPhase4ValidationProject.txt"));
+-            if (!phase1 && !phase4)
++            bool phase5 = project.Replace('\\', '/').Contains("/Validation/UIAuthoring-Phase5/") && File.Exists(Path.Combine(project, "UIAuthoringPhase5ValidationProject.txt"));
++            if (!phase1 && !phase4 && !phase5)
+                 throw new InvalidOperationException("UI input acceptance runs only in the marked disposable UIAuthoring-Phase1 project.");
+             if (hud == null || !Application.IsPlaying(hud.gameObject) || !hud.IsAvailable || !hud.Visible)
+                 throw new InvalidOperationException("UI input acceptance requires the active authored HUD in a running Play session.");
+--- phase5-baseline/UI/Runtime/IceAuthoredHud.cs
++++ UI/Runtime/IceAuthoredHud.cs
+@@ -92,7 +92,7 @@
+         {
+             if (!Application.IsPlaying(gameObject)) return;
+             RefreshVisibility();
+-            if (Time.unscaledTime >= nextRefresh) RefreshNow();
++            if (Visible && Time.unscaledTime >= nextRefresh) RefreshNow();
+         }
+ 
+         public void RefreshNow()
+--- phase5-baseline/UI/Runtime/IceGpsStatus.cs
++++ UI/Runtime/IceGpsStatus.cs
+@@ -34,7 +34,7 @@
+         void LateUpdate()
+         {
+             if (!Application.IsPlaying(gameObject)) return;
+-            SyncVisibility(); if (Time.unscaledTime >= nextRefresh) RefreshNow();
++            SyncVisibility(); if (Visible && Time.unscaledTime >= nextRefresh) RefreshNow();
+         }
+         void Toggle() { if (Visible && IceNavigationUI.Pointer(game)) { game.RouteGuide?.Toggle(); RefreshNow(); } }
+         void Routes() { if (Visible && IceNavigationUI.Pointer(game)) game.RouteGuide?.ToggleRecordingPanel(); }
+--- phase5-baseline/UI/Runtime/IceMachineryConsole.cs
++++ UI/Runtime/IceMachineryConsole.cs
+@@ -95,7 +95,7 @@
+         {
+             if (!Application.IsPlaying(gameObject)) return;
+             TickInput();
+-            if (Time.unscaledTime >= nextRefresh) RefreshNow();
++            if (Visible && Time.unscaledTime >= nextRefresh) RefreshNow();
+         }
+         void Register()
+         {
+--- phase5-baseline/UI/Runtime/IceSurfaceSurvey.cs
++++ UI/Runtime/IceSurfaceSurvey.cs
+@@ -42,7 +42,7 @@
+         {
+             if (!Application.IsPlaying(gameObject)) return;
+             SyncVisibility();
+-            if (Time.unscaledTime >= nextRefresh) RefreshNow();
++            if (Visible && Time.unscaledTime >= nextRefresh) RefreshNow();
+         }
+         public void SyncVisibility()
+         {

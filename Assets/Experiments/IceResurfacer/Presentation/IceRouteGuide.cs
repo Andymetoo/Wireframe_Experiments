@@ -33,6 +33,12 @@ namespace IceResurfacer.Presentation
             continuation?.Draw(game,width,height);
             machineAlignment.Draw(game,continuation,width,height);
         }
+        public void ProjectSilhouette(float width,float height,IGpsProjectedStrokeSink sink)
+        {
+            if(GuidanceDisplayed&&continuation==null)continuation=new RouteSilhouetteContinuation(game);
+            continuation?.Project(game,width,height,sink);
+            machineAlignment.Project(game,continuation,width,height,sink);
+        }
         public bool HasUnsavedRecording=>recorder.Data!=null&&!recorder.Recording&&(savedTake!=recorder.Data.id||savedRevision!=recorder.Revision);
         public RouteManagerPanel Manager=>panel.Manager;
         readonly Vector3[] upcoming=new Vector3[GpsGuidanceGeometry.PointCapacity];
@@ -55,6 +61,8 @@ namespace IceResurfacer.Presentation
         public GuideSample MapPointAt(int i) => mapUpcoming[i];
         public bool IsTestGuide => selectedGuide!=null&&ActiveFit!=null&&(ActiveFit.provenance.IndexOf("NOT the operator",System.StringComparison.OrdinalIgnoreCase)>=0||ActiveFit.provenance.IndexOf("validation",System.StringComparison.OrdinalIgnoreCase)>=0);
         public bool TrainingPanelOpen => PanelOpen&&panel.TrainingTab;
+        public bool AdvancedPanel => panel != null && panel.Advanced;
+        public void ShowLibraryPanel() { if(!PanelOpen)ToggleRecordingPanel(); panel.Advanced=false; }
         readonly RouteRecorder recorder=new RouteRecorder();
         RouteRecordingPanel panel;
         float nextCheckpoint;
@@ -130,7 +138,7 @@ namespace IceResurfacer.Presentation
         {
             if(game==null)return;
             var keys=Keyboard.current;
-            if(keys!=null&&!(PanelOpen&&panel.TextEditing))
+            if(keys!=null&&!(PanelOpen&&(game.HasAuthoredRoutes?game.AuthoredRoutes.TextEditing:panel.TextEditing)))
             {
                 if(keys.numpad7Key.wasPressedThisFrame||keys.f5Key.wasPressedThisFrame)Toggle();
                 if(keys.numpad8Key.wasPressedThisFrame||keys.f6Key.wasPressedThisFrame)ToggleRecordingPanel();
@@ -153,6 +161,8 @@ namespace IceResurfacer.Presentation
         {
             PanelOpen=!PanelOpen;game.ReleaseControls();game.ReleaseLook();
             if(PanelOpen){panel.Advanced=false;Cursor.lockState=CursorLockMode.None;Cursor.visible=true;panel.RefreshFiles();}
+            else if(game.HasAuthoredRoutes) { IceNavigationUI.ClearFocus(game.AuthoredRoutes.transform); Cursor.lockState=CursorLockMode.None; Cursor.visible=true; }
+            game.AuthoredRoutes?.SyncVisibility();
         }
         public void ShowTrainingPanel(){if(!PanelOpen)ToggleRecordingPanel();panel.Advanced=true;panel.TrainingTab=true;}
         public void ShowRawDetails(){if(!PanelOpen)ToggleRecordingPanel();panel.Advanced=true;panel.TrainingTab=false;}
@@ -349,12 +359,13 @@ namespace IceResurfacer.Presentation
         public void FlushRecordingForShutdown(string reason)
         {if(recorder.Recording)recorder.Stop(reason);Checkpoint();}
         void OnApplicationPause(bool paused){if(paused)Checkpoint();}
-        void OnApplicationQuit(){FlushRecordingForShutdown("Application closed");}
-        void OnDisable(){if(line!=null)ShowLines(false);}
+        public void ReleaseProjectedGuidance(){continuation?.Dispose();continuation=null;}
+        void OnApplicationQuit(){FlushRecordingForShutdown("Application closed");ReleaseProjectedGuidance();}
+        void OnDisable(){if(line!=null)ShowLines(false);ReleaseProjectedGuidance();}
         void OnDestroy()
         {
             if(recorder.Recording)recorder.Stop("Play Mode ended or scene unloaded");
-            Checkpoint();panel?.Dispose();continuation?.Dispose();if(material!=null)Destroy(material);if(borderMaterial!=null)Destroy(borderMaterial);
+            Checkpoint();panel?.Dispose();ReleaseProjectedGuidance();if(material!=null)Destroy(material);if(borderMaterial!=null)Destroy(borderMaterial);
             if(headingMaterial!=null)Destroy(headingMaterial);if(headingBorderMaterial!=null)Destroy(headingBorderMaterial);
         }
     }

@@ -1,0 +1,512 @@
+Phase 4 isolated Unity tests. Injected input and camera rendering; native hardware and combined IMGUI visual inspection remain manual.
+PASS Four persistent editable screen roots have explicit scene bindings before Play.
+PASS Uses exactly the existing Canvas and EventSystem.
+PASS All twelve menu actions bind explicitly, independent of hierarchy order.
+PASS Both settings retain independently editable graphics and value/detail labels.
+PASS Seventeen explicit RunReport bindings retain every original metric and status.
+PASS Saved sample-data badges and keyboard targets exist for all screens.
+PASS Menu button and settings are real variants of existing Phase 2/3 art.
+PASS Nested prefab captions preserve authored text overrides.
+PASS Edit Mode preview selects only Welcome without enabling runtime input.
+PASS Edit Mode preview selects only Pause without enabling runtime input.
+PASS Edit Mode preview selects only Help without enabling runtime input.
+PASS Edit Mode preview selects only Results without enabling runtime input.
+PASS Restore returns every prior CanvasGroup value exactly.
+PASS Saving automatically restores temporary screen visibility.
+PASS Preview neither constructs a simulation nor changes PlayerPrefs.
+PASS Deliberate button move/rotation/reskin, background sprite replacement and score resize saved.
+PASS Startup button position, rotation and size survive reopening/Play.
+PASS Local TMP styling and replacement button sprite survive reopening/Play.
+PASS Full-screen background and independently resized score survive reopening/Play.
+PASS Startup button position, rotation and size survive reopening/Play.
+PASS Local TMP styling and replacement button sprite survive reopening/Play.
+PASS Full-screen background and independently resized score survive reopening/Play.
+PASS Startup shows welcome from existing game flags.
+PASS Initial keyboard focus belongs to welcome.
+PASS Tab-order traversal supports forward and backward navigation.
+PASS Real uGUI scored button starts existing scored free simulation.
+PASS Duplicate callback cannot restart the session; gameplay restores previous navigation policy.
+PASS All five Phase 1-3 modules remain registered and live after starting a session.
+PASS Existing hydraulic lever owns the live pointer before Pause.
+PASS Pause releases held hydraulics and blocks all underlying authored driving interfaces.
+PASS Actual modal background raycast belongs to Pause at an underlying machine control.
+PASS Machinery button remains functional after modal close.
+PASS Existing Route Manager retains modal priority.
+PASS Closed screens leave no invisible full-screen blocker; map/GPS resume.
+PASS Practice starts unscored free simulation.
+PASS Input System keyboard Submit starts existing unscored assisted training.
+PASS Assisted training retains existing finish/equipment interlocks.
+PASS Escape opens pause without creating an independent state.
+PASS Speed and eye ranges match the existing constraints.
+PASS Slider snaps 6.13 to the authoritative 6.25 mph quarter-step.
+PASS Seated fallback value changes without moving or double-offsetting the authored eye anchor.
+PASS A speed drag canceled by focus loss cannot continue while held after focus returns.
+PASS Speed uses existing PlayerPrefs save path.
+PASS F1 from Pause opens help while retaining Paused.
+PASS Six authored help sections grow to content and use a scrollable viewport.
+PASS Actual Input System wheel scrolls the help instructions.
+PASS Closing help returns to Pause without resuming.
+PASS Resume returns to gameplay.
+PASS Help from gameplay returns to running gameplay.
+PASS Pause New session returns to the original welcome workflow.
+PASS Refill practice starts the existing unscored service session.
+PASS Saved quarter-mph selection survives new sessions.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Untreated scored run retains actual partial-sheet classification.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results can open help.
+PASS Help closes back to the finished report.
+PASS One thousand unchanged-result refreshes neither rebuild labels nor instantiate objects.
+PASS MEASUREMENT visible unchanged result state: 0.00254 ms/call, excludes rendering and other UI.
+PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual.
+PASS Rendered only Welcome at (1366, 768)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1366, 768)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1366, 768)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1366, 768)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1600, 900)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1600, 900)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1600, 900)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1600, 900)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1920, 1080)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1920, 1080)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1920, 1080)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1920, 1080)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Results New practice starts a fresh unscored run.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Practice remains unscored and has no scoring point breakdown.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results New scored starts a fresh scored run.
+PASS Interrupted button press cannot fire after hide/reopen.
+PASS Startup button position, rotation and size survive reopening/Play.
+PASS Local TMP styling and replacement button sprite survive reopening/Play.
+PASS Full-screen background and independently resized score survive reopening/Play.
+PASS Leaving Play restores saved sample badges.
+PASS Procedural scene retains its legacy welcome and has no authored menu registration.
+PASS Procedural legacy pause/help state paths remain functional.
+PASS Procedural keyboard machinery controls still work.
+PASS Procedural practice finish retains legacy report behavior.
+PASS Procedural scene remains byte-identical.
+PASS Phase 4 automated Unity run complete; native input, complete guided run and full-frame Profiler remain separate manual acceptance.
+PASS Startup button position, rotation and size survive reopening/Play.
+PASS Local TMP styling and replacement button sprite survive reopening/Play.
+PASS Full-screen background and independently resized score survive reopening/Play.
+PASS Forward-speed PlayerPrefs value survives a fresh Unity process (isolated company/product).
+PASS Startup button position, rotation and size survive reopening/Play.
+PASS Local TMP styling and replacement button sprite survive reopening/Play.
+PASS Full-screen background and independently resized score survive reopening/Play.
+PASS Restart initializes live simulation from the persisted speed.
+PASS Phase 4 automated Unity run complete; native input, complete guided run and full-frame Profiler remain separate manual acceptance.
+PASS Four persistent editable screen roots have explicit scene bindings before Play.
+PASS Uses exactly the existing Canvas and EventSystem.
+PASS All twelve menu actions bind explicitly, independent of hierarchy order.
+PASS Both settings retain independently editable graphics and value/detail labels.
+PASS Seventeen explicit RunReport bindings retain every original metric and status.
+PASS Saved sample-data badges and keyboard targets exist for all screens.
+PASS Menu button and settings are real variants of existing Phase 2/3 art.
+PASS Nested prefab captions preserve authored text overrides.
+PASS Startup shows welcome from existing game flags.
+PASS Initial keyboard focus belongs to welcome.
+PASS Tab-order traversal supports forward and backward navigation.
+PASS Real uGUI scored button starts existing scored free simulation.
+PASS Duplicate callback cannot restart the session; gameplay restores previous navigation policy.
+PASS All five Phase 1-3 modules remain registered and live after starting a session.
+PASS Existing hydraulic lever owns the live pointer before Pause.
+PASS Pause releases held hydraulics and blocks all underlying authored driving interfaces.
+PASS Actual modal background raycast belongs to Pause at an underlying machine control.
+PASS Machinery button remains functional after modal close.
+PASS Existing Route Manager retains modal priority.
+PASS Closed screens leave no invisible full-screen blocker; map/GPS resume.
+PASS Practice starts unscored free simulation.
+PASS Input System keyboard Submit starts existing unscored assisted training.
+PASS Assisted training retains existing finish/equipment interlocks.
+PASS Escape opens pause without creating an independent state.
+PASS Speed and eye ranges match the existing constraints.
+PASS Slider snaps 6.13 to the authoritative 6.25 mph quarter-step.
+PASS Seated fallback value changes without moving or double-offsetting the authored eye anchor.
+PASS A speed drag canceled by focus loss cannot continue while held after focus returns.
+PASS Speed uses existing PlayerPrefs save path.
+PASS F1 from Pause opens help while retaining Paused.
+PASS Six authored help sections grow to content and use a scrollable viewport.
+PASS Actual Input System wheel scrolls the help instructions.
+PASS Closing help returns to Pause without resuming.
+PASS Resume returns to gameplay.
+PASS Help from gameplay returns to running gameplay.
+PASS Pause New session returns to the original welcome workflow.
+PASS Refill practice starts the existing unscored service session.
+PASS Saved quarter-mph selection survives new sessions.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Actual report metric: FinishQuality
+PASS Actual report metric: WaterDistribution
+PASS Actual report metric: Missed
+PASS Actual report metric: ExcessWater
+PASS Actual report metric: Efficiency
+PASS Actual report metric: ShavingCoverage
+PASS Actual report metric: WaterCoverage
+PASS Handling, faults and original speed match the finished report.
+PASS Every score and penalty column uses the authoritative report points.
+PASS Untreated scored run retains actual partial-sheet classification.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results can open help.
+PASS Help closes back to the finished report.
+PASS One thousand unchanged-result refreshes neither rebuild labels nor instantiate objects.
+PASS MEASUREMENT visible unchanged result state: 0.00245 ms/call, excludes rendering and other UI.
+PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual.
+PASS Rendered only Welcome at (1366, 768)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1366, 768)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1366, 768)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1366, 768)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1600, 900)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1600, 900)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1600, 900)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1600, 900)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1920, 1080)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1920, 1080)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1920, 1080)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1920, 1080)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Results New practice starts a fresh unscored run.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Actual report metric: FinishQuality
+PASS Actual report metric: WaterDistribution
+PASS Actual report metric: Missed
+PASS Actual report metric: ExcessWater
+PASS Actual report metric: Efficiency
+PASS Actual report metric: ShavingCoverage
+PASS Actual report metric: WaterCoverage
+PASS Handling, faults and original speed match the finished report.
+PASS Practice remains unscored and has no scoring point breakdown.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results New scored starts a fresh scored run.
+PASS Interrupted button press cannot fire after hide/reopen.
+PASS Exact delivered scene retains every serialized byte after Play.
+PASS Phase 4 automated Unity run complete; native input, complete guided run and full-frame Profiler remain separate manual acceptance.
+PASS Reused full Phase 1 HUD/cockpit and Phase 2 physical/keyboard parity suites completed with Phase 4 installed.
+PASS Full input regression retains exact delivered scene bytes.
+PASS Phase 4 automated Unity run complete; native input, complete guided run and full-frame Profiler remain separate manual acceptance.
+PASS Four persistent editable screen roots have explicit scene bindings before Play.
+PASS Uses exactly the existing Canvas and EventSystem.
+PASS All twelve menu actions bind explicitly, independent of hierarchy order.
+PASS Both settings retain independently editable graphics and value/detail labels.
+PASS Seventeen explicit RunReport bindings retain every original metric and status.
+PASS Saved sample-data badges and keyboard targets exist for all screens.
+PASS Menu button and settings are real variants of existing Phase 2/3 art.
+PASS Nested prefab captions preserve authored text overrides.
+PASS Startup shows welcome from existing game flags.
+PASS Initial keyboard focus belongs to welcome.
+PASS Tab-order traversal supports forward and backward navigation.
+PASS Real uGUI scored button starts existing scored free simulation.
+PASS Duplicate callback cannot restart the session; gameplay restores previous navigation policy.
+PASS All five Phase 1-3 modules remain registered and live after starting a session.
+PASS Existing hydraulic lever owns the live pointer before Pause.
+PASS Pause releases held hydraulics and blocks all underlying authored driving interfaces.
+PASS Actual modal background raycast belongs to Pause at an underlying machine control.
+PASS Machinery button remains functional after modal close.
+PASS Existing Route Manager retains modal priority.
+PASS Closed screens leave no invisible full-screen blocker; map/GPS resume.
+PASS Practice starts unscored free simulation.
+PASS Input System keyboard Submit starts existing unscored assisted training.
+PASS Assisted training retains existing finish/equipment interlocks.
+PASS Escape opens pause without creating an independent state.
+PASS Speed and eye ranges match the existing constraints.
+PASS Slider snaps 6.13 to the authoritative 6.25 mph quarter-step.
+PASS A late slider callback after hiding Pause restores its display without changing the setting.
+PASS Seated fallback value changes without moving or double-offsetting the authored eye anchor.
+PASS A speed drag canceled by focus loss cannot continue while held after focus returns.
+PASS Speed uses existing PlayerPrefs save path.
+PASS F1 from Pause opens help while retaining Paused.
+PASS Six authored help sections grow to content and use a scrollable viewport.
+PASS Actual Input System wheel scrolls the help instructions.
+PASS Closing help returns to Pause without resuming.
+PASS Resume returns to gameplay.
+PASS Help from gameplay returns to running gameplay.
+PASS Pause New session returns to the original welcome workflow.
+PASS Refill practice starts the existing unscored service session.
+PASS Saved quarter-mph selection survives new sessions.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Actual report metric: FinishQuality
+PASS Actual report metric: WaterDistribution
+PASS Actual report metric: Missed
+PASS Actual report metric: ExcessWater
+PASS Actual report metric: Efficiency
+PASS Actual report metric: ShavingCoverage
+PASS Actual report metric: WaterCoverage
+PASS Handling, faults and original speed match the finished report.
+PASS Every score and penalty column uses the authoritative report points.
+PASS Untreated scored run retains actual partial-sheet classification.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results can open help.
+PASS Help closes back to the finished report.
+PASS One thousand unchanged-result refreshes neither rebuild labels nor instantiate objects.
+PASS MEASUREMENT visible unchanged result state: 0.00239 ms/call, excludes rendering and other UI.
+PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual.
+PASS Rendered only Welcome at (1366, 768)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1366, 768)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1366, 768)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1366, 768)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1600, 900)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1600, 900)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1600, 900)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1600, 900)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1920, 1080)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1920, 1080)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1920, 1080)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1920, 1080)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Results New practice starts a fresh unscored run.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Actual report metric: FinishQuality
+PASS Actual report metric: WaterDistribution
+PASS Actual report metric: Missed
+PASS Actual report metric: ExcessWater
+PASS Actual report metric: Efficiency
+PASS Actual report metric: ShavingCoverage
+PASS Actual report metric: WaterCoverage
+PASS Handling, faults and original speed match the finished report.
+PASS Practice remains unscored and has no scoring point breakdown.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results New scored starts a fresh scored run.
+PASS Interrupted button press cannot fire after hide/reopen.
+PASS Exact delivered scene retains every serialized byte after Play.
+PASS Phase 4 automated Unity run complete; native input, complete guided run and full-frame Profiler remain separate manual acceptance.
+PASS Four persistent editable screen roots have explicit scene bindings before Play.
+PASS Uses exactly the existing Canvas and EventSystem.
+PASS All twelve menu actions bind explicitly, independent of hierarchy order.
+PASS Both settings retain independently editable graphics and value/detail labels.
+PASS Seventeen explicit RunReport bindings retain every original metric and status.
+PASS Saved sample-data badges and keyboard targets exist for all screens.
+PASS Menu button and settings are real variants of existing Phase 2/3 art.
+PASS Nested prefab captions preserve authored text overrides.
+PASS Startup shows welcome from existing game flags.
+PASS Initial keyboard focus belongs to welcome.
+PASS Tab-order traversal supports forward and backward navigation.
+PASS Real uGUI scored button starts existing scored free simulation.
+PASS Duplicate callback cannot restart the session; gameplay restores previous navigation policy.
+PASS All five Phase 1-3 modules remain registered and live after starting a session.
+PASS Existing hydraulic lever owns the live pointer before Pause.
+PASS Pause releases held hydraulics and blocks all underlying authored driving interfaces.
+PASS Actual modal background raycast belongs to Pause at an underlying machine control.
+PASS Machinery button remains functional after modal close.
+PASS Existing Route Manager retains modal priority.
+PASS Closed screens leave no invisible full-screen blocker; map/GPS resume.
+PASS Practice starts unscored free simulation.
+PASS Input System keyboard Submit starts existing unscored assisted training.
+PASS Assisted training retains existing finish/equipment interlocks.
+PASS Escape opens pause without creating an independent state.
+PASS Speed and eye ranges match the existing constraints.
+PASS Slider snaps 6.13 to the authoritative 6.25 mph quarter-step.
+PASS A late slider callback after hiding Pause restores its display without changing the setting.
+PASS Seated fallback value changes without moving or double-offsetting the authored eye anchor.
+PASS A speed drag canceled by focus loss cannot continue while held after focus returns.
+PASS Speed uses existing PlayerPrefs save path.
+PASS F1 from Pause opens help while retaining Paused.
+PASS Six authored help sections grow to content and use a scrollable viewport.
+PASS Actual Input System wheel scrolls the help instructions.
+PASS Closing help returns to Pause without resuming.
+PASS Resume returns to gameplay.
+PASS Help from gameplay returns to running gameplay.
+PASS Pause New session returns to the original welcome workflow.
+PASS Refill practice starts the existing unscored service session.
+PASS Saved quarter-mph selection survives new sessions.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Actual report metric: FinishQuality
+PASS Actual report metric: WaterDistribution
+PASS Actual report metric: Missed
+PASS Actual report metric: ExcessWater
+PASS Actual report metric: Efficiency
+PASS Actual report metric: ShavingCoverage
+PASS Actual report metric: WaterCoverage
+PASS Handling, faults and original speed match the finished report.
+PASS Every score and penalty column uses the authoritative report points.
+PASS Untreated scored run retains actual partial-sheet classification.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results can open help.
+PASS Help closes back to the finished report.
+PASS One thousand unchanged-result refreshes neither rebuild labels nor instantiate objects.
+PASS MEASUREMENT visible unchanged result state: 0.00129 ms/call, excludes rendering and other UI.
+PASS MEASUREMENT managed allocation counter UNAVAILABLE (4096-byte calibration reported 0); full-frame Profiler remains manual.
+PASS Rendered only Welcome at (1366, 768)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1366, 768)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1366, 768)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1366, 768)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1600, 900)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1600, 900)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1600, 900)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1600, 900)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Welcome at (1920, 1080)
+PASS Action within target viewport: Start scored session
+PASS Action within target viewport: Start practice session
+PASS Action within target viewport: Assisted training
+PASS Action within target viewport: Operator's guide
+PASS Rendered only Pause at (1920, 1080)
+PASS Action within target viewport: Resume
+PASS Action within target viewport: Operator's guide
+PASS Action within target viewport: New session
+PASS Action within target viewport: Refill practice — start with partly empty tanks
+PASS Rendered only Help at (1920, 1080)
+PASS Action within target viewport: Close F1
+PASS Rendered only Results at (1920, 1080)
+PASS Action within target viewport: New scored session
+PASS Action within target viewport: New practice session
+PASS Action within target viewport: Operator's guide
+PASS Results New practice starts a fresh unscored run.
+PASS Results bind the actual finished simulation report.
+PASS Score/practice text uses actual RunReport without UI scoring.
+PASS Coverage and selected speed use explicit report fields.
+PASS Actual report metric: FinishQuality
+PASS Actual report metric: WaterDistribution
+PASS Actual report metric: Missed
+PASS Actual report metric: ExcessWater
+PASS Actual report metric: Efficiency
+PASS Actual report metric: ShavingCoverage
+PASS Actual report metric: WaterCoverage
+PASS Handling, faults and original speed match the finished report.
+PASS Practice remains unscored and has no scoring point breakdown.
+PASS Complete-report formatter supports authoritative Complete flag (representative formatter fixture only).
+PASS Results New scored starts a fresh scored run.
+PASS Interrupted button press cannot fire after hide/reopen.
+PASS Exact delivered scene retains every serialized byte after Play.
+PASS Phase 4 automated Unity run complete; native input, complete guided run and full-frame Profiler remain separate manual acceptance.

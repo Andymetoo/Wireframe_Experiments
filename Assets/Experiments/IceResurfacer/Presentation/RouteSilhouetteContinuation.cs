@@ -14,6 +14,7 @@ namespace IceResurfacer.Presentation
         readonly List<Mesh> ownedMeshes=new List<Mesh>();
         readonly Scene scene;
         readonly PhysicsScene physics;
+        bool disposed;
         public int LastVisibleSegments {get;private set;}
         public int LastSampledPoints {get;private set;}
         public int LastRayQueries {get;private set;}
@@ -64,10 +65,12 @@ namespace IceResurfacer.Presentation
         // Runs the same bounded visibility work outside OnGUI for native validation.
         public void MeasureVisibility(IceResurfacerGame game,float width,float height)
         {Visit(game,width,height,false);}
-        void Visit(IceResurfacerGame game,float width,float height,bool draw)
+        public void Project(IceResurfacerGame game,float width,float height,IGpsProjectedStrokeSink sink)
+        {Visit(game,width,height,false,sink);}
+        void Visit(IceResurfacerGame game,float width,float height,bool draw,IGpsProjectedStrokeSink sink=null)
         {
             LastVisibleSegments=LastSampledPoints=LastRayQueries=0;var guide=game.RouteGuide;
-            if(guide==null||!guide.GuidanceDisplayed)return;
+            if(disposed||guide==null||!guide.GuidanceDisplayed)return;
             foreach(var shape in shapes)if(shape.moving&&shape.source!=null)Copy(shape);
             Physics.SyncTransforms();var camera=game.DriverCamera;var fit=guide.ActiveFit;
             float scale=Mathf.Min(width/1600,height/900);Vector2 offset=new Vector2((width-1600*scale)*.5f,(height-900*scale)*.5f);
@@ -83,6 +86,7 @@ namespace IceResurfacer.Presentation
                 if(visible&&previous&&Vector2.Distance(last,at)<35)
                 {
                     if(draw){Stroke(last,at,4.8f,new Color(.06f,0,.055f,.88f));var color=guide.GpsColor;color.a*=.78f;Stroke(last,at,2.4f,color);}
+                    sink?.Segment(last,at,false);
                     LastVisibleSegments++;
                 }
                 last=at;previous=visible;
@@ -94,6 +98,24 @@ namespace IceResurfacer.Presentation
             GUI.matrix=matrix*Matrix4x4.TRS(new Vector3(a.x,a.y,0),Quaternion.Euler(0,0,Mathf.Atan2(b.y-a.y,b.x-a.x)*Mathf.Rad2Deg),Vector3.one);
             GUI.DrawTexture(new Rect(0,-width*.5f,Vector2.Distance(a,b),width),Texture2D.whiteTexture);GUI.color=old;GUI.matrix=matrix;
         }
-        public void Dispose(){if(scene.IsValid()&&scene.isLoaded)SceneManager.UnloadSceneAsync(scene);foreach(var mesh in ownedMeshes)Object.Destroy(mesh);}
+        public void Dispose()
+        {
+            if(disposed)return;disposed=true;
+            // Detach the isolated query colliders while their PhysicsScene is
+            // alive. HideAndDontSave query objects must not survive an Editor
+            // Play transition and reach native shutdown with stale physics data.
+            foreach(var shape in shapes)if(shape.copy!=null)
+            {
+                var node=shape.copy.gameObject;node.SetActive(false);
+#if UNITY_EDITOR
+                Object.DestroyImmediate(node);
+#else
+                Object.Destroy(node);
+#endif
+            }
+            shapes.Clear();machine.Clear();LastVisibleSegments=LastSampledPoints=LastRayQueries=0;
+            if(scene.IsValid()&&scene.isLoaded)SceneManager.UnloadSceneAsync(scene);
+            foreach(var mesh in ownedMeshes)Object.Destroy(mesh);ownedMeshes.Clear();
+        }
     }
 }

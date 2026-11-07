@@ -1,0 +1,1826 @@
+{
+    "utc":  "2026-11-07T02:40:57.1651424Z",
+    "unity":  "6000.4.1f1",
+    "project":  "G:\\UnityProjects\\Wireframe_Experiments\\Validation\\UIAuthoring-Phase2\\AcceptanceProject",
+    "acceptanceLog":  "Unity-acceptance-06.log",
+    "freshProcessPersistenceLog":  "Unity-persistence-final.log",
+    "exactIntegratedSceneLog":  "Unity-integrated-exact.log",
+    "note":  "Every listed source/asset matches the final tested project. Authored test scene contains deliberate disposable overrides and is separately recorded; live scene integration is reviewed independently.",
+    "files":  [
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\BoardBrushArticulation.cs",
+                      "sourceSHA256":  "8339E370A800D03A24545EF32D807D1E21DECEF9CAAF910968F3A51DB9C8A5F7",
+                      "testedSHA256":  "8339E370A800D03A24545EF32D807D1E21DECEF9CAAF910968F3A51DB9C8A5F7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\BoardBrushArticulation.cs.meta",
+                      "sourceSHA256":  "CA61751DCAC69C55EBACB2F7AE134EA118A7F6228F9DCFC891A53F031AE7785B",
+                      "testedSHA256":  "CA61751DCAC69C55EBACB2F7AE134EA118A7F6228F9DCFC891A53F031AE7785B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\EnvironmentField.cs",
+                      "sourceSHA256":  "94377D4392A837DC838A52C116E7FE7C4BD8043F1526B4AFF5647C8C860DFAC7",
+                      "testedSHA256":  "94377D4392A837DC838A52C116E7FE7C4BD8043F1526B4AFF5647C8C860DFAC7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\EnvironmentField.cs.meta",
+                      "sourceSHA256":  "4F39E875D2187EEC1D4C4520902177A0A45B552775CBE75CEB3CA9DA74D46C77",
+                      "testedSHA256":  "4F39E875D2187EEC1D4C4520902177A0A45B552775CBE75CEB3CA9DA74D46C77"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\FreedomCalibration.cs",
+                      "sourceSHA256":  "A2148C25928CF7CD92EF676868E94F7593C38CCB72E4B4EC1E1A81ECC68934C3",
+                      "testedSHA256":  "A2148C25928CF7CD92EF676868E94F7593C38CCB72E4B4EC1E1A81ECC68934C3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\FreedomCalibration.cs.meta",
+                      "sourceSHA256":  "2666D247965AB9FB013FD8AC0B4C38ED6320FC43DF5C9D289CA112CB7F354403",
+                      "testedSHA256":  "2666D247965AB9FB013FD8AC0B4C38ED6320FC43DF5C9D289CA112CB7F354403"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceCalibrationConfig.cs",
+                      "sourceSHA256":  "03A2926B54522395E215F9BACB838BA4EE18E26897B54B4E583A6C84DDA94CF6",
+                      "testedSHA256":  "03A2926B54522395E215F9BACB838BA4EE18E26897B54B4E583A6C84DDA94CF6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceCalibrationConfig.cs.meta",
+                      "sourceSHA256":  "A2D0C86531A9412C4A5732EB13FCE8465E1612C539B8B078798FABC4DDB02CB8",
+                      "testedSHA256":  "A2D0C86531A9412C4A5732EB13FCE8465E1612C539B8B078798FABC4DDB02CB8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceCoverage.cs",
+                      "sourceSHA256":  "2BA8A19C3FFDBC505DE23FC1AF0093AF1588E142B0858CE18045E44DF3B4E2E8",
+                      "testedSHA256":  "2BA8A19C3FFDBC505DE23FC1AF0093AF1588E142B0858CE18045E44DF3B4E2E8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceCoverage.cs.meta",
+                      "sourceSHA256":  "794E1E2D33D276A905988EE863C06B8E783EEDC43E489740D26974367F039387",
+                      "testedSHA256":  "794E1E2D33D276A905988EE863C06B8E783EEDC43E489740D26974367F039387"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceField.cs",
+                      "sourceSHA256":  "A538B78F3A117402D070987D3C48F50E3239F23C9FB8AF81309EF8CC97C68D67",
+                      "testedSHA256":  "A538B78F3A117402D070987D3C48F50E3239F23C9FB8AF81309EF8CC97C68D67"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceField.cs.meta",
+                      "sourceSHA256":  "744670EF2D6F12292C0006255CB03B8A7E093C82D7BF0945A4B8716A0D8C30AD",
+                      "testedSHA256":  "744670EF2D6F12292C0006255CB03B8A7E093C82D7BF0945A4B8716A0D8C30AD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceOverview.cs",
+                      "sourceSHA256":  "7FF510B9B72555124CFBD28212EF5D9CE1CE6B53FBD8FC8901192339139E6512",
+                      "testedSHA256":  "7FF510B9B72555124CFBD28212EF5D9CE1CE6B53FBD8FC8901192339139E6512"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceOverview.cs.meta",
+                      "sourceSHA256":  "54897113BCFC879EDD3915862663ABF04FF1E62928C84071C46E433A49722B76",
+                      "testedSHA256":  "54897113BCFC879EDD3915862663ABF04FF1E62928C84071C46E433A49722B76"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceWaterSpread.cs",
+                      "sourceSHA256":  "0F3C828AD325C1B227C72A8B459609B52ACF9039CC51E89E2EE074EB8AC3C882",
+                      "testedSHA256":  "0F3C828AD325C1B227C72A8B459609B52ACF9039CC51E89E2EE074EB8AC3C882"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\IceWaterSpread.cs.meta",
+                      "sourceSHA256":  "09D1C2D60EC41CC8676D7BC6C0DD5964BC8AD8A974114D3719AF049FBAEF8FCC",
+                      "testedSHA256":  "09D1C2D60EC41CC8676D7BC6C0DD5964BC8AD8A974114D3719AF049FBAEF8FCC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\MachineGeometryConfig.cs",
+                      "sourceSHA256":  "CEDFA9C187FB5EDDDB81AFAC70E17E1046D44B0637CD2A6E79521906990E0205",
+                      "testedSHA256":  "CEDFA9C187FB5EDDDB81AFAC70E17E1046D44B0637CD2A6E79521906990E0205"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\MachineGeometryConfig.cs.meta",
+                      "sourceSHA256":  "1B8956F826BABB142C47DDACA539B2AB68257A7D047D78FFD449AD6B2EE6BC74",
+                      "testedSHA256":  "1B8956F826BABB142C47DDACA539B2AB68257A7D047D78FFD449AD6B2EE6BC74"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\MovementContact.cs",
+                      "sourceSHA256":  "9ED51987845363B8476EBC2564D0B9DACB08985613DFA0B154D1E6D6E3B5FB40",
+                      "testedSHA256":  "9ED51987845363B8476EBC2564D0B9DACB08985613DFA0B154D1E6D6E3B5FB40"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\MovementContact.cs.meta",
+                      "sourceSHA256":  "2656FDB78E50F2643FCC3BA586BB08B771A8E55DD4A2E0666A01AEE6BF5719C4",
+                      "testedSHA256":  "2656FDB78E50F2643FCC3BA586BB08B771A8E55DD4A2E0666A01AEE6BF5719C4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\OperatorTuningSettings.cs",
+                      "sourceSHA256":  "3C18476CF6D5C102083FF8DC321B6D464F64DF6B8628B6FE8A2D1CCC9C888883",
+                      "testedSHA256":  "3C18476CF6D5C102083FF8DC321B6D464F64DF6B8628B6FE8A2D1CCC9C888883"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\OperatorTuningSettings.cs.meta",
+                      "sourceSHA256":  "A98DACCED6C825EB42DB5B7CE61E5DC4BB9C922BA63D98586FD0959FDF711770",
+                      "testedSHA256":  "A98DACCED6C825EB42DB5B7CE61E5DC4BB9C922BA63D98586FD0959FDF711770"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RecordedTrackReconstruction.cs",
+                      "sourceSHA256":  "40F731E135E3AB4B39DE7062E995D6C401FC2FECD6DE4396C431F8B4FFF8A445",
+                      "testedSHA256":  "40F731E135E3AB4B39DE7062E995D6C401FC2FECD6DE4396C431F8B4FFF8A445"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RecordedTrackReconstruction.cs.meta",
+                      "sourceSHA256":  "DE23C0C3C66E8062F3EB62928DD06D8DA51A8E81733CE50DEC3F7D1D35435B93",
+                      "testedSHA256":  "DE23C0C3C66E8062F3EB62928DD06D8DA51A8E81733CE50DEC3F7D1D35435B93"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\ResurfacingRoute.cs",
+                      "sourceSHA256":  "052C6EB1B1179677F20E81759B38D68FB795ACE8540E61D77B2C2834583142B0",
+                      "testedSHA256":  "052C6EB1B1179677F20E81759B38D68FB795ACE8540E61D77B2C2834583142B0"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\ResurfacingRoute.cs.meta",
+                      "sourceSHA256":  "1BD58C5041B31F878B580A930568B31CE065C4D37079B147ACA2C3957B40ED18",
+                      "testedSHA256":  "1BD58C5041B31F878B580A930568B31CE065C4D37079B147ACA2C3957B40ED18"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteFitDiagnostics.cs",
+                      "sourceSHA256":  "FFB25DBC252197213BCD385392A8F87695E27DA5AF7362E9B06DF75F0B0BB457",
+                      "testedSHA256":  "FFB25DBC252197213BCD385392A8F87695E27DA5AF7362E9B06DF75F0B0BB457"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteFitDiagnostics.cs.meta",
+                      "sourceSHA256":  "F3B3206B821B9B75A3835593DD0A6AF68697BA348C27A465880135AC39978343",
+                      "testedSHA256":  "F3B3206B821B9B75A3835593DD0A6AF68697BA348C27A465880135AC39978343"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteFootprints.cs",
+                      "sourceSHA256":  "EFAE38980A97CE1BD4D076DE4698E373D2EB8C7073C1161F6750E9BCFA51E5D5",
+                      "testedSHA256":  "EFAE38980A97CE1BD4D076DE4698E373D2EB8C7073C1161F6750E9BCFA51E5D5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteFootprints.cs.meta",
+                      "sourceSHA256":  "6E1B937965BC56F0ED837E4822976743AB6954B9C6AFBB83ABB2D1B3F51F0CE4",
+                      "testedSHA256":  "6E1B937965BC56F0ED837E4822976743AB6954B9C6AFBB83ABB2D1B3F51F0CE4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteProgress.cs",
+                      "sourceSHA256":  "BD6396F1721CCD9828188C3B1CA0D214555D21E89BAA5644655DCDD9DD90C6AB",
+                      "testedSHA256":  "BD6396F1721CCD9828188C3B1CA0D214555D21E89BAA5644655DCDD9DD90C6AB"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteProgress.cs.meta",
+                      "sourceSHA256":  "A5ED8EF9E309E70AC843FC989D4485D712C81E6D649ABD18ADDF70271497134D",
+                      "testedSHA256":  "A5ED8EF9E309E70AC843FC989D4485D712C81E6D649ABD18ADDF70271497134D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteRecording.cs",
+                      "sourceSHA256":  "96244C1709EBC2E451073191D5F362DC0A0D2D92F86ADF83BD93CF72C719FB7A",
+                      "testedSHA256":  "96244C1709EBC2E451073191D5F362DC0A0D2D92F86ADF83BD93CF72C719FB7A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\RouteRecording.cs.meta",
+                      "sourceSHA256":  "031E5FF2C34E31162477FA839F330CE862B26DDED76647CE751B4F8DC797E71C",
+                      "testedSHA256":  "031E5FF2C34E31162477FA839F330CE862B26DDED76647CE751B4F8DC797E71C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\ServiceLayout.cs",
+                      "sourceSHA256":  "385D99CB1C0B77A389C973055A963894A499A43AE159015049B69224573B1B41",
+                      "testedSHA256":  "385D99CB1C0B77A389C973055A963894A499A43AE159015049B69224573B1B41"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\ServiceLayout.cs.meta",
+                      "sourceSHA256":  "1342223BE3CB6A142582307D8422053907561D6D2537C0B624556B0AA853E3AF",
+                      "testedSHA256":  "1342223BE3CB6A142582307D8422053907561D6D2537C0B624556B0AA853E3AF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\Simulation.cs",
+                      "sourceSHA256":  "5A16AEDEE07C41C093EF2DE4F4A75C9515A33F292EA1339C5D393F1A896F09A9",
+                      "testedSHA256":  "5A16AEDEE07C41C093EF2DE4F4A75C9515A33F292EA1339C5D393F1A896F09A9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\Simulation.cs.meta",
+                      "sourceSHA256":  "2A39435D0B9D3099AC0E050981FE0CFE8321537918E26A7BE64AD9B3814F3170",
+                      "testedSHA256":  "2A39435D0B9D3099AC0E050981FE0CFE8321537918E26A7BE64AD9B3814F3170"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SimulatorConfig.cs",
+                      "sourceSHA256":  "7B69B920270F1FF3D3C475DA287465233721E6A5A54CB5BCBC47FB948ED1E6C0",
+                      "testedSHA256":  "7B69B920270F1FF3D3C475DA287465233721E6A5A54CB5BCBC47FB948ED1E6C0"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SimulatorConfig.cs.meta",
+                      "sourceSHA256":  "2DEF84FD9D1B02D80ECB5AB8A6EE59FAB009455EB218BD948C99C711C30224D3",
+                      "testedSHA256":  "2DEF84FD9D1B02D80ECB5AB8A6EE59FAB009455EB218BD948C99C711C30224D3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SnowContact.cs",
+                      "sourceSHA256":  "DA8FE25304777F9D779D4A2ED012E136B31510DB9AAF0FA33DE42DB65333DDA2",
+                      "testedSHA256":  "DA8FE25304777F9D779D4A2ED012E136B31510DB9AAF0FA33DE42DB65333DDA2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SnowContact.cs.meta",
+                      "sourceSHA256":  "F1951A2EAE0E5227764C737BFB2345B8EFD902E5DCD8060C8632FF7B91DA784B",
+                      "testedSHA256":  "F1951A2EAE0E5227764C737BFB2345B8EFD902E5DCD8060C8632FF7B91DA784B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SnowSpoutPresentation.cs",
+                      "sourceSHA256":  "B34C79FE3B4FD8C12334948A9D4A4FA72DEDFAE01915E7E47A3D83D666DE5639",
+                      "testedSHA256":  "B34C79FE3B4FD8C12334948A9D4A4FA72DEDFAE01915E7E47A3D83D666DE5639"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SnowSpoutPresentation.cs.meta",
+                      "sourceSHA256":  "65F6771B8696CF0616A415D383AC461492A1A82C35C859452E9C2ECC9722502E",
+                      "testedSHA256":  "65F6771B8696CF0616A415D383AC461492A1A82C35C859452E9C2ECC9722502E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SnowSurfaceGeometry.cs",
+                      "sourceSHA256":  "0A14C848A984E4581814FC60B41A1CC8A189C178F8BE96E6AE042080961D43E9",
+                      "testedSHA256":  "0A14C848A984E4581814FC60B41A1CC8A189C178F8BE96E6AE042080961D43E9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SnowSurfaceGeometry.cs.meta",
+                      "sourceSHA256":  "8E66031804201E08A3DF2279AD4728D387725A290338DE49C4BF8C6CF5178D66",
+                      "testedSHA256":  "8E66031804201E08A3DF2279AD4728D387725A290338DE49C4BF8C6CF5178D66"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SurfaceProcessing.cs",
+                      "sourceSHA256":  "AC903EF813A8556BD0E25D264E496C92E7C48B195E82A746E1FDE0632CCC6642",
+                      "testedSHA256":  "AC903EF813A8556BD0E25D264E496C92E7C48B195E82A746E1FDE0632CCC6642"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\SurfaceProcessing.cs.meta",
+                      "sourceSHA256":  "CD50726F779D7976A5C94B99180C47792495E89FE3D461E45CEE2A077B59D458",
+                      "testedSHA256":  "CD50726F779D7976A5C94B99180C47792495E89FE3D461E45CEE2A077B59D458"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\TankCollision.cs",
+                      "sourceSHA256":  "66185C503C3DB86FE6E89923B3F541718D7899CC1C2986676DCE6B52460D5094",
+                      "testedSHA256":  "66185C503C3DB86FE6E89923B3F541718D7899CC1C2986676DCE6B52460D5094"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\TankCollision.cs.meta",
+                      "sourceSHA256":  "7C1A36705CA607DEA502109CFAD34E1ABDB38AF2A7EB0DCA9DB1F2FECE14B753",
+                      "testedSHA256":  "7C1A36705CA607DEA502109CFAD34E1ABDB38AF2A7EB0DCA9DB1F2FECE14B753"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\TrainingRoute.cs",
+                      "sourceSHA256":  "9E11106E1599D9A78C676BFC5181244BF40C27E157D28B030B06DB88E7E5EC60",
+                      "testedSHA256":  "9E11106E1599D9A78C676BFC5181244BF40C27E157D28B030B06DB88E7E5EC60"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\TrainingRoute.cs.meta",
+                      "sourceSHA256":  "6677A2D49FF2D6174C94D698C648ED04A857B88D63D7085C5380CBFB7A096484",
+                      "testedSHA256":  "6677A2D49FF2D6174C94D698C648ED04A857B88D63D7085C5380CBFB7A096484"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\TrainingRouteEditing.cs",
+                      "sourceSHA256":  "8398CCA55DBB5B23C5A92949141601FBF67DBACC3B953761EDDDA8B575491E4A",
+                      "testedSHA256":  "8398CCA55DBB5B23C5A92949141601FBF67DBACC3B953761EDDDA8B575491E4A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\TrainingRouteEditing.cs.meta",
+                      "sourceSHA256":  "551EE5657200E63A03962988CA28B893CAEAC726CEB6005784DD184994816A9F",
+                      "testedSHA256":  "551EE5657200E63A03962988CA28B893CAEAC726CEB6005784DD184994816A9F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\VehicleOutlineConfig.cs",
+                      "sourceSHA256":  "B27B499DFE73C7F078D45E6776D40409A71EBC3A0EBA0C804A73D7B6B3E44E07",
+                      "testedSHA256":  "B27B499DFE73C7F078D45E6776D40409A71EBC3A0EBA0C804A73D7B6B3E44E07"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\VehicleOutlineConfig.cs.meta",
+                      "sourceSHA256":  "5A9AFA174476D1F597F8A6C9BE79BB9BD8BC82704CC6D6E7044E729E12BAF138",
+                      "testedSHA256":  "5A9AFA174476D1F597F8A6C9BE79BB9BD8BC82704CC6D6E7044E729E12BAF138"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\WaterService.cs",
+                      "sourceSHA256":  "76E7E73D08A8118DE537BAD5F5EEA3BAE688CA5C20F8088DDC8D86A4873C3A1E",
+                      "testedSHA256":  "76E7E73D08A8118DE537BAD5F5EEA3BAE688CA5C20F8088DDC8D86A4873C3A1E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Core\\WaterService.cs.meta",
+                      "sourceSHA256":  "AFD4F56BD39A00844699A0C0ED1DCC847F6FAE9358F58CE72FE81D6613E12401",
+                      "testedSHA256":  "AFD4F56BD39A00844699A0C0ED1DCC847F6FAE9358F58CE72FE81D6613E12401"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceArenaBaker.cs",
+                      "sourceSHA256":  "EA640FC9E30EEBF71DD1922E295035D9756432351E060A40F19E3E1B67E9722B",
+                      "testedSHA256":  "EA640FC9E30EEBF71DD1922E295035D9756432351E060A40F19E3E1B67E9722B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceArenaBaker.cs.meta",
+                      "sourceSHA256":  "5923D45A84D14E824687CA679E7A1FA536D106F3569592A716A0675B3BF8CBFB",
+                      "testedSHA256":  "5923D45A84D14E824687CA679E7A1FA536D106F3569592A716A0675B3BF8CBFB"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceArenaRigEditor.cs",
+                      "sourceSHA256":  "5E4C392B44AC1A376765DA640160E9999E38921EF427C64B95FBA771BECE3B75",
+                      "testedSHA256":  "5E4C392B44AC1A376765DA640160E9999E38921EF427C64B95FBA771BECE3B75"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceArenaRigEditor.cs.meta",
+                      "sourceSHA256":  "F4FF7537B6238B7BCE29AEEBD59E2E06266A73DD5453E6231E276EFA169B43CC",
+                      "testedSHA256":  "F4FF7537B6238B7BCE29AEEBD59E2E06266A73DD5453E6231E276EFA169B43CC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAssetPersistence.cs",
+                      "sourceSHA256":  "E5E96654574E61AE2236BC48AE3AFFE2B547A3EB4BF4720A62BA010B436B7ED7",
+                      "testedSHA256":  "E5E96654574E61AE2236BC48AE3AFFE2B547A3EB4BF4720A62BA010B436B7ED7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAssetPersistence.cs.meta",
+                      "sourceSHA256":  "A2784DA9C7ABEB65155C6995004F99C0163BEB4B790F13045E68F103C541C095",
+                      "testedSHA256":  "A2784DA9C7ABEB65155C6995004F99C0163BEB4B790F13045E68F103C541C095"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthenticityValidation.cs",
+                      "sourceSHA256":  "198DC4C95339965F470E528EDE585CA3DDE8E8EB0656808C438F39B88A7F3221",
+                      "testedSHA256":  "198DC4C95339965F470E528EDE585CA3DDE8E8EB0656808C438F39B88A7F3221"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthenticityValidation.cs.meta",
+                      "sourceSHA256":  "B1387437BDB77744885197F4C08AC329D1694C8E7E8FB3E1733AA05A253343D4",
+                      "testedSHA256":  "B1387437BDB77744885197F4C08AC329D1694C8E7E8FB3E1733AA05A253343D4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthoredArenaValidation.cs",
+                      "sourceSHA256":  "142F9804CCA950F6032102B9A47FE74711F3D32B3C4425D41D3F01E546C8392B",
+                      "testedSHA256":  "142F9804CCA950F6032102B9A47FE74711F3D32B3C4425D41D3F01E546C8392B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthoredArenaValidation.cs.meta",
+                      "sourceSHA256":  "449DB17183AFA8C72FC1CAEDF7D0338D10CA0C63F8AE217A2C182EB3F44D8A50",
+                      "testedSHA256":  "449DB17183AFA8C72FC1CAEDF7D0338D10CA0C63F8AE217A2C182EB3F44D8A50"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthoredMachineValidation.cs",
+                      "sourceSHA256":  "5C9A294D5A0CFA3956E10F73C73520FAAD972FA98B4AE6880A01B79562BE32B8",
+                      "testedSHA256":  "5C9A294D5A0CFA3956E10F73C73520FAAD972FA98B4AE6880A01B79562BE32B8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthoredMachineValidation.cs.meta",
+                      "sourceSHA256":  "3C905FC542380366A415C2CA77B330EB9F2653B020FB19B2F1C825BF966BB1FD",
+                      "testedSHA256":  "3C905FC542380366A415C2CA77B330EB9F2653B020FB19B2F1C825BF966BB1FD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthoredRecovery.cs",
+                      "sourceSHA256":  "A629E8B79CFC7243D634613A38C7D5E615E1AFB223EB69A204A0267920B4D3B1",
+                      "testedSHA256":  "A629E8B79CFC7243D634613A38C7D5E615E1AFB223EB69A204A0267920B4D3B1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceAuthoredRecovery.cs.meta",
+                      "sourceSHA256":  "FFE926BEEB0E0B6868D3BDB62C8688EF18D743C3C71C641EED1E8FD313EB464F",
+                      "testedSHA256":  "FFE926BEEB0E0B6868D3BDB62C8688EF18D743C3C71C641EED1E8FD313EB464F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceBoardBrushRigEditor.cs",
+                      "sourceSHA256":  "89D55628B134B664BEC12C897933E95AB61CEF6E3F0B2D0D0F66CFDB209BB2CF",
+                      "testedSHA256":  "89D55628B134B664BEC12C897933E95AB61CEF6E3F0B2D0D0F66CFDB209BB2CF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceBoardBrushRigEditor.cs.meta",
+                      "sourceSHA256":  "48991BE5A2357558417E0C5DB947CA0F61F3D7095DDE02453DB6B144C81FA5A4",
+                      "testedSHA256":  "48991BE5A2357558417E0C5DB947CA0F61F3D7095DDE02453DB6B144C81FA5A4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceBrushConditionerValidation.cs",
+                      "sourceSHA256":  "90C6EDD5D78F0051AABCCF08924110AC45044173927531FBB0A6A62D6089ABFA",
+                      "testedSHA256":  "90C6EDD5D78F0051AABCCF08924110AC45044173927531FBB0A6A62D6089ABFA"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceBrushConditionerValidation.cs.meta",
+                      "sourceSHA256":  "41D0365D63AA2B942671FB675A058B500A21194C1B5495A1B290FE1FABB391A7",
+                      "testedSHA256":  "41D0365D63AA2B942671FB675A058B500A21194C1B5495A1B290FE1FABB391A7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCalibrationContext.cs",
+                      "sourceSHA256":  "2A08BEFB27236D9E0C301E5E5353A5A0B83153DBDB2EECBAC14CEA7CACA408C9",
+                      "testedSHA256":  "2A08BEFB27236D9E0C301E5E5353A5A0B83153DBDB2EECBAC14CEA7CACA408C9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCalibrationContext.cs.meta",
+                      "sourceSHA256":  "D244DA14BCC794E1BB76FDD63DB0A33ED86764BD88E8D700453F2486906B3A31",
+                      "testedSHA256":  "D244DA14BCC794E1BB76FDD63DB0A33ED86764BD88E8D700453F2486906B3A31"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCalibrationRuntimeValidation.cs",
+                      "sourceSHA256":  "D6E1696CF69F56AC1BB63320B196681A900B8754DF88761F62436CFD8513D9B4",
+                      "testedSHA256":  "D6E1696CF69F56AC1BB63320B196681A900B8754DF88761F62436CFD8513D9B4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCalibrationRuntimeValidation.cs.meta",
+                      "sourceSHA256":  "9BB92EBD6843F9D06418FE4E55DB038E7D49F084749DA753D455384E3C44CA69",
+                      "testedSHA256":  "9BB92EBD6843F9D06418FE4E55DB038E7D49F084749DA753D455384E3C44CA69"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCameraValidation.cs",
+                      "sourceSHA256":  "982C32448DDC76A083F2A2F016DB0168373EFEF390554932E138F69D17848FD9",
+                      "testedSHA256":  "982C32448DDC76A083F2A2F016DB0168373EFEF390554932E138F69D17848FD9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCameraValidation.cs.meta",
+                      "sourceSHA256":  "DFFE7A574643373ECD1933A5375F9D38215048168922BD1E98B575358C1CE0F3",
+                      "testedSHA256":  "DFFE7A574643373ECD1933A5375F9D38215048168922BD1E98B575358C1CE0F3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCockpitRefinementValidation.cs",
+                      "sourceSHA256":  "9B176A247B1C8C7161FD5B66A9E4CA5FAC324761D6D95F73AA31B6B401B7C002",
+                      "testedSHA256":  "9B176A247B1C8C7161FD5B66A9E4CA5FAC324761D6D95F73AA31B6B401B7C002"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCockpitRefinementValidation.cs.meta",
+                      "sourceSHA256":  "699E9666D59B9D330ED1971ABD0BE9CCD7DDCAEA8178829212C82588DAF03EEA",
+                      "testedSHA256":  "699E9666D59B9D330ED1971ABD0BE9CCD7DDCAEA8178829212C82588DAF03EEA"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCollisionOutlineFit.cs",
+                      "sourceSHA256":  "A8A3F35D6E7DDA69C713A32C266241546F0A8A384DD938035B5D7DD3037E0FCC",
+                      "testedSHA256":  "A8A3F35D6E7DDA69C713A32C266241546F0A8A384DD938035B5D7DD3037E0FCC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceCollisionOutlineFit.cs.meta",
+                      "sourceSHA256":  "52E3089A57D1994E78E136D0EA7BEF4365F833948F119B418691CEDC19A9BCEF",
+                      "testedSHA256":  "52E3089A57D1994E78E136D0EA7BEF4365F833948F119B418691CEDC19A9BCEF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceConditionerAlignment.cs",
+                      "sourceSHA256":  "78DE594BBE66573E753A2B51DB5E44C71BE5025EDE7EA7EC1E3D91BC7B62FB51",
+                      "testedSHA256":  "78DE594BBE66573E753A2B51DB5E44C71BE5025EDE7EA7EC1E3D91BC7B62FB51"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceConditionerAlignment.cs.meta",
+                      "sourceSHA256":  "C6AA4B65A80527104819D9854E1028126C2C723122591CA1B1842258F3DC7D2A",
+                      "testedSHA256":  "C6AA4B65A80527104819D9854E1028126C2C723122591CA1B1842258F3DC7D2A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceControlsBrushRollerValidation.cs",
+                      "sourceSHA256":  "B6999AF382F5556A3573AD1A7D4848312F808B1256DC4879A7F037176EF61D95",
+                      "testedSHA256":  "B6999AF382F5556A3573AD1A7D4848312F808B1256DC4879A7F037176EF61D95"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceControlsBrushRollerValidation.cs.meta",
+                      "sourceSHA256":  "677BF58FFC1B2DF24BFE71545DE87EA7D12D553F5304A1D804CACE57E81560EF",
+                      "testedSHA256":  "677BF58FFC1B2DF24BFE71545DE87EA7D12D553F5304A1D804CACE57E81560EF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceControlsSurvey.cs",
+                      "sourceSHA256":  "32B339491E7740C51712645D33F3BCA89FFBFDC37023956509ED0A2B8DB67435",
+                      "testedSHA256":  "32B339491E7740C51712645D33F3BCA89FFBFDC37023956509ED0A2B8DB67435"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceControlsSurvey.cs.meta",
+                      "sourceSHA256":  "64235E171C676A04919ADF6D1E7769B90AAF2A55DAA8127FDBA99A92CCEF9A48",
+                      "testedSHA256":  "64235E171C676A04919ADF6D1E7769B90AAF2A55DAA8127FDBA99A92CCEF9A48"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceGpsVisibilityValidation.cs",
+                      "sourceSHA256":  "C0DE767754E5A90CCEBB911CADDE8A1B838AF75898B47C4226B50C6BF1FDC53F",
+                      "testedSHA256":  "C0DE767754E5A90CCEBB911CADDE8A1B838AF75898B47C4226B50C6BF1FDC53F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceGpsVisibilityValidation.cs.meta",
+                      "sourceSHA256":  "48B57F1A4F830F68E6EACB57E2237C76955A4D56490E0F45327112E208707022",
+                      "testedSHA256":  "48B57F1A4F830F68E6EACB57E2237C76955A4D56490E0F45327112E208707022"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceHUDVideoSpeedValidation.cs",
+                      "sourceSHA256":  "B5D145BD3918FD292EF4F7D1BF3B094B7B4107B3374538CEF1D85D619EB7F90B",
+                      "testedSHA256":  "B5D145BD3918FD292EF4F7D1BF3B094B7B4107B3374538CEF1D85D619EB7F90B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceHUDVideoSpeedValidation.cs.meta",
+                      "sourceSHA256":  "948EB53E6E62662B477242F297EFACF8FEFB32A257FE20E3FE5636500DE2494C",
+                      "testedSHA256":  "948EB53E6E62662B477242F297EFACF8FEFB32A257FE20E3FE5636500DE2494C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceLayoutValidation.cs",
+                      "sourceSHA256":  "FF028BCA483FBFB486260D8CD1ED6F405DE31A89483C2C8ADB4D9D06C0610442",
+                      "testedSHA256":  "FF028BCA483FBFB486260D8CD1ED6F405DE31A89483C2C8ADB4D9D06C0610442"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceLayoutValidation.cs.meta",
+                      "sourceSHA256":  "36B9ECE756A89AEA63209F5FA75B26E202B92B0D4B319C691A097F09E9AD8004",
+                      "testedSHA256":  "36B9ECE756A89AEA63209F5FA75B26E202B92B0D4B319C691A097F09E9AD8004"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineBaker.cs",
+                      "sourceSHA256":  "B31E641117C8829B9140FA910628A7FE41F8119F654A112B6554B6E339BAAA89",
+                      "testedSHA256":  "B31E641117C8829B9140FA910628A7FE41F8119F654A112B6554B6E339BAAA89"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineBaker.cs.meta",
+                      "sourceSHA256":  "FCE45689A9AD12A6F84564E17EB40B1CC2A1A0CA78F91097A5D4D3F3F38D8D7E",
+                      "testedSHA256":  "FCE45689A9AD12A6F84564E17EB40B1CC2A1A0CA78F91097A5D4D3F3F38D8D7E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineGeometryEditor.cs",
+                      "sourceSHA256":  "C0849B7822598D6690466EE1383AB67CACEE9792EC1584FD856816C00D611C84",
+                      "testedSHA256":  "C0849B7822598D6690466EE1383AB67CACEE9792EC1584FD856816C00D611C84"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineGeometryEditor.cs.meta",
+                      "sourceSHA256":  "C671EF4DA39C41C175C82D10320409AA86C240EA1FBC82C33E8586D1E0DBEC09",
+                      "testedSHA256":  "C671EF4DA39C41C175C82D10320409AA86C240EA1FBC82C33E8586D1E0DBEC09"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineProportionPass.cs",
+                      "sourceSHA256":  "C6519FD72755940AA40C513033A3F940A945E87B2D7027ADA1548881F2351708",
+                      "testedSHA256":  "C6519FD72755940AA40C513033A3F940A945E87B2D7027ADA1548881F2351708"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineProportionPass.cs.meta",
+                      "sourceSHA256":  "8AAE99C47290D6D52A2CB5C9C52DB71B018DFD58F33B1323374E87A6D2DA6AA2",
+                      "testedSHA256":  "8AAE99C47290D6D52A2CB5C9C52DB71B018DFD58F33B1323374E87A6D2DA6AA2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineProportionsValidation.cs",
+                      "sourceSHA256":  "BB85615D5451C590E0C4C4F39B05939F140E8A1AFB8F672FDE5D3FE359A546EB",
+                      "testedSHA256":  "BB85615D5451C590E0C4C4F39B05939F140E8A1AFB8F672FDE5D3FE359A546EB"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineProportionsValidation.cs.meta",
+                      "sourceSHA256":  "2C4C05CC31C23D05E373CB9A595A546242ED732144F90EF201B9D5C7842A9082",
+                      "testedSHA256":  "2C4C05CC31C23D05E373CB9A595A546242ED732144F90EF201B9D5C7842A9082"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineRigEditor.cs",
+                      "sourceSHA256":  "BD52C749512DE9046259CDAF72278700D37E50119BAC409CA131BF40642FA44D",
+                      "testedSHA256":  "BD52C749512DE9046259CDAF72278700D37E50119BAC409CA131BF40642FA44D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMachineRigEditor.cs.meta",
+                      "sourceSHA256":  "E0BDB280A998313E0BA428A3C7B75E32B1E9B4D5537EA81AA2260A663C7EA99A",
+                      "testedSHA256":  "E0BDB280A998313E0BA428A3C7B75E32B1E9B4D5537EA81AA2260A663C7EA99A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMechanicalAlignment.cs",
+                      "sourceSHA256":  "47E7AF87560C34300D96CA164DB3C777C735CFA8E336FE4A9724D15CBCA8997D",
+                      "testedSHA256":  "47E7AF87560C34300D96CA164DB3C777C735CFA8E336FE4A9724D15CBCA8997D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMechanicalAlignment.cs.meta",
+                      "sourceSHA256":  "A68E19D89100A73804756CBD5EAEBFADBA60566653FF832BC03F4B4FB0D62764",
+                      "testedSHA256":  "A68E19D89100A73804756CBD5EAEBFADBA60566653FF832BC03F4B4FB0D62764"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMechanicalReconciliationValidation.cs",
+                      "sourceSHA256":  "0A8C2AB7C0B2B7953C470962FC6F1A79760BFE0C1E461A2B4A6EA224E01A551E",
+                      "testedSHA256":  "0A8C2AB7C0B2B7953C470962FC6F1A79760BFE0C1E461A2B4A6EA224E01A551E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMechanicalReconciliationValidation.cs.meta",
+                      "sourceSHA256":  "47D76F5BAB11CD0FF2742BDDDBBE1834F305DDA516A9BBF65A763B032F9DC94C",
+                      "testedSHA256":  "47D76F5BAB11CD0FF2742BDDDBBE1834F305DDA516A9BBF65A763B032F9DC94C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMechanicalSurvey.cs",
+                      "sourceSHA256":  "761B577C876E93024162B8EB0743C62CE27FABB8788E22EA91331741DD7F9428",
+                      "testedSHA256":  "761B577C876E93024162B8EB0743C62CE27FABB8788E22EA91331741DD7F9428"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceMechanicalSurvey.cs.meta",
+                      "sourceSHA256":  "3BE5582A7C46F00B86B3666DD023F083C927A50432514549D4D009E8B3BBB1D6",
+                      "testedSHA256":  "3BE5582A7C46F00B86B3666DD023F083C927A50432514549D4D009E8B3BBB1D6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperationValidation.cs",
+                      "sourceSHA256":  "6B7B38B42E30F8AE3424D394C4EFF7E2DD9706F8AB10C8A8077841C02AC0A7C3",
+                      "testedSHA256":  "6B7B38B42E30F8AE3424D394C4EFF7E2DD9706F8AB10C8A8077841C02AC0A7C3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperationValidation.cs.meta",
+                      "sourceSHA256":  "597B2450929280D7EC3EBF3B4958D3476332D5BF39580B9F53829CB9AC3B659A",
+                      "testedSHA256":  "597B2450929280D7EC3EBF3B4958D3476332D5BF39580B9F53829CB9AC3B659A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperatorIntegrationValidation.cs",
+                      "sourceSHA256":  "68C030D29105C86CC3318F531B32DCDF8E12E8C18A28D225D975B5EE4097D7B7",
+                      "testedSHA256":  "68C030D29105C86CC3318F531B32DCDF8E12E8C18A28D225D975B5EE4097D7B7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperatorIntegrationValidation.cs.meta",
+                      "sourceSHA256":  "D261CEDBB44B10BCE6582D066F7A737FB592A83AB3DC0814E61DC7FD92DE9478",
+                      "testedSHA256":  "D261CEDBB44B10BCE6582D066F7A737FB592A83AB3DC0814E61DC7FD92DE9478"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperatorTuningEditor.cs",
+                      "sourceSHA256":  "41F4EE0180795E3D6EFBCB62555AE78526CA10FCEEA84E9EB2A8ACD7A4F094FE",
+                      "testedSHA256":  "41F4EE0180795E3D6EFBCB62555AE78526CA10FCEEA84E9EB2A8ACD7A4F094FE"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperatorTuningEditor.cs.meta",
+                      "sourceSHA256":  "ED4DBCE9F3C99220A90324BA8F759B1BF246E0EE210F00604CB7560FB84AEDD7",
+                      "testedSHA256":  "ED4DBCE9F3C99220A90324BA8F759B1BF246E0EE210F00604CB7560FB84AEDD7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperatorTuningValidation.cs",
+                      "sourceSHA256":  "7C0BC8A890D5757438162742DB37270050D87CD53215A01A7B647FFD5AC3D5EC",
+                      "testedSHA256":  "7C0BC8A890D5757438162742DB37270050D87CD53215A01A7B647FFD5AC3D5EC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceOperatorTuningValidation.cs.meta",
+                      "sourceSHA256":  "2DCC0D08580DAAD28DC6B76614524D76817946A5FB6F198B02E6207744FC7BE2",
+                      "testedSHA256":  "2DCC0D08580DAAD28DC6B76614524D76817946A5FB6F198B02E6207744FC7BE2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IcePerformanceBuild.cs",
+                      "sourceSHA256":  "713A7906AA9A889CD297C90EC2DC377C4BDEF8FF644C36A137BF100AB8C0F192",
+                      "testedSHA256":  "713A7906AA9A889CD297C90EC2DC377C4BDEF8FF644C36A137BF100AB8C0F192"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IcePerformanceBuild.cs.meta",
+                      "sourceSHA256":  "00CCFAFF6D28D8A4359A556639A15F4CC4F4F5E8E674B1C34EB8A34722DDB42B",
+                      "testedSHA256":  "00CCFAFF6D28D8A4359A556639A15F4CC4F4F5E8E674B1C34EB8A34722DDB42B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IcePhysicalValidation.cs",
+                      "sourceSHA256":  "D2E760C5101AF529B957FA2F3B85B4E342371E644309D45D835EB23D218D88F8",
+                      "testedSHA256":  "D2E760C5101AF529B957FA2F3B85B4E342371E644309D45D835EB23D218D88F8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IcePhysicalValidation.cs.meta",
+                      "sourceSHA256":  "C244DECF0363009EAB62848B595A5BC67974B9DAEB67C9E61C1486F4BA8B1FA1",
+                      "testedSHA256":  "C244DECF0363009EAB62848B595A5BC67974B9DAEB67C9E61C1486F4BA8B1FA1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRecoveryWindow.cs",
+                      "sourceSHA256":  "67FEDA69C2BF543B7B9C1A2554DA4ADDE1BF02102961AC41B16D00B5DE140D9C",
+                      "testedSHA256":  "67FEDA69C2BF543B7B9C1A2554DA4ADDE1BF02102961AC41B16D00B5DE140D9C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRecoveryWindow.cs.meta",
+                      "sourceSHA256":  "91F7BD0DC06F50DBC742469A77865CFF5E3C022651D2AA8BBC3622BE8CAD12DA",
+                      "testedSHA256":  "91F7BD0DC06F50DBC742469A77865CFF5E3C022651D2AA8BBC3622BE8CAD12DA"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceResurfacer.Editor.asmdef",
+                      "sourceSHA256":  "4B7784CDDAAF672C35F258B18E948DF52203F0CAB0DC37AAAE22718B615A5905",
+                      "testedSHA256":  "4B7784CDDAAF672C35F258B18E948DF52203F0CAB0DC37AAAE22718B615A5905"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceResurfacer.Editor.asmdef.meta",
+                      "sourceSHA256":  "D6F495F05B541ED0B62C5818EB867DA88A111A683663AA567C5F9AC50DF2E601",
+                      "testedSHA256":  "D6F495F05B541ED0B62C5818EB867DA88A111A683663AA567C5F9AC50DF2E601"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceResurfacerEditor.cs",
+                      "sourceSHA256":  "83EFC797122CF8AD253EB4C948D8FDA57E508A8699647D2C28EE9692DFB99EF7",
+                      "testedSHA256":  "83EFC797122CF8AD253EB4C948D8FDA57E508A8699647D2C28EE9692DFB99EF7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceResurfacerEditor.cs.meta",
+                      "sourceSHA256":  "2F00D406AF6105BB736B5813CEC463752DCEB0BF2B1FB924F9105AA4D79727D7",
+                      "testedSHA256":  "2F00D406AF6105BB736B5813CEC463752DCEB0BF2B1FB924F9105AA4D79727D7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRinkFillPortValidation.cs",
+                      "sourceSHA256":  "623EE3C74C9F670B838D202B9A923116DA2C1F2CF9E1BFAEEB3874F074F631E5",
+                      "testedSHA256":  "623EE3C74C9F670B838D202B9A923116DA2C1F2CF9E1BFAEEB3874F074F631E5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRinkFillPortValidation.cs.meta",
+                      "sourceSHA256":  "9694C963BFCF0AC4104365BE8D9F114F6BC213BC50808563DABD0FE94B9E5BBE",
+                      "testedSHA256":  "9694C963BFCF0AC4104365BE8D9F114F6BC213BC50808563DABD0FE94B9E5BBE"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRinkRefinement.cs",
+                      "sourceSHA256":  "65A94021ED09627F46998B9EC8F9B5D47187677BFE03E35E9B78E844D29B5E0F",
+                      "testedSHA256":  "65A94021ED09627F46998B9EC8F9B5D47187677BFE03E35E9B78E844D29B5E0F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRinkRefinement.cs.meta",
+                      "sourceSHA256":  "D5A8F8FF48D1574990858A8A8E52C2BF7578A666951EDE69F5FE5D9EE4DF6F49",
+                      "testedSHA256":  "D5A8F8FF48D1574990858A8A8E52C2BF7578A666951EDE69F5FE5D9EE4DF6F49"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRinkSurvey.cs",
+                      "sourceSHA256":  "8519DFC73CCE2C1AD1AA210736ACBF9F814E96487A1CE00FC608510B0B6C66FC",
+                      "testedSHA256":  "8519DFC73CCE2C1AD1AA210736ACBF9F814E96487A1CE00FC608510B0B6C66FC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRinkSurvey.cs.meta",
+                      "sourceSHA256":  "3743E9E09F3ED032FEF3C91FEA7D106DC8BD0BF8EB0A40E225F58F9B2299A6D9",
+                      "testedSHA256":  "3743E9E09F3ED032FEF3C91FEA7D106DC8BD0BF8EB0A40E225F58F9B2299A6D9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteCalibrationValidation.cs",
+                      "sourceSHA256":  "875E460B0DE2CBCA1222D24253A4F8B1017489D93912FFC6B1296081F4505374",
+                      "testedSHA256":  "875E460B0DE2CBCA1222D24253A4F8B1017489D93912FFC6B1296081F4505374"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteCalibrationValidation.cs.meta",
+                      "sourceSHA256":  "4DFE9C63CC3202A81D217B3DD31CB97D738AEE499D8218A46A703627B34C6099",
+                      "testedSHA256":  "4DFE9C63CC3202A81D217B3DD31CB97D738AEE499D8218A46A703627B34C6099"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteRecordingsWindow.cs",
+                      "sourceSHA256":  "C4B943EB762E52221CA1C1D496DACFD912033627A769995270BD6BC843B05FD2",
+                      "testedSHA256":  "C4B943EB762E52221CA1C1D496DACFD912033627A769995270BD6BC843B05FD2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteRecordingsWindow.cs.meta",
+                      "sourceSHA256":  "B813BFBD5576BA7A82511482C295CB08EC7EB7663BFCF3DEBBCB3AE0BC754DB8",
+                      "testedSHA256":  "B813BFBD5576BA7A82511482C295CB08EC7EB7663BFCF3DEBBCB3AE0BC754DB8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteRecordingValidation.cs",
+                      "sourceSHA256":  "C0CABDA202582BB2D1DE48521FE5047D737E910A6D8785FB09AC581F6522F63B",
+                      "testedSHA256":  "C0CABDA202582BB2D1DE48521FE5047D737E910A6D8785FB09AC581F6522F63B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteRecordingValidation.cs.meta",
+                      "sourceSHA256":  "4D04C536DF2C21EE68325284BFEFA6A73CD5AD25BB1B62FD85786CB14688AB10",
+                      "testedSHA256":  "4D04C536DF2C21EE68325284BFEFA6A73CD5AD25BB1B62FD85786CB14688AB10"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteRepairValidation.cs",
+                      "sourceSHA256":  "D4971525235A77C35AA82EF7382C8CD8A3D6C8CC0F60EC7FCED7A73BB21D52C2",
+                      "testedSHA256":  "D4971525235A77C35AA82EF7382C8CD8A3D6C8CC0F60EC7FCED7A73BB21D52C2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteRepairValidation.cs.meta",
+                      "sourceSHA256":  "31EC287B62FC6548962D9E78945F9EDBD8C12B389ED2DA0001E2996701F07C28",
+                      "testedSHA256":  "31EC287B62FC6548962D9E78945F9EDBD8C12B389ED2DA0001E2996701F07C28"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteUXValidation.cs",
+                      "sourceSHA256":  "83912A5C35A054F1BDFB46A4D369412362BA8521D5A8F98606C21A1FC00BA92B",
+                      "testedSHA256":  "83912A5C35A054F1BDFB46A4D369412362BA8521D5A8F98606C21A1FC00BA92B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceRouteUXValidation.cs.meta",
+                      "sourceSHA256":  "A19526EFFB5C85AF4CBA40AA55FCBF976E374137A31EDA4BA4836432849FB5E6",
+                      "testedSHA256":  "A19526EFFB5C85AF4CBA40AA55FCBF976E374137A31EDA4BA4836432849FB5E6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceServiceGeometryValidation.cs",
+                      "sourceSHA256":  "8FD2E14EC7690A69DFED0D92A7468DFBE8CD7CCA6B06A771754C2A8E3B36CF19",
+                      "testedSHA256":  "8FD2E14EC7690A69DFED0D92A7468DFBE8CD7CCA6B06A771754C2A8E3B36CF19"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceServiceGeometryValidation.cs.meta",
+                      "sourceSHA256":  "6A06CAF96DC5FBDFE1F505D9E87B783685D1FCD4CA446BC2C3B335CFA276BBBA",
+                      "testedSHA256":  "6A06CAF96DC5FBDFE1F505D9E87B783685D1FCD4CA446BC2C3B335CFA276BBBA"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceServiceValidation.cs",
+                      "sourceSHA256":  "BC9CF3B0E719C9C9A3D85BC90E57C3FBE61D125DBC1349552D7CB9D490E475C0",
+                      "testedSHA256":  "BC9CF3B0E719C9C9A3D85BC90E57C3FBE61D125DBC1349552D7CB9D490E475C0"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceServiceValidation.cs.meta",
+                      "sourceSHA256":  "E1A5BB6C64FA79F28A332C2C70362F200D2CEE8355D944B108C5B502B29ADEAA",
+                      "testedSHA256":  "E1A5BB6C64FA79F28A332C2C70362F200D2CEE8355D944B108C5B502B29ADEAA"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceSnowMeshValidation.cs",
+                      "sourceSHA256":  "4CFAF21012BED81A7975CB7311560C723FB23915C9EA6C44FF63591FB775DF11",
+                      "testedSHA256":  "4CFAF21012BED81A7975CB7311560C723FB23915C9EA6C44FF63591FB775DF11"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceSnowMeshValidation.cs.meta",
+                      "sourceSHA256":  "FB1683B6E81977511BBC3A1AD882A8B5C4A17BE78BE14ABD6055BB6C03C6C68B",
+                      "testedSHA256":  "FB1683B6E81977511BBC3A1AD882A8B5C4A17BE78BE14ABD6055BB6C03C6C68B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceSnowRealismValidation.cs",
+                      "sourceSHA256":  "AADC50D49B53C5869828F15577E0D3B054DB6295F4186105254638447A1EEB85",
+                      "testedSHA256":  "AADC50D49B53C5869828F15577E0D3B054DB6295F4186105254638447A1EEB85"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceSnowRealismValidation.cs.meta",
+                      "sourceSHA256":  "498CD23B348D09AD93848BEC37048AA659E5C784346C8AEEBC79DCD481D96747",
+                      "testedSHA256":  "498CD23B348D09AD93848BEC37048AA659E5C784346C8AEEBC79DCD481D96747"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceSpatialAudioValidation.cs",
+                      "sourceSHA256":  "FEBCA61EE899E99A61D7E15F0B8ED3183B43BC8D032655A60E720874878AF903",
+                      "testedSHA256":  "FEBCA61EE899E99A61D7E15F0B8ED3183B43BC8D032655A60E720874878AF903"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceSpatialAudioValidation.cs.meta",
+                      "sourceSHA256":  "B620AD182C94BCA4A996E428E043D8F7412797B7B877BAE1ACC9E63DC2663671",
+                      "testedSHA256":  "B620AD182C94BCA4A996E428E043D8F7412797B7B877BAE1ACC9E63DC2663671"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceTrainingGuideValidation.cs",
+                      "sourceSHA256":  "48ADFBDB1B6A10B2715145CCCFACD9A5068616A77DD6B7F8CF6BB4A32DB6C731",
+                      "testedSHA256":  "48ADFBDB1B6A10B2715145CCCFACD9A5068616A77DD6B7F8CF6BB4A32DB6C731"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceTrainingGuideValidation.cs.meta",
+                      "sourceSHA256":  "C3A392BCFBEEEDF49D19F795B91ECF282B22B909BEC06D316B752B92C9AC5E42",
+                      "testedSHA256":  "C3A392BCFBEEEDF49D19F795B91ECF282B22B909BEC06D316B752B92C9AC5E42"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceWaterFillPortEditor.cs",
+                      "sourceSHA256":  "C305F94ED48659434B76AE8DF682D35C6C384B2B6D43081F7C2463ECDBD9845A",
+                      "testedSHA256":  "C305F94ED48659434B76AE8DF682D35C6C384B2B6D43081F7C2463ECDBD9845A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\IceWaterFillPortEditor.cs.meta",
+                      "sourceSHA256":  "07583C561DC1D7995F56086F4CEC1A3B55A72CC0F2FB2C8A964D323294490F94",
+                      "testedSHA256":  "07583C561DC1D7995F56086F4CEC1A3B55A72CC0F2FB2C8A964D323294490F94"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\OperatorMaterialValidation.cs",
+                      "sourceSHA256":  "CD51702F8A8EFDF520F8346F3D69D02B08739B18E063E59E896C1B0CF3586DCD",
+                      "testedSHA256":  "CD51702F8A8EFDF520F8346F3D69D02B08739B18E063E59E896C1B0CF3586DCD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\OperatorMaterialValidation.cs.meta",
+                      "sourceSHA256":  "6B8DB88CC6753A6F32D96312F7CCCADDD60D37F05AE688BC3E86CEF486A7B7E3",
+                      "testedSHA256":  "6B8DB88CC6753A6F32D96312F7CCCADDD60D37F05AE688BC3E86CEF486A7B7E3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\OperatorSnowRealismValidation.cs",
+                      "sourceSHA256":  "2CA612B73CFA0091F87EDD0A08A9866E3BC2F87CB85962166A1E832C7FBB1C9A",
+                      "testedSHA256":  "2CA612B73CFA0091F87EDD0A08A9866E3BC2F87CB85962166A1E832C7FBB1C9A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\OperatorSnowRealismValidation.cs.meta",
+                      "sourceSHA256":  "E3E13E1CC030864EE69F94F4A9B06D7A2C832BB2DF4D7E4BD97C930D684FAC8F",
+                      "testedSHA256":  "E3E13E1CC030864EE69F94F4A9B06D7A2C832BB2DF4D7E4BD97C930D684FAC8F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\OperatorWaterRealismValidation.cs",
+                      "sourceSHA256":  "4B69B6FC95E3EC4FB54766CDAC0DF76EBD77F909AB114CE4A13CA6CE82A2308C",
+                      "testedSHA256":  "4B69B6FC95E3EC4FB54766CDAC0DF76EBD77F909AB114CE4A13CA6CE82A2308C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\OperatorWaterRealismValidation.cs.meta",
+                      "sourceSHA256":  "9D0D8683F9CD1C4CD449A1314959C4F0C7ACF4D402E445A4528C698BC21C4D8A",
+                      "testedSHA256":  "9D0D8683F9CD1C4CD449A1314959C4F0C7ACF4D402E445A4528C698BC21C4D8A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\RecordedRouteFixture.cs",
+                      "sourceSHA256":  "FF9B9C81BDEED53E1A955EA5334E671AE398493F1EDBD2461E90A494454AE4F7",
+                      "testedSHA256":  "FF9B9C81BDEED53E1A955EA5334E671AE398493F1EDBD2461E90A494454AE4F7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\RecordedRouteFixture.cs.meta",
+                      "sourceSHA256":  "5BE787529030D358BE9DAAC670AABB5110AF71F70CF588BC8DDF08D3532A5604",
+                      "testedSHA256":  "5BE787529030D358BE9DAAC670AABB5110AF71F70CF588BC8DDF08D3532A5604"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\RouteManagerEditorBridge.cs",
+                      "sourceSHA256":  "1388E19E292B40628A2FAB26D49229B7B36406AE071F89045C18DB96BA73FA11",
+                      "testedSHA256":  "1388E19E292B40628A2FAB26D49229B7B36406AE071F89045C18DB96BA73FA11"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\RouteManagerEditorBridge.cs.meta",
+                      "sourceSHA256":  "73617FE889B97C7474EC0E822B8A0145C788831BDAB7F4983F5E39E0FCD2EAF9",
+                      "testedSHA256":  "73617FE889B97C7474EC0E822B8A0145C788831BDAB7F4983F5E39E0FCD2EAF9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\TrainingRouteEditorWindow.cs",
+                      "sourceSHA256":  "05EAF07914D46D7A8F47BF3F2B7C441CA087DF5817C59AE872B49973D48DC5C2",
+                      "testedSHA256":  "05EAF07914D46D7A8F47BF3F2B7C441CA087DF5817C59AE872B49973D48DC5C2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Editor\\TrainingRouteEditorWindow.cs.meta",
+                      "sourceSHA256":  "1AF6FDAC1EECE7D4491804A88BB6FC49CBA36C220915FB580043C19CC02E8B11",
+                      "testedSHA256":  "1AF6FDAC1EECE7D4491804A88BB6FC49CBA36C220915FB580043C19CC02E8B11"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\IceResurfacer.Runtime.asmdef",
+                      "sourceSHA256":  "F4AB5C1B9934BA6DC4AFE898A83CDA4D8C2B5206F7F8B7553E7355DE0D97D189",
+                      "testedSHA256":  "F4AB5C1B9934BA6DC4AFE898A83CDA4D8C2B5206F7F8B7553E7355DE0D97D189"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\IceResurfacer.Runtime.asmdef.meta",
+                      "sourceSHA256":  "77F1EEB89AFED761F8B984F7AAB1CC568E2BC97C71DEBB85ABCEFE5A66C445D6",
+                      "testedSHA256":  "77F1EEB89AFED761F8B984F7AAB1CC568E2BC97C71DEBB85ABCEFE5A66C445D6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\GpsGuidanceGeometry.cs",
+                      "sourceSHA256":  "1E0FF7C7E7660351103BA076BB0C12F4D3979C164BE597B520351ABB5F486339",
+                      "testedSHA256":  "1E0FF7C7E7660351103BA076BB0C12F4D3979C164BE597B520351ABB5F486339"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\GpsGuidanceGeometry.cs.meta",
+                      "sourceSHA256":  "A174B24A4E83407E0B3C9DD372DF23837B4B81A7A7E2CE5AEEBE18D7EB9C8E4E",
+                      "testedSHA256":  "A174B24A4E83407E0B3C9DD372DF23837B4B81A7A7E2CE5AEEBE18D7EB9C8E4E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\GpsMachineAlignment.cs",
+                      "sourceSHA256":  "CDB07DCE4CA76AB11F792FAD24A4EFD2C12DAEC1F3A250659C2567510D4B360F",
+                      "testedSHA256":  "CDB07DCE4CA76AB11F792FAD24A4EFD2C12DAEC1F3A250659C2567510D4B360F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\GpsMachineAlignment.cs.meta",
+                      "sourceSHA256":  "467AAB147DEC7B927A0BC66044CE5C70A316D72CB29CA7123139B0A06D14E469",
+                      "testedSHA256":  "467AAB147DEC7B927A0BC66044CE5C70A316D72CB29CA7123139B0A06D14E469"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceArenaDrift.cs",
+                      "sourceSHA256":  "E6FD7DCF984D8E4D5263E4D7DAA56D5CE1C419FEB3F49A87486D29B0B54F08F4",
+                      "testedSHA256":  "E6FD7DCF984D8E4D5263E4D7DAA56D5CE1C419FEB3F49A87486D29B0B54F08F4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceArenaDrift.cs.meta",
+                      "sourceSHA256":  "8169F543287C9234337F949A67027F97AEBE726BF9A7FE0663EEC071351E7BF9",
+                      "testedSHA256":  "8169F543287C9234337F949A67027F97AEBE726BF9A7FE0663EEC071351E7BF9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceArenaPart.cs",
+                      "sourceSHA256":  "F196CB82FFABC3BE88B9F18D91887F9D562B34FDFF74FA473A30E9AB48A28407",
+                      "testedSHA256":  "F196CB82FFABC3BE88B9F18D91887F9D562B34FDFF74FA473A30E9AB48A28407"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceArenaPart.cs.meta",
+                      "sourceSHA256":  "38B6F747C6BDEF577A5C58BEAC084F4D7ADCE0A685878F515C2D68CB9CE62D6E",
+                      "testedSHA256":  "38B6F747C6BDEF577A5C58BEAC084F4D7ADCE0A685878F515C2D68CB9CE62D6E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceArenaRig.cs",
+                      "sourceSHA256":  "6E8FDE50F472E87052DBB70E2AB5618D0881D28FEDCE749D1262CC541C5665B2",
+                      "testedSHA256":  "6E8FDE50F472E87052DBB70E2AB5618D0881D28FEDCE749D1262CC541C5665B2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceArenaRig.cs.meta",
+                      "sourceSHA256":  "E703068E52D76DB3695524BFA356C7F23DD9A922D2CB4ECC63A27394AB3C2C6C",
+                      "testedSHA256":  "E703068E52D76DB3695524BFA356C7F23DD9A922D2CB4ECC63A27394AB3C2C6C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceAudioSpatialization.cs",
+                      "sourceSHA256":  "808A60A61BDAD2F515D4B6D0A570EF6A84A6221EB3E284A89EE0F4B44C33280D",
+                      "testedSHA256":  "808A60A61BDAD2F515D4B6D0A570EF6A84A6221EB3E284A89EE0F4B44C33280D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceAudioSpatialization.cs.meta",
+                      "sourceSHA256":  "D57E44869942E412E107E84C69278BEFB1FDF4D3A6E6845E042B0834EC580379",
+                      "testedSHA256":  "D57E44869942E412E107E84C69278BEFB1FDF4D3A6E6845E042B0834EC580379"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceBoardBrushRig.cs",
+                      "sourceSHA256":  "E9E7377E6AE72DF6737FA99DCBCF2770842F00E85676AEF565235A82CB40C826",
+                      "testedSHA256":  "E9E7377E6AE72DF6737FA99DCBCF2770842F00E85676AEF565235A82CB40C826"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceBoardBrushRig.cs.meta",
+                      "sourceSHA256":  "AA883C946565C5116634AF5AC4ED3A02BF799730336748678391DD080F966CE9",
+                      "testedSHA256":  "AA883C946565C5116634AF5AC4ED3A02BF799730336748678391DD080F966CE9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceChaseCamera.cs",
+                      "sourceSHA256":  "BF9BAECA2FD40B1E450B5AEA6C011627383C225953A8786CAF080ABFD554D303",
+                      "testedSHA256":  "BF9BAECA2FD40B1E450B5AEA6C011627383C225953A8786CAF080ABFD554D303"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceChaseCamera.cs.meta",
+                      "sourceSHA256":  "DC70B055073450A235107BC6E7C061917AAA3B734372BA9E741786E9F24AC64A",
+                      "testedSHA256":  "DC70B055073450A235107BC6E7C061917AAA3B734372BA9E741786E9F24AC64A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceCollisionOverlay.cs",
+                      "sourceSHA256":  "ED5E39CD630AB1C004B81A7B293A6571917E59E8FA17BE229480B3F4EFFC1B28",
+                      "testedSHA256":  "ED5E39CD630AB1C004B81A7B293A6571917E59E8FA17BE229480B3F4EFFC1B28"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceCollisionOverlay.cs.meta",
+                      "sourceSHA256":  "A96D2EC46B09627CF6F57AC6C05D448F978C53A9FDA6447093EF84602FD08429",
+                      "testedSHA256":  "A96D2EC46B09627CF6F57AC6C05D448F978C53A9FDA6447093EF84602FD08429"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceConditionerLinkage.cs",
+                      "sourceSHA256":  "88D71093B24221B2CD80A68ADD1295061AE46601A47B838B0ABA10C6F3F7B1F0",
+                      "testedSHA256":  "88D71093B24221B2CD80A68ADD1295061AE46601A47B838B0ABA10C6F3F7B1F0"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceConditionerLinkage.cs.meta",
+                      "sourceSHA256":  "22CF94B967FEE5F609C55FFD401C56DB86AC5B17F6BF0DF1CB9AA3EC4B91165A",
+                      "testedSHA256":  "22CF94B967FEE5F609C55FFD401C56DB86AC5B17F6BF0DF1CB9AA3EC4B91165A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceConditionerSpan.cs",
+                      "sourceSHA256":  "6E9DEED3D466AB4310B222D4CA7E9B10A9257BE501ED059F8BF472EFC92DEF24",
+                      "testedSHA256":  "6E9DEED3D466AB4310B222D4CA7E9B10A9257BE501ED059F8BF472EFC92DEF24"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceConditionerSpan.cs.meta",
+                      "sourceSHA256":  "EBDB2120193005D92F712D7CF2AC4655748A95C64BBBF33C81ED310DA83A2934",
+                      "testedSHA256":  "EBDB2120193005D92F712D7CF2AC4655748A95C64BBBF33C81ED310DA83A2934"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceDashboard.cs",
+                      "sourceSHA256":  "146BD0E56A35D22AABCF64A63B2DA08A86DB868D5E7571C209DB61E6555D14F2",
+                      "testedSHA256":  "146BD0E56A35D22AABCF64A63B2DA08A86DB868D5E7571C209DB61E6555D14F2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceDashboard.cs.meta",
+                      "sourceSHA256":  "99AA732F765F2A459731981E35C1E8EAD36D9A7829AFF803D6E6116D3D324A99",
+                      "testedSHA256":  "99AA732F765F2A459731981E35C1E8EAD36D9A7829AFF803D6E6116D3D324A99"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceDepositedSnowView.cs",
+                      "sourceSHA256":  "0D85071EDBB77D3E1657E49FCB979A4F38DB7F85B9ABF41CE297F0559955847A",
+                      "testedSHA256":  "0D85071EDBB77D3E1657E49FCB979A4F38DB7F85B9ABF41CE297F0559955847A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceDepositedSnowView.cs.meta",
+                      "sourceSHA256":  "BFEA4069910D46585A822A0721B9315963FD3A9902EAD6E7EFAE121C6508BF99",
+                      "testedSHA256":  "BFEA4069910D46585A822A0721B9315963FD3A9902EAD6E7EFAE121C6508BF99"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceKeepUnbatched.cs",
+                      "sourceSHA256":  "8A59FFD4C70C20FE22B225FC2FDF1BDE44514D892349401418D5358B116CC3AF",
+                      "testedSHA256":  "8A59FFD4C70C20FE22B225FC2FDF1BDE44514D892349401418D5358B116CC3AF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceKeepUnbatched.cs.meta",
+                      "sourceSHA256":  "DFAEE4249A5EA1EED1037418441385A9A846FBF8BE9E3E3DEC1FC39A978B4E7B",
+                      "testedSHA256":  "DFAEE4249A5EA1EED1037418441385A9A846FBF8BE9E3E3DEC1FC39A978B4E7B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceLayoutPlayerProbe.Calibration.cs",
+                      "sourceSHA256":  "D77898313B0DEE685A9FE3489AB64AE68E52023AE7A692B644A226EF8671D96E",
+                      "testedSHA256":  "D77898313B0DEE685A9FE3489AB64AE68E52023AE7A692B644A226EF8671D96E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceLayoutPlayerProbe.Calibration.cs.meta",
+                      "sourceSHA256":  "868BB705D9D2D397A027CD35D9F4364AEBCEDDCD2C35526A8730F1E9A871D623",
+                      "testedSHA256":  "868BB705D9D2D397A027CD35D9F4364AEBCEDDCD2C35526A8730F1E9A871D623"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceLayoutPlayerProbe.cs",
+                      "sourceSHA256":  "E37C4B8021DECBE39ECBCE7065F5877A9FE8FB7DED394690D55B63DFE30654FE",
+                      "testedSHA256":  "E37C4B8021DECBE39ECBCE7065F5877A9FE8FB7DED394690D55B63DFE30654FE"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceLayoutPlayerProbe.cs.meta",
+                      "sourceSHA256":  "692756B5466078EB3083367F4213124E3692888815E71CE6A411CA9104D479D9",
+                      "testedSHA256":  "692756B5466078EB3083367F4213124E3692888815E71CE6A411CA9104D479D9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceLayoutPlayerProbe.Hydraulics.cs",
+                      "sourceSHA256":  "978B017575229045096D47CA7B6722592A70FD1B2EC40BF74DDA0B5A4E78313D",
+                      "testedSHA256":  "978B017575229045096D47CA7B6722592A70FD1B2EC40BF74DDA0B5A4E78313D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceLayoutPlayerProbe.Hydraulics.cs.meta",
+                      "sourceSHA256":  "C6960A940006E7C878D09877F33A5964645D79C84A1DF973AF0B4FA61AA18049",
+                      "testedSHA256":  "C6960A940006E7C878D09877F33A5964645D79C84A1DF973AF0B4FA61AA18049"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceMachineAudio.cs",
+                      "sourceSHA256":  "DAE5DA3C51B07495689BFA1F7D347196DB821D064A9636201866ADE341E8652C",
+                      "testedSHA256":  "DAE5DA3C51B07495689BFA1F7D347196DB821D064A9636201866ADE341E8652C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceMachineAudio.cs.meta",
+                      "sourceSHA256":  "7E2AA3D6235BB187643AC1D41614160F7671F5F873C45F315DA3E987DCBDE4AE",
+                      "testedSHA256":  "7E2AA3D6235BB187643AC1D41614160F7671F5F873C45F315DA3E987DCBDE4AE"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceMachineRig.cs",
+                      "sourceSHA256":  "6F57B592BF286B085A3C3200B3EB07314A066BDDDA52E90C4CE3EA550ADADF23",
+                      "testedSHA256":  "6F57B592BF286B085A3C3200B3EB07314A066BDDDA52E90C4CE3EA550ADADF23"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceMachineRig.cs.meta",
+                      "sourceSHA256":  "D5124259F1EF6B0F7A1B3B5DD5980E923EA59B2D16F18890F7981ECBF899F402",
+                      "testedSHA256":  "D5124259F1EF6B0F7A1B3B5DD5980E923EA59B2D16F18890F7981ECBF899F402"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceOperatorPreferences.cs",
+                      "sourceSHA256":  "BEBC8FCB411528864B0EF96708F79364BA9A38E8A6C8ACD80CD29063B90BEE22",
+                      "testedSHA256":  "BEBC8FCB411528864B0EF96708F79364BA9A38E8A6C8ACD80CD29063B90BEE22"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceOperatorPreferences.cs.meta",
+                      "sourceSHA256":  "27F3900E86E33B218946E278324C550A6CB8C241B872B14405426135A3F27372",
+                      "testedSHA256":  "27F3900E86E33B218946E278324C550A6CB8C241B872B14405426135A3F27372"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceOperatorStation.cs",
+                      "sourceSHA256":  "E0F388FC5AC793F374484FEF4FBBEFAFBC2BA015A4912DEFFACAC875D1A8C01A",
+                      "testedSHA256":  "E0F388FC5AC793F374484FEF4FBBEFAFBC2BA015A4912DEFFACAC875D1A8C01A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceOperatorStation.cs.meta",
+                      "sourceSHA256":  "F0867BD49CC465B046F24A0A87AE114051749566ECD4F52644290C601DDD7F08",
+                      "testedSHA256":  "F0867BD49CC465B046F24A0A87AE114051749566ECD4F52644290C601DDD7F08"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceOperatorTuning.cs",
+                      "sourceSHA256":  "3B7097D20537A2FA4D35E496269963232C3493873CDB79CD18FC429A8F901C13",
+                      "testedSHA256":  "3B7097D20537A2FA4D35E496269963232C3493873CDB79CD18FC429A8F901C13"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceOperatorTuning.cs.meta",
+                      "sourceSHA256":  "BB87ECA242091938029181779F6826E6479DC9701AE5AEEDCEE31AB1541A33AC",
+                      "testedSHA256":  "BB87ECA242091938029181779F6826E6479DC9701AE5AEEDCEE31AB1541A33AC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IcePerformanceMeter.cs",
+                      "sourceSHA256":  "0404933671A4B3DBFC9D05E8D7AA50ECCEDC98C6369EDE55CCB09D156843FFF4",
+                      "testedSHA256":  "0404933671A4B3DBFC9D05E8D7AA50ECCEDC98C6369EDE55CCB09D156843FFF4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IcePerformanceMeter.cs.meta",
+                      "sourceSHA256":  "73013D94064AED9238A5D2D0C6AA84953D484C3617F91812EB814E7D6194658C",
+                      "testedSHA256":  "73013D94064AED9238A5D2D0C6AA84953D484C3617F91812EB814E7D6194658C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IcePerformanceProbe.cs",
+                      "sourceSHA256":  "55ED3911C9806614C2101C30717D527E5B70EA55D1EDBA8FF9A82A413221E7D7",
+                      "testedSHA256":  "55ED3911C9806614C2101C30717D527E5B70EA55D1EDBA8FF9A82A413221E7D7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IcePerformanceProbe.cs.meta",
+                      "sourceSHA256":  "5A82F374FAE224BB0BD58FBEFC0DC2AD692F79E7C1450B162E46E1F8A0A85A11",
+                      "testedSHA256":  "5A82F374FAE224BB0BD58FBEFC0DC2AD692F79E7C1450B162E46E1F8A0A85A11"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IcePhysicalControls.cs",
+                      "sourceSHA256":  "30802F0F2DA865DFCAE213BC7CFF848DB09FCF07066C5B082E13C76311CFE035",
+                      "testedSHA256":  "30802F0F2DA865DFCAE213BC7CFF848DB09FCF07066C5B082E13C76311CFE035"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IcePhysicalControls.cs.meta",
+                      "sourceSHA256":  "4A64C79C83850C208F1AC6582963A37A84D49B78FC5441C04DF06363C14DF9AD",
+                      "testedSHA256":  "4A64C79C83850C208F1AC6582963A37A84D49B78FC5441C04DF06363C14DF9AD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceResurfacerGame.cs",
+                      "sourceSHA256":  "B2106CC8E0154157C8E8DF987D209548728D205501F67D9315E715FA7F3C319B",
+                      "testedSHA256":  "B2106CC8E0154157C8E8DF987D209548728D205501F67D9315E715FA7F3C319B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceResurfacerGame.cs.meta",
+                      "sourceSHA256":  "649BE50AFBB1FA7A2415FE93D76CC2219FDD5FDB9C4B4A0B340F91718B5F05DF",
+                      "testedSHA256":  "649BE50AFBB1FA7A2415FE93D76CC2219FDD5FDB9C4B4A0B340F91718B5F05DF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceRinkBoards.cs",
+                      "sourceSHA256":  "6684E43FC04BC7A2E345662A1EE6F6E9575E4503962C214D62D35B092AD3CC92",
+                      "testedSHA256":  "6684E43FC04BC7A2E345662A1EE6F6E9575E4503962C214D62D35B092AD3CC92"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceRinkBoards.cs.meta",
+                      "sourceSHA256":  "AA18D7B1EEC4EF02B96CEE44F046833C95951985D2F63CB1C29A14E4FE7DD767",
+                      "testedSHA256":  "AA18D7B1EEC4EF02B96CEE44F046833C95951985D2F63CB1C29A14E4FE7DD767"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceRouteGuide.cs",
+                      "sourceSHA256":  "3A7E14D902ED8FE2B109ECEEC86BA359DA2D3DF6B415B0F14B7E1C2F3A3C1377",
+                      "testedSHA256":  "3A7E14D902ED8FE2B109ECEEC86BA359DA2D3DF6B415B0F14B7E1C2F3A3C1377"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceRouteGuide.cs.meta",
+                      "sourceSHA256":  "CB2A1977F30E27A959310074C7AB1A276F7F32D878466C8896579BB4A313E839",
+                      "testedSHA256":  "CB2A1977F30E27A959310074C7AB1A276F7F32D878466C8896579BB4A313E839"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceSnowView.cs",
+                      "sourceSHA256":  "492ACE233DC0A4B3D80A0736BC1DC5973635AB26686754193079EDC577B2FBE8",
+                      "testedSHA256":  "492ACE233DC0A4B3D80A0736BC1DC5973635AB26686754193079EDC577B2FBE8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceSnowView.cs.meta",
+                      "sourceSHA256":  "B351DF9F2D51B427B7419C3DFC16576BC4DDD32738F68E64BF16E666E22C6F52",
+                      "testedSHA256":  "B351DF9F2D51B427B7419C3DFC16576BC4DDD32738F68E64BF16E666E22C6F52"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceSurfaceView.cs",
+                      "sourceSHA256":  "91162314CB96E050AFF585A7BC95A51D238CCA9F06AA82EB0D90866C16ED460D",
+                      "testedSHA256":  "91162314CB96E050AFF585A7BC95A51D238CCA9F06AA82EB0D90866C16ED460D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceSurfaceView.cs.meta",
+                      "sourceSHA256":  "D0A5ABC2EC74EC1BD786588AD50610FDFEF81557EE39A7C4B9203A3CDE21D6BF",
+                      "testedSHA256":  "D0A5ABC2EC74EC1BD786588AD50610FDFEF81557EE39A7C4B9203A3CDE21D6BF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceUITheme.cs",
+                      "sourceSHA256":  "649CDF7B573340B30AB41FAC05317F2BC98AA33AE44BD311B6F216BB9CBE8169",
+                      "testedSHA256":  "649CDF7B573340B30AB41FAC05317F2BC98AA33AE44BD311B6F216BB9CBE8169"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceUITheme.cs.meta",
+                      "sourceSHA256":  "C59CA77D6A1C962C94D0A3B3E2FDB5765FE55FE07EBDD42FD3B1C973819BC607",
+                      "testedSHA256":  "C59CA77D6A1C962C94D0A3B3E2FDB5765FE55FE07EBDD42FD3B1C973819BC607"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWaterFillPort.cs",
+                      "sourceSHA256":  "2BD1781D22CFBDAEDABD0C24D6FBA2B1007268F07FC9BCED823279E7267B20F0",
+                      "testedSHA256":  "2BD1781D22CFBDAEDABD0C24D6FBA2B1007268F07FC9BCED823279E7267B20F0"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWaterFillPort.cs.meta",
+                      "sourceSHA256":  "73CF91C515763FF002F56B22ECC6C2C186D94A6F441B29FE0411E2A373F77D4E",
+                      "testedSHA256":  "73CF91C515763FF002F56B22ECC6C2C186D94A6F441B29FE0411E2A373F77D4E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWaterLevelGauge.cs",
+                      "sourceSHA256":  "5858C8B9AD5963F51D2BFAD70AF76633173190E30A506DE2A35FD4D1F0D9B493",
+                      "testedSHA256":  "5858C8B9AD5963F51D2BFAD70AF76633173190E30A506DE2A35FD4D1F0D9B493"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWaterLevelGauge.cs.meta",
+                      "sourceSHA256":  "819A6A64A4ADF8D941B77C880F076301A73D0D7412AC1234D317EA4FD4CBF0BD",
+                      "testedSHA256":  "819A6A64A4ADF8D941B77C880F076301A73D0D7412AC1234D317EA4FD4CBF0BD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWaterService.cs",
+                      "sourceSHA256":  "2DDE02263E57BCF73A340B48125D54AB2D1757F9B3A48F233324883A19388326",
+                      "testedSHA256":  "2DDE02263E57BCF73A340B48125D54AB2D1757F9B3A48F233324883A19388326"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWaterService.cs.meta",
+                      "sourceSHA256":  "AA7773AA9673EC28A6C939D88233E16A403CA6562F2A0DF989195E11FE057442",
+                      "testedSHA256":  "AA7773AA9673EC28A6C939D88233E16A403CA6562F2A0DF989195E11FE057442"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWorldBuilder.cs",
+                      "sourceSHA256":  "47CF2355015BE12045A3882C521BF33386052E787BE5B6B608B140BE3613E756",
+                      "testedSHA256":  "47CF2355015BE12045A3882C521BF33386052E787BE5B6B608B140BE3613E756"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\IceWorldBuilder.cs.meta",
+                      "sourceSHA256":  "C58C0A541750BC0E4B2D38A48A82FE7D8A016C9FB3BBD49E7CB4B3E4ADCE7C33",
+                      "testedSHA256":  "C58C0A541750BC0E4B2D38A48A82FE7D8A016C9FB3BBD49E7CB4B3E4ADCE7C33"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteLibraryCatalog.cs",
+                      "sourceSHA256":  "82A7BC501574F6DF4B98A9E3052EB91103CDE758377909DA986302D7643E7E8C",
+                      "testedSHA256":  "82A7BC501574F6DF4B98A9E3052EB91103CDE758377909DA986302D7643E7E8C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteLibraryCatalog.cs.meta",
+                      "sourceSHA256":  "5699F988A1FF1031AAE0C09E2AD9CA1463E920D92F18F754C3DB35F0649875B2",
+                      "testedSHA256":  "5699F988A1FF1031AAE0C09E2AD9CA1463E920D92F18F754C3DB35F0649875B2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteManagerPanel.cs",
+                      "sourceSHA256":  "99722F54ACF539D8ED4AD10A3263785B8744721EC713DE8442E907D641B48359",
+                      "testedSHA256":  "99722F54ACF539D8ED4AD10A3263785B8744721EC713DE8442E907D641B48359"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteManagerPanel.cs.meta",
+                      "sourceSHA256":  "1FC2B7C12A2228713EAE4E219CE833FEB7CD622A1B2C4F3B865C436D8D241A24",
+                      "testedSHA256":  "1FC2B7C12A2228713EAE4E219CE833FEB7CD622A1B2C4F3B865C436D8D241A24"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteRecordingPanel.cs",
+                      "sourceSHA256":  "6493C24ED469228F583678F79A40A63F18E27D383880EE38560FCB59CFCB062D",
+                      "testedSHA256":  "6493C24ED469228F583678F79A40A63F18E27D383880EE38560FCB59CFCB062D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteRecordingPanel.cs.meta",
+                      "sourceSHA256":  "DE48E3AD7401B9E561EB2CFDDE481F124F22BA404A0E34D639E479275A63DC8E",
+                      "testedSHA256":  "DE48E3AD7401B9E561EB2CFDDE481F124F22BA404A0E34D639E479275A63DC8E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteRecordingPreview.cs",
+                      "sourceSHA256":  "854A2725ABF0B7EA0C30CA9B700D6C7C3935D88586A0F5699F790B99C56FD5F5",
+                      "testedSHA256":  "854A2725ABF0B7EA0C30CA9B700D6C7C3935D88586A0F5699F790B99C56FD5F5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteRecordingPreview.cs.meta",
+                      "sourceSHA256":  "FE16A0C75217A0CA44C5BDAF4A83A8A81D96AEA3C46C1C69442331B4DE1C9F7D",
+                      "testedSHA256":  "FE16A0C75217A0CA44C5BDAF4A83A8A81D96AEA3C46C1C69442331B4DE1C9F7D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteRecordingStorage.cs",
+                      "sourceSHA256":  "25EF0E163422454F85C1B31587D4FF5B98A26616F3999635867F3C1B903DA260",
+                      "testedSHA256":  "25EF0E163422454F85C1B31587D4FF5B98A26616F3999635867F3C1B903DA260"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteRecordingStorage.cs.meta",
+                      "sourceSHA256":  "F6294F3C1C021B8BF8D95C5A78FD53B9296CAFDC50DA1CEBC8D4119A08AEB455",
+                      "testedSHA256":  "F6294F3C1C021B8BF8D95C5A78FD53B9296CAFDC50DA1CEBC8D4119A08AEB455"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteSilhouetteContinuation.cs",
+                      "sourceSHA256":  "11478DA60AB1943E25C3D10630A4511202F088C8CA43227F567526E3B93E53A8",
+                      "testedSHA256":  "11478DA60AB1943E25C3D10630A4511202F088C8CA43227F567526E3B93E53A8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\RouteSilhouetteContinuation.cs.meta",
+                      "sourceSHA256":  "20C4D8106EB8DE059CB85B5D83B2B741FB2C39565A43A31C53C2633DA2E6EC1D",
+                      "testedSHA256":  "20C4D8106EB8DE059CB85B5D83B2B741FB2C39565A43A31C53C2633DA2E6EC1D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\TrainingGuidePanel.cs",
+                      "sourceSHA256":  "7FD868A65265AD56AC951958043799E762392DB922D9A593A07BBF0038CB3CBF",
+                      "testedSHA256":  "7FD868A65265AD56AC951958043799E762392DB922D9A593A07BBF0038CB3CBF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\TrainingGuidePanel.cs.meta",
+                      "sourceSHA256":  "78E0EA5BFC803F35CAC924E3DB9AFF8CFF7890FE129AB3ECEFEB32A03C793073",
+                      "testedSHA256":  "78E0EA5BFC803F35CAC924E3DB9AFF8CFF7890FE129AB3ECEFEB32A03C793073"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\TrainingGuideStorage.cs",
+                      "sourceSHA256":  "01BAB55ECB6E991C9F0FC02D1E6C4D27A5CBEE42737ECD74DE32F6128A1E5328",
+                      "testedSHA256":  "01BAB55ECB6E991C9F0FC02D1E6C4D27A5CBEE42737ECD74DE32F6128A1E5328"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\TrainingGuideStorage.cs.meta",
+                      "sourceSHA256":  "71D9D8AB306C57F9F79E402B93BA46F9A7AB9CDA624679D5B2DCE7A162422B46",
+                      "testedSHA256":  "71D9D8AB306C57F9F79E402B93BA46F9A7AB9CDA624679D5B2DCE7A162422B46"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\TrainingGuideView.cs",
+                      "sourceSHA256":  "349ECA9784F8E225FF5C78060847A2C2713DD934D14A5D9909CE74F73CFE41C3",
+                      "testedSHA256":  "349ECA9784F8E225FF5C78060847A2C2713DD934D14A5D9909CE74F73CFE41C3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\Presentation\\TrainingGuideView.cs.meta",
+                      "sourceSHA256":  "373B69EB218ADAD1F0FFC046F7FD84FBF90B6E776E2F23B46B207EA2684670FE",
+                      "testedSHA256":  "373B69EB218ADAD1F0FFC046F7FD84FBF90B6E776E2F23B46B207EA2684670FE"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Artwork.meta",
+                      "sourceSHA256":  "F7AF513AB3F8A9265610222EE8F405105F757050C208369C65B3C586A7B71211",
+                      "testedSHA256":  "F7AF513AB3F8A9265610222EE8F405105F757050C208369C65B3C586A7B71211"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Artwork\\Placeholder White.png",
+                      "sourceSHA256":  "EA2E756CFAE73AE84195AAB2E1DE0C1DFF8D5F517FD7E42C9A9AE610C0A14D70",
+                      "testedSHA256":  "EA2E756CFAE73AE84195AAB2E1DE0C1DFF8D5F517FD7E42C9A9AE610C0A14D70"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Artwork\\Placeholder White.png.meta",
+                      "sourceSHA256":  "CD5039C0F5C415CC29D04F8517637D05F692F9C7AAAAD9BB0DBBE5ADD4A24AA1",
+                      "testedSHA256":  "CD5039C0F5C415CC29D04F8517637D05F692F9C7AAAAD9BB0DBBE5ADD4A24AA1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor.meta",
+                      "sourceSHA256":  "68A3EDECF439888F04EC9A298B84DE40D5C30BBD274D06993D8CA279B78B7D24",
+                      "testedSHA256":  "68A3EDECF439888F04EC9A298B84DE40D5C30BBD274D06993D8CA279B78B7D24"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceHudBindingEditors.cs",
+                      "sourceSHA256":  "D7987E4DABBA07832DB6A472B8F53F3146E37186CBC90A0A83C3D98BE20767D7",
+                      "testedSHA256":  "D7987E4DABBA07832DB6A472B8F53F3146E37186CBC90A0A83C3D98BE20767D7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceHudBindingEditors.cs.meta",
+                      "sourceSHA256":  "C22EB738BBBF08B0C5F7538758B1D7564D18262CFBA653B29C9BF3943C713708",
+                      "testedSHA256":  "C22EB738BBBF08B0C5F7538758B1D7564D18262CFBA653B29C9BF3943C713708"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceMachineryConsoleFactory.cs",
+                      "sourceSHA256":  "9C88C63AAB7891E74B522560CD699892A76B651A01FF45C70FAA7753CEAED21D",
+                      "testedSHA256":  "9C88C63AAB7891E74B522560CD699892A76B651A01FF45C70FAA7753CEAED21D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceMachineryConsoleFactory.cs.meta",
+                      "sourceSHA256":  "4BAB9DF17A1903326B3170A167C9DE4481D00AEFA9C89127307AAFA2179A036C",
+                      "testedSHA256":  "4BAB9DF17A1903326B3170A167C9DE4481D00AEFA9C89127307AAFA2179A036C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceMachineryConsoleValidation.cs",
+                      "sourceSHA256":  "B247FAE10A89F7F34268938F92AEF9526A9F58A0E3D10DC7442BFC07C22E63E2",
+                      "testedSHA256":  "B247FAE10A89F7F34268938F92AEF9526A9F58A0E3D10DC7442BFC07C22E63E2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceMachineryConsoleValidation.cs.meta",
+                      "sourceSHA256":  "667E970FA1B55EAC8A2E1013DCCD9B946992327BDA35F802BF18C26C56697366",
+                      "testedSHA256":  "667E970FA1B55EAC8A2E1013DCCD9B946992327BDA35F802BF18C26C56697366"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceMachineryPhysicalValidation.cs",
+                      "sourceSHA256":  "67A845CE3D662F3065B398B1E66A67E5902890CAE9EEF24E764E79E958607565",
+                      "testedSHA256":  "67A845CE3D662F3065B398B1E66A67E5902890CAE9EEF24E764E79E958607565"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceMachineryPhysicalValidation.cs.meta",
+                      "sourceSHA256":  "AABB0FD23062C6714249F5A04209BDEEB67EBF08D0B9D00310B7A587F37201A2",
+                      "testedSHA256":  "AABB0FD23062C6714249F5A04209BDEEB67EBF08D0B9D00310B7A587F37201A2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceResurfacer.UI.Editor.asmdef",
+                      "sourceSHA256":  "70B3860501391182CC3AC37D3F04D5286074C71AF4E511CB33039BE2083EC8E6",
+                      "testedSHA256":  "70B3860501391182CC3AC37D3F04D5286074C71AF4E511CB33039BE2083EC8E6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceResurfacer.UI.Editor.asmdef.meta",
+                      "sourceSHA256":  "8C5DDAB178B5EAF0BBE4EDDE17D0FD440643A08A339FDBD2324B9F314A4F7A18",
+                      "testedSHA256":  "8C5DDAB178B5EAF0BBE4EDDE17D0FD440643A08A339FDBD2324B9F314A4F7A18"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceUIAuthoringValidation.cs",
+                      "sourceSHA256":  "FEBA5BC89C68074CD3D310ABE492230C039774C96CBF0895247814675BEE21B1",
+                      "testedSHA256":  "FEBA5BC89C68074CD3D310ABE492230C039774C96CBF0895247814675BEE21B1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceUIAuthoringValidation.cs.meta",
+                      "sourceSHA256":  "900F1BD0DF9D1A7D17C05F15C5E5B7C421CA165D2B98015E0D6648BEB62B32A1",
+                      "testedSHA256":  "900F1BD0DF9D1A7D17C05F15C5E5B7C421CA165D2B98015E0D6648BEB62B32A1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceUIInputValidation.cs",
+                      "sourceSHA256":  "36B26ADF299539C534EAC5104F7E2F9EAC26871817E0067F5AF2DF53E54378A1",
+                      "testedSHA256":  "36B26ADF299539C534EAC5104F7E2F9EAC26871817E0067F5AF2DF53E54378A1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceUIInputValidation.cs.meta",
+                      "sourceSHA256":  "EA4F45274BE36B92413D24A448D1132AB813B42487FE98F749435B1CB3FA52AF",
+                      "testedSHA256":  "EA4F45274BE36B92413D24A448D1132AB813B42487FE98F749435B1CB3FA52AF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceUIStyleEditor.cs",
+                      "sourceSHA256":  "DAAD3744BD23407AB8C3F4FC7E918DD3A14A8FCFA9791083CCB969B14A198D00",
+                      "testedSHA256":  "DAAD3744BD23407AB8C3F4FC7E918DD3A14A8FCFA9791083CCB969B14A198D00"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Editor\\IceUIStyleEditor.cs.meta",
+                      "sourceSHA256":  "C5862A5A63490608AF5CB38EA994CA25C0FC15099BCD784293C9158FCC96C4D2",
+                      "testedSHA256":  "C5862A5A63490608AF5CB38EA994CA25C0FC15099BCD784293C9158FCC96C4D2"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs.meta",
+                      "sourceSHA256":  "107DB6F7569E62F8C143585F6343635280DEB24982D56DECA85230E060C12CD0",
+                      "testedSHA256":  "107DB6F7569E62F8C143585F6343635280DEB24982D56DECA85230E060C12CD0"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Aurora UI.prefab",
+                      "sourceSHA256":  "E716E021D12077C36EA82DAB1437588F6AE6AC18F11F29C3AA9CACE3EC4749D5",
+                      "testedSHA256":  "E716E021D12077C36EA82DAB1437588F6AE6AC18F11F29C3AA9CACE3EC4749D5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Aurora UI.prefab.meta",
+                      "sourceSHA256":  "2FF65379ED5B759BE831A1FB1E2F9CB333331E86E2A9414EBD5A527462D17EFC",
+                      "testedSHA256":  "2FF65379ED5B759BE831A1FB1E2F9CB333331E86E2A9414EBD5A527462D17EFC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery.meta",
+                      "sourceSHA256":  "AE9A62A9A9908F044D722CE7BC97F15329F4D5AFC81B88E0E716F33F03A98134",
+                      "testedSHA256":  "AE9A62A9A9908F044D722CE7BC97F15329F4D5AFC81B88E0E716F33F03A98134"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Aurora Machinery Console.prefab",
+                      "sourceSHA256":  "97B1D4EB7E2196A54EA7C00D651EB0087A6567732C5FB19DD0283F0480A9EEDF",
+                      "testedSHA256":  "97B1D4EB7E2196A54EA7C00D651EB0087A6567732C5FB19DD0283F0480A9EEDF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Aurora Machinery Console.prefab.meta",
+                      "sourceSHA256":  "3C6F85BD61B132A769ACAA9742FD7F59C7C1404F3EF7542E9278F6DE88C78530",
+                      "testedSHA256":  "3C6F85BD61B132A769ACAA9742FD7F59C7C1404F3EF7542E9278F6DE88C78530"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets.meta",
+                      "sourceSHA256":  "62BCBE7B98E1C3E190FE32D0AD08784F72FD80224FB335111C7B303F181E41C6",
+                      "testedSHA256":  "62BCBE7B98E1C3E190FE32D0AD08784F72FD80224FB335111C7B303F181E41C6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Action Button.prefab",
+                      "sourceSHA256":  "E4FDD84D89729EDD783B25959C8FA3FC336B12D7772A0DD0B15426222E86DF00",
+                      "testedSHA256":  "E4FDD84D89729EDD783B25959C8FA3FC336B12D7772A0DD0B15426222E86DF00"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Action Button.prefab.meta",
+                      "sourceSHA256":  "38DB9A3DFFC916137C23C55668C57829460123E408A17BF0B91CC8B1BC7CEEC7",
+                      "testedSHA256":  "38DB9A3DFFC916137C23C55668C57829460123E408A17BF0B91CC8B1BC7CEEC7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Blade Wheel.prefab",
+                      "sourceSHA256":  "6803C36E66BC1C3568367C8C6CADBA66EA1AA8E314A47B7F9C06844C0ED2EB1F",
+                      "testedSHA256":  "6803C36E66BC1C3568367C8C6CADBA66EA1AA8E314A47B7F9C06844C0ED2EB1F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Blade Wheel.prefab.meta",
+                      "sourceSHA256":  "3F2EAD2700953F7986DED03098D4F60A6D418C78FC01BFFB6C21354DF2FE592A",
+                      "testedSHA256":  "3F2EAD2700953F7986DED03098D4F60A6D418C78FC01BFFB6C21354DF2FE592A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Bound Slider.prefab",
+                      "sourceSHA256":  "B7580AEF97DCE1292AE1A3E0D37930C7EDAA15CB5B183214ED0053DEF467CDC1",
+                      "testedSHA256":  "B7580AEF97DCE1292AE1A3E0D37930C7EDAA15CB5B183214ED0053DEF467CDC1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Bound Slider.prefab.meta",
+                      "sourceSHA256":  "FE3283C3D5BAF20872CEE6FBC61E2BF2CB79617575A6C1C0017386387EF1E632",
+                      "testedSHA256":  "FE3283C3D5BAF20872CEE6FBC61E2BF2CB79617575A6C1C0017386387EF1E632"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Collapsible Panel.prefab",
+                      "sourceSHA256":  "7C118349574970E3CD17F945D9A1999F6BE5905355D110706535A50C455303C7",
+                      "testedSHA256":  "7C118349574970E3CD17F945D9A1999F6BE5905355D110706535A50C455303C7"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Collapsible Panel.prefab.meta",
+                      "sourceSHA256":  "0C0816DECF17CA4EE884E7BF1451678096EE23FBB62014CDDB92912504F3902B",
+                      "testedSHA256":  "0C0816DECF17CA4EE884E7BF1451678096EE23FBB62014CDDB92912504F3902B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Hydraulic Lever.prefab",
+                      "sourceSHA256":  "57A148A35D87D346643F9273B325648047034C0AD96DF1E4BCFABD19162DC07C",
+                      "testedSHA256":  "57A148A35D87D346643F9273B325648047034C0AD96DF1E4BCFABD19162DC07C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Hydraulic Lever.prefab.meta",
+                      "sourceSHA256":  "763CF07A0B832EDC7A0ADA30E5FBD29E388C74D8A2388D47A30157B41C135B3E",
+                      "testedSHA256":  "763CF07A0B832EDC7A0ADA30E5FBD29E388C74D8A2388D47A30157B41C135B3E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Maintained Toggle.prefab",
+                      "sourceSHA256":  "AE4ABBAEA23AA0F16B9458E1CA4A1B65DDFF4B00AF064D131775CC85146AB3F1",
+                      "testedSHA256":  "AE4ABBAEA23AA0F16B9458E1CA4A1B65DDFF4B00AF064D131775CC85146AB3F1"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Maintained Toggle.prefab.meta",
+                      "sourceSHA256":  "93993E1FB09434784AD4E6B985D1B6D5A3E847A7687ADC8D4CE9161ECAC06CDD",
+                      "testedSHA256":  "93993E1FB09434784AD4E6B985D1B6D5A3E847A7687ADC8D4CE9161ECAC06CDD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Momentary Button.prefab",
+                      "sourceSHA256":  "112DC5C7D57595116E0823B083AEEFD35C6F2E430BD928C2AD34E45AFB9CE664",
+                      "testedSHA256":  "112DC5C7D57595116E0823B083AEEFD35C6F2E430BD928C2AD34E45AFB9CE664"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Momentary Button.prefab.meta",
+                      "sourceSHA256":  "C65DEF2FB63B065A8F2EE2781ABE63FF0EC13CD58F02BF78D1DB5A2D2B9F8167",
+                      "testedSHA256":  "C65DEF2FB63B065A8F2EE2781ABE63FF0EC13CD58F02BF78D1DB5A2D2B9F8167"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Quarter Turn Valve.prefab",
+                      "sourceSHA256":  "CBC381F362699B293CA378A3C2974DF484DBA809196732F4378B41C023B789B9",
+                      "testedSHA256":  "CBC381F362699B293CA378A3C2974DF484DBA809196732F4378B41C023B789B9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Machinery\\Widgets\\Aurora Quarter Turn Valve.prefab.meta",
+                      "sourceSHA256":  "EB7074DE8BEC8137250A7ED3AEDB0A5DF820CC195DDC355D7B102872E66D096F",
+                      "testedSHA256":  "EB7074DE8BEC8137250A7ED3AEDB0A5DF820CC195DDC355D7B102872E66D096F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets.meta",
+                      "sourceSHA256":  "3533F88FF95A477746779F1B314FF80E86F4A493631E90CC1D2A77F6927D673E",
+                      "testedSHA256":  "3533F88FF95A477746779F1B314FF80E86F4A493631E90CC1D2A77F6927D673E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets\\Aurora Diagnostics Button.prefab",
+                      "sourceSHA256":  "8B6C2FE657508E0DD18A873378C4201113C5016FABA07259CA909EA83AC03EF8",
+                      "testedSHA256":  "8B6C2FE657508E0DD18A873378C4201113C5016FABA07259CA909EA83AC03EF8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets\\Aurora Diagnostics Button.prefab.meta",
+                      "sourceSHA256":  "37365E8D87EF1BFB69D331E7DBDE212422C08C5304B7160D0D2841594CA85C2E",
+                      "testedSHA256":  "37365E8D87EF1BFB69D331E7DBDE212422C08C5304B7160D0D2841594CA85C2E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets\\Aurora Meter.prefab",
+                      "sourceSHA256":  "0783209EBAAFDD7F0B80B9A95E5342FA1C3AA00B1E368F12BD6332B510D91F0B",
+                      "testedSHA256":  "0783209EBAAFDD7F0B80B9A95E5342FA1C3AA00B1E368F12BD6332B510D91F0B"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets\\Aurora Meter.prefab.meta",
+                      "sourceSHA256":  "D799052B67C5987D2D3A2D7622CBF19F5EFFDFA9EE14CCD32C55AC18768FF8A3",
+                      "testedSHA256":  "D799052B67C5987D2D3A2D7622CBF19F5EFFDFA9EE14CCD32C55AC18768FF8A3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets\\Aurora Status.prefab",
+                      "sourceSHA256":  "E56B0B73279435A0531417776B6BAD0128CCFC5C855AB5ED13162C1AB7FA2391",
+                      "testedSHA256":  "E56B0B73279435A0531417776B6BAD0128CCFC5C855AB5ED13162C1AB7FA2391"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Prefabs\\Widgets\\Aurora Status.prefab.meta",
+                      "sourceSHA256":  "E64386904801E4A6B79534667D2E9786C95CF5A320F31CE31DD660016517864C",
+                      "testedSHA256":  "E64386904801E4A6B79534667D2E9786C95CF5A320F31CE31DD660016517864C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime.meta",
+                      "sourceSHA256":  "62D0FE4BAA166BB597F44DB845BA90149CE738A8E1776C3196EE6FAB8AB279AF",
+                      "testedSHA256":  "62D0FE4BAA166BB597F44DB845BA90149CE738A8E1776C3196EE6FAB8AB279AF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceAuthoredHud.cs",
+                      "sourceSHA256":  "9BF913CD633A9663DE93DD969894330B13D673535B0DD682AE5B7BC201845755",
+                      "testedSHA256":  "9BF913CD633A9663DE93DD969894330B13D673535B0DD682AE5B7BC201845755"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceAuthoredHud.cs.meta",
+                      "sourceSHA256":  "DB1DCF21BEFD0EC6DB9C8AC67D46D93F600E94797075640B677831F94E50462F",
+                      "testedSHA256":  "DB1DCF21BEFD0EC6DB9C8AC67D46D93F600E94797075640B677831F94E50462F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceConsoleControl.cs",
+                      "sourceSHA256":  "82946F907A3C822F06944AE0BE879A659C067B7E61A5A142220DFEC24885D6B6",
+                      "testedSHA256":  "82946F907A3C822F06944AE0BE879A659C067B7E61A5A142220DFEC24885D6B6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceConsoleControl.cs.meta",
+                      "sourceSHA256":  "42E71DA554A8E200E3FE696B1C3480FD7CA63F1EF06D7CF01003658A41EB2AF9",
+                      "testedSHA256":  "42E71DA554A8E200E3FE696B1C3480FD7CA63F1EF06D7CF01003658A41EB2AF9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceHudWidget.cs",
+                      "sourceSHA256":  "C13229B2A029B9A39811D0C1B1674C98EB264EDB08EE9247DB908B7E54A5107E",
+                      "testedSHA256":  "C13229B2A029B9A39811D0C1B1674C98EB264EDB08EE9247DB908B7E54A5107E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceHudWidget.cs.meta",
+                      "sourceSHA256":  "F516937F3331AFCCADEC6FDFAB8AEFCCEC63958D6146FAE7061AF454B5319B40",
+                      "testedSHA256":  "F516937F3331AFCCADEC6FDFAB8AEFCCEC63958D6146FAE7061AF454B5319B40"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceMachineryConsole.cs",
+                      "sourceSHA256":  "EB0F9CB349C23C88018F878F3A6D3FCD5A70CF40DDC05EA250670CAC64094950",
+                      "testedSHA256":  "EB0F9CB349C23C88018F878F3A6D3FCD5A70CF40DDC05EA250670CAC64094950"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceMachineryConsole.cs.meta",
+                      "sourceSHA256":  "6583D03B9B3C884F82166F8185EBCDAEFFD34ABDC80901077A455C5C1AD9013C",
+                      "testedSHA256":  "6583D03B9B3C884F82166F8185EBCDAEFFD34ABDC80901077A455C5C1AD9013C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceUIPointerGuard.cs",
+                      "sourceSHA256":  "AAB85204F0639A7AC45E7181F864D4D5EDF869AE21B82AFF59614E7A91683EF8",
+                      "testedSHA256":  "AAB85204F0639A7AC45E7181F864D4D5EDF869AE21B82AFF59614E7A91683EF8"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceUIPointerGuard.cs.meta",
+                      "sourceSHA256":  "3642B3CCB5A1D73843720404C75B4F2EBD7ED06D2A011C0CDCE87340FB7EB35E",
+                      "testedSHA256":  "3642B3CCB5A1D73843720404C75B4F2EBD7ED06D2A011C0CDCE87340FB7EB35E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceUIStyle.cs",
+                      "sourceSHA256":  "7BC6EF10318F942C41D48A0D6B06DC66B6A9EE2345BACBFDB89F067089FECBB6",
+                      "testedSHA256":  "7BC6EF10318F942C41D48A0D6B06DC66B6A9EE2345BACBFDB89F067089FECBB6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceUIStyle.cs.meta",
+                      "sourceSHA256":  "EEBD09C3EF914905A576B5E67B009130E997DE0BDBA9CBD9C52FA32A505C9279",
+                      "testedSHA256":  "EEBD09C3EF914905A576B5E67B009130E997DE0BDBA9CBD9C52FA32A505C9279"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceUIStyleSheet.cs",
+                      "sourceSHA256":  "7B8103C77506F44052FE79F8ADC88B8A0F1AB35F35EA2965C9BC5ED5907BCB1E",
+                      "testedSHA256":  "7B8103C77506F44052FE79F8ADC88B8A0F1AB35F35EA2965C9BC5ED5907BCB1E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Runtime\\IceUIStyleSheet.cs.meta",
+                      "sourceSHA256":  "E90F24250E66038D7EB146C444C4D6F8FD1F34DF8AB4B4B6E8FD2778F505CCF3",
+                      "testedSHA256":  "E90F24250E66038D7EB146C444C4D6F8FD1F34DF8AB4B4B6E8FD2778F505CCF3"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Themes.meta",
+                      "sourceSHA256":  "8D86A8865B3ED44F7EA3A717C0301341109D8D4231F2101C883E1223E907F717",
+                      "testedSHA256":  "8D86A8865B3ED44F7EA3A717C0301341109D8D4231F2101C883E1223E907F717"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Themes\\Aurora UI Theme.asset",
+                      "sourceSHA256":  "98CE2FC26BBAE1A763FF9B6D30927AEA2C2F4EF2324E56C1EB544093F1374CE5",
+                      "testedSHA256":  "98CE2FC26BBAE1A763FF9B6D30927AEA2C2F4EF2324E56C1EB544093F1374CE5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Themes\\Aurora UI Theme.asset.meta",
+                      "sourceSHA256":  "FC6BC88E6D5A80BC66294EAA0DAEFA50C0F2A40AB1C75030DAF8CAB877D831F5",
+                      "testedSHA256":  "FC6BC88E6D5A80BC66294EAA0DAEFA50C0F2A40AB1C75030DAF8CAB877D831F5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography.meta",
+                      "sourceSHA256":  "1009BB2EE5F6ABEE6411043CD13174828E967D70F5BBCFB1EC011728F82F7A80",
+                      "testedSHA256":  "1009BB2EE5F6ABEE6411043CD13174828E967D70F5BBCFB1EC011728F82F7A80"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Fonts.meta",
+                      "sourceSHA256":  "0A5735A6660B7DD4C7B8D26C1E66073C221DFD784E64D5AD23B3700F9BB52645",
+                      "testedSHA256":  "0A5735A6660B7DD4C7B8D26C1E66073C221DFD784E64D5AD23B3700F9BB52645"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Fonts\\LiberationSans - OFL.txt",
+                      "sourceSHA256":  "37F8552E9A874EC10710DC0EDE6A9ADF168E6609FBD02A507F35629373B85A48",
+                      "testedSHA256":  "37F8552E9A874EC10710DC0EDE6A9ADF168E6609FBD02A507F35629373B85A48"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Fonts\\LiberationSans - OFL.txt.meta",
+                      "sourceSHA256":  "5DBEC32C014C17D94674AF5F1494D49B42BA00EDD50397F895F088C868CCBF86",
+                      "testedSHA256":  "5DBEC32C014C17D94674AF5F1494D49B42BA00EDD50397F895F088C868CCBF86"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Fonts\\LiberationSans.ttf",
+                      "sourceSHA256":  "E5B0AF421EA2BFBC1AC8D251D647268087AE82786234C57F757D1F0B90FA8B49",
+                      "testedSHA256":  "E5B0AF421EA2BFBC1AC8D251D647268087AE82786234C57F757D1F0B90FA8B49"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Fonts\\LiberationSans.ttf.meta",
+                      "sourceSHA256":  "E2E35A015703584FB119355FA02631764D111C3E112D32519801D46BD697B596",
+                      "testedSHA256":  "E2E35A015703584FB119355FA02631764D111C3E112D32519801D46BD697B596"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources.meta",
+                      "sourceSHA256":  "B3054314649EE7C63F8BA56457D297CDE8726D07EE080FFFE1735D4C0A62108C",
+                      "testedSHA256":  "B3054314649EE7C63F8BA56457D297CDE8726D07EE080FFFE1735D4C0A62108C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Fonts \u0026 Materials.meta",
+                      "sourceSHA256":  "95EB61AB97F9ED1B839DADED023A10937471E42ABD02078825FF35409D375DEF",
+                      "testedSHA256":  "95EB61AB97F9ED1B839DADED023A10937471E42ABD02078825FF35409D375DEF"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Fonts \u0026 Materials\\LiberationSans SDF - Fallback.asset",
+                      "sourceSHA256":  "E2D77876F2B90D98BA2424F6FC32B1403EA701DE8FD24A8FE8E571ECC3CDC10A",
+                      "testedSHA256":  "E2D77876F2B90D98BA2424F6FC32B1403EA701DE8FD24A8FE8E571ECC3CDC10A"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Fonts \u0026 Materials\\LiberationSans SDF - Fallback.asset.meta",
+                      "sourceSHA256":  "D6D86504040CF6E736767FDA9BDEF494AFB06D5304384243E2DD703EBA3A4A3D",
+                      "testedSHA256":  "D6D86504040CF6E736767FDA9BDEF494AFB06D5304384243E2DD703EBA3A4A3D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Fonts \u0026 Materials\\LiberationSans SDF.asset",
+                      "sourceSHA256":  "C3FF50E3133D989180B187748FFC67903F1FEDE099A5B85B4FCBD8CB6E8BE958",
+                      "testedSHA256":  "C3FF50E3133D989180B187748FFC67903F1FEDE099A5B85B4FCBD8CB6E8BE958"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Fonts \u0026 Materials\\LiberationSans SDF.asset.meta",
+                      "sourceSHA256":  "37233890984555987CB585551BC885069F2849A9B0D1C2191AF073B9376AA10F",
+                      "testedSHA256":  "37233890984555987CB585551BC885069F2849A9B0D1C2191AF073B9376AA10F"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\LineBreaking Following Characters.txt",
+                      "sourceSHA256":  "3A73E5FFE2510756DD3C2E982FDC1218B4BE82C6E21ABDE88070D6860E1BC8E6",
+                      "testedSHA256":  "3A73E5FFE2510756DD3C2E982FDC1218B4BE82C6E21ABDE88070D6860E1BC8E6"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\LineBreaking Following Characters.txt.meta",
+                      "sourceSHA256":  "D5A86D8B7DB6AA3CA6F4A63750EB94E0C42A64909B47D8C6C6F2565845534490",
+                      "testedSHA256":  "D5A86D8B7DB6AA3CA6F4A63750EB94E0C42A64909B47D8C6C6F2565845534490"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\LineBreaking Leading Characters.txt",
+                      "sourceSHA256":  "62D3F4D5F64AAF885692D2D13A8313F6918E6E4C5AEB3990A43F614652BFD89C",
+                      "testedSHA256":  "62D3F4D5F64AAF885692D2D13A8313F6918E6E4C5AEB3990A43F614652BFD89C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\LineBreaking Leading Characters.txt.meta",
+                      "sourceSHA256":  "6A925814D5E251A0CED6DE210DB2BACF2DE29B4F0DC2991E85C908632E9565E4",
+                      "testedSHA256":  "6A925814D5E251A0CED6DE210DB2BACF2DE29B4F0DC2991E85C908632E9565E4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Style Sheets.meta",
+                      "sourceSHA256":  "DB585F2CBFD07F55B838A688F3B004825106D82AA8A433DD03482ED643394476",
+                      "testedSHA256":  "DB585F2CBFD07F55B838A688F3B004825106D82AA8A433DD03482ED643394476"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Style Sheets\\Default Style Sheet.asset",
+                      "sourceSHA256":  "93E073CDB91B7E3D2FA31E2DD13626D7B9D2F327904BA8C3C2B97A3EECFBABAC",
+                      "testedSHA256":  "93E073CDB91B7E3D2FA31E2DD13626D7B9D2F327904BA8C3C2B97A3EECFBABAC"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\Style Sheets\\Default Style Sheet.asset.meta",
+                      "sourceSHA256":  "B832663CA09EC7AF8C8E816FD91A718B2AF6C21AB4F126FA818871AD53BCE763",
+                      "testedSHA256":  "B832663CA09EC7AF8C8E816FD91A718B2AF6C21AB4F126FA818871AD53BCE763"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\TMP Settings.asset",
+                      "sourceSHA256":  "36734EF50D0D62F021F3D9EE04015A3BA581C9E2315FF8B5E395F94C5D8BD8D9",
+                      "testedSHA256":  "36734EF50D0D62F021F3D9EE04015A3BA581C9E2315FF8B5E395F94C5D8BD8D9"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Resources\\TMP Settings.asset.meta",
+                      "sourceSHA256":  "A65193B095EC3606789A3191751A837704CF52D4F461993AE7903024C6D43F45",
+                      "testedSHA256":  "A65193B095EC3606789A3191751A837704CF52D4F461993AE7903024C6D43F45"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders.meta",
+                      "sourceSHA256":  "F1FB4C4EFB14A536D2013BD3058DFD3B3A91BC2CEEF52610124C372175485FC5",
+                      "testedSHA256":  "F1FB4C4EFB14A536D2013BD3058DFD3B3A91BC2CEEF52610124C372175485FC5"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMP_SDF-Mobile.shader",
+                      "sourceSHA256":  "44C39AABC7E88E7E1FEFFC1880DF754F4ADF86B62E9512AA89E9D2D65171AFF4",
+                      "testedSHA256":  "44C39AABC7E88E7E1FEFFC1880DF754F4ADF86B62E9512AA89E9D2D65171AFF4"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMP_SDF-Mobile.shader.meta",
+                      "sourceSHA256":  "F2112F50C72762D4E6731391495EA11F76975D677B698E9BCFDD38275EA18F9D",
+                      "testedSHA256":  "F2112F50C72762D4E6731391495EA11F76975D677B698E9BCFDD38275EA18F9D"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMPro.cginc",
+                      "sourceSHA256":  "14EDB7D7B88CAF2B82CAE68200ABE895E5B5B3474C3FFFBF0E9B4B09A4E2467E",
+                      "testedSHA256":  "14EDB7D7B88CAF2B82CAE68200ABE895E5B5B3474C3FFFBF0E9B4B09A4E2467E"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMPro.cginc.meta",
+                      "sourceSHA256":  "A9CF9D5431B809E36B8FFFF4377B5EBDA7D386A36D48838CD134BC09F3CAEC6C",
+                      "testedSHA256":  "A9CF9D5431B809E36B8FFFF4377B5EBDA7D386A36D48838CD134BC09F3CAEC6C"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMPro_Mobile.cginc",
+                      "sourceSHA256":  "D9D43DDD9810476162F21B42477D9CE2CDC4E6CC7571D354C3253AAFC6673EAD",
+                      "testedSHA256":  "D9D43DDD9810476162F21B42477D9CE2CDC4E6CC7571D354C3253AAFC6673EAD"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMPro_Mobile.cginc.meta",
+                      "sourceSHA256":  "2E16FA15EF884A60A402D8B696F8B09E5315CBB468BA223D256030C7FE2B0667",
+                      "testedSHA256":  "2E16FA15EF884A60A402D8B696F8B09E5315CBB468BA223D256030C7FE2B0667"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMPro_Properties.cginc",
+                      "sourceSHA256":  "66DB1F03E8D7A413EBA79BCB6602FDB2DE710B586F34A6F2584ED6F68F028E90",
+                      "testedSHA256":  "66DB1F03E8D7A413EBA79BCB6602FDB2DE710B586F34A6F2584ED6F68F028E90"
+                  },
+                  {
+                      "path":  "Assets\\Experiments\\IceResurfacer\\UI\\Typography\\Shaders\\TMPro_Properties.cginc.meta",
+                      "sourceSHA256":  "EDACE33591894D86D9A4144466FB3606E538D3341030FE22F908551755120EA5",
+                      "testedSHA256":  "EDACE33591894D86D9A4144466FB3606E538D3341030FE22F908551755120EA5"
+                  }
+              ],
+    "integratedScene":  {
+                            "path":  "Assets/Experiments/IceResurfacer/Scenes/IceResurfacer_AuthoredMachine.unity",
+                            "sourceSHA256":  "92D8ECB950E588668BF520AF5EC85675F2D21A40CBF5B22AADEE51DBF09108FF",
+                            "testedSHA256":  "92D8ECB950E588668BF520AF5EC85675F2D21A40CBF5B22AADEE51DBF09108FF"
+                        }
+}

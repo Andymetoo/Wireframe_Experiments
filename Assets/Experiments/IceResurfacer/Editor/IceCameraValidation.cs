@@ -86,6 +86,7 @@ namespace IceResurfacer.Editor
                 game.ToggleHelp();Step(false,default,false);Same(down,"guide does not recenter");game.ToggleHelp();
                 typeof(IceResurfacerGame).GetMethod("OnApplicationFocus",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,new object[]{false});
                 Step(false,default,false);Same(down,"focus loss does not recenter");
+                typeof(IceResurfacerGame).GetMethod("OnApplicationFocus",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(game,new object[]{true});
                 Aim(-155,60,true);Quaternion start=Head.localRotation;
                 Step(false,default,true,Key.X,Key.Space);
                 Check(Quaternion.Angle(Head.localRotation,ForwardPose)>90&&Quaternion.Angle(start,Head.localRotation)>0,"X begins a smooth recenter without teleporting");

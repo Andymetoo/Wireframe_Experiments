@@ -42,7 +42,7 @@ namespace IceResurfacer.Editor
             var changed = new List<Object>(3);
             if (style.text != null && (style.applyFont || style.applyFontSize || style.applyColor)) changed.Add(style.text);
             if (style.image != null && (style.applyColor || style.applySprite)) changed.Add(style.image);
-            if (style.button != null && style.applyButtonStates) changed.Add(style.button);
+            if (style.StateTarget != null && style.applyButtonStates) changed.Add(style.StateTarget);
             if (changed.Count == 0) return;
             Undo.RecordObjects(changed.ToArray(), "Apply Aurora UI theme");
             style.Apply();
@@ -74,7 +74,7 @@ namespace IceResurfacer.Editor
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            EditorGUILayout.HelpBox("To override a font, color, sprite, size or Button states, first disable that shared channel here, then edit the target component. Alignment, material, RectTransform, spacing and text content always remain locally authored. Theme changes are not applied while you edit; use the button below, or Apply Theme to Loaded UI on the theme asset.", MessageType.Info);
+            EditorGUILayout.HelpBox("To override a font, color, sprite, size or Selectable/Button states, first disable that shared channel here, then edit the target component. Alignment, material, RectTransform, spacing and text content always remain locally authored. Theme changes are not applied while you edit; use the button below, or Apply Theme to Loaded UI on the theme asset.", MessageType.Info);
             using (new EditorGUI.DisabledScope(Application.isPlaying))
                 if (GUILayout.Button("Apply Shared Style (Undoable)"))
                 {

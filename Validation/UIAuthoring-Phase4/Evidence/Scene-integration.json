@@ -1,0 +1,18 @@
+{
+  "originalSceneSha256": "b8e81838a780adb751bb972656801c678e1a57f6589f1aa9f0dd4443837178ba",
+  "unityArtifactSha256": "34afe3e047907302fd1337615cdd022d6d578581c03b4407678be8a7e3c1d47a",
+  "integratedSceneSha256": "1967e79a06217bb0d2ccb22541c98079770074b13e644911022b106954d873ce",
+  "unchangedExistingRecords": 28,
+  "newRecordIds": [
+    "2093241011",
+    "2093241012"
+  ],
+  "remappedReusedIds": {},
+  "omittedByUnityButRetainedExistingRecords": [
+    "1905400001"
+  ],
+  "existingUIChange": "Only m_AddedGameObjects; all existing Phase 1-3 children retained.",
+  "newPrefabGuids": [
+    "cc251896c8fca144dad616dcc7f4b838"
+  ]
+}

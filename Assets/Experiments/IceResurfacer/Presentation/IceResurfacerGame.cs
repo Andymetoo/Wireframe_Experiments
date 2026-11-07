@@ -22,6 +22,36 @@ namespace IceResurfacer.Presentation
         // Registered by the persistent scene UI; procedural scenes leave this null.
         public IceAuthoredHud AuthoredHud { get; set; }
         public bool HasAuthoredHud => AuthoredHud != null && AuthoredHud.IsAvailable;
+        public IceMachineryConsole AuthoredConsole { get; set; }
+        public bool HasAuthoredConsole => AuthoredConsole != null && AuthoredConsole.IsAvailable;
+        public IceSurfaceSurvey AuthoredSurvey { get; set; }
+        public IceGpsStatus AuthoredGps { get; set; }
+        public IceRouteManager AuthoredRoutes { get; set; }
+        public bool HasAuthoredSurvey => AuthoredSurvey != null && AuthoredSurvey.IsAvailable;
+        public bool HasAuthoredGps => AuthoredGps != null && AuthoredGps.IsAvailable;
+        public bool HasAuthoredRoutes => AuthoredRoutes != null && AuthoredRoutes.IsAvailable;
+        public IceMenuScreens AuthoredMenus { get; set; }
+        public bool HasAuthoredMenus => AuthoredMenus != null && AuthoredMenus.IsAvailable;
+        public IceOperatorOverlay AuthoredOperatorUI { get; set; }
+        public bool HasAuthoredOperatorUI => AuthoredOperatorUI != null && AuthoredOperatorUI.IsAvailable;
+        public bool UsesAuthoredDriverEye => HasDriverAnchor;
+        readonly IceUIPointerGuard navigationPointer = new IceUIPointerGuard();
+        public bool PointerOverAuthoredInterface(Vector2 screenPoint)
+        {
+            AuthoredMenus?.RefreshState();
+            if (HasAuthoredMenus && AuthoredMenus.ModalVisible) return true;
+            AuthoredOperatorUI?.SyncVisibility();
+            // Synchronize every shared-Canvas group before any raycast, even on a modal/hide transition.
+            AuthoredSurvey?.SyncVisibility(); AuthoredGps?.SyncVisibility(); AuthoredRoutes?.SyncVisibility();
+            if (HasAuthoredRoutes && AuthoredRoutes.Visible) return true;
+            bool consolePointer = HasAuthoredConsole && AuthoredConsole.ContainsPointer(screenPoint);
+            bool hudPointer = HasAuthoredHud && AuthoredHud.ContainsPointer(screenPoint);
+            if (HasAuthoredOperatorUI && AuthoredOperatorUI.ContainsPointer(screenPoint)) return true;
+            if ((HasAuthoredSurvey && AuthoredSurvey.CanInteract || HasAuthoredGps && AuthoredGps.Visible && IceNavigationUI.Pointer(this)) &&
+                navigationPointer.ContainsPointer(HasAuthoredSurvey ? AuthoredSurvey.raycaster : AuthoredGps.raycaster, screenPoint)) return true;
+            // Refresh console mode/modal visibility before the shared Canvas raycast.
+            return consolePointer || hudPointer;
+        }
         public float OriginalForwardSpeedMph=>calibration.ForwardSpeed/IceOperatorPreferences.MetersPerSecondPerMph;
         public float SelectedForwardSpeedMph=>(Sim==null?calibration.ForwardSpeed:Sim.MaximumForwardSpeedTarget)/IceOperatorPreferences.MetersPerSecondPerMph;
         public void SetOperatorSpeedMph(float mph)
@@ -42,6 +72,7 @@ namespace IceResurfacer.Presentation
             PhysicalControls?.RefreshVisibility();WaterService?.RefreshInteractionVisibility();RouteGuide?.Refresh();
             Surface?.SetDebugMode(HudHidden?0:SurfaceDebugMode);
             GetComponent<IceCollisionOverlay>()?.Refresh();
+            AuthoredMenus?.RefreshState();
         }
         public bool Looking { get; private set; }
         public Camera DriverCamera { get; private set; }
@@ -100,7 +131,7 @@ namespace IceResurfacer.Presentation
         Color oldAmbient, oldFog;
         AmbientMode oldAmbientMode;
         float oldAmbientIntensity, oldFogDensity;
-        bool oldFogEnabled, oldCursorVisible;
+        bool oldFogEnabled, oldCursorVisible, oldRunInBackground;
         CursorLockMode oldCursorLock;
 
         void Awake()
@@ -112,6 +143,8 @@ namespace IceResurfacer.Presentation
             oldAmbientIntensity=RenderSettings.ambientIntensity;
             oldFog=RenderSettings.fogColor; oldFogEnabled=RenderSettings.fog; oldFogDensity=RenderSettings.fogDensity;
             oldCursorVisible=Cursor.visible; oldCursorLock=Cursor.lockState;
+            oldRunInBackground=Application.runInBackground;
+            Application.runInBackground=true;
             RenderSettings.ambientMode=AmbientMode.Flat;
             // RenderSettings stores the same sRGB color represented by Unity's
             // Environment color picker. Unity converts it for linear rendering;
@@ -197,13 +230,14 @@ namespace IceResurfacer.Presentation
             DriverCamera.transform.localPosition=Vector3.zero;
             DriverCamera.transform.localRotation=Quaternion.Euler(ForwardPitch,0,0);
             Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
+            AuthoredMenus?.RefreshState();
         }
-        public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); } }
-        public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseControls(); ReleaseLook(); }
+        public void TogglePause() { if(Started&&!Sim.Finished) { Paused=!Paused; ReleaseControls(); ReleaseLook(); AuthoredMenus?.RefreshState(); } }
+        public void ToggleHelp() { HelpVisible=!HelpVisible; ReleaseControls(); ReleaseLook(); AuthoredMenus?.RefreshState(); }
         public void ToggleDiagnostics() { DiagnosticsVisible=!DiagnosticsVisible; }
         public void Finish()
         {
-            if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseControls(); ReleaseLook(); }
+            if(Sim.TryFinish()) { Report=Sim.GetReport(); ReleaseControls(); ReleaseLook(); AuthoredMenus?.RefreshState(); }
             else Notice=Sim.LastMessage;
         }
         public void Service()
@@ -218,6 +252,7 @@ namespace IceResurfacer.Presentation
         }
         public void ReleaseControls()
         {
+            AuthoredConsole?.ReleaseInteractions();
             PhysicalControls?.Release(); dashboard?.ReleaseInteractions(); keyboardLift=keyboardTank=false;
             if(Sim!=null) { Sim.SetConditionerHydraulic(0); Sim.SetTankHydraulic(0); }
         }
@@ -232,8 +267,9 @@ namespace IceResurfacer.Presentation
             if(Sim==null) return;
             if(operatorTuning!=null)operatorTuning.ApplyRuntime(Sim.Config,calibration);
             Performance.BeginFrame(Time.unscaledDeltaTime);
-            var keys=Keyboard.current;
-            if(keys!=null)
+            var keys=HasFocus?Keyboard.current:null;
+            bool routeTextEditing=HasAuthoredRoutes&&AuthoredRoutes.TextEditing;
+            if(keys!=null&&!routeTextEditing)
             {
                 if(keys.numpad1Key.wasPressedThisFrame)ToggleVideoMode();
                 if(keys.escapeKey.wasPressedThisFrame) TogglePause();
@@ -241,15 +277,15 @@ namespace IceResurfacer.Presentation
                 if(keys.f3Key.wasPressedThisFrame) DiagnosticsVisible=!DiagnosticsVisible;
                 if(keys.f4Key.wasPressedThisFrame) PerformanceVisible=!PerformanceVisible;
                 if(keys.f2Key.wasPressedThisFrame) { SurfaceDebugMode=(SurfaceDebugMode+1)%3; Surface.SetDebugMode(HudHidden?0:SurfaceDebugMode); }
-                if(keys.tabKey.wasPressedThisFrame) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
+                if(keys.tabKey.wasPressedThisFrame&&!(HasAuthoredMenus&&AuthoredMenus.ModalVisible)) { dashboard.Compact=!dashboard.Compact; ReleaseControls(); }
             }
             bool running=Started&&!Paused&&!HelpVisible&&!Sim.Finished;
             bool wasOnFoot=Sim.OnFoot;
             bool routePanel=RouteGuide!=null&&RouteGuide.PanelOpen;
             if(running&&!wasOnFoot&&!routePanel&&keys!=null&&keys.fKey.wasPressedThisFrame)RestoreSeatedCameraBeforeDismount();
-            WaterService.HandleInput(running&&!routePanel,Time.deltaTime);
+            WaterService.HandleInput(running&&!routePanel&&HasFocus,Time.deltaTime);
             if(wasOnFoot!=Sim.OnFoot) { ReleaseControls(); if(!Sim.OnFoot)ReleaseLook(); else { Looking=false; lookMouse=null; } }
-            bool driving=running&&!Sim.OnFoot&&!routePanel;
+            bool driving=running&&!Sim.OnFoot&&!routePanel&&HasFocus;
             var c=Sim.Controls;
             RawThrottle=keys!=null?(keys.wKey.isPressed?1:0)-(keys.sKey.isPressed?1:0):0;
             c.Throttle=driving?RawThrottle:0;
@@ -277,6 +313,7 @@ namespace IceResurfacer.Presentation
             }
             if(!Sim.OnFoot)UpdateLook(running&&!routePanel,Time.deltaTime);
             PhysicalControls.UpdateInput(driving&&!Looking&&!ChaseActive&&CameraView!="Rear"&&CameraView!="Conditioner", dashboard.PointerOverInterface(this,Mouse.current!=null?Mouse.current.position.ReadValue():Vector2.zero));
+            AuthoredConsole?.TickInput();
             if(running)
             {
                 accumulator+=Mathf.Min(Time.deltaTime,.12f);
@@ -288,6 +325,7 @@ namespace IceResurfacer.Presentation
             }
             UpdateMachine(running?Time.deltaTime:0);
             WaterService.UpdateViewAndEffects(running,Time.deltaTime);
+            dashboard.ObserveMessages(this);
             machineAudio.SetState(Sim,running,Mathf.Abs(Sim.Conditioner.Lift-lastLift)>.0001f||Mathf.Abs(Sim.TankLift-lastTankLift)>.0001f);
             lastLift=Sim.Conditioner.Lift;
             lastTankLift=Sim.TankLift;
@@ -295,6 +333,7 @@ namespace IceResurfacer.Presentation
         }
         public void SelectCameraView(string view)
         {
+            AuthoredConsole?.ReleaseInteractions();
             PhysicalControls?.Release();
             chaseCamera.Leave();
             CameraView=view;
@@ -453,8 +492,8 @@ namespace IceResurfacer.Presentation
         }
         void UpdateLook(bool running,float dt)
         {
-            var mouse=Mouse.current;
-            var keys=Keyboard.current;
+            var mouse=HasFocus?Mouse.current:null;
+            var keys=HasFocus?Keyboard.current:null;
             bool held=running&&mouse!=null&&mouse.rightButton.isPressed;
             bool preset=false;
             if(running&&keys!=null)
@@ -668,8 +707,8 @@ namespace IceResurfacer.Presentation
         void OnApplicationFocus(bool focus)
         {
             HasFocus=focus;
-            if(!focus)ReleaseControls();
-            if(!Application.isBatchMode&&!focus&&Started&&!Sim.Finished) { Paused=true; ReleaseLook(); }
+            // Editing another window releases held input without opening Pause.
+            if(!focus) { ReleaseControls(); ReleaseLook(); }
         }
         void OnDestroy()
         {
@@ -680,6 +719,7 @@ namespace IceResurfacer.Presentation
             RenderSettings.ambientIntensity=oldAmbientIntensity; RenderSettings.fogColor=oldFog;
             RenderSettings.fog=oldFogEnabled; RenderSettings.fogDensity=oldFogDensity;
             Cursor.lockState=oldCursorLock; Cursor.visible=oldCursorVisible;
+            Application.runInBackground=oldRunInBackground;
             // Own generated geometry/materials: clean them when replacing or unloading the scene.
             foreach(var m in World.Meshes)Destroy(m);
             foreach(var m in World.Materials)Destroy(m);
